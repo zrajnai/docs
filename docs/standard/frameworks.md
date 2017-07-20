@@ -49,7 +49,7 @@ You can refer to a family of frameworks using long or short-forms of the framewo
 
 ## Latest framework versions
 
-The following table defines the set of frameworks that you can use, how they're referenced, and which version of the [.NET Standard](library.md) they implement. These framework versions are the latest stable versions. Pre-release versions aren't shown.
+The following table defines the set of frameworks that you can use, how they're referenced, and which version of the [.NET Standard](net-standard.md) they implement. These framework versions are the latest stable versions. Pre-release versions aren't shown.
 
 | Framework             | Latest Version | Target Framework Moniker (TFM) | Compact Target Framework Moniker (TFM) | .NET Standard Version | Metapackage |
 | :-------------------: | :------------: | :----------------------------: | :------------------------------------: | :-------------------: | :---------: |
@@ -143,10 +143,10 @@ A number of frameworks are related to and compatible with one another but not ne
 
 ## .NET Standard
 
-The [.NET Standard](https://github.com/dotnet/standard) simplifies references between binary-compatible frameworks, allowing a single target framework to reference a combination of others. For more information, see the [.NET Standard Library](library.md) topic.
+The [.NET Standard](https://github.com/dotnet/standard) simplifies references between binary-compatible frameworks, allowing a single target framework to reference a combination of others. For more information, see the [.NET Standard](net-standard.md) topic.
 
 The [NuGet Tools Get Nearest Framework Tool](http://nugettoolsdev.azurewebsites.net/) simulates the NuGet logic used for the selection of one framework from many available framework assets in a package based on the project's framework. To use the tool, enter one project framework and one or more package frameworks. Select the **Submit** button. The tool indicates if the package frameworks you list are compatible with the project framework you provide.
 
 ## Portable Class Libraries
 
-For information on Portable Class Libraries, see the [Portable Class Libraries](https://docs.microsoft.com/nuget/schema/target-frameworks#portable-class-libraries) section of the *Target Framework* topic in the NuGet documentation. Stephen Cleary created a tool that lists the supported PCLs. For more information, see [Framework Profiles in .NET](http://blog.stephencleary.com/2012/05/framework-profiles-in-net.html).
+For information on Portable Class Libraries, see the [Portable Class Libraries](/nuget/schema/target-frameworks#portable-class-libraries) section of the *Target Framework* topic in the NuGet documentation. Stephen Cleary created a tool that lists the supported PCLs. For more information, see [Framework Profiles in .NET](http://blog.stephencleary.com/2012/05/framework-profiles-in-net.html).

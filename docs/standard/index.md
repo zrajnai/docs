@@ -12,9 +12,9 @@ ms.devlang: dotnet
 ms.assetid: bbfe6465-329d-4982-869d-472e7ef85d93
 ---
 
-# .NET Platform Guide
+# .NET Guide
 
-The .NET Platform Guide provides a large amount of information about the .NET Platform.  Depending on your familiarity with .NET, you may wish to explore different sections of this guide and other sections of the .NET documentation.
+The .NET Guide provides a large amount of information about .NET.  Depending on your familiarity with .NET, you may wish to explore different sections of this guide and other sections of the .NET documentation.
 
 ## New to .NET
 
@@ -30,7 +30,7 @@ If you're new to .NET Core, check out [Get Started with .NET Core](../core/get-s
 
 ## New to .NET Standard
 
-If you're new to .NET Standard, check out [.NET Standard Library](library.md).
+If you're new to .NET Standard, check out [.NET Standard](net-standard.md).
 
 ## Porting .NET Framework Code to .NET Core
 
@@ -45,7 +45,7 @@ If you're looking to port a NuGet package to .NET Standard, check out [Porting t
 If you're interested in some of the major concepts of .NET, check out:
 
 * [.NET Architectural Components](components.md)
-* [.NET Standard Library](library.md)
+* [.NET Standard](net-standard.md)
 * [Native Interoperability](native-interop.md)
 * [Garbage Collection](garbagecollection/index.md)
 * [Base Types in .NET](base-types/index.md)
