@@ -38,95 +38,96 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <typeparam name="T">The type of object that is being lazily initialized.</typeparam>
-    <summary>Provides support for lazy initialization.</summary>
+    <typeparam name="T">遅延初期化されているオブジェクトの型。</typeparam>
+    <summary>遅延初期化のサポートを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use lazy initialization to defer the creation of a large or resource-intensive object, or the execution of a resource-intensive task, particularly when such creation or execution might not occur during the lifetime of the program.  
+## 解説  
+ 特に、このような作成または実行が、プログラムの有効期間中に実行されない場合に、大規模またはリソースを消費するオブジェクトの作成またはリソースを消費するタスクの実行を延期するのに限定的な初期化を使用します。  
   
- To prepare for lazy initialization, you create an instance of <xref:System.Lazy%601>. The type argument of the <xref:System.Lazy%601> object that you create specifies the type of the object that you want to initialize lazily. The constructor that you use to create the <xref:System.Lazy%601> object determines the characteristics of the initialization. Lazy initialization occurs the first time the <xref:System.Lazy%601.Value%2A?displayProperty=fullName> property is accessed.  
+ インスタンスを作成する限定的な初期化の準備として、 <xref:System.Lazy%601>です。 型引数、 <xref:System.Lazy%601> を作成するオブジェクトは、遅延初期化するオブジェクトの種類を指定します。 作成するために使用するコンス トラクター、 <xref:System.Lazy%601> オブジェクトが初期化の特性を決定します。 限定的な初期化が初めて発生した、 <xref:System.Lazy%601.Value%2A?displayProperty=fullName> プロパティにアクセスします。  
   
- In most cases, choosing a constructor depends on your answers to two questions:  
+ ほとんどの場合は、2 つの質問に対する回答に依存コンス トラクターを選択します。  
   
--   Will the lazily initialized object be accessed from more than one thread? If so, the <xref:System.Lazy%601> object might create it on any thread. You can use one of the simple constructors whose default behavior is to create a thread-safe <xref:System.Lazy%601> object, so that only one instance of the lazily instantiated object is created no matter how many threads try to access it. To create a <xref:System.Lazy%601> object that is not thread safe, you must use a constructor that enables you to specify no thread safety.  
+-   遅れて初期化されるオブジェクトは、複数のスレッドからアクセスされるでしょうか。 その場合、 <xref:System.Lazy%601> オブジェクトを使用するとすべてのスレッドに作成できます。 既定の動作は、スレッド セーフを作成する簡単なコンス トラクターのいずれかを使用する <xref:System.Lazy%601> オブジェクトのため、アクセスしようとしているスレッドの数に関係なく、遅延インスタンス化されたオブジェクトの 1 つのインスタンスを作成します。 作成する、 <xref:System.Lazy%601> スレッド セーフではないオブジェクトの場合は、スレッド セーフ no を指定することができますコンス トラクターを使用する必要があります。  
   
     > [!CAUTION]
-    >  Making the <xref:System.Lazy%601> object thread safe does not protect the lazily initialized object. If multiple threads can access the lazily initialized object, you must make its properties and methods safe for multithreaded access.  
+    >  作成、 <xref:System.Lazy%601> スレッド セーフでオブジェクトが、遅れて初期化されるオブジェクトを保護しません。 複数のスレッドが、遅れて初期化されるオブジェクトにアクセスできる場合が必要プロパティとメソッド マルチ スレッド アクセスについて安全です。  
   
--   Does lazy initialization require a lot of code, or does the lazily initialized object have a default constructor that does everything you need and doesn't throw exceptions? If you need to write initialization code or if exceptions need to be handled, use one of the constructors that takes a factory method. Write your initialization code in the factory method.  
+-   限定的な初期化が不要多くのコードに遅れて初期化されるオブジェクトがすべて必要があるし、例外をスローせず、既定のコンス トラクターか。 初期化コードを記述する必要がある場合、または例外を処理する必要がある場合は、ファクトリ メソッドを受け取るコンス トラクターのいずれかを使用します。 ファクトリ メソッドには、初期化コードを記述します。  
   
- The following table shows which constructor to choose, based on these two factors:  
+ これら 2 つの要因に基づいて選択するにはどのコンス トラクターを次の表に示します。  
   
-|Object will be accessed by|If no initialization code is required (default constructor), use|If initialization code is required, use|  
-|--------------------------------|------------------------------------------------------------------------|---------------------------------------------|  
-|Multiple threads|<xref:System.Lazy%601.%23ctor>|<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>|  
-|One thread|<xref:System.Lazy%601.%23ctor%28System.Boolean%29> with `isThreadSafe` set to `false`.|<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> with `isThreadSafe` set to `false`.|  
+|アクセスされるオブジェクト|初期化コードが必要ない場合 \(既定のコンス トラクター\) を使用して|初期化コードが必要な場合は、使用します。|  
+|-------------------|------------------------------------------|--------------------------|  
+|複数のスレッド|<xref:System.Lazy%601.%23ctor>|<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>|  
+|1 つのスレッド|<xref:System.Lazy%601.%23ctor%28System.Boolean%29> `isThreadSafe` 設定 `false`します。|<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> `isThreadSafe` 設定 `false`します。|  
   
- You can use a lambda expression to specify the factory method. This keeps all the initialization code in one place. The lambda expression captures the context, including any arguments you pass to the lazily initialized object's constructor.  
+ ラムダ式を使用すると、ファクトリ メソッドを指定します。 これにより、すべての初期化コードが 1 か所に保持されます。 ラムダ式では、遅れて初期化されるオブジェクトのコンス トラクターに渡す引数も含めて、コンテキストをキャプチャします。  
   
- **Exception caching** When you use factory methods, exceptions are cached. That is, if the factory method throws an exception the first time a thread tries to access the <xref:System.Lazy%601.Value%2A> property of the <xref:System.Lazy%601> object, the same exception is thrown on every subsequent attempt. This ensures that every call to the <xref:System.Lazy%601.Value%2A> property produces the same result and avoids subtle errors that might arise if different threads get different results. The <xref:System.Lazy%601> stands in for an actual `T` that otherwise would have been initialized at some earlier point, usually during startup. A failure at that earlier point is usually fatal. If there is a potential for a recoverable failure, we recommend that you build the retry logic into the initialization routine (in this case, the factory method), just as you would if you weren’t using lazy initialization.  
+ **例外キャッシュ** ファクトリ メソッドを使用する場合、例外がキャッシュされます。 つまり、ファクトリ メソッドが例外の最初の時間をスローした場合、スレッドにアクセスしよう、 <xref:System.Lazy%601.Value%2A> のプロパティ、 <xref:System.Lazy%601> オブジェクト、後続するたびに、同じ例外がスローされます。 これにより、すべての呼び出しに、 <xref:System.Lazy%601.Value%2A> プロパティは、同じ結果を生成して、別のスレッドが異なる結果を得る場合に生じる可能性のある微妙なエラーを回避できます。<xref:System.Lazy%601> 、実際の代わりに `T` をそれ以外の場合は初期化されているある以前の時点での起動中に通常です。 その以前の時点でのエラーでは、通常致命的です。 回復可能な障害発生する可能性がある場合は、限定的な初期化を使用していなかった場合と同様、\(ここでは、ファクトリ メソッド\)、初期化ルーチンに再試行ロジックを構築することをお勧めします。  
   
- **Alternative to locking** In certain situations, you might want to avoid the overhead of the <xref:System.Lazy%601> object's default locking behavior. In rare situations, there might be a potential for deadlocks. In such cases, you can use the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> or <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructor, and specify <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>. This enables the <xref:System.Lazy%601> object to create a copy of the lazily initialized object on each of several threads if the threads call the <xref:System.Lazy%601.Value%2A> property simultaneously. The <xref:System.Lazy%601> object ensures that all threads use the same instance of the lazily initialized object and discards the instances that are not used. Thus, the cost of reducing the locking overhead is that your program might sometimes create and discard extra copies of an expensive object. In most cases, this is unlikely. The examples for the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> and <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructors demonstrate this behavior.  
+ **をロックする代わりに** 特定の状況でのオーバーヘッドを回避することがあります、 <xref:System.Lazy%601> オブジェクトの既定のロック動作します。 まれな状況でデッドロックの可能性があります。 このような場合に使用することができます、 <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> または <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> コンス トラクターを指定して <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=fullName>します。 これにより、 <xref:System.Lazy%601> 、スレッドを呼び出す場合、複数のスレッドの各遅れて初期化されるオブジェクトのコピーを作成するオブジェクト、 <xref:System.Lazy%601.Value%2A> プロパティ同時にします。<xref:System.Lazy%601> オブジェクトにより、すべてのスレッドが、遅れて初期化されるオブジェクトの同じインスタンスを使用し、使用されていないインスタンスを破棄します。 したがって、ロックのオーバーヘッドを軽減するのにかかるコストは、プログラムの作成し、負荷の高いオブジェクトの余分なコピーを破棄することがある場合もありますです。 ほとんどの場合、これはほとんどありません。 例として、 <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> と <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> コンス トラクターは、この動作をについて説明します。  
   
 > [!IMPORTANT]
->  When you specify <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>, exceptions are never cached, even if you specify a factory method.  
+>  指定すると <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>, 、ファクトリ メソッドを指定した場合でも、例外はキャッシュしないでされます。  
   
- **Equivalent constructors** In addition to enabling the use of <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>, the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> and <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructors can duplicate the functionality of the other constructors. The following table shows the parameter values that produce equivalent behavior.  
+ **相当するコンス トラクター** の使用を有効にするだけでなく <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>, 、 <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> と <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> コンス トラクターは、他のコンス トラクターの機能を複製することができます。 次の表は、同等の動作を生成するパラメーター値を示します。  
   
-|To create a <xref:System.Lazy%601> object that is|For constructors that have a `LazyThreadSafetyMode` `mode` parameter, set `mode` to|For constructors that have a Boolean `isThreadSafe` parameter, set `isThreadSafe` to|For constructors with no thread safety parameters|  
-|-------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------|  
-|Fully thread safe; uses locking to ensure that only one thread initializes the value.|<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication>|`true`|All such constructors are fully thread safe.|  
-|Not thread safe.|<xref:System.Threading.LazyThreadSafetyMode.None>|`false`|Not applicable.|  
-|Fully thread safe; threads race to initialize the value.|<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>|Not applicable.|Not applicable.|  
+|作成する、 <xref:System.Lazy%601> オブジェクトを|コンス トラクターを持つ、 `LazyThreadSafetyMode` `mode` パラメーターを設定する `mode` に|ブール値を持つコンス トラクターの `isThreadSafe` パラメーターを設定する `isThreadSafe` に|スレッド セーフのパラメーターなしのコンス トラクター|  
+|------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|-------------------------------------------------------------------|---------------------------------|  
+|スレッド セーフでは完全に使用して、その 1 つのスレッドをロックでは、値を初期化します。|<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication>|`true`|このようなすべてのコンス トラクターは、スレッド セーフでは完全にします。|  
+|いないスレッド セーフであります。|<xref:System.Threading.LazyThreadSafetyMode.None>|`false`|該当しない。|  
+|スレッド セーフでは完全に値を初期化するためにスレッド競合します。|<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>|該当しない。|該当なし。|  
   
- **Other capabilities** For information about the use of <xref:System.Lazy%601> with thread-static fields, or as the backing store for properties, see [Lazy Initialization](~/docs/framework/performance/lazy-initialization.md).  
+ **その他の機能** の使用については <xref:System.Lazy%601> スレッド内静的フィールドを持つ、またはプロパティのバッキング ストアとして [Lazy Initialization](http://msdn.microsoft.com/ja-jp/56b4ae5c-4745-44ff-ad78-ffe4fcde6b9b)します。  
   
    
   
-## Examples  
- The following example demonstrates the use of the <xref:System.Lazy%601> class to provide lazy initialization with access from multiple threads.  
+## 例  
+ 次の例では、使用、 <xref:System.Lazy%601> クラスを複数のスレッドからのアクセスを限定的な初期化を提供します。  
   
 > [!NOTE]
->  The example uses the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> constructor. It also demonstrates the use of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor (specifying `true` for `isThreadSafe`) and the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`). To switch to a different constructor, just change which constructors are commented out.  
+>  例では、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> コンス トラクターです。 使用についても示します、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> コンス トラクター \(を指定する `true` の `isThreadSafe`\) および <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> コンス トラクター \(を指定する <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName> の `mode`\)。 別のコンス トラクターに切り替えると、同じどのコンス トラクターをコメント アウトを変更します。  
 >   
->  For an example that demonstrates exception caching using the same constructors, see the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> constructor.  
+>  例外を示す例については、同じコンス トラクターを使用して、キャッシュを参照してください、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> コンス トラクターです。  
   
- The example defines a `LargeObject` class that will be initialized lazily by one of several threads. The four key sections of code illustrate the creation of the initializer, the factory method, the actual initialization, and the constructor of the `LargeObject` class, which displays a message when the object is created. At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:  
+ この例では、複数あるスレッドのうちの 1 つによって遅れて初期化される `LargeObject` クラスを定義します。 コードの 4 つの主要セクションが、初期化子、ファクトリ メソッド、実際の初期化およびのコンス トラクターの作成を示す、 `LargeObject` クラスは、オブジェクトの作成時にメッセージが表示されます。`Main` メソッドの開始時に、この例では `LargeObject` のスレッドセーフな遅延初期化子が作成されます。  
   
- [!code-csharp[System.Lazy\`1#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#newlazy)]
- [!code-vb[System.Lazy\`1#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#newlazy)]  
+ [!code-csharp[System.Lazy\`1\#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1\#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#newlazy)]  
   
- The factory method shows the creation of the object, with a placeholder for further initialization:  
+ ファクトリ メソッドより詳細な初期化のプレース ホルダーで、オブジェクトの作成を示しています。  
   
- [!code-csharp[System.Lazy\`1#FactoryFunc](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#factoryfunc)]
- [!code-vb[System.Lazy\`1#FactoryFunc](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#factoryfunc)]  
+ [!code-csharp[System.Lazy\`1\#FactoryFunc](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#factoryfunc)]
+ [!code-vb[System.Lazy\`1\#FactoryFunc](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#factoryfunc)]  
   
- Note that the first two code sections could be combined by using a lambda function, as shown here:  
+ 次に示すように、最初の 2 つのコードのセクションでは、でしたラムダ関数を使用してによって組み合わせて指定することに注意してください。  
   
- [!code-csharp[System.Lazy\`1#InitWithLambda](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/lambda.cs#initwithlambda)]
- [!code-vb[System.Lazy\`1#InitWithLambda](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/lambda.vb#initwithlambda)]  
+ [!code-csharp[System.Lazy\`1\#InitWithLambda](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/lambda.cs#initwithlambda)]
+ [!code-vb[System.Lazy\`1\#InitWithLambda](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/lambda.vb#initwithlambda)]  
   
- The example pauses, to indicate that an indeterminate period may elapse before lazy initialization occurs. When you press the **Enter** key, the example creates and starts three threads. The `ThreadProc` method that's used by all three threads calls the <xref:System.Lazy%601.Value%2A> property. The first time this happens, the `LargeObject` instance is created:  
+ 例では、限定的な初期化が行われる前に、不確定な期間が切れることがありますを示すために一時停止します。 押すと、 **Enter** キー、例を作成して 3 つのスレッドを開始します。`ThreadProc` 3 つのスレッドのすべての呼び出しで使用されるメソッド、 <xref:System.Lazy%601.Value%2A> プロパティです。 このシナリオは、最初に、 `LargeObject` インスタンスを作成します。  
   
- [!code-csharp[System.Lazy\`1#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#valueprop)]
- [!code-vb[System.Lazy\`1#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#valueprop)]  
+ [!code-csharp[System.Lazy\`1\#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1\#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#valueprop)]  
   
- The constructor of the `LargeObject` class, which includes the last key section of code, displays a message and records the identity of the initializing thread. The output from the program appears at the end of the full code listing.  
+ コンス トラクター、 `LargeObject` クラスは、コードの最後の主要セクションが含まれているメッセージが表示され、初期化中のスレッドの id を記録します。 完全なコード リストの最後に、プログラムからの出力が表示されます。  
   
- [!code-csharp[System.Lazy\`1#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#largector)]
- [!code-vb[System.Lazy\`1#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#largector)]  
+ [!code-csharp[System.Lazy\`1\#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#largector)]
+ [!code-vb[System.Lazy\`1\#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#largector)]  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
   
- [!code-csharp[System.Lazy\`1#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#all)]  
+ [!code-csharp[System.Lazy\`1\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#all)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>By default, all public and protected members of the <see cref="T:System.Lazy`1" /> class are thread safe and may be used concurrently from multiple threads. These thread-safety guarantees may be removed optionally and per instance, using parameters to the type's constructors.</threadsafe>
+    <threadsafe>既定では、すべてのパブリック、プロテクト メンバーの <see cref="T:System.Lazy`1" /> クラスはスレッド セーフであると、複数のスレッドから同時に使用される場合があります。 これらのスレッド セーフの保証は、必要に応じて、型のコンス トラクターにパラメーターを使用して、インスタンスごとに削除できます。</threadsafe>
+    <altmember cref="T:System.Threading.LazyThreadSafetyMode" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -153,39 +154,40 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Lazy`1" /> class. When lazy initialization occurs, the default constructor of the target type is used.</summary>
+        <summary>
+          <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。 遅延初期化が発生した場合は、ターゲット型の既定のコンストラクターが使用されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An instance that is created with this constructor may be used concurrently from multiple threads.  
+## 解説  
+ このコンス トラクターで作成されたインスタンスは、複数のスレッドから同時に使用可能性があります。  
   
- The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>. The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.  
+ スレッドの安全性モード、 <xref:System.Lazy%601> このコンス トラクターで初期化されたインスタンスが <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>です。 初期化しようとしている複数のスレッドとスレッドの安全性モードが動作を記述、 <xref:System.Lazy%601> インスタンス。  
   
- A <xref:System.Lazy%601> instance that is created with this constructor does not cache exceptions. For more information, see the <xref:System.Lazy%601>class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> enumeration.  
+ A <xref:System.Lazy%601> このコンス トラクターで作成されたインスタンスには、例外をキャッシュしません。 詳細については、次を参照してください。、 <xref:System.Lazy%601>クラスまたは <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> 列挙します。  
   
    
   
-## Examples  
- The following example demonstrates the use of this constructor. It also illustrates the use of the <xref:System.Lazy%601.%23ctor%28System.Boolean%29> constructor (specifying `true` for `isThreadSafe`) and the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`). To switch to a different constructor, just change which constructors are commented out.  
+## 例  
+ 次の例では、このコンス トラクターの使用を示します。 使用についても説明して、 <xref:System.Lazy%601.%23ctor%28System.Boolean%29> コンス トラクター \(を指定する `true` の `isThreadSafe`\) および <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> コンス トラクター \(を指定する <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName> の `mode`\)。 別のコンス トラクターに切り替えると、同じどのコンス トラクターをコメント アウトを変更します。  
   
- The example defines a `LargeObject` class that will be initialized lazily by one of several threads. The two key lines of code in this example are the creation of the initializer and the actual initialization. At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:  
+ この例では、複数あるスレッドのうちの 1 つによって遅れて初期化される `LargeObject` クラスを定義します。 この例のコードの 2 つのキーの行は、初期化子と実際の初期化の作成です。`Main` メソッドの開始時に、この例では `LargeObject` のスレッドセーフな遅延初期化子が作成されます。  
   
- [!code-csharp[System.Lazy\`1.ctor#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#newlazy)]
- [!code-vb[System.Lazy\`1.ctor#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#newlazy)]  
+ [!code-csharp[System.Lazy\`1.ctor\#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctor\#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#newlazy)]  
   
- The example creates and starts three threads that block on a <xref:System.Threading.ManualResetEvent> object, so that the example can release the threads all at once. The `ThreadProc` method that's used by all three threads calls the <xref:System.Lazy%601.Value%2A> property to get the `LargeObject` instance:  
+ 例では、作成し、ブロックの 3 つのスレッドを開始、 <xref:System.Threading.ManualResetEvent> オブジェクトの例では、スレッドをすべて一度に解放できるようにします。`ThreadProc` 3 つのスレッドのすべての呼び出しで使用されるメソッド、 <xref:System.Lazy%601.Value%2A> を取得するプロパティ、 `LargeObject` インスタンス。  
   
- [!code-csharp[System.Lazy\`1.ctor#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#valueprop)]
- [!code-vb[System.Lazy\`1.ctor#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#valueprop)]  
+ [!code-csharp[System.Lazy\`1.ctor\#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctor\#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#valueprop)]  
   
- The <xref:System.Lazy%601> class provides locking, so that only one thread is allowed to create the `LargeObject` instance. The example demonstrates that the other threads all get the same instance.  
+ <xref:System.Lazy%601> クラスのロックを作成する 1 つのスレッドが許可されるようには、 `LargeObject` インスタンス。 この例では、他のスレッドはすべてが同じインスタンスを取得することを示します。  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
   
- [!code-csharp[System.Lazy\`1.ctor#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1.ctor#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#all)]  
+ [!code-csharp[System.Lazy\`1.ctor\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctor\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#all)]  
   
  ]]></format>
         </remarks>
@@ -217,32 +219,32 @@
         <Parameter Name="isThreadSafe" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="isThreadSafe">
-          <see langword="true" /> to make this instance usable concurrently by multiple threads; <see langword="false" /> to make the instance usable by only one thread at a time.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Lazy`1" /> class. When lazy initialization occurs, the default constructor of the target type and the specified initialization mode are used.</summary>
+        <param name="isThreadSafe">同時に複数のスレッドでこのインスタンスを使用できるようにする場合には <see langword="true" />、このインスタンスを一度に 1 つのスレッドのみで使用できるようにする場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。 遅延初期化が発生すると、ターゲット型の既定のコンストラクターおよび指定した初期化モードが使用されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> if `isThreadSafe` is `true`; otherwise, the mode is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>. The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance. To specify the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> mode, use the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> or <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor.  
+## 解説  
+ スレッドの安全性モード、<xref:System.Lazy%601>このコンス トラクターで初期化されているインスタンスが<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>場合`isThreadSafe`は`true`、それ以外のモードは<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName>します。 複数のスレッドを初期化しようとするときにスレッド セーフ モードは動作について説明します、<xref:System.Lazy%601>インスタンス。 指定する、<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=fullName>モードを使用して、<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>または<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>コンス トラクターです。  
   
- A <xref:System.Lazy%601> instance that is created with this constructor does not cache exceptions. For more information, see the<xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> enumeration.  
+ A<xref:System.Lazy%601>このコンス トラクターで作成されるインスタンスでは、例外はキャッシュされません。 詳細については、次を参照してください。、<xref:System.Lazy%601>クラスまたは<xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>列挙します。  
   
    
   
-## Examples  
- The following example demonstrates the use of this constructor to create a lazy initializer that is not thread safe, for scenarios where all access to the lazily initialized object occurs on the same thread. It also demonstrates the use of the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`. To switch to a different constructor, just change which constructor is commented out.  
+## 例  
+ 次の例では、スレッド セーフである、遅れて初期化されるオブジェクトに対するすべてのアクセスのと同じスレッドで発生しているシナリオではない、遅延初期化子を作成するこのコンス トラクターの使用を示します。 使用についても示します、<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>コンス トラクター \(を指定する<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName>の`mode`します。 別のコンス トラクターに切り替えると、どのコンス トラクターをコメント アウト オプションだけ変更します。  
   
 > [!NOTE]
->  For code that demonstrates how to use this constructor in multithreaded scenarios (specifying `true` for `isThreadSafe`), see the example for the <xref:System.Lazy%601.%23ctor> constructor.  
+>  マルチ スレッド シナリオでこのコンス トラクターを使用する方法を示すコードについて \(を指定する`true`の`isThreadSafe`\)、例を参照してください、<xref:System.Lazy%601.%23ctor>コンス トラクターです。  
   
- The example defines a `LargeObject` class that will be initialized lazily. In the `Main` method, the example creates a <xref:System.Lazy%601> instance and then pauses. When you press the **Enter** key, the example accesses the <xref:System.Lazy%601.Value%2A> property of the <xref:System.Lazy%601> instance, which causes initialization to occur. The constructor of the `LargeObject` class displays a console message.  
+ 例では、定義、`LargeObject`遅れて初期化されるクラスです。`Main`メソッドは、例では、作成、<xref:System.Lazy%601>インスタンスし、一時停止します。 キーを押したときに、**入力**キー、例では、アクセス、<xref:System.Lazy%601.Value%2A>のプロパティ、<xref:System.Lazy%601>これにより、初期化が発生するインスタンス。 コンス トラクター、`LargeObject`クラスには、コンソール メッセージが表示されます。  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
   
- [!code-csharp[System.Lazy\`1.ctorBool#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorbool/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1.ctorBool#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorbool/vb/example.vb#all)]  
+ [!code-csharp[System.Lazy\`1.ctorBool\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorbool/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorBool\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorbool/vb/example.vb#all)]  
   
  ]]></format>
         </remarks>
@@ -274,50 +276,51 @@
         <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="valueFactory">The delegate that is invoked to produce the lazily initialized value when it is needed.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Lazy`1" /> class. When lazy initialization occurs, the specified initialization function is used.</summary>
+        <param name="valueFactory">必要に応じて、遅延初期化の値を生成するために呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。 遅延初期化が発生すると、指定された初期化関数が使用されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An instance that is created with this constructor may be used concurrently from multiple threads.  
+## 解説  
+ このコンス トラクターで作成されるインスタンスは、複数のスレッドから同時に使用可能性があります。  
   
- The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>. The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.  
+ スレッドの安全性モード、<xref:System.Lazy%601>このコンス トラクターで初期化されているインスタンスが<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>です。 複数のスレッドを初期化しようとするときにスレッド セーフ モードは動作について説明します、<xref:System.Lazy%601>インスタンス。  
   
- Exceptions that are thrown by `valueFactory` are cached. For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> enumeration.  
+ によってスローされる例外`valueFactory`キャッシュされます。 詳細については、<xref:System.Lazy%601> クラスまたは <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> 列挙体の解説を参照してください。  
   
    
   
-## Examples  
- The following example demonstrates the use of this constructor to provide lazy initialization with exception caching. It also demonstrates the use of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor (specifying `true` for `isThreadSafe`) and the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`). To switch to a different constructor, just change which constructors are commented out.  
+## 例  
+ 次の例では、キャッシュが例外の限定的な初期化を提供するこのコンス トラクターの使用を示します。 使用についても示します、<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29>コンス トラクター \(を指定する`true`の`isThreadSafe`\) および<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>コンス トラクター \(を指定する<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>の`mode`\)。 別のコンス トラクターに切り替えると、変更どのコンス トラクターをコメント アウトします。  
   
- The example defines a `LargeObject` class that will be initialized lazily by one of several threads. The three key sections of code illustrate the creation of the initializer, the actual initialization, and the constructor of the `LargeObject` class, which demonstrates exception caching. At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:  
+ この例では、複数あるスレッドのうちの 1 つによって遅れて初期化される `LargeObject` クラスを定義します。 コードの 3 つの主要セクションが、実際の初期化とのコンス トラクターの初期化子の作成を示しています、`LargeObject`クラスは、例外のキャッシュを示しています。`Main` メソッドの開始時に、この例では `LargeObject` のスレッドセーフな遅延初期化子が作成されます。  
   
- [!code-csharp[System.Lazy\`1.ctorFunc#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#newlazy)]
- [!code-vb[System.Lazy\`1.ctorFunc#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#newlazy)]  
+ [!code-csharp[System.Lazy\`1.ctorFunc\#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorFunc\#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#newlazy)]  
   
- The example creates and starts three threads. The `ThreadProc` method that's used by all three threads calls the <xref:System.Lazy%601.Value%2A> property to get the `LargeObject` instance:  
+ この例では、作成し、3 つのスレッドを開始します。`ThreadProc` 3 つのスレッドのすべての呼び出しによって使用されるメソッド、<xref:System.Lazy%601.Value%2A>取得するプロパティ、`LargeObject`インスタンス。  
   
- [!code-csharp[System.Lazy\`1.ctorFunc#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#valueprop)]
- [!code-vb[System.Lazy\`1.ctorFunc#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#valueprop)]  
+ [!code-csharp[System.Lazy\`1.ctorFunc\#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorFunc\#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#valueprop)]  
   
- In the constructor of the `LargeObject` class, the third key section of code throws an exception the first time a `LargeObject` instance is created, but thereafter allows instance creation to occur:  
+ コンス トラクターで、 `LargeObject` 、クラス コードの 3 番目の主要セクションが最初に例外をスローする、`LargeObject`インスタンスは作成されますが、これ以降発生するインスタンスの作成を許可。  
   
- [!code-csharp[System.Lazy\`1.ctorFunc#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#largector)]
- [!code-vb[System.Lazy\`1.ctorFunc#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#largector)]  
+ [!code-csharp[System.Lazy\`1.ctorFunc\#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#largector)]
+ [!code-vb[System.Lazy\`1.ctorFunc\#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#largector)]  
   
- When the example is run, the first thread that tries to create an instance of `LargeObject` fails, and the exception is caught. You might expect that the next thread would successfully create an instance, but the <xref:System.Lazy%601> object has cached the exception. Because of this, all three threads throw the exception.  
+ 例では、実行時のインスタンスを作成しようとしています。 最初のスレッド`LargeObject`は失敗し、例外をキャッチします。 次のスレッドは、インスタンスの作成が正常にする予定であるが、<xref:System.Lazy%601>オブジェクトが例外をキャッシュします。 このためは、次の 3 つのすべてのスレッドは、例外をスローします。  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
   
- [!code-csharp[System.Lazy\`1.ctorFunc#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1.ctorFunc#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#all)]  
+ [!code-csharp[System.Lazy\`1.ctorFunc\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorFunc\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#all)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="valueFactory" /> is <see langword="null" />.</exception>
+          <paramref name="valueFactory" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -346,51 +349,53 @@
         <Parameter Name="mode" Type="System.Threading.LazyThreadSafetyMode" />
       </Parameters>
       <Docs>
-        <param name="mode">One of the enumeration values that specifies the thread safety mode.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Lazy`1" /> class that uses the default constructor of <paramref name="T" /> and the specified thread-safety mode.</summary>
+        <param name="mode">スレッド セーフ モードを指定する列挙値の 1 つ。</param>
+        <summary>
+          <paramref name="T" /> の既定のコンストラクターと指定されたスレッド セーフ モードを使用する <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The thread safety mode of a <xref:System.Lazy%601> instance describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.  
+## 解説  
+ スレッドの安全性モード、<xref:System.Lazy%601>とき、複数のスレッドを初期化するために、インスタンスが動作を説明します、<xref:System.Lazy%601>インスタンス。  
   
- A <xref:System.Lazy%601> instance that is created with this constructor does not cache exceptions. For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> enumeration.  
+ A<xref:System.Lazy%601>このコンス トラクターで作成されるインスタンスでは、例外はキャッシュされません。 詳細については、<xref:System.Lazy%601> クラスまたは <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> 列挙体の解説を参照してください。  
   
    
   
-## Examples  
- The following example demonstrates the use of this constructor to create a lazy initializer that enables multiple threads to race to create an object lazily. Multiple threads might succeed in creating instances, but all threads use the instance that was created first.  
+## 例  
+ 次の例では、遅延オブジェクトの作成に競合する複数のスレッドをできるようにする遅延初期化子を作成するこのコンス トラクターの使用を示します。 複数のスレッドが、インスタンスの作成に成功する可能性がありますが、すべてのスレッドが最初に作成されたインスタンスを使用します。  
   
 > [!NOTE]
->  For an example that demonstrates how to use this constructor in single-threaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`), see the <xref:System.Lazy%601.%23ctor%28System.Boolean%29> constructor. For an example that demonstrates how to use this constructor to provide locking instead of race conditions in multithreaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`), see the <xref:System.Lazy%601.%23ctor> constructor.  
+>  シングル スレッドのシナリオでこのコンス トラクターを使用する方法を示す例については \(を指定する<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName>の`mode`\) を参照してください、<xref:System.Lazy%601.%23ctor%28System.Boolean%29>コンス トラクターです。 このコンス トラクターを使用して、マルチ スレッド シナリオでの競合状態の代わりにロックを提供する方法を示す例については \(を指定する<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>の`mode`\) を参照してください、<xref:System.Lazy%601.%23ctor>コンス トラクターです。  
   
- The example defines a `LargeObject` class that will be initialized lazily by any of several threads. The three key sections of code illustrate the creation of the initializer, the actual initialization, and the constructor and finalizer of the `LargeObject` class. At the beginning of the `Main` method, the example creates the <xref:System.Lazy%601> object that performs lazy initialization of the `LargeObject`:  
+ 例では、定義、`LargeObject`複数のスレッドのいずれかによって遅れて初期化されるクラスです。 コードの 3 つの主要セクションは、初期化子、実際の初期化とコンス トラクターの作成とのファイナライザーを示しています、`LargeObject`クラスです。 先頭に、`Main`メソッドは、例では、作成、<xref:System.Lazy%601>の限定的な初期化を実行するオブジェクト、 `LargeObject`:  
   
- [!code-csharp[System.Lazy\`1.ctorLTSM#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#newlazy)]
- [!code-vb[System.Lazy\`1.ctorLTSM#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#newlazy)]  
+ [!code-csharp[System.Lazy\`1.ctorLTSM\#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorLTSM\#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#newlazy)]  
   
- The example creates and starts three threads that block on a <xref:System.Threading.ManualResetEvent> object, so that the example can release the threads all at once. In the `ThreadProc` method that's used by all three threads, calling the <xref:System.Lazy%601.Value%2A> property creates the `LargeObject` instance:  
+ この例は、作成し、ブロックを 3 つのスレッドを開始、<xref:System.Threading.ManualResetEvent>オブジェクトの例が、スレッドをすべて同時に解放できるようにします。`ThreadProc`メソッドを呼び出す、3 つすべてのスレッドによって使用される、<xref:System.Lazy%601.Value%2A>プロパティを作成、`LargeObject`インスタンス。  
   
- [!code-csharp[System.Lazy\`1.ctorLTSM#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#valueprop)]
- [!code-vb[System.Lazy\`1.ctorLTSM#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#valueprop)]  
+ [!code-csharp[System.Lazy\`1.ctorLTSM\#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorLTSM\#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#valueprop)]  
   
- Because the constructor for the <xref:System.Lazy%601> instance specified <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>, all three threads are allowed to create `LargeObject` instances. The example demonstrates this by displaying console messages in the constructor and in the finalizer of the `LargeObject` class:  
+ のコンス トラクター、<xref:System.Lazy%601>指定されたインスタンス<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=fullName>、3 つすべてのスレッドを作成することが`LargeObject`インスタンス。 例では、このコンス トラクターおよびのファイナライザーでは、コンソール メッセージを表示することによって、`LargeObject`クラス。  
   
- [!code-csharp[System.Lazy\`1.ctorLTSM#CtorFinalizer](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#ctorfinalizer)]
- [!code-vb[System.Lazy\`1.ctorLTSM#CtorFinalizer](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#ctorfinalizer)]  
+ [!code-csharp[System.Lazy\`1.ctorLTSM\#CtorFinalizer](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#ctorfinalizer)]
+ [!code-vb[System.Lazy\`1.ctorLTSM\#CtorFinalizer](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#ctorfinalizer)]  
   
- However, the <xref:System.Lazy%601> object ensures that only one instance is used by all threads. The output from the example shows that all three threads use the same instance, and also shows that the other two instances can be reclaimed by garbage collection.  
+ ただし、<xref:System.Lazy%601>オブジェクトにより 1 つのインスタンスは、すべてのスレッドによって使用されます。 出力例を使用を示しています 3 つすべてのスレッド、同じインスタンス、およびも他の 2 つのインスタンスがガベージ コレクションによって再要求できることを示しています。  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
   
- [!code-csharp[System.Lazy\`1.ctorLTSM#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1.ctorLTSM#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#all)]  
+ [!code-csharp[System.Lazy\`1.ctorLTSM\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorLTSM\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#all)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="mode" /> contains an invalid value.</exception>
+          <paramref name="mode" /> に無効な値が含まれています。</exception>
+        <altmember cref="T:System.Threading.LazyThreadSafetyMode" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -438,55 +443,55 @@
         <Parameter Name="isThreadSafe" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="valueFactory">The delegate that is invoked to produce the lazily initialized value when it is needed.</param>
-        <param name="isThreadSafe">
-          <see langword="true" /> to make this instance usable concurrently by multiple threads; <see langword="false" /> to make this instance usable by only one thread at a time.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Lazy`1" /> class. When lazy initialization occurs, the specified initialization function and initialization mode are used.</summary>
+        <param name="valueFactory">必要に応じて、遅延初期化の値を生成するために呼び出されるデリゲート。</param>
+        <param name="isThreadSafe">同時に複数のスレッドでこのインスタンスを使用できるようにする場合には <see langword="true" />、このインスタンスを一度に 1 つのスレッドのみで使用できるようにする場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。 遅延初期化が発生すると、指定された初期化関数と初期化モードが使用されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> if `isThreadSafe` is `true`; otherwise, the mode is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>. The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.  
+## 解説  
+ スレッドの安全性モード、 <xref:System.Lazy%601> このコンス トラクターで初期化されたインスタンスが <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName> 場合 `isThreadSafe` は `true`。 そうしないと、モードは <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName>です。 初期化しようとしている複数のスレッドとスレッドの安全性モードが動作を記述、 <xref:System.Lazy%601> インスタンス。  
   
- To specify the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> mode, use the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> or <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor.  
+ 指定する、 <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=fullName> モードでは、使用、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> または <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> コンス トラクターです。  
   
- Exceptions that are thrown by `valueFactory` are cached. For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> enumeration.  
+ によってスローされる例外 `valueFactory` キャッシュされます。 詳細については、<xref:System.Lazy%601> クラスまたは <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> 列挙体の解説を参照してください。  
   
    
   
-## Examples  
- The following example demonstrates the use of this constructor to provide lazy initialization with exception caching, in a scenario with a single thread. It also demonstrates the use of the  <xref:System.Lazy%601.%23ctor%2A>constructor (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`). To switch to that constructor, just change which constructor is commented out.  
+## 例  
+ 次の例では、キャッシュには、1 つのスレッドがあるシナリオで例外を限定的な初期化を提供するこのコンス トラクターの使用を示します。 使用についても示します、  <xref:System.Lazy%601.%23ctor%2A>コンス トラクター \(を指定する <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName> の `mode`\)。 そのコンス トラクターに切り替えると、同じコンス トラクターをコメント アウトを変更します。  
   
 > [!NOTE]
->  For code that demonstrates how to use this constructor in multithreaded scenarios (specifying `true` for `isThreadSafe`), see the example for the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> constructor.  
+>  マルチ スレッドのシナリオでこのコンス トラクターを使用する方法を示すコードについて \(を指定する `true` の `isThreadSafe`\) の例を参照してください、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> コンス トラクターです。  
   
- The example defines a `LargeObject` class that will be initialized lazily by one of several threads. The three key sections of code illustrate the creation of the initializer, the actual initialization, and the constructor of the `LargeObject` class, which demonstrates exception caching. At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:  
+ この例では、複数あるスレッドのうちの 1 つによって遅れて初期化される `LargeObject` クラスを定義します。 コードの 3 つの主要セクションが、実際の初期化とのコンス トラクターの初期化子の作成を示す、 `LargeObject` クラスは、例外のキャッシュを示しています。`Main` メソッドの開始時に、この例では `LargeObject` のスレッドセーフな遅延初期化子が作成されます。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncBool#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#newlazy)]
- [!code-vb[System.Lazy\`1.ctorFuncBool#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#newlazy)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool\#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool\#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#newlazy)]  
   
- In the call to the constructor, the `isThreadSafe` parameter is `false`, so the <xref:System.Lazy%601> is not thread safe. Because it's not thread safe, the example calls the <xref:System.Lazy%601.Value%2A> property three times on the same thread:  
+ コンス トラクターの呼び出しで、 `isThreadSafe` パラメーターは `false`, ので、 <xref:System.Lazy%601> はスレッド セーフです。 スレッド セーフではないため、例では、 <xref:System.Lazy%601.Value%2A> 同じスレッドで 3 回のプロパティ。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncBool#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#valueprop)]
- [!code-vb[System.Lazy\`1.ctorFuncBool#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#valueprop)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool\#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool\#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#valueprop)]  
   
- In the constructor of the `LargeObject` class, the third key section of code throws an exception the first time a `LargeObject` instance is created, but thereafter allows instance creation to occur:  
+ コンス トラクターで、 `LargeObject` クラス コードの 3 番目の主要セクションが最初に例外をスローする、 `LargeObject` インスタンスは作成しますが、発生するインスタンスの作成は、その後。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncBool#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#largector)]
- [!code-vb[System.Lazy\`1.ctorFuncBool#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#largector)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool\#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#largector)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool\#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#largector)]  
   
- When the example is run, the first attempt to create an instance of `LargeObject` fails, and the exception is caught. You might expect that the next attempt would succeed, but the <xref:System.Lazy%601> object has cached the exception. Because of this, all three attempts throw the exception.  
+ この例を実行するのインスタンスを作成する最初の試み `LargeObject` は失敗し、例外がキャッチされました。 次の試行が成功すると思うかもしれませんが、 <xref:System.Lazy%601> オブジェクトが例外をキャッシュします。 このためは、次の 3 つのすべての試行は、例外をスローします。  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncBool#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1.ctorFuncBool#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#all)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#all)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="valueFactory" /> is <see langword="null" />.</exception>
+          <paramref name="valueFactory" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -516,66 +521,66 @@
         <Parameter Name="mode" Type="System.Threading.LazyThreadSafetyMode" />
       </Parameters>
       <Docs>
-        <param name="valueFactory">The delegate that is invoked to produce the lazily initialized value when it is needed.</param>
-        <param name="mode">One of the enumeration values that specifies the thread safety mode.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Lazy`1" /> class that uses the specified initialization function and thread-safety mode.</summary>
+        <param name="valueFactory">必要に応じて、遅延初期化の値を生成するために呼び出されるデリゲート。</param>
+        <param name="mode">スレッド セーフ モードを指定する列挙値の 1 つ。</param>
+        <summary>指定された初期化関数とスレッド セーフ モードを使用する <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The thread safety mode of a <xref:System.Lazy%601> instance describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.  
+## 解説  
+ スレッドの安全性モード、<xref:System.Lazy%601>インスタンスを初期化するときに複数のスレッドの動作をについて説明します、<xref:System.Lazy%601>インスタンス。  
   
- Exceptions that are thrown by `valueFactory` are cached, unless `mode` is <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>. For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> enumeration.  
+ によってスローされる例外`valueFactory`はキャッシュされる場合を除き、`mode`は<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>します。 詳細については、<xref:System.Lazy%601> クラスまたは <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> 列挙体の解説を参照してください。  
   
    
   
-## Examples  
- The following example demonstrates the use of this constructor to create a lazy initializer that enables multiple threads to race to create an object lazily. Multiple threads might succeed in creating instances, but all threads use the instance that was created first. In addition, the example demonstrates that exceptions are never cached when you specify <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>, even if initialization is performed by a function instead of by the default constructor of the lazily created type.  
+## 例  
+ 次の例では、遅延オブジェクトの作成に競合する複数のスレッドをできるようにする遅延初期化子を作成するこのコンス トラクターの使用を示します。 複数のスレッドが、インスタンスの作成に成功する可能性がありますが、すべてのスレッドが最初に作成されたインスタンスを使用します。 さらに、この例を指定する場合の例外はキャッシュ決して<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>遅れて作成された型の既定のコンス トラクターによって初期化が実行の代わりに、関数であっても、します。  
   
 > [!NOTE]
->  For an example that demonstrates how to use this constructor in single-threaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`), see the <xref:System.Lazy%601.%23ctor%28System.Boolean%29> constructor. For an example that demonstrates how to use this constructor to provide locking instead of race conditions in multithreaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> for `mode`), see the <xref:System.Lazy%601.%23ctor> constructor.  
+>  シングル スレッドのシナリオでこのコンス トラクターを使用する方法を示す例については \(を指定する<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName>用`mode`\) を参照してください、<xref:System.Lazy%601.%23ctor%28System.Boolean%29>コンス トラクターです。 このコンス トラクターを使用して、マルチ スレッド シナリオでの競合状態の代わりにロックを提供する方法を示す例については \(を指定する<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>用`mode`\) を参照してください、<xref:System.Lazy%601.%23ctor>コンス トラクターです。  
   
- The example defines a `LargeObject` class that will be initialized lazily by any of several threads. The four key sections of code illustrate the creation of the initializer, the actual initialization, the initialization function, and the constructor and finalizer of the `LargeObject` class. At the beginning of the `Main` method, the example creates the <xref:System.Lazy%601> object that performs lazy initialization of the `LargeObject`:  
+ 例では、定義、`LargeObject`複数のスレッドのいずれかによって遅れて初期化されるクラスです。 コードの 4 つの主要なセクションは、初期化子、実際の初期化、初期化関数と、コンス トラクターの作成とのファイナライザーを示しています、`LargeObject`クラスです。 先頭に、`Main`メソッドは、例では、作成、<xref:System.Lazy%601>の限定的な初期化を実行するオブジェクト、 `LargeObject`:  
   
- [!code-csharp[System.Lazy\`1.ctorFuncLTSM#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#newlazy)]
- [!code-vb[System.Lazy\`1.ctorFuncLTSM#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#newlazy)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM\#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM\#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#newlazy)]  
   
- The lazy initializer uses a function to perform the initialization. In this case, a function is required because there is no default constructor for the `LargeObject` class.  
+ 遅延初期化子では、関数を使用して、初期化を実行します。 この場合、関数が必要既定のコンス トラクターがないため、`LargeObject`クラスです。  
   
- The example creates and starts three threads that block on a <xref:System.Threading.ManualResetEvent> object, so that the example can release the threads all at once. In the `ThreadProc` method that's used by all three threads, calling the <xref:System.Lazy%601.Value%2A> property creates the `LargeObject` instance:  
+ この例は、作成しをブロックする 3 つのスレッドを開始、<xref:System.Threading.ManualResetEvent>オブジェクトの例が、スレッドをすべて同時に解放できるようにします。`ThreadProc`メソッドの呼び出し、3 つすべてのスレッドによって使用される、<xref:System.Lazy%601.Value%2A>プロパティを作成、`LargeObject`インスタンス。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncLTSM#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#valueprop)]
- [!code-vb[System.Lazy\`1.ctorFuncLTSM#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#valueprop)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM\#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM\#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#valueprop)]  
   
- In the third key section of code, the lazy initialization function is called to create the `LargeObject` instance. The function throws an exception the first time it's called:  
+ コードの 3 番目の主要セクションで、遅延初期化関数を作成する、`LargeObject`インスタンス。 関数が呼び出される最初の例外にスローされます。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncLTSM#FactoryFunc](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#factoryfunc)]
- [!code-vb[System.Lazy\`1.ctorFuncLTSM#FactoryFunc](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#factoryfunc)]  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM\#FactoryFunc](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#factoryfunc)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM\#FactoryFunc](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#factoryfunc)]  
   
- With any other <xref:System.Threading.LazyThreadSafetyMode> setting, an unhandled exception in the initialization function would be cached. However, <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly> suppresses exception caching. The output from the example demonstrates that a subsequent attempt to initialize the object succeeds.  
-  
-> [!NOTE]
->  The exception message usually appears after messages indicating that other threads have successfully initialized the object. This is because of the delay introduced by throwing and catching the exception.  
-  
- Because the constructor for the <xref:System.Lazy%601> instance specified <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>, all three threads are allowed to create `LargeObject` instances. The example demonstrates this by displaying console messages in the constructor and in the finalizer of the `LargeObject` class:  
-  
- [!code-csharp[System.Lazy\`1.ctorFuncLTSM#CtorFinalizer](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#ctorfinalizer)]
- [!code-vb[System.Lazy\`1.ctorFuncLTSM#CtorFinalizer](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#ctorfinalizer)]  
-  
- The <xref:System.Lazy%601> object ensures that only one instance is used by all threads (except the thread where the initialization function throws an exception). The output from the example shows this.  
+ その他の<xref:System.Threading.LazyThreadSafetyMode>設定すると、初期化関数の未処理の例外はキャッシュされます。 ただし、<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>例外のキャッシュを抑制します。 例の出力は、オブジェクトを初期化後の試行が成功したことを示します。  
   
 > [!NOTE]
->  For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic). These are not requirements for the use of lazy initialization.  
+>  例外メッセージは、通常、他のスレッドでオブジェクトが正常に初期化したことを示すメッセージの後に表示されます。 これは、スローして、例外をキャッチによって導入された、遅延が原因です。  
   
- [!code-csharp[System.Lazy\`1.ctorFuncLTSM#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#all)]
- [!code-vb[System.Lazy\`1.ctorFuncLTSM#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#all)]  
+ のコンス トラクター、<xref:System.Lazy%601>指定されたインスタンス<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=fullName>、3 つすべてのスレッドを作成することが`LargeObject`インスタンス。 例では、このコンス トラクターおよびのファイナライザーでは、コンソール メッセージを表示することによって、`LargeObject`クラス。  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM\#CtorFinalizer](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#ctorfinalizer)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM\#CtorFinalizer](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#ctorfinalizer)]  
+  
+ <xref:System.Lazy%601>オブジェクトにより 1 つのインスタンスが \(初期化関数が例外をスローするスレッド\) を除くすべてのスレッドによって使用されます。 この例からの出力に示します。  
+  
+> [!NOTE]
+>  簡略化のために、この例では <xref:System.Lazy%601> のグローバル インスタンスを使用して、すべてのメソッドは `static` \(Visual Basic の `Shared`\) です。 これらは、遅延初期化を使用するための要件ではありません。  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM\#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM\#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#all)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="mode" /> contains an invalid value.</exception>
+          <paramref name="mode" /> に正しくない値が含まれています。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="valueFactory" /> is <see langword="null" />.</exception>
+          <paramref name="valueFactory" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="IsValueCreated">
@@ -604,21 +609,24 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether a value has been created for this <see cref="T:System.Lazy`1" /> instance.</summary>
-        <value>
-          <see langword="true" /> if a value has been created for this <see cref="T:System.Lazy`1" /> instance; otherwise, <see langword="false" />.</value>
+        <summary>この <see cref="T:System.Lazy`1" /> インスタンスに対して値が作成されているかどうかを示す値を取得します。</summary>
+        <value>この <see cref="T:System.Lazy`1" /> インスタンスに対して値が作成されている場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When lazy initialization occurs for a <xref:System.Lazy%601> instance, it may result in either a value being created or an exception being thrown. If an exception is thrown, subsequent behavior of the <xref:System.Lazy%601> instance depends on whether exception caching is in effect. If the <xref:System.Lazy%601> instance was created by using a constructor that does not specify an initialization function, then exception caching is not in effect. A subsequent attempt to initialize the <xref:System.Lazy%601> might succeed, and after successful initialization the <xref:System.Lazy%601.IsValueCreated%2A> property returns `true`. If the <xref:System.Lazy%601> instance was created with an initialization function (specified by the `valueFactory` parameter of the <xref:System.Lazy%601> constructor), then exception caching is controlled by the thread safety mode.  
+## 解説  
+ 限定的な初期化が発生したとき、<xref:System.Lazy%601>インスタンス、する可能性があります、値を作成中または例外がスローされます。 例外がスローされると、後の動作の場合、<xref:System.Lazy%601>インスタンスは、有効では例外キャッシュするかどうかによって異なります。 場合、<xref:System.Lazy%601>インスタンスの初期化関数を指定しないコンス トラクターを使用して作成し、例外のキャッシュは無効です。 初期化するために、後続の試行、<xref:System.Lazy%601>成功可能性がありますと初期化が成功した後、<xref:System.Lazy%601.IsValueCreated%2A>プロパティから返される`true`です。 場合、<xref:System.Lazy%601>初期化関数のインスタンスが作成された \(によって指定された、`valueFactory`のパラメーター、<xref:System.Lazy%601>コンス トラクター\)、例外のキャッシュは、スレッドの安全性モードによって制御されます。  
   
--   If the mode is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName> or <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>, there is no second chance to initialize the <xref:System.Lazy%601> instance. If an exception occurs and is unhandled in the initialization function, that exception is cached and rethrown on subsequent accesses of the <xref:System.Lazy%601.Value%2A?displayProperty=fullName>property. No value is created if an exception is thrown, so in such cases <xref:System.Lazy%601.IsValueCreated%2A> returns `false`.  
+-   モードの場合<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=fullName>または<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=fullName>、初期化するために 2 つ目の可能性はありません、<xref:System.Lazy%601>インスタンス。 場合は、例外が発生し、初期化関数でハンドルされていない、その例外はキャッシュされ、以降のアクセスの再スローされます、<xref:System.Lazy%601.Value%2A?displayProperty=fullName>プロパティです。 例外がスローされた場合、それには、このような場合の値は作成されません<xref:System.Lazy%601.IsValueCreated%2A>返します`false`です。  
   
--   If the mode is <xref:System.Threading.LazyThreadSafetyMode?displayProperty=fullName>, the first thread that succeeds in running the initialization function (or the default constructor) creates the value for the <xref:System.Lazy%601> instance. If the initialization function throws an exception on one thread, other threads can still try to initialize the <xref:System.Lazy%601> instance. Until the value is created, the <xref:System.Lazy%601.IsValueCreated%2A> property returns `false`.  
+-   モードの場合<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=fullName>を正常に初期化関数 \(または既定のコンス トラクター\) を実行している最初のスレッドの値を作成する、<xref:System.Lazy%601>インスタンス。 増やせる場合は、初期化関数は、1 つのスレッドで例外をスロー、他のスレッドも初期化するために、<xref:System.Lazy%601>インスタンス。 値が作成されるまで、<xref:System.Lazy%601.IsValueCreated%2A>プロパティから返される`false`です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.LazyThreadSafetyMode" />
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -648,19 +656,23 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates and returns a string representation of the <see cref="P:System.Lazy`1.Value" /> property for this instance.</summary>
-        <returns>The result of calling the <see cref="M:System.Object.ToString" /> method on the <see cref="P:System.Lazy`1.Value" /> property for this instance, if the value has been created (that is, if the <see cref="P:System.Lazy`1.IsValueCreated" /> property returns <see langword="true" />). Otherwise, a string indicating that the value has not been created.</returns>
+        <summary>このインスタンスの <see cref="P:System.Lazy`1.Value" /> プロパティの文字列形式を作成して返します。</summary>
+        <returns>このインスタンスの <see cref="P:System.Lazy`1.Value" /> プロパティについて <see cref="M:System.Object.ToString" />メソッド を呼び出した結果 \(値が作成されている場合。つまり、<see cref="P:System.Lazy`1.IsValueCreated" /> プロパティが <see langword="true" /> を返した場合\)。 それ以外の場合は、値が作成されていないことを示す文字列です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling this method does not cause initialization.  
+## 解説  
+ このメソッドを呼び出すことも、初期化は失敗しません。  
   
- The <xref:System.Lazy%601.Value%2A?displayProperty=fullName> property can be `null` after lazy initialization if the factory method that was specified for the `valueFactory` parameter of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>, <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>, or <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor returns `null`.  
+ <xref:System.Lazy%601.Value%2A?displayProperty=fullName> プロパティを指定できます `null` ファクトリ メソッドの場合は、限定的な初期化後に指定された、 `valueFactory` のパラメーター、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>, 、<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>, 、または <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> コンス トラクターを戻します `null`します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The <see cref="P:System.Lazy`1.Value" /> property is <see langword="null" />.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <see cref="P:System.Lazy`1.Value" /> プロパティが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Value">
@@ -694,22 +706,47 @@
         <ReturnType>T</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the lazily initialized value of the current <see cref="T:System.Lazy`1" /> instance.</summary>
-        <value>The lazily initialized value of the current <see cref="T:System.Lazy`1" /> instance.</value>
+        <summary>現在の <see cref="T:System.Lazy`1" /> インスタンスの遅れて初期化される値を取得します。</summary>
+        <value>現在の <see cref="T:System.Lazy`1" /> インスタンスの遅れて初期化される値。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Lazy%601.IsValueCreated%2A?displayProperty=fullName> property is `false`, accessing the <xref:System.Lazy%601.Value%2A> property forces initialization.  
+## 解説  
+ 場合、 <xref:System.Lazy%601.IsValueCreated%2A?displayProperty=fullName> プロパティは、 `false`, へのアクセス、 <xref:System.Lazy%601.Value%2A> プロパティ初期化が強制されます。  
   
- In addition to the exceptions that are listed, the <xref:System.Lazy%601.Value%2A> property can throw any unhandled exception that is thrown by the factory method that was passed to the `valueFactory` parameter of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>, <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>, or <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor.  
+ 記載されている例外だけでなく、 <xref:System.Lazy%601.Value%2A> プロパティは、ファクトリ メソッドに渡されたによってスローされた未処理の例外をスローできる、 `valueFactory` のパラメーター、 <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>, 、<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>, 、または <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> コンス トラクターです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">The <see cref="T:System.Lazy`1" /> instance is initialized to use the default constructor of the type that is being lazily initialized, and permissions to access the constructor are missing.</exception>
-        <exception cref="T:System.MissingMemberException">The <see cref="T:System.Lazy`1" /> instance is initialized to use the default constructor of the type that is being lazily initialized, and that type does not have a public, parameterless constructor.</exception>
-        <exception cref="T:System.InvalidOperationException">The initialization function tries to access <see cref="P:System.Lazy`1.Value" /> on this instance.</exception>
+        <exception cref="T:System.MemberAccessException">
+          <see cref="T:System.Lazy`1" /> インスタンスは遅れて初期化される型の既定のコンストラクターを使用するために初期化され、コンストラクターにアクセスする権限がありません。</exception>
+        <exception cref="T:System.MissingMemberException">
+          <see cref="T:System.Lazy`1" /> インスタンスは遅れて初期化される型の既定のコンストラクターを使用するために初期化され、その型はパブリックのパラメーターのないコンストラクターを持ちません。</exception>
+        <exception cref="T:System.InvalidOperationException">初期化関数はこのインスタンスの <see cref="P:System.Lazy`1.Value" /> にアクセスしようとします。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Lazy`1" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

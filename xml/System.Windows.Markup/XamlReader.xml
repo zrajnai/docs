@@ -11,63 +11,64 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Reads XAML input and creates an object graph, using the WPF default XAML reader and an associated XAML object writer.</summary>
+    <summary>XAML 入力を読み込んで、WPF の既定の XAML リーダーと、関連する XAML オブジェクト ライターを使用して、オブジェクト グラフを作成します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The synchronous <xref:System.Windows.Markup.XamlReader.Load%2A> methods are static, but the asynchronous <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> methods are not static and require an instance of the <xref:System.Windows.Markup.XamlReader> class to use.  
+## 解説  
+ 同期 <xref:System.Windows.Markup.XamlReader.Load%2A> メソッドは静的では、非同期 <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> メソッドが静的なもののインスタンスを必要と、 <xref:System.Windows.Markup.XamlReader> クラスを使用します。  
   
- The output of the `Load` methods is a single object, which represents the root object of a created object tree or object graph. Object graphs that are created by <xref:System.Windows.Markup.XamlReader> are typically added to the existing object tree of a WPF application at run time. Otherwise the new object graph is considered disconnected for purposes of the WPF application model. This means that it does not render, and cannot be accessed using any of the object tree techniques as applied to the WPF application's main object tree (for example, the APIs <xref:System.Windows.FrameworkElement.FindName%2A>, <xref:System.Windows.LogicalTreeHelper>, <xref:System.Windows.Media.VisualTreeHelper>). For more information on object tree concepts, see [Trees in WPF](~/docs/framework/wpf/advanced/trees-in-wpf.md).  
+ 出力、 `Load` メソッドが作成されたオブジェクト ツリーまたはオブジェクト グラフのルート オブジェクトを表す 1 つのオブジェクト。 オブジェクトによって作成されるグラフ <xref:System.Windows.Markup.XamlReader> 通常実行時に WPF アプリケーションの既存のオブジェクト ツリーに追加します。 それ以外の場合、新しいオブジェクト グラフは、WPF アプリケーション モデルのため切断されたと見なされます。 つまり、表示できない、WPF アプリケーションの主要なオブジェクトのツリーに適用手法のいずれかのオブジェクト ツリーとしてアクセスを使用することはできません \(Api など <xref:System.Windows.FrameworkElement.FindName%2A>, 、<xref:System.Windows.LogicalTreeHelper>, 、<xref:System.Windows.Media.VisualTreeHelper>\)。 オブジェクト ツリーの概念の詳細については、次を参照してください。 [WPF のツリー](http://msdn.microsoft.com/ja-jp/e83f25e5-d66b-4fc7-92d2-50130c9a6649)します。  
   
- <xref:System.Windows.Markup.XamlReader> supports the following primary scenarios:  
+ <xref:System.Windows.Markup.XamlReader> 次の主なシナリオをサポートしています。  
   
--   **Cloning/object factory**: Without additional mechanisms, a reference type generally cannot be included in more than one position in a WPF object tree. (Examples of additional mechanisms that offer support for sharing or re-use in WPF include objects that are based on <xref:System.Windows.Freezable>, or support for commonly shareable objects such as <xref:System.Windows.Media.Brush> that are referenced as an item from a <xref:System.Windows.ResourceDictionary>.) One way to clone an object that is already in the object tree is to serialize the object using <xref:System.Windows.Markup.XamlWriter.Save%2A?displayProperty=fullName>. You then use the serialized string as input for a call to <xref:System.Windows.Markup.XamlReader.Load%2A>, with a stream or <xref:System.Xml.XmlReader> as an intermediary.  
+-   **クローン化\/オブジェクト ファクトリ**: 追加機構せず、参照型一般に含めることができません WPF オブジェクト ツリー内の 1 つ以上の位置にします。 \(共有のサポートを提供または WPF で再利用できるその他のメカニズムの例に基づくオブジェクトが含まれる <xref:System.Windows.Freezable>, などの一般的に共有できるオブジェクトのサポートまたは <xref:System.Windows.Media.Brush> からアイテムとして参照されている、 <xref:System.Windows.ResourceDictionary>.\) 使用してオブジェクトをシリアル化になっているオブジェクトのクローンを作成する方法の 1 つのオブジェクト ツリーは <xref:System.Windows.Markup.XamlWriter.Save%2A?displayProperty=fullName>です。 文字列を使用するシリアル化された入力としての呼び出しを <xref:System.Windows.Markup.XamlReader.Load%2A>, 、ストリームまたは <xref:System.Xml.XmlReader> の仲介役として。  
   
--   **Constructing objects based on just-in-time information**: There are often other ways to have late-binding or user-supplied input change the state of existing objects. For example you could use the same value to set more than one property, or use data binding. But if you have a scenario where even the type of object to create is only determinable at run time or with user interaction, then creating such an object by building up a string for <xref:System.Windows.Markup.XamlReader.Load%2A> input is often a useful technique.  
+-   **だけ時の情報に基づくオブジェクトのコンストラクト**: 多くの場合、遅延バインディングまたはユーザー指定の入力が既存のオブジェクトの状態を変更するには、他の方法があります。 たとえば、1 つ以上のプロパティを設定する同じ値を使用またはデータ バインディングを使用できます。 シナリオを作成するオブジェクトの種類ものみ確定またはユーザーの操作で実行時にした場合の文字列を作成することによりこのようなオブジェクトを作成しが <xref:System.Windows.Markup.XamlReader.Load%2A> 入力が便利な方法では多くの場合。  
   
--   **Using existing resource techniques**: The <xref:System.IO.Stream> type is used frequently in other frameworks or technologies for transferring data or objects across application boundaries or for similar situations. You can then use the <xref:System.IO.Stream> techniques to store or obtain XAML-formatted data that you eventually use to create an object as part of your application.  
+-   **既存のリソースの手法を使用して**: <xref:System.IO.Stream> 型が頻繁にで使用フレームワークまたはテクノロジの他のアプリケーションの境界を越えてデータまたはオブジェクトを転送するためやのような状況です。 使用して、 <xref:System.IO.Stream> 格納または最終的に使用して、アプリケーションの一部としてオブジェクトを作成する XAML 形式のデータを取得するための技法です。  
   
--   **Fixed documents:** Your application might load local or downloaded XPS documents for inclusion in a WPF application object tree and UI.  
+-   **ドキュメントを固定:** 、アプリケーションは、WPF アプリケーションのオブジェクト ツリーと UI に含めることのローカルまたはダウンロード済みの XPS ドキュメントを読み込む場合もあります。  
   
 > [!NOTE]
->  This documentation sometimes describes an object graph, as opposed to an object tree. A strict parent-child relationship does not always exist in the run time object relationships of a run time WPF application, so an object graph is a more widely applicable terminology. However, because WPF also includes two different tree conceptualization APIs (<xref:System.Windows.LogicalTreeHelper>, <xref:System.Windows.Media.VisualTreeHelper>) the tree metaphor still applies adequately to most real-world cases in WPF. From the XAML language perspective however, the object graph is often the best way to think about how objects are created out of XAML, because the XAML language itself does not necessarily specify helper class methodologies that bring the relationships more into a tree structure again.  
+>  場合によって、このドキュメントでは、オブジェクト ツリーではなく、オブジェクト グラフについて説明します。 厳密な親子のリレーションシップが常にありません、実行時の WPF アプリケーションの実行時のオブジェクトのリレーションシップのオブジェクト グラフがより広く適用可能な用語であるため。 ただし、WPF では、2 つの異なるツリー概念化 Api も含まれるため \(<xref:System.Windows.LogicalTreeHelper>, 、<xref:System.Windows.Media.VisualTreeHelper>\) WPF では、ほとんどの実際の場合に、ツリーの比喩を適切にも該当します。 XAML 言語の観点から、オブジェクト グラフは多くの場合、最適な見方をすると、XAML からオブジェクトを作成する方法は、XAML 言語そのものは必ずしも指定しないのでリレーションシップ ツリー構造に再度戻すヘルパー クラスの方法論です。  
   
-## Code Access Security, Loose XAML, and XamlReader  
- XAML is a markup language that directly represents object instantiation and execution. Therefore, elements created in XAML have the same ability to interact with system resources (network access, file system IO, for example) as the equivalent generated code does.  
+## コード アクセス セキュリティ、Loose XAML および XamlReader  
+ XAML は、オブジェクトのインスタンス化と実行を直接表すマークアップ言語です。 そのため、XAML で作成した要素、同じする機能があります \(ネットワーク アクセス、ファイル システムの入出力、たとえば\) システム リソースとの対話は、対応する生成コードします。  
   
- [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] supports the [!INCLUDE[TLA2#tla_net](~/includes/tla2sharptla-net-md.md)] security framework [!INCLUDE[TLA#tla_cas](~/includes/tlasharptla-cas-md.md)]. This means that [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] content running in the internet zone has reduced execution permissions. "Loose XAML" (pages of noncompiled XAML interpreted at load time by a XAML viewer) and [!INCLUDE[TLA#tla_xbap](~/includes/tlasharptla-xbap-md.md)] are usually run in this internet zone and use the same permission set.  However, XAML loaded in to a fully trusted application has the same access to the system resources as the hosting application does. For more information, see [WPF Partial Trust Security](~/docs/framework/wpf/wpf-partial-trust-security.md).  
+ [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] サポートしています、 [!INCLUDE[TLA2#tla_net](~/includes/tla2sharptla-net-md.md)] セキュリティ フレームワーク [!INCLUDE[TLA#tla_cas](~/includes/tlasharptla-cas-md.md)]します。 つまり、この [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] インターネット ゾーンで実行されているコンテンツが実行のアクセス許可を制限します。 "Loose XAML"\(コンパイルされない XAML のページと解釈の読み込み時に XAML ビューアーで\) と [!INCLUDE[TLA#tla_xbap](~/includes/tlasharptla-xbap-md.md)] このインターネット ゾーンでは、通常実行して、同じアクセス許可セットを使用します。  ただし、完全に信頼されたアプリケーションに読み込まれた XAML では、ホスト アプリケーションのようにシステム リソースに対する同じアクセスがあります。 詳細については、次を参照してください。 [WPF 部分信頼セキュリティ](http://msdn.microsoft.com/ja-jp/ef2c0810-1dbf-4511-babd-1fab95b523b5)します。  
   
- The implications of these statements for <xref:System.Windows.Markup.XamlReader> is that your application design must make trust decisions about the XAML you decide to load. If you are loading XAML that is not trusted, consider implementing your own sandboxing technique for how you load the resulting object graph.  
+ これらのステートメントの影響 <xref:System.Windows.Markup.XamlReader> は、アプリケーションの設計がロードする場合、XAML に関する信頼性の決定を行う必要があります。 信頼されていない XAML を読み込む場合は、生成されたオブジェクト グラフを読み込む方法について、独自のサンド ボックス化手法を実装することを検討してください。  
   
- <xref:System.Windows.Markup.XamlReader> can also be called by partial trust code. In this case, Internet security zone is applied for code access security. If anything in the loaded XAML is invalid under Internet security zone, a XAML parse exception is thrown. Under XBAP and other cases that are partial trust at the platform level, where <xref:System.Windows.Markup.XamlReader> is part of the execution, you get the same exception behavior as with explicit partial trust calls.  
+ <xref:System.Windows.Markup.XamlReader> 部分信頼コードから呼び出すこともできます。 この場合は、インターネット セキュリティ ゾーンは、コード アクセス セキュリティに対して適用されます。 読み込まれた XAML では何も情報がインターネット セキュリティ ゾーンで有効でない場合は、XAML の解析例外がスローされます。 \[XBAP とプラットフォーム レベルでは、部分的に信頼をそれ以外の場合、 <xref:System.Windows.Markup.XamlReader> 一部である、実行の明示的な部分的な信頼関係の呼び出しと同様の例外動作は同じを取得します。  
   
-## WPF XAML, XAML Readers/Writers, and XAML Language Versioning  
- [!INCLUDE[xaml2009](~/includes/xaml2009-md.md)] includes language features such as  and . You can use signatures of `Load` or `Parse` to load XAML that uses these features. However, those language features are not supported for XAML that needs to be markup compiled (such as XAML for the **Page** build action in a WPF application, or any XAML that involves the markup compile task in the build actions).  
+## WPF XAML、XAML リーダー\/ライター、および XAML 言語のバージョン管理  
+ [!INCLUDE[xaml2009](~/includes/xaml2009-md.md)] などの言語機能が含まれているとします。 署名を使用することができます `Load` または `Parse` をこれらの機能を使用する XAML を読み込みます。 ただし、これらの言語機能が XAML マークアップ コンパイルする必要があるためサポートされていません \(の XAML など、 **ページ** ビルド アクションでは、WPF アプリケーションの場合、または XAML ビルド アクションにマークアップ コンパイル タスクを含む\)。  
   
- WPF types and the WPF technology in general support concepts that rely on access to WPF internals. For instance, how WPF implements dependency properties relies on internal techniques for efficient type-member lookup. Access to these internals is enabled by the XAML reading and writing APIs provided in <xref:System.Windows.Markup.XamlWriter> and <xref:System.Windows.Markup.XamlReader> from the <xref:System.Windows.Markup> namespace and PresentationFramework assembly. However, the lower-level XAML readers and XAML writers from the System.Xaml assembly (classes based on <xref:System.Xaml.XamlReader?displayProperty=fullName>, <xref:System.Xaml.XamlWriter?displayProperty=fullName>) do not have access to the WPF internals. There is no dependency from System.Xaml to any WPF-specific assembly. Without access to the WPF internals, System.Xaml readers and writers cannot correctly load or save all WPF types, or types based on WPF types. In particular, the System.Xaml readers and writers do not understand concepts such as the WPF dependency property backing property store, or all the specifics of how WPF uses styles, resource dictionaries and templates. Therefore you have a choice to make:  
+ WPF の型と WPF テクノロジ一般に WPF の内部構造へのアクセスに依存している概念がサポートします。 たとえば、WPF 依存関係プロパティを実装する方法は、効率的な型メンバーの参照に関する内部の手法に依存します。 提供される Api の読み取りと書き込み、XAML でこれらの内部構造へのアクセスが有効になっている <xref:System.Windows.Markup.XamlWriter> と <xref:System.Windows.Markup.XamlReader> から、 <xref:System.Windows.Markup> 名前空間と PresentationFramework アセンブリ。 ただし、下位レベルの XAML リーダーと XAML ライターを System.Xaml アセンブリから \(クラスに基づきます <xref:System.Xaml.XamlReader?displayProperty=fullName>, 、<xref:System.Xaml.XamlWriter?displayProperty=fullName>\) WPF の内部構造へのアクセスはありません。 System.Xaml から任意の WPF 固有のアセンブリへの依存関係はありません。 WPF の内部構造にアクセスできなければ、System.Xaml リーダーとライターに正常に読み込むことができませんまたは型、または型での WPF 型に基づくすべての WPF を保存します。 具体的には、System.Xaml リーダーとライターは、WPF 依存関係プロパティがプロパティ ストア、または WPF でのスタイル、リソース ディクショナリ、およびテンプレートの使用方法の詳細をすべてのバックアップなどの概念を理解されません。 そのため、選択することがある場合。  
   
--   If you are loading WPF types, and/or you are using XAML in BAML form in any way, use the PresentationFramework XAML readers and XAML writers.  
+-   WPF の型を読み込む XAML の BAML 形式はまったくしている場合や場合、は、PresentationFramework XAML リーダーと XAML ライターを使用します。  
   
--   If you are not relying on any WPF types or the BAML form of XAML, and are not using another specific technology's XAML reader or XAML writer implementation for reasons that are specific to that framework, use the System.Xaml XAML readers and XAML writers.  
+-   任意の WPF 型または XAML の BAML 形式は、せずしてそのフレームワークに固有の上の理由から特定のテクノロジの別の XAML リーダーまたは XAML ライターの実装を使用しない場合は、System.Xaml XAML リーダーと XAML ライターを使用します。  
   
-## System.Xaml Backing Implementation in .NET 4  
- <xref:System.Windows.Markup.XamlReader> is the callable API surface for the WPF framework-level XAML parser. The same underlying XAML parser also performs the run-time XAML loading and parsing for WPF applications that target [!INCLUDE[net_v30_short](~/includes/net-v30-short-md.md)] and [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)].  
+## System.Xaml .NET 4 での実装をバックアップします。  
+ <xref:System.Windows.Markup.XamlReader> WPF フレームワーク レベル XAML パーサーの呼び出し可能な API サーフェイスです。 同じ基になる XAML パーサーが実行時の XAML を読み込み、対象とする WPF アプリケーションの解析も行い [!INCLUDE[net_v30_short](~/includes/net-v30-short-md.md)] と [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)]です。  
   
- If you are targeting [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], the external API is the same, but parts of the implementation are built on the [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)] general XAML implementation in the System.Xaml assembly, which improves many of the technical and reporting aspects of parsing XAML. Targeting [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)] necessarily entails including System.Xaml as a reference, and details of implementation such as the exceptions reported may come from System.Xaml defined types.  
+ 対象としている場合は、 [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], 、外部 API、同じですが、実装のパーツが上に構築された、 [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)] の XAML を解析技術とレポートの多くが向上される System.Xaml アセンブリに全般的な XAML の実装です。 対象とする [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)] System.Xaml から報告された例外が取得されるように、実装の詳細と、参照として System.Xaml を追加が必要ですが型を定義するとは限りません。  
   
 <a name="xamlTextUsage_XamlReader"></a>   
-## XAML Text Usage  
+## XAML テキストの使用方法  
    
   
-## Examples  
- The following example converts a <xref:System.Windows.Controls.Button> into a string using the <xref:System.Windows.Markup.XamlWriter> class.  The string is then loaded back into a <xref:System.Windows.Controls.Button> using the static <xref:System.Windows.Markup.XamlReader.Load%2A> method on the <xref:System.Windows.Markup.XamlReader> class.  
+## 例  
+ 次の例では、変換、 <xref:System.Windows.Controls.Button> を使用して文字列に、 <xref:System.Windows.Markup.XamlWriter> クラスです。  文字列は、再度読み込んで、 <xref:System.Windows.Controls.Button> 、静的 using <xref:System.Windows.Markup.XamlReader.Load%2A> メソッドを <xref:System.Windows.Markup.XamlReader> クラスです。  
   
- [!code-csharp[xamlreaderwritersnippets#XamlReaderLoadXmlReader](~/samples/snippets/csharp/VS_Snippets_Wpf/XamlReaderWriterSnippets/CSharp/Window1.xaml.cs#xamlreaderloadxmlreader)]
- [!code-vb[xamlreaderwritersnippets#XamlReaderLoadXmlReader](~/samples/snippets/visualbasic/VS_Snippets_Wpf/XamlReaderWriterSnippets/visualbasic/window1.xaml.vb#xamlreaderloadxmlreader)]  
+ [!code-csharp[xamlreaderwritersnippets\#XamlReaderLoadXmlReader](~/samples/snippets/csharp/VS_Snippets_Wpf/XamlReaderWriterSnippets/CSharp/Window1.xaml.cs#xamlreaderloadxmlreader)]
+ [!code-vb[xamlreaderwritersnippets\#XamlReaderLoadXmlReader](~/samples/snippets/visualbasic/VS_Snippets_Wpf/XamlReaderWriterSnippets/visualbasic/window1.xaml.vb#xamlreaderloadxmlreader)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Windows.Markup.XamlWriter" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -81,7 +82,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Markup.XamlReader" /> class.</summary>
+        <summary>
+          <see cref="T:System.Windows.Markup.XamlReader" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -99,12 +101,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Aborts the current asynchronous load operation, if there is an asynchronous load operation pending.</summary>
+        <summary>保留中の非同期の読み込み操作がある場合は、現在の非同期ロード操作を中止します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Markup.XamlReader.CancelAsync%2A> is an asynchronous operation; therefore, some loading may occur before the operation is aborted.  
+## 解説  
+ <xref:System.Windows.Markup.XamlReader.CancelAsync%2A> 非同期操作です。そのため、操作を中止する前に、いくつかの読み込みが発生します。  
   
  ]]></format>
         </remarks>
@@ -124,8 +126,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a <see cref="T:System.Xaml.XamlSchemaContext" /> object that represents the WPF schema context settings for a <see cref="T:System.Windows.Markup.XamlReader" />.</summary>
-        <returns>A <see cref="T:System.Xaml.XamlSchemaContext" /> object that represents the WPF schema context settings for a <see cref="T:System.Windows.Markup.XamlReader" />.</returns>
+        <summary>返します。、 <see cref="T:System.Xaml.XamlSchemaContext" /> の WPF スキーマ コンテキストの設定を表すオブジェクト、 <see cref="T:System.Windows.Markup.XamlReader" />です。</summary>
+        <returns>A <see cref="T:System.Xaml.XamlSchemaContext" /> の WPF スキーマ コンテキストの設定を表すオブジェクト、 <see cref="T:System.Windows.Markup.XamlReader" />です。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -145,22 +147,26 @@
         <Parameter Name="stream" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="stream">The XAML to load, in stream form.</param>
-        <summary>Reads the XAML input in the specified <see cref="T:System.IO.Stream" /> and returns an <see cref="T:System.Object" /> that is the root of the corresponding object tree.</summary>
-        <returns>The object at the root of the created object tree.</returns>
+        <param name="stream">読み込むには、ストリームの形式で XAML です。</param>
+        <summary>指定した XAML 入力を読み取り <see cref="T:System.IO.Stream" /> 返します、 <see cref="T:System.Object" /> 、対応するオブジェクト ツリーのルートです。</summary>
+        <returns>作成されたオブジェクト ツリーのルートにあるオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example saves a <xref:System.Windows.Controls.Button> into a <xref:System.IO.MemoryStream> using the <xref:System.Windows.Markup.XamlWriter> class. The stream is then loaded back into a <xref:System.Windows.Controls.Button> using the static <xref:System.Windows.Markup.XamlReader.Load%2A> method on the <xref:System.Windows.Markup.XamlReader> class.  
+## 解説  
+   
   
- [!code-csharp[XamlReaderWriterSnippets#XamlReaderLoadXmlReader](~/samples/snippets/csharp/VS_Snippets_Wpf/XamlReaderWriterSnippets/CSharp/Window1.xaml.cs#xamlreaderloadxmlreader)]
- [!code-vb[XamlReaderWriterSnippets#XamlReaderLoadXmlReader](~/samples/snippets/visualbasic/VS_Snippets_Wpf/XamlReaderWriterSnippets/visualbasic/window1.xaml.vb#xamlreaderloadxmlreader)]  
+## 例  
+ 次の例では保存、 <xref:System.Windows.Controls.Button> に、 <xref:System.IO.MemoryStream> を使用して、 <xref:System.Windows.Markup.XamlWriter> クラスです。 ストリームは、再度読み込んで、 <xref:System.Windows.Controls.Button> 、静的 using <xref:System.Windows.Markup.XamlReader.Load%2A> メソッドを <xref:System.Windows.Markup.XamlReader> クラスです。  
+  
+ [!code-csharp[XamlReaderWriterSnippets\#XamlReaderLoadXmlReader](~/samples/snippets/csharp/VS_Snippets_Wpf/XamlReaderWriterSnippets/CSharp/Window1.xaml.cs#xamlreaderloadxmlreader)]
+ [!code-vb[XamlReaderWriterSnippets\#XamlReaderLoadXmlReader](~/samples/snippets/visualbasic/VS_Snippets_Wpf/XamlReaderWriterSnippets/visualbasic/window1.xaml.vb#xamlreaderloadxmlreader)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> is <see langword="null" />.</exception>
+          <paramref name="stream" /> は <see langword="null" /> です。</exception>
+        <altmember cref="T:System.Windows.Markup.XamlWriter" />
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -179,19 +185,20 @@
         <Parameter Name="reader" Type="System.Xaml.XamlReader" />
       </Parameters>
       <Docs>
-        <param name="reader">A <see cref="T:System.Xaml.XamlReader" /> object. This is expected to be initialized with input XAML.</param>
-        <summary>Reads the XAML input through a provided <see cref="T:System.Xaml.XamlReader" /> and returns an object that is the root of the corresponding object tree.</summary>
-        <returns>The object that is the root of the created object tree.</returns>
+        <param name="reader">
+          <see cref="T:System.Xaml.XamlReader" /> オブジェクト。 入力 XAML が初期化されていると考えられます。</param>
+        <summary>指定されたを通じて XAML 入力を読み取り <see cref="T:System.Xaml.XamlReader" /> し、対応するオブジェクト ツリーのルートを表すオブジェクトを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The input <xref:System.Xaml.XamlReader> can be <xref:System.Windows.Baml2006.Baml2006Reader>. This is how you can load BAML at run time, or for localization tool purposes.  
+## 解説  
+ 入力 <xref:System.Xaml.XamlReader> できる <xref:System.Windows.Baml2006.Baml2006Reader>です。 これは、実行時に、またはローカライズ ツールのために、BAML を読み込むことができますか。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="reader" /> is <see langword="null" />.</exception>
+          <paramref name="reader" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -210,22 +217,27 @@
         <Parameter Name="reader" Type="System.Xml.XmlReader" />
       </Parameters>
       <Docs>
-        <param name="reader">The <see cref="T:System.Xml.XmlReader" /> that has already loaded the XAML input to load in XML form.</param>
-        <summary>Reads the XAML input in the specified <see cref="T:System.Xml.XmlReader" /> and returns an object that is the root of the corresponding object tree.</summary>
-        <returns>The object that is the root of the created object tree.</returns>
+        <param name="reader">
+          <see cref="T:System.Xml.XmlReader" /> XML 形式で読み込むように入力 XAML が既に読み込まれています。</param>
+        <summary>指定した XAML 入力を読み取り <see cref="T:System.Xml.XmlReader" /> し、対応するオブジェクト ツリーのルートを表すオブジェクトを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example converts a <xref:System.Windows.Controls.Button> into a string using the <xref:System.Windows.Markup.XamlWriter> class.  The string is then loaded back into a <xref:System.Windows.Controls.Button> using the static <xref:System.Windows.Markup.XamlReader.Load%2A> method on the <xref:System.Windows.Markup.XamlReader> class.  
+## 解説  
+   
   
- [!code-csharp[XamlReaderWriterSnippets#XamlReaderLoadXmlReader](~/samples/snippets/csharp/VS_Snippets_Wpf/XamlReaderWriterSnippets/CSharp/Window1.xaml.cs#xamlreaderloadxmlreader)]
- [!code-vb[XamlReaderWriterSnippets#XamlReaderLoadXmlReader](~/samples/snippets/visualbasic/VS_Snippets_Wpf/XamlReaderWriterSnippets/visualbasic/window1.xaml.vb#xamlreaderloadxmlreader)]  
+## 例  
+ 次の例では、変換、 <xref:System.Windows.Controls.Button> を使用して文字列に、 <xref:System.Windows.Markup.XamlWriter> クラスです。  文字列は、再度読み込んで、 <xref:System.Windows.Controls.Button> 、静的 using <xref:System.Windows.Markup.XamlReader.Load%2A> メソッドを <xref:System.Windows.Markup.XamlReader> クラスです。  
+  
+ [!code-csharp[XamlReaderWriterSnippets\#XamlReaderLoadXmlReader](~/samples/snippets/csharp/VS_Snippets_Wpf/XamlReaderWriterSnippets/CSharp/Window1.xaml.cs#xamlreaderloadxmlreader)]
+ [!code-vb[XamlReaderWriterSnippets\#XamlReaderLoadXmlReader](~/samples/snippets/visualbasic/VS_Snippets_Wpf/XamlReaderWriterSnippets/visualbasic/window1.xaml.vb#xamlreaderloadxmlreader)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="reader" /> is <see langword="null" />.</exception>
+          <paramref name="reader" /> は <see langword="null" /> です。</exception>
+        <altmember cref="T:System.Windows.Markup.XamlWriter" />
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -245,17 +257,23 @@
         <Parameter Name="parserContext" Type="System.Windows.Markup.ParserContext" />
       </Parameters>
       <Docs>
-        <param name="stream">The stream that contains the XAML input to load.</param>
-        <param name="parserContext">Context information used by the parser.</param>
-        <summary>Reads the XAML input in the specified <see cref="T:System.IO.Stream" /> and returns an object that is the root of the corresponding object tree.</summary>
-        <returns>The object that is the root of the created object tree.</returns>
-        <remarks>To be added.</remarks>
+        <param name="stream">このストリームは、読み込む入力 XAML が含まれています。</param>
+        <param name="parserContext">パーサーによって使用されるコンテキスト情報。</param>
+        <summary>指定した XAML 入力を読み取り <see cref="T:System.IO.Stream" /> し、対応するオブジェクト ツリーのルートを表すオブジェクトを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートを表すオブジェクト。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> is <see langword="null" />.  
+          <paramref name="stream" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="parserContext" /> is <see langword="null" />.</exception>
+ <paramref name="parserContext" /> は <see langword="null" /> です。</exception>
+        <altmember cref="T:System.Windows.Markup.XamlWriter" />
       </Docs>
     </Member>
     <Member MemberName="LoadAsync">
@@ -274,26 +292,27 @@
         <Parameter Name="stream" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="stream">The stream containing the XAML input to load.</param>
-        <summary>Reads the XAML input in the specified <see cref="T:System.IO.Stream" /> and returns the root of the corresponding object tree.</summary>
-        <returns>The object that is the root of the created object tree.</returns>
+        <param name="stream">XAML を読み込む入力を含むストリーム。</param>
+        <summary>指定した XAML 入力を読み取り <see cref="T:System.IO.Stream" /> し、対応するオブジェクト ツリーのルートを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An asynchronous XAML load operation will initially return an object that is purely the root object. Asynchronously, XAML parsing then continues, and any child objects are filled in under the root. This is in contrast to the typical WPF XAML processing behavior and its interaction with WPF concepts of object lifetime. In the typical (non-async) interaction, all properties of an object including all child collections are filled before returning an element and reporting it as loaded. That behavior equates to a bottom-up methodology for creating the tree where the root object is the last object to become available.  
+## 解説  
+ 非同期の XAML 読み込み操作は、純粋にルート オブジェクトであるオブジェクト最初に戻ります。 非同期に、XAML を解析しが引き続き発生するし、子オブジェクトは、ルートの下に入力されます。 これは、動作とオブジェクトの有効期間の概念を WPF との対話を処理する一般的な WPF XAML とは対照的です。 一般的な \(非 async\) との対話はすべての子コレクションを含むオブジェクトのすべてのプロパティは要素を返すと、読み込みであることを報告する前に格納されます。 その動作は、ルート オブジェクトの使用可能になる最後のオブジェクト ツリーを作成するためのボトムアップ方式に相当します。  
   
- You typically would assign the returned object to some location in your WPF application's object tree, with the knowledge that content might still be filling in and might cause incremental layout updates if the entire content is exposed as part of the UI. For this reason it is typical to isolate or virtualize any asynchronously loaded objects from XAML, and to use application-specific logic or application state to notify when <xref:System.Windows.Markup.XamlReader.LoadCompleted> is handled.  
+ 通常、WPF アプリケーションのオブジェクト ツリー内のある場所に割り当てる、返されたオブジェクトには、コンテンツの知識を持つがまだ入力されるおよび全体のコンテンツは、UI の一部として公開されている場合にインクリメンタル レイアウトの更新が発生する可能性があります。 この理由は、別のアプリケーションを特定したり、XAML から非同期的に読み込まれたオブジェクトを仮想化したり、ときに通知するアプリケーション固有のロジックまたはアプリケーションの状態を使用する標準的な <xref:System.Windows.Markup.XamlReader.LoadCompleted> 処理されます。  
   
- In order for <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> to load XAML input asynchronously, the root element in the XAML input must contain the attribute and value `x:SynchronousMode="Async"`. The value is treated as case sensitive. If the XAML input root does not contain `x:SynchronousMode="Async"`, no exception is thrown, and the call is processed as a synchronous load (see <xref:System.Windows.Markup.XamlReader.Load%28System.IO.Stream%29>).  
+ 順序で <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> 属性と値を非同期的に入力 XAML を読み込む、入力 XAML のルート要素があります `x:SynchronousMode="Async"`します。 値は大文字と小文字です。 XAML 入力ルートが含まれていない場合 `x:SynchronousMode="Async"`, 、例外はスローされず、および同期の負荷の一部として処理される呼び出しは、\(を参照してください <xref:System.Windows.Markup.XamlReader.Load%28System.IO.Stream%29>\)。  
   
- Only one asynchronous load operation per instance of the <xref:System.Windows.Markup.XamlReader> class can be performed at a time.  If more than one asynchronous operation is attempted on the same instance of the <xref:System.Windows.Markup.XamlReader> class an <xref:System.InvalidOperationException> is thrown.  
+ インスタンスごとに 1 つだけの非同期ロード操作、 <xref:System.Windows.Markup.XamlReader> クラスは、一度に行うことができます。  同じインスタンスで複数の非同期操作が試みられたかどうか、 <xref:System.Windows.Markup.XamlReader> クラス、 <xref:System.InvalidOperationException> がスローされます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">Multiple load operations are pending concurrently with the same <see cref="T:System.Windows.Markup.XamlReader" />.</exception>
+          <paramref name="stream" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">複数のロード操作が保留中と同時に同じ <see cref="T:System.Windows.Markup.XamlReader" />します。</exception>
+        <altmember cref="T:System.Windows.Markup.XamlWriter" />
       </Docs>
     </Member>
     <Member MemberName="LoadAsync">
@@ -312,26 +331,27 @@
         <Parameter Name="reader" Type="System.Xml.XmlReader" />
       </Parameters>
       <Docs>
-        <param name="reader">An existing  <see cref="T:System.Xml.XmlReader" /> that has already loaded/read the XAML input.</param>
-        <summary>Reads the XAML input in the specified <see cref="T:System.Xml.XmlReader" /> and returns the root of the corresponding object tree.</summary>
-        <returns>The root of the created object tree.</returns>
+        <param name="reader">既存の  <see cref="T:System.Xml.XmlReader" /> が既に読み込まれた読み取り XAML 入力します。</param>
+        <summary>指定した XAML 入力を読み取り <see cref="T:System.Xml.XmlReader" /> し、対応するオブジェクト ツリーのルートを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An asynchronous XAML load operation will initially return an object that is purely the root object. Asynchronously, XAML parsing then continues, and any child objects are filled in under the root. This is in contrast to the typical WPF XAML processing behavior and its interaction with WPF concepts of object lifetime. In the typical (non-async) interaction, all properties of an object including all child collections are filled before returning an element and reporting it as loaded. That behavior equates to a bottom-up methodology for creating the tree where the root object is the last object to become available.  
+## 解説  
+ 非同期の XAML 読み込み操作は、純粋にルート オブジェクトであるオブジェクト最初に戻ります。 非同期に、XAML を解析しが引き続き発生するし、子オブジェクトは、ルートの下に入力されます。 これは、動作とオブジェクトの有効期間の概念を WPF との対話を処理する一般的な WPF XAML とは対照的です。 一般的な \(非 async\) との対話はすべての子コレクションを含むオブジェクトのすべてのプロパティは要素を返すと、読み込みであることを報告する前に格納されます。 その動作は、ルート オブジェクトの使用可能になる最後のオブジェクト ツリーを作成するためのボトムアップ方式に相当します。  
   
- You typically would assign the returned object from <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> to some location in your application's object tree, with the knowledge that content might still be filling in and might cause incremental layout updates if the entire content is exposed as part of the UI. For this reason it is typical to isolate or virtualize any asynchronously loaded objects from XAML, and to use application-specific logic or application state to notify when <xref:System.Windows.Markup.XamlReader.LoadCompleted> is handled.  
+ 返されたオブジェクト割り当てられる通常 <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> 、アプリケーションのオブジェクト ツリー内のある場所にコンテンツの知識を持つがまだ入力され、全体のコンテンツは、UI の一部として公開されている場合にインクリメンタル レイアウトの更新が発生する可能性があります。 この理由は、別のアプリケーションを特定したり、XAML から非同期的に読み込まれたオブジェクトを仮想化したり、ときに通知するアプリケーション固有のロジックまたはアプリケーションの状態を使用する標準的な <xref:System.Windows.Markup.XamlReader.LoadCompleted> 処理されます。  
   
- In order for <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> to load XAML input asynchronously, the root element in the XAML markup must contain the attribute and value `x:SynchronousMode="Async"`. The value is treated as case sensitive. If the XAML markup root does not contain `x:SynchronousMode="Async"`, no exception is thrown, and the call is instead processed as a synchronous load (see <xref:System.Windows.Markup.XamlReader.Load%28System.Xml.XmlReader%29>).  
+ 順序で <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> 属性と値を非同期的に入力 XAML を読み込むには、XAML マークアップのルート要素があります `x:SynchronousMode="Async"`します。 値は大文字と小文字です。 XAML マークアップのルートに含まれない場合 `x:SynchronousMode="Async"`, 呼び出しは同期読み込みとして処理される代わりに、例外はスローされません \(を参照してください <xref:System.Windows.Markup.XamlReader.Load%28System.Xml.XmlReader%29>\)。  
   
- Only one asynchronous load operation per instance of the <xref:System.Windows.Markup.XamlReader> class can be performed at a time.  If more than one asynchronous operation is attempted on the same instance of the <xref:System.Windows.Markup.XamlReader> class an <xref:System.InvalidOperationException> is thrown.  
+ インスタンスごとに 1 つだけの非同期ロード操作、 <xref:System.Windows.Markup.XamlReader> クラスは、一度に行うことができます。  同じインスタンスで複数の非同期操作が試みられたかどうか、 <xref:System.Windows.Markup.XamlReader> クラス、 <xref:System.InvalidOperationException> がスローされます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="reader" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">Multiple load operations are performed concurrently with the same <see cref="T:System.Windows.Markup.XamlReader" />.</exception>
+          <paramref name="reader" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">同じと同時に複数の読み込み操作が実行される <see cref="T:System.Windows.Markup.XamlReader" />します。</exception>
+        <altmember cref="T:System.Windows.Markup.XamlWriter" />
       </Docs>
     </Member>
     <Member MemberName="LoadAsync">
@@ -351,27 +371,28 @@
         <Parameter Name="parserContext" Type="System.Windows.Markup.ParserContext" />
       </Parameters>
       <Docs>
-        <param name="stream">A stream containing the XAML input to load.</param>
-        <param name="parserContext">Context information used by the parser.</param>
-        <summary>Reads the XAML input in the specified <see cref="T:System.IO.Stream" /> and returns the root of the corresponding object tree.</summary>
-        <returns>The root of the created object tree.</returns>
+        <param name="stream">XAML を読み込む入力を含むストリーム。</param>
+        <param name="parserContext">パーサーによって使用されるコンテキスト情報。</param>
+        <summary>指定した XAML 入力を読み取り <see cref="T:System.IO.Stream" /> し、対応するオブジェクト ツリーのルートを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An asynchronous XAML load operation will initially return an object that is purely the root object. Asynchronously, XAML parsing then continues, and any child objects are filled in under the root. This is in contrast to the typical WPF XAML processing behavior and its interaction with WPF concepts of object lifetime. In the typical (non-async) interaction, all properties of an object including all child collections are filled before returning an element and reporting it as loaded. That behavior equates to a bottom-up methodology for creating the tree where the root object is the last object to become available.  
+## 解説  
+ 非同期の XAML 読み込み操作は、純粋にルート オブジェクトであるオブジェクト最初に戻ります。 非同期に、XAML を解析しが引き続き発生するし、子オブジェクトは、ルートの下に入力されます。 これは、動作とオブジェクトの有効期間の概念を WPF との対話を処理する一般的な WPF XAML とは対照的です。 一般的な \(非 async\) との対話はすべての子コレクションを含むオブジェクトのすべてのプロパティは要素を返すと、読み込みであることを報告する前に格納されます。 その動作は、ルート オブジェクトの使用可能になる最後のオブジェクト ツリーを作成するためのボトムアップ方式に相当します。  
   
- You typically would assign the returned object to some location in your application's object tree, with the knowledge that content might still be filling in and might cause incremental layout updates if the entire content is exposed as part of the UI. For this reason it is typical to isolate or virtualize any asynchronously loaded objects from XAML, and to use application-specific logic or application state to notify when <xref:System.Windows.Markup.XamlReader.LoadCompleted> is handled.  
+ 通常、アプリケーションのオブジェクト ツリー内のある場所に割り当てる、返されたオブジェクトには、コンテンツの知識を持つがまだ入力されるおよび全体のコンテンツは、UI の一部として公開されている場合にインクリメンタル レイアウトの更新が発生する可能性があります。 この理由は、別のアプリケーションを特定したり、XAML から非同期的に読み込まれたオブジェクトを仮想化したり、ときに通知するアプリケーション固有のロジックまたはアプリケーションの状態を使用する標準的な <xref:System.Windows.Markup.XamlReader.LoadCompleted> 処理されます。  
   
- In order for <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> to load markup asynchronously, the root element in the XAML markup must contain the attribute and value `x:SynchronousMode="Async"`. The value is treated as case sensitive. If the XAML markup root does not contain `x:SynchronousMode="Async"`, no exception is thrown, and the call is processed as a synchronous load (see <xref:System.Windows.Markup.XamlReader.Load%28System.IO.Stream%2CSystem.Windows.Markup.ParserContext%29>).  
+ 順序で <xref:System.Windows.Markup.XamlReader.LoadAsync%2A> 属性と値のマークアップを非同期で読み込むには、XAML マークアップのルート要素があります `x:SynchronousMode="Async"`します。 値は大文字と小文字です。 XAML マークアップのルートに含まれない場合 `x:SynchronousMode="Async"`, 、例外はスローされず、および同期の負荷の一部として処理される呼び出しは、\(を参照してください <xref:System.Windows.Markup.XamlReader.Load%28System.IO.Stream%2CSystem.Windows.Markup.ParserContext%29>\)。  
   
- Only one asynchronous load operation per instance of the <xref:System.Windows.Markup.XamlReader> class can be performed at a time.  If more than one asynchronous operation is attempted on the same instance of the <xref:System.Windows.Markup.XamlReader> class an <xref:System.InvalidOperationException> is thrown.  
+ インスタンスごとに 1 つだけの非同期ロード操作、 <xref:System.Windows.Markup.XamlReader> クラスは、一度に行うことができます。  同じインスタンスで複数の非同期操作が試みられたかどうか、 <xref:System.Windows.Markup.XamlReader> クラス、 <xref:System.InvalidOperationException> がスローされます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">Multiple load operations are performed concurrently with the same <see cref="T:System.Windows.Markup.XamlReader" />.</exception>
+          <paramref name="stream" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">同じと同時に複数の読み込み操作が実行される <see cref="T:System.Windows.Markup.XamlReader" />します。</exception>
+        <altmember cref="T:System.Windows.Markup.XamlWriter" />
       </Docs>
     </Member>
     <Member MemberName="LoadCompleted">
@@ -387,15 +408,16 @@
         <ReturnType>System.ComponentModel.AsyncCompletedEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when an asynchronous load operation completes.</summary>
+        <summary>非同期の読み込み操作の完了時に発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Markup.XamlReader.LoadCompleted> is also raised when an asynchronous load operation aborts.  
+## 解説  
+ <xref:System.Windows.Markup.XamlReader.LoadCompleted> 非同期の読み込み操作の中止時にも発生します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.AsyncCompletedEventHandler" />
       </Docs>
     </Member>
     <Member MemberName="Parse">
@@ -414,14 +436,14 @@
         <Parameter Name="xamlText" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="xamlText">The input XAML, as a single text string.</param>
-        <summary>Reads the XAML input in the specified text string and returns an object that corresponds to the root of the specified markup.</summary>
-        <returns>The root of the created object tree.</returns>
+        <param name="xamlText">入力を 1 つのテキスト文字列としての XAML です。</param>
+        <summary>指定されたテキスト文字列内の XAML 入力を読み取り、指定したマークアップのルートに対応するオブジェクトを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The implementation calls <xref:System.Windows.Markup.XamlReader.Load%2A> internally after creating a stream from the string. See <xref:System.Windows.Markup.XamlReader.Load%2A> for additional information such as possible exceptions.  
+## 解説  
+ 実装の呼び出し <xref:System.Windows.Markup.XamlReader.Load%2A> 文字列からストリームを作成した後に、内部的にします。 参照してください <xref:System.Windows.Markup.XamlReader.Load%2A> 可能性のある例外などの詳細。  
   
  ]]></format>
         </remarks>
@@ -444,19 +466,46 @@
         <Parameter Name="parserContext" Type="System.Windows.Markup.ParserContext" />
       </Parameters>
       <Docs>
-        <param name="xamlText">The input XAML, as a single text string.</param>
-        <param name="parserContext">Context information used by the parser.</param>
-        <summary>Reads the XAML markup in the specified text string (using a specified <see cref="T:System.Windows.Markup.ParserContext" />) and returns an object that corresponds to the root of the specified markup.</summary>
-        <returns>The root of the created object tree.</returns>
+        <param name="xamlText">入力を 1 つのテキスト文字列としての XAML です。</param>
+        <param name="parserContext">パーサーによって使用されるコンテキスト情報。</param>
+        <summary>指定されたテキスト文字列内の XAML マークアップを読み取ります \(、指定した <see cref="T:System.Windows.Markup.ParserContext" />\) し、指定したマークアップのルートに対応するオブジェクトを返します。</summary>
+        <returns>作成されたオブジェクト ツリーのルートです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The implementation calls <xref:System.Windows.Markup.XamlReader.Load%2A> internally after creating a stream from the string. See <xref:System.Windows.Markup.XamlReader.Load%2A> for additional information such as possible exceptions.  
+## 解説  
+ 実装の呼び出し <xref:System.Windows.Markup.XamlReader.Load%2A> 文字列からストリームを作成した後に、内部的にします。 参照してください <xref:System.Windows.Markup.XamlReader.Load%2A> 可能性のある例外などの詳細。  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Parse">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定されたテキスト文字列内のマークアップを読み取り、指定したマークアップのルートに対応するオブジェクトを返します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Load">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>XAML 入力を読み取り、対応するオブジェクト ツリーのルートを返します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="LoadAsync">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>XAML マークアップを読み取り、指定したマークアップのルートに対応するオブジェクトを返します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

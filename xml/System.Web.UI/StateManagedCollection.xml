@@ -18,28 +18,31 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Provides a base class for all strongly typed collections that manage <see cref="T:System.Web.UI.IStateManager" /> objects.</summary>
+    <summary>
+      <see cref="T:System.Web.UI.IStateManager" /> オブジェクトを管理する厳密に型指定されたすべてのコレクションの基本クラスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection> class is the base class for all strongly typed collections that store <xref:System.Web.UI.IStateManager> elements, including <xref:System.Web.UI.WebControls.DataControlFieldCollection>, <xref:System.Web.UI.WebControls.ParameterCollection>, <xref:System.Web.UI.WebControls.StyleCollection>, <xref:System.Web.UI.WebControls.TreeNodeBindingCollection>, and others. The <xref:System.Web.UI.StateManagedCollection> collection manages its own state as well as the state of the elements it contains. Therefore, a call to <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A> saves the state of the collection and the state of all the elements currently contained by the collection.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection>クラスが格納されるすべての厳密に型指定されたコレクションの基底クラス<xref:System.Web.UI.IStateManager>などの要素が<xref:System.Web.UI.WebControls.DataControlFieldCollection>、 <xref:System.Web.UI.WebControls.ParameterCollection>、 <xref:System.Web.UI.WebControls.StyleCollection>、 <xref:System.Web.UI.WebControls.TreeNodeBindingCollection>、およびその他。<xref:System.Web.UI.StateManagedCollection>コレクションが含まれている要素の状態と同様に、独自の状態を管理します。 そのため、呼び出しを<xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A>コレクションの状態、および現在コレクションに含まれているすべての要素の状態を保存します。  
   
- The most important methods to consider when deriving from the <xref:System.Web.UI.StateManagedCollection> class are <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A>, <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A>, <xref:System.Web.UI.StateManagedCollection.OnValidate%2A>, <xref:System.Web.UI.StateManagedCollection.SetDirty%2A>, and <xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A>. The <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> and <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> methods are used to store an index in view state for the type of a contained element. Storing an index rather than a fully qualified type name improves performance. The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called whenever elements of the collection are manipulated, and validates the elements according to business rules. Currently, the implementation of the <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method prohibits `null` objects from being stored in the collection; however, you can override this method to define your own validation behavior in a derived type. The <xref:System.Web.UI.StateManagedCollection.SetDirty%2A> method forces the entire collection to be serialized to view state, rather than just serializing changes made to state since the last time it was loaded. The <xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A> method is an abstract method you can implement to perform this same behavior at the element level.  
+ 派生している場合に考慮すべき最も重要なメソッド、<xref:System.Web.UI.StateManagedCollection>クラスが<xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A>、 <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A>、 <xref:System.Web.UI.StateManagedCollection.OnValidate%2A>、 <xref:System.Web.UI.StateManagedCollection.SetDirty%2A>、および<xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A>です。<xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A>と<xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A>ビュー ステートに格納されている要素の種類のインデックスを格納するメソッドが使用されます。 完全修飾型名ではなく、インデックスを格納すると、パフォーマンスが向上します。<xref:System.Web.UI.StateManagedCollection.OnValidate%2A>メソッドは、コレクションの要素を操作すると、およびビジネス ルールに従って要素を検証します。 実装では現在、<xref:System.Web.UI.StateManagedCollection.OnValidate%2A>メソッドを禁止`null`のオブジェクトをコレクションに格納されているただし、派生型で、独自の検証動作を定義するには、このメソッドをオーバーライドすることができます。<xref:System.Web.UI.StateManagedCollection.SetDirty%2A>メソッド強制的にコレクション全体をビューステートにシリアル化、前回の状態に加えられた変更をシリアル化するだけではなく読み込まれました。<xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A>メソッドが要素レベルでこの同じ動作を実行するために実装できる抽象メソッドです。  
   
 > [!IMPORTANT]
->  <xref:System.Web.UI.StateManagedCollection> stores assembly-qualified type names of the collection items in view state. A site visitor could decode the view state and retrieve the type name. If this scenario creates a security concern in your Web site, you can manually encrypt the type name before placing it in the view state.  
+>  <xref:System.Web.UI.StateManagedCollection>アセンブリ修飾のストアは、コレクション項目をビュー ステートの名前を入力します。 サイトの利用者はでしたビュー ステートをデコードし、型名を取得します。 このシナリオでは、Web サイトのセキュリティが脅かされるを作成する場合は、ビュー ステートに配置する前に型名を手動で暗号化ことができます。  
   
    
   
-## Examples  
- The following code example demonstrates how to derive a strongly typed collection class from <xref:System.Web.UI.StateManagedCollection> to contain <xref:System.Web.UI.IStateManager> objects. In this example, the `CycleCollection` is derived to contain instances of the abstract `Cycle` class, which can be either `Bicycle` or `Tricycle` objects. The `Cycle` class implements the <xref:System.Web.UI.IStateManager> interface because it stores the value of the `CycleColor` property in view state.  
+## 例  
+ 次のコード例から厳密に型指定されたコレクション クラスを派生<xref:System.Web.UI.StateManagedCollection>を含む<xref:System.Web.UI.IStateManager>オブジェクト。 この例では、`CycleCollection`抽象のインスタンスを含めるには派生`Cycle`クラスは、いずれかになります`Bicycle`または`Tricycle`オブジェクト。`Cycle`クラスが実装する、<xref:System.Web.UI.IStateManager>の値を格納するためのインターフェイス、`CycleColor`プロパティ ビュー ステートにします。  
   
- [!code-csharp[Samples.AspNet.CycleCollection#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#1)]
- [!code-vb[Samples.AspNet.CycleCollection#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#1)]  
+ [!code-csharp[Samples.AspNet.CycleCollection\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#1)]
+ [!code-vb[Samples.AspNet.CycleCollection\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Web.UI.IStateManager" />
+    <altmember cref="T:System.Web.UI.StateBag" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -53,13 +56,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.StateManagedCollection" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Derived classes can override the constructor to provide customized implementation.  
+## 解説  
+ 派生クラスでは、カスタマイズされた実装を提供するコンス トラクターをオーバーライドできます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -78,15 +85,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Removes all items from the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションからすべての項目を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Web.UI.StateManagedCollection.OnClear%2A> method is called before the <xref:System.Web.UI.StateManagedCollection.Clear%2A> method is called, and the <xref:System.Web.UI.StateManagedCollection.OnClearComplete%2A> method is called after <xref:System.Web.UI.StateManagedCollection.Clear%2A> has finished removing elements from the collection.  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnClear" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnClearComplete" />
       </Docs>
     </Member>
     <Member MemberName="CopyTo">
@@ -106,33 +116,34 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from the <see cref="T:System.Web.UI.StateManagedCollection" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
-        <param name="index">The zero-based index in <c>array</c> at which copying begins.</param>
-        <summary>Copies the elements of the <see cref="T:System.Web.UI.StateManagedCollection" /> collection to an array, starting at a particular array index.</summary>
+        <param name="array">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> からコピーされる要素のコピー先となる 1 次元の <see cref="T:System.Array" />。<see cref="T:System.Array" /> には、0 から始まるインデックス番号が必要です。</param>
+        <param name="index">コピーの開始位置とする <c>array</c> のインデックス \(0 から始まる\)。</param>
+        <summary>特定の配列インデックスを開始位置として、配列に <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションの要素をコピーします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The specified array must be of a compatible type.  
+## 解説  
+ 指定された配列は、互換性のある型でなければなりません。  
   
- The elements are copied to the <xref:System.Array> in the same order in which the enumerator iterates through the <xref:System.Web.UI.StateManagedCollection> collection.  
+ 要素は、列挙子が <xref:System.Array> コレクションを反復処理するのと同じ順序で、<xref:System.Web.UI.StateManagedCollection> にコピーされます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="array" /> is <see langword="null" />.</exception>
+          <paramref name="array" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> is less than zero.</exception>
+          <paramref name="index" /> が 0 未満です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="array" /> is multidimensional.  
+          <paramref name="array" /> が多次元です。  
   
- \- or -  
+ または  
   
- <paramref name="index" /> is greater than or equal to the length of <paramref name="array" />.  
+ <paramref name="index" /> が <paramref name="array" /> の長さ以上です。  
   
- \- or -  
+ または  
   
- The number of elements in the source <see cref="T:System.Web.UI.StateManagedCollection" /> is greater than the available space from the <paramref name="index" /> to the end of the destination <paramref name="array" />.</exception>
+ ソース内の要素の数 <see cref="T:System.Web.UI.StateManagedCollection" /> から使用可能な領域よりも大きい、 <paramref name="index" /> 変換先の末尾に <paramref name="array" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -148,8 +159,10 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of elements contained in the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
-        <value>The number of elements contained in the <see cref="T:System.Web.UI.StateManagedCollection" />.</value>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションに格納されている要素の数を取得します。</summary>
+        <value>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> に格納されている要素の数。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -169,26 +182,29 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">The index, from the ordered list of types returned by <see cref="M:System.Web.UI.StateManagedCollection.GetKnownTypes" />, of the type of <see cref="T:System.Web.UI.IStateManager" /> to create.</param>
-        <summary>When overridden in a derived class, creates an instance of a class that implements <see cref="T:System.Web.UI.IStateManager" />. The type of object created is based on the specified member of the collection returned by the <see cref="M:System.Web.UI.StateManagedCollection.GetKnownTypes" /> method.</summary>
-        <returns>An instance of a class derived from <see cref="T:System.Web.UI.IStateManager" />, according to the <paramref name="index" /> provided.</returns>
+        <param name="index">
+          <see cref="M:System.Web.UI.StateManagedCollection.GetKnownTypes" /> から返される、順番に並べられた型リストに含まれる作成対象の <see cref="T:System.Web.UI.IStateManager" /> の型のインデックス。</param>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="T:System.Web.UI.IStateManager" /> を実装するクラスのインスタンスを作成します。 作成されるオブジェクトの型は、<see cref="M:System.Web.UI.StateManagedCollection.GetKnownTypes" /> メソッドから返されるコレクションの指定されたメンバーに基づきます。</summary>
+        <returns>指定された <paramref name="index" /> に基づいた <see cref="T:System.Web.UI.IStateManager" /> の派生クラスのインスタンス。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> method is called internally by the <xref:System.Web.UI.StateManagedCollection> collection in its implementation of the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23LoadViewState%2A?displayProperty=fullName> method. Derived collections override the <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> method to return a default instance of the <xref:System.Web.UI.IStateManager> type identified by the provided `index`, which maps to one of the types returned by the <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> method.  
+## 解説  
+ The <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> method is called internally by the <xref:System.Web.UI.StateManagedCollection> collection in its implementation of the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23LoadViewState%2A?displayProperty=fullName> method. Derived collections override the <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> method to return a default instance of the <xref:System.Web.UI.IStateManager> type identified by the provided **parameterReference tag is not supported!!!!**  
+, which maps to one of the types returned by the <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> method.  
   
    
   
-## Examples  
+## 例  
  The following code example demonstrates how a strongly typed <xref:System.Web.UI.StateManagedCollection> class implements the <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> method. The `CycleCollection` implementation of <xref:System.Web.UI.StateManagedCollection.CreateKnownType%2A> returns the default instance of either a `Bicycle` or `Tricycle` object, depending on the index passed. This code example is part of a larger example provided for the <xref:System.Web.UI.StateManagedCollection> class.  
   
- [!code-csharp[Samples.AspNet.CycleCollection#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#2)]
- [!code-vb[Samples.AspNet.CycleCollection#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#2)]  
+ [!code-csharp[Samples.AspNet.CycleCollection\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#2)]
+ [!code-vb[Samples.AspNet.CycleCollection\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">In all cases when not overridden in a derived class.</exception>
+        <exception cref="T:System.InvalidOperationException">派生クラスでオーバーライドされていないすべての場合。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.GetKnownTypes" />
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -205,9 +221,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an iterator that iterates through the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
-        <returns>An <see cref="T:System.Collections.IEnumerator" /> that can be used to iterate through the <see cref="T:System.Web.UI.StateManagedCollection" />.</returns>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションを反復処理する反復子を返します。</summary>
+        <returns>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> を反復処理するために使用できる <see cref="T:System.Collections.IEnumerator" />。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Collections.IEnumerable.GetEnumerator" />
       </Docs>
     </Member>
     <Member MemberName="GetKnownTypes">
@@ -224,24 +243,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, gets an array of <see cref="T:System.Web.UI.IStateManager" /> types that the <see cref="T:System.Web.UI.StateManagedCollection" /> collection can contain.</summary>
-        <returns>An ordered array of <see cref="T:System.Type" /> objects that identify the types of <see cref="T:System.Web.UI.IStateManager" /> objects the collection can contain. The default implementation returns <see langword="null" />.</returns>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="T:System.Web.UI.StateManagedCollection" /> コレクションに格納できる <see cref="T:System.Web.UI.IStateManager" /> 型の配列を取得します。</summary>
+        <returns>コレクションに格納できる <see cref="T:System.Web.UI.IStateManager" /> オブジェクトの型を識別する <see cref="T:System.Type" /> オブジェクトの順番に並べられた配列。 既定の実装では、<see langword="null" /> が返されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> method is called internally by the <xref:System.Web.UI.StateManagedCollection> collection in its implementation of the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method. Derived collections override the <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> method to return an array of <xref:System.Type> objects that represent the types the collection can contain.  
   
    
   
-## Examples  
+## 例  
  The following code example demonstrates how a strongly typed <xref:System.Web.UI.StateManagedCollection> class implements the <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> method. The `CycleCollection` implementation of <xref:System.Web.UI.StateManagedCollection.GetKnownTypes%2A> returns a <xref:System.Type> array of known types, including `Bicycle` and `Tricycle` types. This code example is part of a larger example provided for the <xref:System.Web.UI.StateManagedCollection> class.  
   
- [!code-csharp[Samples.AspNet.CycleCollection#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#2)]
- [!code-vb[Samples.AspNet.CycleCollection#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#2)]  
+ [!code-csharp[Samples.AspNet.CycleCollection\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#2)]
+ [!code-vb[Samples.AspNet.CycleCollection\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.CreateKnownType(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="OnClear">
@@ -258,15 +278,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, performs additional work before the <see cref="M:System.Web.UI.StateManagedCollection.Clear" /> method removes all items from the collection.</summary>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="M:System.Web.UI.StateManagedCollection.Clear" /> メソッドによってコレクションからすべての項目が削除される前の補足作業を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Collections derived from <xref:System.Web.UI.StateManagedCollection> can override the <xref:System.Web.UI.StateManagedCollection.OnClear%2A> method to perform any additional work before all items are removed from the collection using the <xref:System.Web.UI.StateManagedCollection.Clear%2A> method.  
+## 解説  
+ 派生したコレクション <xref:System.Web.UI.StateManagedCollection> オーバーライドできる、 <xref:System.Web.UI.StateManagedCollection.OnClear%2A> メソッドを使用して、コレクションからすべての項目が削除される前に、追加の作業を実行する、 <xref:System.Web.UI.StateManagedCollection.Clear%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.Clear" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnClearComplete" />
       </Docs>
     </Member>
     <Member MemberName="OnClearComplete">
@@ -283,15 +305,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, performs additional work after the <see cref="M:System.Web.UI.StateManagedCollection.Clear" /> method finishes removing all items from the collection.</summary>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="M:System.Web.UI.StateManagedCollection.Clear" /> メソッドによってコレクションからすべての項目が削除された後の補足作業を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Collections derived from <xref:System.Web.UI.StateManagedCollection> can override the <xref:System.Web.UI.StateManagedCollection.OnClearComplete%2A> method to perform any additional work after all items are removed from the collection using the <xref:System.Web.UI.StateManagedCollection.Clear%2A> method.  
+## 解説  
+ 派生したコレクション <xref:System.Web.UI.StateManagedCollection> オーバーライドできる、 <xref:System.Web.UI.StateManagedCollection.OnClearComplete%2A> メソッドを使用して、コレクションからすべての項目が削除された後に、追加の作業を実行する、 <xref:System.Web.UI.StateManagedCollection.Clear%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.Clear" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnClear" />
       </Docs>
     </Member>
     <Member MemberName="OnInsert">
@@ -311,17 +335,22 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index at which <c>value</c> should be inserted by the <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> method.</param>
-        <param name="value">The object to insert into the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>When overridden in a derived class, performs additional work before the <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> or <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" /> method adds an item to the collection.</summary>
+        <param name="index">
+          <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> メソッドが <c>value</c> を挿入する位置の、0 から始まるインデックス番号。</param>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> に挿入するオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> メソッドまたは <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" /> メソッドによってコレクションに項目が追加される前の補足作業を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Collections derived from <xref:System.Web.UI.StateManagedCollection> can override the <xref:System.Web.UI.StateManagedCollection.OnInsert%2A> method to perform any additional work before an item is added to the collection using the <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Add%2A> or <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Insert%2A> method.  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnInsertComplete(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="OnInsertComplete">
@@ -341,17 +370,22 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index at which <c>value</c> is inserted by the <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> method.</param>
-        <param name="value">The object inserted into the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>When overridden in a derived class, performs additional work after the <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> or <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" /> method adds an item to the collection.</summary>
+        <param name="index">
+          <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> メソッドが <c>value</c> を挿入する位置の、0 から始まるインデックス番号。</param>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> に挿入するオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" /> メソッドまたは <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" /> メソッドによってコレクションに項目が追加された後の補足作業を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Collections derived from <xref:System.Web.UI.StateManagedCollection> can override the <xref:System.Web.UI.StateManagedCollection.OnInsertComplete%2A> method to perform any additional work after an item is added to the collection using the <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Add%2A> or <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Insert%2A> method.  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnInsert(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="OnRemove">
@@ -371,17 +405,21 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index of the item to remove, which is used when <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> is called.</param>
-        <param name="value">The object to remove from the <see cref="T:System.Web.UI.StateManagedCollection" />, which is used when <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> is called.</param>
-        <summary>When overridden in a derived class, performs additional work before the <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> or <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> method removes the specified item from the collection.</summary>
+        <param name="index">削除する項目の 0 から始まるインデックス番号。<see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> が呼び出されたときに使用されます。</param>
+        <param name="value">
+          <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> が呼び出されたときに使用される、<see cref="T:System.Web.UI.StateManagedCollection" /> から削除されるオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> メソッドまたは <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> メソッドによって、指定された項目がコレクションから削除される前の補足作業を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Collections derived from <xref:System.Web.UI.StateManagedCollection> can override the <xref:System.Web.UI.StateManagedCollection.OnRemove%2A> method to perform any additional work before an item is removed from the collection using the <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Remove%2A> or <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23RemoveAt%2A> method.  
+## 解説  
+ 派生したコレクション<xref:System.Web.UI.StateManagedCollection>オーバーライドできる、<xref:System.Web.UI.StateManagedCollection.OnRemove%2A>メソッドを使用してコレクションから項目を削除する前に、追加の作業を実行する、<xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Remove%2A>または<xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23RemoveAt%2A>メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnRemoveComplete(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="OnRemoveComplete">
@@ -401,17 +439,21 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index of the item to remove, which is used when <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> is called.</param>
-        <param name="value">The object removed from the <see cref="T:System.Web.UI.StateManagedCollection" />, which is used when <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> is called.</param>
-        <summary>When overridden in a derived class, performs additional work after the <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> or <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> method removes the specified item from the collection.</summary>
+        <param name="index">削除する項目の 0 から始まるインデックス番号。<see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> が呼び出されたときに使用されます。</param>
+        <param name="value">
+          <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> が呼び出されたときに使用される、<see cref="T:System.Web.UI.StateManagedCollection" /> から削除されるオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" /> メソッドまたは <see cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" /> メソッドによって、指定された項目がコレクションから削除された後の補足作業を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Collections derived from <xref:System.Web.UI.StateManagedCollection> can override the <xref:System.Web.UI.StateManagedCollection.OnRemoveComplete%2A> method to perform any additional work after an item is removed from the collection using the <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Remove%2A> or <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23RemoveAt%2A> method.  
+## 解説  
+ 派生したコレクション<xref:System.Web.UI.StateManagedCollection>オーバーライドできる、<xref:System.Web.UI.StateManagedCollection.OnRemoveComplete%2A>メソッドを使用してコレクションから項目を削除した後、追加の作業を実行する、<xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Remove%2A>または<xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23RemoveAt%2A>メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnRemove(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="OnValidate">
@@ -430,18 +472,25 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The <see cref="T:System.Web.UI.IStateManager" /> to validate.</param>
-        <summary>When overridden in a derived class, validates an element of the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
+        <param name="value">検証対象の <see cref="T:System.Web.UI.IStateManager" />。</param>
+        <summary>派生クラスでオーバーライドされた場合、<see cref="T:System.Web.UI.StateManagedCollection" /> コレクションの要素を検証します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called to validate the object manipulated through the <xref:System.Web.UI.StateManagedCollection> implementation of the <xref:System.Collections.IList> interface methods. The default implementation is to verify that the object manipulated by the collection is not `null`; however, collections derived from <xref:System.Web.UI.StateManagedCollection> override the <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method to perform any additional validation, such as type-checking.  
+## 解説  
+ The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called to validate the object manipulated through the <xref:System.Web.UI.StateManagedCollection> implementation of the <xref:System.Collections.IList> interface methods. The default implementation is to verify that the object manipulated by the collection is not **languageKeyword tag is not supported!!!!**  
+; however, collections derived from <xref:System.Web.UI.StateManagedCollection> override the <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method to perform any additional validation, such as type\-checking.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Contains(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#IndexOf(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="SetDirty">
@@ -458,15 +507,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Forces the entire <see cref="T:System.Web.UI.StateManagedCollection" /> collection to be serialized into view state.</summary>
+        <summary>強制的に <see cref="T:System.Web.UI.StateManagedCollection" /> コレクション全体をビューステートにシリアル化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.SetDirty%2A> method forces the <xref:System.Web.UI.StateManagedCollection> collection to be serialized completely (whereas the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method saves only the change information). This is useful when a collection has changed in a significant way and change information is insufficient to recreate the object in memory from view state.  
+## 解説  
+ The <xref:System.Web.UI.StateManagedCollection.SetDirty%2A> method forces the <xref:System.Web.UI.StateManagedCollection> collection to be serialized completely \(whereas the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method saves only the change information\). This is useful when a collection has changed in a significant way and change information is insufficient to recreate the object in memory from view state.  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.SetDirtyObject(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateBag.SetDirty(System.Boolean)" />
       </Docs>
     </Member>
     <Member MemberName="SetDirtyObject">
@@ -485,24 +536,25 @@
         <Parameter Name="o" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="o">The <see cref="T:System.Web.UI.IStateManager" /> that should serialize itself completely.</param>
-        <summary>When overridden in a derived class, instructs an <see langword="object" /> contained by the collection to record its entire state to view state, rather than recording only change information.</summary>
+        <param name="o">自身を完全にシリアル化する必要のある <see cref="T:System.Web.UI.IStateManager" />。</param>
+        <summary>派生クラスでオーバーライドされた場合、コレクションに格納されている <see langword="object" /> に、変更情報だけでなく、その状態全体をビューステートに記録するよう指示します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A> method is called internally by the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A>, <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Add%2A>, and <xref:System.Web.UI.StateManagedCollection.System%23Collections%23IList%23Insert%2A> methods.  
   
    
   
-## Examples  
- The following code example demonstrates how a strongly typed <xref:System.Web.UI.StateManagedCollection> class implements the abstract <xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A> method. The `CycleCollection` uses a <xref:System.Web.UI.StateBag> object to store its view-state information, and simply delegates the call to the <xref:System.Web.UI.StateBag.SetDirty%2A> method of the <xref:System.Web.UI.StateBag> object. This code example is part of a larger example provided for the <xref:System.Web.UI.StateManagedCollection> class.  
+## 例  
+ The following code example demonstrates how a strongly typed <xref:System.Web.UI.StateManagedCollection> class implements the abstract <xref:System.Web.UI.StateManagedCollection.SetDirtyObject%2A> method. The `CycleCollection` uses a <xref:System.Web.UI.StateBag> object to store its view\-state information, and simply delegates the call to the <xref:System.Web.UI.StateBag.SetDirty%2A> method of the <xref:System.Web.UI.StateBag> object. This code example is part of a larger example provided for the <xref:System.Web.UI.StateManagedCollection> class.  
   
- [!code-csharp[Samples.AspNet.CycleCollection#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#2)]
- [!code-vb[Samples.AspNet.CycleCollection#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#2)]  
+ [!code-csharp[Samples.AspNet.CycleCollection\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/CS/statemanagedcollectionsample.cs#2)]
+ [!code-vb[Samples.AspNet.CycleCollection\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.CycleCollection/VB/statemanagedcollectionsample.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#SaveViewState" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.ICollection.Count">
@@ -518,8 +570,10 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of elements contained in the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
-        <value>The number of elements in the <see cref="T:System.Web.UI.StateManagedCollection" />.</value>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションに格納されている要素の数を取得します。</summary>
+        <value>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> にある要素の数。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -536,10 +590,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the <see cref="T:System.Web.UI.StateManagedCollection" /> collection is synchronized (thread safe). This method returns <see langword="false" /> in all cases.</summary>
-        <value>
-          <see langword="false" /> in all cases.</value>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションが同期されている \(スレッド セーフである\) かどうかを示す値を取得します。 このメソッドは、常に <see langword="false" /> を返します。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Collections#ICollection#SyncRoot" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.ICollection.SyncRoot">
@@ -555,10 +610,11 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an object that can be used to synchronize access to the <see cref="T:System.Web.UI.StateManagedCollection" /> collection. This method returns <see langword="null" /> in all cases.</summary>
-        <value>
-          <see langword="null" /> in all cases.</value>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションへのアクセスを同期するために使用できるオブジェクトを取得します。 このメソッドは、常に <see langword="null" /> を返します。</summary>
+        <value>常に <see langword="null" />。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Collections#ICollection#IsSynchronized" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
@@ -575,9 +631,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an iterator that iterates through the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
-        <returns>An <see cref="T:System.Collections.IEnumerator" /> that can be used to iterate through the <see cref="T:System.Web.UI.StateManagedCollection" />.</returns>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションを反復処理する反復子を返します。</summary>
+        <returns>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> を反復処理するために使用できる <see cref="T:System.Collections.IEnumerator" />。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Collections.IEnumerable.GetEnumerator" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.Add">
@@ -596,18 +655,23 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The <see langword="object" /> to add to the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>Adds an item to the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
-        <returns>The position at which the new element was inserted.</returns>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> に追加する <see langword=" object " />。</param>
+        <summary>項目を <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションに追加します。</summary>
+        <returns>新しい要素が挿入された位置。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> and <xref:System.Web.UI.StateManagedCollection.OnInsert%2A> methods are called before the element is added to the collection, and the <xref:System.Web.UI.StateManagedCollection.OnInsertComplete%2A> method is called after the element is added.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection.OnValidate%2A>および<xref:System.Web.UI.StateManagedCollection.OnInsert%2A>メソッドが呼び出されるは、このコレクションに要素が追加される前に、<xref:System.Web.UI.StateManagedCollection.OnInsertComplete%2A>要素が追加された後にメソッドが呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The specified <paramref name="value" /> is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">指定された <paramref name="value" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Insert(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnInsert(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnInsertComplete(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnValidate(System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.Clear">
@@ -624,15 +688,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Removes all items from the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションからすべての項目を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnClear%2A> method is called before the <xref:System.Web.UI.StateManagedCollection.Clear%2A> method is called, and the <xref:System.Web.UI.StateManagedCollection.OnClearComplete%2A> method is called after <xref:System.Web.UI.StateManagedCollection.Clear%2A> has finished removing elements from the collection.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection.OnClear%2A> メソッドは、前に呼び出されます、 <xref:System.Web.UI.StateManagedCollection.Clear%2A> メソッドが呼び出されると、 <xref:System.Web.UI.StateManagedCollection.OnClearComplete%2A> 後に呼び出されます <xref:System.Web.UI.StateManagedCollection.Clear%2A> がコレクションから要素を削除し終わます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.Clear" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.Contains">
@@ -651,18 +717,20 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The <see langword="object" /> to locate in the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>Determines whether the <see cref="T:System.Web.UI.StateManagedCollection" /> collection contains a specific value.</summary>
-        <returns>
-          <see langword="true" /> if the object is found in the <see cref="T:System.Web.UI.StateManagedCollection" />; otherwise, <see langword="false" />. If <see langword="null" /> is passed for the value parameter, <see langword="false" /> is returned.</returns>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> 内で検索される <see langword="object" />。</param>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションに特定の値が格納されているかどうかを判断します。</summary>
+        <returns>そのオブジェクトが <see cref="T:System.Web.UI.StateManagedCollection" /> に存在する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。 値パラメーターに <see langword="null" /> が渡された場合、<see langword="false" /> が返されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called to validate `value` before the collection is checked.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> を検証するメソッドが呼び出される `value` コレクションがチェックインされる前にします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnValidate(System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.IndexOf">
@@ -681,17 +749,20 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The object to locate in the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>Determines the index of a specified item in the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
-        <returns>The index of <paramref name="value" />, if it is found in the list; otherwise, -1.</returns>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> 内で検索するオブジェクト。</param>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクション内での指定した項目のインデックスを調べます。</summary>
+        <returns>リストに存在する場合は <paramref name="value" /> のインデックス。それ以外の場合は \-1。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called to validate `value` before the index is returned.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection.OnValidate%2A>検証するメソッドが呼び出された`value`インデックスが返される前にします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Collections#IList#Item(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.Insert">
@@ -711,20 +782,31 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index at which <c>value</c> should be inserted.</param>
-        <param name="value">The object to insert into the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>Inserts an item into the <see cref="T:System.Web.UI.StateManagedCollection" /> collection at the specified index.</summary>
+        <param name="index">
+          <c>value</c> を挿入する位置の、0 から始まるインデックス。</param>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> に挿入するオブジェクト。</param>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクション内の指定したインデックスの位置に項目を挿入します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `index` is -1, `value` is appended to the beginning of the <xref:System.Web.UI.StateManagedCollection> collection. If `index` equals the number of items in the collection, `value` is appended to the end of the collection.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ is \-1, **parameterReference tag is not supported!!!!**  
+ is appended to the beginning of the <xref:System.Web.UI.StateManagedCollection> collection. If **parameterReference tag is not supported!!!!**  
+ equals the number of items in the collection, **parameterReference tag is not supported!!!!**  
+ is appended to the end of the collection.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The specified <paramref name="index" /> is out of range of the collection.</exception>
-        <exception cref="T:System.NotSupportedException">The <see cref="T:System.Web.UI.StateManagedCollection" /> is read-only.</exception>
-        <exception cref="T:System.ArgumentNullException">The specified <paramref name="value" /> is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">指定した <paramref name="index" /> はコレクションの範囲外です。</exception>
+        <exception cref="T:System.NotSupportedException">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> は読み取り専用です。</exception>
+        <exception cref="T:System.ArgumentNullException">指定された <paramref name="value" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Add(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnInsert(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnInsertComplete(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.IsFixedSize">
@@ -740,10 +822,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the <see cref="T:System.Web.UI.StateManagedCollection" /> collection has a fixed size. This method returns <see langword="false" /> in all cases.</summary>
-        <value>
-          <see langword="false" /> in all cases.</value>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションが固定サイズかどうかを示す値を取得します。 このメソッドは、常に <see langword="false" /> を返します。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Collections#IList#IsReadOnly" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.IsReadOnly">
@@ -759,10 +842,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the <see cref="T:System.Web.UI.StateManagedCollection" /> collection is read-only.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションが読み取り専用かどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the <see cref="T:System.Web.UI.StateManagedCollection" /> is read-only; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> が読み取り専用である場合は <see cref="T:System.Web.UI.StateManagedCollection" />。それ以外の場合は <see langword="false" />。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Collections#IList#IsFixedSize" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.Item">
@@ -781,11 +866,12 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index of the element to get.</param>
-        <summary>Gets the <see cref="T:System.Web.UI.IStateManager" /> element at the specified index.</summary>
-        <value>The element at the specified index.</value>
+        <param name="index">取得する要素の 0 から始まるインデックス。</param>
+        <summary>指定したインデックス位置にある <see cref="T:System.Web.UI.IStateManager" /> 要素を取得します。</summary>
+        <value>指定したインデックス位置にある要素。</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The specified <paramref name="index" /> is out of range of the collection.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">指定した <paramref name="index" /> はコレクションの範囲外です。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#IndexOf(System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.Remove">
@@ -804,17 +890,22 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The object to remove from the <see cref="T:System.Web.UI.StateManagedCollection" />.</param>
-        <summary>Removes the first occurrence of the specified object from the <see cref="T:System.Web.UI.StateManagedCollection" /> collection.</summary>
+        <param name="value">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> から削除するオブジェクト。</param>
+        <summary>指定したオブジェクトのうち、<see cref="T:System.Web.UI.StateManagedCollection" /> コレクションで最初に出現したオブジェクトを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called to validate `value` before the value is removed from the collection. The <xref:System.Web.UI.StateManagedCollection.OnRemove%2A> method is called before the object is removed, and the <xref:System.Web.UI.StateManagedCollection.OnRemoveComplete%2A> method is called after the object is removed.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection.OnValidate%2A>を検証するメソッドが呼び出された`value`値がコレクションから削除する前にします。<xref:System.Web.UI.StateManagedCollection.OnRemove%2A>メソッドは、オブジェクトが削除される前に、<xref:System.Web.UI.StateManagedCollection.OnRemoveComplete%2A>オブジェクトが削除された後にメソッドが呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The <see cref="T:System.Web.UI.StateManagedCollection" /> is read-only.</exception>
+        <exception cref="T:System.NotSupportedException">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> は読み取り専用です。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#RemoveAt(System.Int32)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnRemove(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnRemoveComplete(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IList.RemoveAt">
@@ -833,17 +924,21 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">The zero-based index of the item to remove.</param>
-        <summary>Removes the <see cref="T:System.Web.UI.IStateManager" /> element at the specified index.</summary>
+        <param name="index">削除する項目の 0 から始まるインデックス。</param>
+        <summary>指定したインデックス位置にある <see cref="T:System.Web.UI.IStateManager" /> 要素を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.StateManagedCollection.OnValidate%2A> method is called to validate `value` before the value is removed from the collection. The <xref:System.Web.UI.StateManagedCollection.OnRemove%2A> method is called before the object is removed, and the <xref:System.Web.UI.StateManagedCollection.OnRemoveComplete%2A> method is called after the object is removed.  
+## 解説  
+ <xref:System.Web.UI.StateManagedCollection.OnValidate%2A>を検証するメソッドが呼び出された`value`値がコレクションから削除する前にします。<xref:System.Web.UI.StateManagedCollection.OnRemove%2A>メソッドは、オブジェクトが削除される前に、<xref:System.Web.UI.StateManagedCollection.OnRemoveComplete%2A>オブジェクトが削除された後にメソッドが呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The <see cref="T:System.Web.UI.StateManagedCollection" /> is read-only.</exception>
+        <exception cref="T:System.NotSupportedException">
+          <see cref="T:System.Web.UI.StateManagedCollection" /> は読み取り専用です。</exception>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Collections#IList#Remove(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnRemove(System.Int32,System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.OnRemoveComplete(System.Int32,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="System.Web.UI.IStateManager.IsTrackingViewState">
@@ -859,10 +954,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the <see cref="T:System.Web.UI.StateManagedCollection" /> collection is saving changes to its view state.</summary>
-        <value>
-          <see langword="true" /> if the collection is marked to save its own state and the state of all the <see cref="T:System.Web.UI.IStateManager" /> items it contains; otherwise, <see langword="false" />.</value>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションがビューステートへの変更を保存しているかどうかを示す値を取得します。</summary>
+        <value>コレクションが、その自身の状態と、そのコレクションに格納されているすべての <see cref="T:System.Web.UI.IStateManager" /> 項目の状態を保存するようにマークされている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#SaveViewState" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#TrackViewState" />
       </Docs>
     </Member>
     <Member MemberName="System.Web.UI.IStateManager.LoadViewState">
@@ -881,20 +979,24 @@
         <Parameter Name="savedState" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="savedState">An object that represents the collection and collection elements' state to restore.</param>
-        <summary>Restores the previously saved view state of the <see cref="T:System.Web.UI.StateManagedCollection" /> collection and the <see cref="T:System.Web.UI.IStateManager" /> items it contains.</summary>
+        <param name="savedState">復元するコレクションとコレクション要素の状態を表すオブジェクト。</param>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションと、そのコレクションに格納されている <see cref="T:System.Web.UI.IStateManager" /> 項目の以前に保存されたビューステートを復元します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method restores view-state information that was saved by the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method.  
+## 解説  
+ This method restores view\-state information that was saved by the <xref:System.Web.UI.StateManagedCollection.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method.  
   
- View state is the accumulation of the values of a server control's properties. These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class. This property's value is then persisted to a string object after the save state stage of the server control life cycle. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/en-us/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).  
+ View state is the accumulation of the values of a server control's properties. These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class. This property's value is then persisted to a string object after the save state stage of the server control life cycle. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/ja-jp/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).  
   
- This method is used primarily by control developers. You can override this method to specify how a custom server control restores its view state. For more information, see [ASP.NET State Management Overview](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce).  
+ This method is used primarily by control developers. You can override this method to specify how a custom server control restores its view state. For more information, see [ASP.NET State Management Overview](http://msdn.microsoft.com/ja-jp/0218d965-5d30-445b-b6a6-8870e70e63ce).  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#IsTrackingViewState" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#SaveViewState" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#TrackViewState" />
       </Docs>
     </Member>
     <Member MemberName="System.Web.UI.IStateManager.SaveViewState">
@@ -911,20 +1013,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Saves the changes to the <see cref="T:System.Web.UI.StateManagedCollection" /> collection and each <see cref="T:System.Web.UI.IStateManager" /> object it contains since the time the page was posted back to the server.</summary>
-        <returns>The object that contains the changes to the view state of the <see cref="T:System.Web.UI.StateManagedCollection" /> and the items it contains. If no view state is associated with the collection and its elements, this method returns <see langword="null" />.</returns>
+        <summary>ページがサーバーにポストバックされた時間以降に発生した、<see cref="T:System.Web.UI.StateManagedCollection" /> コレクションとその各 <see cref="T:System.Web.UI.IStateManager" /> オブジェクトへの変更を保存します。</summary>
+        <returns>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> とそれに含まれる項目のビューステートへの変更を格納しているオブジェクト。 ビューステートがコレクションとその要素に関連付けられていない場合、このメソッドは <see langword="null" /> を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This method is used primarily by control developers.  
   
- View state is the accumulation of the values of a server control's properties. These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class. This property's value is then persisted to a string object after the save state stage of the server control life cycle. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/en-us/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).  
+ View state is the accumulation of the values of a server control's properties. These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class. This property's value is then persisted to a string object after the save state stage of the server control life cycle. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/ja-jp/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).  
   
- When view state is saved, this string object is returned to the client as a variable that is stored in an HTML hidden element (`<input type="hidden">`). When you author custom server controls, you can improve efficiency by overriding this method and modifying your server control's <xref:System.Web.UI.Control.ViewState%2A> property. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/en-us/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1) and[ASP.NET State Management Overview](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce).  
+ When view state is saved, this string object is returned to the client as a variable that is stored in an HTML hidden element \(**languageKeyword tag is not supported!!!!**  
+\). When you author custom server controls, you can improve efficiency by overriding this method and modifying your server control's <xref:System.Web.UI.Control.ViewState%2A> property. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/ja-jp/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1) and[ASP.NET State Management Overview](http://msdn.microsoft.com/ja-jp/0218d965-5d30-445b-b6a6-8870e70e63ce).  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#IsTrackingViewState" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#TrackViewState" />
       </Docs>
     </Member>
     <Member MemberName="System.Web.UI.IStateManager.TrackViewState">
@@ -941,15 +1048,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Causes the <see cref="T:System.Web.UI.StateManagedCollection" /> collection and each of the <see cref="T:System.Web.UI.IStateManager" /> objects it contains to track changes to their view state so they can be persisted across requests for the same page.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.StateManagedCollection" /> コレクションとその各 <see cref="T:System.Web.UI.IStateManager" /> オブジェクトに自身のビューステートへの変更を追跡させ、同じページに対する要求間でこれらが永続化されるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- View state is the accumulation of the values of a server control's properties. These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class. This property's value is then persisted to a string object after the save state stage of the server control life cycle. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/en-us/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).  
+## 解説  
+ View state is the accumulation of the values of a server control's properties. These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class. This property's value is then persisted to a string object after the save state stage of the server control life cycle. For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/ja-jp/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#IsTrackingViewState" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
+        <altmember cref="M:System.Web.UI.StateManagedCollection.System#Web#UI#IStateManager#SaveViewState" />
       </Docs>
     </Member>
   </Members>

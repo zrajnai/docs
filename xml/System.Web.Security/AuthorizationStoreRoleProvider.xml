@@ -11,47 +11,47 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Manages storage of role-membership information for an ASP.NET application in an authorization-manager policy store, either in an XML file, in an Active Directory, or on an Active Directory Application Mode server.</summary>
+    <summary>Active Directory では、または Active Directory Application Mode サーバー上の XML ファイルのいずれか、承認マネージャー ポリシー ストアに、ASP.NET アプリケーションのロール メンバーシップ情報の記憶域を管理します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This class is used by the <xref:System.Web.Security.Roles> and <xref:System.Web.Security.RolePrincipal> classes to provide role-management services for an ASP.NET application using an authorization-manager store. You can use role management to specify different levels of authorization for your application. The authorization manager can be accessed using the Microsoft Management Console.  
+## 解説  
+ このクラスは使用、 <xref:System.Web.Security.Roles> と <xref:System.Web.Security.RolePrincipal> 承認マネージャー ストアを使用して、ASP.NET アプリケーションのロール管理サービスを提供するクラス。 ロール管理を使用すると、アプリケーションの複数の承認レベルを指定します。 承認マネージャーは、Microsoft 管理コンソールを使用してアクセスできます。  
   
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider> object works with both Windows authentication and forms authentication modes.  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider> オブジェクトは、Windows 認証を操作し、認証モードを形成します。  
   
- You can configure the <xref:System.Web.Security.AuthorizationStoreRoleProvider> object to use either a local XML file or an Active Directory or Active Directory Application Mode (ADAM) server. When using a local file, the connection string should look like the following example.  
+ 構成することができます、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> XML ファイルをローカルまたは Active Directory または Active Directory Application Mode \(ADAM\) のサーバーのいずれかを使用するオブジェクト。 ローカル ファイルを使用する場合、接続文字列は次の例のようになります。  
   
 ```  
 msxml://<path to xml file>  
 ```  
   
- If the local file is stored in the directory tree of an ASP.NET Web application, you can use the tilde ("~") character to indicate the root directory. For example, to indicate that the local file is stored in the Web application's data directory, you would use a connection string similar to the following example.  
+ チルダを使用する場合は、ローカル保存されている ASP.NET Web アプリケーションのディレクトリ ツリー内の \("~"\) のルート ディレクトリを示すことができます。 たとえば、Web アプリケーションのデータ ディレクトリにローカル ファイルが格納されていることを指定するには、次の例に似た接続文字列を使用します。  
   
  `msxml://~\App_Data\datafilename.xml`  
   
 > [!IMPORTANT]
->  Storing an XML data file in the Web application directory is a potential security threat. By default, IIS will serve XML data files to the Web. To improve security when using a local data file in an ASP.NET application, you should store the data file in the `App_Data` directory. Files stored in the `App_Data` directory will not be served to the Web.  
+>  Web アプリケーションのディレクトリに XML データ ファイルを保存すると、潜在的なセキュリティの脅威です。 既定では、IIS は、web、XML データ ファイルを提供します。 ASP.NET アプリケーションでローカル データ ファイルを使用する場合にセキュリティを強化するには、データ ファイルを保存する必要があります、 `App_Data` ディレクトリ。 格納されたファイル、 `App_Data` ディレクトリは、Web には提供されません。  
   
- If you are using an Active Directory or ADAM server for the policy store, your connection string should be similar to the following example.  
+ ポリシー ストアを Active Directory または ADAM サーバーを使用している場合、接続文字列は次の例のようにする必要があります。  
   
  `msldap://myserver/CN=MyAzManStore,OU=MyOU,DC=MyDomain,DC=MyDC,DC=Com`  
   
- The exceptions listed in the documentation for <xref:System.Web.Security.AuthorizationStoreRoleProvider> object methods are the exceptions that are raised by the <xref:System.Web.Security.AuthorizationStoreRoleProvider> object. Since the provider relies on the underlying Authentication Manager runtime, a <xref:System.Runtime.InteropServices.COMException> exception may be thrown whenever the <xref:System.Web.Security.AuthorizationStoreRoleProvider> object forwards a method call to the Authentication Manager runtime.  
+ ドキュメントに示されている例外 <xref:System.Web.Security.AuthorizationStoreRoleProvider> オブジェクトのメソッドが例外によって発生する、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> オブジェクトです。 プロバイダーは、基になる Authentication Manager ランタイムに依存しているため、 <xref:System.Runtime.InteropServices.COMException> 例外があるときにスローされる、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> オブジェクトは、認証マネージャーの実行時にメソッド呼び出しを転送します。  
   
 > [!IMPORTANT]
->  The <xref:System.Web.Security.AuthorizationStoreRoleProvider> object has the following requirements for running in partial-trust environments:  
+>  <xref:System.Web.Security.AuthorizationStoreRoleProvider> オブジェクトが部分的に信頼された環境で実行中の次の要件。  
 >   
->  When using a file-based policy store in an ASP.NET application, the file I/O permissions granted by the current trust level determine whether read and write actions are allowed by the provider. The ASP.NET application must have read permission on the file to read data from the policy store, and must have write permission to save new information or update existing information in the policy store. The default Medium-trust policy file gives an ASP.NET application read/write permissions in its application directory. The default Low-trust policy file only gives an ASP.NET application read permission in its application directory. In addition, the process identity under which the ASP.NET application runs must have file-system permissions to read and/or write the policy file.  
+>  ASP.NET アプリケーション、現在の信頼レベルで付与されるファイル I\/O アクセス許可でファイル ベースのポリシー ストアを使用して決定し、読み取らかどうか、プロバイダーによって書き込みが許可されます。 ASP.NET アプリケーションでは、読み取り、ファイルにポリシー ストアからデータを読み取る権限が必要し、新しい情報を保存するか、ポリシー ストアの既存の情報を更新する書き込み権限を持っている必要があります。 既定の中程度の信頼ポリシー ファイルには、そのアプリケーションのディレクトリに、ASP.NET アプリケーションの読み取り\/書き込みアクセス許可が与えられます。 低信頼ポリシーの既定のファイルは、読み取り、アプリケーション ディレクトリにアクセス許可を ASP.NET アプリケーションのみを与えます。 さらに、ASP.NET アプリケーションを実行するプロセス id には、読み取り\/書き込みポリシー ファイルにファイル システムのアクセス許可が必要です。  
 >   
->  When using an Active Directory or ADAM server, the ASP.NET application needs unmanaged-code permission because the internal <xref:System.Web.Security.AuthorizationStoreRoleProvider> object code uses COM interop.  
+>  ASP.NET アプリケーションにアンマネージ コードのアクセス許可が必要があるため、Active Directory または ADAM サーバーを使用する場合、内部 <xref:System.Web.Security.AuthorizationStoreRoleProvider> オブジェクト コードは、COM 相互運用機能を使用します。  
 >   
->  When using the <xref:System.Web.Security.AuthorizationStoreRoleProvider> object outside of ASP.NET, the calling code needs unmanaged-code permission.  
+>  使用する場合、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> ASP.NET の外部でオブジェクトの呼び出し元のコードには、アンマネージ コードのアクセス許可が必要があります。  
   
    
   
-## Examples  
- The following code example shows a Web.config file set to use the <xref:System.Web.Security.AuthorizationStoreRoleProvider> for role management.  
+## 例  
+ 次のコード例は、Web.config ファイルを使用する設定を示しています、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> ロール管理します。  
   
 ```  
 <configuration>  
@@ -104,12 +104,13 @@ msxml://<path to xml file>
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.%23ctor%2A> constructor is called by ASP.NET to create an instance of the <xref:System.Web.Security.AuthorizationStoreRoleProvider> class as specified in the configuration for the application. This constructor is not intended to be used from your code.  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.%23ctor%2A> コンス トラクターを呼び出す ASP.NET のインスタンスを作成する、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> クラスのアプリケーションの構成で指定します。 このコンス トラクターは、コードから使用することはありません。  
   
  ]]></format>
         </remarks>
@@ -132,62 +133,64 @@ msxml://<path to xml file>
         <Parameter Name="roleNames" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="usernames">A string array of user names to be added to the specified roles.</param>
-        <param name="roleNames">A string array of role names to add the specified user names to.</param>
-        <summary>Adds the specified user names to each of the specified roles.</summary>
+        <param name="usernames">指定したロールに追加するユーザー名の文字列配列。</param>
+        <param name="roleNames">指定されたユーザー名の割り当て先となるロール名の文字列配列。</param>
+        <summary>指定されたユーザー名を指定したロールのそれぞれに追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.AddUsersToRoles%2A> method is called by the <xref:System.Web.Security.Roles> class to associate one or more users with one or more roles in the authorization-manager data store specified in the ASP.NET application's configuration file (Web.config). This method is called by the <xref:System.Web.Security.Roles.AddUserToRole%2A?displayProperty=fullName>, <xref:System.Web.Security.Roles.AddUserToRoles%2A?displayProperty=fullName>, <xref:System.Web.Security.Roles.AddUsersToRole%2A?displayProperty=fullName>, and <xref:System.Web.Security.Roles.AddUsersToRoles%2A?displayProperty=fullName> methods of the <xref:System.Web.Security.Roles> class.  
+## 解説  
+ [AddUsersToRoles メソッド \(String\<xref:System.Web.Security.AuthorizationStoreRoleProvider.AddUsersToRoles%2A> メソッドは、 [AddUsersToRoles メソッド \(String\<xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された承認マネージャーのデータ ストア内の 1 つまたは複数の役割を持つ 1 つまたは複数のユーザーを関連付けるにはクラスです。 このメソッドは、 [AddUsersToRoles メソッド \(String\<xref:System.Web.Security.Roles.AddUserToRole%2A?displayProperty=fullName>, 、[AddUsersToRoles メソッド \(String\<xref:System.Web.Security.Roles.AddUserToRoles%2A?displayProperty=fullName>, 、[AddUsersToRoles メソッド \(String\<xref:System.Web.Security.Roles.AddUsersToRole%2A?displayProperty=fullName>, 、および [AddUsersToRoles メソッド \(String\<xref:System.Web.Security.Roles.AddUsersToRoles%2A?displayProperty=fullName> のメソッド、 [AddUsersToRoles メソッド \(String\<xref:System.Web.Security.Roles> クラスです。  
   
    
   
-## Examples  
- The following code example adds one or more users to a role or removes a user from a role. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、1 つまたは複数のユーザーをロールに追加またはロールからユーザーを削除します。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 [AddUsersToRoles メソッド \(String\<xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/adduserstorolecs.aspx#3)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/adduserstorolevb.aspx#3)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/adduserstorolecs.aspx#3)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/adduserstorolevb.aspx#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">One of the specified user names is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">指定されたユーザー名の 1 つは <see langword="null" />です。  
   
- -or-  
+ または  
   
- One of the specified role names is <see langword="null" />.  
+ 指定されたロール名の 1 つは <see langword="null" />です。  
   
- -or-  
+ または  
   
- <paramref name="usernames" /> is <see langword="null" />.  
+ <paramref name="usernames" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="roleNames" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">One of the specified user names is an empty string or contains a comma (,).  
+ <paramref name="roleNames" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">指定されたユーザー名のいずれかにより、空の文字列またはコンマ \(,\) が含まれています。  
   
- -or-  
+ または  
   
- One of the specified role names is an empty string or contains a comma (,).  
+ 指定したロール名のいずれかにより、空の文字列か、コンマ \(,\) を含んでいます。  
   
- -or-  
+ または  
   
- <paramref name="usernames" /> contains a duplicate element.  
+ <paramref name="usernames" /> 重複する要素が含まれています。  
   
- -or-  
+ または  
   
- <paramref name="roleNames" /> contains a duplicate element.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+ <paramref name="roleNames" /> 重複する要素が含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ApplicationName">
@@ -203,26 +206,26 @@ msxml://<path to xml file>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the authorization store application for which to store and retrieve role information.</summary>
-        <value>The name of the authorization store application for which to store and retrieve role information. The default is the <see cref="P:System.Web.HttpRequest.ApplicationPath" /> property value for the current <see cref="P:System.Web.HttpContext.Request" />.</value>
+        <summary>取得または格納およびロール情報を取得する対象の承認ストアのアプリケーションの名前を設定します。</summary>
+        <value>ストアを格納およびロール情報を取得する対象のアプリケーションの認証の名前。 既定値は、 <see cref="P:System.Web.HttpRequest.ApplicationPath" /> プロパティの値を現在の <see cref="P:System.Web.HttpContext.Request" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> is used by the <xref:System.Web.Security.AuthorizationStoreRoleProvider> to associate users and roles with different authorization-manager applications, which enables multiple ASP.NET applications to use the same authorization-manager policy store to store role information without running into conflicts between duplicate role names. Alternatively, multiple ASP.NET applications can use the same policy store by specifying the same value in the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property. The <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property can be set programmatically, or it can be set declaratively in the application's Web.config file by using the `applicationName` attribute.  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> によって使用される、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> 異なる承認マネージャー アプリケーションは、これにより、同じ承認マネージャー ポリシーを使用して複数の ASP.NET アプリケーションにユーザーとロールを関連付けるストアに実行することがなくロール情報の競合する重複するロール名との間です。 複数の ASP.NET アプリケーションが同じポリシー ストアを使用して、内の同じ値を指定することで別の方法として、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティです。<xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティをプログラムで設定できるまたはことで設定できます宣言によって、アプリケーションの Web.config ファイルを使用して、 `applicationName` 属性です。  
   
- If a value is not specified for the `applicationName` attribute in the Web.config file, then the <xref:System.Web.HttpRequest.ApplicationPath%2A?displayProperty=fullName> property value for the current <xref:System.Web.HttpContext.Request%2A?displayProperty=fullName> object is used.  
+ 値が指定されていない場合、 `applicationName` Web.config ファイル内の属性、 <xref:System.Web.HttpRequest.ApplicationPath%2A?displayProperty=fullName> プロパティの値を現在の <xref:System.Web.HttpContext.Request%2A?displayProperty=fullName> オブジェクトを使用します。  
   
 > [!NOTE]
->  Authorization-manager application names cannot contain the "/" character that is included in the <xref:System.Web.HttpRequest.ApplicationPath%2A?displayProperty=fullName> property. As a result, the default value for the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property cannot be used as an authorization-manager application name, and in the application's Web.config file, you must always specify an `applicationName` attribute in the `provider` element to configure your <xref:System.Web.Security.AuthorizationStoreRoleProvider> instance.  
+>  承認マネージャー アプリケーションの名前に含まれている「\/」文字を含めることはできません、 <xref:System.Web.HttpRequest.ApplicationPath%2A?displayProperty=fullName> プロパティです。 その場合、既定値、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティは、承認マネージャー アプリケーション名として使用できませんし、アプリケーションの Web.config ファイルで指定してください、 `applicationName` 属性、 `provider` 構成するのには、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> インスタンス。  
   
 > [!CAUTION]
->  Because a single default role provider instance is used for all of the requests served by an <xref:System.Web.HttpApplication> object, you can have multiple requests executing concurrently and attempting to set the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property value. The <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property is not thread safe for multiple writes, and changing the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property value can result in unexpected behavior when there are multiple users of an application. We recommend that you avoid writing code that allows users to set the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property unless you must. An example of an application where setting the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property may be required is an administrative application that manages role data for multiple applications. Such an application should be a single-user application and not a Web application.  
+>  すべてで処理された要求の 1 つの既定のロール プロバイダーのインスタンスが使用されるため、 <xref:System.Web.HttpApplication> オブジェクト、複数の要求が同時に実行し、設定しようとした、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティの値。<xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティは複数の書き込みに対して安全、かつ変化のスレッドではありません、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティの値は、アプリケーションの複数のユーザーがある場合に予期しない動作結果ことができます。 設定できるコードを記述しないことをお勧めします <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティ必要な場合です。 アプリケーションの例の設定場所、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティが必要な可能性がありますが複数のアプリケーション ロールのデータを管理する管理アプリケーションです。 このようなアプリケーションは、シングル ユーザー アプリケーションと Web アプリケーションではなくにする必要があります。  
   
    
   
-## Examples  
- The following example shows the  element in the `system.web` section of the Web.config file for an ASP.NET application. It specifies the application's <xref:System.Web.Security.AuthorizationStoreRoleProvider> instance and sets the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> property to `MyApplication`.  
+## 例  
+ 次の例では、内の要素、 `system.web` 、ASP.NET アプリケーションの Web.config ファイルのセクションです。 アプリケーションの指定 <xref:System.Web.Security.AuthorizationStoreRoleProvider> インスタンスとセット、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName%2A> プロパティを `MyApplication`します。  
   
 ```  
 <roleManager defaultProvider="AuthorizationStoreProvider"   
@@ -247,7 +250,7 @@ msxml://<path to xml file>
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Configuration.Provider.ProviderException">An attempt was made to set the <see cref="P:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName" /> to a string that is longer than 256 characters.</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">設定しようとしましたが、 <see cref="P:System.Web.Security.AuthorizationStoreRoleProvider.ApplicationName" /> が 256 文字より長い文字列にします。</exception>
       </Docs>
     </Member>
     <Member MemberName="CacheRefreshInterval">
@@ -263,8 +266,8 @@ msxml://<path to xml file>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of minutes between refreshes of the cache of the policy-store data.</summary>
-        <value>The number of minutes between refreshes of cached policy-store data. The default is 60.</value>
+        <summary>ポリシー ストアのデータのキャッシュの更新間隔を分単位の数を取得します。</summary>
+        <value>ポリシー ストアのキャッシュされたデータの更新間隔を分単位の数。 既定値は 60 です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -284,45 +287,47 @@ msxml://<path to xml file>
         <Parameter Name="roleName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="roleName">The name of the role to create.</param>
-        <summary>Adds a new role to the role authorization-manager policy store.</summary>
+        <param name="roleName">作成するロールの名前。</param>
+        <summary>ロールの承認マネージャー ポリシー ストアに新しいロールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.CreateRole%2A> method is called by the <xref:System.Web.Security.Roles> class to create a role in the authorization-manager data store specified in the ASP.NET application's configuration file (Web.config).  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.CreateRole%2A> メソッドは、 <xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された承認マネージャーのデータ ストア内のロールを作成するクラス。  
   
- Role names are not case sensitive.  
+ ロール名では大文字小文字を区別します。  
   
    
   
-## Examples  
- The following code example creates a new role in the authorization-manager policy store. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、承認マネージャー ポリシー ストアの新しいロールを作成します。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/createrolecs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/createrolevb.aspx#1)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/createrolecs.aspx#1)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/createrolevb.aspx#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="roleName" /> is <see langword="null" />.</exception>
+          <paramref name="roleName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="roleName" /> is an empty string.  
+          <paramref name="roleName" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="roleName" /> contains a comma.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+ <paramref name="roleName" /> コンマが含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="DeleteRole">
@@ -342,53 +347,55 @@ msxml://<path to xml file>
         <Parameter Name="throwOnPopulatedRole" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="roleName">The name of the role to delete.</param>
-        <param name="throwOnPopulatedRole">If <see langword="true" />, throws an exception if <c>roleName</c> has one or more members.</param>
-        <summary>Removes a role from the authorization-manager policy store.</summary>
+        <param name="roleName">削除するロールの名前。</param>
+        <param name="throwOnPopulatedRole">場合 <see langword="true" />, 、例外がスロー <c>roleName</c> は 1 つまたは複数のメンバーがあります。</param>
+        <summary>承認マネージャー ポリシー ストアからロールを削除します。</summary>
         <returns>
-          <see langword="true" /> if the role was deleted; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> ロールが削除された場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.DeleteRole%2A> method is called by the <xref:System.Web.Security.Roles> class to delete a role from the authorization-manager policy store specified in the ASP.NET application's configuration file (Web.config). When a role is deleted, the list of users associated with that role is also deleted from the policy store. The user information in the database is not affected.  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.DeleteRole%2A> メソッドは、 <xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された承認マネージャー ポリシー ストアからロールを削除するクラス。 ロールを削除すると、そのロールに関連付けられているユーザーの一覧は、ポリシー ストアからも削除されます。 データベース内のユーザー情報には影響しません。  
   
- If `throwOnPopulatedRole` is `true`, then an exception will be thrown and the role will not be deleted if the role identified by the `roleName` parameter has one or more members. If `throwOnPopulatedRole` is `false`, then the role will be deleted whether it is empty or not.  
+ 場合 `throwOnPopulatedRole` は `true`, 、例外のスローし、およびロールがで識別される場合、ロールは削除されません、 `roleName` パラメーターが 1 つまたは複数のメンバーです。 場合 `throwOnPopulatedRole` は `false`, が空かどうかどうか、ロールが削除されます。  
   
    
   
-## Examples  
- The following example deletes a role from the authorization-manager policy store. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次の例では、承認マネージャー ポリシー ストアからロールを削除します。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/deleterolecs.aspx#2)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/deleterolevb.aspx#2)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/deleterolecs.aspx#2)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/deleterolevb.aspx#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="roleName" /> is <see langword="null" />.</exception>
+          <paramref name="roleName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="roleName" /> is an empty string.  
+          <paramref name="roleName" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="roleName" /> contains a comma.</exception>
+ <paramref name="roleName" /> コンマが含まれています。</exception>
         <exception cref="T:System.Configuration.Provider.ProviderException">
-          <paramref name="roleName" /> has one or more members and <paramref name="throwOnPopulatedRole" /> is <see langword="true" />.  
+          <paramref name="roleName" /> 1 つまたは複数のメンバーが存在し、 <paramref name="throwOnPopulatedRole" /> は <see langword="true" />です。  
   
- -or-  
+ または  
   
- The configured <see langword="applicationName" /> was not found.  
+ 構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="FindUsersInRole">
@@ -408,12 +415,12 @@ msxml://<path to xml file>
         <Parameter Name="usernameToMatch" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="roleName">The role to search in.</param>
-        <param name="usernameToMatch">The user name to search for.</param>
-        <summary>This method is not supported by the authorization store role provider.</summary>
-        <returns>A string array containing the names of all the users whose user name matches <paramref name="usernameToMatch" /> and who are members of the specified role.</returns>
+        <param name="roleName">検索範囲とするロール。</param>
+        <param name="usernameToMatch">検索するユーザー名。</param>
+        <summary>このメソッドは、承認ストアのロール プロバイダーでサポートされていません。</summary>
+        <returns>ユーザー名と一致するすべてのユーザーの名前を含んでいる文字列配列 <paramref name="usernameToMatch" /> 指定したロールのメンバーとなっているとします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotImplementedException">An unsupported method was called.</exception>
+        <exception cref="T:System.NotImplementedException">サポートされていないメソッドが呼び出されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetAllRoles">
@@ -430,35 +437,37 @@ msxml://<path to xml file>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets a list of all the roles for the application.</summary>
-        <returns>A string array containing the names of all the roles stored in the authorization-manager policy store for a particular application.</returns>
+        <summary>アプリケーションのすべてのロールのリストを取得します。</summary>
+        <returns>特定のアプリケーションの承認マネージャー ポリシー ストアに保存されているすべてのロールの名前を含んでいる文字列配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetAllRoles%2A> method is called by the <xref:System.Web.Security.Roles> class to retrieve a list of all the roles in the authorization-manager policy store specified in the ASP.NET application's configuration file (Web.config).  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetAllRoles%2A> メソッドは、 <xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された、承認マネージャー ポリシー ストアのすべてのロールの一覧を取得するクラス。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Web.Security.Roles.GetAllRoles%2A> method to get the list of roles for an application and bind the results to a <xref:System.Web.UI.WebControls.GridView?displayProperty=fullName> control. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、 <xref:System.Web.Security.Roles.GetAllRoles%2A> アプリケーションのロールの一覧を取得し、結果にバインドするメソッド、 <xref:System.Web.UI.WebControls.GridView?displayProperty=fullName> コントロールです。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/createrolecs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/createrolevb.aspx#1)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/createrolecs.aspx#1)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/createrolevb.aspx#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetRolesForUser">
@@ -477,40 +486,42 @@ msxml://<path to xml file>
         <Parameter Name="username" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">The user to return a list of roles for.</param>
-        <summary>Gets a list of the roles that a user is in.</summary>
-        <returns>A string array containing the names of all the roles that the specified user is in.</returns>
+        <param name="username">ロールの一覧を取得するユーザー。</param>
+        <summary>ユーザーに割り当てられたロールのリストを取得します。</summary>
+        <returns>指定ユーザーに割り当てられたすべてのロールの名前を格納している文字列配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetRolesForUser%2A> method is called by the <xref:System.Web.Security.Roles> class to retrieve a list of a specified user's roles from the authorization-manager policy store specified in the ASP.NET application's configuration file (Web.config).  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetRolesForUser%2A> メソッドは、 <xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された承認マネージャー ポリシー ストアから指定したユーザーのロールの一覧を取得するクラス。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Web.Security.Roles.GetRolesForUser%2A> method to retrieve a list of roles for a specified user and binds them to a <xref:System.Web.UI.WebControls.GridView?displayProperty=fullName> control. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、 <xref:System.Web.Security.Roles.GetRolesForUser%2A> を指定したユーザー ロールの一覧を取得するメソッドにバインドしてに、 <xref:System.Web.UI.WebControls.GridView?displayProperty=fullName> コントロールです。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/ViewRolescs.aspx#4)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/ViewRolesvb.aspx#4)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/ViewRolescs.aspx#4)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/ViewRolesvb.aspx#4)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="username" /> is <see langword="null" />.</exception>
+          <paramref name="username" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="username" /> contains a comma.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+          <paramref name="username" /> コンマが含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetUsersInRole">
@@ -529,46 +540,48 @@ msxml://<path to xml file>
         <Parameter Name="roleName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="roleName">The name of the role to get the list of users for.</param>
-        <summary>Gets a list of users in the specified role.</summary>
-        <returns>A string array containing the names of all the users who are members of the specified role.</returns>
+        <param name="roleName">ユーザーの一覧を取得するロールの名前。</param>
+        <summary>指定されたロールに属するユーザーのリストを取得します。</summary>
+        <returns>指定されたロールのメンバーであるすべてのユーザーの名前を格納している文字列配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetUsersInRole%2A> method is called by the <xref:System.Web.Security.Roles> class to retrieve the list of users associated with the specified role in the authorization-manager policy store specified in the ASP.NET application's configuration file (Web.config).  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetUsersInRole%2A> メソッドは、 <xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された、承認マネージャー ポリシー ストアの指定されたロールに関連付けられているユーザーの一覧を取得するクラス。  
   
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetUsersInRole%2A> method only returns user names that are directly contained in the authorization-manager role specified by the `roleName` parameter. The underlying authorization-manager API called by the <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetUsersInRole%2A> method does not support group expansion, so users contained in nested NT groups, nested authorization-manager groups, and LDAP query groups will not be returned.  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetUsersInRole%2A> メソッドによって指定される承認マネージャー ロールに直接含まれているユーザー名だけを返します、 `roleName` パラメーター。 基になる承認\-マネージャー API によって呼び出される、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.GetUsersInRole%2A> メソッドがグループの展開をサポートしていないため、入れ子になった NT グループ、承認マネージャーの入れ子になったグループ、および LDAP クエリ グループに含まれるユーザーは返されません。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Web.Security.Roles.GetUsersInRole%2A> method to get a list of the users in a particular role and bind the results to a <xref:System.Web.UI.WebControls.GridView?displayProperty=fullName> control. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、 <xref:System.Web.Security.Roles.GetUsersInRole%2A> メソッドは、特定のロール内のユーザーの一覧を取得する結果バインドを <xref:System.Web.UI.WebControls.GridView?displayProperty=fullName> コントロールです。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/adduserstorolecs.aspx#3)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/adduserstorolevb.aspx#3)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/adduserstorolecs.aspx#3)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/adduserstorolevb.aspx#3)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="roleName" /> is <see langword="null" />.</exception>
+          <paramref name="roleName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="roleName" /> is an empty string.  
+          <paramref name="roleName" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="roleName" /> contains a comma.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+ <paramref name="roleName" /> コンマが含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="Initialize">
@@ -588,29 +601,30 @@ msxml://<path to xml file>
         <Parameter Name="config" Type="System.Collections.Specialized.NameValueCollection" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance to initialize.</param>
-        <param name="config">A <see cref="T:System.Collections.Specialized.NameValueCollection" /> that contains the names and values of configuration options for the role provider.</param>
-        <summary>Initializes the authorization-manager role provider with the property values specified in the ASP.NET application's configuration file. This method is not intended to be used directly from your code.</summary>
+        <param name="name">名前、 <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスを初期化します。</param>
+        <param name="config">A <see cref="T:System.Collections.Specialized.NameValueCollection" /> 名とロール プロバイダーの構成オプションの値を含みます。</param>
+        <summary>ASP.NET アプリケーションの構成ファイルで指定されたプロパティの値では、承認マネージャー ロール プロバイダーを初期化します。 このメソッドは、コードから直接使用するものでありません。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.Initialize%2A> method initializes the <xref:System.Web.Security.AuthorizationStoreRoleProvider> with the property values specified in the ASP.NET application configuration file (Web.config) and is not intended to be used directly from your code.  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.Initialize%2A> メソッドの初期化、 <xref:System.Web.Security.AuthorizationStoreRoleProvider> プロパティを使用して値が ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定し、コードから直接使用するものではありません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="config" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The <see langword="connectionStringName" /> attribute is empty or does not exist in the [connectionStrings Element (ASP.NET Settings Schema)](http://msdn.microsoft.com/en-us/b6ffbb2e-a4d1-410e-8f7e-9755e92c65de) configuration section.  
+          <paramref name="config" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">
+          <see langword="connectionStringName" /> 属性が空かに存在しません、 [connectionStrings 要素 \(ASP.NET 設定スキーマ\)](http://msdn.microsoft.com/ja-jp/b6ffbb2e-a4d1-410e-8f7e-9755e92c65de) 構成セクション。  
   
- -or-  
+ または  
   
- The configured <see langword="applicationName" /> is longer than 256 characters.  
+ 構成された <see langword="applicationName" /> が 256 文字より長い。  
   
- -or-  
+ または  
   
- The configuration for this <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance contains an unrecognized attribute.</exception>
-        <exception cref="T:System.Web.HttpException">The ASP.NET application is not running at <see cref="F:System.Web.AspNetHostingPermissionLevel.Low" /> trust or higher.</exception>
+ 構成は <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスには、認識されない属性が含まれています。</exception>
+        <exception cref="T:System.Web.HttpException">ASP.NET アプリケーションが実行されていない <see cref="F:System.Web.AspNetHostingPermissionLevel.Low" /> 信頼またはそれ以降。</exception>
       </Docs>
     </Member>
     <Member MemberName="IsUserInRole">
@@ -630,54 +644,56 @@ msxml://<path to xml file>
         <Parameter Name="roleName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">The user name to search for.</param>
-        <param name="roleName">The role to search in.</param>
-        <summary>Gets a value indicating whether the specified user is in the specified role.</summary>
+        <param name="username">検索するユーザー名。</param>
+        <param name="roleName">検索範囲とするロール。</param>
+        <summary>指定したユーザーが指定したロールに存在するかどうかを示す値を取得します。</summary>
         <returns>
-          <see langword="true" /> if the specified user name is in the specified role; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 指定されたユーザー名が指定されたロールの場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.IsUserInRole%2A> method is called by the <xref:System.Web.Security.Roles> class and the <xref:System.Security.Principal.IPrincipal.IsInRole%2A> method of the <xref:System.Web.UI.Page.User%2A?displayProperty=fullName> property to determine whether a user is associated with a role in the authorization-manager data store specified in the ASP.NET application's configuration file (Web.config).  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.IsUserInRole%2A> メソッドによって呼び出されます、 <xref:System.Web.Security.Roles> クラスおよび <xref:System.Security.Principal.IPrincipal.IsInRole%2A> のメソッド、 <xref:System.Web.UI.Page.User%2A?displayProperty=fullName> プロパティをユーザーが、ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された承認マネージャーのデータ ストア内のロールに関連付けられているかどうかを判断します。  
   
    
   
-## Examples  
- The following code example programmatically checks to see whether the logged-on user is in the Administrators role before allowing the user to view user roles. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例は、プログラムを使用して、ユーザー ロールを表示するユーザーを許可する前に、ログオン ユーザーが Administrators ロールに属してがかどうかを確認します。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/ViewRolescs.aspx#4)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/ViewRolesvb.aspx#4)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/ViewRolescs.aspx#4)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/ViewRolesvb.aspx#4)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="username" /> is <see langword="null" />.  
+          <paramref name="username" /> は <see langword="null" /> です。  
   
- -or  
+ または  
   
- <paramref name="roleName" /> is <see langword="null" />.</exception>
+ <paramref name="roleName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="roleName" /> is an empty string.  
+          <paramref name="roleName" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="roleName" /> contains a comma.  
+ <paramref name="roleName" /> コンマが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="username" /> contains a comma.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+ <paramref name="username" /> コンマが含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveUsersFromRoles">
@@ -697,62 +713,64 @@ msxml://<path to xml file>
         <Parameter Name="roleNames" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="userNames">A string array of user names to be removed from the specified roles.</param>
-        <param name="roleNames">A string array of role names to remove the specified user names from.</param>
-        <summary>Removes the specified user names from the specified roles.</summary>
+        <param name="userNames">指定したロールから削除するユーザー名の文字列配列。</param>
+        <param name="roleNames">指定したユーザー名を削除するロール名の文字列配列。</param>
+        <summary>指定されたユーザー名を指定されたロールから削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.RemoveUsersFromRoles%2A> method is called by the <xref:System.Web.Security.Roles> class to remove one or more users from one or more roles in the authorization-manager policy store specified in the ASP.NET application's configuration file (Web.config). This method is called by the <xref:System.Web.Security.Roles.RemoveUserFromRole%2A>, <xref:System.Web.Security.Roles.RemoveUserFromRoles%2A>, <xref:System.Web.Security.Roles.RemoveUsersFromRole%2A>, and <xref:System.Web.Security.Roles.RemoveUsersFromRoles%2A> methods of the <xref:System.Web.Security.Roles> class.  
+## 解説  
+ [RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.AuthorizationStoreRoleProvider.RemoveUsersFromRoles%2A> メソッドは、 [RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.Roles> ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された、承認マネージャー ポリシー ストアの 1 つ以上のロールから 1 つまたは複数のユーザーを削除するクラス。 このメソッドは、 [RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.Roles.RemoveUserFromRole%2A>, 、[RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.Roles.RemoveUserFromRoles%2A>, 、[RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.Roles.RemoveUsersFromRole%2A>, 、および [RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.Roles.RemoveUsersFromRoles%2A> のメソッド、 [RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.Roles> クラスです。  
   
    
   
-## Examples  
- The following code example adds one or more users to a role or removes a user from a role. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、1 つまたは複数のユーザーをロールに追加またはロールからユーザーを削除します。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 [RemoveUsersFromRoles メソッド \(String\<xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/adduserstorolecs.aspx#3)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/adduserstorolevb.aspx#3)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/adduserstorolecs.aspx#3)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/adduserstorolevb.aspx#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">One of the specified user names is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">指定されたユーザー名の 1 つは <see langword="null" />です。  
   
- -or-  
+ または  
   
- One of the specified role names is <see langword="null" />.  
+ 指定されたロール名の 1 つは <see langword="null" />です。  
   
- -or-  
+ または  
   
- <paramref name="userNames" /> is <see langword="null" />.  
+ <paramref name="userNames" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="roleNames" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">One of the specified user names is an empty string or contains a comma.  
+ <paramref name="roleNames" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">指定されたユーザー名のいずれかにより、空の文字列またはコンマが含まれています。  
   
- -or-  
+ または  
   
- One of the specified role names is an empty string or contains a comma.  
+ 指定されたロール名のいずれかは、空の文字列でか、コンマが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="userNames" /> contains a duplicate element.  
+ <paramref name="userNames" /> 重複する要素が含まれています。  
   
- -or-  
+ または  
   
- <paramref name="roleNames" /> contains a duplicate element.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+ <paramref name="roleNames" /> 重複する要素が含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="RoleExists">
@@ -771,45 +789,47 @@ msxml://<path to xml file>
         <Parameter Name="roleName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="roleName">The name of the role to search for in the authorization-manager policy store.</param>
-        <summary>Gets a value indicating whether the specified role name already exists in the authorization-manager policy store.</summary>
+        <param name="roleName">承認マネージャー ポリシー ストアで検索するロールの名前。</param>
+        <summary>指定したロール名は、承認マネージャー ポリシー ストアに既に存在するかどうかを示す値を取得します。</summary>
         <returns>
-          <see langword="true" /> if the role name already exists in the authorization-manager policy store; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> ロール名は、承認マネージャー ポリシー ストアに既に存在する場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.RoleExists%2A> method is called by the <xref:System.Web.Security.Roles> class to determine whether a role name exists in the authorization-manager data store specified in the ASP.NET application's configuration file (Web.config).  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.RoleExists%2A> メソッドは、 <xref:System.Web.Security.Roles> ロール名が、ASP.NET アプリケーションの構成ファイル \(Web.config\) で指定された承認マネージャーのデータ ストアに存在するかどうかを判断するクラス。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Web.Security.Roles.RoleExists%2A> method to determine whether a role name already exists before creating the role. For an example of a Web.config file that enables role management, see <xref:System.Web.Security.AuthorizationStoreRoleProvider>.  
+## 例  
+ 次のコード例では、 <xref:System.Web.Security.Roles.RoleExists%2A> ロールを作成する前に、ロール名が既に存在するかどうかを決定する方法です。 ロールの管理を有効にする Web.config ファイルの例は、次を参照してください。 <xref:System.Web.Security.AuthorizationStoreRoleProvider>します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Security.SqlRoleProvider#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/createrolecs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Security.SqlRoleProvider#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/createrolevb.aspx#1)]  -->  
+ [!code-csharp[System.Web.Security.SqlRoleProvider\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/CS/createrolecs.aspx#1)]
+ [!code-vb[System.Web.Security.SqlRoleProvider\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.SqlRoleProvider/VB/createrolevb.aspx#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="roleName" /> is <see langword="null" />.</exception>
+          <paramref name="roleName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="roleName" /> is an empty string.  
+          <paramref name="roleName" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="roleName" /> contains a comma.</exception>
-        <exception cref="T:System.Configuration.Provider.ProviderException">The configured <see langword="applicationName" /> was not found.  
+ <paramref name="roleName" /> コンマが含まれています。</exception>
+        <exception cref="T:System.Configuration.Provider.ProviderException">構成された <see langword="applicationName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The configured <see langword="scopeName" /> was not found.  
+ 構成された <see langword="scopeName" /> が見つかりませんでした。  
   
- -or-  
+ または  
   
- The authorization-manager runtime is not installed on the server.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The <see langword="connectionStringName" /> attribute references a connection string to a file that does not exist.</exception>
-        <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> instance is configured with a file-based policy store, and read access to the file is not allowed at the current trust level.</exception>
+ 承認マネージャーのランタイムがサーバーにインストールされていません。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">
+          <see langword="connectionStringName" /> 属性が存在しないファイルへの接続文字列を参照します。</exception>
+        <exception cref="T:System.Web.HttpException">
+          <see cref="T:System.Web.Security.AuthorizationStoreRoleProvider" /> インスタンスは、ファイル ベースのポリシー ストアで構成され、現在の信頼レベルで、ファイルへの読み取りアクセスが許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ScopeName">
@@ -825,16 +845,16 @@ msxml://<path to xml file>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the scope name for the authorization store.</summary>
-        <value>The scope name for the authorization store.</value>
+        <summary>取得または承認ストアのスコープ名を設定します。</summary>
+        <value>承認ストアのスコープ名。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> property can be set using the `scopeName` configuration attribute for the provider instance in the `providers` section of the  configuration section.  
+## 解説  
+ <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> を使用してプロパティを設定できる、 `scopeName` でプロバイダーのインスタンスの属性の構成、 `providers` 構成セクションのセクションです。  
   
 > [!CAUTION]
->  Because a single default role provider instance is used for all of the requests served by an <xref:System.Web.HttpApplication> object, you can have multiple requests executing concurrently and attempting to set the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> property value. The <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> property is not thread safe for multiple writes, and changing the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> property value can result in unexpected behavior when there are multiple users of an application. We recommend that you avoid writing code that allows users to set the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> property unless you must. An example of an application where setting the <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> property may be required is an administrative application that manages role data for multiple applications. Such an application should be a single-user application and not a Web application.  
+>  すべてで処理された要求の 1 つの既定のロール プロバイダーのインスタンスが使用されるため、 <xref:System.Web.HttpApplication> オブジェクト、複数の要求が同時に実行し、設定しようとした、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> プロパティの値。<xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> プロパティは複数の書き込みに対して安全、かつ変化のスレッドではありません、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> プロパティの値は、アプリケーションの複数のユーザーがある場合に予期しない動作結果ことができます。 設定できるコードを記述しないことをお勧めします <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> プロパティ必要な場合です。 アプリケーションの例の設定場所、 <xref:System.Web.Security.AuthorizationStoreRoleProvider.ScopeName%2A> プロパティが必要な可能性がありますが複数のアプリケーション ロールのデータを管理する管理アプリケーションです。 このようなアプリケーションは、シングル ユーザー アプリケーションと Web アプリケーションではなくにする必要があります。  
   
  ]]></format>
         </remarks>

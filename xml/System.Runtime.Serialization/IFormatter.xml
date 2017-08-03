@@ -22,20 +22,22 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides functionality for formatting serialized objects.</summary>
+    <summary>シリアル化されたオブジェクトの書式設定機能を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This interface must be implemented by any class identified as a formatter in the <xref:System.Runtime.Serialization> architecture.  
+## 解説  
+ フォーマッタとして識別される任意のクラスによってこのインターフェイスを実装する必要があります、 <xref:System.Runtime.Serialization> アーキテクチャです。  
   
- Objects controlling their own serialization can do so by implementing the <xref:System.Runtime.Serialization.ISerializable> interface. In order for an object to be serialized, you must mark that object as being serializable. You can do this by applying the serializable attribute to a class. If any object in the graph is not serializable, serialization will fail.  
+ オブジェクトを独自のシリアル化を制御できるように実装することによって、 <xref:System.Runtime.Serialization.ISerializable> インターフェイスです。 オブジェクトをシリアル化するためには、シリアル化可能としては、そのオブジェクトをマークする必要があります。 シリアル化可能な属性をクラスに適用することで、これを行うことができます。 グラフ内のオブジェクトがシリアル化可能でない場合は、シリアル化は失敗します。  
   
  ]]></format>
     </remarks>
     <block subset="none" type="overrides">
       <para>All formatters must implement this interface. Use <see cref="M:System.Runtime.Serialization.IFormatter.Serialize(System.IO.Stream,System.Object)" /> to serialize an object or graph of objects. Use <see cref="M:System.Runtime.Serialization.IFormatter.Deserialize(System.IO.Stream)" /> to deserialize a stream and create a clone of the original object or graph of objects.</para>
     </block>
+    <altmember cref="T:System.Runtime.Serialization.Formatter" />
+    <altmember cref="T:System.Runtime.Serialization.ISerializable" />
   </Docs>
   <Members>
     <Member MemberName="Binder">
@@ -60,15 +62,16 @@
         <ReturnType>System.Runtime.Serialization.SerializationBinder</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Runtime.Serialization.SerializationBinder" /> that performs type lookups during deserialization.</summary>
-        <value>The <see cref="T:System.Runtime.Serialization.SerializationBinder" /> that performs type lookups during deserialization.</value>
+        <summary>取得または設定、 <see cref="T:System.Runtime.Serialization.SerializationBinder" /> 逆シリアル化中に型の検索を実行します。</summary>
+        <value>
+          <see cref="T:System.Runtime.Serialization.SerializationBinder" /> 逆シリアル化中に型の検索を実行します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When trying to resolve a type from information encoded on the stream, the formatter calls the <xref:System.Runtime.Serialization.SerializationBinder.BindToType%2A> method on the <xref:System.Runtime.Serialization.SerializationBinder>. This method resolves these parameters to a <xref:System.Type> object. The binder can find a <xref:System.Type> at deserialization time that is in a different assembly than it was at serialization time.  
+## 解説  
+ 情報から型を解決しようとしているエンコードされたストリーム フォーマッタに対して呼び出し、 <xref:System.Runtime.Serialization.SerializationBinder.BindToType%2A> メソッドを <xref:System.Runtime.Serialization.SerializationBinder>です。 このメソッドはこれらのパラメーターを解決、 <xref:System.Type> オブジェクトです。 バインダーを検索できる、 <xref:System.Type> 時にシリアル化の場合よりも、別のアセンブリでは逆シリアル化時にします。  
   
- Setting this property has no effect during serialization.  
+ このプロパティを設定してもシリアル化中には影響しません。  
   
  ]]></format>
         </remarks>
@@ -96,13 +99,14 @@
         <ReturnType>System.Runtime.Serialization.StreamingContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Runtime.Serialization.StreamingContext" /> used for serialization and deserialization.</summary>
-        <value>The <see cref="T:System.Runtime.Serialization.StreamingContext" /> used for serialization and deserialization.</value>
+        <summary>取得または設定、 <see cref="T:System.Runtime.Serialization.StreamingContext" /> シリアル化および逆シリアル化に使用します。</summary>
+        <value>
+          <see cref="T:System.Runtime.Serialization.StreamingContext" /> シリアル化および逆シリアル化に使用します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of this property is passed to any object implementing <xref:System.Runtime.Serialization.ISerializable> or <xref:System.Runtime.Serialization.ISerializationSurrogate>. The <xref:System.Runtime.Serialization.StreamingContext> indicates the destination (during serialization) or the source (during deserialization) of the data. An object implementing <xref:System.Runtime.Serialization.ISerializable> can alter the data that it transmits depending on value of the <xref:System.Runtime.Serialization.IFormatter.Context%2A>.  
+## 解説  
+ このプロパティの値が実装するオブジェクトに渡される <xref:System.Runtime.Serialization.ISerializable> または <xref:System.Runtime.Serialization.ISerializationSurrogate>です。<xref:System.Runtime.Serialization.StreamingContext> \(シリアル化中に\) 変換先、または \(逆シリアル化\) の中に、データ ソースを示します。 実装するオブジェクト <xref:System.Runtime.Serialization.ISerializable> の値に応じてで送信されたデータを変更することができます、 <xref:System.Runtime.Serialization.IFormatter.Context%2A>です。  
   
  ]]></format>
         </remarks>
@@ -133,16 +137,16 @@
         <Parameter Name="serializationStream" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="serializationStream">The stream that contains the data to deserialize.</param>
-        <summary>Deserializes the data on the provided stream and reconstitutes the graph of objects.</summary>
-        <returns>The top object of the deserialized graph.</returns>
+        <param name="serializationStream">逆シリアル化するデータを格納しているストリーム。</param>
+        <summary>指定されたストリームにデータを逆シリアル化し、オブジェクトのグラフを再構成します。</summary>
+        <returns>逆シリアル化されたグラフの最上位オブジェクトです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.Serialization.IFormatter.Deserialize%2A> method reads graph information from the stream and reconstructs a clone of the original graph. The topology of the graph is preserved.  
+## 解説  
+ <xref:System.Runtime.Serialization.IFormatter.Deserialize%2A> メソッドは、ストリームからグラフの情報を読み取るし、元のグラフの複製を再構築します。 グラフのトポロジが維持されます。  
   
- The deserialization process allocates an empty object of the appropriate type and repopulates its fields from the data transmitted in the `serializationStream` stream. It is important to note that no constructor is ever called on the object during deserialization.  
+ 逆シリアル化プロセスを選択し、適切な型の空のオブジェクトを割り当てるによって転送されるデータからそのフィールドを再作成、 `serializationStream` ストリームします。 ことが重要、コンス トラクターが呼び出されないことオブジェクトに逆シリアル化中に注意してください。  
   
  ]]></format>
         </remarks>
@@ -174,16 +178,16 @@
         <Parameter Name="graph" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="serializationStream">The stream where the formatter puts the serialized data. This stream can reference a variety of backing stores (such as files, network, memory, and so on).</param>
-        <param name="graph">The object, or root of the object graph, to serialize. All child objects of this root object are automatically serialized.</param>
-        <summary>Serializes an object, or graph of objects with the given root to the provided stream.</summary>
+        <param name="serializationStream">フォーマッタによってシリアル化されたデータが格納するストリーム。 このストリームは、さまざまなバッキング ストア \(ファイル、ネットワーク、メモリなど\) を参照できます。</param>
+        <param name="graph">オブジェクト、またはシリアル化する、オブジェクト グラフのルート。 このルート オブジェクトのすべての子オブジェクトは、自動的にシリアル化されます。</param>
+        <summary>オブジェクト、または、指定されたストリームに特定のルートを持つオブジェクトのグラフをシリアル化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.Serialization.IFormatter.Serialize%2A> method automatically serializes the provided objects, and all objects connected to it, to the provided stream.  
+## 解説  
+ <xref:System.Runtime.Serialization.IFormatter.Serialize%2A> メソッドは、指定されたオブジェクトを自動的にシリアル化し、すべてのオブジェクト、接続されている、指定されたストリームにします。  
   
- By default, the serialization process records an object's state by gathering the values of all its fields (public and private). These fields are saved to the stream along with information about the object such as the name qualified by the assembly for its type.  
+ 既定では、シリアル化プロセスは、すべてのフィールド \(パブリックとプライベート\) の値を収集することにより、オブジェクトの状態を記録します。 これらのフィールドでその型のアセンブリ修飾名などのオブジェクトに関する情報と共にストリームに保存されます。  
   
  ]]></format>
         </remarks>
@@ -211,13 +215,14 @@
         <ReturnType>System.Runtime.Serialization.ISurrogateSelector</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Runtime.Serialization.SurrogateSelector" /> used by the current formatter.</summary>
-        <value>The <see cref="T:System.Runtime.Serialization.SurrogateSelector" /> used by this formatter.</value>
+        <summary>取得または設定、 <see cref="T:System.Runtime.Serialization.SurrogateSelector" /> 、現在のフォーマッタで使用します。</summary>
+        <value>
+          <see cref="T:System.Runtime.Serialization.SurrogateSelector" /> このフォーマッタで使用します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.Runtime.Serialization.ISerializationSurrogate> allows the user to specify an object best suited to handle the serialization of a particular object or class of objects. Think of it as an implementation of <xref:System.Runtime.Serialization.ISerializable> but provided by a different object.  
+## 解説  
+ A <xref:System.Runtime.Serialization.ISerializationSurrogate> 特定のオブジェクトまたはオブジェクトのクラスのシリアル化を処理する最適なオブジェクトが適しているかを指定することができます。 実装としてないということ <xref:System.Runtime.Serialization.ISerializable> が別のオブジェクトに用意されています。  
   
  ]]></format>
         </remarks>

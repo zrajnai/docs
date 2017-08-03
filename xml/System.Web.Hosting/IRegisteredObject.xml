@@ -8,19 +8,22 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Defines methods for objects that are managed by the hosting environment.</summary>
+    <summary>ホスティング環境で管理されているオブジェクトのメソッドを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Objects must implement the <xref:System.Web.Hosting.IRegisteredObject> interface in order to register with the hosting environment and have their lifetime managed by the hosting environment.  
+## 解説  
+ オブジェクトを実装する必要があります、 <xref:System.Web.Hosting.IRegisteredObject> ホスティング環境での登録し、その有効期間がホスティング環境で管理するためにインターフェイスです。  
   
- You can create an instance of a registered object by calling the <xref:System.Web.Hosting.ApplicationManager.CreateObject%2A?displayProperty=fullName> method on the application manager. The application manager returns the newly created object to the caller, which can then call a type-specific method on the object. During startup, the registered object should call the <xref:System.Web.Hosting.HostingEnvironment.RegisterObject%2A?displayProperty=fullName> method to complete registration of the object.  
+ 登録済みのオブジェクトのインスタンスを作成するには呼び出すことによって、 <xref:System.Web.Hosting.ApplicationManager.CreateObject%2A?displayProperty=fullName> アプリケーション マネージャーのメソッドです。 アプリケーション マネージャーは、オブジェクトの種類に固有のメソッドを呼び出すことができますし、呼び出し元に新しく作成されたオブジェクトを返します。 スタートアップ中に、登録済みのオブジェクトを呼び出す必要があります、 <xref:System.Web.Hosting.HostingEnvironment.RegisterObject%2A?displayProperty=fullName> メソッドをオブジェクトの登録を完了します。  
   
- When the application manager needs to stop a registered object, it will call the <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> method.  
+ アプリケーション マネージャーは、登録済みのオブジェクトを停止する必要がある、それが呼び出す、 <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> メソッドです。  
   
- Applications can have only one instance of a registered type. To create multiple instances of a registered type, use the factory pattern to create an object manager that is registered with the application and then manages the multiple instances. For an example of an object implementing the factory pattern, see the example for the <xref:System.Web.Hosting.ApplicationManager> class.  
+ アプリケーションは、登録されているタイプのインスタンスを 1 つだけではできます。 登録済みの型の複数のインスタンスを作成するのにには、アプリケーションに登録されており、複数のインスタンスを管理するマネージャー オブジェクトを作成するのにファクトリ パターンを使用します。 オブジェクトの例についてはファクトリ パターンを実装する例についてを「、 <xref:System.Web.Hosting.ApplicationManager> クラスです。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -42,18 +45,21 @@
       </Parameters>
       <Docs>
         <param name="immediate">
-          <see langword="true" /> to indicate the registered object should unregister from the hosting environment before returning; otherwise, <see langword="false" />.</param>
-        <summary>Requests a registered object to unregister.</summary>
+          <see langword="true" /> 登録済みのオブジェクトを示すために登録解除するホスト環境から制御を戻す前にそれ以外の場合、 <see langword="false" />です。</param>
+        <summary>登録を解除する登録済みのオブジェクトを要求します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The application manager will call the <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> method to ask a registered object to unregister. During processing of the <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> method, the registered object must call the <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A?displayProperty=fullName> method.  
+## 解説  
+ アプリケーション マネージャーが呼び出す、 <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> 登録を解除する登録済みのオブジェクトを確認するメソッドです。 処理中に、 <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> メソッド、登録済みのオブジェクトを呼び出す必要があります、 <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A?displayProperty=fullName> メソッドです。  
   
- The <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> method is first called with the `immediate` parameter set to `false`. The object can either complete processing, call the <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A> method, and then return or it can return immediately and complete processing asynchronously before calling the <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A> method.  
+ <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> メソッドが呼び出された最初の `immediate` パラメーターを設定する `false`です。 オブジェクトがいずれかの処理が完了を呼び出す、 <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A> メソッド、および戻り値またはそれをすぐに戻り、呼び出す前に非同期的に処理を完了、 <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A> メソッドです。  
   
- If the registered object does not complete processing before the application manager's time-out period expires, the <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> method is called again with the `immediate` parameter set to `true`. When the `immediate` parameter is `true`, the registered object must call the <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A> method before returning; otherwise, its registration will be removed by the application manager.  
+ 登録済みのオブジェクトが、アプリケーション マネージャーのタイムアウト期間が経過する前に、処理を完了しない場合、 <xref:System.Web.Hosting.IRegisteredObject.Stop%2A> でメソッドが再度呼び出され、 `immediate` パラメーターを設定する `true`です。 ときに、 `immediate` パラメーターは `true`, 、登録済みのオブジェクトを呼び出す必要があります、 <xref:System.Web.Hosting.HostingEnvironment.UnregisterObject%2A> 制御を戻す前にアプリケーション マネージャーによってその登録を削除する場合は、です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>

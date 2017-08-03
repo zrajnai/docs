@@ -11,42 +11,45 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>The abstract base class that defines the properties and methods of a security token service (STS).</summary>
+    <summary>プロパティとセキュリティ トークン サービス \(STS\) のメソッドを定義する抽象基本クラス。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To create an STS you must derive from the <xref:System.IdentityModel.SecurityTokenService> class. In your custom class you must, at a minimum, override the <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> and <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> methods. With these overrides, the STS created using the default implementation of all the other methods defined in the class is capable of issuing security tokens in response to security token requests (RST). That is, the Issue binding defined in the WS-Trust specification is implemented. This binding is implemented in the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method. None of the other WS-Trust bindings (Renew, Cancel, and Validate) are implemented in the default case and an appropriate fault is returned to the caller if an RST that corresponds to one of these bindings is encountered. You can, of course, override the appropriate methods (<xref:System.IdentityModel.SecurityTokenService.Renew%2A>, <xref:System.IdentityModel.SecurityTokenService.Cancel%2A>, and <xref:System.IdentityModel.SecurityTokenService.Validate%2A>) to implement these bindings in your STS.  
+## 解説  
+ 派生する必要があります STS を作成する、 <xref:System.IdentityModel.SecurityTokenService> クラスです。 カスタム クラスで、最低限、オーバーライドする必要あります、 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> と <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> メソッドです。 これらのオーバーライドでは、クラスで定義されているその他のすべてのメソッドの既定の実装を使用して作成された STS はトークン要求 \(RST\) のセキュリティへの応答のセキュリティ トークンを発行できます。 つまり、Ws\-trust 仕様で定義されている問題のバインディングが実装されます。 このバインディングは、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。 既定では、その他の Ws\-trust バインディング \(Renew、Cancel、および検証\) のいずれもは実装され、これらのバインドのいずれかに対応する RST が発生した場合、呼び出し元に適切なエラーが返されます。 適切なメソッドをオーバーライドすることができます、もちろん、\(<xref:System.IdentityModel.SecurityTokenService.Renew%2A>, 、<xref:System.IdentityModel.SecurityTokenService.Cancel%2A>, 、および <xref:System.IdentityModel.SecurityTokenService.Validate%2A>\)、STS でこれらのバインディングを実装します。  
   
 > [!IMPORTANT]
->  Implementing a production-ready STS entails careful planning and considerable resources to mitigate the potential security risks inherent in exposing such a service. Most developers using Windows Identity Foundation (WIF) will be developing applications that outsource identity management to an STS, rather than developing an STS itself. WIF provides a Visual Studio extension, the Identity and Access Tool for Visual Studio 2012, to help developers test solutions in the development environment. This tool includes an STS, `LocalSTS`, that you can configure to serve specific claims to the application that you are developing. For more information about the Identity and Access tool, see [Identity and Access Tool for Visual Studio 2012](~/docs/framework/security/identity-and-access-tool-for-vs.md). In some scenarios, `LocalSTS` may not provide the functionality necessary to adequately test your application; for example, in a scenario that involves developing a custom token handler for use by an application. In these cases, you can derive from <xref:System.IdentityModel.SecurityTokenService> to create one or more simple STSs that can be deployed in your development environment and that can be used to test such features in your application. The rest of this section focuses on the methods exposed by the <xref:System.IdentityModel.SecurityTokenService> class that enable you to implement a simple STS and extend the token issuance pipeline.  
+>  実稼動可能な STS の実装は、慎重に計画し、このようなサービスの公開に固有の潜在的なセキュリティ リスクを軽減するために大量のリソースがあります。 Windows Identity Foundation \(WIF\) を使用しているほとんどの開発者は id 管理、STS に外部委託するアプリケーションの開発よりもする自体の STS を開発します。 WIF では、開発環境でソリューションをテストする開発者を支援する Identity and Access Tool for Visual Studio 2012、Visual Studio 拡張機能を提供します。 このツールには、STS が含まれている `LocalSTS`, 、開発中のアプリケーションに特定の要求を処理するために構成したことができます。 Id およびアクセス ツールの詳細については、次を参照してください。 [Identity and Access Tool for Visual Studio 2012](http://msdn.microsoft.com/ja-jp/87b8f8f2-4074-44fd-9fd6-08278e877390)します。 一部のシナリオで `LocalSTS` 適切にアプリケーションをテストするために必要な機能を提供しません可能性があります。 などに関連するシナリオで、アプリケーションで使用するためのカスタム トークン ハンドラーを開発します。 このような場合から派生できます <xref:System.IdentityModel.SecurityTokenService> 開発環境内で展開できるいると、アプリケーションでこのような機能をテストに使用できる 1 つまたは複数の単純な Sts を作成します。 によって公開されるメソッドのこのセクションの残りの部分に焦点を当てています、 <xref:System.IdentityModel.SecurityTokenService> を使用すると、単純な STS の実装およびトークンの発行のパイプラインを拡張するクラス。  
   
- The following list provides a brief overview of the methods of primary importance to the developer for use in a test or development environment.  
+ 次の一覧は、テストや開発環境で使用するため、開発者に最優先の方法の簡単な概要を説明します。  
   
--   The <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> method. This method returns a <xref:System.IdentityModel.Scope> object that contains information about the RP. This object is used in the rest of the token issuance pipeline and includes information about the signing and encrypting credentials to use in the response, as well as the `AppliesTo` and `ReplyTo` (if required) addresses. You must override this method.  
+-   <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> メソッド。 このメソッドが戻る、 <xref:System.IdentityModel.Scope> RP に関する情報を含むオブジェクト。 このオブジェクト トークンの発行のパイプラインの残りの部分で使用し、応答に使用する、署名と資格情報を暗号化に関する情報だけでなく `AppliesTo` と `ReplyTo` \(必要な場合\) アドレスです。 このメソッドをオーバーライドする必要があります。  
   
--   The <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> method. This method returns an <xref:System.Security.Claims.ClaimsIdentity> object that contains the claims to return to the RP. You must override this method.  
+-   <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> メソッド。 このメソッドが戻る、 <xref:System.Security.Claims.ClaimsIdentity> RP に戻るには要求を含むオブジェクト。 このメソッドをオーバーライドする必要があります。  
   
--   The <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method. This method implements the token request pipeline, which processes an incoming security token request (RST) and returns a response (RSTR) to the caller that contains a token that can be used to authenticate with an RP. Many of the other methods defined in the <xref:System.IdentityModel.SecurityTokenService> class are called from this method, including the <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> and <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> methods. You do not have to override this method, but an understanding of the token request pipeline it implements may be helpful.  
+-   <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッド。 このメソッドでは、受信セキュリティ トークン要求 \(RST\) を処理し、RP での認証に使用できるトークンを含む呼び出し元に応答 \(RSTR\) を返すトークン要求パイプラインを実装します。 定義されているその他のメソッドの多くは、 <xref:System.IdentityModel.SecurityTokenService> クラスは、このメソッドから呼び出されるなど、 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> と <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> メソッドです。 このメソッドをオーバーライドする必要はありませんが、実装するトークン要求パイプラインの理解が参考になります。  
   
- An STS is configured through the <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration> class.  
+ STS を使用して構成、 <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration> クラスです。  
   
    
   
-## Examples  
- The code examples that are used in the <xref:System.IdentityModel.SecurityTokenService> topics are taken from the `Custom Token` sample. This sample provides custom classes that enable processing of Simple Web Tokens (SWT) and it includes an implementation of a passive STS that is capable of serving an SWT token. For an example of how to implement an active STS, you can see the `Federation Metadata` sample. For information about these samples and other samples available for WIF and about where to download them, see [WIF Code Sample Index](~/docs/framework/security/wif-code-sample-index.md). The following code shows the implementation of a passive STS using the <xref:System.IdentityModel.SecurityTokenService> class.  
+## 例  
+ コード例で使用されている、 <xref:System.IdentityModel.SecurityTokenService> からトピックを取得、 `Custom Token` サンプルです。 このサンプルは、Simple Web Token \(SWT\) の処理を有効にするカスタム クラスを提供し、SWT トークンのサービスを提供できるは、パッシブ STS の実装が含まれています。 アクティブ STS を実装する方法の例は、について確認できます、 `Federation Metadata` サンプルです。 Wif とそのダウンロード場所については、これらのサンプルを使用できるその他のサンプルについて、次を参照してください。 [WIF Code Sample Index](http://msdn.microsoft.com/ja-jp/6711f01a-4743-43ce-95ab-5e2302a363ea)します。 次のコードは、パッシブ STS の実装を使用して、 <xref:System.IdentityModel.SecurityTokenService> クラスです。  
   
- [!code-csharp[WIFCustomTokenSTS#3](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#3)]  
+ [!code-csharp[WIFCustomTokenSTS\#3](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#3)]  
   
- The following code shows how to invoke a custom passive STS to process a WS-Federation request by calling the <xref:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations.ProcessRequest%28System.Web.HttpRequest%2CSystem.Security.Claims.ClaimsPrincipal%2CSystem.IdentityModel.SecurityTokenService%2CSystem.Web.HttpResponse%29?displayProperty=fullName> method from the code behind in the `default.aspx.cs` file.  
+ 次のコードを呼び出すことで Ws\-federation 要求を処理するカスタムのパッシブ STS を呼び出す方法を示しています、 <xref:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations.ProcessRequest%28System.Web.HttpRequest%2CSystem.Security.Claims.ClaimsPrincipal%2CSystem.IdentityModel.SecurityTokenService%2CSystem.Web.HttpResponse%29?displayProperty=fullName> メソッドの背後にあるコードから、 `default.aspx.cs` ファイルです。  
   
- [!code-csharp[WIFCustomTokenSTS#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/default.aspx.cs#1)]  
+ [!code-csharp[WIFCustomTokenSTS\#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/default.aspx.cs#1)]  
   
  ]]></format>
     </remarks>
     <block subset="none" type="overrides">
       <para>You must override both the <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> and the <see cref="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" /> methods.</para>
     </block>
+    <altmember cref="T:System.IdentityModel.Scope" />
+    <altmember cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />
+    <altmember cref="T:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -62,18 +65,18 @@
         <Parameter Name="securityTokenServiceConfiguration" Type="System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />
       </Parameters>
       <Docs>
-        <param name="securityTokenServiceConfiguration">A <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> that contains the settings for the STS.</param>
-        <summary>Called from derived classes to initialize the <see cref="T:System.IdentityModel.SecurityTokenService" /> class using the specified configuration settings.</summary>
+        <param name="securityTokenServiceConfiguration">A <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> 、STS の設定値を格納します。</param>
+        <summary>初期化するために派生クラスから呼び出される、 <see cref="T:System.IdentityModel.SecurityTokenService" /> クラスの指定した構成設定を使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this constructor to initialize scope provider and token issuer certificate.  
+## 解説  
+ このコンス トラクターを使用すると、スコープのプロバイダーとトークン発行者の証明書を初期化できます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="securityTokenServiceConfiguration" /> is <see langword="null" />.</exception>
+          <paramref name="securityTokenServiceConfiguration" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="BeginCancel">
@@ -95,17 +98,18 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that receives notification of the completion of the asynchronous cancel operation.</param>
-        <param name="state">An object that contains state information associated with the asynchronous cancel operation.</param>
-        <summary>When overridden in a derived class, begins an asynchronous WS-Trust Cancel request.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous cancel operation.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> 非同期の取り消し操作の完了の通知を受信するデリゲート。</param>
+        <param name="state">非同期の取り消し操作に関連付けられている状態情報を格納するオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合は、非同期 Ws\-trust キャンセル要求を開始します。</summary>
+        <returns>非同期の取り消し操作を参照する <see cref="T:System.IAsyncResult" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -131,18 +135,20 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="scope">The <see cref="T:System.IdentityModel.Scope" /> that contains information about the relying party associated with the request.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that receives notification of the completion of the asynchronous operation.</param>
-        <param name="state">An object that contains state information associated with the asynchronous operation.</param>
-        <summary>When overridden in a derived class, begins an asynchronous call to the <see cref="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" /> method.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous operation.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="scope">
+          <see cref="T:System.IdentityModel.Scope" /> 要求に関連付けられている証明書利用者に関する情報を格納します。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> 非同期操作の完了の通知を受信するデリゲート。</param>
+        <param name="state">非同期操作に関連付けられている状態情報を格納するオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされると、開始するための非同期呼び出し、 <see cref="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" /> メソッドです。</summary>
+        <returns>非同期操作を参照する <see cref="T:System.IAsyncResult" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws a <xref:System.NotImplementedException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.NotImplementedException>です。  
   
  ]]></format>
         </remarks>
@@ -167,17 +173,18 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that receives notification of the completion of the asynchronous operation.</param>
-        <param name="state">An object that contains state information associated with the asynchronous operation.</param>
-        <summary>When overridden in a derived class, begins an asynchronous call for the <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> method.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous cancel operation.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> 非同期操作の完了の通知を受信するデリゲート。</param>
+        <param name="state">非同期操作に関連付けられている状態情報を格納するオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合の非同期呼び出しを開始、 <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> メソッドです。</summary>
+        <returns>非同期の取り消し操作を参照する <see cref="T:System.IAsyncResult" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws a <xref:System.NotImplementedException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.NotImplementedException>です。  
   
  ]]></format>
         </remarks>
@@ -202,17 +209,19 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that receives notification of the completion of the asynchronous issue operation.</param>
-        <param name="state">An object that contains state information associated with the asynchronous issue operation.</param>
-        <summary>When overridden in a derived class, begins an asynchronous WS-Trust Issue request.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous issue operation.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> 問題の非同期操作の完了の通知を受信するデリゲート。</param>
+        <param name="state">問題の非同期操作に関連付けられている状態情報を格納するオブジェクト。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust 問題の非同期要求を開始します。</summary>
+        <returns>
+          <see cref="T:System.IAsyncResult" /> 問題の非同期操作を参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -237,17 +246,19 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that receives notification of the completion of the asynchronous renew operation.</param>
-        <param name="state">An object that contains state information associated with the asynchronous renew operation.</param>
-        <summary>When overridden in a derived class, begins an asynchronous WS-Trust Renew request.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous renew operation.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> の非同期完了の通知を受信するデリゲートが操作を更新します。</param>
+        <param name="state">非同期の関連付けられている状態情報を格納しているオブジェクトは、操作を更新します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust の更新の非同期要求を開始します。</summary>
+        <returns>
+          <see cref="T:System.IAsyncResult" /> 、非同期の参照が操作を更新します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -272,17 +283,19 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that receives notification of the completion of the asynchronous validate operation.</param>
-        <param name="state">An object that contains state information associated with the asynchronous validate operation.</param>
-        <summary>When overridden in a derived class, begins an asynchronous WS-Trust Validate request.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous validate operation.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> の非同期完了の通知を受信するデリゲートが操作を検証します。</param>
+        <param name="state">非同期の関連付けられている状態情報を格納しているオブジェクトは、操作を検証します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust の検証の非同期要求を開始します。</summary>
+        <returns>
+          <see cref="T:System.IAsyncResult" /> 、非同期の参照が操作を検証します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -305,15 +318,15 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <summary>When overridden in a derived class, processes a WS-Trust Cancel request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust のキャンセル要求を処理します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -336,24 +349,26 @@
         <Parameter Name="scope" Type="System.IdentityModel.Scope" />
       </Parameters>
       <Docs>
-        <param name="request">The incoming token request.</param>
-        <param name="scope">The <see cref="P:System.IdentityModel.SecurityTokenService.Scope" /> object returned from <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />.</param>
-        <summary>Creates an instance of a <see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />.</summary>
-        <returns>The <see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />.</returns>
+        <param name="request">受信トークンの要求。</param>
+        <param name="scope">
+          <see cref="P:System.IdentityModel.SecurityTokenService.Scope" /> から返されるオブジェクト <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />します。</param>
+        <summary>インスタンスを作成、 <see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />です。</summary>
+        <returns>
+          <see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Invoked during token issuance after <xref:System.IdentityModel.SecurityTokenService.GetScope%2A>.  
+## 解説  
+ 後のトークンの発行時に呼び出される <xref:System.IdentityModel.SecurityTokenService.GetScope%2A>です。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="request" /> is <see langword="null" />.  
+          <paramref name="request" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="scope" /> is <see langword="null" />.</exception>
+ <paramref name="scope" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="EndCancel">
@@ -372,14 +387,15 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> that is returned by a call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginCancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</param>
-        <summary>When overridden in a derived class, completes the asynchronous WS-Trust Cancel request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="M:System.IdentityModel.SecurityTokenService.BeginCancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />。</param>
+        <summary>派生クラスでオーバーライドされた場合は、非同期の Ws\-trust キャンセル要求を完了します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -401,14 +417,15 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> that is returned by a call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> method.</param>
-        <summary>When overridden in a derived class, completes the asynchronous call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> method.</summary>
-        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> that contains the collection of claims that will be placed in the issued security token.</returns>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" />。</param>
+        <summary>派生クラスでオーバーライドされると、非同期の呼び出しが完了すると、 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> メソッドです。</summary>
+        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> が発行されたセキュリティ トークンに配置されるクレームのコレクションを格納しています。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws a <xref:System.NotImplementedException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.NotImplementedException>です。  
   
  ]]></format>
         </remarks>
@@ -430,14 +447,15 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> that is returned by a call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</param>
-        <summary>When overridden in a derived class, completes the asynchronous call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Scope" /> that encapsulates the relying party (RP) information associated with the request (RST) specified in the call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</returns>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />。</param>
+        <summary>派生クラスでオーバーライドされると、非同期の呼び出しが完了すると、 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> メソッドです。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Scope" /> への呼び出しで指定された要求 \(RST\) に関連付けられている証明書利用者 \(rp\) 情報をカプセル化する、 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> メソッドです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws a <xref:System.NotImplementedException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.NotImplementedException>です。  
   
  ]]></format>
         </remarks>
@@ -459,14 +477,15 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> that is returned by a call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginIssue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</param>
-        <summary>When overridden in a derived class, completes the asynchronous WS-Trust Issue request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="M:System.IdentityModel.SecurityTokenService.BeginIssue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />。</param>
+        <summary>派生クラスでオーバーライドされた場合は、非同期の Ws\-trust 発行要求を完了します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -488,14 +507,15 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> that is returned by a call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginRenew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</param>
-        <summary>When overridden in a derived class, completes the asynchronous WS-Trust Renew request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="M:System.IdentityModel.SecurityTokenService.BeginRenew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust の更新の非同期要求を完了します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -517,14 +537,15 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> that is returned by a call to the <see cref="M:System.IdentityModel.SecurityTokenService.BeginValidate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> method.</param>
-        <summary>When overridden in a derived class, completes the asynchronous WS-Trust Validate request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="M:System.IdentityModel.SecurityTokenService.BeginValidate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust の検証の非同期要求を完了します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -544,18 +565,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets the name of the security token service (STS).</summary>
-        <returns>The issuer name.</returns>
+        <summary>セキュリティ トークン サービス \(STS\) の名前を取得します。</summary>
+        <returns>発行者名。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called from the default token issuance pipeline implemented in the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method.  
+## 解説  
+ トークンの発行のパイプラインとして実装された既定値からこのメソッドは、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。  
   
- The default implementation returns the <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.TokenIssuerName%2A> property from configuration accessed through the <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> property.  
+ 既定の実装、 <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.TokenIssuerName%2A> プロパティを使用してアクセスの構成から、 <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> プロパティです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="GetOutputClaimsIdentity">
@@ -576,33 +598,36 @@
         <Parameter Name="scope" Type="System.IdentityModel.Scope" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <param name="scope">The <see cref="T:System.IdentityModel.Scope" /> that contains information about the relying party associated with the request. This is the <see cref="T:System.IdentityModel.Scope" /> object that was returned by the <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> method.</param>
-        <summary>When overridden in a derived class, this method returns a collection of output subjects to be included in the issued token.</summary>
-        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> that contains the collection of claims that will be placed in the issued security token.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <param name="scope">
+          <see cref="T:System.IdentityModel.Scope" /> 要求に関連付けられている証明書利用者に関する情報を格納します。 これは、 <see cref="T:System.IdentityModel.Scope" /> によって返されたオブジェクト、 <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> メソッドです。</param>
+        <summary>派生クラスでオーバーライドされると、このメソッドは、発行されたトークンに含まれる出力情報のカテゴリのコレクションを返します。</summary>
+        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> が発行されたセキュリティ トークンに配置されるクレームのコレクションを格納しています。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> method is called from the token issuance pipeline, which is implemented by the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method. It returns an <xref:System.Security.Claims.ClaimsIdentity> that contains the claims to include in the issued security token based on the requestor of the token (the `principal` parameter), the incoming RST (the `request` parameter), and the relying party for which the token is intended (the `scope` parameter). The logic in this method is primarily concerned with answering the following questions:  
+## 解説  
+ <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> によって実装されるトークンの発行パイプラインから呼び出されます、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。 返す、 <xref:System.Security.Claims.ClaimsIdentity> トークンの要求元に基づいて発行されたセキュリティ トークンに含めるクレームを格納 \(、 `principal` パラメーター\)、受信 RST \(、 `request` パラメーター\) と、証明書利用者のトークンが対象としてのパーティ \(、 `scope` パラメーター\)。 このメソッドのロジックは主に、次の質問に答えることに関係します。  
   
--   **Which claim types should be included in the response based on the RP for which it is intended?** Typically this is decided on a per-RP basis from lists of claim types required for each RP or on a per-request basis by examining the <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.Claims%2A> property of the request. However, the logic and details for determining the claims to include in the response is completely up to your implementation.  
+-   **クレームの種類は、ものでは、RP に基づき応答に含める必要がありますか。**通常これは決まります RP ごとに各 RP に必要なクレームの種類の一覧から、または、要求ごとに確認するには、 <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.Claims%2A> 要求のプロパティです。 ただし、ロジックと、応答に含めるに対するクレームを決定するための詳細は完全に実装までです。  
   
--   **Which claim values should be assigned to the claims in the response?** For an Identity Provider (IP-STS) this typically means using one or more claims in the requestor’s <xref:System.Security.Claims.ClaimsPrincipal> (provided by the `principal` parameter) to access a store (or other entity) to return values for the required claim types. For a Federation Provider (R-STS) this typically means performing some kind of processing on the requestor’s incoming claims to fulfill the request; perhaps performing filtering or transformation on some claims presented by the requestor, while passing others through unmodified. Of course, as in the case of deciding which claims to include in the response, the details and logic of how to determine the values of these claims is up to your implementation.  
+-   **要求の値は、応答内のクレームに割り当てる必要がありますか。**Id プロバイダー \(IP STS\) 通常は、要求元の 1 つまたは複数の要求の使用 <xref:System.Security.Claims.ClaimsPrincipal> \(によって提供される、 `principal` パラメーター\) に必須クレームの種類の値を返すストア \(またはその他のエンティティ\) にアクセスします。 フェデレーション プロバイダー \(R STS\) 通常は、要求を満たすために、要求元の入力方向の要求にいくつかの種類の処理を実行します。おそらく、未変更の状態を他のユーザーを渡すときに、リクエスターが提示されるクレームにいくつかのフィルター処理または変換を実行します。 もちろん、応答に含める要求を決定する場合のように、詳細情報とこれらのクレームの値を決定する方法のロジックは、実装までです。  
   
    
   
-## Examples  
- The code example that is used in this topic is taken from the `Custom Token` sample. This sample provides custom classes that enable processing of Simple Web Tokens (SWT) and it includes an implementation of a passive STS that is capable of serving an SWT token. For an example of how to implement an active STS, you can see the `Federation Metadata` sample. For information about these samples and other samples available for WIF and about where to download them, see [WIF Code Sample Index](~/docs/framework/security/wif-code-sample-index.md). The following code shows how to override the <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> method to return claims for your STS. In this example, the Request Security Token (RST) message is ignored and a collection of claims based on the user as authenticated at the STS is returned.  
+## 例  
+ ここで使用するコード例から取得、 `Custom Token` サンプルです。 このサンプルは、Simple Web Token \(SWT\) の処理を有効にするカスタム クラスを提供し、SWT トークンのサービスを提供できるは、パッシブ STS の実装が含まれています。 アクティブ STS を実装する方法の例は、について確認できます、 `Federation Metadata` サンプルです。 Wif とそのダウンロード場所については、これらのサンプルを使用できるその他のサンプルについて、次を参照してください。 [WIF Code Sample Index](http://msdn.microsoft.com/ja-jp/6711f01a-4743-43ce-95ab-5e2302a363ea)します。 次のコードを上書きする方法を示しています、 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> STS の信頼性情報を返します。 この例では、セキュリティ トークン要求 \(RST\) メッセージは無視され、STS で認証されたユーザーに基づくクレームのコレクションが返されます。  
   
- [!code-csharp[WIFCustomTokenSTS#6](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#6)]  
+ [!code-csharp[WIFCustomTokenSTS\#6](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#6)]  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You must override this method in your implementation of the <see cref="T:System.IdentityModel.SecurityTokenService" /> class.</para>
         </block>
+        <altmember cref="T:System.IdentityModel.Scope" />
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="GetProofToken">
@@ -622,26 +647,28 @@
         <Parameter Name="scope" Type="System.IdentityModel.Scope" />
       </Parameters>
       <Docs>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the incoming token request (RST).</param>
-        <param name="scope">The <see cref="T:System.IdentityModel.Scope" /> instance that encapsulates information about the relying party.</param>
-        <summary>Gets the proof token to be included in the response (RSTR).</summary>
-        <returns>A <see cref="T:System.IdentityModel.Tokens.ProofDescriptor" /> that represents the newly created proof descriptor. The proof descriptor can be an asymmetric proof descriptor, a symmetric proof descriptor, or <see langword="null" /> in the bearer token case.</returns>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> 受信トークン要求 \(RST\) を表します。</param>
+        <param name="scope">
+          <see cref="T:System.IdentityModel.Scope" /> 証明書利用者に関する情報をカプセル化するインスタンス。</param>
+        <summary>応答 \(RSTR\) に含まれる証明トークンを取得します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Tokens.ProofDescriptor" /> を新しく作成された校正記述子を表します。 証明の記述子は、非対称の校正記述子、対称の校正記述子または <see langword="null" /> ベアラー トークンの場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called from the default token issuance pipeline implemented in the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method.  
+## 解説  
+ トークンの発行のパイプラインとして実装された既定値からこのメソッドは、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。  
   
- The default implementation returns a proof descriptor or throws an appropriate exception.  
+ 既定の実装では、証明記述子を返します。 または、適切な例外をスローします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="request" /> is <see langword="null" />.  
+          <paramref name="request" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="scope" /> is <see langword="null" />.</exception>
+ <paramref name="scope" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="GetRequestorProofEncryptingCredentials">
@@ -660,21 +687,22 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the incoming token request (RST).</param>
-        <summary>Gets the requestor's proof encrypting credentials.</summary>
-        <returns>An <see cref="T:System.IdentityModel.Tokens.EncryptingCredentials" /> object that represents the requestor’s encrypting credentials.</returns>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> 受信トークン要求 \(RST\) を表します。</param>
+        <summary>資格情報の暗号化要求元の証拠を取得します。</summary>
+        <returns>
+          <see cref="T:System.IdentityModel.Tokens.EncryptingCredentials" /> を要求元を表すオブジェクトの資格情報を暗号化します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called from the <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> method.  
+## 解説  
+ このメソッドは、 <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> メソッドです。  
   
- The default implementation does the following. Returns `null` if there is no encryption token specified in the request (the <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.ProofEncryption%2A?displayProperty=fullName> property is `null`). Otherwise, if it can get the token as an <xref:System.IdentityModel.Tokens.X509SecurityToken>, it returns credentials based on that token. If it cannot resolve the token as an <xref:System.IdentityModel.Tokens.X509SecurityToken>, a <xref:System.IdentityModel.RequestFailedException> is thrown.  
+ 既定の実装は、次のことです。 返します。 `null` 、要求で指定された暗号化トークンがない場合 \(、 <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.ProofEncryption%2A?displayProperty=fullName> プロパティは `null`\)。 それ以外の場合とトークンを取得できる場合、 <xref:System.IdentityModel.Tokens.X509SecurityToken>, 、そのトークンに基づいた資格情報を返します。 トークンを解決できない場合、 <xref:System.IdentityModel.Tokens.X509SecurityToken>, 、 <xref:System.IdentityModel.RequestFailedException> がスローされます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="request" /> is <see langword="null" />.</exception>
+          <paramref name="request" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetResponse">
@@ -694,27 +722,28 @@
         <Parameter Name="tokenDescriptor" Type="System.IdentityModel.Tokens.SecurityTokenDescriptor" />
       </Parameters>
       <Docs>
-        <param name="request">The RST that contains the token request.</param>
-        <param name="tokenDescriptor">The token descriptor that contains the information to use for the issued token.</param>
-        <summary>Creates the response (RSTR) that contains the issued token by using the specified request (RST) and security token descriptor.</summary>
-        <returns>The response (RSTR) or <see langword="null" /> if a response cannot be created from the specified request and token descriptor. The default implementation returns <see langword="null" /> if the <paramref name="tokenDescriptor" /> parameter is <see langword="null" />.</returns>
+        <param name="request">トークンの要求を含む RST します。</param>
+        <param name="tokenDescriptor">発行されたトークンを使用する情報を含むトークン記述子。</param>
+        <summary>指定された要求 \(RST\) とトークンのセキュリティ記述子を使用して、発行されたトークンを含む応答 \(RSTR\) を作成します。</summary>
+        <returns>応答 \(RSTR\) または <see langword="null" /> 場合は、指定された要求とトークン記述子からの応答を作成できません。 既定の実装 <see langword="null" /> 場合、 <paramref name="tokenDescriptor" /> パラメーターは <see langword="null" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> method is called as the last step from the token issuance pipeline, which is implemented by the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method. It creates and returns the response (RSTR) by using the original incoming request (RST) and the token descriptor that was built up during previous steps in the token issuance pipeline.  
+## 解説  
+ <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> によって実装されるトークンの発行パイプラインからメソッドを呼び出した最後の手順として、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。 作成し、元の受信要求 \(RST\) とトークンの発行のパイプラインの前の手順で作成されたトークンの記述子を使用して、応答 \(RSTR\) を返します。  
   
- The default implementation creates the RSTR by passing the RST specified in the request parameter to the <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse.%23ctor%28System.IdentityModel.Protocols.WSTrust.WSTrustMessage%29?displayProperty=fullName> constructor, invoking the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.ApplyTo%2A?displayProperty=fullName> method on the token descriptor passed into <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> to apply its properties to the newly created RSTR, setting the <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.AppliesTo%2A> property on the RSTR by using the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A> property on the token descriptor, and finally setting the <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> property on the RSTR according to the following table:  
+ 既定の実装では、RSTR を作成する要求パラメーターで指定された RST を渡すことによって、 <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse.%23ctor%28System.IdentityModel.Protocols.WSTrust.WSTrustMessage%29?displayProperty=fullName> コンス トラクターを呼び出す、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.ApplyTo%2A?displayProperty=fullName> に渡されたトークンの記述子のメソッド <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> 設定、新しく作成された RSTR にそのプロパティを適用する、 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.AppliesTo%2A> プロパティを使用して、RSTR で、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A> トークン記述子のプロパティと最後に設定、 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> 次の表に従って RSTR のプロパティ:  
   
-|`RST.ReplyTo` property|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=fullName> property.|`RSTR.ReplyTo` property|  
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|  
-|Set|Not Set|Not Set|  
-|Set|Set|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=fullName>|  
-|Not Set|Set|Not Set|  
-|Not Set|Not Set|Not Set|  
+|`RST.ReplyTo` プロパティ|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=fullName> プロパティ。|`RSTR.ReplyTo` プロパティ|  
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|  
+|設定|未設定します。|未設定します。|  
+|設定|設定|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=fullName>|  
+|未設定します。|設定|未設定します。|  
+|未設定します。|未設定します。|未設定します。|  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="GetScope">
@@ -734,33 +763,33 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the client making the request.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the incoming request (RST).</param>
-        <summary>Gets a <see cref="T:System.IdentityModel.Scope" /> object that contains information about the relying party (RP) associated with the specified request (RST). You must override this method in your implementation of the <see cref="T:System.IdentityModel.SecurityTokenService" /> class.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Scope" /> that encapsulates the RP information associated with the request.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 要求を行うクライアントを表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> 受信要求 \(RST\) を表します。</param>
+        <summary>取得、 <see cref="T:System.IdentityModel.Scope" /> 証明書利用者 \(RP\) 指定された要求 \(RST\) に関連付けられている情報を含むオブジェクト。 実装でこのメソッドをオーバーライドする必要があります、 <see cref="T:System.IdentityModel.SecurityTokenService" /> クラスです。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Scope" /> 要求に関連付けられている RP 情報をカプセル化します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> method is called from the token issuance pipeline after the <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> method and should return a <xref:System.IdentityModel.Scope> object configured for the incoming request. (The token issuance pipeline is implemented in the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method.) The <xref:System.IdentityModel.Scope> object encapsulates information about the RP associated with the security token request (RST). This includes information about the encrypting and signing credentials to be used with the RP and whether or not to encrypt any issued tokens and/or symmetric keys in the response. Some typical tasks performed in the <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> method are:  
+## 解説  
+ <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> メソッドは、後のトークンの発行パイプラインから呼び出される、 <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> メソッド返す必要があります、 <xref:System.IdentityModel.Scope> 受信要求用に構成されたオブジェクト。 \(トークンの発行のパイプラインは、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです\)。<xref:System.IdentityModel.Scope> オブジェクトは、セキュリティ トークン要求 \(RST\) に関連付けられている RP に関する情報をカプセル化します。 これには、暗号化と署名に、RP とれた発行されたトークンと、応答内の対称キーを暗号化するかどうかを使用する資格情報に関する情報が含まれます。 実行するいくつかの一般的なタスク、 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> メソッドには。  
   
--   Determine whether the RP for which the token is intended is a recognized RP. How this is accomplished depends on your implementation. If the intended RP is not a valid RP for this STS, then the method should throw an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+-   トークンの対象となる RP が認識 RP であるかどうかを確認します。 これを実現する方法は、実装に依存します。 目的の RP は、この STS の有効な RP ではないかどうかは、メソッドがスローする必要があります、 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
--   Determine the signing credentials to be used in the response (RSTR) and set the <xref:System.IdentityModel.Scope.SigningCredentials%2A> property accordingly.  
+-   応答 \(RSTR\) で使用され、設定する資格情報、署名の確認、 <xref:System.IdentityModel.Scope.SigningCredentials%2A> プロパティ適切です。  
   
--   Determine whether the response and/or any included symmetrical keys should be encrypted and the credentials to be used for encryption. Set the <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A>, <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A>, and <xref:System.IdentityModel.Scope.EncryptingCredentials%2A> properties accordingly.  
+-   応答や、含まれる対称キーを暗号化するかどうかと暗号化に使用する資格情報を確認します。 設定、 <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A>, 、<xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A>, 、および <xref:System.IdentityModel.Scope.EncryptingCredentials%2A> プロパティ適切です。  
   
     > [!IMPORTANT]
-    >  By default, the <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A> and <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A> properties are set `true` to prevent the STS from issuing tokens that are not secure. It is recommended that these properties never be set to `false` in a production environment.  
+    >  既定では、 <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A> と <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A> プロパティが設定 `true` STS がセキュリティで保護されていないトークンを発行することを防ぐためです。 これらのプロパティを設定しないことをお勧め `false` を運用環境にします。  
   
--   Determine the address to which the response should be returned. Set either the <xref:System.IdentityModel.Scope.AppliesToAddress%2A> or <xref:System.IdentityModel.Scope.ReplyToAddress%2A> property accordingly.  
+-   応答を返す必要があるアドレスを決定します。 いずれかの設定、 <xref:System.IdentityModel.Scope.AppliesToAddress%2A> または <xref:System.IdentityModel.Scope.ReplyToAddress%2A> プロパティ適切です。  
   
    
   
-## Examples  
- The code example that is used in this topic is taken from the `Custom Token` sample. This sample provides custom classes that enable processing of Simple Web Tokens (SWT) and it includes an implementation of a passive STS that is capable of serving an SWT token. For an example of how to implement an active STS, you can see the `Federation Metadata` sample. For information about these samples and other samples available for WIF and about where to download them, see [WIF Code Sample Index](~/docs/framework/security/wif-code-sample-index.md).  
+## 例  
+ ここで使用するコード例から取得、 `Custom Token` サンプルです。 このサンプルは、Simple Web Token \(SWT\) の処理を有効にするカスタム クラスを提供し、SWT トークンのサービスを提供できるは、パッシブ STS の実装が含まれています。 アクティブ STS を実装する方法の例は、について確認できます、 `Federation Metadata` サンプルです。 Wif とそのダウンロード場所については、これらのサンプルを使用できるその他のサンプルについて、次を参照してください。 [WIF Code Sample Index](http://msdn.microsoft.com/ja-jp/6711f01a-4743-43ce-95ab-5e2302a363ea)します。  
   
- The following code example shows an implementation of the <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> method. This implementation verifies that the RP is recognized by the STS, validates the <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> address in the request and sets the <xref:System.IdentityModel.Scope.ReplyToAddress%2A?displayProperty=fullName> property accordingly, and sets the signing and encrypting credentials to use with the RP based on certificates that are hard-coded in the file.  
+ <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> メソッドを実装する方法を次のコード例に示します。 この実装では、RP が認識されること、STS によって検証を確認、 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> 要求とセット内のアドレス、 <xref:System.IdentityModel.Scope.ReplyToAddress%2A?displayProperty=fullName> プロパティ、およびファイルには、ハード コーディングされている証明書に基づいて、RP で使用する、署名と資格情報の暗号化を設定します。  
   
  [!code-csharp[WIFCustomTokenSTS#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#4)]  
 [!code-csharp[WIFCustomTokenSTS#5](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#5)]  
@@ -771,6 +800,8 @@
         <block subset="none" type="overrides">
           <para>You must override this method in your implementation of the <see cref="T:System.IdentityModel.SecurityTokenService" /> class.</para>
         </block>
+        <altmember cref="T:System.IdentityModel.Scope" />
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="GetSecurityTokenHandler">
@@ -789,19 +820,20 @@
         <Parameter Name="requestedTokenType" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="requestedTokenType">A string that contains the requested token type URI.</param>
-        <summary>Gets the appropriate security token handler for issuing a security token of the specified type.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Tokens.SecurityTokenHandler" /> that represents the token handler to be used for creating the issued security token. Returns <see langword="null" /> if the requested token type is not supported (there is no handler configured for the specified token type).</returns>
+        <param name="requestedTokenType">要求されたトークンの種類の URI を含む文字列です。</param>
+        <summary>指定した型のセキュリティ トークンを発行するためには、適切なセキュリティ トークン ハンドラーを取得します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Tokens.SecurityTokenHandler" /> 発行されたセキュリティ トークンを作成するために使用するトークン ハンドラーを表します。 返します。 <see langword="null" /> 要求トークンの種類がサポートされていない場合 \(指定されたトークンの種類用に構成されたハンドラーはありません\)。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In the default implementation if `requestedTokenType` is `null` or an empty string, the default token type from configuration is used. This is specified by the <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenType%2A> property of the STS configuration object accessed through the <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> property.  
+## 解説  
+ 既定の実装で場合 `requestedTokenType` は `null` または空の文字列、既定の構成からのトークンの種類を使用します。 これは指定、 <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenType%2A> を使用してアクセス STS 構成オブジェクトのプロパティ、 <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> プロパティです。  
   
- This method is called from the default token issuance pipeline implemented in the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method.  
+ トークンの発行のパイプラインとして実装された既定値からこのメソッドは、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="GetTokenLifetime">
@@ -820,26 +852,27 @@
         <Parameter Name="requestLifetime" Type="System.IdentityModel.Protocols.WSTrust.Lifetime" />
       </Parameters>
       <Docs>
-        <param name="requestLifetime">A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> that represents the requested lifetime.</param>
-        <summary>Gets the lifetime for the issued token.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> that represents the granted lifetime.</returns>
+        <param name="requestLifetime">A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> 要求の有効期間を表します。</param>
+        <summary>発行済みトークンの有効期間を取得します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> 付与されている有効期間を表します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is normally called with the lifetime that arrived in the RST. In the default implementation, the token lifetime is calculated according to the following table.  
+## 解説  
+ 通常、このメソッドは、RST に到達した有効期間を持つ呼び出されます。 既定の実装では、トークンの有効期間は、次の表に従って計算されます。  
   
-|Created (in)|Expires (in)|Created (in)|Expires (out)|  
-|--------------------|--------------------|--------------------|---------------------|  
-|`null`|`null`|<xref:System.DateTime.UtcNow%2A?displayProperty=fullName>|<xref:System.DateTime.UtcNow%2A?displayProperty=fullName> + <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=fullName>|  
-|C|`null`|C|C + <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=fullName>|  
+|作成 \(in\)|有効期限\)|作成 \(in\)|\(Out\) 有効期限が切れる|  
+|---------------|------------|---------------|----------------------|  
+|`null`|`null`|<xref:System.DateTime.UtcNow%2A?displayProperty=fullName>|<xref:System.DateTime.UtcNow%2A?displayProperty=fullName> \+ <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=fullName>|  
+|C|`null`|C|C \+ <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=fullName>|  
 |`null`|E|<xref:System.DateTime.UtcNow%2A?displayProperty=fullName>|E|  
 |C|E|C|E|  
   
- This method is called from the default token issuance pipeline implemented in the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method.  
+ トークンの発行のパイプラインとして実装された既定値からこのメソッドは、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
     <Member MemberName="Issue">
@@ -859,35 +892,35 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <summary>Issues a security token.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that contains the issued security token.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <summary>セキュリティ トークンを発行します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> 発行されたセキュリティ トークンを格納しています。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method implements the Issue binding defined in the WS-Trust specification. The default implementation of the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method processes the incoming request (RST) through a token issuance (claims issuance) pipeline and returns either a response (RSTR) that contains a security token with the appropriate claims to authenticate the requestor with the RP or an appropriate exception. The token issuance pipeline in the default implementation consists of calls to the following methods (of the <xref:System.IdentityModel.SecurityTokenService> class).  
+## 解説  
+ このメソッドでは、Ws\-trust 仕様で定義されている問題のバインディングを実装します。 既定の実装、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッドは、トークンの発行 \(要求の発行\) パイプラインを介して受信した要求 \(RST\) を処理し、RP と、要求元の認証に適切なクレームを含むセキュリティ トークンを含む応答 \(RSTR\) または適切な例外を返します。 既定の実装でトークンの発行のパイプラインは、次のメソッドに対する呼び出しで構成されます \(の <xref:System.IdentityModel.SecurityTokenService> クラス\)。  
   
-1.  The <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> method to validate the request (RST).  
+1.  <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> 要求 \(RST\) を検証するメソッドです。  
   
-2.  The <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> method to get a <xref:System.IdentityModel.Scope> object that contains information about the relying party (RP) associated with the request. You must override this method. If <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> returns `null`, a <xref:System.InvalidOperationException> is thrown.  
+2.  <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 取得するメソッド、 <xref:System.IdentityModel.Scope> 証明書利用者 \(RP\)、要求に関連付けられている情報を含むオブジェクト。 このメソッドをオーバーライドする必要があります。 場合 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 返します `null`, 、 <xref:System.InvalidOperationException> がスローされます。  
   
-3.  The <xref:System.IdentityModel.SecurityTokenService.CreateSecurityTokenDescriptor%2A> method to return a security token descriptor based on the RST and the <xref:System.IdentityModel.Scope> object returned in the previous step. The security token descriptor (<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor>) contains information about the request in a form that can be used by a token handler. The <xref:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor%2A?displayProperty=fullName> property is set to the descriptor returned by the call. If `null` is returned or if the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials%2A> property of the descriptor is `null`, an <xref:System.InvalidOperationException> is thrown. The exception is also thrown if the <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A?displayProperty=fullName> property is `true` but the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.EncryptingCredentials%2A> property on the returned descriptor is `null`.  
+3.  <xref:System.IdentityModel.SecurityTokenService.CreateSecurityTokenDescriptor%2A> RST に基づいてセキュリティ トークンの記述子を返すメソッド、および <xref:System.IdentityModel.Scope> オブジェクトは、前の手順で返されます。 セキュリティ トークンの記述子 \(<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor>\)、トークン ハンドラーで使用できる形式で要求に関する情報が含まれています。<xref:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor%2A?displayProperty=fullName> プロパティは、呼び出しによって返された記述子に設定します。 場合 `null` が返されます場合や、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials%2A> 記述子のプロパティは、 `null`, 、 <xref:System.InvalidOperationException> がスローされます。 場合にも、例外がスローされます、 <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A?displayProperty=fullName> プロパティは `true` が、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.EncryptingCredentials%2A> 返された記述子のプロパティは `null`です。  
   
-4.  The <xref:System.IdentityModel.SecurityTokenService.GetSecurityTokenHandler%2A> method to get the appropriate token handler based on the kind of token requested. If `null` is returned, a <xref:System.NotImplementedException> is thrown.  
+4.  <xref:System.IdentityModel.SecurityTokenService.GetSecurityTokenHandler%2A> 要求されたトークンの種類に基づいて、適切なトークン ハンドラーを取得します。 場合 `null` が返されると、 <xref:System.NotImplementedException> がスローされます。  
   
-5.  The <xref:System.IdentityModel.SecurityTokenService.GetIssuerName%2A> method to get the issuer name for the token. Throws an <xref:System.InvalidOperationException> if the name is `null` or empty; otherwise sets the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.TokenIssuerName%2A> property on the descriptor.  
+5.  <xref:System.IdentityModel.SecurityTokenService.GetIssuerName%2A> トークンの発行者名を取得します。 スロー、 <xref:System.InvalidOperationException> 名がある場合 `null` または空の場合、それ以外の場合設定、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.TokenIssuerName%2A> プロパティ記述子にします。  
   
-6.  The <xref:System.IdentityModel.SecurityTokenService.GetTokenLifetime%2A> method to get the lifetime for the token and sets the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Lifetime%2A> property on the descriptor.  
+6.  <xref:System.IdentityModel.SecurityTokenService.GetTokenLifetime%2A> トークンとセットの有効期間を取得するメソッド、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Lifetime%2A> プロパティ記述子にします。  
   
-7.  The <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> method to get the proof token to include in the issued token and sets the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Proof%2A> property on the descriptor.  
+7.  <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> の発行済みトークンのセットに含まれる証明トークンを取得するメソッド、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Proof%2A> プロパティ記述子にします。  
   
-8.  The <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> method to get the claims to include in the issued token and sets the <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Subject%2A> property on the descriptor. You must override this method.  
+8.  <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> の発行済みトークンのセットに含まれるクレームを取得するメソッド、 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Subject%2A> プロパティ記述子にします。 このメソッドをオーバーライドする必要があります。  
   
-9. The <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> method to create a response (RSTR) that contains the issued token.  
+9. <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> 発行済みトークンを含む応答 \(RSTR\) を作成します。  
   
- You can override the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method to implement a custom token issuance pipeline; however this is typically not necessary in the development and test environments for which most custom implementations of the <xref:System.IdentityModel.SecurityTokenService> class are intended. In many of these cases you override the <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> and <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> methods and optionally override the <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> method  to provide a serviceable STS for your environment. If further customization is necessary you can often provide it by overriding the methods that implement each stage of the default token issuance pipeline listed above.  
+ オーバーライドすることができます、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> トークンの発行をカスタム パイプラインを実装するメソッド。 ただしこれは通常、開発およびテスト環境の実装の大部分のユーザー設定するために必要な、 <xref:System.IdentityModel.SecurityTokenService> クラスが対象としています。 オーバーライドするには、多くの場合、 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> と <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> メソッドし、必要に応じてオーバーライドして、 <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> 、環境の保守の STS を提供するメソッドです。 さらにカスタマイズが必要な場合は、既定のトークンの発行のパイプラインが上記の各ステージを実装するメソッドをオーバーライドすることで多くの場合、指定できます。  
   
  ]]></format>
         </remarks>
@@ -906,9 +939,14 @@
         <ReturnType>System.Security.Claims.ClaimsPrincipal</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the principal associated with the current instance.</summary>
-        <value>A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the current principal.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得または現在のインスタンスに関連付けられているプリンシパルを設定します。</summary>
+        <value>A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 、現在のプリンシパルを表します。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Renew">
@@ -928,15 +966,15 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <summary>When overridden in a derived class, processes a WS-Trust Renew request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust の更新の要求を処理します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -955,9 +993,14 @@
         <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityToken</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the security token request (RST) associated with the current instance.</summary>
-        <value>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that contains the request.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得または現在のインスタンスに関連付けられているセキュリティ トークン要求 \(RST\) を設定します。</summary>
+        <value>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> 要求を含みます。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Scope">
@@ -973,9 +1016,14 @@
         <ReturnType>System.IdentityModel.Scope</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the scope associated with the current instance.</summary>
-        <value>A <see cref="T:System.IdentityModel.Scope" /> that represents the configuration for the token issuance request.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得または現在のインスタンスに関連付けられたスコープを設定します。</summary>
+        <value>A <see cref="T:System.IdentityModel.Scope" /> を表すトークンの発行要求を構成します。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SecurityTokenDescriptor">
@@ -991,10 +1039,15 @@
         <ReturnType>System.IdentityModel.Tokens.SecurityTokenDescriptor</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.IdentityModel.Tokens.SecurityTokenDescriptor" /> associated with the current instance.</summary>
-        <value>The security token descriptor that is associated with the current instance.</value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">An attempt to set the property to <see langword="null" /> occurs.</exception>
+        <summary>取得または設定、 <see cref="T:System.IdentityModel.Tokens.SecurityTokenDescriptor" /> 現在のインスタンスに関連付けられています。</summary>
+        <value>現在のインスタンスに関連付けられているセキュリティ トークン記述子。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">プロパティを設定しようとすると、 <see langword="null" /> に発生します。</exception>
       </Docs>
     </Member>
     <Member MemberName="SecurityTokenServiceConfiguration">
@@ -1010,9 +1063,14 @@
         <ReturnType>System.IdentityModel.Configuration.SecurityTokenServiceConfiguration</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the owner configuration instance.</summary>
-        <value>A <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> that contains the configuration for the current instance.</value>
-        <remarks>To be added.</remarks>
+        <summary>構成のインスタンスの所有者を取得します。</summary>
+        <value>A <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> 現在のインスタンスの構成を含みます。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Validate">
@@ -1032,15 +1090,15 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> that represents the identity of the token requestor.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the security token request. This includes the request message as well as other client related information such as authorization context.</param>
-        <summary>When overridden in a derived class, processes a WS-Trust Validate request.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> that represents the RSTR to return to the caller.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> トークンの要求元の id を表します。</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> セキュリティ トークンの要求を表します。 これにより、要求が含まれます。 メッセージとその他のクライアントは、承認コンテキストなどの情報を関連します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、Ws\-trust の検証の要求を処理します。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> を表す、RSTR、呼び出し元に戻ります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method throws an <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+## 解説  
+ このメソッドの既定の実装をスローする <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>です。  
   
  ]]></format>
         </remarks>
@@ -1062,33 +1120,34 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> that represents the request.</param>
-        <summary>Validates the security token request (RST) encapsulated by this instance.</summary>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> 要求を表します。</param>
+        <summary>このインスタンスによってカプセル化されたセキュリティ トークン要求 \(RST\) を検証します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> method is called from the token issuance pipeline (the <xref:System.IdentityModel.SecurityTokenService.Issue%2A> method) to validate the incoming RST. The RST is validated against the requirements (policy) of the STS and an appropriate exception is thrown if it is not valid.  
+## 解説  
+ <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> トークンの発行パイプラインから呼び出されます \(、 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> メソッド\) を受信 RST を検証します。 RST は STS の要件 \(ポリシー\) に対して検証し、無効な場合に、適切な例外がスローされます。  
   
- The default implementation of the <xref:System.IdentityModel.SecurityTokenService> class supports only the RST-RSTR pattern and only the Issue binding of the WS-Trust specification (the <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType%2A> property of the request must be set to <xref:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue?displayProperty=fullName>). The default implementation of this method enforces these requirements (and others noted in the exceptions section). You can override this method if you must enforce different validation requirements for your custom STS.  
+ 既定の実装、 <xref:System.IdentityModel.SecurityTokenService> クラスは、RST、RSTR パターンのみと Ws\-trust 仕様の問題のバインドのみサポート \(、 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType%2A> に要求のプロパティを設定する必要があります <xref:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue?displayProperty=fullName>\)。 このメソッドの既定の実装は、これらの要件を強制 \(および \[例外\] セクションに記載されている他のユーザー\)。 このメソッドをオーバーライドするには、場合は、カスタム STS の別の検証の要件を適用する必要があります。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.IdentityModel.Protocols.WSTrust.InvalidRequestException">
-          <paramref name="request" /> is <see langword="null" />.  
+          <paramref name="request" /> は <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType" /> property of the request is not set to <see cref="F:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue" />.  
+ <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType" /> に要求のプロパティが設定されていない <see cref="F:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue" />します。  
   
- -or-  
+ または  
   
- The <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> property of the request is not <see langword="null" /> or one of the constants defined in the <see cref="T:System.IdentityModel.Protocols.WSTrust.KeyTypes" /> class.  
+ <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> 要求のプロパティは使用されません <see langword="null" /> で定義されている定数のいずれか、または、 <see cref="T:System.IdentityModel.Protocols.WSTrust.KeyTypes" /> クラスです。  
   
- -or-  
+ または  
   
- The <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> of the request is <see cref="F:System.IdentityModel.Protocols.WSTrust.KeyTypes.Bearer" /> and the <see langword="KeySize" /> element is present, but its value is not equal to zero.</exception>
-        <exception cref="T:System.IdentityModel.UnsupportedTokenTypeBadRequestException">The STS does not support the request token type (based on the value of the <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.TokenType" /> property of the request).</exception>
+ <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> は、要求の <see cref="F:System.IdentityModel.Protocols.WSTrust.KeyTypes.Bearer" /> と <see langword="KeySize" /> 要素が含まれているが、その値は 0 に等しい。</exception>
+        <exception cref="T:System.IdentityModel.UnsupportedTokenTypeBadRequestException">STS がトークンの要求の種類をサポートしていません \(の値に基づいて、 <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.TokenType" /> 要求のプロパティ\)。</exception>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
   </Members>

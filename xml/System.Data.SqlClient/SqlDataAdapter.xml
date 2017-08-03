@@ -31,36 +31,36 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents a set of data commands and a database connection that are used to fill the <see cref="T:System.Data.DataSet" /> and update a SQL Server database. This class cannot be inherited.</summary>
+    <summary>データ コマンドのセットと、<see cref="T:System.Data.DataSet" /> の格納および SQL Server データベースの更新に使用されるデータベース接続を表します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Data.SqlClient.SqlDataAdapter>, serves as a bridge between a <xref:System.Data.DataSet> and SQL Server for retrieving and saving data. The <xref:System.Data.SqlClient.SqlDataAdapter> provides this bridge by mapping <xref:System.Data.Common.DbDataAdapter.Fill%2A>, which changes the data in the <xref:System.Data.DataSet> to match the data in the data source, and <xref:System.Data.Common.DbDataAdapter.Update%2A>, which changes the data in the data source to match the data in the <xref:System.Data.DataSet>, using the appropriate Transact-SQL statements against the data source. The update is performed on a by-row basis. For every inserted, modified, and deleted row, the <xref:System.Data.Common.DbDataAdapter.Update%2A> method determines the type of change that has been performed on it (`Insert`, `Update`, or `Delete`). Depending on the type of change, the `Insert`, `Update`, or `Delete` command template executes to propagate the modified row to the data source. When the <xref:System.Data.SqlClient.SqlDataAdapter> fills a <xref:System.Data.DataSet>, it creates the necessary tables and columns for the returned data if they do not already exist. However, primary key information is not included in the implicitly created schema unless the <xref:System.Data.Common.DataAdapter.MissingSchemaAction%2A> property is set to <xref:System.Data.MissingSchemaAction.AddWithKey>. You may also have the <xref:System.Data.SqlClient.SqlDataAdapter> create the schema of the <xref:System.Data.DataSet>, including primary key information, before filling it with data using `FillSchema`. For more information, see [Adding Existing Constraints to a DataSet](~/docs/framework/data/adonet/adding-existing-constraints-to-a-dataset.md).  
+## 解説  
+ <xref:System.Data.SqlClient.SqlDataAdapter>, 、間の仲介役として機能する <xref:System.Data.DataSet> と SQL Server を取得して、データを保存します。<xref:System.Data.SqlClient.SqlDataAdapter> マッピングすることによってこのブリッジは、 <xref:System.Data.Common.DbDataAdapter.Fill%2A>, 、内のデータを変更する、 <xref:System.Data.DataSet> データ ソースのデータと一致して <xref:System.Data.Common.DbDataAdapter.Update%2A>, のデータと一致するデータ ソースのデータを変更する、 <xref:System.Data.DataSet>, 、データ ソースに対して適切な TRANSACT\-SQL ステートメントを使用します。 更新プログラムは、行ごとに実行されます。 すべての挿入、変更、および削除された行に対して、 <xref:System.Data.Common.DbDataAdapter.Update%2A> メソッドで行われた変更の種類を判断する \(`Insert`, 、`Update`, 、または `Delete`\)。 変更の種類に応じて、 `Insert`, 、`Update`, 、または `Delete` コマンド テンプレートを変更した行のデータ ソースに反映されるまで実行します。 ときに、 <xref:System.Data.SqlClient.SqlDataAdapter> 塗りつぶします、 <xref:System.Data.DataSet>, 、まだ存在しない場合、必要なテーブルと返されたデータの列を作成しています。 ただし、主キー情報は含まれません暗黙的に作成されたスキーマにしない限り、 <xref:System.Data.Common.DataAdapter.MissingSchemaAction%2A> にプロパティが設定されている <xref:System.Data.MissingSchemaAction.AddWithKey>します。 こともできます、 <xref:System.Data.SqlClient.SqlDataAdapter> のスキーマを作成、 <xref:System.Data.DataSet>, を使用してデータを入力する前に、主キーの情報を含む `FillSchema`します。 詳細については、「[Adding Existing Constraints to a DataSet](http://msdn.microsoft.com/ja-jp/307d2809-208b-4cf8-b6a9-5d16f15fc16c)」を参照してください。  
   
- <xref:System.Data.SqlClient.SqlDataAdapter> is used in conjunction with <xref:System.Data.SqlClient.SqlConnection> and <xref:System.Data.SqlClient.SqlCommand> to increase performance when connecting to a SQL Server database.  
-  
-> [!NOTE]
->  If you are using SQL Server stored procedures to edit or delete data using a `DataAdapter`, make sure that you do not use SET NOCOUNT ON in the stored procedure definition. This causes the rows affected count returned to be zero, which the `DataAdapter` interprets as a concurrency conflict. In this event, a <xref:System.Data.DBConcurrencyException> will be thrown.  
-  
- The <xref:System.Data.SqlClient.SqlDataAdapter> also includes the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, and <xref:System.Data.Common.DataAdapter.TableMappings%2A> properties to facilitate the loading and updating of data.  
-  
- When an instance of <xref:System.Data.SqlClient.SqlDataAdapter> is created, the read/write properties are set to initial values. For a list of these values, see the <xref:System.Data.SqlClient.SqlDataAdapter> constructor.  
-  
- The <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A>, and <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> are generic templates that are automatically filled with individual values from every modified row through the parameters mechanism.  
-  
- For every column that you propagate to the data source on <xref:System.Data.Common.DbDataAdapter.Update%2A>, a parameter should be added to the `InsertCommand`, `UpdateCommand`, or `DeleteCommand`. The <xref:System.Data.Common.DbParameter.SourceColumn%2A> property of the <xref:System.Data.Common.DbParameter> object should be set to the name of the column. This setting indicates that the value of the parameter is not set manually, but is taken from the particular column in the currently processed row.  
+ <xref:System.Data.SqlClient.SqlDataAdapter> 組み合わせて使用 <xref:System.Data.SqlClient.SqlConnection> と <xref:System.Data.SqlClient.SqlCommand> SQL Server データベースに接続するときにパフォーマンスを向上させる。  
   
 > [!NOTE]
->  An <xref:System.InvalidOperationException> will occur if the <xref:System.Data.Common.DbDataAdapter.Fill%2A> method is called and the table contains a user-defined type that is not available on the client computer. For more information, see [Creating and Using User-Defined Types](http://go.microsoft.com/fwlink/?LinkId=139492) in SQL Server Books Online.  
+>  SQL Server のストアド プロシージャで、`DataAdapter` を使用してデータを編集または削除する場合、ストアド プロシージャの定義に SET NOCOUNT ON は使用しないでください。 処理された行数がゼロとして返され、`DataAdapter` によって同時実行の競合として解釈されてしまいます。 この場合、<xref:System.Data.DBConcurrencyException> がスローされます。  
+  
+ <xref:System.Data.SqlClient.SqlDataAdapter> も含まれています、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, 、および <xref:System.Data.Common.DataAdapter.TableMappings%2A> を読み込み、データの更新を容易にするプロパティです。  
+  
+ インスタンス <xref:System.Data.SqlClient.SqlDataAdapter> が作成、読み取り\/書き込みプロパティの初期値に設定されます。 これらの値の一覧は、次を参照してください。、 <xref:System.Data.SqlClient.SqlDataAdapter> コンス トラクターです。  
+  
+ <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A>, 、および <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> パラメーター メカニズムによって変更されたすべての行から個々 の値で自動的に埋められた一般的なテンプレートです。  
+  
+ \[データ ソースに反映されるすべての列に対して <xref:System.Data.Common.DbDataAdapter.Update%2A>, には、パラメーターを追加する必要があります、 `InsertCommand`, 、`UpdateCommand`, 、または `DeleteCommand`です。<xref:System.Data.Common.DbParameter.SourceColumn%2A> のプロパティ、 <xref:System.Data.Common.DbParameter> オブジェクトは、列の名前に設定する必要があります。 この設定は、パラメーターの値が、手動で設定されていないが、現在処理されている行の特定の列から取得したことを示します。  
+  
+> [!NOTE]
+>  <xref:System.InvalidOperationException> 場合に発生するが、 <xref:System.Data.Common.DbDataAdapter.Fill%2A> メソッドが呼び出され、テーブルにはで、クライアント コンピューターが利用できないユーザー定義の型が含まれています。 詳細については、次を参照してください。 [Creating and Using User\-Defined Types](http://go.microsoft.com/fwlink/?LinkId=139492) SQL Server オンライン ブック。  
   
    
   
-## Examples  
- The following example uses the <xref:System.Data.SqlClient.SqlCommand>, <xref:System.Data.SqlClient.SqlDataAdapter>, and <xref:System.Data.SqlClient.SqlConnection> to select records from a database and populate a <xref:System.Data.DataSet> with the selected rows. The filled <xref:System.Data.DataSet> is then returned. To accomplish this, the method is passed an initialized <xref:System.Data.DataSet>, a connection string, and a query string that is a Transact-SQL SELECT statement.  
+## 例  
+ 次の例では、 <xref:System.Data.SqlClient.SqlCommand>, 、<xref:System.Data.SqlClient.SqlDataAdapter>, と <xref:System.Data.SqlClient.SqlConnection> をデータベースからレコードを選択し、設定、 <xref:System.Data.DataSet> 、選択した行にします。 塗りつぶされた、 <xref:System.Data.DataSet> 返されます。 これを実現する、メソッドは渡される初期化された <xref:System.Data.DataSet>, 、接続文字列の場合、およびクエリ文字列では、TRANSACT\-SQL SELECT ステートメントです。  
   
- [!code-csharp[Classic WebData SqlDataAdapter Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter Example/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -82,27 +82,28 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> class.</summary>
+        <summary>
+          <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When an instance of <xref:System.Data.SqlClient.SqlDataAdapter> is created, the following read/write properties are set to the following initial values.  
+## 解説  
+ インスタンス <xref:System.Data.SqlClient.SqlDataAdapter> 作成されると、次読み取り\/書き込みプロパティは、次の初期値に設定されます。  
   
-|Properties|Initial value|  
-|----------------|-------------------|  
+|プロパティ|初期値|  
+|-----------|---------|  
 |<xref:System.Data.Common.DataAdapter.MissingMappingAction%2A>|`MissingMappingAction.Passthrough`|  
 |<xref:System.Data.Common.DataAdapter.MissingSchemaAction%2A>|`MissingSchemaAction.Add`|  
   
- You can change the value of any of these properties through a separate call to the property.  
+ プロパティに別個の呼び出しでこれらのプロパティのいずれかの値を変更することができます。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets some of its properties.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、一部のプロパティを設定します。  
   
- [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -126,32 +127,32 @@
         <Parameter Name="selectCommand" Type="System.Data.SqlClient.SqlCommand" />
       </Parameters>
       <Docs>
-        <param name="selectCommand">A <see cref="T:System.Data.SqlClient.SqlCommand" /> that is a Transact-SQL SELECT statement or stored procedure and is set as the <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> property of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> class with the specified <see cref="T:System.Data.SqlClient.SqlCommand" /> as the <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> property.</summary>
+        <param name="selectCommand">A <see cref="T:System.Data.SqlClient.SqlCommand" /> TRANSACT\-SQL SELECT ステートメントまたはストアド プロシージャととして設定されている、 <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> のプロパティ、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" />です。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> 、指定したクラス <see cref="T:System.Data.SqlClient.SqlCommand" /> として、 <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> プロパティです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This implementation of the <xref:System.Data.SqlClient.SqlDataAdapter> constructor sets the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> property to the value specified in the `selectCommand` parameter.  
+## 解説  
+ この実装の <xref:System.Data.SqlClient.SqlDataAdapter> コンス トラクターのセット、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> プロパティで指定された値を `selectCommand` パラメーター。  
   
- When an instance of <xref:System.Data.SqlClient.SqlDataAdapter> is created, the following read/write properties are set to the following initial values.  
+ インスタンス <xref:System.Data.SqlClient.SqlDataAdapter> 作成されると、次読み取り\/書き込みプロパティは、次の初期値に設定されます。  
   
-|Properties|Initial value|  
-|----------------|-------------------|  
+|プロパティ|初期値|  
+|-----------|---------|  
 |<xref:System.Data.Common.DataAdapter.MissingMappingAction%2A>|`MissingMappingAction.Passthrough`|  
 |<xref:System.Data.Common.DataAdapter.MissingSchemaAction%2A>|`MissingSchemaAction.Add`|  
   
- You can change the value of any of these properties through a separate call to the property.  
+ プロパティに別個の呼び出しでこれらのプロパティのいずれかの値を変更することができます。  
   
- When <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> (or any of the other command properties) is assigned to a previously created <xref:System.Data.SqlClient.SqlCommand>, the <xref:System.Data.SqlClient.SqlCommand> is not cloned. The <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> maintains a reference to the previously created <xref:System.Data.SqlClient.SqlCommand> object.  
+ <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> \(またはその他のコマンド プロパティのいずれか\) が割り当てられている以前に作成した <xref:System.Data.SqlClient.SqlCommand>, 、 <xref:System.Data.SqlClient.SqlCommand> 複製されません。<xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> 以前に作成したへの参照を保持 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets some of its properties.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、一部のプロパティを設定します。  
   
- [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter1 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter1 Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter1 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter1 Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter1 Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter1 Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter1 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter1 Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -176,31 +177,31 @@
         <Parameter Name="selectConnection" Type="System.Data.SqlClient.SqlConnection" />
       </Parameters>
       <Docs>
-        <param name="selectCommandText">A <see cref="T:System.String" /> that is a Transact-SQL SELECT statement or stored procedure to be used by the <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> property of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" />.</param>
-        <param name="selectConnection">A <see cref="T:System.Data.SqlClient.SqlConnection" /> that represents the connection. If your connection string does not use <see langword="Integrated Security = true" />, you can use <see cref="T:System.Data.SqlClient.SqlCredential" /> to pass the user ID and password more securely than by specifying the user ID and password as text in the connection string.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> class with a <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> and a <see cref="T:System.Data.SqlClient.SqlConnection" /> object.</summary>
+        <param name="selectCommandText">A <see cref="T:System.String" /> TRANSACT\-SQL SELECT ステートメントまたはストアド プロシージャで使用するのには、 <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> のプロパティ、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" />です。</param>
+        <param name="selectConnection">A <see cref="T:System.Data.SqlClient.SqlConnection" /> 接続を表します。 接続文字列で <see langword="Integrated Security = true" /> を使用しない場合、<see cref="T:System.Data.SqlClient.SqlCredential" /> を使用することによって、接続文字列内でユーザー ID とパスワードをテキストとして指定する場合よりも安全にユーザー ID とパスワードを渡すことができます。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> クラス、 <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> と <see cref="T:System.Data.SqlClient.SqlConnection" /> オブジェクトです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This implementation of the <xref:System.Data.SqlClient.SqlDataAdapter> opens and closes a <xref:System.Data.SqlClient.SqlConnection> if it is not already open. This can be useful in an application that must call the <xref:System.Data.Common.DbDataAdapter.Fill%2A> method for two or more <xref:System.Data.SqlClient.SqlDataAdapter> objects. If the <xref:System.Data.SqlClient.SqlConnection> is already open, you must explicitly call **Close** or **Dispose** to close it.  
+## 解説  
+ この実装の <xref:System.Data.SqlClient.SqlDataAdapter> を開いたり閉じたり、 <xref:System.Data.SqlClient.SqlConnection> が開いていない場合。 これ呼び出す必要のあるアプリケーションで役に立ちます、 <xref:System.Data.Common.DbDataAdapter.Fill%2A> メソッドの 2 つまたは複数 <xref:System.Data.SqlClient.SqlDataAdapter> オブジェクトです。 場合、 <xref:System.Data.SqlClient.SqlConnection> は既に開かれている、明示的に呼び出す必要があります **を閉じる** または **Dispose** を閉じます。  
   
- When an instance of <xref:System.Data.SqlClient.SqlDataAdapter> is created, the following read/write properties are set to the following initial values.  
+ インスタンス <xref:System.Data.SqlClient.SqlDataAdapter> 作成されると、次読み取り\/書き込みプロパティは、次の初期値に設定されます。  
   
-|Properties|Initial value|  
-|----------------|-------------------|  
+|プロパティ|初期値|  
+|-----------|---------|  
 |<xref:System.Data.Common.DataAdapter.MissingMappingAction%2A>|`MissingMappingAction.Passthrough`|  
 |<xref:System.Data.Common.DataAdapter.MissingSchemaAction%2A>|`MissingSchemaAction.Add`|  
   
- You can change the value of either of these properties through a separate call to the property.  
+ プロパティに別個の呼び出しでこれらのプロパティのいずれかの値を変更することができます。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets some of its properties.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、一部のプロパティを設定します。  
   
- [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter3 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter3 Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter3 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter3 Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter3 Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter3 Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter3 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter3 Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -225,31 +226,31 @@
         <Parameter Name="selectConnectionString" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="selectCommandText">A <see cref="T:System.String" /> that is a Transact-SQL SELECT statement or stored procedure to be used by the <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> property of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" />.</param>
-        <param name="selectConnectionString">The connection string. If your connection string does not use <see langword="Integrated Security = true" />, you can use <see cref="M:System.Data.SqlClient.SqlDataAdapter.#ctor(System.String,System.Data.SqlClient.SqlConnection)" /> and <see cref="T:System.Data.SqlClient.SqlCredential" /> to pass the user ID and password more securely than by specifying the user ID and password as text in the connection string.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> class with a <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> and a connection string.</summary>
+        <param name="selectCommandText">A <see cref="T:System.String" /> TRANSACT\-SQL SELECT ステートメントまたはストアド プロシージャで使用するのには、 <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> のプロパティ、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" />です。</param>
+        <param name="selectConnectionString">接続文字列。 接続文字列を使用しない場合 <see langword="Integrated Security = true" />, 、使用することができます <see cref="M:System.Data.SqlClient.SqlDataAdapter.#ctor(System.String,System.Data.SqlClient.SqlConnection)" /> と <see cref="T:System.Data.SqlClient.SqlCredential" /> ユーザー ID とパスワードをするよりも安全に渡す接続文字列内のテキストとしてユーザー ID とパスワードを指定することです。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> クラス、 <see cref="P:System.Data.SqlClient.SqlDataAdapter.SelectCommand" /> と接続文字列。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload of the <xref:System.Data.SqlClient.SqlDataAdapter> constructor uses the `selectCommandText` parameter to set the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> property. The <xref:System.Data.SqlClient.SqlDataAdapter> will create and maintain the connection created with the `selectConnectionString` parameter.  
+## 解説  
+ このオーバー ロード、 <xref:System.Data.SqlClient.SqlDataAdapter> コンス トラクターを使用して、 `selectCommandText` を設定するパラメーター、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> プロパティです。<xref:System.Data.SqlClient.SqlDataAdapter> が作成されで作成された接続を維持、 `selectConnectionString` パラメーター。  
   
- When an instance of <xref:System.Data.SqlClient.SqlDataAdapter> is created, the following read/write properties are set to the following initial values.  
+ インスタンス <xref:System.Data.SqlClient.SqlDataAdapter> 作成されると、次読み取り\/書き込みプロパティは、次の初期値に設定されます。  
   
-|Properties|Initial value|  
-|----------------|-------------------|  
+|プロパティ|初期値|  
+|-----------|---------|  
 |<xref:System.Data.Common.DataAdapter.MissingMappingAction%2A>|`MissingMappingAction.Passthrough`|  
 |<xref:System.Data.Common.DataAdapter.MissingSchemaAction%2A>|`MissingSchemaAction.Add`|  
   
- You can change the value of any of these properties through a separate call to the property.  
+ プロパティに別個の呼び出しでこれらのプロパティのいずれかの値を変更することができます。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets some of its properties.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、一部のプロパティを設定します。  
   
- [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter2 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter2 Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter2 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter2 Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter.SqlDataAdapter2 Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter2 Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter.SqlDataAdapter2 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.SqlDataAdapter2 Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -381,25 +382,25 @@
         <ReturnType>System.Data.SqlClient.SqlCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a Transact-SQL statement or stored procedure to delete records from the data set.</summary>
-        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to delete records in the database that correspond to deleted rows in the <see cref="T:System.Data.DataSet" />.</value>
+        <summary>取得または TRANSACT\-SQL ステートメントまたはデータ セットからレコードを削除するストアド プロシージャを設定します。</summary>
+        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> 時に使用される <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> に対応するデータベース レコードを削除するには、内の行を削除、 <see cref="T:System.Data.DataSet" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- During <xref:System.Data.Common.DbDataAdapter.Update%2A>, if this property is not set and primary key information is present in the <xref:System.Data.DataSet>, the <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> can be generated automatically if you set the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> property and use the <xref:System.Data.SqlClient.SqlCommandBuilder>. Then, any additional commands that you do not set are generated by the <xref:System.Data.SqlClient.SqlCommandBuilder>. This generation logic requires key column information to be present in the <xref:System.Data.DataSet>. For more information, see [Generating Commands with CommandBuilders](~/docs/framework/data/adonet/generating-commands-with-commandbuilders.md).  
+## 解説  
+ 中に <xref:System.Data.Common.DbDataAdapter.Update%2A>, このプロパティを設定しないと、主キー情報が内に存在する場合は、 <xref:System.Data.DataSet>, 、 <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> を設定する場合は、自動的に生成できる、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> プロパティと使用、 <xref:System.Data.SqlClient.SqlCommandBuilder>です。 次に、追加のコマンドを設定しないはによって生成される、 <xref:System.Data.SqlClient.SqlCommandBuilder>です。 この生成ロジックではキー列の情報に含まれる、 <xref:System.Data.DataSet>です。 詳細については、「[Automatically Generated Commands](http://msdn.microsoft.com/ja-jp/6e3fb8b5-373b-4f9e-ab03-a22693df8e91)」を参照してください。  
   
- When <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> is assigned to a previously created <xref:System.Data.SqlClient.SqlCommand>, the <xref:System.Data.SqlClient.SqlCommand> is not cloned. The <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> maintains a reference to the previously created <xref:System.Data.SqlClient.SqlCommand> object.  
+ <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> が割り当てられている以前に作成した <xref:System.Data.SqlClient.SqlCommand>, 、 <xref:System.Data.SqlClient.SqlCommand> 複製されません。<xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> 以前に作成したへの参照を保持 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
- For every column that you propagate to the data source on <xref:System.Data.Common.DbDataAdapter.Update%2A>, a parameter should be added to the `InsertCommand`, `UpdateCommand`, or `DeleteCommand`. The `SourceColumn` property of the parameter should be set to the name of the column. This indicates that the value of the parameter is not set manually, but is taken from the particular column in the currently processed row.  
+ \[データ ソースに反映されるすべての列に対して <xref:System.Data.Common.DbDataAdapter.Update%2A>, には、パラメーターを追加する必要があります、 `InsertCommand`, 、`UpdateCommand`, 、または `DeleteCommand`です。`SourceColumn` 列の名前に、パラメーターのプロパティを設定する必要があります。 これは、パラメーターの値が、手動で設定されていないが、現在処理されている行の特定の列から取得したことを示します。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, and <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> properties. It assumes you have already created a <xref:System.Data.SqlClient.SqlConnection> object.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、設定、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, 、および <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> プロパティです。 既に作成するいると想定して、 <xref:System.Data.SqlClient.SqlConnection> オブジェクトです。  
   
- [!code-csharp[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
- [!code-vb[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
+ [!code-csharp[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
+ [!code-vb[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -521,27 +522,27 @@
         <ReturnType>System.Data.SqlClient.SqlCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a Transact-SQL statement or stored procedure to insert new records into the data source.</summary>
-        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to insert records into the database that correspond to new rows in the <see cref="T:System.Data.DataSet" />.</value>
+        <summary>取得または TRANSACT\-SQL ステートメントまたはデータ ソースに新しいレコードを挿入するストアド プロシージャを設定します。</summary>
+        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> 時に使用される <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> で新しい行に対応するデータベースにレコードを挿入、 <see cref="T:System.Data.DataSet" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- During <xref:System.Data.Common.DbDataAdapter.Update%2A>, if this property is not set and primary key information is present in the <xref:System.Data.DataSet>, the <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A> can be generated automatically if you set the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> property and use the <xref:System.Data.SqlClient.SqlCommandBuilder>. Then, any additional commands that you do not set are generated by the <xref:System.Data.SqlClient.SqlCommandBuilder>. This generation logic requires key column information to be present in the <xref:System.Data.DataSet>. For more information, see [Generating Commands with CommandBuilders](~/docs/framework/data/adonet/generating-commands-with-commandbuilders.md).  
+## 解説  
+ 中に <xref:System.Data.Common.DbDataAdapter.Update%2A>, このプロパティを設定しないと、主キー情報が内に存在する場合は、 <xref:System.Data.DataSet>, 、 <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A> を設定する場合は、自動的に生成できる、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> プロパティと使用、 <xref:System.Data.SqlClient.SqlCommandBuilder>です。 次に、追加のコマンドを設定しないはによって生成される、 <xref:System.Data.SqlClient.SqlCommandBuilder>です。 この生成ロジックではキー列の情報に含まれる、 <xref:System.Data.DataSet>です。 詳細については、「[Automatically Generated Commands](http://msdn.microsoft.com/ja-jp/6e3fb8b5-373b-4f9e-ab03-a22693df8e91)」を参照してください。  
   
- When <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A> is assigned to a previously created <xref:System.Data.SqlClient.SqlCommand>, the <xref:System.Data.SqlClient.SqlCommand> is not cloned. The <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A> maintains a reference to the previously created <xref:System.Data.SqlClient.SqlCommand> object.  
+ <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A> が割り当てられている以前に作成した <xref:System.Data.SqlClient.SqlCommand>, 、 <xref:System.Data.SqlClient.SqlCommand> 複製されません。<xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A> 以前に作成したへの参照を保持 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
- If execution of this command returns rows, these rows can be added to the <xref:System.Data.DataSet> depending on how you set the **UpdatedRowSource** property of the <xref:System.Data.SqlClient.SqlCommand> object.  
+ これらの行に追加できるこのコマンドの実行には、行が返された場合、 <xref:System.Data.DataSet> の設定に応じて、 **UpdatedRowSource** のプロパティ、 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
- For every column that you propagate to the data source on <xref:System.Data.Common.DbDataAdapter.Update%2A>, a parameter should be added to `InsertCommand`, `UpdateCommand`, or `DeleteCommand`. The `SourceColumn` property of the parameter should be set to the name of the column. This indicates that the value of the parameter is not set manually, but is taken from the particular column in the currently processed row.  
+ \[データ ソースに反映されるすべての列に対して <xref:System.Data.Common.DbDataAdapter.Update%2A>, には、パラメーターを追加する必要があります `InsertCommand`, 、`UpdateCommand`, 、または `DeleteCommand`です。`SourceColumn` 列の名前に、パラメーターのプロパティを設定する必要があります。 これは、パラメーターの値が、手動で設定されていないが、現在処理されている行の特定の列から取得したことを示します。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, and <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> properties. It assumes you have already created a <xref:System.Data.SqlClient.SqlConnection> object.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、設定、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, 、および <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> プロパティです。 既に作成するいると想定して、 <xref:System.Data.SqlClient.SqlConnection> オブジェクトです。  
   
- [!code-csharp[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
- [!code-vb[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
+ [!code-csharp[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
+ [!code-vb[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -617,42 +618,42 @@
         <ReturnType>System.Data.SqlClient.SqlRowUpdatedEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> after a command is executed against the data source. The attempt to update is made, so the event fires.</summary>
+        <summary>中に発生した <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> データ ソースに対してコマンドが実行された後です。 更新の試行が行われたイベントが発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When using <xref:System.Data.Common.DbDataAdapter.Update%2A>, there are two events that occur per data row updated. The order of execution is as follows:  
+## 解説  
+ 使用する場合 <xref:System.Data.Common.DbDataAdapter.Update%2A>, 、更新されたデータ行ごとに発生する 2 つのイベントがあります。 実行の順序は次のとおりです。  
   
-1.  The values in the <xref:System.Data.DataRow> are moved to the parameter values.  
+1.  値、 <xref:System.Data.DataRow> パラメーターの値に移動します。  
   
-2.  The <xref:System.Data.Common.DbDataAdapter.OnRowUpdating%2A> event is raised.  
+2.  <xref:System.Data.Common.DbDataAdapter.OnRowUpdating%2A> イベントが発生します。  
   
-3.  The command executes.  
+3.  コマンドを実行します。  
   
-4.  If the command is set to `FirstReturnedRecord`, the first returned result is placed in the <xref:System.Data.DataRow>.  
+4.  コマンドに設定されている場合は、 `FirstReturnedRecord`, 、最初に返された結果に格納、 <xref:System.Data.DataRow>です。  
   
-5.  If there are output parameters, they are placed in the <xref:System.Data.DataRow>.  
+5.  出力パラメーターがある場合に置かれて、 <xref:System.Data.DataRow>です。  
   
-6.  The <xref:System.Data.Common.DbDataAdapter.OnRowUpdated%2A> event is raised.  
+6.  <xref:System.Data.Common.DbDataAdapter.OnRowUpdated%2A> イベントが発生します。  
   
-7.  <xref:System.Data.DataRow.AcceptChanges%2A> is called.  
+7.  <xref:System.Data.DataRow.AcceptChanges%2A> が呼ばれたとき。  
   
    
   
-## Examples  
- The following example shows how to use both the <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> and <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> events.  
+## 例  
+ 次の例では、両方を使用する方法、 <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> と <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> イベントです。  
   
- The <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> event returns this output:  
+ <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> イベントには、この出力が返されます。  
   
- event args: (command=System.Data.SqlClient.SqlCommand commandType=2 status=0)  
+ イベント引数: \(command\=System.Data.SqlClient.SqlCommand commandType 2 のステータスを \= \= 0\)  
   
- The <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> event returns this output:  
+ <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> イベントには、この出力が返されます。  
   
- event args: (command=System.Data.SqlClient.SqlCommand commandType=2 recordsAffected=1 row=System.Data.DataRow[37] status=0)  
+ イベント引数: \(command\=System.Data.SqlClient.SqlCommand commandType \= 2 recordsAffected \= 1 row\=System.Data.DataRow\[37\] ステータス \= 0\)  
   
- [!code-csharp[Classic WebData SqlDataAdapter.RowUpdated Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter.RowUpdated Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter.RowUpdated Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter.RowUpdated Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -676,42 +677,42 @@
         <ReturnType>System.Data.SqlClient.SqlRowUpdatingEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> before a command is executed against the data source. The attempt to update is made, so the event fires.</summary>
+        <summary>中に発生した <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> 、データ ソースに対してコマンドが実行される前にします。 更新の試行が行われたイベントが発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When using <xref:System.Data.Common.DbDataAdapter.Update%2A>, there are two events that occur per data row updated. The order of execution is as follows:  
+## 解説  
+ 使用する場合 <xref:System.Data.Common.DbDataAdapter.Update%2A>, 、更新されたデータ行ごとに発生する 2 つのイベントがあります。 実行の順序は次のとおりです。  
   
-1.  The values in the <xref:System.Data.DataRow> are moved to the parameter values.  
+1.  値、 <xref:System.Data.DataRow> パラメーターの値に移動します。  
   
-2.  The <xref:System.Data.Common.DbDataAdapter.OnRowUpdating%2A> event is raised.  
+2.  <xref:System.Data.Common.DbDataAdapter.OnRowUpdating%2A> イベントが発生します。  
   
-3.  The command executes.  
+3.  コマンドを実行します。  
   
-4.  If the command is set to `FirstReturnedRecord`, the first returned result is placed in the <xref:System.Data.DataRow>.  
+4.  コマンドに設定されている場合は、 `FirstReturnedRecord`, 、最初に返された結果に格納、 <xref:System.Data.DataRow>です。  
   
-5.  If there are output parameters, they are placed in the <xref:System.Data.DataRow>.  
+5.  出力パラメーターがある場合に置かれて、 <xref:System.Data.DataRow>です。  
   
-6.  The <xref:System.Data.Common.DbDataAdapter.OnRowUpdated%2A> event is raised.  
+6.  <xref:System.Data.Common.DbDataAdapter.OnRowUpdated%2A> イベントが発生します。  
   
-7.  <xref:System.Data.DataRow.AcceptChanges%2A> is called.  
+7.  <xref:System.Data.DataRow.AcceptChanges%2A> が呼ばれたとき。  
   
    
   
-## Examples  
- The following example shows how to use both the <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> and <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> events.  
+## 例  
+ 次の例では、両方を使用する方法、 <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> と <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> イベントです。  
   
- The <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> event returns this output:  
+ <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdating> イベントには、この出力が返されます。  
   
- event args: (command=System.Data.SqlClient.SqlCommand commandType=2 status=0)  
+ イベント引数: \(command\=System.Data.SqlClient.SqlCommand commandType 2 のステータスを \= \= 0\)  
   
- The <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> event returns this output:  
+ <xref:System.Data.SqlClient.SqlDataAdapter.RowUpdated> イベントには、この出力が返されます。  
   
- event args: (command=System.Data.SqlClient.SqlCommand commandType=2 recordsAffected=1 row=System.Data.DataRow[37] status=0)  
+ イベント引数: \(command\=System.Data.SqlClient.SqlCommand commandType \= 2 recordsAffected \= 1 row\=System.Data.DataRow\[37\] ステータス \= 0\)  
   
- [!code-csharp[Classic WebData SqlDataAdapter.RowUpdated Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlDataAdapter.RowUpdated Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlDataAdapter.RowUpdated Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlDataAdapter.RowUpdated Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataAdapter.RowUpdated Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -743,23 +744,23 @@
         <ReturnType>System.Data.SqlClient.SqlCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a Transact-SQL statement or stored procedure used to select records in the data source.</summary>
-        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> used during <see cref="M:System.Data.Common.DbDataAdapter.Fill(System.Data.DataSet)" /> to select records from the database for placement in the <see cref="T:System.Data.DataSet" />.</value>
+        <summary>取得または TRANSACT\-SQL ステートメントまたはストアド プロシージャをデータ ソース内のレコードを選択するために使用を設定します。</summary>
+        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> 時に使用される <see cref="M:System.Data.Common.DbDataAdapter.Fill(System.Data.DataSet)" /> に配置するデータベースからレコードを選択、 <see cref="T:System.Data.DataSet" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> is assigned to a previously created <xref:System.Data.SqlClient.SqlCommand>, the <xref:System.Data.SqlClient.SqlCommand> is not cloned. The <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> maintains a reference to the previously created <xref:System.Data.SqlClient.SqlCommand> object.  
+## 解説  
+ <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> が割り当てられている以前に作成した <xref:System.Data.SqlClient.SqlCommand>, 、 <xref:System.Data.SqlClient.SqlCommand> 複製されません。<xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> 以前に作成したへの参照を保持 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
- If the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> does not return any rows, no tables are added to the <xref:System.Data.DataSet>, and no exception is raised.  
+ 場合、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> 、どの行を返さないことにテーブルが追加されない、 <xref:System.Data.DataSet>, 、例外が発生しなかったとします。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, and <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> properties. It assumes you have already created a <xref:System.Data.SqlClient.SqlConnection> object.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、設定、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A>, 、および <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> プロパティです。 既に作成するいると想定して、 <xref:System.Data.SqlClient.SqlConnection> オブジェクトです。  
   
- [!code-csharp[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
- [!code-vb[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
+ [!code-csharp[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
+ [!code-vb[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -783,14 +784,17 @@
         <ReturnType>System.Data.IDbCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>For a description of this member, see <see cref="P:System.Data.IDbDataAdapter.DeleteCommand" />.</summary>
-        <value>An <see cref="T:System.Data.IDbCommand" /> that is used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to delete records in the data source for deleted rows in the data set.</value>
+        <summary>このメンバーの詳細については、「<see cref="P:System.Data.IDbDataAdapter.DeleteCommand" />」を参照してください。</summary>
+        <value>データ セットで削除される行のデータ ソース内のレコードを削除するために、<see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> 中で使用される <see cref="T:System.Data.IDbCommand" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Data.SqlClient.SqlDataAdapter> instance is cast to an <xref:System.Data.IDbDataAdapter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Data.SqlClient.SqlDataAdapter> のインスタンスが <xref:System.Data.IDbDataAdapter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -813,14 +817,18 @@
         <ReturnType>System.Data.IDbCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>For a description of this member, see <see cref="P:System.Data.IDbDataAdapter.InsertCommand" />.</summary>
-        <value>An <see cref="T:System.Data.IDbCommand" /> that is used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to insert records in the data source for new rows in the data set.</value>
+        <summary>このメンバーの詳細については、「<see cref="P:System.Data.IDbDataAdapter.InsertCommand" />」をご覧ください。</summary>
+        <value>
+          <see cref="T:System.Data.IDbCommand" />中に使用される<see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" />データ セットの新しい行のデータ ソースのレコードを挿入します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Data.SqlClient.SqlDataAdapter> instance is cast to an <xref:System.Data.IDbDataAdapter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Data.SqlClient.SqlDataAdapter> のインスタンスが <xref:System.Data.IDbDataAdapter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -843,14 +851,18 @@
         <ReturnType>System.Data.IDbCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>For a description of this member, see <see cref="P:System.Data.IDbDataAdapter.SelectCommand" />.</summary>
-        <value>An <see cref="T:System.Data.IDbCommand" /> that is used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to select records from data source for placement in the data set.</value>
+        <summary>このメンバーの詳細については、「<see cref="P:System.Data.IDbDataAdapter.SelectCommand" />」を参照してください。</summary>
+        <value>
+          <see cref="T:System.Data.IDbCommand" /> 中に使用される <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> データ セットに配置するデータ ソースからレコードを選択します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Data.SqlClient.SqlDataAdapter> instance is cast to an <xref:System.Data.IDbDataAdapter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Data.SqlClient.SqlDataAdapter> のインスタンスが <xref:System.Data.IDbDataAdapter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -873,14 +885,18 @@
         <ReturnType>System.Data.IDbCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>For a description of this member, see <see cref="P:System.Data.IDbDataAdapter.UpdateCommand" />.</summary>
-        <value>An <see cref="T:System.Data.IdbCommand" /> that is used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to update records in the data source for modified rows in the data set.</value>
+        <summary>このメンバーの詳細については、「<see cref="P:System.Data.IDbDataAdapter.UpdateCommand" />」をご覧ください。</summary>
+        <value>
+          <see cref="T:System.Data.IdbCommand" />中に使用される<see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" />データ セット内で変更された行のデータ ソース内のレコードを更新します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Data.SqlClient.SqlDataAdapter> instance is cast to an <xref:System.Data.IDbDataAdapter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Data.SqlClient.SqlDataAdapter> のインスタンスが <xref:System.Data.IDbDataAdapter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -904,14 +920,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>For a description of this member, see <see cref="M:System.ICloneable.Clone" />.</summary>
-        <returns>A new object that is a copy of the current instance.</returns>
+        <summary>このメンバーの詳細については、「<see cref="M:System.ICloneable.Clone" />」を参照してください。</summary>
+        <returns>現在のインスタンスのコピーである新しいオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Data.SqlClient.SqlDataAdapter> instance is cast to an <xref:System.ICloneable> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Data.SqlClient.SqlDataAdapter> のインスタンスが <xref:System.ICloneable> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -953,39 +972,56 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the number of rows that are processed in each round-trip to the server.</summary>
-        <value>The number of rows to process per-batch.  
+        <summary>取得または各ラウンドト リップでサーバーに処理される行の数を設定します。</summary>
+        <value>バッチごとに処理する行の数。  
   
- <list type="table"><listheader><term> Value is  
+ <list type="table">  
+<listheader>  
+<term> 値は、します。  
   
- </term><description> Effect  
+ </term>  
+<description> 効果  
   
- </description></listheader><item><term> 0  
+ </description>  
+</listheader>  
+<item>  
+<term> 0  
   
- </term><description> There is no limit on the batch size..  
+ </term>  
+<description> バッチのサイズに制限はありません.  
   
- </description></item><item><term> 1  
+ </description>  
+</item>  
+<item>  
+<term> 1  
   
- </term><description> Disables batch updating.  
+ </term>  
+<description> バッチ更新を無効にします。  
   
- </description></item><item><term> &gt;1  
+ </description>  
+</item>  
+<item>  
+<term> &gt;1  
   
- </term><description> Changes are sent using batches of <see cref="P:System.Data.SqlClient.SqlDataAdapter.UpdateBatchSize" /> operations at a time.  
+ </term>  
+<description> 変更のバッチを使用する送信 <see cref="P:System.Data.SqlClient.SqlDataAdapter.UpdateBatchSize" /> 一度に操作します。  
   
- </description></item></list>  
+ </description>  
+</item>  
+</list>  
   
- When setting this to a value other than 1, all the commands associated with the <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> have to have their **UpdatedRowSource** property set to <see langword="None" /> or <see langword="OutputParameters" />. An exception is thrown otherwise.</value>
+ すべてのコマンドに関連付けられている 1 以外の値には、これを設定するとき、 <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> を持つ必要はその **UpdatedRowSource** プロパティに設定 <see langword="None" /> または <see langword="OutputParameters" />です。 それ以外の場合、例外がスローされます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Gets or sets a value that enables or disables batch processing support, and specifies the number of commands that can be executed in a batch.  
+## 解説  
+ 取得またはまたはバッチ処理サポートを無効にする値を設定し、バッチ内で実行できるコマンドの数を指定します。  
   
- Use the <xref:System.Data.SqlClient.SqlDataAdapter.UpdateBatchSize%2A> property to update a data source with changes from a <xref:System.Data.DataSet>. This can increase application performance by reducing the number of round-trips to the server.  
+ 使用して、 <xref:System.Data.SqlClient.SqlDataAdapter.UpdateBatchSize%2A> の変更に伴ってデータ ソースを更新するプロパティ、 <xref:System.Data.DataSet>です。 サーバーへのラウンドト リップ数を減らすことによってアプリケーションのパフォーマンスが向上します。  
   
- Executing an extremely large batch could decrease performance. Therefore, you should test for the optimum batch size setting before implementing your application.  
+ サイズの大きいバッチを実行すると、パフォーマンスが低下する可能性があります。 そのため、アプリケーションを実装する前に、バッチの最適なサイズ設定をテストする必要があります。  
   
- An <xref:System.ArgumentOutOfRangeException> is thrown if the value is set to a number less than zero.  
+ <xref:System.ArgumentOutOfRangeException> 値が数値に設定されている場合にスローされるゼロより小さい。  
   
  ]]></format>
         </remarks>
@@ -1017,34 +1053,45 @@
         <ReturnType>System.Data.SqlClient.SqlCommand</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a Transact-SQL statement or stored procedure used to update records in the data source.</summary>
-        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> used during <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> to update records in the database that correspond to modified rows in the <see cref="T:System.Data.DataSet" />.</value>
+        <summary>取得または設定により、TRANSACT\-SQL ステートメントまたはストアド プロシージャをデータ ソースのレコードを更新するために使用します。</summary>
+        <value>A <see cref="T:System.Data.SqlClient.SqlCommand" /> 時に使用される <see cref="M:System.Data.Common.DbDataAdapter.Update(System.Data.DataSet)" /> 内の行が変更に対応するデータベース レコードを更新する、 <see cref="T:System.Data.DataSet" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- During <xref:System.Data.Common.DbDataAdapter.Update%2A>, if this property is not set and primary key information is present in the <xref:System.Data.DataSet>, the <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> can be generated automatically if you set the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> property and use the <xref:System.Data.SqlClient.SqlCommandBuilder>. Then, any additional commands that you do not set are generated by the <xref:System.Data.SqlClient.SqlCommandBuilder>. This generation logic requires key column information to be present in the <xref:System.Data.DataSet>. For more information, see [Generating Commands with CommandBuilders](~/docs/framework/data/adonet/generating-commands-with-commandbuilders.md).  
+## 解説  
+ 中に <xref:System.Data.Common.DbDataAdapter.Update%2A>, このプロパティを設定しないと、主キー情報が内に存在する場合は、 <xref:System.Data.DataSet>, 、 <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> を設定する場合は、自動的に生成できる、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A> プロパティと使用、 <xref:System.Data.SqlClient.SqlCommandBuilder>です。 次に、追加のコマンドを設定しないはによって生成される、 <xref:System.Data.SqlClient.SqlCommandBuilder>です。 この生成ロジックではキー列の情報に含まれる、 <xref:System.Data.DataSet>です。 詳細については、「[Automatically Generated Commands](http://msdn.microsoft.com/ja-jp/6e3fb8b5-373b-4f9e-ab03-a22693df8e91)」を参照してください。  
   
- When <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> is assigned to a previously created <xref:System.Data.SqlClient.SqlCommand>, the <xref:System.Data.SqlClient.SqlCommand> is not cloned. The <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> maintains a reference to the previously created <xref:System.Data.SqlClient.SqlCommand> object.  
+ <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> が割り当てられている以前に作成した <xref:System.Data.SqlClient.SqlCommand>, 、 <xref:System.Data.SqlClient.SqlCommand> 複製されません。<xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> 以前に作成したへの参照を保持 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
 > [!NOTE]
->  If execution of this command returns rows, the updated rows may be merged with the <xref:System.Data.DataSet> depending on how you set the **UpdatedRowSource** property of the <xref:System.Data.SqlClient.SqlCommand> object.  
+>  更新された行がマージされる可能性がこのコマンドの実行には、行が返された場合、 <xref:System.Data.DataSet> の設定に応じて、 **UpdatedRowSource** のプロパティ、 <xref:System.Data.SqlClient.SqlCommand> オブジェクトです。  
   
- For every column that you propagate to the data source on <xref:System.Data.Common.DbDataAdapter.Update%2A>, a parameter should be added to `InsertCommand`, `UpdateCommand`, or `DeleteCommand`.  
+ \[データ ソースに反映されるすべての列に対して <xref:System.Data.Common.DbDataAdapter.Update%2A>, には、パラメーターを追加する必要があります `InsertCommand`, 、`UpdateCommand`, 、または `DeleteCommand`です。  
   
- The `SourceColumn` property of the parameter should be set to the name of the column. This indicates that the value of the parameter is not set manually, but taken from the particular column in the currently processed row.  
+ `SourceColumn` 列の名前に、パラメーターのプロパティを設定する必要があります。 これは、あるパラメーターの値を手動で設定がされておらず、現在処理されている行の特定の列から取得を示します。  
   
    
   
-## Examples  
- The following example creates a <xref:System.Data.SqlClient.SqlDataAdapter> and sets the <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, <xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> and <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> properties. It assumes you have already created a <xref:System.Data.SqlClient.SqlConnection> object.  
+## 例  
+ 次の例を作成し、 <xref:System.Data.SqlClient.SqlDataAdapter> し、設定、 <xref:System.Data.SqlClient.SqlDataAdapter.SelectCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.InsertCommand%2A>, 、<xref:System.Data.SqlClient.SqlDataAdapter.UpdateCommand%2A> と <xref:System.Data.SqlClient.SqlDataAdapter.DeleteCommand%2A> プロパティです。 既に作成するいると想定して、 <xref:System.Data.SqlClient.SqlConnection> オブジェクトです。  
   
- [!code-csharp[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
- [!code-vb[DataWorks SqlDataAdapter.Command#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
+ [!code-csharp[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/CS/source.cs#1)]
+ [!code-vb[DataWorks SqlDataAdapter.Command\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlDataAdapter.Command/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Data.SqlClient.SqlDataAdapter" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

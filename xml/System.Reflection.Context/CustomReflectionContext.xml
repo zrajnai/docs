@@ -13,36 +13,36 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents a customizable reflection context.</summary>
+    <summary>カスタマイズ可能なリフレクション コンテキストを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Reflection.Context.CustomReflectionContext> provides a way for you to add or remove custom attributes from reflection objects, or add dummy properties to those objects, without re-implementing the complete reflection model. The default <xref:System.Reflection.Context.CustomReflectionContext> simply wraps reflection objects without making any changes, but by subclassing and overriding the relevant methods, you can add, remove, or change the attributes that apply to any reflected parameter or member, or add new properties to a reflected type.  
+## 解説  
+ <xref:System.Reflection.Context.CustomReflectionContext> または、追加リフレクション オブジェクトからのカスタム属性を削除または完全なリフレクション モデルを再実装しなくても、これらのオブジェクトにダミーのプロパティを追加することができます。 既定値 <xref:System.Reflection.Context.CustomReflectionContext> 、変更を加えずにオブジェクトを単にラップするリフレクションをサブクラス化して関連するメソッドのオーバーライドで、したりすることが追加、削除、または、リフレクションされたパラメーターまたはメンバーに適用する属性を変更リフレクションされた型に新しいプロパティを追加します。  
   
- For example, suppose that your code follows the convention of applying a particular attribute to factory methods, but you are now required to work with third-party code that lacks attributes. You can use <xref:System.Reflection.Context.CustomReflectionContext> to specify a rule for identifying the objects that should have attributes and to supply the objects with those attributes when they are viewed from your code.  
+ たとえば、コードはファクトリ メソッドへの特定の属性を適用する際の規則に従いますが、属性が欠落しているサードパーティ製のコードを使用する必要があるとします。 使用する <xref:System.Reflection.Context.CustomReflectionContext> 属性はオブジェクトを識別するルールを指定して、コードから表示したときにこれらの属性を持つオブジェクトを指定します。  
   
- To use <xref:System.Reflection.Context.CustomReflectionContext> effectively, the code that uses the reflected objects must support the notion of specifying a reflection context, instead of assuming that all reflected objects are associated with the runtime reflection context. Many reflection methods in the .NET Framework provide a <xref:System.Reflection.ReflectionContext> parameter for this purpose.  
+ 使用する <xref:System.Reflection.Context.CustomReflectionContext> 実際には、反映されたオブジェクトを使用するコードがオブジェクトのランタイム リフレクション コンテキストに関連付けられたすべて反映されると仮定した場合ではなく、リフレクション コンテキストの指定の概念をサポートする必要があります。 .NET Framework の多くのリフレクション メソッドを提供、 <xref:System.Reflection.ReflectionContext> この目的のためのパラメーターです。  
   
- To modify the attributes that are applied to a reflected parameter or member, override the <xref:System.Reflection.Context.CustomReflectionContext.GetCustomAttributes%28System.Reflection.ParameterInfo%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%29> or <xref:System.Reflection.Context.CustomReflectionContext.GetCustomAttributes%28System.Reflection.MemberInfo%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%29> method. These methods take the reflected object and the list of attributes under its current reflection context, and return the list of attributes it should have under the custom reflection context.  
-  
-> [!WARNING]
->  <xref:System.Reflection.Context.CustomReflectionContext> methods should not access the list of attributes of a reflected object or method directly by calling the <xref:System.Reflection.MemberInfo.GetCustomAttributes%2A> method on the provided <xref:System.Reflection.MemberInfo> or <xref:System.Reflection.ParameterInfo> instance, but should instead use the `declaredAttributes` list, which is passed as a parameter to the <xref:System.Reflection.Context.CustomReflectionContext.GetCustomAttributes%2A> method overloads.  
-  
- To add properties to a reflected type, override the <xref:System.Reflection.Context.CustomReflectionContext.AddProperties%2A> method. The method accepts a parameter that specifies the reflected type, and returns a list of additional properties. You should use the <xref:System.Reflection.Context.CustomReflectionContext.CreateProperty%2A> method to create property objects to return. You can specify delegates when creating the property that will serve as the property accessor, and you can omit one of the accessors to create a read-only or write-only property. Note that such dummy properties have no metadata or Common Intermediate Language (CIL) backing.  
+ リフレクションされたパラメーターまたはメンバーに適用される属性を変更するには、オーバーライド、 <xref:System.Reflection.Context.CustomReflectionContext.GetCustomAttributes%28System.Reflection.ParameterInfo%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%29> または <xref:System.Reflection.Context.CustomReflectionContext.GetCustomAttributes%28System.Reflection.MemberInfo%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%29> メソッドです。 これらのメソッドは、反映されたオブジェクトとその現在のリフレクション コンテキストで属性の一覧を取得し、カスタムのリフレクション コンテキストである必要がありますの属性の一覧を返します。  
   
 > [!WARNING]
->  Be cautious about equality among reflected objects when you work with reflection contexts, because objects may represent the same reflected object in multiple contexts. You can use the <xref:System.Reflection.Context.CustomReflectionContext.MapType%2A> method to obtain a particular reflection context's version of a reflected object.  
+>  <xref:System.Reflection.Context.CustomReflectionContext> メソッドは、反映されたオブジェクトまたはメソッドの属性の一覧を呼び出すことによって直接アクセスしないでください、 <xref:System.Reflection.MemberInfo.GetCustomAttributes%2A> は指定されたメソッド <xref:System.Reflection.MemberInfo> または <xref:System.Reflection.ParameterInfo> インスタンスが、代わりに使用する必要があります、 `declaredAttributes` をパラメーターとして渡されるリスト、 <xref:System.Reflection.Context.CustomReflectionContext.GetCustomAttributes%2A> メソッドのオーバー ロードします。  
+  
+ リフレクションされた型にプロパティを追加するには、オーバーライド、 <xref:System.Reflection.Context.CustomReflectionContext.AddProperties%2A> メソッドです。 このメソッドは、リフレクションされた型を指定し、追加のプロパティの一覧を返すパラメーターを受け取ります。 使用する必要があります、 <xref:System.Reflection.Context.CustomReflectionContext.CreateProperty%2A> メソッドを返すプロパティ オブジェクトが作成されます。 プロパティのアクセサーとして機能するプロパティを作成して、読み取り専用または書き込み専用プロパティを作成するアクセサーのいずれかを省略した場合は、デリゲートを指定できます。 このようなダミー プロパティがあるないメタデータまたは共通中間言語 \(CIL\) のバックアップに注意してください。  
   
 > [!WARNING]
->  A <xref:System.Reflection.Context.CustomReflectionContext> object alters the attributes returned by a particular reflection object, such as those obtained by the <xref:System.Reflection.MemberInfo.GetCustomAttributes%2A> method. It does not alter the custom attribute data returned by the <xref:System.Reflection.MemberInfo.GetCustomAttributesData%2A> method, and these two lists will not match when you use a custom reflection context.  
+>  原因である反映されたオブジェクトの間で等しいかどうかを慎重リフレクション コンテキストを使用するときにオブジェクトが複数のコンテキストで同じ反映されたオブジェクトを表すことがあります。 使用することができます、 <xref:System.Reflection.Context.CustomReflectionContext.MapType%2A> 反映されたオブジェクトの特定のリフレクション コンテキストのバージョンを取得します。  
+  
+> [!WARNING]
+>  A <xref:System.Reflection.Context.CustomReflectionContext> オブジェクトで取得されたなどの特定のリフレクション オブジェクトによって返される属性の変更、 <xref:System.Reflection.MemberInfo.GetCustomAttributes%2A> メソッドです。 によって返されるカスタム属性のデータが変わらない、 <xref:System.Reflection.MemberInfo.GetCustomAttributesData%2A> メソッド、およびこれら 2 つのリストとは一致しませんカスタム リフレクション コンテキストを使用するとします。  
   
    
   
-## Examples  
- The following example demonstrates how to subclass  <xref:System.Reflection.Context.CustomReflectionContext> to add a custom attribute to all the members of a given type whose names begin with "To". To run this code, paste it into an empty console project, and make sure to include a reference to System.Reflection.Context.dll.  
+## 例  
+ 次の例はサブクラス化する方法  <xref:System.Reflection.Context.CustomReflectionContext> "To"で始まる指定した型のすべてのメンバーにカスタム属性を追加します。 このコードを実行するには、空のコンソール プロジェクトに貼り付けることと System.Reflection.Context.dll への参照を含めるようにします。  
   
- [!code-csharp[System.Reflection.Context.CustomReflectionContext#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.reflection.context.customreflectioncontext/cs/program.cs#1)]  
+ [!code-csharp[System.Reflection.Context.CustomReflectionContext\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.reflection.context.customreflectioncontext/cs/program.cs#1)]  
   
  ]]></format>
     </remarks>
@@ -61,8 +61,14 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Reflection.Context.CustomReflectionContext" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Reflection.Context.CustomReflectionContext" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -80,9 +86,14 @@
         <Parameter Name="source" Type="System.Reflection.ReflectionContext" />
       </Parameters>
       <Docs>
-        <param name="source">The reflection context to use as a base.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Reflection.Context.CustomReflectionContext" /> class with the specified reflection context as a base.</summary>
-        <remarks>To be added.</remarks>
+        <param name="source">ベースとして使用するリフレクション コンテキスト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Reflection.Context.CustomReflectionContext" /> ベースとして指定されたリフレクション コンテキストを持つクラス。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddProperties">
@@ -103,14 +114,14 @@
         <Parameter Name="type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="type">The type to add properties to.</param>
-        <summary>When overridden in a derived class, provides a collection of additional properties for the specified type, as represented in this reflection context.</summary>
-        <returns>A collection of additional properties for the specified type.</returns>
+        <param name="type">プロパティを追加した後の型。</param>
+        <summary>派生クラスでオーバーライドされると、このリフレクション コンテキストで表されるように、指定された型の追加のプロパティのコレクションを提供します。</summary>
+        <returns>指定した型の追加プロパティのコレクション。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Override this method to specify which properties should be added to a given type. To create the properties, use the <xref:System.Reflection.Context.CustomReflectionContext.CreateProperty%2A> method.  
+## 解説  
+ 特定の型にするプロパティを追加する必要がありますを指定するには、このメソッドをオーバーライドします。 プロパティを作成するには、使用、 <xref:System.Reflection.Context.CustomReflectionContext.CreateProperty%2A> メソッドです。  
   
  ]]></format>
         </remarks>
@@ -137,17 +148,17 @@
         <Parameter Name="setter" Type="System.Action&lt;System.Object,System.Object&gt;" />
       </Parameters>
       <Docs>
-        <param name="propertyType">The type of the property to create.</param>
-        <param name="name">The name of the property to create.</param>
-        <param name="getter">An object that represents the property's <see langword="get" /> accessor.</param>
-        <param name="setter">An object that represents the property's <see langword="set" /> accessor.</param>
-        <summary>Creates an object that represents a property to be added to a type, to be used with the <see cref="M:System.Reflection.Context.CustomReflectionContext.AddProperties(System.Type)" /> method.</summary>
-        <returns>An object that represents the property.</returns>
+        <param name="propertyType">作成するプロパティの型。</param>
+        <param name="name">作成するプロパティの名前。</param>
+        <param name="getter">オブジェクトを表すプロパティの <see langword="get" /> アクセサー。</param>
+        <param name="setter">オブジェクトを表すプロパティの <see langword="set" /> アクセサー。</param>
+        <summary>使用される、型に追加するプロパティを表すオブジェクトを作成、 <see cref="M:System.Reflection.Context.CustomReflectionContext.AddProperties(System.Type)" /> メソッドです。</summary>
+        <returns>プロパティを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Objects that are returned by this method are not complete <xref:System.Reflection.PropertyInfo> objects, and should be used only in the context of the <xref:System.Reflection.Context.CustomReflectionContext.AddProperties%2A> method.  
+## 解説  
+ このメソッドによって返されたオブジェクトは不完全な <xref:System.Reflection.PropertyInfo> オブジェクト、およびのコンテキストでのみ使用する必要があります、 <xref:System.Reflection.Context.CustomReflectionContext.AddProperties%2A> メソッドです。  
   
  ]]></format>
         </remarks>
@@ -177,20 +188,20 @@
         <Parameter Name="setterCustomAttributes" Type="System.Collections.Generic.IEnumerable&lt;System.Attribute&gt;" />
       </Parameters>
       <Docs>
-        <param name="propertyType">The type of the property to create.</param>
-        <param name="name">The name of the property to create.</param>
-        <param name="getter">An object that represents the property's <see langword="get" /> accessor.</param>
-        <param name="setter">An object that represents the property's <see langword="set" /> accessor.</param>
-        <param name="propertyCustomAttributes">A collection of custom attributes to apply to the property.</param>
-        <param name="getterCustomAttributes">A collection of custom attributes to apply to the property's <see langword="get" /> accessor.</param>
-        <param name="setterCustomAttributes">A collection of custom attributes to apply to the property's <see langword="set" /> accessor.</param>
-        <summary>Creates an object that represents a property to be added to a type, to be used with the <see cref="M:System.Reflection.Context.CustomReflectionContext.AddProperties(System.Type)" /> method and using the specified custom attributes.</summary>
-        <returns>An object that represents the property.</returns>
+        <param name="propertyType">作成するプロパティの型。</param>
+        <param name="name">作成するプロパティの名前。</param>
+        <param name="getter">オブジェクトを表すプロパティの <see langword="get" /> アクセサー。</param>
+        <param name="setter">オブジェクトを表すプロパティの <see langword="set" /> アクセサー。</param>
+        <param name="propertyCustomAttributes">プロパティに適用するカスタム属性のコレクション。</param>
+        <param name="getterCustomAttributes">プロパティに適用するカスタム属性のコレクション <see langword="get" /> アクセサー。</param>
+        <param name="setterCustomAttributes">プロパティに適用するカスタム属性のコレクション <see langword="set" /> アクセサー。</param>
+        <summary>使用される、型に追加するプロパティを表すオブジェクトを作成、 <see cref="M:System.Reflection.Context.CustomReflectionContext.AddProperties(System.Type)" /> メソッドと指定されたカスタム属性を使用します。</summary>
+        <returns>プロパティを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Objects that are returned by this method are not complete <xref:System.Reflection.PropertyInfo> objects, and should be used only in the context of the <xref:System.Reflection.Context.CustomReflectionContext.AddProperties%2A> method.  
+## 解説  
+ このメソッドによって返されたオブジェクトは不完全な <xref:System.Reflection.PropertyInfo> オブジェクト、およびのコンテキストでのみ使用する必要があります、 <xref:System.Reflection.Context.CustomReflectionContext.AddProperties%2A> メソッドです。  
   
  ]]></format>
         </remarks>
@@ -215,11 +226,16 @@
         <Parameter Name="declaredAttributes" Type="System.Collections.Generic.IEnumerable&lt;System.Object&gt;" />
       </Parameters>
       <Docs>
-        <param name="member">The member whose custom attributes will be returned.</param>
-        <param name="declaredAttributes">A collection of the member's attributes in its current context.</param>
-        <summary>When overridden in a derived class, provides a list of custom attributes for the specified member, as represented in this reflection context.</summary>
-        <returns>A collection that represents the custom attributes of the specified member in this reflection context.</returns>
-        <remarks>To be added.</remarks>
+        <param name="member">カスタム属性を返す対象のメンバー。</param>
+        <param name="declaredAttributes">現在のコンテキストにあるメンバーの属性のコレクション。</param>
+        <summary>派生クラスでオーバーライドされると、このリフレクション コンテキストで表されるように、指定されたメンバーのカスタム属性の一覧を提供します。</summary>
+        <returns>このリフレクション コンテキストの指定されたメンバーのカスタム属性を表すコレクション。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCustomAttributes">
@@ -241,11 +257,16 @@
         <Parameter Name="declaredAttributes" Type="System.Collections.Generic.IEnumerable&lt;System.Object&gt;" />
       </Parameters>
       <Docs>
-        <param name="parameter">The parameter whose custom attributes will be returned.</param>
-        <param name="declaredAttributes">A collection of the parameter's attributes in its current context.</param>
-        <summary>When overridden in a derived class, provides a list of custom attributes for the specified parameter, as represented in this reflection context.</summary>
-        <returns>A collection that represents the custom attributes of the specified parameter in this reflection context.</returns>
-        <remarks>To be added.</remarks>
+        <param name="parameter">カスタム属性が返されるパラメーター。</param>
+        <param name="declaredAttributes">現在のコンテキストにあるパラメーターの属性のコレクション。</param>
+        <summary>派生クラスでオーバーライドされると、このリフレクション コンテキストで表されるように、指定されたパラメーターのカスタム属性の一覧を提供します。</summary>
+        <returns>このリフレクション コンテキストの指定されたパラメーターのカスタム属性を表すコレクション。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MapAssembly">
@@ -266,10 +287,15 @@
         <Parameter Name="assembly" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="assembly">The external representation of the assembly to represent in this context.</param>
-        <summary>Gets the representation, in this reflection context, of an assembly that is represented by an object from another reflection context.</summary>
-        <returns>The representation of the assembly in this reflection context.</returns>
-        <remarks>To be added.</remarks>
+        <param name="assembly">このコンテキストで表すアセンブリの外部表現。</param>
+        <summary>このリフレクション コンテキストで、別のリフレクション コンテキストからのオブジェクトによって表されるアセンブリの表現を取得します。</summary>
+        <returns>このリフレクション コンテキストのアセンブリの表現。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MapType">
@@ -290,11 +316,68 @@
         <Parameter Name="type" Type="System.Reflection.TypeInfo" />
       </Parameters>
       <Docs>
-        <param name="type">The external representation of the type to represent in this context.</param>
-        <summary>Gets the representation, in this reflection context, of a type represented by an object from another reflection context.</summary>
-        <returns>The representation of the type in this reflection context.</returns>
-        <remarks>To be added.</remarks>
+        <param name="type">このコンテキストで表す型の外部表現。</param>
+        <summary>このリフレクション コンテキストで、別のリフレクション コンテキストからのオブジェクトによって表される型の表現を取得します。</summary>
+        <returns>このリフレクション コンテキストの型の表現。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Context</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Reflection.Context.CustomReflectionContext" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="CreateProperty">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Context</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定された型に追加するプロパティを表すオブジェクトを作成、 <see cref="M:System.Reflection.Context.CustomReflectionContext.AddProperties(System.Type)" /> メソッドです。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetCustomAttributes">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Context</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>派生クラスでオーバーライドされると、このリフレクション コンテキストで表されるように、指定されたオブジェクトのカスタム属性の変更されたコレクションを提供します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

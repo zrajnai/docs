@@ -32,42 +32,43 @@
     <ReturnType>System.Void</ReturnType>
   </ReturnValue>
   <Docs>
-    <param name="state">An object containing information to be used by the callback method each time it executes.</param>
+    <param name="state">実行のたびにコールバック メソッドで使用される情報を格納するオブジェクト。</param>
     <param name="timedOut">
-      <see langword="true" /> if the <see cref="T:System.Threading.WaitHandle" /> timed out; <see langword="false" /> if it was signaled.</param>
-    <summary>Represents a method to be called when a <see cref="T:System.Threading.WaitHandle" /> is signaled or times out.</summary>
+      <see langword="true" /> 場合、 <see cref="T:System.Threading.WaitHandle" /> タイムアウト <see langword="false" /> がタイムアウトした場合。</param>
+    <summary>時点で呼び出すメソッドを表す、 <see cref="T:System.Threading.WaitHandle" /> がシグナル通知されたか、タイムアウトします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Threading.WaitOrTimerCallback> represents a callback method that you want to execute when a registered wait handle times out or is signaled. Create the delegate by passing your callback method to the <xref:System.Threading.WaitOrTimerCallback> constructor. Your method must have the signature shown here.  
+## 解説  
+ <xref:System.Threading.WaitOrTimerCallback> 登録された待機ハンドルがタイムアウトになるかがシグナル通知されたときに実行するコールバック メソッドを表します。 コールバック メソッドを渡すことによって、デリゲートを作成、 <xref:System.Threading.WaitOrTimerCallback> コンス トラクターです。 メソッドには、次に示す署名が必要です。  
   
- Create the registered wait handle by passing the <xref:System.Threading.WaitOrTimerCallback> delegate and a <xref:System.Threading.WaitHandle> to <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A?displayProperty=fullName>. Your callback method executes each time the <xref:System.Threading.WaitHandle> times out or is signaled.  
+ 登録された待機ハンドルを渡すことによって作成、 <xref:System.Threading.WaitOrTimerCallback> 委任と <xref:System.Threading.WaitHandle> に <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A?displayProperty=fullName>します。 コールバック メソッドを実行するたびに、 <xref:System.Threading.WaitHandle> タイムアウトになるかは通知します。  
   
+ \[Visual Basic\]  
   
 > [!NOTE]
->  Visual Basic users can omit the <xref:System.Threading.WaitOrTimerCallback> constructor, and simply use the `AddressOf` operator when passing the callback method to <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A>. Visual Basic automatically calls the correct delegate constructor.  
+>  Visual Basic の場合は省略できます、 <xref:System.Threading.WaitOrTimerCallback> コンス トラクター、および使用するだけで、 `AddressOf` 演算子がコールバック メソッドを渡すときに <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A>します。 Visual Basic では、適切なデリゲート コンス トラクターは、自動的に呼び出します。  
   
- If you want to pass information to your callback method, create an object that contains the necessary information and pass it to <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> when you create the registered wait handle. Each time your callback method executes, the `state` parameter contains this object.  
+ コールバック メソッドに情報を渡す場合は、必要な情報を格納しているオブジェクトを作成しに渡します <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> 登録された待機ハンドルを作成する場合。 コールバック メソッドが実行されるたびに、 `state` パラメーターには、このオブジェクトが含まれています。  
   
- For more information about using callback methods to synchronize thread pool threads, see [The Managed Thread Pool](~/docs/standard/threading/the-managed-thread-pool.md).  
+ コールバック メソッドを使用して、スレッド プールのスレッドを同期する方法の詳細については、次を参照してください。 [&#91;\<topic:\/\/cpconthreadpooling\>&#93;](http://msdn.microsoft.com/ja-jp/2be05b06-a42e-4c9d-a739-96c21d673927)します。  
   
    
   
-## Examples  
- The following example shows how to use the <xref:System.Threading.WaitOrTimerCallback> delegate to represent a callback method that is executed when a wait handle is signaled.  
+## 例  
+ 次の例では、使用する方法、 <xref:System.Threading.WaitOrTimerCallback> 待機ハンドルがシグナル通知されたときに実行されるコールバック メソッドを表すデリゲート。  
   
- The example also shows how to use the <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> method to execute a specified callback method when a specified wait handle is signaled. In this example, the callback method is `WaitProc` and the wait handle is an <xref:System.Threading.AutoResetEvent>.  
+ 使用する方法も示します、 <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> メソッドを指定した待機ハンドルがシグナル通知されたときに、指定されたコールバック メソッドを実行します。 コールバック メソッドは、この例では `WaitProc` し、待機ハンドルは、 <xref:System.Threading.AutoResetEvent>です。  
   
- The example defines a `TaskInfo` class to hold the information that is passed to the callback when it executes. The example creates a `TaskInfo` object and assigns it some string data. The <xref:System.Threading.RegisteredWaitHandle> that is returned by the <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> method is assigned to the `Handle` field of the `TaskInfo` object, so that the callback method has access to the <xref:System.Threading.RegisteredWaitHandle>.  
+ 例では、定義、 `TaskInfo` を実行するときに、コールバックに渡される情報を保持するクラス。 例を作成し、 `TaskInfo` オブジェクトし、文字列データを割り当てます。<xref:System.Threading.RegisteredWaitHandle> によって返される、 <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> にメソッドが割り当てられている、 `Handle` のフィールド、 `TaskInfo` オブジェクトをコールバック メソッドにアクセスできるように、 <xref:System.Threading.RegisteredWaitHandle>です。  
   
- In addition to the `TaskInfo` object, the call to the <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> method specifies the <xref:System.Threading.AutoResetEvent> the task waits on, a <xref:System.Threading.WaitOrTimerCallback> delegate that represents the `WaitProc` callback method, a one-second timeout interval, and multiple callbacks.  
+ 加え、 `TaskInfo` オブジェクトへの呼び出し、 <xref:System.Threading.ThreadPool.RegisterWaitForSingleObject%2A> メソッドは、指定、 <xref:System.Threading.AutoResetEvent> 、タスクが待機する、 <xref:System.Threading.WaitOrTimerCallback> を表すデリゲート、 `WaitProc` コールバック メソッド、1 秒間のタイムアウト間隔、および複数のコールバック。  
   
- When the main thread signals the <xref:System.Threading.AutoResetEvent> by calling its <xref:System.Threading.EventWaitHandle.Set%2A> method, the <xref:System.Threading.WaitOrTimerCallback> delegate is invoked. The `WaitProc` method tests <xref:System.Threading.RegisteredWaitHandle> to determine whether a timeout occurred. If the callback was invoked because the wait handle was signaled, the `WaitProc` method unregisters the <xref:System.Threading.RegisteredWaitHandle>, stopping further callbacks. In the case of a timeout, the task continues waiting. The `WaitProc` method ends by printing a message to the console.  
+ メイン スレッドに通知すると、 <xref:System.Threading.AutoResetEvent> を呼び出してその <xref:System.Threading.EventWaitHandle.Set%2A> 、メソッド、 <xref:System.Threading.WaitOrTimerCallback> デリゲートが呼び出されます。`WaitProc` メソッド テスト <xref:System.Threading.RegisteredWaitHandle> タイムアウトが発生したかどうかを調べる。 待機ハンドルがシグナル状態であるため、コールバックが呼び出された場合、 `WaitProc` メソッドの登録を解除、 <xref:System.Threading.RegisteredWaitHandle>, 、コールバックを停止します。 タイムアウトの場合は、タスクは、待機を続けます。`WaitProc` メソッドは、コンソールにメッセージを印刷することで終了します。  
   
- [!code-cpp[System.Threading.ThreadPool RegisterWaitForSingleObject0#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ThreadPool RegisterWaitForSingleObject0/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.ThreadPool RegisterWaitForSingleObject0#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ThreadPool RegisterWaitForSingleObject0/CS/source.cs#1)]
- [!code-vb[System.Threading.ThreadPool RegisterWaitForSingleObject0#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ThreadPool RegisterWaitForSingleObject0/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.ThreadPool RegisterWaitForSingleObject0\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ThreadPool RegisterWaitForSingleObject0/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ThreadPool RegisterWaitForSingleObject0\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ThreadPool RegisterWaitForSingleObject0/CS/source.cs#1)]
+ [!code-vb[System.Threading.ThreadPool RegisterWaitForSingleObject0\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ThreadPool RegisterWaitForSingleObject0/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>

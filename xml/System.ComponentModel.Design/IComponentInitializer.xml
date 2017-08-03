@@ -17,19 +17,22 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Provides a set of recommended default values during component creation.</summary>
+    <summary>コンポーネントの作成時に推奨される既定値のセットを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.IComponentInitializer> interface can be implemented by any designer, which is a component that also implements <xref:System.ComponentModel.Design.IDesigner>, which receives a recommended set of default values for the component it is designing. <xref:System.ComponentModel.Design.IComponentInitializer> is queried during new component creation. Recommended default values for the component's properties are passed in as name/value pairs in a dictionary.  
+## 解説  
+ <xref:System.ComponentModel.Design.IComponentInitializer> もを実装するコンポーネントであるすべてのデザイナーはインターフェイスを実装できます <xref:System.ComponentModel.Design.IDesigner>, がデザインしているコンポーネントの既定値の推奨設定を受信します。<xref:System.ComponentModel.Design.IComponentInitializer> 新しいコンポーネントの作成時に照会します。 コンポーネントのプロパティの推奨される既定値は、辞書に名前\/値ペアとして渡されます。  
   
- This design provides two customization points: the toolbox item itself can be replaced or changed to perform custom actions, or the designer for a component can be changed to provide a custom action. A designer that implements <xref:System.ComponentModel.Design.IComponentInitializer> should not depend on either of its methods—<xref:System.ComponentModel.Design.IComponentInitializer.InitializeNewComponent%2A> or <xref:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent%2A>—being called, because toolbox items are not obligated to call these methods.  
+ この設計により、2 つのカスタマイズ ポイント: ツールボックス項目自体を交換またはカスタム アクションを実行する変更、またはコンポーネントのデザイナーは、カスタム動作を変更することができます。 実装するデザイナー <xref:System.ComponentModel.Design.IComponentInitializer> そのメソッドのいずれかに依存しないように、<xref:System.ComponentModel.Design.IComponentInitializer.InitializeNewComponent%2A> または <xref:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent%2A>: ツールボックス アイテムの保護をこれらのメソッドを呼び出す義務されないため、呼び出されます。  
   
- For an overview of creating design components, see [Extending Design-Time Support](http://msdn.microsoft.com/library/d6ac8a6a-42fd-4bc8-bf33-b212811297e2).  
+ デザイン コンポーネントの作成の概要については、次を参照してください。 [Extending Design\-Time Support](http://msdn.microsoft.com/ja-jp/d6ac8a6a-42fd-4bc8-bf33-b212811297e2)します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+    <altmember cref="T:System.Drawing.Design.ToolboxItem" />
+    <altmember cref="T:System.Collections.IDictionary" />
   </Docs>
   <Members>
     <Member MemberName="InitializeExistingComponent">
@@ -57,19 +60,21 @@
         <Parameter Name="defaultValues" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="defaultValues">A dictionary of default property values, which are name/value pairs, with which to reset the component's state.</param>
-        <summary>Restores an instance of a component to its default state.</summary>
+        <param name="defaultValues">コンポーネントの状態をリセットするために、名前\/値ペアの既定のプロパティ値のディクショナリ。</param>
+        <summary>コンポーネントのインスタンスを既定の状態に復元します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent%2A> method is called when a designer will re-initialize an existing component. For example, <xref:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent%2A> is commonly called after a drag-and-drop operation. The `defaultValues` parameter is a dictionary containing name/value pairs of default values that should be applied to properties of the associated component. This dictionary may be `null` if no default values have been specified.  
+## 解説  
+ <xref:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent%2A> デザイナーの既存のコンポーネントを再初期化するときに、メソッドが呼び出されます。 たとえば、 <xref:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent%2A> ドラッグ アンド ドロップ操作の後に一般と呼ばれます。`defaultValues` パラメーターは、関連付けられたコンポーネントのプロパティに適用される既定値の名前\/値ペアを含むディクショナリ。 この辞書 `null` 既定値が指定されていない場合。  
   
 > [!CAUTION]
->  When implementing this method, generally you should not modify the component properties beyond those recommendations found in `defaultValue`. The existing component may already have had its properties set by the user or other design-time code.  
+>  このメソッドを実装するときに一般的には変更しないで、コンポーネントのプロパティについては、これらの推奨を超える `defaultValue`します。 既存のコンポーネントが既にお持ち、ユーザーまたはその他のデザイン時のコードによって設定のプロパティです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.ComponentModel.Design.IComponentInitializer.InitializeNewComponent(System.Collections.IDictionary)" />
+        <altmember cref="M:System.ComponentModel.Design.IDesigner.Initialize(System.ComponentModel.IComponent)" />
       </Docs>
     </Member>
     <Member MemberName="InitializeNewComponent">
@@ -97,18 +102,20 @@
         <Parameter Name="defaultValues" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="defaultValues">A dictionary of default property values, which are name/value pairs, with which to initialize the component's state.</param>
-        <summary>Initializes a new component using a set of recommended values.</summary>
+        <param name="defaultValues">コンポーネントの状態の初期化に使用する、名前\/値ペアの既定のプロパティ値のディクショナリ。</param>
+        <summary>推奨値のセットを使用して、新しいコンポーネントを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.IComponentInitializer.InitializeNewComponent%2A> method is called after a new component is created. It is typically called by the toolbox item itself and is used to configure the component’s default values.  
+## 解説  
+ <xref:System.ComponentModel.Design.IComponentInitializer.InitializeNewComponent%2A> 新しいコンポーネントを作成した後、メソッドが呼び出されます。 通常は、ツールボックス項目自体によって呼び出され、コンポーネントの既定値を構成するために使用します。  
   
- This dictionary may be `null` if no default values are specified. If the dictionary is `null`, the component properties should be left in their implicit default states.  
+ この辞書 `null` 既定値が指定されていない場合。 ディクショナリが場合 `null`, 、コンポーネントのプロパティは、暗黙的な既定の状態のまま必要があります。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent(System.Collections.IDictionary)" />
+        <altmember cref="M:System.ComponentModel.Design.IDesigner.Initialize(System.ComponentModel.IComponent)" />
       </Docs>
     </Member>
   </Members>

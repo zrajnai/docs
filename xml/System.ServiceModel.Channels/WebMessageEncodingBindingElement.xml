@@ -16,27 +16,30 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Enables plain-text XML, JavaScript Object Notation (JSON) message encodings and "raw" binary content to be read and written when used in a Windows Communication Foundation (WCF) binding.</summary>
+    <summary>Windows Communication Foundation (WCF) バインディングで使用されるときに、プレーンテキストの XML、JSON \(JavaScript Object Notation\) メッセージ エンコーディング、および "生の" バイナリ コンテンツの読み取りと書き込みができるようにします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Encoding is the process of transforming a message into a sequence of bytes. Decoding is the reverse process. These processes require the specification of a character encoding. The <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> works by delegating to a series of inner encoders to handle the plain-text XML and JSON encodings, and "raw" binary data. This delegation is done by a composite message encoder.  
+## 解説  
+ エンコーディングは、メッセージをバイト シーケンスに変換するプロセスです。 デコードは、その逆のプロセスです。 これらのプロセスでは、文字エンコーディングの指定が必要です。<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> は、プレーンテキストの XML と JSON エンコーディング、および "生の" バイナリ データの処理を、一連の内部エンコーダーに代行させることで機能します。 この委任は、複合メッセージ エンコーダーによって実行されます。  
   
- This binding element and its composite encoder are used to control the encoding in scenarios that do not use SOAP messaging used by the <xref:System.ServiceModel.WebHttpBinding>. These scenarios include "Plain Old XML" (POX), Representational State Transfer (REST), Really Simple Syndication (RSS) and Atom syndication, and Asynchronous JavaScript and XML (AJAX). The composite message encoder does not support SOAP or WS-Addressing, and so <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MessageVersion%2A> always returns <xref:System.ServiceModel.Channels.MessageVersion.None%2A>.  
+ このバインディング要素と複合エンコーダーは、<xref:System.ServiceModel.WebHttpBinding> によって使用される SOAP メッセージを使用しないシナリオでのエンコーディングを制御するために使用されます。 これらのシナリオには、POX \("Plain Old XML"\)、REST \(Representational State Transfer\)、RSS \(Really Simple Syndication\) と Atom 配信、および AJAX \(Asynchronous JavaScript and XML\) が含まれます。 複合メッセージ エンコーダーは SOAP または WS\-Addressing をサポートしないため、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MessageVersion%2A> は常に <xref:System.ServiceModel.Channels.MessageVersion.None%2A> を返します。  
   
- The binding element can be configured with a write character encoding at construction time using the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.%23ctor%28System.Text.Encoding%29> constructor. The <xref:System.Text.Encoding> value specifies the behavior on write for the JSON and Textual XML cases. On read, any valid message encoding and text encoding is understood.  
+ バインディング要素は、構築時に、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.%23ctor%28System.Text.Encoding%29> コンストラクターを使用し、書き込みの文字エンコーディングを使用して設定できます。<xref:System.Text.Encoding> 値は、JSON およびテキスト形式の XML の場合の書き込みの動作を指定します。 読み取りについては、任意の有効なメッセージ エンコーディングとテキスト エンコーディングが認識されます。  
   
- This constructor sets default values on the maximum number of readers and writers that are allocated to pools and that are respectively available to process incoming and outgoing messages without allocating new readers or writers. The properties <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> and <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> can also be used to set the maximum number of readers and writers to be allocated respectively. By default 64 readers and 16 writers are allocated.  
+ このコンストラクターは、プールに割り当てられており、それぞれ、新しいリーダーおよびライターを割り当てずに受信および送信メッセージを処理できるリーダーおよびライターの最大数の既定値を設定します。 プロパティ <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> と <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> を使用して、割り当てられるリーダーおよびライターの最大数をそれぞれ設定することもできます。 既定では、64 のリーダーと 16 のライターが割り当てられています。  
   
- Default complexity constraints are also set by this constructor on the <xref:System.Xml.XmlDictionaryReaderQuotas> associated with this encoding by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> property to protect against a class of denial of service (DOS) attacks that attempt to use message complexity to tie up endpoint processing resources.  
+ 既定の複雑さの制約も、<xref:System.Xml.XmlDictionaryReaderQuotas> プロパティによってこのエンコーディングと関連付けられている <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> でこのコンストラクターによって設定され、メッセージの複雑さを使用してエンドポイント処理リソースを停滞させるサービス拒否 \(DOS\) 型の攻撃から保護します。  
   
- The <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> has a <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.CreateMessageEncoderFactory%2A> method that creates a message encoder factory that produces JSON, XML or Raw message decoders and encoders as appropriate depending on the content type specified.  
+ <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> は、メッセージ エンコーダー ファクトリを作成する <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.CreateMessageEncoderFactory%2A> メソッドを持っています。メッセージ エンコーダー ファクトリは、指定されたコンテンツ タイプに応じて、JSON、XML または Raw メッセージのデコーダーおよびエンコーダーを適切に作成します。  
   
- The <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> also provides the methods to build the factories and listeners for the channels through which the HTTP requests flow.  
+ <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> は、HTTP 要求が通過するチャネルのファクトリおよびリスナーを構築するメソッドも提供します。  
   
- The composite encoder and its associated classes and configuration components are usable in partial trust and this use does not require any special permissions.  
+ 複合エンコーダーおよびその関連クラスと構成コンポーネントは部分信頼で使用でき、使用する場合に、特別なアクセス許可は必要ありません。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -53,27 +56,31 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> class.</summary>
+        <summary>
+          <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor uses <xref:System.Text.UTF8Encoding> as the default character encoding. So use this constructor when you want this character encoding. If you want another character encoding, use the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.%23ctor%28System.Text.Encoding%29> constructor.  
+## 解説  
+ このコンストラクターは、既定の文字エンコーディングとして <xref:System.Text.UTF8Encoding> を使用します。 そのため、この文字エンコーディングを使用する場合は、このコンストラクターを使用します。 別の文字エンコーディングを使用する場合は、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.%23ctor%28System.Text.Encoding%29> コンストラクターを使用します。  
   
- This constructor sets default values on the maximum number of readers and writers that are allocated to pools and that are respectively available to process incoming and outgoing messages without allocating new readers or writers. There are 64 readers allocated by default for the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> property and there are 16 writers allocated by default for the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> property.  
+ このコンストラクターは、プールに割り当てられており、それぞれ、新しいリーダーおよびライターを割り当てずに受信および送信メッセージを処理できるリーダーおよびライターの最大数の既定値を設定します。 既定では、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> プロパティでは 64 リーダー、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> プロパティでは 16 ライターが割り当てられています。  
   
- Default complexity constraints are also set by this constructor on the <xref:System.Xml.XmlDictionaryReaderQuotas> associated with this message encoding by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> property to protect against a class of denial of service (DOS) attacks that attempt to use message complexity to tie up endpoint processing resources. The properties that express these constraints and their default values (in bytes) are as follows:  
+ 既定の複雑さの制約も、<xref:System.Xml.XmlDictionaryReaderQuotas> プロパティによってこのメッセージ エンコーディングと関連付けられている <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> でこのコンストラクターによって設定され、メッセージの複雑さを使用してエンドポイント処理リソースを停滞させるサービス拒否 \(DOS\) 型の攻撃から保護します。 これらの制約とその既定値 \(バイト単位\) を公開するプロパティを次に示します。  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxDepth%2A> = 32  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxDepth%2A> \= 32  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxStringContentLength%2A> = 8192  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxStringContentLength%2A> \= 8192  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength%2A> = 16384  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength%2A> \= 16384  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxBytesPerRead%2A> = 4096  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxBytesPerRead%2A> \= 4096  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxNameTableCharCount%2A> = 16384  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxNameTableCharCount%2A> \= 16384  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -92,34 +99,37 @@
         <Parameter Name="writeEncoding" Type="System.Text.Encoding" />
       </Parameters>
       <Docs>
-        <param name="writeEncoding">The <see cref="T:System.Text.Encoding" /> to be used to write characters in a message.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> class with a specified write character encoding.</summary>
+        <param name="writeEncoding">メッセージでの文字の書き込みに使用される <see cref="T:System.Text.Encoding" />。</param>
+        <summary>書き込みの文字エンコーディングを指定して、<see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The message text encodings supported are UTF-8, Unicode, and Big-Endian Unicode. If another text encoding is specified, an <xref:System.ArgumentException> is thrown.  
+## 解説  
+ サポートされているエンコーディングは、UTF\-8、Unicode、および Big\-Endian Unicode です。 別のテキスト エンコーディングを指定すると、<xref:System.ArgumentException> がスローされます。  
   
- This constructor sets default values on the maximum number of readers and writers that are allocated to pools and that are respectively available to process incoming and outgoing messages without allocating new readers or writers. There are 64 readers allocated by default for the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> property and there are 16 writers allocated by default for the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> property.  
+ このコンストラクターは、プールに割り当てられており、それぞれ、新しいリーダーおよびライターを割り当てずに受信および送信メッセージを処理できるリーダーおよびライターの最大数の既定値を設定します。 既定では、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> プロパティでは 64 リーダー、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> プロパティでは 16 ライターが割り当てられています。  
   
- Default complexity constraints are also set by this constructor on the <xref:System.Xml.XmlDictionaryReaderQuotas> associated with this message encoding by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> property to protect against a class of denial of service (DOS) attacks that attempt to use message complexity to tie up endpoint processing resources. The properties that express these constraints and their default values (in bytes) are as follows:  
+ 既定の複雑さの制約も、<xref:System.Xml.XmlDictionaryReaderQuotas> プロパティによってこのメッセージ エンコーディングと関連付けられている <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> でこのコンストラクターによって設定され、メッセージの複雑さを使用してエンドポイント処理リソースを停滞させるサービス拒否 \(DOS\) 型の攻撃から保護します。 これらの制約とその既定値 \(バイト単位\) を公開するプロパティを次に示します。  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxDepth%2A> = 32  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxDepth%2A> \= 32  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxStringContentLength%2A> = 8192  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxStringContentLength%2A> \= 8192  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength%2A> = 16384  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength%2A> \= 16384  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxBytesPerRead%2A> = 4096  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxBytesPerRead%2A> \= 4096  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxNameTableCharCount%2A> = 16384  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxNameTableCharCount%2A> \= 16384  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="writeEncoding" /> is <see langword="null" />.</exception>
+          <paramref name="writeEncoding" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="writeEncoding" /> is not a supported message text encoding.</exception>
+          <paramref name="writeEncoding" /> は、サポートされているメッセージ テキスト エンコーディングではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="BuildChannelFactory&lt;TChannel&gt;">
@@ -142,12 +152,20 @@
         <Parameter Name="context" Type="System.ServiceModel.Channels.BindingContext" />
       </Parameters>
       <Docs>
-        <typeparam name="TChannel">The type of channel the channel factory produces.</typeparam>
-        <param name="context">The <see cref="T:System.ServiceModel.Channels.BindingContext" /> for the channel.</param>
-        <summary>Builds the channel factory stack on the client that creates a specified type of channel for a specified context.</summary>
-        <returns>An <see cref="T:System.ServiceModel.Channels.IChannelFactory`1" /> of type <paramref name="TChannel" /> for the specified context.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The value set is <see langword="null" />.</exception>
+        <typeparam name="TChannel">チャネル ファクトリが作成するチャネルの種類。</typeparam>
+        <param name="context">チャネルの <see cref="T:System.ServiceModel.Channels.BindingContext" />。</param>
+        <summary>指定したコンテキストに対して指定した種類のチャネルを作成するチャネル ファクトリ スタックをクライアント上に作成します。</summary>
+        <returns>指定したコンテキストの <see cref="T:System.ServiceModel.Channels.IChannelFactory`1" /> 型の <paramref name="TChannel" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">設定値が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
@@ -174,12 +192,20 @@
         <Parameter Name="context" Type="System.ServiceModel.Channels.BindingContext" />
       </Parameters>
       <Docs>
-        <typeparam name="TChannel">The type of channel the channel listener accepts.</typeparam>
-        <param name="context">The <see cref="T:System.ServiceModel.Channels.BindingContext" /> for the listener.</param>
-        <summary>Builds the channel listener stack on the client that accepts a specified type of channel for a specified context.</summary>
-        <returns>An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> for the specified context.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The value set is <see langword="null" />.</exception>
+        <typeparam name="TChannel">チャネル リスナーが受け入れるチャネルの種類。</typeparam>
+        <param name="context">リスナーの <see cref="T:System.ServiceModel.Channels.BindingContext" />。</param>
+        <summary>指定したコンテキストに対する、指定した種類のチャネルを受け入れるチャネル リスナー スタックをクライアント上に作成します。</summary>
+        <returns>指定したコンテキストの <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 型の <paramref name="TChannel" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">設定値が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="CanBuildChannelListener&lt;TChannel&gt;">
@@ -206,12 +232,19 @@
         <Parameter Name="context" Type="System.ServiceModel.Channels.BindingContext" />
       </Parameters>
       <Docs>
-        <typeparam name="TChannel">The type of channel the channel listener accepts.</typeparam>
-        <param name="context">The <see cref="T:System.ServiceModel.Channels.BindingContext" /> for the listener.</param>
-        <summary>Returns a value that indicates whether the current binding can build a listener for a specified type of channel and context.</summary>
-        <returns>
-          <see langword="true" /> if the specified channel listener stack can be built on the service; otherwise, <see langword="false" />.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="TChannel">チャネル リスナーが受け入れるチャネルの種類。</typeparam>
+        <param name="context">リスナーの <see cref="T:System.ServiceModel.Channels.BindingContext" />。</param>
+        <summary>指定した種類のチャネルとコンテキストに対するリスナーを現在のバインディングが作成できるかどうかを示す値を返します。</summary>
+        <returns>指定したチャネル リスナー スタックをサービスで作成できる場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -229,14 +262,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> object initialized from the current one.</summary>
-        <returns>A <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> object with property values equal to those of the current element.</returns>
+        <summary>新しい <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> オブジェクトを作成し、現在のオブジェクトを使用して初期化します。</summary>
+        <returns>現在の要素と同じプロパティ値が設定された <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This creates a complete copy of the current binding element object tree, also called a deep clone. A deep clone of an object creates a copy of the object and a copy of everything directly or indirectly referenced by that object. This is called copying the entire object graph. Returning a deep clone enables the runtime to support the case in which multiple custom bindings share a custom binding element. If a deep clone is not returned, the run-time behavior is undefined. A shallow clone of an object, by contrast, is a copy of the object only. If the object contains references to other objects, the shallow copy does not create copies of the referred objects; instead, it copies only the references to the original objects.  
+## 解説  
+ This creates a complete copy of the current binding element object tree, also called a deep clone. A deep clone of an object creates a copy of the object and a copy of everything directly or indirectly referenced by that object. This is called copying the entire object graph. Returning a deep clone enables the runtime to support the case in which multiple custom bindings share a custom binding element. If a deep clone is not returned, the run\-time behavior is undefined. A shallow clone of an object, by contrast, is a copy of the object only. If the object contains references to other objects, the shallow copy does not create copies of the referred objects; instead, it copies only the references to the original objects.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -255,9 +291,17 @@
         <ReturnType>System.ServiceModel.Channels.WebContentTypeMapper</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets how the content type of an incoming message is mapped to a format.</summary>
-        <value>The <see cref="T:System.ServiceModel.Channels.WebContentTypeMapper" /> that indicates the format for the content type of the incoming message.</value>
-        <remarks>To be added.</remarks>
+        <summary>受信メッセージのコンテンツ タイプを形式にマップする方法を取得または設定します。</summary>
+        <value>受信メッセージのコンテンツ タイプの形式を示す <see cref="T:System.ServiceModel.Channels.WebContentTypeMapper" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateMessageEncoderFactory">
@@ -275,18 +319,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a message encoder factory that produces message encoders that can write either JavaScript Object Notation (JSON) or XML messages.</summary>
-        <returns>The <see cref="T:System.ServiceModel.Channels.MessageEncoderFactory" /> that encodes JSON, XML or "raw" binary messages.</returns>
+        <summary>JSON \(JavaScript Object Notation\) または XML メッセージを書き込めるメッセージ エンコーダーを作成する、メッセージ エンコーダー ファクトリを作成します。</summary>
+        <returns>JSON、XML、または "生の" バイナリ メッセージをエンコードする <see cref="T:System.ServiceModel.Channels.MessageEncoderFactory" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The value of the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.WriteEncoding%2A> property determines the character encoding used to write the message.  
   
  The maximum number of readers and writers that are allocated to pools and that is respectively available to process incoming and outgoing messages without allocating new readers are specified by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxReadPoolSize%2A> and <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.MaxWritePoolSize%2A> properties.  
   
- The default complexity constraints that are used by the message encoders produced by the <xref:System.ServiceModel.Channels.MessageEncoderFactory> can be obtained from the <xref:System.Xml.XmlDictionaryReaderQuotas> associated with this encoding by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> property to protect against a class of denial of service (DOS) attacks that attempt to use message complexity to tie up endpoint processing resources.  
+ The default complexity constraints that are used by the message encoders produced by the <xref:System.ServiceModel.Channels.MessageEncoderFactory> can be obtained from the <xref:System.Xml.XmlDictionaryReaderQuotas> associated with this encoding by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> property to protect against a class of denial of service \(DOS\) attacks that attempt to use message complexity to tie up endpoint processing resources.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -304,10 +351,15 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that determines if cross domain script access is enabled.</summary>
+        <summary>ドメイン間スクリプト アクセスが有効かどうかを決定する値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if cross domain script access is enabled; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+          <see langword="true" /> かどうかはドメイン間スクリプト アクセスが有効です。それ以外の場合、 <see langword="false" />です。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProperty&lt;T&gt;">
@@ -334,20 +386,22 @@
         <Parameter Name="context" Type="System.ServiceModel.Channels.BindingContext" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The typed object for which the method is querying.</typeparam>
-        <param name="context">The <see cref="T:System.ServiceModel.Channels.BindingContext" /> for the current binding element.</param>
-        <summary>Returns the object of the type requested, if present, from the appropriate layer in the channel stack, or <see langword="null" /> if it is not present.</summary>
-        <returns>The typed object <paramref name="T" /> requested if it is present or <see langword="null" /> if it is not.</returns>
+        <typeparam name="T">メソッドが照会している、型指定されたオブジェクト。</typeparam>
+        <param name="context">現在のバインディング要素の <see cref="T:System.ServiceModel.Channels.BindingContext" />。</param>
+        <summary>チャネル スタックの適切な層から、要求された型のオブジェクトがある場合はそれを返します。ない場合は <see langword="null" /> を返します。</summary>
+        <returns>要求される型指定されたオブジェクト <paramref name="T" /> がある場合は、そのオブジェクト。ない場合は <see langword="null" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This override adds one property to the base <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.GetProperty%60%601%28System.ServiceModel.Channels.BindingContext%29> implementation: when `T` is <xref:System.Xml.XmlDictionaryReaderQuotas>, the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> property is returned.  
+## 解説  
+ このオーバーライドは、基本の <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.GetProperty%60%601%28System.ServiceModel.Channels.BindingContext%29> 実装に 1 つのプロパティを追加します。`T` が <xref:System.Xml.XmlDictionaryReaderQuotas> の場合は、<xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.ReaderQuotas%2A> プロパティが返されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <paramref name="context" /> set is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">設定されている <paramref name="context" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="MaxReadPoolSize">
@@ -364,17 +418,20 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that specifies the maximum number of readers that is allocated to a pool and that is available to process incoming messages without allocating new readers.</summary>
-        <value>The maximum number of readers available to process incoming messages. The default value is 64 readers of each type.</value>
+        <summary>プールに割り当てられており、新しいリーダーを割り当てずに受信メッセージを処理できるリーダーの最大数を指定する値を取得または設定します。</summary>
+        <value>受信メッセージを処理できるリーダーの最大数。 既定値はそれぞれの種類で 64 リーダーです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Increasing this number increases memory consumption, but prepares the encoder to deal with sudden bursts of incoming messages because it is able to use readers from the pool that are already created instead of creating new ones.  
+## 解説  
+ この数を増やすとメモリの消費量が増えますが、受信メッセージ数の急激な増加にエンコーダーが対処できるようになります。これは、作成済みのリーダーをプールから使用でき、新しいリーダーを作成する必要がないためです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value is less than or equal to zero.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">値が 0 以下です。</exception>
       </Docs>
     </Member>
     <Member MemberName="MaxWritePoolSize">
@@ -391,17 +448,20 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that specifies the maximum number of writers that is allocated to a pool and that is available to process outgoing messages without allocating new writers.</summary>
-        <value>The maximum number of writers available to process outgoing messages. The default is 16 writers of each type.</value>
+        <summary>プールに割り当てられており、新しいライターを割り当てずに送信メッセージを処理できるライターの最大数を指定する値を取得または設定します。</summary>
+        <value>送信メッセージを処理できるライターの最大数。 既定値はそれぞれの種類で 16 ライターです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Increasing this number increases memory consumption, but prepares the encoder to deal with sudden bursts of outgoing messages because it is able to use writers from the pool that are already created instead of creating new ones.  
+## 解説  
+ この数を増やすとメモリの消費が増えますが、送信メッセージ数の急激な増加にエンコーダーが対処できるようになります。これは、作成済みのライターをプールから使用でき、新しいライターを作成する必要がないためです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value is less than or equal to zero.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">値が 0 以下です。</exception>
       </Docs>
     </Member>
     <Member MemberName="MessageVersion">
@@ -418,20 +478,23 @@
         <ReturnType>System.ServiceModel.Channels.MessageVersion</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the message version that indicates that the binding element does not use SOAP or WS-Addressing.</summary>
+        <summary>バインド要素が SOAP または WS\-Addressing を使用しないことを示すメッセージのバージョンを取得または設定します。</summary>
         <value>
           <see cref="P:System.ServiceModel.Channels.MessageVersion.None" />
         </value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The JSON message encoding does not support either SOAP or WS-Addressing. The <xref:System.ServiceModel.Channels.MessageVersion.None%2A> contains <xref:System.ServiceModel.EnvelopeVersion.None%2A> and <xref:System.ServiceModel.Channels.AddressingVersion.None%2A>, which respectively specifies this non-support.  
+## 解説  
+ JSON メッセージ エンコーディングは SOAP または WS\-Addressing のいずれもサポートしません。<xref:System.ServiceModel.Channels.MessageVersion.None%2A> には <xref:System.ServiceModel.EnvelopeVersion.None%2A> および <xref:System.ServiceModel.Channels.AddressingVersion.None%2A> が含まれており、それぞれこの非サポートを指定します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The value set is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The value set is neither <see langword="null" /> nor <see cref="P:System.ServiceModel.Channels.MessageVersion.None" />.</exception>
+        <exception cref="T:System.ArgumentNullException">設定値が <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">設定値が <see langword="null" /> または <see cref="P:System.ServiceModel.Channels.MessageVersion.None" /> のいずれでもありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ReaderQuotas">
@@ -448,27 +511,30 @@
         <ReturnType>System.Xml.XmlDictionaryReaderQuotas</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets constraints on the complexity of SOAP messages that can be processed by endpoints configured with this binding.</summary>
-        <value>The <see cref="T:System.Xml.XmlDictionaryReaderQuotas" /> that specifies the complexity constraints on SOAP messages that are exchanged. The default values for these constraints are provided in the following Remarks section.</value>
+        <summary>このバインディングを使用して設定されるエンドポイントにより処理可能な、SOAP メッセージの複雑さに対する制約を取得します。</summary>
+        <value>交換される SOAP メッセージに対する複雑さの制約を指定する <see cref="T:System.Xml.XmlDictionaryReaderQuotas" />。 これらの制約の既定値については、後の「解説」で説明します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The complexity constraints protect against a class of denial of service (DOS) attacks that attempt to use message complexity to tie up endpoint processing resources. The properties that express these constraints and their default values (in bytes) are as follows:  
+## 解説  
+ 複雑さの制約は、メッセージの複雑さを使用してエンドポイント処理リソースを停滞させるサービス拒否 \(DOS\) 型の攻撃から保護します。 これらの制約とその既定値 \(バイト単位\) を公開するプロパティを次に示します。  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxDepth%2A> = 32  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxDepth%2A> \= 32  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxStringContentLength%2A> = 8192  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxStringContentLength%2A> \= 8192  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength%2A> = 16384  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength%2A> \= 16384  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxBytesPerRead%2A> = 4096  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxBytesPerRead%2A> \= 4096  
   
--   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxNameTableCharCount%2A> = 16384  
+-   <xref:System.Xml.XmlDictionaryReaderQuotas.MaxNameTableCharCount%2A> \= 16384  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The value set is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">設定値が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="System.ServiceModel.Description.IWsdlExportExtension.ExportContract">
@@ -488,15 +554,18 @@
         <Parameter Name="context" Type="System.ServiceModel.Description.WsdlContractConversionContext" />
       </Parameters>
       <Docs>
-        <param name="exporter">The <see cref="T:System.ServiceModel.Description.WsdlExporter" /> that exports the contract information.</param>
-        <param name="context">A <see cref="T:System.ServiceModel.Description.WsdlContractConversionContext" /> object that provides mappings from exported WSDL elements to the contract description.</param>
-        <summary>Generates WSDL contract information from encoding policies contained in the binding element.</summary>
+        <param name="exporter">コントラクト情報をエクスポートする <see cref="T:System.ServiceModel.Description.WsdlExporter" />。</param>
+        <param name="context">エクスポートされた WSDL 要素からコントラクトの説明へのマッピングを提供する <see cref="T:System.ServiceModel.Description.WsdlContractConversionContext" /> オブジェクト。</param>
+        <summary>バインド要素に格納されているエンコーディング ポリシーから WSDL コントラクト情報を生成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> is responsible for setting information about the message version in the WSDL.  
+## 解説  
+ <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> は、WSDL 内のメッセージ バージョンに関する情報を設定します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -518,19 +587,19 @@
         <Parameter Name="context" Type="System.ServiceModel.Description.WsdlEndpointConversionContext" />
       </Parameters>
       <Docs>
-        <param name="exporter">The <see cref="T:System.ServiceModel.Description.WsdlExporter" /> that exports the contract information.</param>
-        <param name="context">A <see cref="T:System.ServiceModel.Description.WsdlContractConversionContext" /> object that provides mappings from exported WSDL elements to the endpoint description.</param>
-        <summary>Generates WSDL contract information from encoding policies contained in the binding element.</summary>
+        <param name="exporter">コントラクト情報をエクスポートする <see cref="T:System.ServiceModel.Description.WsdlExporter" />。</param>
+        <param name="context">エクスポートされた WSDL 要素からエンドポイントの説明へのマッピングを提供する <see cref="T:System.ServiceModel.Description.WsdlContractConversionContext" /> オブジェクト。</param>
+        <summary>バインド要素に格納されているエンコーディング ポリシーから WSDL コントラクト情報を生成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> is responsible for setting information about the message version in the WSDL. But this is done by the <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.System%23ServiceModel%23Description%23IWsdlExportExtension%23ExportEndpoint%28System.ServiceModel.Description.WsdlExporter%2CSystem.ServiceModel.Description.WsdlEndpointConversionContext%29>method.  
+## 解説  
+ <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement> は、WSDL 内のメッセージ バージョンに関する情報を設定します。 これでは、 <xref:System.ServiceModel.Channels.WebMessageEncodingBindingElement.System%23ServiceModel%23Description%23IWsdlExportExtension%23ExportEndpoint%28System.ServiceModel.Description.WsdlExporter%2CSystem.ServiceModel.Description.WsdlEndpointConversionContext%29>メソッドです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="context" /> is <see langword="null" />.</exception>
+          <paramref name="context" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteEncoding">
@@ -547,11 +616,36 @@
         <ReturnType>System.Text.Encoding</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the character encoding that is used to write the message text.</summary>
-        <value>The <see cref="T:System.Text.Encoding" /> that indicates the character encoding that is used to write the message text. The default is <see cref="T:System.Text.UTF8Encoding" />.</value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The value set is <see langword="null" />.</exception>
+        <summary>メッセージ テキストの書き込みに使用される文字エンコーディングを取得または設定します。</summary>
+        <value>メッセージ テキストの書き込みに使用される文字エンコードを示す <see cref="T:System.Text.Encoding" />。 既定値は、<see cref="T:System.Text.UTF8Encoding" /> です。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">設定値が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Web</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.ServiceModel.Channels.WebMessageEncodingBindingElement" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

@@ -27,62 +27,64 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>A synchronization primitive that can also be used for interprocess synchronization.</summary>
+    <summary>同期プリミティブは、プロセス間の同期にも使用できます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  To view the .NET Framework source code for this type, see the [Reference Source](http://referencesource.microsoft.com/#mscorlib/system/threading/mutex.cs#29b92e0e2832a8d6). You can browse through the source code online, download the reference for offline viewing, and step through the sources (including patches and updates) during debugging; see [instructions](http://referencesource.microsoft.com/).  
+>  この型の .NET Framework ソース コードを参照してください、 [Reference Source](http://referencesource.microsoft.com/#mscorlib/system/threading/mutex.cs#29b92e0e2832a8d6)します。 ソース コードをオンラインで参照、オフライン表示のリファレンスをダウンロードおよびデバッグ中にソース \(パッチや更新を含む\) をステップsee [instructions](http://referencesource.microsoft.com/).  
   
- When two or more threads need to access a shared resource at the same time, the system needs a synchronization mechanism to ensure that only one thread at a time uses the resource. <xref:System.Threading.Mutex> is a synchronization primitive that grants exclusive access to the shared resource to only one thread. If a thread acquires a mutex, the second thread that wants to acquire that mutex is suspended until the first thread releases the mutex.  
+ 2 つまたは複数のスレッドは、同時に共有リソースにアクセスする必要がある場合、システムは、一度に 1 つのスレッドがリソースを使用していることを確認する同期メカニズムが必要です。<xref:System.Threading.Mutex> 同期は 1 つのスレッドを共有リソースへの排他アクセスを許可するプリミティブです。 スレッドがミュー テックス、最初のスレッドがミュー テックスを解放するまで、ミュー テックスを取得する必要のある 2 番目のスレッドが中断されます。  
   
 > [!IMPORTANT]
->  This type implements the <xref:System.IDisposable> interface. When you have finished using the type, you should dispose of it either directly or indirectly. To dispose of the type directly, call its <xref:System.IDisposable.Dispose%2A> method in a `try`/`catch` block. To dispose of it indirectly, use a language construct such as `using` (in C#) or `Using` (in Visual Basic). For more information, see the "Using an Object that Implements IDisposable" section in the <xref:System.IDisposable> interface topic.  
+>  この型は、 <xref:System.IDisposable> インターフェイスです。 型の使用が完了したらを直接または間接的にその破棄する必要があります。 型の直接 dispose を呼び出してその <xref:System.IDisposable.Dispose%2A> メソッドで、 `try`\/`catch` ブロックします。 直接ことのない破棄する場合など言語構成要素を使用して `using` \(c\#\) のまたは `Using` \(Visual Basic で\)。 詳細については、"を使用して、オブジェクトを実装して IDisposable"」セクションを参照してください、 <xref:System.IDisposable> インターフェイスに関するトピック。  
   
- You can use the <xref:System.Threading.WaitHandle.WaitOne%2A?displayProperty=fullName> method to request ownership of a mutex. The calling thread blocks until one of the following occurs:  
+ 使用することができます、 <xref:System.Threading.WaitHandle.WaitOne%2A?displayProperty=fullName> ミュー テックスの所有権を要求します。 呼び出し元のスレッド、次のいずれかが発生するまでをブロックします。  
   
--   The mutex is signaled to indicate that it is not owned. When this happens, the <xref:System.Threading.WaitHandle.WaitOne%2A> method returns `true`, and the calling thread assumes ownership of the mutex and accesses the resource protected by the mutex. When it has finished accessing the resource, the thread must call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method to release ownership of the mutex. The first example in the Examples section illustrates this pattern.  
+-   ミュー テックスは、所有されていないことを示すために通知されます。 この場合、 <xref:System.Threading.WaitHandle.WaitOne%2A> メソッドを返します。 `true`, 、呼び出し元のスレッドがミュー テックスの所有権と、ミュー テックスで保護されているリソースにアクセスするとします。 これには、リソースへのアクセスが完了したら、スレッドで呼び出す必要があります、 <xref:System.Threading.Mutex.ReleaseMutex%2A> 、ミュー テックスの所有権を解放します。 例では、最初の例では、このパターンを示します。  
   
--   The time-out interval specified in the call to a <xref:System.Threading.WaitHandle.WaitOne%2A> method that has a `millisecondsTimeout` or `timeout` parameter has elapsed. When this happens, the <xref:System.Threading.WaitHandle.WaitOne%2A> method returns `false`, and the calling thread makes no further attempt to acquire ownership of the mutex. In this case, you should structure your code so that access to the resource that is protected by the mutex is denied to the calling thread. Because the thread never acquired ownership of the mutex, it must not call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method. The second example in the Examples section illustrates this pattern.  
+-   呼び出しで指定されたタイムアウト期間、 <xref:System.Threading.WaitHandle.WaitOne%2A> メソッドを持つ、 `millisecondsTimeout` または `timeout` パラメーターの有効期限が経過します。 このような場合、 <xref:System.Threading.WaitHandle.WaitOne%2A> メソッドを返します。 `false`, 、呼び出し元のスレッドにミュー テックスの所有権取得を試行ではありません。 この場合、呼び出し元のスレッドにミュー テックスで保護されているリソースへのアクセスが拒否されるように、コードを構成する必要があります。 スレッドがミュー テックスの所有権を取得することはありませんのでを呼び出してはならない、 <xref:System.Threading.Mutex.ReleaseMutex%2A> メソッドです。 例では、2 番目の例では、このパターンを示します。  
   
- The <xref:System.Threading.Mutex> class enforces thread identity, so a mutex can be released only by the thread that acquired it. By contrast, the <xref:System.Threading.Semaphore> class does not enforce thread identity. A mutex can also be passed across application domain boundaries.  
+ <xref:System.Threading.Mutex> クラスは、取得したスレッドでのみ、ミュー テックスが解放できるように、スレッド id を強制します。 これに対し、 <xref:System.Threading.Semaphore> クラスがスレッド id を適用しません。 ミュー テックスは、アプリケーション ドメインの境界を越えて渡すこともできます。  
   
- The thread that owns a mutex can request the same mutex in repeated calls to <xref:System.Threading.WaitHandle.WaitOne%2A> without blocking its execution. However, the thread must call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method the same number of times to release ownership of the mutex.  
+ ミュー テックスを所有するスレッドは、繰り返しの呼び出しで同じミュー テックスを要求できる <xref:System.Threading.WaitHandle.WaitOne%2A> の実行をブロックすることがなく。 ただし、スレッドを呼び出す必要があります、 <xref:System.Threading.Mutex.ReleaseMutex%2A> メソッド、同じ回数、ミュー テックスの所有権を解放します。  
   
- Because the <xref:System.Threading.Mutex> class inherits from <xref:System.Threading.WaitHandle>, you can also call the static <xref:System.Threading.WaitHandle.WaitAll%2A?displayProperty=fullName> and <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=fullName> methods to synchronize access to a protected resource.  
+ <xref:System.Threading.Mutex> クラスから継承 <xref:System.Threading.WaitHandle>, 、静的なを呼び出すこともできます <xref:System.Threading.WaitHandle.WaitAll%2A?displayProperty=fullName> と <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=fullName> 保護されたリソースへのアクセスを同期する方法です。  
   
- If a thread terminates while owning a mutex, the mutex is said to be abandoned. The state of the mutex is set to signaled, and the next waiting thread gets ownership. Beginning in version 2.0 of the .NET Framework, an <xref:System.Threading.AbandonedMutexException> is thrown in the next thread that acquires the abandoned mutex. Before version 2.0 of the .NET Framework, no exception was thrown.  
+ ミュー テックスを所有しているスレッドが終了した場合、ミュー テックスを破棄するメンバーといいます。 ミュー テックスの状態は、シグナル状態に設定し、次の待機中のスレッドが所有権を取得します。 .NET Framework version 2.0 以降、 <xref:System.Threading.AbandonedMutexException> 放棄されたミュー テックスを取得し、次のスレッドでスローされます。 .NET Framework version 2.0 の前に例外がスローされなかった。  
   
 > [!CAUTION]
->  An abandoned mutex often indicates a serious error in the code. When a thread exits without releasing the mutex, the data structures protected by the mutex might not be in a consistent state. The next thread to request ownership of the mutex can handle this exception and proceed, if the integrity of the data structures can be verified.  
+>  ミュー テックスの破棄には、コードで重大なエラーが多くの場合を示します。 ミュー テックスを解放しないままスレッドの終了時に、ミュー テックスによって保護されていたデータ構造を一貫性のある状態で可能性がありますできません。 ミュー テックスの所有権を要求する次のスレッドでは、この例外を処理でき、データ構造の整合性を検証できる場合、続行することができます。  
   
- In the case of a system-wide mutex, an abandoned mutex might indicate that an application has been terminated abruptly (for example, by using Windows Task Manager).  
+ システム全体のミュー テックス、ミュー テックスの破棄は可能性があります \(たとえば、Windows タスク マネージャーを使用して\) をアプリケーションが突然終了されたことを示します。  
   
- Mutexes are of two types: local mutexes, which are unnamed, and named system mutexes. A local mutex exists only within your process. It can be used by any thread in your process that has a reference to the <xref:System.Threading.Mutex> object that represents the mutex. Each unnamed <xref:System.Threading.Mutex> object represents a separate local mutex.  
+ ミュー テックスは、次の 2 種類: はであり、名前付きシステム ミュー テックス ローカル ミュー テックスです。 ローカル ミュー テックスは、プロセス内でのみ存在します。 任意のスレッドから参照されて、プロセスのために使用できる、 <xref:System.Threading.Mutex> 、ミュー テックスを表すオブジェクト。 名前のない各 <xref:System.Threading.Mutex> オブジェクトは、別のローカル ミュー テックスを表します。  
   
- Named system mutexes are visible throughout the operating system, and can be used to synchronize the activities of processes. You can create a <xref:System.Threading.Mutex> object that represents a named system mutex by using a constructor that accepts a name. The operating-system object can be created at the same time, or it can exist before the creation of the <xref:System.Threading.Mutex> object. You can create multiple <xref:System.Threading.Mutex> objects that represent the same named system mutex, and you can use the <xref:System.Threading.Mutex.OpenExisting%2A> method to open an existing named system mutex.  
+ 名前付きシステム ミュー テックスは、オペレーティング システム全体から参照でき、プロセスの活動を同期するために使用できます。 作成することができます、 <xref:System.Threading.Mutex> を名前を受け取るコンス トラクターを使用して、名前付きシステム ミュー テックスを表すオブジェクト。 同時にオペレーティング システム オブジェクトを作成するかの作成前に存在する可能性が、 <xref:System.Threading.Mutex> オブジェクトです。 複数作成 <xref:System.Threading.Mutex> 名前付きシステム ミュー テックスを同じを表すオブジェクトと、使用することができます、 <xref:System.Threading.Mutex.OpenExisting%2A> を開くには、既存のメソッドに名前付きシステム ミュー テックスです。  
   
 > [!NOTE]
->  On a server that is running Terminal Services, a named system mutex can have two levels of visibility. If its name begins with the prefix "Global\\", the mutex is visible in all terminal server sessions. If its name begins with the prefix "Local\\", the mutex is visible only in the terminal server session where it was created. In that case, a separate mutex with the same name can exist in each of the other terminal server sessions on the server. If you do not specify a prefix when you create a named mutex, it takes the prefix "Local\\". Within a terminal server session, two mutexes whose names differ only by their prefixes are separate mutexes, and both are visible to all processes in the terminal server session. That is, the prefix names "Global\\" and "Local\\" describe the scope of the mutex name relative to terminal server sessions, not relative to processes.  
+>  ターミナル サービスを実行するサーバーで名前付きシステム ミュー テックス 2 レベルの可視性のことができます。 その名前は、プレフィックス「global \\」で始まっている場合、ミュー テックスはすべてのターミナル サーバー セッションに表示されます。 その名前は、プレフィックス"Local\\"で始まっている場合、ミュー テックスは、ターミナル サーバー セッションでのみが作成されました。 その場合は、同じ名前の別のミュー テックスは、それぞれのサーバー上の他のターミナル サーバー セッションに存在できます。 名前付きミュー テックスを作成するときに、プレフィックスを指定しないと、なります、プレフィックス"Local\\"。 ターミナル サーバー セッション内で名前のプレフィックスのみが異なる 2 つのミュー テックスが別個のミュー テックスにされ、両方が、ターミナル サーバー セッションですべてのプロセスに表示されます。 つまり、「global \\」と"Local\\"プレフィックス名では、プロセス相対的ではない、ターミナル サーバー セッションを基準としたミュー テックスの名前のスコープについて説明します。  
   
    
   
-## Examples  
- This example shows how a local <xref:System.Threading.Mutex> object is used to synchronize access to a protected resource. Because each calling thread is blocked until it acquires ownership of the mutex, it must call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method to release ownership of the thread.  
+## 例  
+ この方法を示しますローカル <xref:System.Threading.Mutex> オブジェクトを使用して、保護されたリソースへのアクセスを同期します。 それを呼び出す必要があります、ミュー テックスの所有権を取得するまで、各呼び出し元のスレッドがブロックされている、 <xref:System.Threading.Mutex.ReleaseMutex%2A> 、スレッドの所有権を解放します。  
   
- [!code-csharp[System.Threading.Mutex.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.mutex.class/cs/example1.cs#1)]
- [!code-vb[System.Threading.Mutex.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.mutex.class/vb/example1.vb#1)]  
+ [!code-csharp[System.Threading.Mutex.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.mutex.class/cs/example1.cs#1)]
+ [!code-vb[System.Threading.Mutex.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.mutex.class/vb/example1.vb#1)]  
   
- In the following example, each thread calls the <xref:System.Threading.WaitHandle.WaitOne%28System.Int32%29> method to acquire the mutex. If the time-out interval elapses, the method returns `false`, and the thread neither acquires the mutex nor gains access to the resource the mutex protects. The <xref:System.Threading.Mutex.ReleaseMutex%2A> method is called only by the thread that acquires the mutex.  
+ 次の例では、各スレッドで、 <xref:System.Threading.WaitHandle.WaitOne%28System.Int32%29> 、ミュー テックスを取得します。 タイムアウト間隔が経過したかどうか、メソッドが返されます `false`, 、スレッドはミュー テックスを取得も、ミュー テックスを保護するリソースにアクセスするとします。<xref:System.Threading.Mutex.ReleaseMutex%2A> ミュー テックスを取得したスレッドによってのみ呼び出されます。  
   
- [!code-csharp[System.Threading.Mutex.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.mutex.class/cs/example2.cs#2)]
- [!code-vb[System.Threading.Mutex.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.mutex.class/vb/example2.vb#2)]  
+ [!code-csharp[System.Threading.Mutex.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.mutex.class/cs/example2.cs#2)]
+ [!code-vb[System.Threading.Mutex.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.mutex.class/vb/example2.vb#2)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>This type is thread safe.</threadsafe>
+    <threadsafe>この型はスレッド セーフです。</threadsafe>
+    <altmember cref="T:System.Threading.WaitHandle" />
+    <altmember cref="T:System.Threading.Thread" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -112,21 +114,22 @@
       </Attributes>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with default properties.</summary>
+        <summary>
+          <see cref="T:System.Threading.Mutex" /> クラスの新しいインスタンスを、既定のプロパティを使用して初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling this constructor overload is the same as calling the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> constructor overload and specifying `false` for initial ownership of the mutex. That is, the calling thread does not own the mutex.  
+## 解説  
+ 呼び出しと同じには、このコンス トラクターのオーバー ロードを呼び出して、 <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> コンス トラクター オーバー ロードを指定して `false` 、ミュー テックスの初期所有権をします。 つまり、呼び出し元のスレッドはミュー テックスを所有していません。  
   
    
   
-## Examples  
- The following code example shows how a local <xref:System.Threading.Mutex> object is used to synchronize access to a protected resource. The thread that creates the mutex does not own it initially.  
+## 例  
+ 次のコード例に示す方法ローカル <xref:System.Threading.Mutex> オブジェクトを使用して、保護されたリソースへのアクセスを同期します。 ミュー テックスを作成するスレッドが所有していない、最初にします。  
   
- [!code-cpp[System.Threading.Mutex Default Ctor Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Mutex Default Ctor Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Mutex Default Ctor Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Mutex Default Ctor Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Mutex Default Ctor Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Mutex Default Ctor Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/VB/class1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -161,18 +164,17 @@
         <Parameter Name="initiallyOwned" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="initiallyOwned">
-          <see langword="true" /> to give the calling thread initial ownership of the mutex; otherwise, <see langword="false" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with a Boolean value that indicates whether the calling thread should have initial ownership of the mutex.</summary>
+        <param name="initiallyOwned">呼び出し元スレッドにミューテックスの初期所有権を与える場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <summary>呼び出し元のスレッドにミューテックスの初期所有権があるかどうかを示すブール値を使用して、<see cref="T:System.Threading.Mutex" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example shows how a local <xref:System.Threading.Mutex> object is used to synchronize access to a protected resource. The thread that creates the <xref:System.Threading.Mutex> owns it initially.  
+## 例  
+ 次のコード例に示す方法ローカル <xref:System.Threading.Mutex> オブジェクトを使用して、保護されたリソースへのアクセスを同期します。 作成したスレッド、 <xref:System.Threading.Mutex> 最初に所有されています。  
   
- [!code-cpp[System.Threading.Mutex 1Arg Ctor Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex 1Arg Ctor Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Mutex 1Arg Ctor Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex 1Arg Ctor Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Mutex 1Arg Ctor Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex 1Arg Ctor Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Mutex 1Arg Ctor Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex 1Arg Ctor Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Mutex 1Arg Ctor Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex 1Arg Ctor Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Mutex 1Arg Ctor Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex 1Arg Ctor Example/VB/class1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -208,47 +210,47 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="initiallyOwned">
-          <see langword="true" /> to give the calling thread initial ownership of the named system mutex if the named system mutex is created as a result of this call; otherwise, <see langword="false" />.</param>
-        <param name="name">The name of the <see cref="T:System.Threading.Mutex" />. If the value is <see langword="null" />, the <see cref="T:System.Threading.Mutex" /> is unnamed.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with a Boolean value that indicates whether the calling thread should have initial ownership of the mutex, and a string that is the name of the mutex.</summary>
+        <param name="initiallyOwned">この呼び出しの結果として名前付きシステム ミューテックスが作成された場合に、呼び出し元スレッドに名前付きシステム ミューテックスの初期所有権を付与する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <param name="name">
+          <see cref="T:System.Threading.Mutex" /> の名前。 値が <see langword="null" /> の場合、<see cref="T:System.Threading.Mutex" /> は無名になります。</param>
+        <summary>呼び出し元のスレッドにミューテックスの初期所有権があるかどうかを示すブール値と、ミューテックスの名前を表す文字列を使用して、<see cref="T:System.Threading.Mutex" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `name` is not `null` and `initiallyOwned` is `true`, the calling thread owns the mutex only if the named system mutex was created as a result of this call. Since there is no mechanism for determining whether the named system mutex was created, it is better to specify `false` for `initiallyOwned` when calling this constructor overload. You can use the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%2CSystem.String%2CSystem.Boolean%40%29> constructor if you need to determine initial ownership.  
+## 解説  
+ 場合 `name` は `null` と `initiallyOwned` は `true`, 、この呼び出しの結果として、名前付きシステム ミュー テックスが作成された場合にのみ、呼び出し元のスレッドがミュー テックスを所有します。 指定することをお勧め名前付きシステム ミュー テックスが作成されたかどうかを判断するためのメカニズムがないため `false` の `initiallyOwned` このコンス トラクターのオーバー ロードを呼び出すとき。 使用することができます、 <xref:System.Threading.Mutex.%23ctor%28System.Boolean%2CSystem.String%2CSystem.Boolean%40%29> コンス トラクターの初期所有権を確認する必要がある場合。  
   
- This constructor initializes a <xref:System.Threading.Mutex> object that represents a named system mutex. You can create multiple <xref:System.Threading.Mutex> objects that represent the same named system mutex.  
+ このコンス トラクター、 <xref:System.Threading.Mutex> 名前付きシステム ミュー テックスを表すオブジェクト。 複数作成 <xref:System.Threading.Mutex> 名前付きシステム ミュー テックスを同じを表すオブジェクト。  
   
- If the named mutex has already been created with access control security, and the caller does not have <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName>, an exception is thrown. To open an existing named mutex with only those permissions needed for synchronizing thread activities, see the <xref:System.Threading.Mutex.OpenExisting%2A> method.  
+ アクセス制御セキュリティでは、名前付きミュー テックスが既に作成されていて、呼び出し元が持っていない場合 <xref:System.Security.AccessControl.MutexRights.FullControl?displayProperty=fullName>, 、例外がスローされます。 既存のスレッドの活動を同期するために必要なアクセス許可のみを持つ名前付きミュー テックスを開きを参照してください、 <xref:System.Threading.Mutex.OpenExisting%2A> メソッドです。  
   
- If you specify `null` or an empty string for `name`, a local mutex is created, as if you had called the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> constructor. In this case, `createdNew` is always `true`.  
+ 指定した場合 `null` または空の文字列の `name`, が呼び出した場合と、ローカル ミュー テックスが作成された、 <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> コンス トラクターです。 この場合、 `createdNew` は常に `true`します。  
   
- Because they are system-wide, named mutexes can be used to coordinate resource use across process boundaries.  
+ これらは、システム全体であるために、プロセス境界をまたがってリソースの使用を調整する名前付きミュー テックスを使用できます。  
   
 > [!NOTE]
->  On a server that is running Terminal Services, a named system mutex can have two levels of visibility. If its name begins with the prefix "Global\\", the mutex is visible in all terminal server sessions. If its name begins with the prefix "Local\\", the mutex is visible only in the terminal server session where it was created. In that case, a separate mutex with the same name can exist in each of the other terminal server sessions on the server. If you do not specify a prefix when you create a named mutex, it takes the prefix "Local\\". Within a terminal server session, two mutexes whose names differ only by their prefixes are separate mutexes, and both are visible to all processes in the terminal server session. That is, the prefix names "Global\\" and "Local\\" describe the scope of the mutex name relative to terminal server sessions, not relative to processes.  
+>  ターミナル サービスを実行するサーバーで名前付きシステム ミュー テックス 2 レベルの可視性のことができます。 その名前は、プレフィックス「global \\」で始まっている場合、ミュー テックスはすべてのターミナル サーバー セッションに表示されます。 その名前は、プレフィックス"Local\\"で始まっている場合、ミュー テックスは、ターミナル サーバー セッションでのみが作成されました。 その場合は、同じ名前の別のミュー テックスは、それぞれのサーバー上の他のターミナル サーバー セッションに存在できます。 名前付きミュー テックスを作成するときに、プレフィックスを指定しないと、なります、プレフィックス"Local\\"。 ターミナル サーバー セッション内で名前のプレフィックスのみが異なる 2 つのミュー テックスが別個のミュー テックスにされ、両方が、ターミナル サーバー セッションですべてのプロセスに表示されます。 つまり、「global \\」と"Local\\"プレフィックス名では、プロセス相対的ではない、ターミナル サーバー セッションを基準としたミュー テックスの名前のスコープについて説明します。  
   
    
   
-## Examples  
- The following example shows how a named mutex is used to signal between threads running in two separate processes.  
+## 例  
+ 次の例では、名前付きミュー テックスを使用して 2 つの個別のプロセスで実行中のスレッド間で通知する方法を示します。  
   
- Run this program from two or more command windows. Each process creates a <xref:System.Threading.Mutex> object that represents the named mutex `MyMutex`. The named mutex is a system object whose lifetime is bounded by the lifetimes of the <xref:System.Threading.Mutex> objects that represent it. The named mutex is created when the first process creates its <xref:System.Threading.Mutex> object; in this example, the named mutex is owned by the first process that runs the program. The named mutex is destroyed when all the <xref:System.Threading.Mutex> objects that represent it have been released.  
+ このプログラムは、2 つ以上のコマンド ウィンドウから実行します。 各プロセスの作成、 <xref:System.Threading.Mutex> 名前付きミュー テックスを表す `MyMutex`します。 名前付きミュー テックスがシステム オブジェクトの有効期間に制限が有効期限を持つ、 <xref:System.Threading.Mutex> を表すオブジェクト。 最初のプロセスを作成するときに名前付きミュー テックスが作成されたその <xref:System.Threading.Mutex> オブジェクト。 この例では、名前付きミュー テックスがプログラムを実行する最初のプロセスが所有します。 名前付きミュー テックスが破棄されるときにすべて、 <xref:System.Threading.Mutex> リリースされたことを表すオブジェクト。  
   
- The constructor overload used in this example cannot tell the calling thread whether initial ownership of the named mutex was granted. You should not use this constructor to request initial ownership unless you can be certain that the thread will create the named mutex.  
+ この例で使用するコンス トラクター オーバー ロードは、名前付きミュー テックスの初期所有権が付与されたかどうかを呼び出し元のスレッドに判断できません。 スレッドが名前付きミュー テックスを作成することを確認できましていないと、初期所有権を要求をこのコンス トラクターを使用する必要があります。  
   
- [!code-cpp[System.Threading.Mutex 2Arg Ctor Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex 2Arg Ctor Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Mutex 2Arg Ctor Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex 2Arg Ctor Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Mutex 2Arg Ctor Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex 2Arg Ctor Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Mutex 2Arg Ctor Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex 2Arg Ctor Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Mutex 2Arg Ctor Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex 2Arg Ctor Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Mutex 2Arg Ctor Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex 2Arg Ctor Example/VB/class1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.MutexRights.FullControl" />.</exception>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named mutex cannot be created, perhaps because a wait handle of a different type has the same name.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミューテックスが存在し、それにアクセス制御セキュリティがありますが、ユーザーに <see cref="F:System.Security.AccessControl.MutexRights.FullControl" /> がありません。</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">名前付きミューテックスを作成できません。原因として、別の型の待機ハンドルに同じ名前が付けられていることが考えられます。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is longer than 260 characters.</exception>
+          <paramref name="name" /> が 260 文字を超えています。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -283,44 +285,54 @@
         <Parameter Name="createdNew" Type="System.Boolean&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="initiallyOwned">
-          <see langword="true" /> to give the calling thread initial ownership of the named system mutex if the named system mutex is created as a result of this call; otherwise, <see langword="false" />.</param>
-        <param name="name">The name of the <see cref="T:System.Threading.Mutex" />. If the value is <see langword="null" />, the <see cref="T:System.Threading.Mutex" /> is unnamed.</param>
-        <param name="createdNew">When this method returns, contains a Boolean that is <see langword="true" /> if a local mutex was created (that is, if <c>name</c> is <see langword="null" /> or an empty string) or if the specified named system mutex was created; <see langword="false" /> if the specified named system mutex already existed. This parameter is passed uninitialized.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with a Boolean value that indicates whether the calling thread should have initial ownership of the mutex, a string that is the name of the mutex, and a Boolean value that, when the method returns, indicates whether the calling thread was granted initial ownership of the mutex.</summary>
+        <param name="initiallyOwned">この呼び出しの結果として名前付きシステム ミューテックスが作成された場合に、呼び出し元スレッドに名前付きシステム ミューテックスの初期所有権を付与する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <param name="name">
+          <see cref="T:System.Threading.Mutex" /> の名前。 値が <see langword="null" /> の場合、<see cref="T:System.Threading.Mutex" /> は無名になります。</param>
+        <param name="createdNew">このメソッドから制御が戻るとき、ローカル ミューテックスが作成された場合 \(つまり <c>name</c> が <see langword="null" /> または空の文字列の場合\) または指定した名前付きシステム ミューテックスが作成された場合は、ブール値 <see langword="true" /> が格納されます。指定した名前付きシステム ミューテックスが既に存在する場合は <see langword="false" /> が格納されます。 このパラメーターは初期化せずに渡されます。</param>
+        <summary>呼び出し元のスレッドにミューテックスの初期所有権があるかどうかを示すブール値、ミューテックスの名前を表す文字列、およびメソッドから戻るときにミューテックスの初期所有権が呼び出し元のスレッドに付与されたかどうかを示すブール値を指定して、<see cref="T:System.Threading.Mutex" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `name` is not `null` and `initiallyOwned` is `true`, the calling thread owns the named mutex only if `createdNew` is `true` after the call. Otherwise the thread can request the mutex by calling the <xref:System.Threading.WaitHandle.WaitOne%2A>method.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ is not **languageKeyword tag is not supported!!!!**  
+ and **parameterReference tag is not supported!!!!**  
+ is **languageKeyword tag is not supported!!!!**  
+, the calling thread owns the named mutex only if **parameterReference tag is not supported!!!!**  
+ is **languageKeyword tag is not supported!!!!**  
+ after the call. Otherwise the thread can request the mutex by calling the <xref:System.Threading.WaitHandle.WaitOne%2A>method.  
   
  This constructor initializes a <xref:System.Threading.Mutex> object that represents a named system mutex. You can create multiple <xref:System.Threading.Mutex> objects that represent the same named system mutex.  
   
- If the named mutex has already been created with access control security, and the caller does not have <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> rights, an exception is thrown. To open an existing named mutex with only those permissions needed for synchronizing thread activities, see the <xref:System.Threading.Mutex.OpenExisting%2A> method.  
+ If the named mutex has already been created with access control security, and the caller does not have <xref:System.Security.AccessControl.MutexRights.FullControl?displayProperty=fullName> rights, an exception is thrown. To open an existing named mutex with only those permissions needed for synchronizing thread activities, see the <xref:System.Threading.Mutex.OpenExisting%2A> method.  
   
- If you specify `null` or an empty string for `name`, a local mutex is created, as if you had called the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> constructor. In this case, `createdNew` is always `true`.  
+ If you specify **languageKeyword tag is not supported!!!!**  
+ or an empty string for **parameterReference tag is not supported!!!!**  
+, a local mutex is created, as if you had called the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> constructor. In this case, **parameterReference tag is not supported!!!!**  
+ is always **languageKeyword tag is not supported!!!!**  
+.  
   
- Because they are system-wide, named mutexes can be used to coordinate resource use across process boundaries.  
+ Because they are system\-wide, named mutexes can be used to coordinate resource use across process boundaries.  
   
 > [!NOTE]
 >  On a server that is running Terminal Services, a named system mutex can have two levels of visibility. If its name begins with the prefix "Global\\", the mutex is visible in all terminal server sessions. If its name begins with the prefix "Local\\", the mutex is visible only in the terminal server session where it was created. In that case, a separate mutex with the same name can exist in each of the other terminal server sessions on the server. If you do not specify a prefix when you create a named mutex, it takes the prefix "Local\\". Within a terminal server session, two mutexes whose names differ only by their prefixes are separate mutexes, and both are visible to all processes in the terminal server session. That is, the prefix names "Global\\" and "Local\\" describe the scope of the mutex name relative to terminal server sessions, not relative to processes.  
   
    
   
-## Examples  
+## 例  
  The following code example shows how a named mutex is used to signal between processes or threads. Run this program from two or more command windows. Each process creates a <xref:System.Threading.Mutex> object that represents the named mutex "MyMutex". The named mutex is a system object. In this example, its lifetime is bounded by the lifetimes of the <xref:System.Threading.Mutex> objects that represent it. The named mutex is created when the first process creates its local <xref:System.Threading.Mutex> object, and destroyed when all the <xref:System.Threading.Mutex> objects that represent it have been released. The named mutex is initially owned by the first process. The second process and any subsequent processes wait for earlier processes to release the named mutex.  
   
- [!code-cpp[System.Threading.Mutex 3Arg Ctor Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex 3Arg Ctor Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Mutex 3Arg Ctor Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex 3Arg Ctor Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Mutex 3Arg Ctor Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex 3Arg Ctor Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Mutex 3Arg Ctor Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex 3Arg Ctor Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Mutex 3Arg Ctor Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex 3Arg Ctor Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Mutex 3Arg Ctor Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex 3Arg Ctor Example/VB/class1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.MutexRights.FullControl" />.</exception>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named mutex cannot be created, perhaps because a wait handle of a different type has the same name.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミューテックスが存在し、それにアクセス制御セキュリティがありますが、ユーザーに <see cref="F:System.Security.AccessControl.MutexRights.FullControl" /> がありません。</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">名前付きミューテックスを作成できません。原因として、別の型の待機ハンドルに同じ名前が付けられていることが考えられます。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is longer than 260 characters.</exception>
+          <paramref name="name" /> が 260 文字を超えています。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -346,17 +358,22 @@
         <Parameter Name="mutexSecurity" Type="System.Security.AccessControl.MutexSecurity" />
       </Parameters>
       <Docs>
-        <param name="initiallyOwned">
-          <see langword="true" /> to give the calling thread initial ownership of the named system mutex if the named system mutex is created as a result of this call; otherwise, <see langword="false" />.</param>
-        <param name="name">The name of the system mutex. If the value is <see langword="null" />, the <see cref="T:System.Threading.Mutex" /> is unnamed.</param>
-        <param name="createdNew">When this method returns, contains a Boolean that is <see langword="true" /> if a local mutex was created (that is, if <c>name</c> is <see langword="null" /> or an empty string) or if the specified named system mutex was created; <see langword="false" /> if the specified named system mutex already existed. This parameter is passed uninitialized.</param>
-        <param name="mutexSecurity">A <see cref="T:System.Security.AccessControl.MutexSecurity" /> object that represents the access control security to be applied to the named system mutex.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with a Boolean value that indicates whether the calling thread should have initial ownership of the mutex, a string that is the name of the mutex, a Boolean variable that, when the method returns, indicates whether the calling thread was granted initial ownership of the mutex, and the access control security to be applied to the named mutex.</summary>
+        <param name="initiallyOwned">この呼び出しの結果として名前付きシステム ミューテックスが作成された場合に、呼び出し元スレッドに名前付きシステム ミューテックスの初期所有権を付与する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <param name="name">システム ミューテックスの名前。 値が <see langword="null" /> の場合、<see cref="T:System.Threading.Mutex" /> は無名になります。</param>
+        <param name="createdNew">このメソッドから制御が戻るとき、ローカル ミューテックスが作成された場合 \(つまり <c>name</c> が <see langword="null" /> または空の文字列の場合\) または指定した名前付きシステム ミューテックスが作成された場合は、ブール値 <see langword="true" /> が格納されます。指定した名前付きシステム ミューテックスが既に存在する場合は <see langword="false" /> が格納されます。 このパラメーターは初期化せずに渡されます。</param>
+        <param name="mutexSecurity">名前付きシステム ミューテックスに適用するアクセス制御セキュリティを表す <see cref="T:System.Security.AccessControl.MutexSecurity" /> オブジェクト。</param>
+        <summary>呼び出し元のスレッドにミューテックスの初期所有権があるかどうかを示すブール値、ミューテックスの名前を表す文字列、メソッドが戻るときにミューテックスの初期所有権が呼び出し元のスレッドに付与されたかどうかを示すブール値変数、および名前付きミューテックスに適用するアクセス制御セキュリティを指定して、<see cref="T:System.Threading.Mutex" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `name` is not `null` and `initiallyOwned` is `true`, the calling thread owns the named mutex only if `createdNew` is `true` after the call. Otherwise the thread can request the mutex by calling the <xref:System.Threading.WaitHandle.WaitOne%2A> method.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ is not **languageKeyword tag is not supported!!!!**  
+ and **parameterReference tag is not supported!!!!**  
+ is **languageKeyword tag is not supported!!!!**  
+, the calling thread owns the named mutex only if **parameterReference tag is not supported!!!!**  
+ is **languageKeyword tag is not supported!!!!**  
+ after the call. Otherwise the thread can request the mutex by calling the <xref:System.Threading.WaitHandle.WaitOne%2A> method.  
   
  Use this constructor to apply access control security to a named system mutex when it is created, preventing other code from taking control of the mutex.  
   
@@ -365,21 +382,26 @@
  If the named system mutex does not exist, it is created with the specified access control security. If the named mutex exists, the specified access control security is ignored.  
   
 > [!NOTE]
->  The caller has full control over the newly created <xref:System.Threading.Mutex> object even if `mutexSecurity` denies or fails to grant some access rights to the current user. However, if the current user attempts to get another <xref:System.Threading.Mutex> object to represent the same named mutex, using either a constructor or the <xref:System.Threading.Mutex.OpenExisting%2A> method, Windows access control security is applied.  
+>  The caller has full control over the newly created <xref:System.Threading.Mutex> object even if **parameterReference tag is not supported!!!!**  
+>  denies or fails to grant some access rights to the current user. However, if the current user attempts to get another <xref:System.Threading.Mutex> object to represent the same named mutex, using either a constructor or the <xref:System.Threading.Mutex.OpenExisting%2A> method, Windows access control security is applied.  
   
- If the named mutex has already been created with access control security, and the caller does not have <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName>, an exception is thrown. To open an existing named mutex with only those permissions needed for synchronizing thread activities, see the <xref:System.Threading.Mutex.OpenExisting%2A> method.  
+ If the named mutex has already been created with access control security, and the caller does not have <xref:System.Security.AccessControl.MutexRights.FullControl?displayProperty=fullName>, an exception is thrown. To open an existing named mutex with only those permissions needed for synchronizing thread activities, see the <xref:System.Threading.Mutex.OpenExisting%2A> method.  
   
- If you specify `null` or an empty string for `name`, a local mutex is created, as if you had called the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> constructor. In this case, `createdNew` is always `true`.  
+ If you specify **languageKeyword tag is not supported!!!!**  
+ or an empty string for **parameterReference tag is not supported!!!!**  
+, a local mutex is created, as if you had called the <xref:System.Threading.Mutex.%23ctor%28System.Boolean%29> constructor. In this case, **parameterReference tag is not supported!!!!**  
+ is always **languageKeyword tag is not supported!!!!**  
+.  
   
- Because they are system-wide, named mutexes can be used to coordinate resource use across process boundaries.  
+ Because they are system\-wide, named mutexes can be used to coordinate resource use across process boundaries.  
   
 > [!NOTE]
 >  On a server that is running Terminal Services, a named system mutex can have two levels of visibility. If its name begins with the prefix "Global\\", the mutex is visible in all terminal server sessions. If its name begins with the prefix "Local\\", the mutex is visible only in the terminal server session where it was created. In that case, a separate mutex with the same name can exist in each of the other terminal server sessions on the server. If you do not specify a prefix when you create a named mutex, it takes the prefix "Local\\". Within a terminal server session, two mutexes whose names differ only by their prefixes are separate mutexes, and both are visible to all processes in the terminal server session. That is, the prefix names "Global\\" and "Local\\" describe the scope of the mutex name relative to terminal server sessions, not relative to processes.  
   
    
   
-## Examples  
- The following code example demonstrates the cross-process behavior of a named mutex with access control security. The example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload to test for the existence of a named mutex.  
+## 例  
+ The following code example demonstrates the cross\-process behavior of a named mutex with access control security. The example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload to test for the existence of a named mutex.  
   
  If the mutex does not exist, it is created with initial ownership and access control security that denies the current user the right to use the mutex, but grants the right to read and change permissions on the mutex.  
   
@@ -387,17 +409,17 @@
   
  After the permissions are changed, the mutex is opened with the rights required to enter and release it. If you run the compiled example from a third command window, it runs using the new permissions.  
   
- [!code-cpp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
- [!code-vb[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
+ [!code-vb[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.MutexRights.FullControl" />.</exception>
-        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named mutex cannot be created, perhaps because a wait handle of a different type has the same name.</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミューテックスが存在し、それにアクセス制御セキュリティがありますが、ユーザーに <see cref="F:System.Security.AccessControl.MutexRights.FullControl" /> がありません。</exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">名前付きミューテックスを作成できません。原因として、別の型の待機ハンドルに同じ名前が付けられていることが考えられます。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is longer than 260 characters.</exception>
+          <paramref name="name" /> が 260 文字を超えています。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -415,39 +437,39 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets a <see cref="T:System.Security.AccessControl.MutexSecurity" /> object that represents the access control security for the named mutex.</summary>
-        <returns>A <see cref="T:System.Security.AccessControl.MutexSecurity" /> object that represents the access control security for the named mutex.</returns>
+        <summary>名前付きミューテックスのアクセス制御セキュリティを表す <see cref="T:System.Security.AccessControl.MutexSecurity" /> オブジェクトを取得します。</summary>
+        <returns>名前付きミューテックスのアクセス制御セキュリティを表す <see cref="T:System.Security.AccessControl.MutexSecurity" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Threading.Mutex.GetAccessControl%2A> method uses the following combination of flags (combined using the bitwise OR operation) to search for permissions: <xref:System.Security.AccessControl.AccessControlSections?displayProperty=fullName>, <xref:System.Security.AccessControl.AccessControlSections?displayProperty=fullName>, and <xref:System.Security.AccessControl.AccessControlSections?displayProperty=fullName>.  
+## 解説  
+ <xref:System.Threading.Mutex.GetAccessControl%2A> メソッドは、次フラグの組み合わせ \(ビットごとの OR 演算を使用して結合\) を使用してアクセス許可を検索する: <xref:System.Security.AccessControl.AccessControlSections.Access?displayProperty=fullName>, 、<xref:System.Security.AccessControl.AccessControlSections.Owner?displayProperty=fullName>, 、および <xref:System.Security.AccessControl.AccessControlSections.Group?displayProperty=fullName>です。  
   
- The user must have <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> to call this method, and the mutex must have been opened with <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName>.  
+ ユーザーが必要 <xref:System.Security.AccessControl.MutexRights.ReadPermissions?displayProperty=fullName> をこのメソッドは、ミュー テックスを呼び出す必要がありますを使用して開いた <xref:System.Security.AccessControl.MutexRights.ReadPermissions?displayProperty=fullName>します。  
   
    
   
-## Examples  
- The following code example demonstrates the cross-process behavior of a named mutex with access control security. The example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload to test for the existence of a named mutex.  
+## 例  
+ 次のコード例では、アクセス制御セキュリティを名前付きミュー テックスのプロセス間の動作を示します。 例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%29> メソッドのオーバー ロードは、名前付きミュー テックスの存在をテストします。  
   
- If the mutex does not exist, it is created with initial ownership and access control security that denies the current user the right to use the mutex, but grants the right to read and change permissions on the mutex.  
+ ミュー テックスが存在しない場合は、初期所有権と現在のユーザーに、ミュー テックスを使用する権利を拒否の読み取りし、ミュー テックスのアクセス許可を変更する権限を付与するアクセス制御セキュリティで作成されます。  
   
- If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.Mutex.OpenExisting%28System.String%29>. The exception is caught, and the example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> method overload to open the mutex with the rights needed to read and change the permissions, using the <xref:System.Threading.Mutex.GetAccessControl%2A> and <xref:System.Threading.Mutex.SetAccessControl%2A> methods.  
+ 2 つのコマンド ウィンドウからコンパイル済みの例を実行する場合、2 番目のコピーへの呼び出しでアクセス違反例外がスローされます <xref:System.Threading.Mutex.OpenExisting%28System.String%29>します。 例外をキャッチし、例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> メソッドのオーバー ロードは、読み取りを使用して、アクセス許可を変更するために必要な権限を持つ、ミュー テックスを開き、 <xref:System.Threading.Mutex.GetAccessControl%2A> と <xref:System.Threading.Mutex.SetAccessControl%2A> メソッドです。  
   
- After the permissions are changed, the mutex is opened with the rights required to enter and release it. If you run the compiled example from a third command window, it runs using the new permissions.  
+ アクセス許可を変更すると、入力し、それを解放するために必要な権限を持つ、ミュー テックスが開かれます。 3 番目のコマンド ウィンドウからコンパイル済みの例を実行する場合は、新しいアクセス許可を使用して実行されます。  
   
- [!code-cpp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
- [!code-vb[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
+ [!code-vb[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.UnauthorizedAccessException">The current <see cref="T:System.Threading.Mutex" /> object represents a named system mutex, but the user does not have <see cref="F:System.Security.AccessControl.MutexRights.ReadPermissions" />.  
+        <exception cref="T:System.UnauthorizedAccessException">現在 <see cref="T:System.Threading.Mutex" /> オブジェクトが、名前付きシステム ミュー テックスを表しますが、ユーザーが持っていない <see cref="F:System.Security.AccessControl.MutexRights.ReadPermissions" />します。  
   
- -or-  
+ または  
   
- The current <see cref="T:System.Threading.Mutex" /> object represents a named system mutex, and was not opened with <see cref="F:System.Security.AccessControl.MutexRights.ReadPermissions" />.</exception>
-        <exception cref="T:System.NotSupportedException">Not supported for Windows 98 or Windows Millennium Edition.</exception>
+ 現在 <see cref="T:System.Threading.Mutex" /> オブジェクトは、名前付きシステム ミュー テックスを表しで開かれていない <see cref="F:System.Security.AccessControl.MutexRights.ReadPermissions" />します。</exception>
+        <exception cref="T:System.NotSupportedException">Windows 98 または Windows Millennium Edition はサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="OpenExisting">
@@ -477,51 +499,51 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the system mutex to open.</param>
-        <summary>Opens the specified named mutex, if it already exists.</summary>
-        <returns>An object that represents the named system mutex.</returns>
+        <param name="name">開くシステム ミューテックスの名前。</param>
+        <summary>既に存在する場合は、指定した名前付きミューテックスを開きます。</summary>
+        <returns>名前付きシステム ミューテックスを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Threading.Mutex.OpenExisting%2A> method tries to open the specified named system mutex. If the system mutex does not exist, this method throws an exception instead of creating the system object. To create the system mutex when it does not already exist, use one of the <xref:System.Threading.Mutex.%23ctor%2A> constructors that has a `name` parameter.  
+## 解説  
+ <xref:System.Threading.Mutex.OpenExisting%2A> メソッドを開こうとした、指定した名前付きシステム ミュー テックスです。 システム ミュー テックスが存在しない場合、このメソッドは、システム オブジェクトを作成する代わりに例外をスローします。 既に存在しない場合にシステム ミュー テックスを作成するには、いずれかを使用、 <xref:System.Threading.Mutex.%23ctor%2A> コンス トラクターを持つ、 `name` パラメーター。  
   
- Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.Mutex> object, even though the objects that are returned represent the same named system mutex.  
+ このメソッドは同じ値を使用する複数の呼び出し `name` 必ずしも返さない同じ <xref:System.Threading.Mutex> 場合でも、返されたオブジェクトは、同じ名前付きシステム ミュー テックスを表すオブジェクトします。  
   
- This method overload is equivalent to calling the <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> method overload and specifying <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> and <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> rights, combined by using the bitwise OR operation.  
+ このメソッドはオーバー ロードを呼び出すことと同じ、 <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> メソッドのオーバー ロードを指定すること <xref:System.Security.AccessControl.MutexRights.Synchronize?displayProperty=fullName> と <xref:System.Security.AccessControl.MutexRights.Modify?displayProperty=fullName> 権限、ビットごとの OR 演算を使用して結合します。  
   
- Specifying the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag allows a thread to wait on the mutex, and specifying the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag allows a thread to call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method.  
+ 指定する、 <xref:System.Security.AccessControl.MutexRights.Synchronize?displayProperty=fullName> フラグにより、ミュー テックスを待機するスレッドを指定して、 <xref:System.Security.AccessControl.MutexRights.Modify?displayProperty=fullName> フラグを呼び出すスレッドを使用する、 <xref:System.Threading.Mutex.ReleaseMutex%2A> メソッドです。  
   
- This method does not request ownership of the mutex.  
+ このメソッドは、ミュー テックスの所有権を要求しません。  
   
    
   
-## Examples  
- The following code example demonstrates the cross-process behavior of a named mutex with access control security. The example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload to test for the existence of a named mutex.  
+## 例  
+ 次のコード例では、アクセス制御セキュリティを名前付きミュー テックスのプロセス間の動作を示します。 例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%29> メソッドのオーバー ロードは、名前付きミュー テックスの存在をテストします。  
   
- If the mutex does not exist, it is created with initial ownership and access control security that denies the current user the right to use the mutex, but grants the right to read and change permissions on the mutex.  
+ ミュー テックスが存在しない場合は、初期所有権と現在のユーザーに、ミュー テックスを使用する権利を拒否の読み取りし、ミュー テックスのアクセス許可を変更する権限を付与するアクセス制御セキュリティで作成されます。  
   
- If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.Mutex.OpenExisting%28System.String%29>. The exception is caught, and the example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> method overload to open the mutex with the rights needed to read and change the permissions.  
+ 2 つのコマンド ウィンドウからコンパイル済みの例を実行する場合、2 番目のコピーへの呼び出しでアクセス違反例外がスローされます <xref:System.Threading.Mutex.OpenExisting%28System.String%29>します。 例外をキャッチし、例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> メソッドのオーバー ロードは、読み取りし、アクセス許可を変更するために必要な権限を持つ、ミュー テックスを開きます。  
   
- After the permissions are changed, the mutex is opened with the rights required to enter and release it. If you run the compiled example from a third command window, it runs using the new permissions.  
+ アクセス許可を変更すると、入力し、それを解放するために必要な権限を持つ、ミュー テックスが開かれます。 3 番目のコマンド ウィンドウからコンパイル済みの例を実行する場合は、新しいアクセス許可を使用して実行されます。  
   
- [!code-cpp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
- [!code-vb[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
+ [!code-vb[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is an empty string.  
+          <paramref name="name" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="name" /> is longer than 260 characters.</exception>
+ <paramref name="name" /> が 260 文字を超えています。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named mutex does not exist.</exception>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists, but the user does not have the security access required to use it.</exception>
+          <paramref name="name" /> が <see langword="null" /> です。</exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">名前付きミュー テックスは存在しません。</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミュー テックスが存在するが、ユーザーには、それを使用するために必要なセキュリティのアクセスはありません。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -543,50 +565,50 @@
         <Parameter Name="rights" Type="System.Security.AccessControl.MutexRights" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the system mutex to open.</param>
-        <param name="rights">A bitwise combination of the enumeration values that represent the desired security access.</param>
-        <summary>Opens the specified named mutex, if it already exists, with the desired security access.</summary>
-        <returns>An object that represents the named system mutex.</returns>
+        <param name="name">開くシステム ミューテックスの名前。</param>
+        <param name="rights">必要なセキュリティ アクセス権を表す列挙値のビットごとの組み合わせ。</param>
+        <summary>既に存在する場合は、必要なセキュリティ アクセスで指定した名前付きミューテックスを開きます。</summary>
+        <returns>名前付きシステム ミューテックスを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `rights` parameter must include the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag to allow threads to wait on the mutex, and the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag to allow threads to call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method.  
+## 解説  
+ `rights` パラメーターを含める必要があります、 <xref:System.Security.AccessControl.MutexRights.Synchronize?displayProperty=fullName> をミュー テックスを待機するスレッドを許可するフラグ、および <xref:System.Security.AccessControl.MutexRights.Modify?displayProperty=fullName> を呼び出すスレッドを許可するフラグ、 <xref:System.Threading.Mutex.ReleaseMutex%2A> メソッドです。  
   
- The <xref:System.Threading.Mutex.OpenExisting%2A> method tries to open an existing named mutex. If the system mutex does not exist, this method throws an exception instead of creating the system object. To create the system mutex when it does not already exist, use one of the <xref:System.Threading.Mutex.%23ctor%2A> constructors that has a `name` parameter.  
+ <xref:System.Threading.Mutex.OpenExisting%2A> メソッドは、既存の名前付きミュー テックスを試みます。 システム ミュー テックスが存在しない場合、このメソッドは、システム オブジェクトを作成する代わりに例外をスローします。 既に存在しない場合にシステム ミュー テックスを作成するには、いずれかを使用、 <xref:System.Threading.Mutex.%23ctor%2A> コンス トラクターを持つ、 `name` パラメーター。  
   
- Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.Mutex> object, even though the objects that are returned represent the same named system mutex.  
+ このメソッドは同じ値を使用する複数の呼び出し `name` 必ずしも返さない同じ <xref:System.Threading.Mutex> 場合でも、返されたオブジェクトは、同じ名前付きシステム ミュー テックスを表すオブジェクトします。  
   
- This method does not request ownership of the mutex.  
+ このメソッドは、ミュー テックスの所有権を要求しません。  
   
    
   
-## Examples  
- The following code example demonstrates the cross-process behavior of a named mutex with access control security. The example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload to test for the existence of a named mutex.  
+## 例  
+ 次のコード例では、アクセス制御セキュリティを名前付きミュー テックスのプロセス間の動作を示します。 例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%29> メソッドのオーバー ロードは、名前付きミュー テックスの存在をテストします。  
   
- If the mutex does not exist, it is created with initial ownership and access control security that denies the current user the right to use the mutex, but grants the right to read and change permissions on the mutex.  
+ ミュー テックスが存在しない場合は、初期所有権と現在のユーザーに、ミュー テックスを使用する権利を拒否の読み取りし、ミュー テックスのアクセス許可を変更する権限を付与するアクセス制御セキュリティで作成されます。  
   
- If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.Mutex.OpenExisting%28System.String%29>. The exception is caught, and the example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> method overload to open the mutex with the rights needed to read and change the permissions.  
+ 2 つのコマンド ウィンドウからコンパイル済みの例を実行する場合、2 番目のコピーへの呼び出しでアクセス違反例外がスローされます <xref:System.Threading.Mutex.OpenExisting%28System.String%29>します。 例外をキャッチし、例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> メソッドのオーバー ロードは、読み取りし、アクセス許可を変更するために必要な権限を持つ、ミュー テックスを開きます。  
   
- After the permissions are changed, the mutex is opened with the rights required to enter and release it. If you run the compiled example from a third command window, it runs using the new permissions.  
+ アクセス許可を変更すると、入力し、それを解放するために必要な権限を持つ、ミュー テックスが開かれます。 3 番目のコマンド ウィンドウからコンパイル済みの例を実行する場合は、新しいアクセス許可を使用して実行されます。  
   
- [!code-cpp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
- [!code-vb[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
+ [!code-vb[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is an empty string.  
+          <paramref name="name" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="name" /> is longer than 260 characters.</exception>
+ <paramref name="name" /> が 260 文字を超えています。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named mutex does not exist.</exception>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists, but the user does not have the desired security access.</exception>
+          <paramref name="name" /> が <see langword="null" /> です。</exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">名前付きミュー テックスは存在しません。</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミュー テックスが存在するが、ユーザーには、必要なセキュリティのアクセスはありません。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -620,38 +642,39 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the <see cref="T:System.Threading.Mutex" /> once.</summary>
+        <summary>
+          <see cref="T:System.Threading.Mutex" /> を一度解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Whenever a thread acquires a mutex (for example, by calling its <xref:System.Threading.WaitHandle.WaitOne%2A> method), it must subsequently call <xref:System.Threading.Mutex.ReleaseMutex%2A> to relinquish ownership of the mutex and unblock other threads that are trying to gain ownership of the mutex. If the attempt to get ownership of the mutex fails (for example, when a call to the <xref:System.Threading.WaitHandle.WaitOne%2A> method with a `millisecondsTimeout` or a `timeout` parameter returns `false` because the request times out), the thread shouldn't call <xref:System.Threading.Mutex.ReleaseMutex%2A>, In this case, the thread should also not be allowed to access the resource protected by the mutex, as the following example shows.  
+## 解説  
+ スレッドがミュー テックスを取得するたびに \(などを呼び出してその<xref:System.Threading.WaitHandle.WaitOne%2A>メソッド\)、後で呼び出す必要があります<xref:System.Threading.Mutex.ReleaseMutex%2A>ミュー テックスの所有権を放棄して、ミュー テックスの所有権を獲得しようとしている他のスレッドのブロックを解除します。 ミュー テックスの所有権の取得に失敗したが失敗したかどうか \(への呼び出し時などに、<xref:System.Threading.WaitHandle.WaitOne%2A>メソッドを`millisecondsTimeout`または`timeout`パラメーターを返します`false`要求がタイムアウトになるため\)、スレッドを呼び出すべきではありません<xref:System.Threading.Mutex.ReleaseMutex%2A>、ここでは、スレッドもことはできません、次の例として、ミュー テックスで保護されているリソースにアクセスします。  
   
- [!code-csharp[System.Threading.Mutex.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.mutex.class/cs/example2.cs#2)]
- [!code-vb[System.Threading.Mutex.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.mutex.class/vb/example2.vb#2)]  
+ [!code-csharp[System.Threading.Mutex.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.mutex.class/cs/example2.cs#2)]
+ [!code-vb[System.Threading.Mutex.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.mutex.class/vb/example2.vb#2)]  
   
- A thread that owns a mutex can specify the same mutex in repeated wait function calls without blocking its execution. The number of calls is kept by the common language runtime. The thread must call <xref:System.Threading.Mutex.ReleaseMutex%2A> the same number of times to release ownership of the mutex.  
+ ミュー テックスを所有するスレッドは、その実行をブロックすることがなく、繰り返される関数呼び出しで同じミュー テックスを指定できます。 呼び出しの数は、共通言語ランタイムによって保持されます。 スレッドを呼び出す必要があります<xref:System.Threading.Mutex.ReleaseMutex%2A>同じ回数、ミュー テックスの所有権を解放します。  
   
- If a thread terminates while owning a mutex, the mutex is said to be abandoned. The state of the mutex is set to signaled and the next waiting thread gets ownership. If no one owns the mutex, the state of the mutex is signaled. Beginning in version 2.0 of the .NET Framework, an <xref:System.Threading.AbandonedMutexException> is thrown in the next thread that acquires the mutex. Prior to version 2.0 of the .NET Framework, no exception was thrown.  
+ スレッドがミュー テックスを所有しているときに終了と、ミュー テックスを破棄すると呼ばれます。 ミュー テックスの状態がシグナル状態に設定し、\[次へ\] の待機中のスレッドが所有権を取得します。 ミュー テックスを所有しているだれミュー テックスの状態が通知されます。 .NET Framework のバージョン 2.0 以降で、<xref:System.Threading.AbandonedMutexException>ミュー テックスを取得する次のスレッドでスローされます。 .NET Framework のバージョン 2.0 より前の例外がスローされなかった。  
   
 > [!CAUTION]
->  An abandoned mutex often indicates a serious error in the code. When a thread exits without releasing the mutex, the data structures protected by the mutex might not be in a consistent state. The next thread to request ownership of the mutex can handle this exception and proceed, if the integrity of the data structures can be verified.  
+>  放棄されたミュー テックスは、多くの場合、コードで深刻なエラーを示します。 ミュー テックスを解放せずに、スレッドが終了したときにミュー テックスで保護されているデータ構造体できない可能性があります一貫した状態にします。 ミュー テックスの所有権を要求する次のスレッドでは、この例外を処理でき、データ構造の整合性を検証できる場合、続行することができます。  
   
- In the case of a system-wide mutex, an abandoned mutex might indicate that an application has been terminated abruptly (for example, by using Windows Task Manager).  
+ 場合は、システムのミュー テックスを放棄されたミュー テックスがある可能性があります \(たとえば、Windows タスク マネージャーを使用\) して、アプリケーションが突然終了されたことです。  
   
    
   
-## Examples  
- The following example shows how a local <xref:System.Threading.Mutex> object is used to synchronize access to a protected resource. The thread that creates the mutex does not own it initially. The <xref:System.Threading.Mutex.ReleaseMutex%2A> method is used to release the mutex when it is no longer needed.  
+## 例  
+ 次の例は、どのローカル<xref:System.Threading.Mutex>オブジェクトは、保護されたリソースへのアクセスを同期するために使用します。 ミュー テックスを作成するスレッドが所有していない、最初にします。<xref:System.Threading.Mutex.ReleaseMutex%2A>不要になったときにミュー テックスを解放するメソッドを使用します。  
   
- [!code-cpp[System.Threading.Mutex Default Ctor Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Mutex Default Ctor Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Mutex Default Ctor Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Mutex Default Ctor Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Mutex Default Ctor Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Mutex Default Ctor Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex Default Ctor Example/VB/class1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ApplicationException">The calling thread does not own the mutex.</exception>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+        <exception cref="T:System.ApplicationException">呼び出しスレッドに独自のミューテックスがありません。</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="SetAccessControl">
@@ -670,39 +693,39 @@
         <Parameter Name="mutexSecurity" Type="System.Security.AccessControl.MutexSecurity" />
       </Parameters>
       <Docs>
-        <param name="mutexSecurity">A <see cref="T:System.Security.AccessControl.MutexSecurity" /> object that represents the access control security to be applied to the named system mutex.</param>
-        <summary>Sets the access control security for a named system mutex.</summary>
+        <param name="mutexSecurity">名前付きシステム ミューテックスに適用するアクセス制御セキュリティを表す <see cref="T:System.Security.AccessControl.MutexSecurity" /> オブジェクト。</param>
+        <summary>名前付きシステム ミューテックスのアクセス制御セキュリティを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The user must have <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> rights to call this method, and the mutex must have been opened with <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName>.  
+## 解説  
+ ユーザーが必要 <xref:System.Security.AccessControl.MutexRights.ChangePermissions?displayProperty=fullName> でこのメソッドは、ミュー テックスを呼び出す権限が開かれている必要があります <xref:System.Security.AccessControl.MutexRights.ChangePermissions?displayProperty=fullName>します。  
   
    
   
-## Examples  
- The following code example demonstrates the cross-process behavior of a named mutex with access control security. The example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload to test for the existence of a named mutex.  
+## 例  
+ 次のコード例では、アクセス制御セキュリティを名前付きミュー テックスのプロセス間の動作を示します。 例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%29> メソッドのオーバー ロードは、名前付きミュー テックスの存在をテストします。  
   
- If the mutex does not exist, it is created with initial ownership and access control security that denies the current user the right to use the mutex, but grants the right to read and change permissions on the mutex.  
+ ミュー テックスが存在しない場合は、初期所有権と現在のユーザーに、ミュー テックスを使用する権利を拒否の読み取りし、ミュー テックスのアクセス許可を変更する権限を付与するアクセス制御セキュリティで作成されます。  
   
- If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.Mutex.OpenExisting%28System.String%29>. The exception is caught, and the example uses the <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> method overload to open the mutex with the rights needed to read and change the permissions, using the <xref:System.Threading.Mutex.GetAccessControl%2A> and <xref:System.Threading.Mutex.SetAccessControl%2A> methods.  
+ 2 つのコマンド ウィンドウからコンパイル済みの例を実行する場合、2 番目のコピーへの呼び出しでアクセス違反例外がスローされます <xref:System.Threading.Mutex.OpenExisting%28System.String%29>します。 例外をキャッチし、例では、 <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> メソッドのオーバー ロードは、読み取りを使用して、アクセス許可を変更するために必要な権限を持つ、ミュー テックスを開き、 <xref:System.Threading.Mutex.GetAccessControl%2A> と <xref:System.Threading.Mutex.SetAccessControl%2A> メソッドです。  
   
- After the permissions are changed, the mutex is opened with the rights required to enter and release it. If you run the compiled example from a third command window, it runs using the new permissions.  
+ アクセス許可を変更すると、入力し、それを解放するために必要な権限を持つ、ミュー テックスが開かれます。 3 番目のコマンド ウィンドウからコンパイル済みの例を実行する場合は、新しいアクセス許可を使用して実行されます。  
   
- [!code-cpp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
- [!code-vb[System.Threading.Mutex.ctor named 4#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/CS/source.cs#1)]
+ [!code-vb[System.Threading.Mutex.ctor named 4\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Mutex.ctor named 4/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="mutexSecurity" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The user does not have <see cref="F:System.Security.AccessControl.MutexRights.ChangePermissions" />.  
+          <paramref name="mutexSecurity" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">ユーザーに <see cref="F:System.Security.AccessControl.MutexRights.ChangePermissions" /> がありません。  
   
- -or-  
+ または  
   
- The mutex was not opened with <see cref="F:System.Security.AccessControl.MutexRights.ChangePermissions" />.</exception>
-        <exception cref="T:System.SystemException">The current <see cref="T:System.Threading.Mutex" /> object does not represent a named system mutex.</exception>
+ ミュー テックスが開かれていない <see cref="F:System.Security.AccessControl.MutexRights.ChangePermissions" />します。</exception>
+        <exception cref="T:System.SystemException">現在 <see cref="T:System.Threading.Mutex" /> オブジェクトは、名前付きシステム ミュー テックスを表していません。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryOpenExisting">
@@ -733,37 +756,38 @@
         <Parameter Name="result" Type="System.Threading.Mutex&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the system mutex to open.</param>
-        <param name="result">When this method returns, contains a <see cref="T:System.Threading.Mutex" /> object that represents the named mutex if the call succeeded, or <see langword="null" /> if the call failed. This parameter is treated as uninitialized.</param>
-        <summary>Opens the specified named mutex, if it already exists, and returns a value that indicates whether the operation succeeded.</summary>
-        <returns>
-          <see langword="true" /> if the named mutex was opened successfully; otherwise, <see langword="false" />.</returns>
+        <param name="name">開くシステム ミューテックスの名前。</param>
+        <param name="result">このメソッドから戻るときに、呼び出しに成功した場合は名前付きミューテックスを表す <see cref="T:System.Threading.Mutex" /> オブジェクトが格納されます。呼び出しに失敗した場合は <see langword="null" /> が格納されます。 このパラメーターは初期化前として処理されます。</param>
+        <summary>既に存在する場合は、指定した名前付きミューテックスを開き操作が成功したかどうかを示す値を返します。</summary>
+        <returns>名前付きミューテックスが正常に開かれた場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the named mutex does not exist, this method does not create it. To create the system mutex when it does not already exist, use one of the <xref:System.Threading.Mutex.%23ctor%2A> constructors that has a `name` parameter.  
+## 解説  
+ If the named mutex does not exist, this method does not create it. To create the system mutex when it does not already exist, use one of the <xref:System.Threading.Mutex.%23ctor%2A> constructors that has a **parameterReference tag is not supported!!!!**  
+ parameter.  
   
  If you are uncertain whether a named mutex exists, use this method overload instead of the <xref:System.Threading.Mutex.OpenExisting%28System.String%29> method overload, which throws an exception if the mutex does not exist.  
   
- Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.Mutex> object, even though the objects that are returned represent the same named system mutex.  
+ Multiple calls to this method that use the same value for **parameterReference tag is not supported!!!!**  
+ do not necessarily return the same <xref:System.Threading.Mutex> object, even though the objects that are returned represent the same named system mutex.  
   
- This method overload is equivalent to calling the <xref:System.Threading.Mutex.TryOpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%2CSystem.Threading.Mutex%40%29> method overload and specifying <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> and <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> rights, combined by using the bitwise OR operation. Specifying the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag allows a thread to wait on the mutex, and specifying the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag allows a thread to call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method.  
+ This method overload is equivalent to calling the <xref:System.Threading.Mutex.TryOpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%2CSystem.Threading.Mutex%40%29> method overload and specifying <xref:System.Security.AccessControl.MutexRights.Synchronize?displayProperty=fullName> and <xref:System.Security.AccessControl.MutexRights.Modify?displayProperty=fullName> rights, combined by using the bitwise OR operation. Specifying the <xref:System.Security.AccessControl.MutexRights.Synchronize?displayProperty=fullName> flag allows a thread to wait on the mutex, and specifying the <xref:System.Security.AccessControl.MutexRights.Modify?displayProperty=fullName> flag allows a thread to call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method.  
   
  This method does not request ownership of the mutex.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is an empty string.  
+          <paramref name="name" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="name" /> is longer than 260 characters.</exception>
+ <paramref name="name" /> が 260 文字を超えています。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists, but the user does not have the security access required to use it.</exception>
+          <paramref name="name" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミューテックスは存在しますが、ユーザーにはそれを使用するために必要なセキュリティ アクセスがありません。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -786,40 +810,88 @@
         <Parameter Name="result" Type="System.Threading.Mutex&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the system mutex to open.</param>
-        <param name="rights">A bitwise combination of the enumeration values that represent the desired security access.</param>
-        <param name="result">When this method returns, contains a <see cref="T:System.Threading.Mutex" /> object that represents the named mutex if the call succeeded, or <see langword="null" /> if the call failed. This parameter is treated as uninitialized.</param>
-        <summary>Opens the specified named mutex, if it already exists, with the desired security access, and returns a value that indicates whether the operation succeeded.</summary>
-        <returns>
-          <see langword="true" /> if the named mutex was opened successfully; otherwise, <see langword="false" />.</returns>
+        <param name="name">開くシステム ミューテックスの名前。</param>
+        <param name="rights">必要なセキュリティ アクセス権を表す列挙値のビットごとの組み合わせ。</param>
+        <param name="result">このメソッドから戻るときに、呼び出しに成功した場合は名前付きミューテックスを表す <see cref="T:System.Threading.Mutex" /> オブジェクトが格納されます。呼び出しに失敗した場合は <see langword="null" /> が格納されます。 このパラメーターは初期化前として処理されます。</param>
+        <summary>既に存在する場合は、必要なセキュリティ アクセスを使用して指定した名前付きミューテックスを開き、操作が成功したかどうかを示す値を返します。</summary>
+        <returns>名前付きミューテックスが正常に開かれた場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the named mutex does not exist, this method does not create it. To create the system mutex when it does not already exist, use one of the <xref:System.Threading.Mutex.%23ctor%2A> constructors that has a `name` parameter.  
+## 解説  
+ If the named mutex does not exist, this method does not create it. To create the system mutex when it does not already exist, use one of the <xref:System.Threading.Mutex.%23ctor%2A> constructors that has a **parameterReference tag is not supported!!!!**  
+ parameter.  
   
  If you are uncertain whether a named mutex exists, use this method overload instead of the <xref:System.Threading.Mutex.OpenExisting%28System.String%2CSystem.Security.AccessControl.MutexRights%29> method overload, which throws an exception if the mutex does not exist.  
   
- The `rights` parameter must include the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag to allow threads to wait on the mutex, and the <xref:System.Security.AccessControl.MutexRights?displayProperty=fullName> flag to allow threads to call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method.  
+ The **parameterReference tag is not supported!!!!**  
+ parameter must include the <xref:System.Security.AccessControl.MutexRights.Synchronize?displayProperty=fullName> flag to allow threads to wait on the mutex, and the <xref:System.Security.AccessControl.MutexRights.Modify?displayProperty=fullName> flag to allow threads to call the <xref:System.Threading.Mutex.ReleaseMutex%2A> method.  
   
- Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.Mutex> object, even though the objects that are returned represent the same named system mutex.  
+ Multiple calls to this method that use the same value for **parameterReference tag is not supported!!!!**  
+ do not necessarily return the same <xref:System.Threading.Mutex> object, even though the objects that are returned represent the same named system mutex.  
   
  This method does not request ownership of the mutex.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is an empty string.  
+          <paramref name="name" /> が空の文字列です。  
   
- -or-  
+ または  
   
- <paramref name="name" /> is longer than 260 characters.</exception>
+ <paramref name="name" /> が 260 文字を超えています。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The named mutex exists, but the user does not have the security access required to use it.</exception>
+          <paramref name="name" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">Win32 エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">名前付きミューテックスは存在しますが、ユーザーにはそれを使用するために必要なセキュリティ アクセスがありません。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
+    <MemberGroup MemberName="TryOpenExisting">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>既に存在する場合は、指定した名前付きミューテックスを開き操作が成功したかどうかを示す値を返します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.Mutex" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="OpenExisting">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>既に存在する場合は、指定した名前付きミューテックスを開きます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

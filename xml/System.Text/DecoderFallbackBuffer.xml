@@ -24,39 +24,40 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides a buffer that allows a fallback handler to return an alternate string to a decoder when it cannot decode an input byte sequence.</summary>
+    <summary>入力バイト シーケンスをデコードできない場合に、フォールバック ハンドラーがデコーダーに代替文字列を返すことを可能にするためのバッファーを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An encoding defines a mapping between a Unicode character and an encoded sequence of bytes. A decoding operation, which converts an input byte sequence to an output character, fails if no mapping is defined for a particular byte sequence.  
+## 解説  
+ エンコーディングは、Unicode 文字およびエンコード済みバイト シーケンスの間のマッピングを定義します。 特定のバイト シーケンスのマッピングが定義されていない場合、入力バイト シーケンスを出力文字に変換、デコードの処理が失敗します。  
   
- The .NET Framework provides a failure handling mechanism, called a fallback, if a conversion cannot be performed. All decoder fallback handlers must implement the following:  
+ .NET Framework では、エラー処理、変換を実行できない場合に、フォールバックと呼ばれる機構を提供します。 すべてのデコーダー フォールバック ハンドラーを次に実装する必要があります。  
   
--   A decoder fallback, which is represented by a class derived from the <xref:System.Text.DecoderFallback> class.  
+-   派生したクラスによって表されるデコーダー フォールバックにおいて、 <xref:System.Text.DecoderFallback> クラスです。  
   
--   A decoder fallback buffer, which is represented by a type derived from the <xref:System.Text.DecoderFallbackBuffer> class that can return a string to the conversion operation.  
+-   派生した型によって表される、デコーダー フォールバック バッファー、 <xref:System.Text.DecoderFallbackBuffer> 変換演算に文字列を返すことができるクラスです。  
   
- Fallbacks can use three strategies to handle conversion failures:  
+ フォールバックは、3 つの戦略を使用して、変換エラーを処理できます。  
   
--   Best-fit mapping. The decoder fallback buffer can return a string that represents a close approximation to the input byte sequence. The .NET Framework does not provide a public best-fit <xref:System.Text.DecoderFallbackBuffer> implementation.  
+-   最適マッピングします。 デコーダー フォールバック バッファーには、入力バイト シーケンスに近い概数を表す文字列を返すことができます。 .NET Framework では、最適のパブリック達しません <xref:System.Text.DecoderFallbackBuffer> 実装します。  
   
--   Replacement. The decoder fallback buffer can return a string, such as a question mark ("?"), that indicates that a byte sequence could not be decoded. In the .NET Framework, the <xref:System.Text.DecoderReplacementFallback> and <xref:System.Text.DecoderReplacementFallbackBuffer> classes provide a public replacement fallback buffer implementation. The constructor of the <xref:System.Text.DecoderReplacementFallback> class enables you to define the replacement string.  
+-   置換します。 デコーダー フォールバック バッファーが疑問符 \(\) などの文字列を返すことができます \("?"\) を示すバイト シーケンスをデコードできませんでした。 .NET Framework で、 <xref:System.Text.DecoderReplacementFallback> と <xref:System.Text.DecoderReplacementFallbackBuffer> クラス パブリック置換フォールバック バッファーの実装を提供します。 コンス トラクター、 <xref:System.Text.DecoderReplacementFallback> クラスでは、置換文字列を定義することができます。  
   
--   Exception. The <xref:System.Text.DecoderFallbackBuffer> implementation throws an exception, which indicates that a byte sequence cannot be decoded, and terminates the decoding operation. In this case, the fallback handler must provide a <xref:System.Text.DecoderFallbackBuffer> implementation, although it does not return a string to the decoder. In the .NET Framework, the <xref:System.Text.DecoderExceptionFallback> and <xref:System.Text.DecoderExceptionFallbackBuffer> classes provide a public exception fallback implementation that throws a <xref:System.Text.DecoderFallbackException> when a byte sequence cannot be decoded.  
+-   例外。<xref:System.Text.DecoderFallbackBuffer> 実装をバイト シーケンスをデコードできないし、デコード操作の終了を示す例外をスローします。 この場合、フォールバックのハンドラーを提供する必要があります、 <xref:System.Text.DecoderFallbackBuffer> 実装が、デコーダーに文字列を返すことはできません。 .NET Framework で、 <xref:System.Text.DecoderExceptionFallback> と <xref:System.Text.DecoderExceptionFallbackBuffer> クラスをスローするパブリック例外フォールバックの実装を提供する、 <xref:System.Text.DecoderFallbackException> バイト シーケンスをデコードできない場合。  
   
- The buffer in a <xref:System.Text.DecoderFallbackBuffer> implementation represents the entire string to be returned to the decoder in response to a decoder fallback. Generally, implementations also include state information, such as the index of the next character to return to the decoder and the number of remaining characters to be returned. Because <xref:System.Text.DecoderFallbackBuffer> is an abstract class, it requires derived classes to implement the following members at a minimum:  
+ 内のバッファー、 <xref:System.Text.DecoderFallbackBuffer> 実装は、フォールバック デコーダーに応えてデコーダーに返される文字列全体を表します。 一般に、実装には、返されるには、デコーダーと残りの文字数に戻るには次の文字のインデックスなどの状態情報も含まれます。<xref:System.Text.DecoderFallbackBuffer> 抽象クラスでは、派生クラスには、少なくとも次のメンバーを実装する必要があります。  
   
--   The <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> method, which is called by the decoder when it cannot decode a byte sequence. The decoder passes two pieces of information to the fallback buffer implementation: an array containing the bytes that could not be decoded and the index of the first byte in the input byte array. In a decoder fallback exception handler, the exception is thrown in this method. Otherwise, the method returns `true` if it provides a fallback, or `false` if it does not.  
+-   <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> バイト シーケンスをデコードできないときに、デコーダーによって呼び出されるメソッド。 デコーダー フォールバック バッファーの実装に 2 つの情報を渡します。 デコードできないバイトを格納する配列と、入力バイト配列の最初のバイトのインデックス。 デコーダー フォールバック例外ハンドラーでは、このメソッドで例外がスローされます。 それ以外の場合、メソッドが返す `true` 、フォールバックを提供する場合または `false` そうでない場合。  
   
--   The <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> method, which is called repeatedly by the decoder if the <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> method returns `true`. In successive calls, the handler should return each character in its buffer. When it has returned all characters, it should return U+0000. An exception fallback handler always returns U+0000.  
+-   <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> 場合デコーダーによって繰り返し呼び出されるメソッド、 <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> メソッドが返す `true`します。 ハンドラーは、連続呼び出しで、バッファー内の各文字を返すはずです。 これには、すべての文字が返されて、u\+0000 を返す必要があります。 例外フォールバック ハンドラーは、u\+0000 を常に返します。  
   
--   The <xref:System.Text.DecoderFallbackBuffer.MovePrevious%2A> method, which tries to move the pointer to the previous position in the buffer and indicates whether the move was successful. An exception handler always returns `false`.  
+-   <xref:System.Text.DecoderFallbackBuffer.MovePrevious%2A> メソッドでは、バッファー内の前の位置にポインターを移動しようとして、移動が成功したかどうかを示します。 例外ハンドラーが常に返します `false`します。  
   
--   The <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> property, which indicates the number of remaining characters to be returned to the decoder. An exception fallback handler always returns zero.  
+-   <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> デコーダーに返される残りの文字の数を示すプロパティです。 例外フォールバック ハンドラーは、常に 0 を返します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Text.DecoderFallback" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -83,7 +84,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Text.DecoderFallbackBuffer" /> class.</summary>
+        <summary>
+          <see cref="T:System.Text.DecoderFallbackBuffer" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -117,16 +119,16 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytesUnknown">An input array of bytes.</param>
-        <param name="index">The index position of a byte in <c>bytesUnknown</c>.</param>
-        <summary>When overridden in a derived class, prepares the fallback buffer to handle the specified input byte sequence.</summary>
+        <param name="bytesUnknown">入力バイト配列。</param>
+        <param name="index">内のバイトのインデックス位置 <c>bytesUnknown</c>します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、指定した入力バイト シーケンスを処理するためのフォールバック バッファーを準備します。</summary>
         <returns>
-          <see langword="true" /> if the fallback buffer can process <paramref name="bytesUnknown" />; <see langword="false" /> if the fallback buffer ignores <paramref name="bytesUnknown" />.</returns>
+          <see langword="true" /> フォールバック バッファーを処理できる場合 <paramref name="bytesUnknown" />; <see langword="false" /> フォールバック バッファーを無視する場合 <paramref name="bytesUnknown" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.Encoding.GetChars%2A?displayProperty=fullName>, <xref:System.Text.Encoding.GetString%2A?displayProperty=fullName>, and <xref:System.Text.Decoder.Convert%2A?displayProperty=fullName> methods call <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> if they encounter an unknown input byte sequence that cannot be decoded. A return value of `true` indicates that the fallback buffer can process the input byte sequence, which causes the calling method to call the <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> method to obtain each character of the fallback buffer. Because it does not process individual bytes, the <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> method in an exception fallback handler throws an exception.  
+## 解説  
+ [Fallback メソッド \(Byte\<xref:System.Text.Encoding.GetChars%2A?displayProperty=fullName>, 、[Fallback メソッド \(Byte\<xref:System.Text.Encoding.GetString%2A?displayProperty=fullName>, 、および [Fallback メソッド \(Byte\<xref:System.Text.Decoder.Convert%2A?displayProperty=fullName> メソッドを呼び出す [Fallback メソッド \(Byte\<xref:System.Text.DecoderFallbackBuffer.Fallback%2A> デコードできない入力バイトが不明なシーケンスが発生した場合。 戻り値 `true` フォールバック バッファーが呼び出し元のメソッドを呼び出すと、入力バイト シーケンスを処理できることを示します、 [Fallback メソッド \(Byte\<xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> フォールバック バッファーの各文字を取得します。 個々 のバイトを処理できないため、 [Fallback メソッド \(Byte\<xref:System.Text.DecoderFallbackBuffer.Fallback%2A> 例外フォールバック ハンドラーのメソッドは例外をスローします。  
   
  ]]></format>
         </remarks>
@@ -159,15 +161,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, retrieves the next character in the fallback buffer.</summary>
-        <returns>The next character in the fallback buffer.</returns>
+        <summary>派生クラスでオーバーライドされた場合は、フォールバック バッファー内の次の文字を取得します。</summary>
+        <returns>フォールバック バッファー内の次の文字。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A decoding operation calls the <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> method if the operation encounters an unknown byte sequence in the input. If the <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> method returns `true`, a substitute string exists that can be inserted in the output instead of decoding the unknown input. The decoding operation calls the <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> method repeatedly and obtains the substitute string one character at a time. When all characters in the fallback buffer have been returned to the decoder, the method should return U+0000.  
+## 解説  
+ デコード操作は、 <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> メソッド操作には、入力で未知のバイト シーケンスが発生するとします。 場合、 <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> メソッドが返す `true`, 、代替文字列が存在する不明な入力をデコードしないで出力に挿入することができます。 デコード操作の呼び出し、 <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> メソッド繰り返しし、一度に置換文字列の 1 つの文字を取得します。 フォールバック バッファー内のすべての文字は、デコーダーに戻されている、このメソッドは u\+0000 を返す必要があります。  
   
- For an exception fallback handler, the <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> method should return U+0000.  
+ 例外フォールバック ハンドラーで、 <xref:System.Text.DecoderFallbackBuffer.GetNextChar%2A> メソッドは u\+0000 を返す必要があります。  
   
  ]]></format>
         </remarks>
@@ -200,14 +202,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, causes the next call to the <see cref="M:System.Text.DecoderFallbackBuffer.GetNextChar" /> method to access the data buffer character position that is prior to the current character position.</summary>
+        <summary>派生クラスでオーバーライドされると、原因を次に呼び出した、 <see cref="M:System.Text.DecoderFallbackBuffer.GetNextChar" /> メソッドは現在の文字位置の前に、データ バッファーの文字位置にアクセスします。</summary>
         <returns>
-          <see langword="true" /> if the <see cref="M:System.Text.DecoderFallbackBuffer.MovePrevious" /> operation was successful; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合、 <see cref="M:System.Text.DecoderFallbackBuffer.MovePrevious" /> 操作が成功した以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception fallback handler should return `false`.  
+## 解説  
+ 例外フォールバック ハンドラーが返す必要があります `false`します。  
   
  ]]></format>
         </remarks>
@@ -239,16 +241,19 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>When overridden in a derived class, gets the number of characters in the current <see cref="T:System.Text.DecoderFallbackBuffer" /> object that remain to be processed.</summary>
-        <value>The number of characters in the current fallback buffer that have not yet been processed.</value>
+        <summary>派生クラスでオーバーライドされた場合は、現在の文字数を取得 <see cref="T:System.Text.DecoderFallbackBuffer" /> 処理するための残存オブジェクトです。</summary>
+        <value>まだ処理されていない現在のフォールバック バッファー内の文字の数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> method returns `true` if <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> is a nonzero value.  
+## 解説  
+ <xref:System.Text.DecoderFallbackBuffer.Fallback%2A> メソッドが返す `true` 場合 <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> は 0 以外の値。  
   
- For an exception fallback handler, the <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> method should return zero.  
+ 例外フォールバック ハンドラーで、 <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> メソッドは、0 を返す必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -280,7 +285,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Initializes all data and state information pertaining to this fallback buffer.</summary>
+        <summary>このフォールバック バッファーに関連するすべてのデータと状態情報を初期化します。</summary>
         <remarks>To be added.</remarks>
         <block subset="none" type="overrides">
           <para>After calling the <see cref="M:System.Text.DecoderFallbackBuffer.Reset" /> method, the <see cref="P:System.Text.DecoderFallbackBuffer.Remaining" /> property should return 0, the <see cref="M:System.Text.DecoderFallbackBuffer.GetNextChar" /> method should return U+0000, and the <see cref="M:System.Text.DecoderFallbackBuffer.MovePrevious" /> method should return <see langword="false" />.</para>

@@ -11,26 +11,26 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents a design-time editor sheet for a custom expression. This class must be inherited.</summary>
+    <summary>カスタム式のデザイン時にエディター シートを表します。 このクラスは継承する必要があります。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A custom expression editor sheet lets a developer set properties on a custom expression at design-time. Control property values can be set using expression strings; the expression strings are evaluated at run time by an expression builder and at design time by an expression editor.  
+## 解説  
+ カスタム式エディター シートにより、開発者はデザイン時にカスタム式のプロパティを設定できます。 式の文字列を使用してコントロール プロパティの値を設定することができます。式の文字列には、式エディターで式ビルダーによって実行時に、デザイン時に評価されます。  
   
- When you browse the <xref:System.Web.UI.Design.HtmlControlDesigner.Expressions%2A> property for a control in the design-time properties grid, the visual designer displays a dialog box to set expressions that provide the value for a control property. You can select the expression type based on a list of expression prefixes. When you select an expression prefix from the list, the visual designer uses the associated <xref:System.Web.UI.Design.ExpressionEditor> and <xref:System.Web.UI.Design.ExpressionEditorSheet> objects to evaluate and convert the expression string based on the syntax for that type of expression. The visual designer uses expression editor sheet properties to prompt for one or more strings that combine into the custom expression string.  
+ 参照すると、 <xref:System.Web.UI.Design.HtmlControlDesigner.Expressions%2A> コントロール プロパティをデザイン時プロパティ グリッドで、ビジュアル デザイナーは、コントロールのプロパティの値を指定する式を設定するダイアログ ボックスを表示します。 式のプレフィックスのリストに基づく式の型を選択できます。 ビジュアル デザイナーを使用して、関連付けられている、一覧から式のプレフィックスを選択すると <xref:System.Web.UI.Design.ExpressionEditor> と <xref:System.Web.UI.Design.ExpressionEditorSheet> その式の構文に基づくオブジェクトを評価し、式の文字列を変換します。 ビジュアル デザイナーでは、カスタム式の文字列に結合する 1 つまたは複数の文字列の入力を求める式エディター シートのプロパティを使用します。  
   
- Typically, to supply a new expression type at design time, you define a unique expression prefix and provide custom <xref:System.Web.Compilation.ExpressionBuilder> and <xref:System.Web.UI.Design.ExpressionEditor> implementations. Optionally, you can provide a custom <xref:System.Web.UI.Design.ExpressionEditorSheet> implementation that defines properties that are used to form the expression. To associate an expression prefix with an expression builder and an expression editor, apply the <xref:System.Web.Compilation.ExpressionEditorAttribute> attribute and an <xref:System.Web.Compilation.ExpressionPrefixAttribute> attribute to the custom <xref:System.Web.Configuration.ExpressionBuilder> class, and then configure the expression prefix for an expression builder in the `expressionBuilders` element in the Web configuration file.  
+ 通常、デザイン時に、新しい式の型を指定するに固有の式のプレフィックスを定義し、提供するカスタム、 <xref:System.Web.Compilation.ExpressionBuilder> と <xref:System.Web.UI.Design.ExpressionEditor> 実装します。 カスタムを指定する必要に応じて、 <xref:System.Web.UI.Design.ExpressionEditorSheet> 条件式に使用されるプロパティを定義して実装します。 式ビルダーと式エディターには、式のプレフィックスを関連付ける、適用、 <xref:System.Web.Compilation.ExpressionEditorAttribute> 属性と <xref:System.Web.Compilation.ExpressionPrefixAttribute> 属性をカスタム <xref:System.Web.Configuration.ExpressionBuilder> クラスし、式ビルダーでの式のプレフィックスを構成、 `expressionBuilders` Web 構成ファイル内の要素。  
   
- The default implementation of the <xref:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet%2A> method returns a basic editor sheet, which uses a single input string to form the expression. Custom expression editors that are derived from the <xref:System.Web.UI.Design.ExpressionEditor> can override the <xref:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet%2A> method to return a custom editor sheet implementation. Typically, a custom editor sheet contains multiple properties that are used to build the expression string. The <xref:System.Web.UI.Design.ExpressionEditorSheet.GetExpression%2A> method returns the resulting expression string based on the current expression properties.  
+ 既定の実装、 <xref:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet%2A> メソッドは、式に 1 つの入力文字列を使用する基本的なエディター シートを返します。 派生したカスタム式エディター、 <xref:System.Web.UI.Design.ExpressionEditor> オーバーライドできる、 <xref:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet%2A> カスタム エディター シートの実装を返すメソッド。 通常、カスタム エディター シートには、式の文字列の構築に使用される複数のプロパティが含まれています。<xref:System.Web.UI.Design.ExpressionEditorSheet.GetExpression%2A> メソッドは、現在の式のプロパティに基づく結果として得られる式の文字列を返します。  
   
- For example, the <xref:System.Web.UI.Design.ResourceExpressionEditor> class derives from the <xref:System.Web.UI.Design.ExpressionEditor> class and provides an implementation for evaluating and associating a resource string reference with a control property at design time. The <xref:System.Web.Compilation.ResourceExpressionBuilder> class is associated with the expression prefix `Resources` and the <xref:System.Web.UI.Design.ResourceExpressionEditor> implementation. The <xref:System.Web.UI.Design.ResourceExpressionEditor.GetExpressionEditorSheet%2A> method returns a <xref:System.Web.UI.Design.ResourceExpressionEditorSheet>, which defines the individual properties that form a resource reference expression.  
+ たとえば、 <xref:System.Web.UI.Design.ResourceExpressionEditor> クラスから派生する、 <xref:System.Web.UI.Design.ExpressionEditor> クラスし、評価を行い、デザイン時にコントロール プロパティを持つリソース文字列の参照を関連付けることの実装を提供します。<xref:System.Web.Compilation.ResourceExpressionBuilder> クラスは、式のプレフィックスに関連付けられた `Resources` と <xref:System.Web.UI.Design.ResourceExpressionEditor> 実装します。<xref:System.Web.UI.Design.ResourceExpressionEditor.GetExpressionEditorSheet%2A> メソッドが返される、 <xref:System.Web.UI.Design.ResourceExpressionEditorSheet>, 、リソース参照式を形成する個々 のプロパティを定義します。  
   
- When you inherit from the <xref:System.Web.UI.Design.ExpressionEditorSheet> class, you must override the following members:  
+ 継承する場合、 <xref:System.Web.UI.Design.ExpressionEditorSheet> クラス、メンバーをオーバーライドする必要があります。  
   
--   The <xref:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet%2A> method to return a custom editor sheet implementation.  
+-   <xref:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet%2A> カスタム エディター シートの実装を返すメソッド。  
   
--   The <xref:System.Web.UI.Design.ExpressionEditorSheet.%23ctor%2A> constructor to implement custom initialization actions for your expression editor sheet implementation.  
+-   <xref:System.Web.UI.Design.ExpressionEditorSheet.%23ctor%2A> 式エディター シート実装用のカスタムの初期化のアクションを実装するコンス トラクターです。  
   
  ]]></format>
     </remarks>
@@ -45,6 +45,9 @@
   
  The associated custom expression editor class creates an instance of the derived editor sheet in the <see cref="M:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet(System.String,System.IServiceProvider)" /> method, initializes that instance with the current expression string set for the control property, and returns the instance to the visual designer. The visual designer allows you to set the expression sheet properties, and then calls the <see cref="M:System.Web.UI.Design.ExpressionEditorSheet.GetExpression" /> method to form the expression string from the input expression sheet property values.</para>
     </block>
+    <altmember cref="T:System.Web.UI.Design.ExpressionEditor" />
+    <altmember cref="M:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet(System.String,System.IServiceProvider)" />
+    <altmember cref="T:System.Web.UI.Design.ResourceExpressionEditorSheet" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -60,13 +63,14 @@
         <Parameter Name="serviceProvider" Type="System.IServiceProvider" />
       </Parameters>
       <Docs>
-        <param name="serviceProvider">A service provider implementation supplied by the designer host, used to obtain additional design-time services.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.Design.ExpressionEditorSheet" /> class.</summary>
+        <param name="serviceProvider">その他のデザイン時サービスを取得するために使用、デザイナー ホストによって提供されるサービス プロバイダーの実装です。</param>
+        <summary>
+          <see cref="T:System.Web.UI.Design.ExpressionEditorSheet" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Because the <xref:System.Web.UI.Design.ExpressionEditorSheet> class is abstract, you cannot create an instance of an <xref:System.Web.UI.Design.ExpressionEditorSheet> directly using the <xref:System.Web.UI.Design.ExpressionEditorSheet.%23ctor%2A> constructor.  
+## 解説  
+ <xref:System.Web.UI.Design.ExpressionEditorSheet> が抽象クラスのインスタンスを作成することはできません、 <xref:System.Web.UI.Design.ExpressionEditorSheet> を使用して直接、 <xref:System.Web.UI.Design.ExpressionEditorSheet.%23ctor%2A> コンス トラクターです。  
   
  ]]></format>
         </remarks>
@@ -75,6 +79,9 @@
   
  For example, a custom expression editor sheet class that implements additional expression properties can define the default values for the expression properties in the <see cref="M:System.Web.UI.Design.ExpressionEditorSheet.#ctor(System.IServiceProvider)" /> constructor. A custom expression editor sheet class can define additional public constructor overloads that use input parameter values to set the initial values for the expression properties.</para>
         </block>
+        <altmember cref="Overload:System.Web.UI.Design.ExpressionEditor.GetExpressionEditor" />
+        <altmember cref="T:System.Web.UI.Design.ExpressionEditor" />
+        <altmember cref="T:System.Web.UI.Design.ResourceExpressionEditorSheet" />
       </Docs>
     </Member>
     <Member MemberName="GetExpression">
@@ -91,15 +98,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, returns the expression string that is formed by the expression editor sheet property values.</summary>
-        <returns>The custom expression string for the current property values.</returns>
+        <summary>派生クラスでオーバーライドされた場合は、式エディターのシートのプロパティ値によって形成される式の文字列を返します。</summary>
+        <returns>現在のプロパティ値のカスタム式文字列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A custom expression editor sheet contains design-time settings for multiple expression properties, which are combined to form an expression string. Control property values can be set using expression strings; the expression strings are evaluated at run time by an expression builder.  
+## 解説  
+ カスタム式エディターのシートには、デザイン時の設定が式の文字列に組み合わされた複数の式プロパティが含まれています。 式の文字列を使用してコントロール プロパティの値を設定することができます。式文字列は、式ビルダーによって、実行時に評価されます。  
   
- The <xref:System.Web.UI.Design.ExpressionEditorSheet.GetExpression%2A> method returns an expression string that is built from the current expression properties. The visual designer allows you to set the expression sheet properties, and then calls the <xref:System.Web.UI.Design.ExpressionEditorSheet.GetExpression%2A> method to get the expression string and set the control property value.  
+ <xref:System.Web.UI.Design.ExpressionEditorSheet.GetExpression%2A> メソッドは、現在の式のプロパティから組み込まれている式の文字列を返します。 ビジュアル デザイナーがシートのプロパティ式を設定することができを呼び出して、 <xref:System.Web.UI.Design.ExpressionEditorSheet.GetExpression%2A> メソッドを式の文字列を取得およびコントロールのプロパティ値を設定します。  
   
  ]]></format>
         </remarks>
@@ -114,6 +121,9 @@
   
  The associated custom expression editor class creates an instance of the derived editor sheet in the <see cref="M:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet(System.String,System.IServiceProvider)" /> method, initializes that instance with the current expression string set for the control property, and then returns the instance to the visual designer. The visual designer allows you to set the expression sheet properties, and then calls the <see cref="M:System.Web.UI.Design.ExpressionEditorSheet.GetExpression" /> method to form the expression string from the input expression sheet property values.</para>
         </block>
+        <altmember cref="T:System.Web.UI.Design.ExpressionEditor" />
+        <altmember cref="M:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet(System.String,System.IServiceProvider)" />
+        <altmember cref="T:System.Web.UI.Design.ResourceExpressionEditorSheet" />
       </Docs>
     </Member>
     <Member MemberName="IsValid">
@@ -134,17 +144,20 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the expression string is valid.</summary>
+        <summary>式の文字列が有効かどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" />, if the expression string is valid; otherwise <see langword="false" />.</value>
+          <see langword="true" />, 、式の文字列が無効である場合それ以外の場合 <see langword="false" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This base implementation always returns `true`.  
+## 解説  
+ この基本実装を常に `true`します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.UI.Design.ExpressionEditor" />
+        <altmember cref="M:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet(System.String,System.IServiceProvider)" />
+        <altmember cref="T:System.Web.UI.Design.ResourceExpressionEditorSheet" />
       </Docs>
     </Member>
     <Member MemberName="ServiceProvider">
@@ -165,18 +178,21 @@
         <ReturnType>System.IServiceProvider</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the service provider implementation that is used by the expression editor sheet.</summary>
-        <value>An <see cref="T:System.IServiceProvider" />, typically provided by the design host, that can be used to obtain additional design-time services.</value>
+        <summary>式エディター シートで使用されるサービス プロバイダーの実装を取得します。</summary>
+        <value>
+          <see cref="T:System.IServiceProvider" />, 、通常、その他のデザイン時サービスの取得に使用できるデザイン ホストで提供されています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Web.UI.Design.ExpressionEditorSheet.%23ctor%2A> constructor to set the <xref:System.Web.UI.Design.ExpressionEditorSheet.ServiceProvider%2A> implementation for a custom expression editor sheet.  
+## 解説  
+ 使用して、 <xref:System.Web.UI.Design.ExpressionEditorSheet.%23ctor%2A> を設定するコンス トラクター、 <xref:System.Web.UI.Design.ExpressionEditorSheet.ServiceProvider%2A> カスタム式エディター シートの実装です。  
   
- The <xref:System.Web.UI.Design.ExpressionEditorSheet.ServiceProvider%2A> property can be used to access services that are provided by the designer host. For example, call the <xref:System.IServiceProvider.GetService%2A> method with the <xref:System.Web.UI.Design.IWebApplication> interface to access project items, documents, or configuration file details that are provided through the visual designer.  
+ <xref:System.Web.UI.Design.ExpressionEditorSheet.ServiceProvider%2A> デザイナー ホストによって提供されるサービスにアクセスするプロパティを使用できます。 たとえばを呼び出して、 <xref:System.IServiceProvider.GetService%2A> メソッドを <xref:System.Web.UI.Design.IWebApplication> プロジェクト項目にアクセスする、ドキュメント、またはビジュアル デザイナーによって提供される構成ファイルの詳細情報へのインターフェイスです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.Design.ExpressionEditor.GetExpressionEditorSheet(System.String,System.IServiceProvider)" />
+        <altmember cref="M:System.Web.UI.Design.ExpressionEditorSheet.#ctor(System.IServiceProvider)" />
       </Docs>
     </Member>
   </Members>

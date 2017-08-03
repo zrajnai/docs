@@ -12,26 +12,28 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Defines extended capabilities for client-based application settings providers.</summary>
+    <summary>クライアント ベースのアプリケーション設定プロバイダーの拡張機能を定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The application settings architecture enables you to provide a custom storage mechanism for application settings by creating a custom settings provider, which is a class derived from <xref:System.Configuration.SettingsProvider>. Such a class contains the basic functionality for storing and retrieving properties. However, you can add additional standardized functionality by implementing the <xref:System.Configuration.IApplicationSettingsProvider> interface in the custom settings provider. This interface contains three methods that primarily enable the settings provider to more intelligently handle application version changes. Typically, the settings provider will store application settings for different versions of an application separately to anticipate the following circumstances:  
+## 解説  
+ アプリケーション設定アーキテクチャから派生したクラスであるカスタム設定プロバイダーを作成することでアプリケーションの設定のカスタム ストレージ機構を提供することができます <xref:System.Configuration.SettingsProvider>します。 このようなクラスには、格納、およびプロパティを取得するための基本的な機能が含まれています。 ただし、実装することによって追加の標準的な機能を追加することができます、 <xref:System.Configuration.IApplicationSettingsProvider> カスタム設定プロバイダーのインターフェイスです。 このインターフェイスには、主に設定プロバイダーをよりインテリジェントなアプリケーションのバージョン変更処理が有効にする 3 つのメソッドが含まれています。 通常、設定プロバイダーでは、次の状況を予測するとは別に、アプリケーションの異なるバージョンのアプリケーション設定を保存します。  
   
--   Side-by-side execution of different versions of an application.  
+-   アプリケーションの異なるバージョンのサイド バイ サイド実行します。  
   
--   Retaining application settings when upgrading an application.  
+-   アプリケーションをアップグレードする場合は、アプリケーションの設定を保持します。  
   
--   Resetting the application settings to their default values for the currently used version.  
+-   アプリケーションの設定を現在使用されているバージョンの既定値にリセットしています。  
   
- The <xref:System.Configuration.LocalFileSettingsProvider> class implements the <xref:System.Configuration.IApplicationSettingsProvider> interface. The same set of methods contained by <xref:System.Configuration.IApplicationSettingsProvider> is also found in the <xref:System.Configuration.ApplicationSettingsBase> class, enabling the establishment of a predefined communication channel between an application settings wrapper and its settings provider.  
+ <xref:System.Configuration.LocalFileSettingsProvider> クラスは、<xref:System.Configuration.IApplicationSettingsProvider> インターフェイスを実装します。 同じ一連のメソッドに含まれる <xref:System.Configuration.IApplicationSettingsProvider> にも存在、 <xref:System.Configuration.ApplicationSettingsBase> にアプリケーション設定のラッパーと設定プロバイダーとの間での定義済みの通信チャネルを確立するクラス。  
   
 > [!NOTE]
->  This interface is optional. If a provider does not implement this interface, the settings infrastructure will fail without notification if it attempts to access any of the methods defined by this interface.  
+>  このインターフェイスはオプションです。 プロバイダーがこのインターフェイスを実装していない場合のこのインターフェイスで定義されているメソッドにアクセスしようとすると通知されることがなく設定インフラストラクチャは失敗します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Configuration.SettingsProvider" />
+    <altmember cref="T:System.Configuration.ApplicationSettingsBase" />
   </Docs>
   <Members>
     <Member MemberName="GetPreviousVersion">
@@ -55,19 +57,22 @@
         <Parameter Name="property" Type="System.Configuration.SettingsProperty" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <param name="property">The <see cref="T:System.Configuration.SettingsProperty" /> whose value is to be returned.</param>
-        <summary>Returns the value of the specified settings property for the previous version of the same application.</summary>
-        <returns>A <see cref="T:System.Configuration.SettingsPropertyValue" /> containing the value of the specified property setting as it was last set in the previous version of the application; or <see langword="null" /> if the setting cannot be found.</returns>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <param name="property">
+          <see cref="T:System.Configuration.SettingsProperty" /> 値が返されます。</param>
+        <summary>同じアプリケーションの以前のバージョンの指定した設定のプロパティの値を返します。</summary>
+        <returns>A <see cref="T:System.Configuration.SettingsPropertyValue" /> 最後に、アプリケーションの以前のバージョンで設定された、指定したプロパティの設定の値を含むまたは <see langword="null" /> 設定が見つからない場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use the <xref:System.Configuration.IApplicationSettingsProvider.GetPreviousVersion%2A> method in conjunction with the <xref:System.Configuration.IApplicationSettingsProvider.Upgrade%2A> method to migrate application settings during or after the installation of a new version of an application.  
+## 解説  
+ 使用することができます、 <xref:System.Configuration.IApplicationSettingsProvider.GetPreviousVersion%2A> メソッドと組み合わせて、 <xref:System.Configuration.IApplicationSettingsProvider.Upgrade%2A> 中またはアプリケーションの新しいバージョンのインストール後に、アプリケーションの設定を移行する方法です。  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.SecurityException">For <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /> permission.</permission>
+        <altmember cref="M:System.Configuration.IApplicationSettingsProvider.Upgrade(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyCollection)" />
+        <altmember cref="M:System.Configuration.ApplicationSettingsBase.GetPreviousVersion(System.String)" />
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -90,19 +95,21 @@
         <Parameter Name="context" Type="System.Configuration.SettingsContext" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <summary>Resets the application settings associated with the specified application to their default values.</summary>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <summary>既定値に指定されたアプリケーションに関連付けられているアプリケーションの設定をリセットします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Configuration.IApplicationSettingsProvider.Reset%2A> method reinitializes the stored values of the specified application settings group. In contrast, <xref:System.Configuration.DefaultSettingValueAttribute> supplies a default value for a single settings property during property initialization, if it has no stored value.  
+## 解説  
+ <xref:System.Configuration.IApplicationSettingsProvider.Reset%2A> メソッドが格納される値の指定したアプリケーション設定\] グループを再初期化します。 これに対し、 <xref:System.Configuration.DefaultSettingValueAttribute> 格納されている値が存在しない場合、プロパティの初期化中に 1 つの設定のプロパティの既定値を提供します。  
   
- The settings provider determines what reasonable defaults are for the specified group of application settings. For example, the implementation in <xref:System.Configuration.LocalFileSettingsProvider> resets user-scoped settings to their shared values in the `application.exe.config` file; in contrast, it leaves the application-scoped settings unchanged.  
+ 設定プロバイダーでは、適切な既定値が、アプリケーション設定の指定したグループを決定します。 実装など <xref:System.Configuration.LocalFileSettingsProvider> で共有値にユーザー スコープ設定をリセット、 `application.exe.config` ; これに対し、アプリケーション スコープ設定を変更せずになります。  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.SecurityException">For <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /> permission.</permission>
+        <altmember cref="T:System.Configuration.DefaultSettingValueAttribute" />
+        <altmember cref="M:System.Configuration.ApplicationSettingsBase.Reset" />
       </Docs>
     </Member>
     <Member MemberName="Upgrade">
@@ -126,22 +133,25 @@
         <Parameter Name="properties" Type="System.Configuration.SettingsPropertyCollection" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection" /> containing the settings property group whose values are to be retrieved.</param>
-        <summary>Indicates to the provider that the application has been upgraded. This offers the provider an opportunity to upgrade its stored settings as appropriate.</summary>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection" /> を取得するのには、値が設定のプロパティ グループを格納しています。</param>
+        <summary>プロバイダーにアプリケーションをアップグレードすることを示します。 これは、プロバイダーに、必要に応じて、保存されている設定をアップグレードする機会を提供します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The .NET Framework enables side-by-side installation and execution of different versions of the same application. The application settings provider stores the application settings for each version of an application separately to ensure isolation. However, you may want to migrate settings from the previous version of an application to the current one. To provide this migration functionality, use the <xref:System.Configuration.IApplicationSettingsProvider.Upgrade%2A> method, implemented in a class derived from <xref:System.Configuration.SettingsProvider>.  
+## 解説  
+ .NET Framework には、同じアプリケーションの異なるバージョンのサイド バイ サイド インストールと実行ができます。 アプリケーションの設定プロバイダーでは、分離するとは別に、アプリケーションの各バージョンのアプリケーション設定を格納します。 ただし、現在の 1 つに、アプリケーションの以前のバージョンからの設定を移行する場合があります。 この移行機能を提供するには、 <xref:System.Configuration.IApplicationSettingsProvider.Upgrade%2A> から派生したクラスで実装されたメソッド <xref:System.Configuration.SettingsProvider>します。  
   
- You can use the <xref:System.Configuration.IApplicationSettingsProvider.Upgrade%2A> method in conjunction with the <xref:System.Configuration.IApplicationSettingsProvider.GetPreviousVersion%2A> method to migrate application settings during or after the installation of a new version of an application.  
+ 使用することができます、 <xref:System.Configuration.IApplicationSettingsProvider.Upgrade%2A> メソッドと組み合わせて、 <xref:System.Configuration.IApplicationSettingsProvider.GetPreviousVersion%2A> 中またはアプリケーションの新しいバージョンのインストール後に、アプリケーションの設定を移行する方法です。  
   
- This method should be suppressed for every application setting that has the <xref:System.Configuration.NoSettingsVersionUpgradeAttribute> is applied to it, or to the entire settings wrapper class, derived from <xref:System.Configuration.ApplicationSettingsBase>.  
+ すべてのアプリケーションを設定するには、このメソッドを抑制するか、 <xref:System.Configuration.NoSettingsVersionUpgradeAttribute> 、またはから派生した、全体の設定ラッパー クラスに適用 <xref:System.Configuration.ApplicationSettingsBase>します。  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.SecurityException">For <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /> permission.</permission>
+        <altmember cref="M:System.Configuration.IApplicationSettingsProvider.GetPreviousVersion(System.Configuration.SettingsContext,System.Configuration.SettingsProperty)" />
+        <altmember cref="M:System.Configuration.ApplicationSettingsBase.Upgrade" />
+        <altmember cref="T:System.Configuration.NoSettingsVersionUpgradeAttribute" />
       </Docs>
     </Member>
   </Members>

@@ -22,38 +22,42 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Defines and represents a dynamic method that can be compiled, executed, and discarded. Discarded methods are available for garbage collection.</summary>
+    <summary>コンパイル、実行、および破棄することのできる動的メソッドを定義し、またそれを表現します。 破棄されたメソッドは、ガベージ コレクションのために利用可能です。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use the <xref:System.Reflection.Emit.DynamicMethod> class to generate and execute a method at run time, without having to generate a dynamic assembly and a dynamic type to contain the method. The executable code created by the just-in-time (JIT) compiler is reclaimed when the <xref:System.Reflection.Emit.DynamicMethod> object is reclaimed. Dynamic methods are the most efficient way to generate and execute small amounts of code.  
+## 解説  
+ You can use the <xref:System.Reflection.Emit.DynamicMethod> class to generate and execute a method at run time, without having to generate a dynamic assembly and a dynamic type to contain the method. The executable code created by the just\-in\-time \(JIT\) compiler is reclaimed when the <xref:System.Reflection.Emit.DynamicMethod> object is reclaimed. Dynamic methods are the most efficient way to generate and execute small amounts of code.  
   
  A dynamic method can be anonymously hosted, or it can belogically associated with a module or with a type.  
   
--   If the dynamic method is anonymously hosted, it is located in a system-provided assembly, and therefore is isolated from other code. By default, it does not have access to any non-public data. An anonymously hosted dynamic method can have restricted ability to skip the JIT compiler's visibility checks, if it has been granted <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. The trust level of the assembly whose non-public members are accessed by the dynamic method must be equal to, or a subset of, the trust level of the call stack that emitted the dynamic method. For more information about anonymously hosted dynamic methods, see [Walkthrough: Emitting Code in Partial Trust Scenarios](~/docs/framework/reflection-and-codedom/walkthrough-emitting-code-in-partial-trust-scenarios.md).  
+-   If the dynamic method is anonymously hosted, it is located in a system\-provided assembly, and therefore is isolated from other code. By default, it does not have access to any non\-public data. An anonymously hosted dynamic method can have restricted ability to skip the JIT compiler's visibility checks, if it has been granted <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess?displayProperty=fullName> flag. The trust level of the assembly whose non\-public members are accessed by the dynamic method must be equal to, or a subset of, the trust level of the call stack that emitted the dynamic method. For more information about anonymously hosted dynamic methods, see [Walkthrough: Emitting Code in Partial Trust Scenarios](http://msdn.microsoft.com/ja-jp/c45be261-2a9d-4c4e-9bd6-27f0931b7d25).  
   
--   If the dynamic method is associated with a module that you specify, the dynamic method is effectively global to that module. It can access all types in the module and all `internal` (`Friend` in Visual Basic) members of the types. You can associate a dynamic method with any module, regardless of whether you created the module, provided that a demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess> flag can be satisfied by the call stack that includes your code. If the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag is included in the grant, the dynamic method can skip the JIT compiler's visibility checks and access the private data of all types declared in the module or in any other module in any assembly.  
+-   If the dynamic method is associated with a module that you specify, the dynamic method is effectively global to that module. It can access all types in the module and all **languageKeyword tag is not supported!!!!**  
+     \(**languageKeyword tag is not supported!!!!**  
+     in Visual Basic\) members of the types. You can associate a dynamic method with any module, regardless of whether you created the module, provided that a demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess> flag can be satisfied by the call stack that includes your code. If the <xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag is included in the grant, the dynamic method can skip the JIT compiler's visibility checks and access the private data of all types declared in the module or in any other module in any assembly.  
   
     > [!NOTE]
-    >  When you specify the module with which a dynamic method is associated, that module must not be in the system-provided assembly that is used for anonymous hosting.  
+    >  When you specify the module with which a dynamic method is associated, that module must not be in the system\-provided assembly that is used for anonymous hosting.  
   
 -   If the dynamic method is associated with a type that you specify, it has access to all members of the type, regardless of access level. In addition, JIT visibility checks can be skipped. This gives the dynamic method access to the private data of other types declared in the same module or in any other module in any assembly. You can associate a dynamic method with any type, but your code must be granted <xref:System.Security.Permissions.ReflectionPermission> with both the <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess> and <xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess> flags.  
   
  The following table shows which types and members are accessible to an anonymously hosted dynamic method, with and without JIT visibility checks, depending on whether <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess> flag is granted.  
   
-||Without <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|With <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|  
+||||  
 |-|-|-|  
+||Without <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|With <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|  
 |Without skipping JIT visibility checks|Public members of public types in any assembly.|Public members of public types in any assembly.|  
 |Skipping JIT visibility checks, with restrictions|Public members of public types in any assembly.|All members of all types, only in assemblies whose trust levels are equal to or less than the trust level of the assembly that emitted the dynamic method.|  
   
 > [!NOTE]
->  Prior to the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], emitting code required <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. This permission is included by default in the FullTrust and LocalIntranet named permission sets, but not in the Internet permission set. Therefore, in earlier versions of the [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] a library can be used with Internet permissions only if it has the <xref:System.Security.SecurityCriticalAttribute> attribute and also executes an <xref:System.Security.PermissionSet.Assert%2A> for <xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit>. Such libraries require careful security review because coding errors could result in security holes. The [!INCLUDE[net_v20SP1_short](~/includes/net-v20sp1-short-md.md)] allows code to be emitted in partial trust scenarios without issuing any security demands, because generating code is not inherently a privileged operation. That is, the generated code has no more permissions than the assembly that emits it. This allows libraries that emit code to be security transparent and removes the need to assert <xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit>, which simplifies the task of writing a secure library. To use this feature, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Prior to the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], emitting code required <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. This permission is included by default in the FullTrust and LocalIntranet named permission sets, but not in the Internet permission set. Therefore, in earlier versions of the [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] a library can be used with Internet permissions only if it has the <xref:System.Security.SecurityCriticalAttribute> attribute and also executes an <xref:System.Security.PermissionSet.Assert%2A> for <xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit>. Such libraries require careful security review because coding errors could result in security holes. The [!INCLUDE[net_v20SP1_short](~/includes/net-v20sp1-short-md.md)] allows code to be emitted in partial trust scenarios without issuing any security demands, because generating code is not inherently a privileged operation. That is, the generated code has no more permissions than the assembly that emits it. This allows libraries that emit code to be security transparent and removes the need to assert <xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit>, which simplifies the task of writing a secure library. To use this feature, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
  The following table shows which types and members are accessible to a dynamic method that is associated with a module or with a type in a module.  
   
-||Associated with module|Associated with type|  
+||||  
 |-|-|-|  
+||Associated with module|Associated with type|  
 |Without skipping JIT visibility checks|Public and internal members of public, internal, and private types in the module.<br /><br /> Public members of public types in any assembly.|All members of the associated type. Public and internal members of all the other types in the module.<br /><br /> Public members of public types in any assembly.|  
 |Skipping JIT visibility checks|All members of all types in any assembly.|All members of all types in any assembly.|  
   
@@ -61,19 +65,22 @@
   
  Dynamic methods and their parameters do not have to be named, but you can specify names to assist in debugging. Custom attributes are not supported on dynamic methods or their parameters.  
   
- Although dynamic methods are `static` methods (`Shared` methods in Visual Basic), the relaxed rules for delegate binding introduced in the [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)] allow a dynamic method to be bound to an object, so that it acts like an instance method when called using that delegate instance. An example that demonstrates this is provided for the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> method overload.  
+ Although dynamic methods are **languageKeyword tag is not supported!!!!**  
+ methods \(**languageKeyword tag is not supported!!!!**  
+ methods in Visual Basic\), the relaxed rules for delegate binding introduced in the [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)] allow a dynamic method to be bound to an object, so that it acts like an instance method when called using that delegate instance. An example that demonstrates this is provided for the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> method overload.  
   
 > [!NOTE]
->  In the [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)], dynamic methods do not support symbol information, that is, local variable names and line-number mapping. This limitation might be removed in a future version. You can use <xref:System.Reflection.Emit.AssemblyBuilder> during development to simplify debugging the generated Microsoft intermediate language (MSIL), and then switch to dynamic methods during final deployment, because the <xref:System.Reflection.Emit.ILGenerator> calls are the same in both cases.  
+>  In the [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)], dynamic methods do not support symbol information, that is, local variable names and line\-number mapping. This limitation might be removed in a future version. You can use <xref:System.Reflection.Emit.AssemblyBuilder> during development to simplify debugging the generated Microsoft intermediate language \(MSIL\), and then switch to dynamic methods during final deployment, because the <xref:System.Reflection.Emit.ILGenerator> calls are the same in both cases.  
   
 ## Verification  
- The following list summarizes the conditions under which dynamic methods can contain unverifiable code. (For example, a dynamic method is unverifiable if its <xref:System.Reflection.Emit.DynamicMethod.InitLocals%2A> property is set to `false`.)  
+ The following list summarizes the conditions under which dynamic methods can contain unverifiable code. \(For example, a dynamic method is unverifiable if its <xref:System.Reflection.Emit.DynamicMethod.InitLocals%2A> property is set to **languageKeyword tag is not supported!!!!**  
+.\)  
   
--   A dynamic method that is associated with a security-critical assembly is also security-critical, and can skip verification. For example, an assembly without security attributes that is run as a desktop application is treated as security-critical by the runtime. If you associate a dynamic method with the assembly, the dynamic method can contain unverifiable code.  
+-   A dynamic method that is associated with a security\-critical assembly is also security\-critical, and can skip verification. For example, an assembly without security attributes that is run as a desktop application is treated as security\-critical by the runtime. If you associate a dynamic method with the assembly, the dynamic method can contain unverifiable code.  
   
--   If a dynamic method that contains unverifiable code is associated with an assembly that has level 1 transparency, the just-in-time (JIT) compiler injects a security demand. The demand succeeds only if the dynamic method is executed by fully trusted code. See [Security-Transparent Code, Level 1](~/docs/framework/misc/security-transparent-code-level-1.md).  
+-   If a dynamic method that contains unverifiable code is associated with an assembly that has level 1 transparency, the just\-in\-time \(JIT\) compiler injects a security demand. The demand succeeds only if the dynamic method is executed by fully trusted code. See [Security\-Transparent Code, Level 1](http://msdn.microsoft.com/ja-jp/5fd8f46d-3961-46a7-84af-2eb1f48e75cf).  
   
--   If a dynamic method that contains unverifiable code is associated with an assembly that has level 2 transparency (such as mscorlib.dll), it throws an exception (injected by the JIT compiler) instead of making a security demand. See [Security-Transparent Code, Level 2](~/docs/framework/misc/security-transparent-code-level-2.md).  
+-   If a dynamic method that contains unverifiable code is associated with an assembly that has level 2 transparency \(such as mscorlib.dll\), it throws an exception \(injected by the JIT compiler\) instead of making a security demand. See [Security\-Transparent Code, Level 2](http://msdn.microsoft.com/ja-jp/4d05610a-0da6-4f08-acea-d54c9d6143c0).  
   
 -   An anonymously hosted dynamic method that contains unverifiable code always throws an exception. It can never skip verification, even if it is created and executed by fully trusted code.  
   
@@ -81,12 +88,12 @@
   
    
   
-## Examples  
+## 例  
  The following code example creates a dynamic method that takes two parameters. The example emits a simple function body that prints the first parameter to the console, and the example uses the second parameter as the return value of the method. The example completes the method by creating a delegate, invokes the delegate with different parameters, and finally invokes the dynamic method using the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method.  
   
- [!code-cpp[Reflection.DynamicMethod.All#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#1)]
- [!code-csharp[Reflection.DynamicMethod.All#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#1)]
- [!code-vb[Reflection.DynamicMethod.All#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#1)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#1)]
+ [!code-csharp[Reflection.DynamicMethod.All\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#1)]
+ [!code-vb[Reflection.DynamicMethod.All\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -113,32 +120,40 @@
         <Parameter Name="parameterTypes" Type="System.Type[]" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <summary>Initializes an anonymously hosted dynamic method, specifying the method name, return type, and parameter types.</summary>
+        <param name="name">動的メソッドの名前。 これには長さ 0 の文字列も可能ですが、<see langword="null" /> にすることはできません。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <summary>メソッド名、戻り値の型、パラメーターの型を指定して、匿名でホストされる動的メソッドを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The dynamic method that is created by this constructor is associated with an anonymous assembly instead of an existing type or module. The anonymous assembly exists only to provide a sandbox environment for dynamic methods, that is, to isolate them from other code. This environment makes it safe for the dynamic method to be emitted and executed by partially trusted code.  
   
- This constructor specifies that just-in-time (JIT) visibility checks will be enforced for the Microsoft intermediate language (MSIL) of the dynamic method. That is, the code in the dynamic method has access to public methods of public classes. Exceptions are thrown if the method tries to access types or members that are `private`, `protected`, or `internal` (`Friend` in Visual Basic). To create a dynamic method that has restricted ability to skip JIT visibility checks, use the <xref:System.Reflection.Emit.DynamicMethod.%23ctor%28System.String%2CSystem.Type%2CSystem.Type%5B%5D%2CSystem.Boolean%29> constructor.  
+ This constructor specifies that just\-in\-time \(JIT\) visibility checks will be enforced for the Microsoft intermediate language \(MSIL\) of the dynamic method. That is, the code in the dynamic method has access to public methods of public classes. Exceptions are thrown if the method tries to access types or members that are **languageKeyword tag is not supported!!!!**  
+, **languageKeyword tag is not supported!!!!**  
+, or **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\). To create a dynamic method that has restricted ability to skip JIT visibility checks, use the <xref:System.Reflection.Emit.DynamicMethod.%23ctor%28System.String%2CSystem.Type%2CSystem.Type%5B%5D%2CSystem.Boolean%29> constructor.  
   
  When an anonymously hosted dynamic method is constructed, the call stack of the emitting assembly is included. When the method is invoked, the permissions of the emitting assembly are used instead of the permissions of the actual caller. Thus, the dynamic method cannot execute at a higher level of privilege than that of the assembly that emitted it, even if it is passed to and executed by an assembly that has a higher trust level.  
   
- This constructor specifies the method attributes <xref:System.Reflection.MethodAttributes?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes?displayProperty=fullName>, and the calling convention <xref:System.Reflection.CallingConventions?displayProperty=fullName>.  
+ This constructor specifies the method attributes <xref:System.Reflection.MethodAttributes.Public?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes.Static?displayProperty=fullName>, and the calling convention <xref:System.Reflection.CallingConventions.Standard?displayProperty=fullName>.  
   
 > [!NOTE]
 >  This constructor was introduced in the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素が <see langword="null" /> または <see cref="T:System.Void" /> です。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.</exception>
+          <paramref name="name" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+          <paramref name="returnType" /> は、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す型です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -163,47 +178,66 @@
         <Parameter Name="restrictedSkipVisibility" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="restrictedSkipVisibility">
-          <see langword="true" /> to skip JIT visibility checks on types and members accessed by the MSIL of the dynamic method, with this restriction: the trust level of the assemblies that contain those types and members must be equal to or less than the trust level of the call stack that emits the dynamic method; otherwise, <see langword="false" />.</param>
-        <summary>Initializes an anonymously hosted dynamic method, specifying the method name, return type, parameter types, and whether just-in-time (JIT) visibility checks should be skipped for types and members accessed by the Microsoft intermediate language (MSIL) of the dynamic method.</summary>
+        <param name="name">動的メソッドの名前。 これには長さ 0 の文字列も可能ですが、<see langword="null" /> にすることはできません。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="restrictedSkipVisibility">動的メソッドの MSIL によりアクセスされる型およびメンバーに対する JIT 参照範囲チェックをスキップする場合は <see langword="true" /> \(ただし、それらの型およびメンバーが含まれるアセンブリの信頼レベルは、動的メソッドを出力する呼び出しスタックの信頼レベル以下でなければならないという制限あり\)。それ以外の場合は <see langword="false" />。</param>
+        <summary>メソッド名、戻り値の型、パラメーターの型を指定し、さらに Just\-In\-Time \(JIT\) 参照範囲チェックが動的メソッドの Microsoft Intermediate Language \(MSIL\) によりアクセスされる型やメンバーをスキップするかどうかを指定して、匿名ホスト対象の動的メソッドを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The dynamic method that is created by this constructor is associated with an anonymous assembly instead of an existing type or module. The anonymous assembly exists only to provide a sandbox environment for dynamic methods, that is, to isolate them from other code. This environment makes it safe for the dynamic method to be emitted and executed by partially trusted code.  
   
- Anonymously hosted dynamic methods do not have automatic access to any types or members that are `private`, `protected`, or `internal` (`Friend` in Visual Basic). This is different from dynamic methods that are associated with an existing type or module, which have access to hidden members in their associated scope.  
+ Anonymously hosted dynamic methods do not have automatic access to any types or members that are **languageKeyword tag is not supported!!!!**  
+, **languageKeyword tag is not supported!!!!**  
+, or **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\). This is different from dynamic methods that are associated with an existing type or module, which have access to hidden members in their associated scope.  
   
- Specify `true` for `restrictedSkipVisibility` if your dynamic method has to access types or members that are `private`, `protected`, or `internal`. This gives the dynamic method restricted access to these members. That is, the members can be accessed only if the following conditions are met:  
+ Specify **languageKeyword tag is not supported!!!!**  
+ for **parameterReference tag is not supported!!!!**  
+ if your dynamic method has to access types or members that are **languageKeyword tag is not supported!!!!**  
+, **languageKeyword tag is not supported!!!!**  
+, or **languageKeyword tag is not supported!!!!**  
+. This gives the dynamic method restricted access to these members. That is, the members can be accessed only if the following conditions are met:  
   
 -   The target members belong to an assembly that has a level of trust equal to or lower than the call stack that emits the dynamic method.  
   
--   The call stack that emits the dynamic method is granted <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. This is always true when the code is executed with full trust. For partially trusted code, it is true only if the host explicitly grants the permission.  
+-   The call stack that emits the dynamic method is granted [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess?displayProperty=fullName> flag. This is always true when the code is executed with full trust. For partially trusted code, it is true only if the host explicitly grants the permission.  
   
     > [!IMPORTANT]
-    >  If the permission has not been granted, a security exception is thrown when <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> is called or when the dynamic method is invoked, not when this constructor is called. No special permissions are required to emit the dynamic method.  
+    >  If the permission has not been granted, a security exception is thrown when [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> is called or when the dynamic method is invoked, not when this constructor is called. No special permissions are required to emit the dynamic method.  
   
- For example, a dynamic method that is created with `restrictedSkipVisibility` set to `true` can access a private member of any assembly on the call stack if the call stack has been granted restricted member access. If the dynamic method is created with partially trusted code on the call stack, it cannot access a private member of a type in a [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] assembly, because such assemblies are fully trusted.  
+ For example, a dynamic method that is created with **parameterReference tag is not supported!!!!**  
+ set to **languageKeyword tag is not supported!!!!**  
+ can access a private member of any assembly on the call stack if the call stack has been granted restricted member access. If the dynamic method is created with partially trusted code on the call stack, it cannot access a private member of a type in a [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] assembly, because such assemblies are fully trusted.  
   
- If `restrictedSkipVisibility` is `false`, JIT visibility checks are enforced. The code in the dynamic method has access to public methods of public classes, and exceptions are thrown if it tries to access types or members that are `private`, `protected`, or `internal`.  
+ If **parameterReference tag is not supported!!!!**  
+ is **languageKeyword tag is not supported!!!!**  
+, JIT visibility checks are enforced. The code in the dynamic method has access to public methods of public classes, and exceptions are thrown if it tries to access types or members that are **languageKeyword tag is not supported!!!!**  
+, **languageKeyword tag is not supported!!!!**  
+, or **languageKeyword tag is not supported!!!!**  
+.  
   
  When an anonymously hosted dynamic method is constructed, the call stack of the emitting assembly is included. When the method is invoked, the permissions of the emitting call stack are used instead of the permissions of the actual caller. Thus, the dynamic method cannot execute at a higher level of privilege than that of the assembly that emitted it, even if it is passed to and executed by an assembly that has a higher trust level.  
   
- This constructor specifies the method attributes <xref:System.Reflection.MethodAttributes?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes?displayProperty=fullName>, and the calling convention <xref:System.Reflection.CallingConventions?displayProperty=fullName>.  
+ This constructor specifies the method attributes [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Public?displayProperty=fullName> and [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Static?displayProperty=fullName>, and the calling convention [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.CallingConventions.Standard?displayProperty=fullName>.  
   
 > [!NOTE]
 >  This constructor was introduced in the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素が <see langword="null" /> または <see cref="T:System.Void" /> です。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.</exception>
+          <paramref name="name" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+          <paramref name="returnType" /> は、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す型です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -228,49 +262,54 @@
         <Parameter Name="m" Type="System.Reflection.Module" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="m">A <see cref="T:System.Reflection.Module" /> representing the module with which the dynamic method is to be logically associated.</param>
-        <summary>Creates a dynamic method that is global to a module, specifying the method name, return type, parameter types, and module.</summary>
+        <param name="name">動的メソッドの名前。 これには長さ 0 の文字列も可能ですが、<see langword="null" /> にすることはできません。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="m">動的メソッドが論理的に関連付けられるモジュールを表す <see cref="T:System.Reflection.Module" />。</param>
+        <summary>モジュールに対してグローバルに適用される動的メソッドを作成し、メソッド名、戻り値の型、パラメーターの型、およびモジュールを指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor specifies method attributes <xref:System.Reflection.MethodAttributes?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes?displayProperty=fullName>, calling convention <xref:System.Reflection.CallingConventions?displayProperty=fullName>, and does not skip just-in-time (JIT) visibility checks.  
+## 解説  
+ This constructor specifies method attributes [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Public?displayProperty=fullName> and [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Static?displayProperty=fullName>, calling convention [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.CallingConventions.Standard?displayProperty=fullName>, and does not skip just\-in\-time \(JIT\) visibility checks.  
   
- The dynamic method created with this constructor has access to public and `internal` (`Friend` in Visual Basic) members of all the types contained in module `m`.  
+ The dynamic method created with this constructor has access to public and **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) members of all the types contained in module **parameterReference tag is not supported!!!!**  
+.  
   
 > [!NOTE]
->  For backward compatibility, this constructor demands <xref:System.Security.Permissions.SecurityPermission> with the <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName> flag if the following conditions are both true: `m` is a module other than the calling module, and the demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag has failed. If the demand for <xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
+>  For backward compatibility, this constructor demands [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence?displayProperty=fullName> flag if the following conditions are both true: **parameterReference tag is not supported!!!!**  
+>  is a module other than the calling module, and the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag has failed. If the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
   
 > [!NOTE]
->  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. (See [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md).) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. \(See [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298).\) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
    
   
-## Examples  
- The following code example creates a dynamic method that takes two parameters. The example emits a simple function body that prints the first parameter to the console, and the example uses the second parameter as the return value of the method. The example completes the method by creating a delegate, invokes the delegate with different parameters, and finally invokes the dynamic method using the <xref:System.Reflection.Emit.DynamicMethod.Invoke%28System.Object%2CSystem.Reflection.BindingFlags%2CSystem.Reflection.Binder%2CSystem.Object%5B%5D%2CSystem.Globalization.CultureInfo%29> method.  
+## 例  
+ The following code example creates a dynamic method that takes two parameters. The example emits a simple function body that prints the first parameter to the console, and the example uses the second parameter as the return value of the method. The example completes the method by creating a delegate, invokes the delegate with different parameters, and finally invokes the dynamic method using the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.Emit.DynamicMethod.Invoke%28System.Object%2CSystem.Reflection.BindingFlags%2CSystem.Reflection.Binder%2CSystem.Object%5B%5D%2CSystem.Globalization.CultureInfo%29> method.  
   
- [!code-cpp[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/cpp/source.cpp#1)]
- [!code-csharp[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/CS/source.cs#1)]
- [!code-vb[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/VB/source.vb#1)]  
+ [!code-cpp[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/cpp/source.cpp#1)]
+ [!code-csharp[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/CS/source.cs#1)]
+ [!code-vb[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素は <see langword="null" /> または <see cref="T:System.Void" /> です。  
   
- -or-  
+ または  
   
- <paramref name="m" /> is a module that provides anonymous hosting for dynamic methods.</exception>
+ <paramref name="m" /> は、動的メソッドに対して匿名のホストを提供するモジュールです。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="m" /> is <see langword="null" />.</exception>
+ <paramref name="m" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+          <paramref name="returnType" /> は、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す型です。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">to associate the dynamic method with a module other than the calling module. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />.</permission>
       </Docs>
     </Member>
@@ -296,62 +335,68 @@
         <Parameter Name="owner" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="owner">A <see cref="T:System.Type" /> with which the dynamic method is logically associated. The dynamic method has access to all members of the type.</param>
-        <summary>Creates a dynamic method, specifying the method name, return type, parameter types, and the type with which the dynamic method is logically associated.</summary>
+        <param name="name">動的メソッドの名前。 これには長さ 0 の文字列も可能ですが、<see langword="null" /> にすることはできません。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="owner">動的メソッドが論理的に関連付けられる <see cref="T:System.Type" />。 動的メソッドには、その型のすべてのメンバーへのアクセス権があります。</param>
+        <summary>メソッド名、戻り値の型、パラメーターの型、および動的メソッドが論理的に関連付けられる型を指定して、動的メソッドを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The dynamic method created with this constructor has access to all members of the type `owner`, and to public and `internal` (`Friend` in Visual Basic) members of all the other types in the module that contains `owner`.  
+## 解説  
+ The dynamic method created with this constructor has access to all members of the type **parameterReference tag is not supported!!!!**  
+, and to public and **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) members of all the other types in the module that contains **parameterReference tag is not supported!!!!**  
+.  
   
- This constructor specifies method attributes <xref:System.Reflection.MethodAttributes?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes?displayProperty=fullName>, calling convention <xref:System.Reflection.CallingConventions?displayProperty=fullName>, and does not skip just-in-time (JIT) visibility checks.  
+ This constructor specifies method attributes [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Public?displayProperty=fullName> and [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Static?displayProperty=fullName>, calling convention [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.CallingConventions.Standard?displayProperty=fullName>, and does not skip just\-in\-time \(JIT\) visibility checks.  
   
 > [!NOTE]
->  For backward compatibility, this constructor demands <xref:System.Security.Permissions.SecurityPermission> with the <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName> flag if the following conditions are both true: `owner` is in a module other than the calling module, and the demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag has failed. If the demand for <xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
+>  For backward compatibility, this constructor demands [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence?displayProperty=fullName> flag if the following conditions are both true: **parameterReference tag is not supported!!!!**  
+>  is in a module other than the calling module, and the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag has failed. If the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
   
 > [!NOTE]
->  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. (See [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md).) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. \(See [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298).\) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
    
   
-## Examples  
- The following code example creates a <xref:System.Reflection.Emit.DynamicMethod> that is logically associated with a type. This association gives it access to the private members of that type.  
+## 例  
+ The following code example creates a [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.Emit.DynamicMethod> that is logically associated with a type. This association gives it access to the private members of that type.  
   
- The code example defines a class named `Example` with a private field, a class named `DerivedFromxample` that derives from the first class, a delegate type named `UseLikeStatic` that returns <xref:System.Int32> and has parameters of type `Example` and <xref:System.Int32>, and a delegate type named `UseLikeInstance` that returns <xref:System.Int32> and has one parameter of type <xref:System.Int32>.  
+ The code example defines a class named `Example` with a private field, a class named `DerivedFromxample` that derives from the first class, a delegate type named `UseLikeStatic` that returns [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Int32> and has parameters of type `Example` and [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Int32>, and a delegate type named `UseLikeInstance` that returns [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Int32> and has one parameter of type [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Int32>.  
   
- The example code then creates a <xref:System.Reflection.Emit.DynamicMethod> that changes the private field of an instance of `Example` and returns the previous value.  
-  
-> [!NOTE]
->  In general, changing the internal fields of classes is not good object-oriented coding practice.  
-  
- The example code creates an instance of `Example` and then creates two delegates. The first is of type `UseLikeStatic`, which has the same parameters as the dynamic method. The second is of type `UseLikeInstance`, which lacks the first parameter (of type `Example`). This delegate is created using the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> method overload; the second parameter of that method overload is an instance of `Example`, in this case the instance just created, which is bound to the newly created delegate. Whenever that delegate is invoked, the dynamic method acts on the bound instance of `Example`.  
+ The example code then creates a [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.Emit.DynamicMethod> that changes the private field of an instance of `Example` and returns the previous value.  
   
 > [!NOTE]
->  This is an example of the relaxed rules for delegate binding introduced in the [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)], along with new overloads of the <xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> method. For more information, see the <xref:System.Delegate> class.  
+>  In general, changing the internal fields of classes is not good object\-oriented coding practice.  
+  
+ The example code creates an instance of `Example` and then creates two delegates. The first is of type `UseLikeStatic`, which has the same parameters as the dynamic method. The second is of type `UseLikeInstance`, which lacks the first parameter \(of type `Example`\). This delegate is created using the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> method overload; the second parameter of that method overload is an instance of `Example`, in this case the instance just created, which is bound to the newly created delegate. Whenever that delegate is invoked, the dynamic method acts on the bound instance of `Example`.  
+  
+> [!NOTE]
+>  This is an example of the relaxed rules for delegate binding introduced in the [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)], along with new overloads of the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> method. For more information, see the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Delegate> class.  
   
  The `UseLikeStatic` delegate is invoked, passing in the instance of `Example` that is bound to the `UseLikeInstance` delegate. Then the `UseLikeInstance` delegate is invoked, so that both delegates act on the same instance of `Example`. The changes in the values of the internal field are displayed after each call. Finally, a `UseLikeInstance` delegate is bound to an instance of `DerivedFromxample`, and the delegate calls are repeated.  
   
- [!code-csharp[Reflection.DynamicMethod.ClosedOver#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/cs/source.cs#1)]
- [!code-vb[Reflection.DynamicMethod.ClosedOver#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/vb/source.vb#1)]  
+ [!code-csharp[Reflection.DynamicMethod.ClosedOver\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/cs/source.cs#1)]
+ [!code-vb[Reflection.DynamicMethod.ClosedOver\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/vb/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素が <see langword="null" /> または <see cref="T:System.Void" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="owner" /> is an interface, an array, an open generic type, or a type parameter of a generic type or method.</exception>
+ <paramref name="owner" /> がインターフェイス、配列、オープン ジェネリック型、またはジェネリック型またはメソッドの型パラメーターです。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="owner" /> is <see langword="null" />.</exception>
+ <paramref name="owner" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> is <see langword="null" />, or is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+          <paramref name="returnType" /> が <see langword="null" /> であるか、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す対象となる型です。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">to associate the dynamic method with a type in a module other than the calling module. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />.</permission>
       </Docs>
     </Member>
@@ -378,42 +423,46 @@
         <Parameter Name="skipVisibility" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="m">A <see cref="T:System.Reflection.Module" /> representing the module with which the dynamic method is to be logically associated.</param>
-        <param name="skipVisibility">
-          <see langword="true" /> to skip JIT visibility checks on types and members accessed by the MSIL of the dynamic method.</param>
-        <summary>Creates a dynamic method that is global to a module, specifying the method name, return type, parameter types, module, and whether just-in-time (JIT) visibility checks should be skipped for types and members accessed by the Microsoft intermediate language (MSIL) of the dynamic method.</summary>
+        <param name="name">動的メソッドの名前。 これには長さ 0 の文字列も可能ですが、<see langword="null" /> にすることはできません。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="m">動的メソッドが論理的に関連付けられるモジュールを表す <see cref="T:System.Reflection.Module" />。</param>
+        <param name="skipVisibility">動的メソッドの MSIL によりアクセスされる型とメンバーに対する JIT参照範囲チェックをスキップする場合は <see langword="true" />。</param>
+        <summary>メソッド名、戻り値の型、パラメーターの型、モジュールを指定し、さらに Just\-In\-Time \(JIT\) 参照範囲チェックが動的メソッドの Microsoft Intermediate Language \(MSIL\) によりアクセスされる型やメンバーをスキップするかどうかを指定して、モジュールに対してグローバルな動的メソッドを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor specifies method attributes <xref:System.Reflection.MethodAttributes?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes?displayProperty=fullName>, and calling convention <xref:System.Reflection.CallingConventions?displayProperty=fullName>.  
+## 解説  
+ This constructor specifies method attributes [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Public?displayProperty=fullName> and [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Static?displayProperty=fullName>, and calling convention [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.CallingConventions.Standard?displayProperty=fullName>.  
   
- The dynamic method created with this constructor has access to public and `internal` (`Friend` in Visual Basic) members of all the types in contained module `m`. Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types as well. This is useful, for example, when writing code to serialize objects.  
+ The dynamic method created with this constructor has access to public and **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) members of all the types in contained module **parameterReference tag is not supported!!!!**  
+. Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types as well. This is useful, for example, when writing code to serialize objects.  
   
 > [!NOTE]
->  For backward compatibility, this constructor demands <xref:System.Security.Permissions.SecurityPermission> with the <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName> flag if the following conditions are both true: `m` is a module other than the calling module, and the demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag has failed. If the demand for <xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
+>  For backward compatibility, this constructor demands [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence?displayProperty=fullName> flag if the following conditions are both true: **parameterReference tag is not supported!!!!**  
+>  is a module other than the calling module, and the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag has failed. If the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
   
 > [!NOTE]
->  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. (See [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md).) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. \(See [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298).\) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素は <see langword="null" /> または <see cref="T:System.Void" /> です。  
   
- -or-  
+ または  
   
- <paramref name="m" /> is a module that provides anonymous hosting for dynamic methods.</exception>
+ <paramref name="m" /> は、動的メソッドに対して匿名のホストを提供するモジュールです。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="m" /> is <see langword="null" />.</exception>
+ <paramref name="m" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+          <paramref name="returnType" /> は、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す型です。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">to associate the dynamic method with a module other than the calling module. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />.</permission>
       </Docs>
     </Member>
@@ -440,42 +489,47 @@
         <Parameter Name="skipVisibility" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="owner">A <see cref="T:System.Type" /> with which the dynamic method is logically associated. The dynamic method has access to all members of the type.</param>
-        <param name="skipVisibility">
-          <see langword="true" /> to skip JIT visibility checks on types and members accessed by the MSIL of the dynamic method; otherwise, <see langword="false" />.</param>
-        <summary>Creates a dynamic method, specifying the method name, return type, parameter types, the type with which the dynamic method is logically associated, and whether just-in-time (JIT) visibility checks should be skipped for types and members accessed by the Microsoft intermediate language (MSIL) of the dynamic method.</summary>
+        <param name="name">動的メソッドの名前。 これには長さ 0 の文字列も可能ですが、<see langword="null" /> にすることはできません。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="owner">動的メソッドが論理的に関連付けられる <see cref="T:System.Type" />。 動的メソッドには、型のすべてのメンバーへのアクセス権があります。</param>
+        <param name="skipVisibility">動的メソッドの MSIL によりアクセスされる型とメンバーに対する JIT 参照範囲チェックをスキップする場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <summary>メソッド名、戻り値の型、パラメーターの型、動的メソッドが論理的に関連付けられている型を指定し、さらに動的メソッドの Microsoft Intermediate Language \(MSIL\) によりアクセスされる型やメンバーに対する Just\-In\-Time \(JIT\) 参照範囲チェックをスキップするかどうかを指定して、動的メソッドを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The dynamic method created with this constructor has access to all members of the type `owner`, and to public and `internal` (`Friend` in Visual Basic) members of all the other types in the module that contains `owner`. Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types as well. This is useful, for example, when writing code to serialize objects.  
+## 解説  
+ The dynamic method created with this constructor has access to all members of the type **parameterReference tag is not supported!!!!**  
+, and to public and **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) members of all the other types in the module that contains **parameterReference tag is not supported!!!!**  
+. Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types as well. This is useful, for example, when writing code to serialize objects.  
   
- This constructor specifies method attributes <xref:System.Reflection.MethodAttributes?displayProperty=fullName> and <xref:System.Reflection.MethodAttributes?displayProperty=fullName>, and calling convention <xref:System.Reflection.CallingConventions?displayProperty=fullName>.  
+ This constructor specifies method attributes [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Public?displayProperty=fullName> and [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.MethodAttributes.Static?displayProperty=fullName>, and calling convention [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Reflection.CallingConventions.Standard?displayProperty=fullName>.  
   
 > [!NOTE]
->  For backward compatibility, this constructor demands <xref:System.Security.Permissions.SecurityPermission> with the <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName> flag if the following conditions are both true: `owner` is in a module other than the calling module, and the demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag has failed. If the demand for <xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
+>  For backward compatibility, this constructor demands [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence?displayProperty=fullName> flag if the following conditions are both true: **parameterReference tag is not supported!!!!**  
+>  is in a module other than the calling module, and the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag has failed. If the demand for [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
   
 > [!NOTE]
->  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. (See [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md).) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. \(See [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298).\) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素が <see langword="null" /> または <see cref="T:System.Void" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="owner" /> is an interface, an array, an open generic type, or a type parameter of a generic type or method.</exception>
+ <paramref name="owner" /> がインターフェイス、配列、オープン ジェネリック型、またはジェネリック型またはメソッドの型パラメーターです。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="owner" /> is <see langword="null" />.</exception>
+ <paramref name="owner" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> is <see langword="null" />, or is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+          <paramref name="returnType" /> が <see langword="null" /> であるか、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す対象となる型です。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">to associate the dynamic method with a type in a module other than the calling module. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />.</permission>
       </Docs>
     </Member>
@@ -504,52 +558,56 @@
         <Parameter Name="skipVisibility" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="attributes">A bitwise combination of <see cref="T:System.Reflection.MethodAttributes" /> values that specifies the attributes of the dynamic method. The only combination allowed is <see cref="F:System.Reflection.MethodAttributes.Public" /> and <see cref="F:System.Reflection.MethodAttributes.Static" />.</param>
-        <param name="callingConvention">The calling convention for the dynamic method. Must be <see cref="F:System.Reflection.CallingConventions.Standard" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="m">To be added.</param>
-        <param name="skipVisibility">
-          <see langword="true" /> to skip JIT visibility checks on types and members accessed by the MSIL of the dynamic method; otherwise, <see langword="false" />.</param>
-        <summary>Creates a dynamic method that is global to a module, specifying the method name, attributes, calling convention, return type, parameter types, module, and whether just-in-time (JIT) visibility checks should be skipped for types and members accessed by the Microsoft intermediate language (MSIL) of the dynamic method.</summary>
+        <param name="name">動的メソッドの名前。 これは、長さ 0 の文字列にできますが、<see langword="null" /> にすることはできません。</param>
+        <param name="attributes">動的メソッドの属性を指定する、<see cref="T:System.Reflection.MethodAttributes" /> 値のビットごとの組み合わせ。 使用できる組み合わせは <see cref="F:System.Reflection.MethodAttributes.Public" /> と <see cref="F:System.Reflection.MethodAttributes.Static" /> だけです。</param>
+        <param name="callingConvention">動的メソッドの呼び出し規則。<see cref="F:System.Reflection.CallingConventions.Standard" /> にする必要があります。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="m">動的メソッドが論理的に関連付けられるモジュールを表す <see cref="T:System.Reflection.Module" />。</param>
+        <param name="skipVisibility">動的メソッドの MSIL によりアクセスされる型とメンバーに対する JIT参照範囲チェックをスキップする場合は <see langword="true" /> 。それ以外の場合は <see langword="false" />。</param>
+        <summary>メソッド名、属性、呼び出し規約、戻り値の型、パラメーターの型、モジュールを指定し、さらに Just\-In\-Time \(JIT\) 参照範囲チェックが動的メソッドの Microsoft Intermediate Language \(MSIL\) によりアクセスされる型やメンバーをスキップするかどうかを指定して、動的メソッドを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The dynamic method created with this constructor has access to public and `internal` (`Friend` in Visual Basic) members of all the public and internal types contained in module `m`.  
+## 解説  
+ The dynamic method created with this constructor has access to public and **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) members of all the public and internal types contained in module **parameterReference tag is not supported!!!!**  
+.  
   
  Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types in the module and in all other assemblies as well. This is useful, for example, when writing code to serialize objects.  
   
 > [!NOTE]
->  For backward compatibility, this constructor demands <xref:System.Security.Permissions.SecurityPermission> with the <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName> flag if the following conditions are both true: `m` is a module other than the calling module, and the demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag has failed. If the demand for <xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
+>  For backward compatibility, this constructor demands [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.SecurityPermission> with the [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence?displayProperty=fullName> flag if the following conditions are both true: **parameterReference tag is not supported!!!!**  
+>  is a module other than the calling module, and the demand for [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag has failed. If the demand for [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
   
 > [!NOTE]
->  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. (See [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md).) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. \(See [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298).\) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素が <see langword="null" /> または <see cref="T:System.Void" /> です。  
   
- -or-  
+ または  
   
- <paramref name="m" /> is a module that provides anonymous hosting for dynamic methods.</exception>
+ <paramref name="m" /> は、動的メソッドに対して匿名のホストを提供するモジュールです。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="m" /> is <see langword="null" />.</exception>
+ <paramref name="m" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="attributes" /> is a combination of flags other than <see cref="F:System.Reflection.MethodAttributes.Public" /> and <see cref="F:System.Reflection.MethodAttributes.Static" />.  
+          <paramref name="attributes" /> は、<see cref="F:System.Reflection.MethodAttributes.Public" /> と <see cref="F:System.Reflection.MethodAttributes.Static" /> 以外のフラグの組み合わせです。  
   
- -or-  
+ または  
   
- <paramref name="callingConvention" /> is not <see cref="F:System.Reflection.CallingConventions.Standard" />.  
+ <paramref name="callingConvention" /> が <see cref="F:System.Reflection.CallingConventions.Standard" /> ではありません。  
   
- -or-  
+ または  
   
- <paramref name="returnType" /> is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+ <paramref name="returnType" /> は、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す型です。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">to associate the dynamic method with a module other than the calling module. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />.</permission>
       </Docs>
     </Member>
@@ -578,52 +636,59 @@
         <Parameter Name="skipVisibility" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the dynamic method. This can be a zero-length string, but it cannot be <see langword="null" />.</param>
-        <param name="attributes">A bitwise combination of <see cref="T:System.Reflection.MethodAttributes" /> values that specifies the attributes of the dynamic method. The only combination allowed is <see cref="F:System.Reflection.MethodAttributes.Public" /> and <see cref="F:System.Reflection.MethodAttributes.Static" />.</param>
-        <param name="callingConvention">The calling convention for the dynamic method. Must be <see cref="F:System.Reflection.CallingConventions.Standard" />.</param>
-        <param name="returnType">A <see cref="T:System.Type" /> object that specifies the return type of the dynamic method, or <see langword="null" /> if the method has no return type.</param>
-        <param name="parameterTypes">An array of <see cref="T:System.Type" /> objects specifying the types of the parameters of the dynamic method, or <see langword="null" /> if the method has no parameters.</param>
-        <param name="owner">A <see cref="T:System.Type" /> with which the dynamic method is logically associated. The dynamic method has access to all members of the type.</param>
-        <param name="skipVisibility">
-          <see langword="true" /> to skip JIT visibility checks on types and members accessed by the MSIL of the dynamic method; otherwise, <see langword="false" />.</param>
-        <summary>Creates a dynamic method, specifying the method name, attributes, calling convention, return type, parameter types, the type with which the dynamic method is logically associated, and whether just-in-time (JIT) visibility checks should be skipped for types and members accessed by the Microsoft intermediate language (MSIL) of the dynamic method.</summary>
+        <param name="name">動的メソッドの名前。 これは、長さ 0 の文字列にできますが、<see langword="null" /> にすることはできません。</param>
+        <param name="attributes">動的メソッドの属性を指定する、<see cref="T:System.Reflection.MethodAttributes" /> 値のビットごとの組み合わせ。 使用できる組み合わせは <see cref="F:System.Reflection.MethodAttributes.Public" /> と <see cref="F:System.Reflection.MethodAttributes.Static" /> だけです。</param>
+        <param name="callingConvention">動的メソッドの呼び出し規則。<see cref="F:System.Reflection.CallingConventions.Standard" /> にする必要があります。</param>
+        <param name="returnType">動的メソッドの戻り値の型を指定する <see cref="T:System.Type" /> オブジェクト。メソッドに戻り値の型がない場合は <see langword="null" />。</param>
+        <param name="parameterTypes">動的メソッドのパラメーターの型を指定する <see cref="T:System.Type" /> オブジェクトの配列。メソッドにパラメーターがない場合は <see langword="null" />。</param>
+        <param name="owner">動的メソッドが論理的に関連付けられる <see cref="T:System.Type" />。 動的メソッドには、型のすべてのメンバーへのアクセス権があります。</param>
+        <param name="skipVisibility">動的メソッドの MSIL によりアクセスされる型とメンバーに対する JIT 参照範囲チェックをスキップする場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <summary>メソッド名、属性、呼び出し規則、戻り値の型、パラメーターの型、動的メソッドが論理的に関連付けられている型を指定し、さらに Just\-In\-Time \(JIT\) 参照範囲チェックが動的メソッドの Microsoft Intermediate Language \(MSIL\) によりアクセスされる型やメンバーをスキップするかどうかを指定して、動的メソッドを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The dynamic method is global to the module that contains the type `owner`. It has access to all members of the type `owner`.  
+## 解説  
+ The dynamic method is global to the module that contains the type **parameterReference tag is not supported!!!!**  
+. It has access to all members of the type **parameterReference tag is not supported!!!!**  
+.  
   
- The dynamic method created with this constructor has access to all members of the type `owner`, and to public and `internal` (`Friend` in Visual Basic) members of all the types contained in the module that contains `owner`. Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types as well. This is useful, for example, when writing code to serialize objects.  
+ The dynamic method created with this constructor has access to all members of the type **parameterReference tag is not supported!!!!**  
+, and to public and **languageKeyword tag is not supported!!!!**  
+ \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) members of all the types contained in the module that contains **parameterReference tag is not supported!!!!**  
+. Skipping the JIT compiler's visibility checks allows the dynamic method to access private and protected members of all other types as well. This is useful, for example, when writing code to serialize objects.  
   
 > [!NOTE]
->  For backward compatibility, this constructor demands <xref:System.Security.Permissions.SecurityPermission> with the <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName> flag if the following conditions are both true: `owner` is in a module other than the calling module, and the demand for <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag has failed. If the demand for <xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
+>  For backward compatibility, this constructor demands [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.SecurityPermission> with the [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence?displayProperty=fullName> flag if the following conditions are both true: **parameterReference tag is not supported!!!!**  
+>  is in a module other than the calling module, and the demand for [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> flag has failed. If the demand for [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.SecurityPermission> succeeds, the operation is allowed.  
   
 > [!NOTE]
->  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag. (See [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md).) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
+>  Starting with the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this member no longer requires [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermission> with the [DynamicMethod コンストラクター \(String, MethodAttributes, CallingConventions, Type, Type\<xref:System.Security.Permissions.ReflectionPermissionFlag.ReflectionEmit?displayProperty=fullName> flag. \(See [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298).\) To use this functionality, your application should target the [!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)] or later.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An element of <paramref name="parameterTypes" /> is <see langword="null" /> or <see cref="T:System.Void" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameterTypes" /> の要素が <see langword="null" /> または <see cref="T:System.Void" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="owner" /> is an interface, an array, an open generic type, or a type parameter of a generic type or method.</exception>
+ <paramref name="owner" /> がインターフェイス、配列、オープン ジェネリック型、またはジェネリック型またはメソッドの型パラメーターです。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="owner" /> is <see langword="null" />.</exception>
+ <paramref name="owner" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="attributes" /> is a combination of flags other than <see cref="F:System.Reflection.MethodAttributes.Public" /> and <see cref="F:System.Reflection.MethodAttributes.Static" />.  
+          <paramref name="attributes" /> は、<see cref="F:System.Reflection.MethodAttributes.Public" /> と <see cref="F:System.Reflection.MethodAttributes.Static" /> 以外のフラグの組み合わせです。  
   
- -or-  
+ または  
   
- <paramref name="callingConvention" /> is not <see cref="F:System.Reflection.CallingConventions.Standard" />.  
+ <paramref name="callingConvention" /> が <see cref="F:System.Reflection.CallingConventions.Standard" /> ではありません。  
   
- -or-  
+ または  
   
- <paramref name="returnType" /> is a type for which <see cref="P:System.Type.IsByRef" /> returns <see langword="true" />.</exception>
+ <paramref name="returnType" /> は、<see cref="P:System.Type.IsByRef" /> が <see langword="true" /> を返す型です。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">to associate the dynamic method with a type in a module other than the calling module. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />.</permission>
       </Docs>
     </Member>
@@ -646,22 +711,22 @@
         <ReturnType>System.Reflection.MethodAttributes</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the attributes specified when the dynamic method was created.</summary>
-        <value>A bitwise combination of the <see cref="T:System.Reflection.MethodAttributes" /> values representing the attributes for the method.</value>
+        <summary>動的メソッドの作成時に指定された属性を取得します。</summary>
+        <value>メソッドの属性を表す <see cref="T:System.Reflection.MethodAttributes" /> 値のビットごとの組み合わせ。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Currently, the method attributes for a dynamic method are always <xref:System.Reflection.MethodAttributes.Public> and <xref:System.Reflection.MethodAttributes.Static>.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the method attributes of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#21](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#21)]
- [!code-csharp[Reflection.DynamicMethod.All#21](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#21)]
- [!code-vb[Reflection.DynamicMethod.All#21](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#21)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#21](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#21)]
+ [!code-csharp[Reflection.DynamicMethod.All\#21](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#21)]
+ [!code-vb[Reflection.DynamicMethod.All\#21](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#21)]  
   
  ]]></format>
         </remarks>
@@ -686,22 +751,22 @@
         <ReturnType>System.Reflection.CallingConventions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the calling convention specified when the dynamic method was created.</summary>
-        <value>One of the <see cref="T:System.Reflection.CallingConventions" /> values that indicates the calling convention of the method.</value>
+        <summary>動的メソッドの作成時に指定された呼び出し規則を取得します。</summary>
+        <value>メソッドの呼び出し規則を示す <see cref="T:System.Reflection.CallingConventions" /> 値の 1 つ。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Currently, the calling convention for a dynamic method is always <xref:System.Reflection.CallingConventions.Standard>.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the calling convention of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#22](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#22)]
- [!code-csharp[Reflection.DynamicMethod.All#22](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#22)]
- [!code-vb[Reflection.DynamicMethod.All#22](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#22)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#22](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#22)]
+ [!code-csharp[Reflection.DynamicMethod.All\#22](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#22)]
+ [!code-vb[Reflection.DynamicMethod.All\#22](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#22)]  
   
  ]]></format>
         </remarks>
@@ -734,31 +799,31 @@
         <Parameter Name="delegateType" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="delegateType">A delegate type whose signature matches that of the dynamic method.</param>
-        <summary>Completes the dynamic method and creates a delegate that can be used to execute it.</summary>
-        <returns>A delegate of the specified type, which can be used to execute the dynamic method.</returns>
+        <param name="delegateType">動的メソッドのシグネチャと一致するシグネチャを持つデリゲート型。</param>
+        <summary>動的メソッドを完了し、これを実行するために使用できるデリゲートを作成します。</summary>
+        <returns>動的メソッドを実行するために使用できる、指定した型のデリゲート。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> method or the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method completes the dynamic method. Any further attempt to alter the dynamic method, such as modifying parameter definitions or emitting more Microsoft intermediate language (MSIL), is ignored; no exception is thrown.  
+## 解説  
+ Calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> method or the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method completes the dynamic method. Any further attempt to alter the dynamic method, such as modifying parameter definitions or emitting more Microsoft intermediate language \(MSIL\), is ignored; no exception is thrown.  
   
  To create a method body for a dynamic method when you have your own MSIL generator, call the <xref:System.Reflection.Emit.DynamicMethod.GetDynamicILInfo%2A> method to obtain a <xref:System.Reflection.Emit.DynamicILInfo> object. If you do not have your own MSIL generator, call the <xref:System.Reflection.Emit.DynamicMethod.GetILGenerator%2A> method to obtain an <xref:System.Reflection.Emit.ILGenerator> object that can be used to generate the method body.  
   
    
   
-## Examples  
+## 例  
  The following code example creates a dynamic method that takes two parameters. The example emits a simple function body that prints the first parameter to the console, and the example uses the second parameter as the return value of the method. The example completes the method by creating a delegate, invokes the delegate with different parameters, and finally invokes the dynamic method using the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method.  
   
- [!code-cpp[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/cpp/source.cpp#1)]
- [!code-csharp[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/CS/source.cs#1)]
- [!code-vb[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/VB/source.vb#1)]  
+ [!code-cpp[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/cpp/source.cpp#1)]
+ [!code-csharp[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/CS/source.cs#1)]
+ [!code-vb[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The dynamic method has no method body.</exception>
+        <exception cref="T:System.InvalidOperationException">動的メソッドにメソッド本体がありません。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="delegateType" /> has the wrong number of parameters or the wrong parameter types.</exception>
+          <paramref name="delegateType" /> に含まれるパラメーターの数か型が正しくありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateDelegate">
@@ -789,25 +854,30 @@
         <Parameter Name="target" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="delegateType">A delegate type whose signature matches that of the dynamic method, minus the first parameter.</param>
-        <param name="target">An object the delegate is bound to. Must be of the same type as the first parameter of the dynamic method.</param>
-        <summary>Completes the dynamic method and creates a delegate that can be used to execute it, specifying the delegate type and an object the delegate is bound to.</summary>
-        <returns>A delegate of the specified type, which can be used to execute the dynamic method with the specified target object.</returns>
+        <param name="delegateType">動的メソッドのシグネチャと一致するシグネチャを持つデリゲート型 \(最初のパラメーターは除く\)。</param>
+        <param name="target">デリゲートをバインドするオブジェクト。 動的メソッドの最初のパラメーターと同じ型でなければなりません。</param>
+        <summary>動的メソッドを完了し、それを実行するために使用できるデリゲートを作成します。作成する際は、デリゲートの型と、デリゲートをバインドするオブジェクトを指定します。</summary>
+        <returns>指定したターゲット オブジェクトで動的メソッドを実行するために使用できる、指定した型のデリゲート。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overload creates a delegate bound to a particular object. Such a delegate is said to be closed over its first argument. Although the method is static, it acts as if it were an instance method; the instance is `target`.  
+## 解説  
+ This method overload creates a delegate bound to a particular object. Such a delegate is said to be closed over its first argument. Although the method is static, it acts as if it were an instance method; the instance is **parameterReference tag is not supported!!!!**  
+.  
   
- This method overload requires `target` to be of the same type as the first parameter of the dynamic method, or to be assignable to that type (for example, a derived class).  The signature of `delegateType` has all the parameters of the dynamic method except the first. For example, if the dynamic method has the parameters <xref:System.String>, <xref:System.Int32>, and <xref:System.Byte>, then `delegateType` has the parameters <xref:System.Int32> and <xref:System.Byte>; `target` is of type <xref:System.String>.  
+ This method overload requires **parameterReference tag is not supported!!!!**  
+ to be of the same type as the first parameter of the dynamic method, or to be assignable to that type \(for example, a derived class\).  The signature of **parameterReference tag is not supported!!!!**  
+ has all the parameters of the dynamic method except the first. For example, if the dynamic method has the parameters <xref:System.String>, <xref:System.Int32>, and <xref:System.Byte>, then **parameterReference tag is not supported!!!!**  
+ has the parameters <xref:System.Int32> and <xref:System.Byte>; **parameterReference tag is not supported!!!!**  
+ is of type <xref:System.String>.  
   
- Calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> method or the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method completes the dynamic method. Any further attempt to alter the dynamic method, such as modifying parameter definitions or emitting more Microsoft intermediate language (MSIL), is ignored; no exception is thrown.  
+ Calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> method or the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method completes the dynamic method. Any further attempt to alter the dynamic method, such as modifying parameter definitions or emitting more Microsoft intermediate language \(MSIL\), is ignored; no exception is thrown.  
   
  To create a method body for a dynamic method when you have your own MSIL generator, call the <xref:System.Reflection.Emit.DynamicMethod.GetDynamicILInfo%2A> method to obtain a <xref:System.Reflection.Emit.DynamicILInfo> object. If you do not have your own MSIL generator, call the <xref:System.Reflection.Emit.DynamicMethod.GetILGenerator%2A> method to obtain an <xref:System.Reflection.Emit.ILGenerator> object that can be used to generate the method body.  
   
    
   
-## Examples  
+## 例  
  The following code example creates delegate that binds a <xref:System.Reflection.Emit.DynamicMethod> to an instance of a type, so that the method acts on the same instance each time it is invoked.  
   
  The code example defines a class named `Example` with a private field, a class named `DerivedFromxample` that derives from the first class, a delegate type named `UseLikeStatic` that returns <xref:System.Int32> and has parameters of type `Example` and <xref:System.Int32>, and a delegate type named `UseLikeInstance` that returns <xref:System.Int32> and has one parameter of type <xref:System.Int32>.  
@@ -815,27 +885,27 @@
  The example code then creates a <xref:System.Reflection.Emit.DynamicMethod> that changes the private field of an instance of `Example` and returns the previous value.  
   
 > [!NOTE]
->  In general, changing the internal fields of classes is not good object-oriented coding practice.  
+>  In general, changing the internal fields of classes is not good object\-oriented coding practice.  
   
- The example code creates an instance of `Example` and then creates two delegates. The first is of type `UseLikeStatic`, which has the same parameters as the dynamic method. The second is of type `UseLikeInstance`, which lacks the first parameter (of type `Example`). This delegate is created using the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> method overload; the second parameter of that method overload is an instance of `Example`, in this case the instance just created, which is bound to the newly created delegate. Whenever that delegate is invoked, the dynamic method acts on the bound instance of `Example`.  
+ The example code creates an instance of `Example` and then creates two delegates. The first is of type `UseLikeStatic`, which has the same parameters as the dynamic method. The second is of type `UseLikeInstance`, which lacks the first parameter \(of type `Example`\). This delegate is created using the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> method overload; the second parameter of that method overload is an instance of `Example`, in this case the instance just created, which is bound to the newly created delegate. Whenever that delegate is invoked, the dynamic method acts on the bound instance of `Example`.  
   
 > [!NOTE]
 >  This is an example of the relaxed rules for delegate binding introduced in the [!INCLUDE[dnprdnext](~/includes/dnprdnext-md.md)], along with new overloads of the <xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> method. For more information, see the <xref:System.Delegate> class.  
   
  The `UseLikeStatic` delegate is invoked, passing in the instance of `Example` that is bound to the `UseLikeInstance` delegate. Then the `UseLikeInstance` delegate is invoked, so that both delegates act on the same instance of `Example`. The changes in the values of the internal field are displayed after each call. Finally, a `UseLikeInstance` delegate is bound to an instance of `DerivedFromxample`, and the delegate calls are repeated.  
   
- [!code-csharp[Reflection.DynamicMethod.ClosedOver#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/cs/source.cs#1)]
- [!code-vb[Reflection.DynamicMethod.ClosedOver#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/vb/source.vb#1)]  
+ [!code-csharp[Reflection.DynamicMethod.ClosedOver\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/cs/source.cs#1)]
+ [!code-vb[Reflection.DynamicMethod.ClosedOver\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ClosedOver/vb/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The dynamic method has no method body.</exception>
+        <exception cref="T:System.InvalidOperationException">動的メソッドにメソッド本体がありません。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="target" /> is not the same type as the first parameter of the dynamic method, and is not assignable to that type.  
+          <paramref name="target" /> が動的メソッドの最初のパラメーターと同じ型ではありません。また、その型に代入可能でもありません。  
   
- -or-  
+ または  
   
- <paramref name="delegateType" /> has the wrong number of parameters or the wrong parameter types.</exception>
+ <paramref name="delegateType" /> に含まれるパラメーターの数か型が正しくありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="DeclaringType">
@@ -857,22 +927,23 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type that declares the method, which is always <see langword="null" /> for dynamic methods.</summary>
-        <value>Always <see langword="null" />.</value>
+        <summary>メソッドを宣言する型を取得します。動的メソッドの場合は常に <see langword="null" /> です。</summary>
+        <value>常に <see langword="null" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property always returns `null` for dynamic methods. Even when a dynamic method is logically associated with a type, it is not declared by the type.  
+## 解説  
+ This property always returns **languageKeyword tag is not supported!!!!**  
+ for dynamic methods. Even when a dynamic method is logically associated with a type, it is not declared by the type.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the declaring type of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#23](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#23)]
- [!code-csharp[Reflection.DynamicMethod.All#23](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#23)]
- [!code-vb[Reflection.DynamicMethod.All#23](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#23)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#23](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#23)]
+ [!code-csharp[Reflection.DynamicMethod.All\#23](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#23)]
+ [!code-vb[Reflection.DynamicMethod.All\#23](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#23)]  
   
  ]]></format>
         </remarks>
@@ -897,39 +968,40 @@
         <Parameter Name="parameterName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="position">The position of the parameter in the parameter list. Parameters are indexed beginning with the number 1 for the first parameter.</param>
-        <param name="attributes">A bitwise combination of <see cref="T:System.Reflection.ParameterAttributes" /> values that specifies the attributes of the parameter.</param>
-        <param name="parameterName">The name of the parameter. The name can be a zero-length string.</param>
-        <summary>Defines a parameter of the dynamic method.</summary>
-        <returns>Always returns <see langword="null" />.</returns>
+        <param name="position">パラメーター リストのパラメーターの位置。 最初のパラメーターに対応する 1 から順番にインデックス番号がパラメーターに付けられます。</param>
+        <param name="attributes">パラメーターの属性を指定する、<see cref="T:System.Reflection.ParameterAttributes" /> 値のビットごとの組み合わせ。</param>
+        <param name="parameterName">パラメーターの名前。 長さ 0 の文字列も名前として可能です。</param>
+        <summary>動的メソッドのパラメーターを定義します。</summary>
+        <returns>常に <see langword="null" /> を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `position` is 0, the <xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A> method refers to the return value. Setting parameter information has no effect on the return value.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ is 0, the <xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A> method refers to the return value. Setting parameter information has no effect on the return value.  
   
  If the dynamic method has already been completed, by calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> or <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method, the <xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A> method has no effect. No exception is thrown.  
   
    
   
-## Examples  
+## 例  
  The following code example shows how to define parameter information for a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#33](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#33)]
- [!code-csharp[Reflection.DynamicMethod.All#33](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#33)]
- [!code-vb[Reflection.DynamicMethod.All#33](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#33)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#33](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#33)]
+ [!code-csharp[Reflection.DynamicMethod.All\#33](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#33)]
+ [!code-vb[Reflection.DynamicMethod.All\#33](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#33)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The method has no parameters.  
+        <exception cref="T:System.ArgumentOutOfRangeException">メソッドにパラメーターが指定されていません。  
   
- -or-  
+ \-または\-  
   
- <paramref name="position" /> is less than 0.  
+ <paramref name="position" /> が 0 未満です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="position" /> is greater than the number of the method's parameters.</exception>
+ <paramref name="position" /> は、メソッドのパラメーターの数を超えています。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetBaseDefinition">
@@ -951,13 +1023,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the base implementation for the method.</summary>
-        <returns>The base implementation of the method.</returns>
+        <summary>メソッドの基本実装を返します。</summary>
+        <returns>メソッドの基本実装。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method always returns the current `DynamicMethod` object.  
+## 解説  
+ このメソッドは、現在を常に返します `DynamicMethod` オブジェクトです。  
   
  ]]></format>
         </remarks>
@@ -984,21 +1056,21 @@
         <Parameter Name="inherit" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="inherit">
-          <see langword="true" /> to search the method's inheritance chain to find the custom attributes; <see langword="false" /> to check only the current method.</param>
-        <summary>Returns all the custom attributes defined for the method.</summary>
-        <returns>An array of objects representing all the custom attributes of the method.</returns>
+        <param name="inherit">メソッドの継承チェーンを検索してカスタム属性を見つける場合は <see langword="true" />、現在のメソッドだけを検査する場合は <see langword="false" />。</param>
+        <summary>メソッドの定義済みのカスタム属性をすべて返します。</summary>
+        <returns>メソッドのすべてのカスタム属性を表す、オブジェクトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For dynamic methods, specifying `true` for `inherit` has no effect, because the method is not declared in a type.  
+## 解説  
+ 動的メソッドは、指定の `true` の `inherit` メソッドが型で宣言されていないため、影響を与えません。  
   
 > [!NOTE]
->  Custom attributes are not currently supported on dynamic methods. The only attribute returned is <xref:System.Runtime.CompilerServices.MethodImplAttribute>; you can get the method implementation flags more easily using the <xref:System.Reflection.Emit.DynamicMethod.GetMethodImplementationFlags%2A> method.  
+>  カスタム属性は、動的メソッドで現在はサポートされません。 唯一の属性が返される <xref:System.Runtime.CompilerServices.MethodImplAttribute>; すれば、メソッド実装フラグを使用してより簡単に、 <xref:System.Reflection.Emit.DynamicMethod.GetMethodImplementationFlags%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Reflection.Emit.DynamicMethod.IsDefined(System.Type,System.Boolean)" />
       </Docs>
     </Member>
     <Member MemberName="GetCustomAttributes">
@@ -1023,24 +1095,25 @@
         <Parameter Name="inherit" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="attributeType">A <see cref="T:System.Type" /> representing the type of custom attribute to return.</param>
-        <param name="inherit">
-          <see langword="true" /> to search the method's inheritance chain to find the custom attributes; <see langword="false" /> to check only the current method.</param>
-        <summary>Returns the custom attributes of the specified type that have been applied to the method.</summary>
-        <returns>An array of objects representing the attributes of the method that are of type <paramref name="attributeType" /> or derive from type <paramref name="attributeType" />.</returns>
+        <param name="attributeType">返されるカスタム属性の型を表す <see cref="T:System.Type" />。</param>
+        <param name="inherit">メソッドの継承チェーンを検索してカスタム属性を見つける場合は <see langword="true" />、現在のメソッドだけを検査する場合は <see langword="false" />。</param>
+        <summary>メソッドに適用されている、指定した型のカスタム属性を返します。</summary>
+        <returns>
+          <paramref name="attributeType" /> 型であるか、または <paramref name="attributeType" /> 型から派生したメソッドの属性を表すオブジェクトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For dynamic methods, specifying `true` for `inherit` has no effect, because the method is not declared in a type.  
+## 解説  
+ 動的メソッドは、指定の `true` の `inherit` メソッドが型で宣言されていないため、影響を与えません。  
   
 > [!NOTE]
->  Custom attributes are not currently supported on dynamic methods. The only attribute returned is <xref:System.Runtime.CompilerServices.MethodImplAttribute>; you can get the method implementation flags more easily using the <xref:System.Reflection.Emit.DynamicMethod.GetMethodImplementationFlags%2A> method.  
+>  カスタム属性は、動的メソッドで現在はサポートされません。 唯一の属性が返される <xref:System.Runtime.CompilerServices.MethodImplAttribute>; すれば、メソッド実装フラグを使用してより簡単に、 <xref:System.Reflection.Emit.DynamicMethod.GetMethodImplementationFlags%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="attributeType" /> is <see langword="null" />.</exception>
+          <paramref name="attributeType" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Reflection.Emit.DynamicMethod.IsDefined(System.Type,System.Boolean)" />
       </Docs>
     </Member>
     <Member MemberName="GetDynamicILInfo">
@@ -1058,17 +1131,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a <see cref="T:System.Reflection.Emit.DynamicILInfo" /> object that can be used to generate a method body from metadata tokens, scopes, and Microsoft intermediate language (MSIL) streams.</summary>
-        <returns>A <see cref="T:System.Reflection.Emit.DynamicILInfo" /> object that can be used to generate a method body from metadata tokens, scopes, and MSIL streams.</returns>
+        <summary>メタデータ トークン、スコープ、および Microsoft Intermediate Language \(MSIL\) ストリームからメソッドの本体を生成するのに使用できる <see cref="T:System.Reflection.Emit.DynamicILInfo" /> オブジェクトを返します。</summary>
+        <returns>メタデータ トークン、スコープ、および MSIL ストリームからメソッドの本体を生成するのに使用できる <see cref="T:System.Reflection.Emit.DynamicILInfo" /> オブジェクト</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Reflection.Emit.DynamicILInfo> class is provided to support unmanaged code generation.  
+## 解説  
+ <xref:System.Reflection.Emit.DynamicILInfo> クラスがアンマネージ コードの生成をサポートするために用意されています。  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">to execute unmanaged code. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
+        <altmember cref="T:System.Reflection.Emit.DynamicILInfo" />
       </Docs>
     </Member>
     <Member MemberName="GetILGenerator">
@@ -1091,25 +1165,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a Microsoft intermediate language (MSIL) generator for the method with a default MSIL stream size of 64 bytes.</summary>
-        <returns>An <see cref="T:System.Reflection.Emit.ILGenerator" /> object for the method.</returns>
+        <summary>メソッドの Microsoft Intermediate Language \(MSIL\) ジェネレーターを返します。これは 64 バイトの既定の MSIL ストリーム サイズを持ちます。</summary>
+        <returns>メソッドの <see cref="T:System.Reflection.Emit.ILGenerator" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  After a dynamic method has been completed, by calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> or <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method, any further attempt to add MSIL is ignored. No exception is thrown.  
   
 > [!NOTE]
->  There are restrictions on unverifiable code in dynamic methods, even in some full-trust scenarios. See the "Verification" section in Remarks for <xref:System.Reflection.Emit.DynamicMethod>.  
+>  There are restrictions on unverifiable code in dynamic methods, even in some full\-trust scenarios. See the "Verification" section in Remarks for <xref:System.Reflection.Emit.DynamicMethod>.  
   
    
   
-## Examples  
+## 例  
  The following code example creates a dynamic method that takes two parameters. The example emits a simple function body that prints the first parameter to the console, and the example uses the second parameter as the return value of the method. The example completes the method by creating a delegate, invokes the delegate with different parameters, and finally invokes the dynamic method using the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method.  
   
- [!code-cpp[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/cpp/source.cpp#1)]
- [!code-csharp[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/CS/source.cs#1)]
- [!code-vb[Reflection.DynamicMethod.ctor1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/VB/source.vb#1)]  
+ [!code-cpp[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/cpp/source.cpp#1)]
+ [!code-csharp[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/CS/source.cs#1)]
+ [!code-vb[Reflection.DynamicMethod.ctor1\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.ctor1/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1137,26 +1211,26 @@
         <Parameter Name="streamSize" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="streamSize">The size of the MSIL stream, in bytes.</param>
-        <summary>Returns a Microsoft intermediate language (MSIL) generator for the method with the specified MSIL stream size.</summary>
-        <returns>An <see cref="T:System.Reflection.Emit.ILGenerator" /> object for the method, with the specified MSIL stream size.</returns>
+        <param name="streamSize">バイト単位の MSIL ストリームのサイズ。</param>
+        <summary>指定した Microsoft Intermediate Language \(MSIL\) ストリーム サイズの、メソッドの MSIL ジェネレーターを返します。</summary>
+        <returns>指定された MSIL ストリーム サイズの、メソッドの <see cref="T:System.Reflection.Emit.ILGenerator" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  After a dynamic method has been completed, by calling the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> or <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method, any further attempt to add MSIL is ignored. No exception is thrown.  
   
 > [!NOTE]
->  There are restrictions on unverifiable code in dynamic methods, even in some full-trust scenarios. See the "Verification" section in Remarks for <xref:System.Reflection.Emit.DynamicMethod>.  
+>  There are restrictions on unverifiable code in dynamic methods, even in some full\-trust scenarios. See the "Verification" section in Remarks for <xref:System.Reflection.Emit.DynamicMethod>.  
   
    
   
-## Examples  
+## 例  
  The following code example demonstrates this method overload. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#2](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#2)]
- [!code-csharp[Reflection.DynamicMethod.All#2](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#2)]
- [!code-vb[Reflection.DynamicMethod.All#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#2)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#2](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#2)]
+ [!code-csharp[Reflection.DynamicMethod.All\#2](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#2)]
+ [!code-vb[Reflection.DynamicMethod.All\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -1181,13 +1255,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the implementation flags for the method.</summary>
-        <returns>A bitwise combination of <see cref="T:System.Reflection.MethodImplAttributes" /> values representing the implementation flags for the method.</returns>
+        <summary>このメソッドの実装フラグを返します。</summary>
+        <returns>メソッドの実装フラグを表す <see cref="T:System.Reflection.MethodImplAttributes" /> 値のビットごとの組み合わせ。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Currently, method implementation attributes for dynamic methods are always <xref:System.Reflection.MethodImplAttributes.IL> and <xref:System.Reflection.MethodImplAttributes.NoInlining>.  
+## 解説  
+ 現時点では、メソッドの実装の属性の動的メソッドは、常に <xref:System.Reflection.MethodImplAttributes.IL> と <xref:System.Reflection.MethodImplAttributes.NoInlining>です。  
   
  ]]></format>
         </remarks>
@@ -1213,25 +1287,26 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the parameters of the dynamic method.</summary>
-        <returns>An array of <see cref="T:System.Reflection.ParameterInfo" /> objects that represent the parameters of the dynamic method.</returns>
+        <summary>動的メソッドのパラメーターを返します。</summary>
+        <returns>動的メソッドのパラメーターを表す <see cref="T:System.Reflection.ParameterInfo" /> オブジェクトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Reflection.ParameterInfo> objects returned by this method are for information only. Use the <xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A> method to set or change the characteristics of the parameters.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the parameters of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#34](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#34)]
- [!code-csharp[Reflection.DynamicMethod.All#34](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#34)]
- [!code-vb[Reflection.DynamicMethod.All#34](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#34)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#34](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#34)]
+ [!code-csharp[Reflection.DynamicMethod.All\#34](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#34)]
+ [!code-vb[Reflection.DynamicMethod.All\#34](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#34)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Reflection.Emit.DynamicMethod.DefineParameter(System.Int32,System.Reflection.ParameterAttributes,System.String)" />
       </Docs>
     </Member>
     <Member MemberName="InitLocals">
@@ -1253,23 +1328,24 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the local variables in the method are zero-initialized.</summary>
-        <value>
-          <see langword="true" /> if the local variables in the method are zero-initialized; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+        <summary>メソッドのローカル変数をゼロに初期化するかどうかを示す値を取得または設定します。</summary>
+        <value>メソッドのローカル変数をゼロに初期化する場合は <see langword="true" />、それ以外の場合は <see langword="false" />。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If this property is set to `true`, the emitted Microsoft intermediate language (MSIL) includes initialization of local variables. If it is set to `false`, local variables are not initialized and the generated code is unverifiable.  
+## 解説  
+ If this property is set to **languageKeyword tag is not supported!!!!**  
+, the emitted Microsoft intermediate language \(MSIL\) includes initialization of local variables. If it is set to **languageKeyword tag is not supported!!!!**  
+, local variables are not initialized and the generated code is unverifiable.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the <xref:System.Reflection.Emit.DynamicMethod.InitLocals%2A> property of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#24](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#24)]
- [!code-csharp[Reflection.DynamicMethod.All#24](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#24)]
- [!code-vb[Reflection.DynamicMethod.All#24](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#24)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#24](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#24)]
+ [!code-csharp[Reflection.DynamicMethod.All\#24](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#24)]
+ [!code-vb[Reflection.DynamicMethod.All\#24](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#24)]  
   
  ]]></format>
         </remarks>
@@ -1300,58 +1376,63 @@
         <Parameter Name="culture" Type="System.Globalization.CultureInfo" />
       </Parameters>
       <Docs>
-        <param name="obj">This parameter is ignored for dynamic methods, because they are static. Specify <see langword="null" />.</param>
-        <param name="invokeAttr">A bitwise combination of <see cref="T:System.Reflection.BindingFlags" /> values.</param>
-        <param name="binder">A <see cref="T:System.Reflection.Binder" /> object that enables the binding, coercion of argument types, invocation of members, and retrieval of <see cref="T:System.Reflection.MemberInfo" /> objects through reflection. If <c>binder</c> is <see langword="null" />, the default binder is used. For more details, see <see cref="T:System.Reflection.Binder" />.</param>
-        <param name="parameters">An argument list. This is an array of arguments with the same number, order, and type as the parameters of the method to be invoked. If there are no parameters this parameter should be <see langword="null" />.</param>
-        <param name="culture">An instance of <see cref="T:System.Globalization.CultureInfo" /> used to govern the coercion of types. If this is <see langword="null" />, the <see cref="T:System.Globalization.CultureInfo" /> for the current thread is used. For example, this information is needed to correctly convert a <see cref="T:System.String" /> that represents 1000 to a <see cref="T:System.Double" /> value, because 1000 is represented differently by different cultures.</param>
-        <summary>Invokes the dynamic method using the specified parameters, under the constraints of the specified binder, with the specified culture information.</summary>
-        <returns>A <see cref="T:System.Object" /> containing the return value of the invoked method.</returns>
+        <param name="obj">それらは静的であるため、動的メソッドではこのパラメーターは無視されます。<see langword="null" /> を指定します。</param>
+        <param name="invokeAttr">
+          <see cref="T:System.Reflection.BindingFlags" /> 値のビットごとの組み合わせ。</param>
+        <param name="binder">バインディング、引数型の強制変換、メンバーの呼び出し、およびリフレクションを使用した <see cref="T:System.Reflection.MemberInfo" /> オブジェクトの取得を有効にする <see cref="T:System.Reflection.Binder" /> オブジェクト。<c>binder</c> が <see langword="null" /> の場合は、既定のバインダーが使用されます。 詳細については、「<see cref="T:System.Reflection.Binder" />」を参照してください。</param>
+        <param name="parameters">引数リスト。 これは、呼び出されるメソッドのパラメーターと同じ数、順序、型の引数の配列です。 パラメーターがない場合は、このパラメーターは <see langword="null" /> である必要があります。</param>
+        <param name="culture">型の強制変換を制御するために使用する <see cref="T:System.Globalization.CultureInfo" /> のインスタンス。<see langword="null" /> の場合は、現在のスレッドの <see cref="T:System.Globalization.CultureInfo" /> が使用されます。 たとえば、この情報は 1000 を表す <see cref="T:System.String" /> を <see cref="T:System.Double" /> 値に正しく変換する場合に必要です。これは、カルチャによって 1000 の表記が異なるためです。</param>
+        <summary>指定されたカルチャ情報を使用し、指定したバインダーの制約の下で、指定したパラメーターを使用して動的メソッドを呼び出します。</summary>
+        <returns>呼び出されたメソッドの戻り値を格納する <see cref="T:System.Object" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In addition to the listed exceptions, the calling code should be prepared to catch any exceptions thrown by the dynamic method.  
+## 解説  
+ 上記の例外だけでなくには、動的メソッドでスローされた例外をキャッチする呼び出し元のコードを準備する必要があります。  
   
- Executing a dynamic method with a delegate created by the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> method is more efficient than executing it with the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method.  
+ によって作成されたデリゲートを使用して動的メソッドの実行、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> 方法で実行するよりも効率的です、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> メソッドです。  
   
- Calling the <xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> method or the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> method completes the dynamic method. Any further attempt to alter the dynamic method, such as modifying parameter definitions or emitting more Microsoft intermediate language (MSIL), is ignored; no exception is thrown.  
+ 呼び出す、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A> メソッドまたは [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> メソッドには、動的メソッドが完了するとします。 さらにパラメーターの定義の変更など、動的メソッドを変更しようとしています。 または以上の Microsoft 中間言語 \(MSIL\) の出力は無視されます。例外はスローされません。  
   
- All dynamic methods are static, so the `obj` parameter is always ignored. To treat a dynamic method as if it were an instance method, use the <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> overload that takes an object instance.  
+ すべての動的メソッドは、静的なため、 `obj` パラメーターが常に無視されます。 動的メソッドは、インスタンス メソッドの場合と同様に扱うを使用して、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%28System.Type%2CSystem.Object%29> をオブジェクトのインスタンスを受け取るオーバー ロードします。  
   
- If the dynamic method has no parameters, the value of `parameters` should be `null`. Otherwise the number, type, and order of elements in the parameters array should be identical to the number, type, and order of parameters of the dynamic method.  
-  
-> [!NOTE]
->  This method overload is called by the <xref:System.Reflection.MethodBase.Invoke%28System.Object%2CSystem.Object%5B%5D%29> method overload inherited from the <xref:System.Reflection.MethodBase> class, so the preceding remarks apply to both overloads.  
-  
- This method does not demand permissions directly, but invoking the dynamic method can result in security demands, depending on the method. For example, no demands are made for anonymously hosted dynamic methods that are created with the `restrictedSkipVisibility` parameter set to `false`. On the other hand, if you create a method with `restrictedSkipVisibility` set to `true` so it can access a hidden member of a target assembly, the method will cause a demand for the permissions of the target assembly plus <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag?displayProperty=fullName> flag.  
+ 動的メソッドは、パラメーターの値を持たない場合 `parameters` べき `null`します。 それ以外の場合、パラメーター配列内の要素の数、種類、および、動的メソッドのパラメーターの順序と同じする必要があります。  
   
 > [!NOTE]
->  Prior to the [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], this method required <xref:System.Security.Permissions.ReflectionPermission> with the <xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess> flag.  
+>  によってこのメソッドのオーバー ロードが呼び出される、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.MethodBase.Invoke%28System.Object%2CSystem.Object%5B%5D%29> から継承されたメソッドのオーバー ロード、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.MethodBase> クラスで、前の「解説」は、両方のオーバー ロードに適用します。  
+  
+ このメソッドがアクセス許可を直接、要求されませんが、動的メソッドを呼び出す方法によっては、セキュリティ確認要求に 。 たとえば、要求がなされますなしで作成された匿名でホストされる動的メソッドで、 `restrictedSkipVisibility` パラメーターを設定する `false`です。 その一方でメソッドを作成する場合は、 `restrictedSkipVisibility` に設定 `true` 、メソッドがプラス対象のアセンブリのアクセス許可の確認要求では、対象アセンブリの非表示のメンバーにアクセスできる、ように [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Security.Permissions.ReflectionPermission> で、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess?displayProperty=fullName> フラグ。  
+  
+> [!NOTE]
+>  前のバージョン、 [!INCLUDE[net_v20sp1_long](~/includes/net-v20sp1-long-md.md)], 、このメソッドが必要な [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Security.Permissions.ReflectionPermission> で、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess> フラグ。  
   
    
   
-## Examples  
- The following code example invokes a dynamic method with exact binding, using the US-English culture. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
+## 例  
+ 次のコード例では、英語 \(米国\) カルチャを使用して、正確なバインディングな動的メソッドを呼び出します。 このコード例が示されている例の一部は、 [Invoke メソッド \(Object, BindingFlags, Binder, Object\<xref:System.Reflection.Emit.DynamicMethod> クラスです。  
   
- [!code-cpp[Reflection.DynamicMethod.All#4](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#4)]
- [!code-csharp[Reflection.DynamicMethod.All#4](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#4)]
- [!code-vb[Reflection.DynamicMethod.All#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#4)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#4](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#4)]
+ [!code-csharp[Reflection.DynamicMethod.All\#4](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#4)]
+ [!code-vb[Reflection.DynamicMethod.All\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#4)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The <see cref="F:System.Reflection.CallingConventions.VarArgs" /> calling convention is not supported.</exception>
-        <exception cref="T:System.Reflection.TargetParameterCountException">The number of elements in <paramref name="parameters" /> does not match the number of parameters in the dynamic method.</exception>
-        <exception cref="T:System.ArgumentException">The type of one or more elements of <paramref name="parameters" /> does not match the type of the corresponding parameter of the dynamic method.</exception>
-        <exception cref="T:System.Reflection.TargetInvocationException">The dynamic method is associated with a module, is not anonymously hosted, and was constructed with <paramref name="skipVisibility" /> set to <see langword="false" />, but the dynamic method accesses members that are not <see langword="public" /> or <see langword="internal" /> (<see langword="Friend" /> in Visual Basic).  
+        <exception cref="T:System.NotSupportedException">
+          <see cref="F:System.Reflection.CallingConventions.VarArgs" /> 呼び出し規約はサポートされません。</exception>
+        <exception cref="T:System.Reflection.TargetParameterCountException">
+          <paramref name="parameters" /> の要素の数が動的メソッドのパラメーターの数と一致しません。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="parameters" /> の 1 つ以上の要素の型が動的メソッドの対応するパラメーターの型と一致しません。</exception>
+        <exception cref="T:System.Reflection.TargetInvocationException">動的メソッドは匿名でホストされずにモジュールに関連付けられます。それは、<paramref name="skipVisibility" /> を <see langword="false" /> に設定して構築されましたが、動的メソッドは <see langword="public" /> または <see langword="internal" /> \(Visual Basic では <see langword="Friend" />\) ではないメンバーにアクセスします。  
   
- -or-  
+ \-または\-  
   
- The dynamic method is anonymously hosted and was constructed with <paramref name="skipVisibility" /> set to <see langword="false" />, but it accesses members that are not <see langword="public" />.  
+ 動的メソッドは匿名でホストされ、<paramref name="skipVisibility" /> を <see langword="false" /> に設定して構築されましたが、<see langword="public" /> ではないメンバーにアクセスします。  
   
- -or-  
+ \-または\-  
   
- The dynamic method contains unverifiable code. See the "Verification" section in Remarks for <see cref="T:System.Reflection.Emit.DynamicMethod" />.</exception>
+ 動的メソッドには、検証できないコードが含まれています。<see cref="T:System.Reflection.Emit.DynamicMethod" /> については、「解説」の「検証」セクションを参照してください。</exception>
+        <altmember cref="M:System.Reflection.Emit.DynamicMethod.CreateDelegate(System.Type)" />
       </Docs>
     </Member>
     <Member MemberName="IsDefined">
@@ -1376,23 +1457,22 @@
         <Parameter Name="inherit" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="attributeType">A <see cref="T:System.Type" /> representing the type of custom attribute to search for.</param>
-        <param name="inherit">
-          <see langword="true" /> to search the method's inheritance chain to find the custom attributes; <see langword="false" /> to check only the current method.</param>
-        <summary>Indicates whether the specified custom attribute type is defined.</summary>
-        <returns>
-          <see langword="true" /> if the specified custom attribute type is defined; otherwise, <see langword="false" />.</returns>
+        <param name="attributeType">検索するカスタム属性の型を表す <see cref="T:System.Type" />。</param>
+        <param name="inherit">メソッドの継承チェーンを検索してカスタム属性を見つける場合は <see langword="true" />、現在のメソッドだけを検査する場合は <see langword="false" />。</param>
+        <summary>指定されたカスタム属性の型が定義されているかどうかを示します。</summary>
+        <returns>指定されたカスタム属性の型が定義されている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For dynamic methods, specifying `true` for `inherit` has no effect. Dynamic methods have no inheritance chain.  
+## 解説  
+ 動的メソッドは、指定の `true` の `inherit` も何も起こりません。 動的メソッドが継承チェーンをあるありません。  
   
 > [!NOTE]
->  Custom attributes are not currently supported on dynamic methods.  
+>  カスタム属性は、動的メソッドで現在はサポートされません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Reflection.Emit.DynamicMethod.GetCustomAttributes(System.Type,System.Boolean)" />
       </Docs>
     </Member>
     <Member MemberName="IsSecurityCritical">
@@ -1413,48 +1493,52 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current dynamic method is security-critical or security-safe-critical, and therefore can perform critical operations.</summary>
-        <value>
-          <see langword="true" /> if the current dynamic method is security-critical or security-safe-critical; <see langword="false" /> if it is transparent.</value>
+        <summary>現在の動的メソッドがセキュリティ クリティカルまたはセキュリティ セーフ クリティカルであり、重要な操作を実行できるかどうかを示す値を取得します。</summary>
+        <value>現在の動的メソッドがセキュリティ クリティカルまたはセキュリティ セーフ クリティカルである場合は <see langword="true" />。現在の動的メソッドが透過的な場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Reflection.Emit.DynamicMethod.IsSecurityCritical%2A>, <xref:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical%2A>, and <xref:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent%2A> properties report the transparency level of the dynamic method as determined by the common language runtime (CLR). The combinations of these properties are shown in the following table:  
+## 解説  
+ <xref:System.Reflection.Emit.DynamicMethod.IsSecurityCritical%2A>, 、<xref:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical%2A>, 、および <xref:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent%2A> プロパティは、共通言語ランタイム \(CLR\) によって決定される動的メソッドの透明度を報告します。 次の表では、これらのプロパティの組み合わせを示します。  
   
-|Security level|IsSecurityCritical|IsSecuritySafeCritical|IsSecurityTransparent|  
-|--------------------|------------------------|----------------------------|---------------------------|  
+|セキュリティ レベル|IsSecurityCritical|IsSecuritySafeCritical|IsSecurityTransparent|  
+|----------------|------------------------|----------------------------|---------------------------|  
 |Critical|`true`|`false`|`false`|  
-|Safe critical|`true`|`true`|`false`|  
-|Transparent|`false`|`false`|`true`|  
+|セーフ クリティカル|`true`|`true`|`false`|  
+|透過的|`false`|`false`|`true`|  
   
- Using these properties is much simpler than examining the security annotations of an assembly and its types, checking the current trust level, and attempting to duplicate the runtime's rules.  
+ これらのプロパティを使用する方が、アセンブリとその型のセキュリティの注釈を調べたり、現在の信頼レベルを確認したり、ランタイムの規則を複製したりするより、はるかに簡単です。  
   
- The transparency of a dynamic method depends on the module it is associated with. If the dynamic method is associated with a type rather than a module, its transparency depends on the module that contains the type. Dynamic methods do not have security annotations, so they are assigned the default transparency for the associated module.  
+ 動的メソッドの透明度と、関連付けられたモジュールに依存します。 動的メソッドがモジュールではなく型に関連付けられている場合は、透過性は、型を格納しているモジュールに依存します。 動的メソッドにはセキュリティの注釈はない、関連するモジュールの透過性を既定値が割り当てられているためです。  
   
--   Anonymously hosted dynamic methods are always transparent, because the system-provided module that contains them is transparent.  
+-   匿名でホストされる動的メソッドは、それらを含む、システムによって提供されるモジュールが透過的であるために常に透過的に。  
   
--   The transparency of a dynamic method that is associated with a trusted assembly (that is, a strong-named assembly that is installed in the global assembly cache) is described in the following table.  
+-   次の表は、信頼されたアセンブリ \(つまり、厳密な名前付きアセンブリがグローバル アセンブリ キャッシュにインストールされている\) に関連付けられている動的メソッドの透明度を説明します。  
   
-    |Assembly annotation|Level 1 transparency|Level 2 transparency|  
-    |-------------------------|--------------------------|--------------------------|  
-    |Fully transparent|Transparent|Transparent|  
-    |Fully critical|Critical|Critical|  
-    |Mixed transparency|Transparent|Transparent|  
-    |Security-agnostic|Safe-critical|Critical|  
+    |アセンブリの注釈|レベル 1 の透過性|レベル 2 の透過性|  
+    |--------------|----------------|----------------|  
+    |完全に透明|透明|透明|  
+    |非常に重大|重大|重大|  
+    |混在透過性|透明|透明|  
+    |セキュリティに依存しません。|セーフ クリティカル|重大|  
   
-     For example, if you associate a dynamic method with a type that is in mscorlib.dll, which has level 2 mixed transparency, the dynamic method is transparent and cannot execute critical code. For information about transparency levels, see [Security-Transparent Code, Level 1](~/docs/framework/misc/security-transparent-code-level-1.md) and [Security-Transparent Code, Level 2](~/docs/framework/misc/security-transparent-code-level-2.md).  
+     たとえば、混在 2 の透過性レベル、mscorlib.dll に含まれる型と動的メソッドを関連付ける場合は、動的メソッドは透過的とクリティカルなコードを実行できません。 透明度レベルについては、次を参照してください。 [Security\-Transparent Code, Level 1](http://msdn.microsoft.com/ja-jp/5fd8f46d-3961-46a7-84af-2eb1f48e75cf) と [Security\-Transparent Code, Level 2](http://msdn.microsoft.com/ja-jp/4d05610a-0da6-4f08-acea-d54c9d6143c0)です。  
   
     > [!NOTE]
-    >  Associating a dynamic method with a module in a trusted level 1 assembly that is security-agnostic, such as System.dll, does not permit elevation of trust. If the grant set of the code that calls the dynamic method does not include the grant set of System.dll (that is, full trust), <xref:System.Security.SecurityException> is thrown when the dynamic method is called.  
+    >  System.dll などのセキュリティに依存しない、信頼レベル 1 アセンブリ内のモジュールを使用して動的メソッドを関連付けることも、信頼の昇格は許可されません。 動的メソッドを呼び出すコードの許可セットに \(つまり、完全信頼\) System.dll の許可セットが含まれていない場合 <xref:System.Security.SecurityException> 動的メソッドが呼び出された場合にスローされます。  
   
--   The transparency of a dynamic method that is associated with a partially trusted assembly depends on how the assembly is loaded. If the assembly is loaded with partial trust (for example, into a sandboxed application domain), the runtime ignores the security annotations of the assembly. The assembly and all its types and members, including dynamic methods, are treated as transparent. The runtime pays attention to security annotations only if the partial-trust assembly is loaded with full trust (for example, into the default application domain of a desktop application). In that case, the runtime assigns the dynamic method the default transparency for methods according to the assembly's annotations.  
+-   部分的に信頼されたアセンブリに関連付けられている動的メソッドの透過性は、アセンブリが読み込まれる方法によって異なります。 アセンブリが \(たとえば、サンド ボックス アプリケーション ドメイン\) に部分信頼で読み込まれた場合、ランタイムはアセンブリのセキュリティの注釈を無視します。 アセンブリと、その型と動的メソッドを含むメンバーをすべてを透過的に処理されます。 ランタイムは、部分的に信頼されたアセンブリが \(たとえば、デスクトップ アプリケーションの既定のアプリケーション ドメイン\) に完全な信頼で読み込まれた場合にのみ、セキュリティの注釈に注意を支払います。 その場合は、ランタイムでは、動的メソッドに、アセンブリの注釈に従ってメソッドの既定の透過性が割り当てられます。  
   
- For more information about reflection emit and transparency, see [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md). For information about transparency, see [Security Changes](~/docs/framework/security/security-changes.md).  
+ 詳細については、リフレクション出力と透明度を参照してください [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298)します。 透過性の詳細については、次を参照してください。 [Security Changes in the .NET Framework Version 4.0](http://msdn.microsoft.com/ja-jp/5e87881c-9c13-4b52-8ad1-e34bb46e8aaa)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The dynamic method doesn't have a method body.</exception>
+        <exception cref="T:System.InvalidOperationException">動的メソッドにメソッド本体がありません。</exception>
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical" />
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent" />
       </Docs>
     </Member>
     <Member MemberName="IsSecuritySafeCritical">
@@ -1475,48 +1559,52 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current dynamic method is security-safe-critical at the current trust level; that is, whether it can perform critical operations and can be accessed by transparent code.</summary>
-        <value>
-          <see langword="true" /> if the dynamic method is security-safe-critical at the current trust level; <see langword="false" /> if it is security-critical or transparent.</value>
+        <summary>現在の動的メソッドが現在の信頼レベルでセキュリティ セーフ クリティカルであるかどうか、つまり、重要な操作を実行でき、透過的なコードからアクセスできるかどうかを示す値を取得します。</summary>
+        <value>現在の動的メソッドが現在の信頼レベルでセキュリティ セーフ クリティカルである場合は <see langword="true" />。現在の型がセキュリティ クリティカルまたは透過的な場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Reflection.Emit.DynamicMethod.IsSecurityCritical%2A>, <xref:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical%2A>, and <xref:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent%2A> properties report the transparency level of the dynamic method as determined by the common language runtime (CLR). The combinations of these properties are shown in the following table:  
+## 解説  
+ <xref:System.Reflection.Emit.DynamicMethod.IsSecurityCritical%2A>, 、<xref:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical%2A>, 、および <xref:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent%2A> プロパティは、共通言語ランタイム \(CLR\) によって決定される動的メソッドの透明度を報告します。 次の表では、これらのプロパティの組み合わせを示します。  
   
-|Security level|IsSecurityCritical|IsSecuritySafeCritical|IsSecurityTransparent|  
-|--------------------|------------------------|----------------------------|---------------------------|  
+|セキュリティ レベル|IsSecurityCritical|IsSecuritySafeCritical|IsSecurityTransparent|  
+|----------------|------------------------|----------------------------|---------------------------|  
 |Critical|`true`|`false`|`false`|  
-|Safe critical|`true`|`true`|`false`|  
-|Transparent|`false`|`false`|`true`|  
+|セーフ クリティカル|`true`|`true`|`false`|  
+|透過的|`false`|`false`|`true`|  
   
- Using these properties is much simpler than examining the security annotations of an assembly and its types, checking the current trust level, and attempting to duplicate the runtime's rules.  
+ これらのプロパティを使用する方が、アセンブリとその型のセキュリティの注釈を調べたり、現在の信頼レベルを確認したり、ランタイムの規則を複製したりするより、はるかに簡単です。  
   
- The transparency of a dynamic method depends on the module it is associated with. If the dynamic method is associated with a type rather than a module, its transparency depends on the module that contains the type. Dynamic methods do not have security annotations, so they are assigned the default transparency for the associated module.  
+ 動的メソッドの透明度と、関連付けられたモジュールに依存します。 動的メソッドがモジュールではなく型に関連付けられている場合は、透過性は、型を格納しているモジュールに依存します。 動的メソッドにはセキュリティの注釈はない、関連するモジュールの透過性を既定値が割り当てられているためです。  
   
--   Anonymously hosted dynamic methods are always transparent, because the system-provided module that contains them is transparent.  
+-   匿名でホストされる動的メソッドは、それらを含む、システムによって提供されるモジュールが透過的であるために常に透過的に。  
   
--   The transparency of a dynamic method that is associated with a trusted assembly (that is, a strong-named assembly that is installed in the global assembly cache) is described in the following table.  
+-   次の表は、信頼されたアセンブリ \(つまり、厳密な名前付きアセンブリがグローバル アセンブリ キャッシュにインストールされている\) に関連付けられている動的メソッドの透明度を説明します。  
   
-    |Assembly annotation|Level 1 transparency|Level 2 transparency|  
-    |-------------------------|--------------------------|--------------------------|  
-    |Fully transparent|Transparent|Transparent|  
-    |Fully critical|Critical|Critical|  
-    |Mixed transparency|Transparent|Transparent|  
-    |Security-agnostic|Safe-critical|Critical|  
+    |アセンブリの注釈|レベル 1 の透過性|レベル 2 の透過性|  
+    |--------------|----------------|----------------|  
+    |完全に透明|透明|透明|  
+    |非常に重大|重大|重大|  
+    |混在透過性|透明|透明|  
+    |セキュリティに依存しません。|セーフ クリティカル|重大|  
   
-     For example, if you associate a dynamic method with a type that is in mscorlib.dll, which has level 2 mixed transparency, the dynamic method is transparent and cannot execute critical code. For information about transparency levels, see [Security-Transparent Code, Level 1](~/docs/framework/misc/security-transparent-code-level-1.md) and [Security-Transparent Code, Level 2](~/docs/framework/misc/security-transparent-code-level-2.md).  
+     たとえば、混在 2 の透過性レベル、mscorlib.dll に含まれる型と動的メソッドを関連付ける場合は、動的メソッドは透過的とクリティカルなコードを実行できません。 透明度レベルについては、次を参照してください。 [Security\-Transparent Code, Level 1](http://msdn.microsoft.com/ja-jp/5fd8f46d-3961-46a7-84af-2eb1f48e75cf) と [Security\-Transparent Code, Level 2](http://msdn.microsoft.com/ja-jp/4d05610a-0da6-4f08-acea-d54c9d6143c0)です。  
   
     > [!NOTE]
-    >  Associating a dynamic method with a module in a trusted level 1 assembly that is security-agnostic, such as System.dll, does not permit elevation of trust. If the grant set of the code that calls the dynamic method does not include the grant set of System.dll (that is, full trust), <xref:System.Security.SecurityException> is thrown when the dynamic method is called.  
+    >  System.dll などのセキュリティに依存しない、信頼レベル 1 アセンブリ内のモジュールを使用して動的メソッドを関連付けることも、信頼の昇格は許可されません。 動的メソッドを呼び出すコードの許可セットに \(つまり、完全信頼\) System.dll の許可セットが含まれていない場合 <xref:System.Security.SecurityException> 動的メソッドが呼び出された場合にスローされます。  
   
--   The transparency of a dynamic method that is associated with a partially trusted assembly depends on how the assembly is loaded. If the assembly is loaded with partial trust (for example, into a sandboxed application domain), the runtime ignores the security annotations of the assembly. The assembly and all its types and members, including dynamic methods, are treated as transparent. The runtime pays attention to security annotations only if the partial-trust assembly is loaded with full trust (for example, into the default application domain of a desktop application). In that case, the runtime assigns the dynamic method the default transparency for methods according to the assembly's annotations.  
+-   部分的に信頼されたアセンブリに関連付けられている動的メソッドの透過性は、アセンブリが読み込まれる方法によって異なります。 アセンブリが \(たとえば、サンド ボックス アプリケーション ドメイン\) に部分信頼で読み込まれた場合、ランタイムはアセンブリのセキュリティの注釈を無視します。 アセンブリと、その型と動的メソッドを含むメンバーをすべてを透過的に処理されます。 ランタイムは、部分的に信頼されたアセンブリが \(たとえば、デスクトップ アプリケーションの既定のアプリケーション ドメイン\) に完全な信頼で読み込まれた場合にのみ、セキュリティの注釈に注意を支払います。 その場合は、ランタイムでは、動的メソッドに、アセンブリの注釈に従ってメソッドの既定の透過性が割り当てられます。  
   
- For more information about reflection emit and transparency, see [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md). For information about transparency, see [Security Changes](~/docs/framework/security/security-changes.md).  
+ 詳細については、リフレクション出力と透明度を参照してください [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298)します。 透過性の詳細については、次を参照してください。 [Security Changes in the .NET Framework Version 4.0](http://msdn.microsoft.com/ja-jp/5e87881c-9c13-4b52-8ad1-e34bb46e8aaa)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The dynamic method doesn't have a method body.</exception>
+        <exception cref="T:System.InvalidOperationException">動的メソッドにメソッド本体がありません。</exception>
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityCritical" />
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent" />
       </Docs>
     </Member>
     <Member MemberName="IsSecurityTransparent">
@@ -1537,48 +1625,52 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current dynamic method is transparent at the current trust level, and therefore cannot perform critical operations.</summary>
-        <value>
-          <see langword="true" /> if the dynamic method is security-transparent at the current trust level; otherwise, <see langword="false" />.</value>
+        <summary>現在の動的メソッドが現在の信頼レベルで透過的であり、重要な操作を実行できないかどうかを示す値を取得します。</summary>
+        <value>現在の動的メソッドが現在の信頼レベルで透過的セキュリティである場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Reflection.Emit.DynamicMethod.IsSecurityCritical%2A>, <xref:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical%2A>, and <xref:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent%2A> properties report the transparency level of the dynamic method as determined by the common language runtime (CLR). The combinations of these properties are shown in the following table:  
+## 解説  
+ <xref:System.Reflection.Emit.DynamicMethod.IsSecurityCritical%2A>, 、<xref:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical%2A>, 、および <xref:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent%2A> プロパティは、共通言語ランタイム \(CLR\) によって決定される動的メソッドの透明度を報告します。 次の表では、これらのプロパティの組み合わせを示します。  
   
-|Security level|IsSecurityCritical|IsSecuritySafeCritical|IsSecurityTransparent|  
-|--------------------|------------------------|----------------------------|---------------------------|  
+|セキュリティ レベル|IsSecurityCritical|IsSecuritySafeCritical|IsSecurityTransparent|  
+|----------------|------------------------|----------------------------|---------------------------|  
 |Critical|`true`|`false`|`false`|  
-|Safe critical|`true`|`true`|`false`|  
-|Transparent|`false`|`false`|`true`|  
+|セーフ クリティカル|`true`|`true`|`false`|  
+|透過的|`false`|`false`|`true`|  
   
- Using these properties is much simpler than examining the security annotations of an assembly and its types, checking the current trust level, and attempting to duplicate the runtime's rules.  
+ これらのプロパティを使用する方が、アセンブリとその型のセキュリティの注釈を調べたり、現在の信頼レベルを確認したり、ランタイムの規則を複製したりするより、はるかに簡単です。  
   
- The transparency of a dynamic method depends on the module it is associated with. If the dynamic method is associated with a type rather than a module, its transparency depends on the module that contains the type. Dynamic methods do not have security annotations, so they are assigned the default transparency for the associated module.  
+ 動的メソッドの透明度と、関連付けられたモジュールに依存します。 動的メソッドがモジュールではなく型に関連付けられている場合は、透過性は、型を格納しているモジュールに依存します。 動的メソッドにはセキュリティの注釈はない、関連するモジュールの透過性を既定値が割り当てられているためです。  
   
--   Anonymously hosted dynamic methods are always transparent, because the system-provided module that contains them is transparent.  
+-   匿名でホストされる動的メソッドは、それらを含む、システムによって提供されるモジュールが透過的であるために常に透過的にします。  
   
--   The transparency of a dynamic method that is associated with a trusted assembly (that is, a strong-named assembly that is installed in the global assembly cache) is described in the following table.  
+-   次の表は、信頼されたアセンブリ \(つまり、厳密な名前付きアセンブリがグローバル アセンブリ キャッシュにインストールされている\) に関連付けられている動的メソッドの透明度を説明します。  
   
-    |Assembly annotation|Level 1 transparency|Level 2 transparency|  
-    |-------------------------|--------------------------|--------------------------|  
-    |Fully transparent|Transparent|Transparent|  
-    |Fully critical|Critical|Critical|  
-    |Mixed transparency|Transparent|Transparent|  
-    |Security-agnostic|Safe-critical|Critical|  
+    |アセンブリの注釈|レベル 1 の透過性|レベル 2 の透過性|  
+    |--------------|----------------|----------------|  
+    |完全に透明|透明|透明|  
+    |非常に重大|重大|重大|  
+    |混在透過性|透明|透明|  
+    |セキュリティに依存しません。|セーフ クリティカル|重大|  
   
-     For example, if you associate a dynamic method with a type that is in mscorlib.dll, which has level 2 mixed transparency, the dynamic method is transparent and cannot execute critical code. For information about transparency levels, see [Security-Transparent Code, Level 1](~/docs/framework/misc/security-transparent-code-level-1.md) and [Security-Transparent Code, Level 2](~/docs/framework/misc/security-transparent-code-level-2.md).  
+     たとえば、混在 2 の透過性レベル、mscorlib.dll に含まれる型と動的メソッドを関連付ける場合は、動的メソッドは透過的とクリティカルなコードを実行できません。 透明度レベルについては、次を参照してください。 [Security\-Transparent Code, Level 1](http://msdn.microsoft.com/ja-jp/5fd8f46d-3961-46a7-84af-2eb1f48e75cf) と [Security\-Transparent Code, Level 2](http://msdn.microsoft.com/ja-jp/4d05610a-0da6-4f08-acea-d54c9d6143c0)です。  
   
     > [!NOTE]
-    >  Associating a dynamic method with a module in a trusted level 1 assembly that is security-agnostic, such as System.dll, does not permit elevation of trust. If the grant set of the code that calls the dynamic method does not include the grant set of System.dll (that is, full trust), <xref:System.Security.SecurityException> is thrown when the dynamic method is called.  
+    >  System.dll などのセキュリティに依存しない、信頼レベル 1 アセンブリ内のモジュールを使用して動的メソッドを関連付けることも、信頼の昇格は許可されません。 動的メソッドを呼び出すコードの許可セットに \(つまり、完全信頼\) System.dll の許可セットが含まれていない場合 <xref:System.Security.SecurityException> 動的メソッドが呼び出された場合にスローされます。  
   
--   The transparency of a dynamic method that is associated with a partially trusted assembly depends on how the assembly is loaded. If the assembly is loaded with partial trust (for example, into a sandboxed application domain), the runtime ignores the security annotations of the assembly. The assembly and all its types and members, including dynamic methods, are treated as transparent. The runtime pays attention to security annotations only if the partial-trust assembly is loaded with full trust (for example, into the default application domain of a desktop application). In that case, the runtime assigns the dynamic method the default transparency for methods according to the assembly's annotations.  
+-   部分的に信頼されたアセンブリに関連付けられている動的メソッドの透過性は、アセンブリが読み込まれる方法によって異なります。 アセンブリが \(たとえば、サンド ボックス アプリケーション ドメイン\) に部分信頼で読み込まれた場合、ランタイムはアセンブリのセキュリティの注釈を無視します。 アセンブリと、その型と動的メソッドを含むメンバーをすべてを透過的に処理されます。 ランタイムは、部分的に信頼されたアセンブリが \(たとえば、デスクトップ アプリケーションの既定のアプリケーション ドメイン\) に完全な信頼で読み込まれた場合にのみ、セキュリティの注釈に注意を支払います。 その場合は、ランタイムでは、動的メソッドに、アセンブリの注釈に従ってメソッドの既定の透過性が割り当てられます。  
   
- For more information about reflection emit and transparency, see [Security Issues in Reflection Emit](~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md). For information about transparency, see [Security Changes](~/docs/framework/security/security-changes.md).  
+ 詳細については、リフレクション出力と透明度を参照してください [Security Issues in Reflection Emit](http://msdn.microsoft.com/ja-jp/0f8bf8fa-b993-478f-87ab-1a1a7976d298)します。 透過性の詳細については、次を参照してください。 [Security Changes in the .NET Framework Version 4.0](http://msdn.microsoft.com/ja-jp/5e87881c-9c13-4b52-8ad1-e34bb46e8aaa)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The dynamic method doesn't have a method body.</exception>
+        <exception cref="T:System.InvalidOperationException">動的メソッドにメソッド本体がありません。</exception>
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityCritical" />
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical" />
       </Docs>
     </Member>
     <Member MemberName="MethodHandle">
@@ -1599,10 +1691,15 @@
         <ReturnType>System.RuntimeMethodHandle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Not supported for dynamic methods.</summary>
-        <value>Not supported for dynamic methods.</value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Not allowed for dynamic methods.</exception>
+        <summary>動的メソッドはサポートされていません。</summary>
+        <value>動的メソッドはサポートされていません。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">動的メソッドは許可されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="MethodImplementationFlags">
@@ -1637,22 +1734,22 @@
         <ReturnType>System.Reflection.Module</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the module with which the dynamic method is logically associated.</summary>
-        <value>The <see cref="T:System.Reflection.Module" /> with which the current dynamic method is associated.</value>
+        <summary>動的メソッドが論理的に関連付けられるモジュールを取得します。</summary>
+        <value>現在の動的メソッドが関連付けられる <see cref="T:System.Reflection.Module" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If a module was specified when the dynamic method was created, this property returns that module. If a type was specified as the owner when the dynamic method was created, this property returns the module which contains that type.  
+## 解説  
+ モジュールは、動的メソッドの作成時に指定されている場合、このプロパティは、そのモジュールを返します。 型は、動的メソッドの作成時に、所有者として指定されている場合、このプロパティは、その型を格納するモジュールを返します。  
   
    
   
-## Examples  
- The following code example displays the <xref:System.Reflection.Emit.DynamicMethod.Module%2A> property of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
+## 例  
+ 次のコード例を表示、 <xref:System.Reflection.Emit.DynamicMethod.Module%2A> 動的メソッドのプロパティです。 このコード例が示されている例の一部は、 <xref:System.Reflection.Emit.DynamicMethod> クラスです。  
   
- [!code-cpp[Reflection.DynamicMethod.All#26](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#26)]
- [!code-csharp[Reflection.DynamicMethod.All#26](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#26)]
- [!code-vb[Reflection.DynamicMethod.All#26](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#26)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#26](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#26)]
+ [!code-csharp[Reflection.DynamicMethod.All\#26](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#26)]
+ [!code-vb[Reflection.DynamicMethod.All\#26](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#26)]  
   
  ]]></format>
         </remarks>
@@ -1677,24 +1774,24 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the name of the dynamic method.</summary>
-        <value>The simple name of the method.</value>
+        <summary>動的メソッドの名前を取得します。</summary>
+        <value>メソッドの単純な名前。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
 >  It is not necessary to name dynamic methods.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the name of a dynamic method. This code example is part of a larger example provided for  the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#27](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#27)]
- [!code-csharp[Reflection.DynamicMethod.All#27](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#27)]
- [!code-vb[Reflection.DynamicMethod.All#27](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#27)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#27](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#27)]
+ [!code-csharp[Reflection.DynamicMethod.All\#27](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#27)]
+ [!code-vb[Reflection.DynamicMethod.All\#27](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#27)]  
   
  ]]></format>
         </remarks>
@@ -1718,22 +1815,22 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the class that was used in reflection to obtain the method.</summary>
-        <value>Always <see langword="null" />.</value>
+        <summary>メソッドを取得するためにリフレクションで使用されたクラスを取得します。</summary>
+        <value>常に <see langword="null" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property always returns `null` for dynamic methods.  
+## 解説  
+ このプロパティは常に返します `null` 動的メソッドでします。  
   
    
   
-## Examples  
- The following code example displays the reflected type of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
+## 例  
+ 次のコード例では、動的メソッドのリフレクションされた型が表示されます。 このコード例が示されている例の一部は、 <xref:System.Reflection.Emit.DynamicMethod> クラスです。  
   
- [!code-cpp[Reflection.DynamicMethod.All#28](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#28)]
- [!code-csharp[Reflection.DynamicMethod.All#28](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#28)]
- [!code-vb[Reflection.DynamicMethod.All#28](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#28)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#28](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#28)]
+ [!code-csharp[Reflection.DynamicMethod.All\#28](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#28)]
+ [!code-vb[Reflection.DynamicMethod.All\#28](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#28)]  
   
  ]]></format>
         </remarks>
@@ -1758,13 +1855,14 @@
         <ReturnType>System.Reflection.ParameterInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the return parameter of the dynamic method.</summary>
-        <value>Always <see langword="null" />.</value>
+        <summary>動的メソッドの戻りパラメーターを取得します。</summary>
+        <value>常に <see langword="null" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property always returns `null` for dynamic methods.  
+## 解説  
+ This property always returns **languageKeyword tag is not supported!!!!**  
+ for dynamic methods.  
   
  ]]></format>
         </remarks>
@@ -1789,22 +1887,23 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type of return value for the dynamic method.</summary>
-        <value>A <see cref="T:System.Type" /> representing the type of the return value of the current method; <see cref="T:System.Void" /> if the method has no return type.</value>
+        <summary>動的メソッドの戻り値の型を取得します。</summary>
+        <value>現在のメソッドの戻り値の型を表す <see cref="T:System.Type" />。メソッドに戻り値の型がない場合は <see cref="T:System.Void" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `null` was specified for the return type when the dynamic method was created, this property returns <xref:System.Void?displayProperty=fullName>.  
+## 解説  
+ If **languageKeyword tag is not supported!!!!**  
+ was specified for the return type when the dynamic method was created, this property returns <xref:System.Void?displayProperty=fullName>.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the return type of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#30](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#30)]
- [!code-csharp[Reflection.DynamicMethod.All#30](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#30)]
- [!code-vb[Reflection.DynamicMethod.All#30](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#30)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#30](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#30)]
+ [!code-csharp[Reflection.DynamicMethod.All\#30](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#30)]
+ [!code-vb[Reflection.DynamicMethod.All\#30](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#30)]  
   
  ]]></format>
         </remarks>
@@ -1828,25 +1927,26 @@
         <ReturnType>System.Reflection.ICustomAttributeProvider</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the custom attributes of the return type for the dynamic method.</summary>
-        <value>An <see cref="T:System.Reflection.ICustomAttributeProvider" /> representing the custom attributes of the return type for the dynamic method.</value>
+        <summary>動的メソッドの戻り値の型のカスタム属性を取得します。</summary>
+        <value>動的メソッドの戻り値の型のカスタム属性を表す <see cref="T:System.Reflection.ICustomAttributeProvider" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Custom attributes are not supported on the return type of a dynamic method, so the array of custom attributes returned by the <xref:System.Reflection.ICustomAttributeProvider.GetCustomAttributes%2A> method is always empty.  
+## 解説  
+ によって返されるカスタム属性の配列に、カスタム属性は、動的メソッドの戻り値の型でサポートされていません、 <xref:System.Reflection.ICustomAttributeProvider.GetCustomAttributes%2A> メソッドは常に空です。  
   
    
   
-## Examples  
- The following code example shows how to display the custom attributes of the return type of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
+## 例  
+ 次のコード例では、動的メソッドの戻り値の型のカスタム属性を表示する方法を示します。 このコード例が示されている例の一部は、 <xref:System.Reflection.Emit.DynamicMethod> クラスです。  
   
- [!code-cpp[Reflection.DynamicMethod.All#31](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#31)]
- [!code-csharp[Reflection.DynamicMethod.All#31](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#31)]
- [!code-vb[Reflection.DynamicMethod.All#31](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#31)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#31](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#31)]
+ [!code-csharp[Reflection.DynamicMethod.All\#31](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#31)]
+ [!code-vb[Reflection.DynamicMethod.All\#31](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#31)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Reflection.Emit.DynamicMethod.ReturnType" />
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -1869,26 +1969,72 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the signature of the method, represented as a string.</summary>
-        <returns>A string representing the method signature.</returns>
+        <summary>文字列として表される、メソッドの署名を返します。</summary>
+        <returns>メソッドの署名を表す文字列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The signature includes only types and the method name, if any. Parameter names are not included.  
   
    
   
-## Examples  
+## 例  
  The following code example displays the <xref:System.Reflection.Emit.DynamicMethod.ToString%2A> method of a dynamic method. This code example is part of a larger example provided for the <xref:System.Reflection.Emit.DynamicMethod> class.  
   
- [!code-cpp[Reflection.DynamicMethod.All#32](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#32)]
- [!code-csharp[Reflection.DynamicMethod.All#32](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#32)]
- [!code-vb[Reflection.DynamicMethod.All#32](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#32)]  
+ [!code-cpp[Reflection.DynamicMethod.All\#32](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection.DynamicMethod.All/cpp/source.cpp#32)]
+ [!code-csharp[Reflection.DynamicMethod.All\#32](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection.DynamicMethod.All/CS/source.cs#32)]
+ [!code-vb[Reflection.DynamicMethod.All\#32](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection.DynamicMethod.All/VB/source.vb#32)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="GetILGenerator">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>動的メソッドの本体を出力するために使用できる MSIL ジェネレーターを返します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetCustomAttributes">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>メソッドに適用されるカスタム属性を返します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>動的メソッドを作成します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="CreateDelegate">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>動的メソッドを完了し、それを実行するために使用できるデリゲートを作成します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

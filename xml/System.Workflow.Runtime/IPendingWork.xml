@@ -13,21 +13,24 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides methods to participate in a work batch.</summary>
+    <summary>作業バッチに参加するためのメソッドを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
 >  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
   
- The <xref:System.Workflow.Runtime.IPendingWork> interface is provided for services that want to participate in the workflow runtime engine batching mechanism. The batching mechanism is especially useful for services that use a durable store. It is often important in these cases to maintain consistency between the durable store used by the service and the internal state of the workflow runtime engine.  
+ <xref:System.Workflow.Runtime.IPendingWork> インターフェイスは、ワークフロー ランタイム エンジンのバッチ メカニズムに参加するサービスのために用意されています。 バッチ メカニズムは特に、永続的ストアを使用するサービスに役立ちます。 このような場合には、サービスで使用する永続的ストアとワークフロー ランタイム エンジンの内部状態の整合性を保持することがしばしば重要になります。  
   
- If you want your service to participate in workflow transaction batching provided by the <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>, you must implement the methods defined by the <xref:System.Workflow.Runtime.IPendingWork> interface. The workflow runtime engine will call the <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> method on your service to commit the batch.  
+ <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> が提供するワークフロー トランザクション バッチにサービスを参加させる場合は、<xref:System.Workflow.Runtime.IPendingWork> インターフェイスによって定義されたメソッドを実装する必要があります。 ワークフロー ランタイム エンジンは、サービスの <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> メソッドを呼び出すことによってバッチをコミットします。  
   
- The <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> class implements the <xref:System.Workflow.Runtime.IPendingWork> interface.  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> クラスは、<xref:System.Workflow.Runtime.IPendingWork> インターフェイスを実装します。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -49,15 +52,18 @@
         <Parameter Name="items" Type="System.Collections.ICollection" />
       </Parameters>
       <Docs>
-        <param name="transaction">The <see cref="T:System.Transactions.Transaction" /> associated with the pending work.</param>
-        <param name="items">The work items to be committed.</param>
-        <summary>Commits the list of work items by using the specified <see cref="T:System.Transactions.Transaction" /> object.</summary>
+        <param name="transaction">保留中の作業に関連付けられた <see cref="T:System.Transactions.Transaction" />。</param>
+        <param name="items">コミットされる作業項目。</param>
+        <summary>指定した <see cref="T:System.Transactions.Transaction" /> オブジェクトを使用して作業項目のリストをコミットします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The workflow runtime engine calls the <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> method when its semantics dictate that the pending work in the work batch should be committed. When it reaches a commit point, the workflow runtime engine calls the <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> method on each <xref:System.Workflow.Runtime.IPendingWork> object in its work batch; the workflow runtime engine passes the <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> method the collection of items associated with that <xref:System.Workflow.Runtime.IPendingWork> object. Either all of the work in a batch succeeds or none of it succeeds. You should throw an exception if any of the work items passed to the <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> method in your implementation cannot be committed. Depending on your implementation, you may want to perform some rollback in your <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> method if it cannot commit its work items. If the workflow runtime engine successfully commits all of the work in the work batch, it calls <xref:System.Workflow.Runtime.IPendingWork.Complete%2A> with the `succeeded` parameter set to `true`; otherwise, it calls <xref:System.Workflow.Runtime.IPendingWork.Complete%2A> with `succeeded` set to `false`.  
+## 解説  
+ ワークフロー ランタイム エンジンは、作業バッチに含まれる保留中の作業をコミットする必要があることが自身のセマンティクスで決まると、<xref:System.Workflow.Runtime.IPendingWork.Commit%2A> メソッドを呼び出します。 コミット ポイントに達すると、ワークフロー ランタイム エンジンは作業バッチに含まれる <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> オブジェクトごとに <xref:System.Workflow.Runtime.IPendingWork> メソッドを呼び出します。このときワークフロー ランタイム エンジンは、その <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> オブジェクトに関連付けられた項目のコレクションを <xref:System.Workflow.Runtime.IPendingWork> メソッドに渡します。 バッチに含まれるすべての作業が成功するか、どれも成功しないかのどちらかになります。 実装に含まれる <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> メソッドに渡されたいずれの作業項目もコミットできない場合は、例外をスローする必要があります。 実装によっては、作業項目をコミットできない場合に <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> メソッド内でなんらかのロールバックを実行できます。 ワークフロー ランタイム エンジンは、作業バッチに含まれるすべての作業を正常にコミットした場合は、<xref:System.Workflow.Runtime.IPendingWork.Complete%2A> パラメーターを `succeeded` に設定して `true` を呼び出します。それ以外の場合は、<xref:System.Workflow.Runtime.IPendingWork.Complete%2A> を `succeeded` に設定して `false` を呼び出します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -79,16 +85,18 @@
         <Parameter Name="items" Type="System.Collections.ICollection" />
       </Parameters>
       <Docs>
-        <param name="succeeded">
-          <see langword="true" /> if the transaction succeeded; otherwise, <see langword="false" />.</param>
-        <param name="items">An <see cref="T:System.Collections.ICollection" /> of work items.</param>
-        <summary>Called when the transaction has completed.</summary>
+        <param name="succeeded">トランザクションが成功した場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <param name="items">作業項目の <see cref="T:System.Collections.ICollection" />。</param>
+        <summary>トランザクションが完了したときに呼び出されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `succeeded` is `true`, the transaction succeeded and any resources used by the work batch may be released. If `succeeded` is `false`, the transaction failed. Depending on your implementation, you can perform any appropriate roll back on the work in the work batch when the transaction fails.  
+## 解説  
+ `succeeded` が `true` の場合、トランザクションは成功しており、作業バッチで使用されたリソースを解放できます。`succeeded` が `false` の場合、トランザクションは失敗しました。 実装によっては、トランザクションが失敗したときに、作業バッチに含まれる作業に対して適切なロールバックを実行できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -109,16 +117,18 @@
         <Parameter Name="items" Type="System.Collections.ICollection" />
       </Parameters>
       <Docs>
-        <param name="items">An <see cref="T:System.Collections.ICollection" /> of work items.</param>
-        <summary>Allows the items in the work batch to assert whether they must commit immediately.</summary>
-        <returns>
-          <see langword="true" /> if any item in the collection must be committed immediately; otherwise, <see langword="false" />.</returns>
+        <param name="items">作業項目の <see cref="T:System.Collections.ICollection" />。</param>
+        <summary>作業バッチに含まれる項目自身が、直ちにコミットされる必要があるかどうかをアサートできます。</summary>
+        <returns>コレクション内のいずれかの項目を直ちにコミットする必要がある場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If <xref:System.Workflow.Runtime.IPendingWork.MustCommit%2A> returns `false`, the work can be postponed to a future commit point. If any of the items must be committed, then return `true` and all items will be committed at the current commit point. For a discussion about possible commit points, see the <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> class.  
+## 解説  
+ <xref:System.Workflow.Runtime.IPendingWork.MustCommit%2A> が `false` を返した場合、作業は以降のコミット ポイントまで延期される場合があります。 いずれかの項目をコミットする必要がある場合は `true` が返され、すべての項目が現在のコミット ポイントでコミットされます。 可能なコミット ポイントについては、<xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> クラスを参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>

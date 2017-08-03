@@ -29,36 +29,38 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides a base class for data source controls that represent hierarchical data.</summary>
+    <summary>階層データを表現するデータ ソース コントロールの基底クラスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- ASP.NET supports a controls data-binding architecture that enables Web server controls to bind to data and present it in a consistent fashion. Web server controls that bind to data are called data-bound controls, and the classes that facilitate binding are called data source controls. Data source controls can represent any data source: a file, a stream, a relational database, a business object, and so on. Data source controls present data in a consistent way to data-bound controls, regardless of the source or format of the underlying data.  
+## 解説  
+ ASP.NET には、Web サーバー コントロールのデータにバインドして、一貫した方法で提供できるようにするコントロールのデータ バインディング アーキテクチャがサポートされています。 データにバインドする web サーバー コントロールは、データ バインド コントロールと呼ばれ、バインドを容易にするためのクラスには、データ ソース コントロールと呼ばれます。 データ ソース コントロールは、任意のデータ ソースを表すことができます。 ファイル、ストリーム、リレーショナル データベース、ビジネス オブジェクト、およびなどです。 データ ソースは、ソースまたは基になるデータの形式に関係なく、データ バインド コントロールに一貫した方法でデータ表示を制御します。  
   
- Data source controls that represent hierarchical data derive from the <xref:System.Web.UI.HierarchicalDataSourceControl> class, while data source controls that represent lists or tables of data derive from the <xref:System.Web.UI.DataSourceControl> class. The <xref:System.Web.UI.HierarchicalDataSourceControl> class is the base implementation of the <xref:System.Web.UI.IHierarchicalDataSource> interface, which defines a single method to retrieve hierarchical data source view objects associated with the data source control, <xref:System.Web.UI.IHierarchicalDataSource.GetHierarchicalView%2A>.  
+ 階層データを表現するデータ ソース コントロールから派生されて、 <xref:System.Web.UI.HierarchicalDataSourceControl> クラスのリストまたはデータのテーブルを表すデータ ソース コントロールから派生中に、 <xref:System.Web.UI.DataSourceControl> クラスです。<xref:System.Web.UI.HierarchicalDataSourceControl> クラスの基本実装は、 <xref:System.Web.UI.IHierarchicalDataSource> をデータ ソース コントロールに関連付けられている階層的なデータ ソース ビュー オブジェクトを取得する 1 つのメソッドを定義するインターフェイス <xref:System.Web.UI.IHierarchicalDataSource.GetHierarchicalView%2A>します。  
   
- You can think of a data source control as the combination of the <xref:System.Web.UI.HierarchicalDataSourceControl> object and its associated views on the underlying data, called data source view objects. While data source controls that represent tabular data are typically associated with only one named view, the <xref:System.Web.UI.HierarchicalDataSourceControl> class supports a data source view for each level of hierarchical data that the data source control represents. The level of hierarchical data is identified by a unique hierarchical path, passed to the <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> method in the `viewPath` parameter. Each <xref:System.Web.UI.HierarchicalDataSourceView> object defines the capabilities of a data source control for the hierarchical level represented, and performs operations such as insert, update, delete, and sort.  
+ データ ソース コントロールの組み合わせと考えることができますできます、 <xref:System.Web.UI.HierarchicalDataSourceControl> オブジェクトとデータ ソース ビュー オブジェクトと呼ばれる、基になるデータ ビュー。 表形式のデータを表すデータ ソース コントロールは通常 1 つだけの名前付きビューに関連付けられて、 <xref:System.Web.UI.HierarchicalDataSourceControl> クラスは、データ ソース コントロールを表す階層のデータの各レベルのデータ ソース ビューをサポートしています。 階層データのレベルに渡される一意の階層パスで識別される、 <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> メソッドで、 `viewPath` パラメーター。 各 <xref:System.Web.UI.HierarchicalDataSourceView> オブジェクトが表現される、階層レベルのデータ ソース コントロールの機能を定義し、insert、update、delete、および並べ替えなどの操作を実行します。  
   
- Web server controls that derive from the <xref:System.Web.UI.WebControls.HierarchicalDataBoundControl> class, such as <xref:System.Web.UI.WebControls.TreeView>, use hierarchical data source controls to bind to hierarchical data.  
+ Web サーバー コントロールから派生する、 <xref:System.Web.UI.WebControls.HierarchicalDataBoundControl> クラスなど、 <xref:System.Web.UI.WebControls.TreeView>, 、階層的なデータ ソース コントロールを使用して、階層データにバインドします。  
   
- Data source controls are implemented as controls to enable declarative persistence and to optionally permit participation in state management. Data source controls have no visual rendering, and therefore do not support themes.  
+ データ ソース コントロールは、宣言型の永続化を有効にして、必要に応じてで、状態管理を行うためのコントロールとして実装されます。 データ ソース コントロールは、ビジュアルのレンダリングがなくと、テーマをサポートしています。  
   
    
   
-## Examples  
- The following code example demonstrates how to extend the abstract <xref:System.Web.UI.HierarchicalDataSourceControl> class and the <xref:System.Web.UI.HierarchicalDataSourceView> class, and implement the <xref:System.Web.UI.IHierarchicalEnumerable> and <xref:System.Web.UI.IHierarchyData> interfaces to create a hierarchical data source control that retrieves file system information. The `FileSystemDataSource` control enables Web server controls to bind to <xref:System.IO.FileSystemInfo> objects and display basic file system information. The `FileSystemDataSource` class in the example provides the implementation of the <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> method, which retrieves a `FileSystemDataSourceView` object. The `FileSystemDataSourceView` object retrieves the data from the underlying data storage, in this case the file system information on the Web server. For security purposes, file system information is displayed only if the data source control is being used in a localhost, authenticated scenario, and only starts with the virtual directory that the Web Forms page using the data source control resides in. Finally, two classes that implement <xref:System.Web.UI.IHierarchicalEnumerable> and <xref:System.Web.UI.IHierarchyData> are provided to wrap the <xref:System.IO.FileSystemInfo> objects that `FileSystemDataSource` uses.  
+## 例  
+ 次のコード例は、抽象を拡張する方法を示します <xref:System.Web.UI.HierarchicalDataSourceControl> クラスと <xref:System.Web.UI.HierarchicalDataSourceView> クラス、および実装、 <xref:System.Web.UI.IHierarchicalEnumerable> と <xref:System.Web.UI.IHierarchyData> 階層データを作成するインターフェイスのソース ファイル システム情報を取得します。`FileSystemDataSource` コントロールにより、Web サーバー コントロールにバインドする <xref:System.IO.FileSystemInfo> オブジェクトおよび基本的なファイル システム情報を表示します。`FileSystemDataSource` の例のクラスの実装を提供する、 <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> を取得するメソッド、 `FileSystemDataSourceView` オブジェクトです。`FileSystemDataSourceView` オブジェクトは、この場合は、Web サーバー上のファイル システム情報の基になるデータ ストレージからデータを取得します。 セキュリティのために、ファイル システム情報は、データ ソース コントロールは、ローカル ホスト上で使用されている場合にのみが表示されます、シナリオでは、認証され、データ ソース コントロールを使用して Web フォーム ページが存在する仮想ディレクトリのみが起動します。 最後に、2 つのクラスを実装する <xref:System.Web.UI.IHierarchicalEnumerable> と <xref:System.Web.UI.IHierarchyData> をラップするもの、 <xref:System.IO.FileSystemInfo> オブジェクト `FileSystemDataSource` を使用します。  
   
- [!code-csharp[Urtue.Samples.Alexkr.FileSystemDataSource_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/CS/filesystemdatasource.cs#2)]
- [!code-vb[Urtue.Samples.Alexkr.FileSystemDataSource_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/VB/filesystemdatasource.vb#2)]  
+ [!code-csharp[Urtue.Samples.Alexkr.FileSystemDataSource\_1\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/CS/filesystemdatasource.cs#2)]
+ [!code-vb[Urtue.Samples.Alexkr.FileSystemDataSource\_1\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/VB/filesystemdatasource.vb#2)]  
   
- The following code example demonstrates how to declaratively bind a <xref:System.Web.UI.WebControls.TreeView> control to file system data using the `FileSystemDataSource` example.  
+ 次のコード例では、宣言によってバインド、 <xref:System.Web.UI.WebControls.TreeView> コントロールを使用してファイル システムのデータ、 `FileSystemDataSource` 例です。  
   
- <!-- TODO: review snippet reference [!code-csharp[Urtue.Samples.Alexkr.FileSystemDataSource_webform_1#50](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_webform_1/CS/webform7cs.aspx#50)]  -->
- <!-- TODO: review snippet reference [!code-vb[Urtue.Samples.Alexkr.FileSystemDataSource_webform_1#50](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_webform_1/VB/webform7vb.aspx#50)]  -->  
+ [!code-csharp[Urtue.Samples.Alexkr.FileSystemDataSource\_webform\_1\#50](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_webform_1/CS/webform7cs.aspx#50)]
+ [!code-vb[Urtue.Samples.Alexkr.FileSystemDataSource\_webform\_1\#50](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_webform_1/VB/webform7vb.aspx#50)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Web.UI.IHierarchicalDataSource" />
+    <altmember cref="T:System.Web.UI.DataSourceControl" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -72,7 +74,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.HierarchicalDataSourceControl" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.HierarchicalDataSourceControl" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -97,8 +100,9 @@
         <Parameter Name="page" Type="System.Web.UI.Page" />
       </Parameters>
       <Docs>
-        <param name="page">The <see cref="T:System.Web.UI.Page" /> containing the control.</param>
-        <summary>Applies the style properties that are defined in the page style sheet to the control.</summary>
+        <param name="page">
+          <see cref="T:System.Web.UI.Page" /> コントロールを含みます。</param>
+        <summary>コントロールをページのスタイル シートで定義されているスタイル プロパティを適用します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -123,8 +127,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the server control identifier generated by ASP.NET.</summary>
-        <value>The server control identifier generated by ASP.NET.</value>
+        <summary>ASP.NET によって生成されたサーバー コントロールの識別子を取得します。</summary>
+        <value>ASP.NET によって生成されたサーバー コントロールの識別子です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -152,16 +156,17 @@
         <ReturnType>System.Web.UI.ClientIDMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used for data source controls.</summary>
-        <value>This property is not used for data source controls.</value>
+        <summary>このプロパティは、データ ソース コントロールでは使用されません。</summary>
+        <value>このプロパティは、データ ソース コントロールでは使用されません。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property of the <xref:System.Web.UI.Control> base class is not used for data source controls because data source controls do not render markup.  
+## 解説  
+ このプロパティの <xref:System.Web.UI.Control> データ ソース コントロールのマークアップにレンダリングされないために、データ ソース コントロールの基本クラスが使用されません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.Control.ClientIDMode" />
       </Docs>
     </Member>
     <Member MemberName="Controls">
@@ -182,8 +187,8 @@
         <ReturnType>System.Web.UI.ControlCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a <see cref="T:System.Web.UI.ControlCollection" /> object that represents the child controls for a specified server control in the UI hierarchy.</summary>
-        <value>The collection of child controls for the specified server control.</value>
+        <summary>取得、 <see cref="T:System.Web.UI.ControlCollection" /> UI 階層に指定されたサーバー コントロールの子コントロールを表すオブジェクト。</summary>
+        <value>指定されたサーバー コントロールの子コントロールのコレクション。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -201,13 +206,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new <see cref="T:System.Web.UI.ControlCollection" /> object to hold the child controls (both literal and server) of the server control.</summary>
-        <returns>An <see cref="T:System.Web.UI.EmptyControlCollection" /> that prevents any child controls from being added.</returns>
+        <summary>新しい <see cref="T:System.Web.UI.ControlCollection" /> サーバー コントロールの子コントロール \(リテラルとサーバーの両方\) を保持するオブジェクト。</summary>
+        <returns>
+          <see cref="T:System.Web.UI.EmptyControlCollection" /> を追加するすべての子コントロールを阻止します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.HierarchicalDataSourceControl.CreateControlCollection%2A> method is overridden by the <xref:System.Web.UI.HierarchicalDataSourceControl> class to prevent child controls from being added.  
+## 解説  
+ <xref:System.Web.UI.HierarchicalDataSourceControl.CreateControlCollection%2A> メソッドは、 <xref:System.Web.UI.HierarchicalDataSourceControl> 子コントロールが追加されないようにするクラス。  
   
  ]]></format>
         </remarks>
@@ -237,18 +243,19 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether this control supports themes.</summary>
-        <value>
-          <see langword="false" /> in all cases.</value>
+        <summary>このコントロールがテーマをサポートするかどうかを示す値を取得します。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Because the <xref:System.Web.UI.HierarchicalDataSourceControl> class has no visual rendering, it does not support themes.  
+## 解説  
+ <xref:System.Web.UI.HierarchicalDataSourceControl> クラスはビジュアル レンダリングを持たない、テーマをサポートしていません。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">An attempt was made to set the value of the <see cref="P:System.Web.UI.HierarchicalDataSourceControl.EnableTheming" /> property.</exception>
+        <exception cref="T:System.NotSupportedException">値を設定しようとしましたが、 <see cref="P:System.Web.UI.HierarchicalDataSourceControl.EnableTheming" /> プロパティです。</exception>
+        <altmember cref="P:System.Web.UI.HierarchicalDataSourceControl.SkinID" />
+        <altmember cref="P:System.Web.UI.HierarchicalDataSourceControl.Visible" />
       </Docs>
     </Member>
     <Member MemberName="FindControl">
@@ -272,9 +279,9 @@
         <Parameter Name="id" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="id">The identifier for the control to be found.</param>
-        <summary>Searches the current naming container for a server control with the specified <paramref name="id" /> parameter.</summary>
-        <returns>The specified control, or <see langword="null" /> if the specified control does not exist.</returns>
+        <param name="id">検索するコントロールの識別子。</param>
+        <summary>指定したサーバー コントロールの現在の名前付けコンテナーを検索 <paramref name="id" /> パラメーター。</summary>
+        <returns>指定したコントロールまたは <see langword="null" /> 指定したコントロールが存在しない場合。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -297,16 +304,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Sets input focus to the control.</summary>
+        <summary>コントロールに入力フォーカスを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Because the <xref:System.Web.UI.HierarchicalDataSourceControl> class has no visual rendering, calling the <xref:System.Web.UI.HierarchicalDataSourceControl.Focus%2A> method on it throws a <xref:System.NotSupportedException> exception.  
+## 解説  
+ <xref:System.Web.UI.HierarchicalDataSourceControl> クラスを持たない visual レンダリングを呼び出す、 <xref:System.Web.UI.HierarchicalDataSourceControl.Focus%2A> メソッドをスロー、 <xref:System.NotSupportedException> 例外です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">An attempt was made to call the <see cref="M:System.Web.UI.HierarchicalDataSourceControl.Focus" /> method.</exception>
+        <exception cref="T:System.NotSupportedException">呼び出すしようとしましたが、 <see cref="M:System.Web.UI.HierarchicalDataSourceControl.Focus" /> メソッドです。</exception>
+        <altmember cref="P:System.Web.UI.HierarchicalDataSourceControl.Visible" />
       </Docs>
     </Member>
     <Member MemberName="GetHierarchicalView">
@@ -325,25 +333,26 @@
         <Parameter Name="viewPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="viewPath">The hierarchical path of the view to retrieve.</param>
-        <summary>Gets the view helper object for the <see cref="T:System.Web.UI.IHierarchicalDataSource" /> interface for the specified path.</summary>
-        <returns>A <see cref="T:System.Web.UI.HierarchicalDataSourceView" /> that represents a single view of the data at the hierarchical level identified by the <paramref name="viewPath" /> parameter.</returns>
+        <param name="viewPath">取得するビューの階層パス。</param>
+        <summary>ビューのヘルパー オブジェクトを取得、 <see cref="T:System.Web.UI.IHierarchicalDataSource" /> 指定されたパスのインターフェイスです。</summary>
+        <returns>A <see cref="T:System.Web.UI.HierarchicalDataSourceView" /> で識別される階層のレベルでデータの単一のビューを表す、 <paramref name="viewPath" /> パラメーター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> method provides the default implementation for the <xref:System.Web.UI.HierarchicalDataSourceControl> class, which simply returns `null`. Classes that derive from the <xref:System.Web.UI.HierarchicalDataSourceControl> class override this method and provide an implementation to return a strongly typed view that derives from <xref:System.Web.UI.HierarchicalDataSourceView>.  
+## 解説  
+ これは、 <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> メソッドの既定の実装を提供する、 <xref:System.Web.UI.HierarchicalDataSourceControl> クラスは、単に返す `null`します。 派生するクラス、 <xref:System.Web.UI.HierarchicalDataSourceControl> クラスは、このメソッドをオーバーライドしから派生した厳密に型指定されたビューが返される実装を提供 <xref:System.Web.UI.HierarchicalDataSourceView>します。  
   
    
   
-## Examples  
- The following code example demonstrates how to override the <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> method in a class that extends the <xref:System.Web.UI.HierarchicalDataSourceControl> class to return a strongly typed <xref:System.Web.UI.HierarchicalDataSourceView> object. This code example is part of a larger example provided for the <xref:System.Web.UI.HierarchicalDataSourceControl> class.  
+## 例  
+ 次のコード例では、オーバーライド、 <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> を拡張するクラスのメソッド、 <xref:System.Web.UI.HierarchicalDataSourceControl> 厳密に型を返すために <xref:System.Web.UI.HierarchicalDataSourceView> オブジェクトです。 このコード例が示されている例の一部は、 <xref:System.Web.UI.HierarchicalDataSourceControl> クラスです。  
   
- [!code-csharp[Urtue.Samples.Alexkr.FileSystemDataSource_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/CS/filesystemdatasource.cs#1)]
- [!code-vb[Urtue.Samples.Alexkr.FileSystemDataSource_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/VB/filesystemdatasource.vb#1)]  
+ [!code-csharp[Urtue.Samples.Alexkr.FileSystemDataSource\_1\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/CS/filesystemdatasource.cs#1)]
+ [!code-vb[Urtue.Samples.Alexkr.FileSystemDataSource\_1\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.FileSystemDataSource_1/VB/filesystemdatasource.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.UI.HierarchicalDataSourceView" />
       </Docs>
     </Member>
     <Member MemberName="HasControls">
@@ -365,9 +374,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Determines if the server control contains any child controls.</summary>
+        <summary>サーバー コントロールに子コントロールが含まれるかどうかを判断します。</summary>
         <returns>
-          <see langword="true" /> if the control contains other controls; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> コントロールには、その他のコントロールにコントロールが含まれている場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -387,23 +396,25 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains event data.</param>
-        <summary>Raises the <see cref="E:System.Web.UI.IHierarchicalDataSource.DataSourceChanged" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Web.UI.IHierarchicalDataSource.DataSourceChanged" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.HierarchicalDataSourceControl.OnDataSourceChanged%2A> method notifies a data-bound control that the underlying data source or the data cached in memory has changed, that the control should rebind, and that any necessary work should be performed.  
+## 解説  
+ <xref:System.Web.UI.HierarchicalDataSourceControl.OnDataSourceChanged%2A> メソッドは、基になるデータ ソースまたはメモリにキャッシュされたデータが変更されたこと、コントロールを再バインドで必要な作業を実行する必要がある、データ バインド コントロールに通知します。  
   
- Raising an event invokes the event handler through a delegate. For more information, see [NIB: Raising an Event](http://msdn.microsoft.com/en-us/f2adaf01-1ed1-42e1-8c31-8d467e7e0ee2).  
+ イベントを発生させると、イベント ハンドラーがデリゲートから呼び出されます。 詳細については、次を参照してください。 [NIB: イベントを発生させる](http://msdn.microsoft.com/ja-jp/f2adaf01-1ed1-42e1-8c31-8d467e7e0ee2)します。  
   
- The <xref:System.Web.UI.HierarchicalDataSourceControl.OnDataSourceChanged%2A> method also allows derived classes to handle the event without attaching a delegate. This is the preferred technique for handling the event in a derived class.  
+ <xref:System.Web.UI.HierarchicalDataSourceControl.OnDataSourceChanged%2A> メソッドを使用すると、デリゲートを結び付けずに、派生クラスでイベントを処理することもできます。 派生クラスでイベントを処理する場合は、この手法をお勧めします。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>When overriding <see cref="M:System.Web.UI.HierarchicalDataSourceControl.OnDataSourceChanged(System.EventArgs)" /> in a derived class, be sure to call the base class's <see cref="M:System.Web.UI.HierarchicalDataSourceControl.OnDataSourceChanged(System.EventArgs)" /> method so that registered delegates receive the event.</para>
         </block>
+        <altmember cref="E:System.Web.UI.IHierarchicalDataSource.DataSourceChanged" />
       </Docs>
     </Member>
     <Member MemberName="RenderControl">
@@ -427,9 +438,10 @@
         <Parameter Name="writer" Type="System.Web.UI.HtmlTextWriter" />
       </Parameters>
       <Docs>
-        <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the control content.</param>
-        <summary>Outputs server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter" /> object and stores tracing information about the control if tracing is enabled.</summary>
+        <param name="writer">コントロールの内容を受け取る <see cref="T:System.Web.UI.HtmlTextWriter" /> オブジェクト。</param>
+        <summary>指定の <see cref="T:System.Web.UI.HtmlTextWriter" /> オブジェクトにサーバー コントロールの内容を出力し、トレースが有効である場合はコントロールに関するトレース情報を保存します。</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Web.UI.Control.RenderControl(System.Web.UI.HtmlTextWriter)" />
       </Docs>
     </Member>
     <Member MemberName="SkinID">
@@ -456,18 +468,17 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the skin to apply to the <see cref="T:System.Web.UI.HierarchicalDataSourceControl" /> control.</summary>
-        <value>
-          <see cref="F:System.String.Empty" /> in all cases.</value>
+        <summary>取得または設定に適用するスキン、 <see cref="T:System.Web.UI.HierarchicalDataSourceControl" /> コントロールです。</summary>
+        <value>常に <see cref="F:System.String.Empty" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Because the <xref:System.Web.UI.HierarchicalDataSourceControl> has no visual rendering, it does not support themes or skins.  
+## 解説  
+ <xref:System.Web.UI.HierarchicalDataSourceControl> Visual を持たないレンダリングすることができませんテーマまたはスキンです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">An attempt was made to set the value of the <see cref="P:System.Web.UI.HierarchicalDataSourceControl.SkinID" /> property.</exception>
+        <exception cref="T:System.NotSupportedException">値を設定しようとしましたが、 <see cref="P:System.Web.UI.HierarchicalDataSourceControl.SkinID" /> プロパティです。</exception>
       </Docs>
     </Member>
     <Member MemberName="System.Web.UI.IHierarchicalDataSource.GetHierarchicalView">
@@ -486,17 +497,19 @@
         <Parameter Name="viewPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="viewPath">The hierarchical path of the view to retrieve.</param>
-        <summary>Gets the view helper object for the <see cref="T:System.Web.UI.IHierarchicalDataSource" /> interface for the specified path.</summary>
-        <returns>Returns a <see cref="T:System.Web.UI.HierarchicalDataSourceView" /> that represents a single view of the data at the hierarchical level identified by the <paramref name="viewPath" /> parameter.</returns>
+        <param name="viewPath">取得するビューの階層パス。</param>
+        <summary>ビューのヘルパー オブジェクトを取得、 <see cref="T:System.Web.UI.IHierarchicalDataSource" /> 指定されたパスのインターフェイスです。</summary>
+        <returns>返します。、 <see cref="T:System.Web.UI.HierarchicalDataSourceView" /> で識別される階層のレベルでデータの単一のビューを表す、 <paramref name="viewPath" /> パラメーター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.IHierarchicalDataSource.GetHierarchicalView%2A> method is called by clients when a <xref:System.Web.UI.HierarchicalDataSourceControl> is manipulated as an <xref:System.Web.UI.IHierarchicalDataSource> interface. It delegates to the <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> method, which derived classes override to return strongly typed <xref:System.Web.UI.HierarchicalDataSourceView> objects.  
+## 解説  
+ <xref:System.Web.UI.IHierarchicalDataSource.GetHierarchicalView%2A> メソッドは、クライアントから呼び出されるときに、 <xref:System.Web.UI.HierarchicalDataSourceControl> としては、操作、 <xref:System.Web.UI.IHierarchicalDataSource> インターフェイスです。 デリゲート、 <xref:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView%2A> メソッドで、派生クラスを厳密に型を返すオーバーライド <xref:System.Web.UI.HierarchicalDataSourceView> オブジェクトです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.HierarchicalDataSourceControl.GetHierarchicalView(System.String)" />
+        <altmember cref="T:System.Web.UI.HierarchicalDataSourceView" />
       </Docs>
     </Member>
     <Member MemberName="Visible">
@@ -523,18 +536,17 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the control is visually displayed.</summary>
-        <value>
-          <see langword="false" /> in all cases.</value>
+        <summary>取得またはコントロールが視覚的に表示されるかどうかを示す値を設定します。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Because the <xref:System.Web.UI.HierarchicalDataSourceControl> class has no visual rendering, <xref:System.Web.UI.HierarchicalDataSourceControl.Visible%2A> always returns `false`.  
+## 解説  
+ <xref:System.Web.UI.HierarchicalDataSourceControl> クラスはビジュアルのレンダリングを持たない <xref:System.Web.UI.HierarchicalDataSourceControl.Visible%2A> は常に返します `false`します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">An attempt was made to set the value of the <see cref="P:System.Web.UI.HierarchicalDataSourceControl.Visible" /> property.</exception>
+        <exception cref="T:System.NotSupportedException">値を設定しようとしましたが、 <see cref="P:System.Web.UI.HierarchicalDataSourceControl.Visible" /> プロパティです。</exception>
       </Docs>
     </Member>
   </Members>

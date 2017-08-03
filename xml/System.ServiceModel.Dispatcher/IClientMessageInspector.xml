@@ -9,29 +9,31 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Defines a message inspector object that can be added to the <see cref="P:System.ServiceModel.Dispatcher.ClientRuntime.MessageInspectors" /> collection to view or modify messages.</summary>
+    <summary>メッセージを表示または変更するために <see cref="P:System.ServiceModel.Dispatcher.ClientRuntime.MessageInspectors" /> コレクションに追加できる、メッセージ オブジェクト インスペクターを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Dispatcher.IClientMessageInspector> interface and add it to the <xref:System.ServiceModel.Dispatcher.ClientRuntime.MessageInspectors%2A> collection to inspect or modify messages as they pass through a [!INCLUDE[indigo2](~/includes/indigo2-md.md)] client object. For details, see <xref:System.ServiceModel.Dispatcher.ClientRuntime>.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IClientMessageInspector> インターフェイスを実装し、それを <xref:System.ServiceModel.Dispatcher.ClientRuntime.MessageInspectors%2A> コレクションに追加して、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] クライアント オブジェクトを通過するメッセージを検査または変更します。 詳細については、「<xref:System.ServiceModel.Dispatcher.ClientRuntime>」を参照してください。  
   
    
   
-## Examples  
- The following code example shows an implementation that writes strings to the console when the implementation is called.  
+## 例  
+ 呼び出されたときにコンソールに文字列を出力する実装を、次のコード例に示します。  
   
- [!code-csharp[Interceptors#1](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#1)]
- [!code-vb[Interceptors#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#1)]  
+ [!code-csharp[Interceptors\#1](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#1)]
+ [!code-vb[Interceptors\#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#1)]  
   
- The following code example shows how to use an <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> to insert the client message inspector in the client endpoint.  
+ <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> を使用してクライアント メッセージ インスペクターをクライアントのエンドポイントに挿入する方法を、次のコード例に示します。  
   
- [!code-csharp[Interceptors#2](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#2)]
- [!code-vb[Interceptors#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#2)]  
+ [!code-csharp[Interceptors\#2](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#2)]
+ [!code-vb[Interceptors\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#2)]  
   
- Finally, the following code example shows how to modify the client configuration file to use the endpoint behavior with a particular endpoint.  
+ 最後に、特定のエンドポイントでエンドポイント動作を使用するようにクライアント構成ファイルを変更する方法を、次のコード例に示します。  
   
- [!code-xml[Interceptors#3](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/client.exe.config#3)]   
+ [!code[Interceptors\#3](~/samples/snippets/common/VS_Snippets_CFX/interceptors/common/client.exe.config#3)]
+ [!code-csharp[Interceptors\#3](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/client.exe.config#3)]
+ [!code-vb[Interceptors\#3](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/client.exe.config#3)]  
   
  ]]></format>
     </remarks>
@@ -55,33 +57,35 @@
         <Parameter Name="correlationState" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="reply">The message to be transformed into types and handed back to the client application.</param>
-        <param name="correlationState">Correlation state data.</param>
-        <summary>Enables inspection or modification of a message after a reply message is received but prior to passing it back to the client application.</summary>
+        <param name="reply">各種型に変換され、クライアント アプリケーションに戻されるメッセージ。</param>
+        <param name="correlationState">相関状態データ。</param>
+        <summary>応答メッセージを受信した後、それをクライアント アプリケーションに返信する前に、メッセージの検査と変更を実行できるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement <xref:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply%2A> to inspect or modify a reply message after it has been received by the [!INCLUDE[indigo2](~/includes/indigo2-md.md)] client object but before it is deserialized into objects that are returned to the client application.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply%2A> を実装して、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] クライアント オブジェクトが応答メッセージを受信した後、クライアント アプリケーションに戻されるオブジェクトに逆シリアル化する前に、応答メッセージを検査または変更します。  
   
- The `correlationState` is the object returned by the user when <xref:System.ServiceModel.Dispatcher.IClientMessageInspector.BeforeSendRequest%2A> is called for this message. The best practice is to make this a <xref:System.Guid?displayProperty=fullName> to ensure that no two `correlationState` objects are the same.  
+ `correlationState` は、このメッセージに対して <xref:System.ServiceModel.Dispatcher.IClientMessageInspector.BeforeSendRequest%2A> が呼び出されたときに、ユーザーによって返されるオブジェクトです。 2 つの <xref:System.Guid?displayProperty=fullName> オブジェクトが決して同じにならないように、これを `correlationState` にすることをお勧めします。  
   
    
   
-## Examples  
- The following code example shows an implementation that writes strings to the console when the implementation is called.  
+## 例  
+ 呼び出されたときにコンソールに文字列を出力する実装を、次のコード例に示します。  
   
- [!code-csharp[Interceptors#1](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#1)]
- [!code-vb[Interceptors#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#1)]  
+ [!code-csharp[Interceptors\#1](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#1)]
+ [!code-vb[Interceptors\#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#1)]  
   
- The following code example shows how to use an <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> to insert the client message inspector in the client endpoint.  
+ <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> を使用してクライアント メッセージ インスペクターをクライアントのエンドポイントに挿入する方法を、次のコード例に示します。  
   
- [!code-csharp[Interceptors#2](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#2)]
- [!code-vb[Interceptors#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#2)]  
+ [!code-csharp[Interceptors\#2](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#2)]
+ [!code-vb[Interceptors\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#2)]  
   
- Finally, the following code example shows how to modify the client configuration file to use the endpoint behavior with a particular endpoint.  
+ 最後に、特定のエンドポイントでエンドポイント動作を使用するようにクライアント構成ファイルを変更する方法を、次のコード例に示します。  
   
- [!code-xml[Interceptors#3](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/client.exe.config#3)]   
+ [!code[Interceptors\#3](~/samples/snippets/common/VS_Snippets_CFX/interceptors/common/client.exe.config#3)]
+ [!code-csharp[Interceptors\#3](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/client.exe.config#3)]
+ [!code-vb[Interceptors\#3](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/client.exe.config#3)]  
   
  ]]></format>
         </remarks>
@@ -105,34 +109,37 @@
         <Parameter Name="channel" Type="System.ServiceModel.IClientChannel" />
       </Parameters>
       <Docs>
-        <param name="request">The message to be sent to the service.</param>
-        <param name="channel">The [!INCLUDE[indigo2](~/includes/indigo2-md.md)] client object channel.</param>
-        <summary>Enables inspection or modification of a message before a request message is sent to a service.</summary>
-        <returns>The object that is returned as the <paramref name="correlationState" /> argument of the <see cref="M:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)" /> method. This is <see langword="null" /> if no correlation state is used.  
+        <param name="request">サービスに送信されるメッセージ。</param>
+        <param name="channel">WCF クライアント オブジェクト チャネル。</param>
+        <summary>要求メッセージをサービスに送信する前に、メッセージを検査または変更できるようにします。</summary>
+        <returns>
+          <paramref name="correlationState " /> メソッドの <see cref="M:System.ServiceModel.Dispatcher.IClientMessageInspector.AfterReceiveReply(System.ServiceModel.Channels.Message@,System.Object)" /> 引数として返されるオブジェクト。 相関状態を使用しない場合は <see langword="null" /> です。  
   
- The best practice is to make this a <see cref="T:System.Guid" /> to ensure that no two <paramref name="correlationState" /> objects are the same.</returns>
+ 2 つの <see cref="T:System.Guid" /> オブジェクトが決して同じにならないように、これを <paramref name="correlationState" /> にすることをお勧めします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Implement the <xref:System.ServiceModel.Dispatcher.IClientMessageInspector.BeforeSendRequest%2A> to inspect or modify a request message before it is sent.  
   
    
   
-## Examples  
+## 例  
  The following code example shows an implementation that writes strings to the console when the implementation is called.  
   
- [!code-csharp[Interceptors#1](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#1)]
- [!code-vb[Interceptors#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#1)]  
+ [!code-csharp[Interceptors\#1](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#1)]
+ [!code-vb[Interceptors\#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#1)]  
   
  The following code example shows how to use an <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> to insert the client message inspector in the client endpoint.  
   
- [!code-csharp[Interceptors#2](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#2)]
- [!code-vb[Interceptors#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#2)]  
+ [!code-csharp[Interceptors\#2](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#2)]
+ [!code-vb[Interceptors\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#2)]  
   
  Finally, the following code example shows how to modify the client configuration file to use the endpoint behavior with a particular endpoint.  
   
- [!code-xml[Interceptors#3](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/client.exe.config#3)]   
+ [!code[Interceptors\#3](~/samples/snippets/common/VS_Snippets_CFX/interceptors/common/client.exe.config#3)]
+ [!code-csharp[Interceptors\#3](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/client.exe.config#3)]
+ [!code-vb[Interceptors\#3](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/client.exe.config#3)]  
   
  ]]></format>
         </remarks>

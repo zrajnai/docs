@@ -23,18 +23,18 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Converts base data types to an array of bytes, and an array of bytes to base data types.</summary>
+    <summary>基本データ型をバイト配列に、バイト配列を基本データ型に変換します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter> class helps manipulate value types in their fundamental form, as a series of bytes. A byte is defined as an 8-bit unsigned integer. The <xref:System.BitConverter> class includes static methods to convert each of the primitive types to and from an array of bytes, as the following table illustrates.  
+## 解説  
+ <xref:System.BitConverter>クラスは、一連のバイトとしてその基本的な形式で値型を操作します。 バイトは 8 ビット符号なし整数として定義されます。<xref:System.BitConverter>クラスに次の表に示すように変換する各プリミティブ型の配列 \(バイト単位\) の静的メソッドが含まれます。  
   
-|Type|To byte conversion|From byte conversion|  
-|----------|------------------------|--------------------------|  
+|型|バイトに変換する|バイトの変換から|  
+|-------|--------------|--------------|  
 |<xref:System.Boolean>|<xref:System.BitConverter.GetBytes%28System.Boolean%29>|<xref:System.BitConverter.ToBoolean%2A>|  
 |<xref:System.Char>|<xref:System.BitConverter.GetBytes%28System.Char%29>|<xref:System.BitConverter.ToChar%2A>|  
-|<xref:System.Double>|<xref:System.BitConverter.GetBytes%28System.Double%29><br /><br /> -or-<br /><br /> <xref:System.BitConverter.DoubleToInt64Bits%28System.Double%29>|<xref:System.BitConverter.ToDouble%2A><br /><br /> -or-<br /><br /> <xref:System.BitConverter.Int64BitsToDouble%2A>|  
+|<xref:System.Double>|<xref:System.BitConverter.GetBytes%28System.Double%29><br /><br /> または<br /><br /> <xref:System.BitConverter.DoubleToInt64Bits%28System.Double%29>|<xref:System.BitConverter.ToDouble%2A><br /><br /> または<br /><br /> <xref:System.BitConverter.Int64BitsToDouble%2A>|  
 |<xref:System.Int16>|<xref:System.BitConverter.GetBytes%28System.Int16%29>|<xref:System.BitConverter.ToInt16%2A>|  
 |<xref:System.Int32>|<xref:System.BitConverter.GetBytes%28System.Int32%29>|<xref:System.BitConverter.ToInt32%2A>|  
 |<xref:System.Int64>|<xref:System.BitConverter.GetBytes%28System.Int64%29>|<xref:System.BitConverter.ToInt64%2A>|  
@@ -43,40 +43,41 @@
 |<xref:System.UInt32>|<xref:System.BitConverter.GetBytes%28System.UInt32%29>|<xref:System.BitConverter.ToUInt32%2A>|  
 |<xref:System.UInt64>|<xref:System.BitConverter.GetBytes%28System.UInt64%29>|<xref:System.BitConverter.ToUInt64%2A>|  
   
- If you use <xref:System.BitConverter> methods to round-trip data, make sure that the <xref:System.BitConverter.GetBytes%2A> overload and the `To`*Type* method specify the same type. As the following example illustrates, restoring an array that represents a signed integer by calling the <xref:System.BitConverter.ToUInt32%2A> method can result in a value that is different from the original. For more information, see the entry [Working with Signed Non-Decimal and Bitwise Values](http://go.microsoft.com/fwlink/?LinkId=186999) in the BCL Team Blog.  
+ 使用する場合<xref:System.BitConverter>メソッド、データのラウンド トリップをことを確認して、<xref:System.BitConverter.GetBytes%2A>オーバー ロードおよび`To`*型*メソッドが同じ型を指定します。 次の例のように、復元を呼び出すことによって、符号付き整数を表す配列、<xref:System.BitConverter.ToUInt32%2A>メソッドが元とは異なる値になります。 詳細については、エントリを参照してください。 [Working with Signed Non\-Decimal and Bitwise Values](http://go.microsoft.com/fwlink/?LinkId=186999) 、BCL チームのブログでします。  
   
- [!code-csharp[System.BitConverter.Class#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/example1.cs#3)]
- [!code-vb[System.BitConverter.Class#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/example1.vb#3)]  
+ [!code-csharp[System.BitConverter.Class\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/example1.cs#3)]
+ [!code-vb[System.BitConverter.Class\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/example1.vb#3)]  
   
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method overloads (as well as the order of bits in the integer returned by the <xref:System.BitConverter.DoubleToInt64Bits%2A> method and the order of hexadecimal strings returned by the <xref:System.BitConverter.ToString%28System.Byte%5B%5D%29> method) depends on whether the computer architecture is little-endian or big-endian. Similarly, the order of bytes in the array and returned by the `To`*IntegerValue* methods and the <xref:System.BitConverter.ToChar%2A> method depends on whether the computer architecture is little-endian or big-endian. The endianness of an architecture is indicated by the <xref:System.BitConverter.IsLittleEndian> property, which returns `true` on little-endian systems and `false` on big-endian systems. On little-endian systems, lower-order bytes precede higher-order bytes. On big-endian system, higher-order bytes precede lower-order bytes. The following table illustrates the difference in the byte arrays that result from passing the integer 1,234,567,890 (0x499602D2) to the <xref:System.BitConverter.GetBytes%28System.Int32%29> method. The bytes are listed in order from the byte at index 0 to the byte at index 3.  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドのオーバー ロード \(によって返された整数のビットの順序だけでなく、<xref:System.BitConverter.DoubleToInt64Bits%2A>メソッドとによって返される 16 進数の文字列の順序、<xref:System.BitConverter.ToString%28System.Byte%5B%5D%29>メソッド\) コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。 同様に、配列内のバイトの順序によって返されると、 `To`*値をとります*メソッドおよび<xref:System.BitConverter.ToChar%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。 によって、アーキテクチャのエンディアンが示される、<xref:System.BitConverter.IsLittleEndian>を返すプロパティ`true`リトル エンディアンのシステムでと`false`ビッグ エンディアン システムでします。 リトル エンディアンのシステムでは、下位バイトには、上位バイトが先頭に置きます。 ビッグ エンディアン システムでは、上位バイトには、下位バイトが先頭に置きます。 次の表に、整数 1,234,567,890 \(0x499602D2\) を渡すことに起因するバイト配列に違いを示しています、<xref:System.BitConverter.GetBytes%28System.Int32%29>メソッドです。 バイトは、インデックス 3 バイトをインデックス 0 位置のバイトから順に一覧表示されます。  
   
 |||  
 |-|-|  
-|Little-endian|D2-02-96-49|  
-|Big-endian|49-96-02-D2|  
+|リトル エンディアン|D2 02 96 49|  
+|ビッグ エンディアン|49 96\-02 D2|  
   
- Because the return value of some methods depends on system architecture, be careful when transmitting byte data beyond machine boundaries:  
+ 一部のメソッドの戻り値は、システムのアーキテクチャに依存しているためコンピューターの境界を超えるバイト データを送信する際は注意。  
   
--   If all systems sending and receiving data are guaranteed to have the same endianness, nothing has be done to the data.  
+-   同じエンディアンにデータを送受信するすべてのシステムが保証されますが場合、データに何も実行ができます。  
   
--   If systems sending and receiving data can have different endianness, always transmit data in a particular order. This means that the order of bytes in the array may have to be reversed either before sending them or after receiving them. A common convention is to transmit data in network byte order (big-endian order). The following example provides an implementation for sending an integer value in network byte order.  
+-   システム データを送受信するには別のエンディアンを設定できる場合は、常に特定の順序でデータを送信します。 つまり、配列内のバイトの順序は、送信前に、または受信して元に戻す必要があります。 一般的な方法では、ネットワーク バイト順 \(ビッグ エンディアン順\) でデータを転送します。 次の例では、ネットワークのバイト順で整数値を送信するための実装を提供します。  
   
-     [!code-csharp[System.BitConverter.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/networkorder1.cs#4)]
-     [!code-vb[System.BitConverter.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/networkorder1.vb#4)]  
+     [!code-csharp[System.BitConverter.Class\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/networkorder1.cs#4)]
+     [!code-vb[System.BitConverter.Class\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/networkorder1.vb#4)]  
   
--   If systems sending and receiving data can have different endianness and the data to be transmitted consists of signed integers, call the <xref:System.Net.IPAddress.HostToNetworkOrder%2A?displayProperty=fullName> method to convert the data to network byte order and the <xref:System.Net.IPAddress.NetworkToHostOrder%2A?displayProperty=fullName> method to convert it to the order required by the recipient.  
+-   呼び出すシステム データを送受信することができる場合、異なるエンディアンがあり、送信されるデータは、符号付き整数、<xref:System.Net.IPAddress.HostToNetworkOrder%2A?displayProperty=fullName>ネットワーク バイト オーダーにデータを変換するメソッドと<xref:System.Net.IPAddress.NetworkToHostOrder%2A?displayProperty=fullName>受信者が必要な順序に変換するメソッド。  
   
    
   
-## Examples  
- The following code example illustrates the use of several <xref:System.BitConverter> class methods.  
+## 例  
+ 次のコード例は、いくつかの使用を示しています。<xref:System.BitConverter>クラスのメソッドです。  
   
- [!code-cpp[System.BitConverter.Class#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.Class/CPP/bitconv.cpp#1)]
- [!code-csharp[System.BitConverter.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/bitconv.cs#1)]
- [!code-vb[System.BitConverter.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/bitconv.vb#1)]  
+ [!code-cpp[System.BitConverter.Class\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.Class/CPP/bitconv.cpp#1)]
+ [!code-csharp[System.BitConverter.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/bitconv.cs#1)]
+ [!code-vb[System.BitConverter.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/bitconv.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Byte" />
   </Docs>
   <Members>
     <Member MemberName="DoubleToInt64Bits">
@@ -112,26 +113,27 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Converts the specified double-precision floating point number to a 64-bit signed integer.</summary>
-        <returns>A 64-bit signed integer whose value is equivalent to <paramref name="value" />.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>指定した倍精度浮動小数点数を 64 ビット符号付き整数に変換します。</summary>
+        <returns>64 ビットの符号付き整数の値と等価です <paramref name="value" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bits in the integer returned by the <xref:System.BitConverter.DoubleToInt64Bits%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返された整数のビットの順序、 <xref:System.BitConverter.DoubleToInt64Bits%2A> メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of several <xref:System.Double> values to <xref:System.Int64> values with the `DoubleToInt64Bits` method.  
+## 例  
+ 次のコード例は、いくつかのビット パターンを変換 <xref:System.Double> 値 <xref:System.Int64> の値を使った、 `DoubleToInt64Bits` メソッドです。  
   
- [!code-cpp[System.BitConverter.DoubleInt64#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CPP/dbltobits.cpp#2)]
- [!code-csharp[System.BitConverter.DoubleInt64#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CS/dbltobits.cs#2)]
- [!code-vb[System.BitConverter.DoubleInt64#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/VB/dbltobits.vb#2)]  
+ [!code-cpp[System.BitConverter.DoubleInt64\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CPP/dbltobits.cpp#2)]
+ [!code-csharp[System.BitConverter.DoubleInt64\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CS/dbltobits.cs#2)]
+ [!code-vb[System.BitConverter.DoubleInt64\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/VB/dbltobits.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.Int64BitsToDouble(System.Int64)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -162,26 +164,27 @@
         <Parameter Name="value" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="value">A Boolean value.</param>
-        <summary>Returns the specified Boolean value as a byte array.</summary>
-        <returns>A byte array with length 1.</returns>
+        <param name="value">ブール値。</param>
+        <summary>バイト配列として指定したブール値を返します。</summary>
+        <returns>長さ 1 のバイト配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can convert a byte array back to a <xref:System.Boolean> value by calling the <xref:System.BitConverter.ToBoolean%2A> method.  
+## 解説  
+ バイト配列に変換することに、 <xref:System.Boolean> を呼び出して値、 <xref:System.BitConverter.ToBoolean%2A> メソッドです。  
   
    
   
-## Examples  
- The following example converts the bit patterns of <xref:System.Boolean> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次の例のビット パターンの変換 <xref:System.Boolean> 値 <xref:System.Byte> アレイで、 `GetBytes` メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.Others#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/bytesbool.cpp#1)]
- [!code-csharp[System.BitConverter.GetBytes.Others#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/bytesbool.cs#1)]
- [!code-vb[System.BitConverter.GetBytes.Others#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/bytesbool.vb#1)]  
+ [!code-cpp[System.BitConverter.GetBytes.Others\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/bytesbool.cpp#1)]
+ [!code-csharp[System.BitConverter.GetBytes.Others\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/bytesbool.cs#1)]
+ [!code-vb[System.BitConverter.GetBytes.Others\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/bytesbool.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToBoolean(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -212,26 +215,27 @@
         <Parameter Name="value" Type="System.Char" />
       </Parameters>
       <Docs>
-        <param name="value">A character to convert.</param>
-        <summary>Returns the specified Unicode character value as an array of bytes.</summary>
-        <returns>An array of bytes with length 2.</returns>
+        <param name="value">変換する文字。</param>
+        <summary>バイト配列として指定した Unicode 文字値を返します。</summary>
+        <returns>長さが 2 バイト配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.Char> values (Unicode characters) to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.Char>\(Unicode 文字\) の値を<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.Others#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/byteschar.cpp#2)]
- [!code-csharp[System.BitConverter.GetBytes.Others#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/byteschar.cs#2)]
- [!code-vb[System.BitConverter.GetBytes.Others#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/byteschar.vb#2)]  
+ [!code-cpp[System.BitConverter.GetBytes.Others\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/byteschar.cpp#2)]
+ [!code-csharp[System.BitConverter.GetBytes.Others\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/byteschar.cs#2)]
+ [!code-vb[System.BitConverter.GetBytes.Others\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/byteschar.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToChar(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -267,26 +271,27 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified double-precision floating point value as an array of bytes.</summary>
-        <returns>An array of bytes with length 8.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した倍精度浮動小数点値を返します。</summary>
+        <returns>長さが 8 バイトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.Double> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.Double>値<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.Others#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/bytesdouble.cpp#4)]
- [!code-csharp[System.BitConverter.GetBytes.Others#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/bytesdouble.cs#4)]
- [!code-vb[System.BitConverter.GetBytes.Others#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/bytesdouble.vb#4)]  
+ [!code-cpp[System.BitConverter.GetBytes.Others\#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/bytesdouble.cpp#4)]
+ [!code-csharp[System.BitConverter.GetBytes.Others\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/bytesdouble.cs#4)]
+ [!code-vb[System.BitConverter.GetBytes.Others\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/bytesdouble.vb#4)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToDouble(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -322,26 +327,27 @@
         <Parameter Name="value" Type="System.Int16" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified 16-bit signed integer value as an array of bytes.</summary>
-        <returns>An array of bytes with length 2.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した 16 ビット符号付き整数値を返します。</summary>
+        <returns>長さが 2 バイト配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.Int16> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.Int16>値<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.SInts#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CPP/bytesint16.cpp#3)]
- [!code-csharp[System.BitConverter.GetBytes.SInts#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CS/bytesint16.cs#3)]
- [!code-vb[System.BitConverter.GetBytes.SInts#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/VB/bytesint16.vb#3)]  
+ [!code-cpp[System.BitConverter.GetBytes.SInts\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CPP/bytesint16.cpp#3)]
+ [!code-csharp[System.BitConverter.GetBytes.SInts\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CS/bytesint16.cs#3)]
+ [!code-vb[System.BitConverter.GetBytes.SInts\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/VB/bytesint16.vb#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToInt16(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -377,26 +383,27 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified 32-bit signed integer value as an array of bytes.</summary>
-        <returns>An array of bytes with length 4.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した 32 ビット符号付き整数値を返します。</summary>
+        <returns>長さ 4 バイトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.Int32> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.Int32>値を<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.SInts#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CPP/bytesint32.cpp#2)]
- [!code-csharp[System.BitConverter.GetBytes.SInts#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CS/bytesint32.cs#2)]
- [!code-vb[System.BitConverter.GetBytes.SInts#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/VB/bytesint32.vb#2)]  
+ [!code-cpp[System.BitConverter.GetBytes.SInts\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CPP/bytesint32.cpp#2)]
+ [!code-csharp[System.BitConverter.GetBytes.SInts\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CS/bytesint32.cs#2)]
+ [!code-vb[System.BitConverter.GetBytes.SInts\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/VB/bytesint32.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToInt32(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -432,26 +439,27 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified 64-bit signed integer value as an array of bytes.</summary>
-        <returns>An array of bytes with length 8.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した 64 ビット符号付き整数値を返します。</summary>
+        <returns>長さが 8 バイトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following example calls the <xref:System.BitConverter.GetBytes%2A> method to convert each element in an <xref:System.Int64> array to a<xref:System.Byte> arrays.  
+## 例  
+ 次の例では、<xref:System.BitConverter.GetBytes%2A>内の各要素を変換する方法、<xref:System.Int64>配列を<xref:System.Byte>配列。  
   
- [!code-cpp[System.BitConverter.GetBytes.SInts#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CPP/bytesint64.cpp#1)]
- [!code-csharp[System.BitConverter.GetBytes.SInts#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CS/bytesint64.cs#1)]
- [!code-vb[System.BitConverter.GetBytes.SInts#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/VB/bytesint64.vb#1)]  
+ [!code-cpp[System.BitConverter.GetBytes.SInts\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CPP/bytesint64.cpp#1)]
+ [!code-csharp[System.BitConverter.GetBytes.SInts\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/CS/bytesint64.cs#1)]
+ [!code-vb[System.BitConverter.GetBytes.SInts\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.SInts/VB/bytesint64.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToInt64(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -487,26 +495,27 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified single-precision floating point value as an array of bytes.</summary>
-        <returns>An array of bytes with length 4.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した単精度浮動小数点値を返します。</summary>
+        <returns>長さ 4 バイトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.Single> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.Single>値を<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.Others#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/bytessingle.cpp#3)]
- [!code-csharp[System.BitConverter.GetBytes.Others#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/bytessingle.cs#3)]
- [!code-vb[System.BitConverter.GetBytes.Others#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/bytessingle.vb#3)]  
+ [!code-cpp[System.BitConverter.GetBytes.Others\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CPP/bytessingle.cpp#3)]
+ [!code-csharp[System.BitConverter.GetBytes.Others\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/CS/bytessingle.cs#3)]
+ [!code-vb[System.BitConverter.GetBytes.Others\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.Others/VB/bytessingle.vb#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToSingle(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -542,26 +551,27 @@
         <Parameter Name="value" Type="System.UInt16" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified 16-bit unsigned integer value as an array of bytes.</summary>
-        <returns>An array of bytes with length 2.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した 16 ビット符号なし整数値を返します。</summary>
+        <returns>長さが 2 バイト配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.UInt16> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.UInt16>値<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.UInts#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CPP/bytesuint16.cpp#3)]
- [!code-csharp[System.BitConverter.GetBytes.UInts#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CS/bytesuint16.cs#3)]
- [!code-vb[System.BitConverter.GetBytes.UInts#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/VB/bytesuint16.vb#3)]  
+ [!code-cpp[System.BitConverter.GetBytes.UInts\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CPP/bytesuint16.cpp#3)]
+ [!code-csharp[System.BitConverter.GetBytes.UInts\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CS/bytesuint16.cs#3)]
+ [!code-vb[System.BitConverter.GetBytes.UInts\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/VB/bytesuint16.vb#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToUInt16(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -597,26 +607,27 @@
         <Parameter Name="value" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified 32-bit unsigned integer value as an array of bytes.</summary>
-        <returns>An array of bytes with length 4.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した 32 ビット符号なし整数値を返します。</summary>
+        <returns>長さ 4 バイトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.UInt32> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.UInt32>値を<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.UInts#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CPP/bytesuint32.cpp#2)]
- [!code-csharp[System.BitConverter.GetBytes.UInts#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CS/bytesuint32.cs#2)]
- [!code-vb[System.BitConverter.GetBytes.UInts#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/VB/bytesuint32.vb#2)]  
+ [!code-cpp[System.BitConverter.GetBytes.UInts\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CPP/bytesuint32.cpp#2)]
+ [!code-csharp[System.BitConverter.GetBytes.UInts\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CS/bytesuint32.cs#2)]
+ [!code-vb[System.BitConverter.GetBytes.UInts\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/VB/bytesuint32.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToUInt32(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -652,26 +663,27 @@
         <Parameter Name="value" Type="System.UInt64" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Returns the specified 64-bit unsigned integer value as an array of bytes.</summary>
-        <returns>An array of bytes with length 8.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>バイト配列として指定した 64 ビット符号なし整数値を返します。</summary>
+        <returns>長さが 8 バイトの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The order of bytes in the array returned by the <xref:System.BitConverter.GetBytes%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ によって返される配列内のバイトの順序、<xref:System.BitConverter.GetBytes%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of <xref:System.UInt64> values to <xref:System.Byte> arrays with the `GetBytes` method.  
+## 例  
+ 次のコード例のビット パターンの変換<xref:System.UInt64>値<xref:System.Byte>アレイで、`GetBytes`メソッドです。  
   
- [!code-cpp[System.BitConverter.GetBytes.UInts#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CPP/bytesuint64.cpp#1)]
- [!code-csharp[System.BitConverter.GetBytes.UInts#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CS/bytesuint64.cs#1)]
- [!code-vb[System.BitConverter.GetBytes.UInts#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/VB/bytesuint64.vb#1)]  
+ [!code-cpp[System.BitConverter.GetBytes.UInts\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CPP/bytesuint64.cpp#1)]
+ [!code-csharp[System.BitConverter.GetBytes.UInts\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/CS/bytesuint64.cs#1)]
+ [!code-vb[System.BitConverter.GetBytes.UInts\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.GetBytes.UInts/VB/bytesuint64.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.ToUInt64(System.Byte[],System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="Int32BitsToSingle">
@@ -729,26 +741,27 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="value">The number to convert.</param>
-        <summary>Converts the specified 64-bit signed integer to a double-precision floating point number.</summary>
-        <returns>A double-precision floating point number whose value is equivalent to <paramref name="value" />.</returns>
+        <param name="value">変換する数値。</param>
+        <summary>指定した 64 ビット符号付き整数を倍精度浮動小数点数に変換します。</summary>
+        <returns>倍精度浮動小数点値を持つは等価<paramref name="value" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Typically, `value` is an integer that is returned by the <xref:System.BitConverter.DoubleToInt64Bits%2A> method.  
+## 解説  
+ 通常、`value`によって返される整数は、<xref:System.BitConverter.DoubleToInt64Bits%2A>メソッドです。  
   
    
   
-## Examples  
- The following code example converts the bit patterns of several <xref:System.Int64> values to <xref:System.Double> values with the `Int64BitsToDouble` method.  
+## 例  
+ 次のコード例は、いくつかのビット パターンを変換<xref:System.Int64>値<xref:System.Double>の値を使った、`Int64BitsToDouble`メソッドです。  
   
- [!code-cpp[System.BitConverter.DoubleInt64#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CPP/bitstodbl.cpp#1)]
- [!code-csharp[System.BitConverter.DoubleInt64#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CS/bitstodbl.cs#1)]
- [!code-vb[System.BitConverter.DoubleInt64#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/VB/bitstodbl.vb#1)]  
+ [!code-cpp[System.BitConverter.DoubleInt64\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CPP/bitstodbl.cpp#1)]
+ [!code-csharp[System.BitConverter.DoubleInt64\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/CS/bitstodbl.cs#1)]
+ [!code-vb[System.BitConverter.DoubleInt64\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.DoubleInt64/VB/bitstodbl.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.BitConverter.DoubleToInt64Bits(System.Double)" />
       </Docs>
     </Member>
     <Member MemberName="IsLittleEndian">
@@ -776,24 +789,24 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates the byte order ("endianness") in which data is stored in this computer architecture.</summary>
+        <summary>このコンピューターのアーキテクチャにデータを格納するバイト順 \("エンディアン"\) を示します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Different computer architectures store data using different byte orders. "Big-endian" means the most significant byte is on the left end of a word. "Little-endian" means the most significant byte is on the right end of a word.  
+## 解説  
+ 別のコンピューターのアーキテクチャでは、異なるバイト順を使用してデータを格納します。 「ビッグ エンディアン」では、最上位バイトが左端の単語の上を意味します。 「リトル エンディアン」では、単語の右端には、最上位バイトを意味します。  
   
 > [!NOTE]
->  You can convert from network byte order to the byte order of the host computer without retrieving  the value of the <xref:System.BitConverter.IsLittleEndian?displayProperty=fullName> field by passing a 16-bit, 32-bit, or 64 bit integer to the <xref:System.Net.IPAddress.HostToNetworkOrder%2A?displayProperty=fullName> method.  
+>  値を取得せずにホスト コンピューターのバイト順ネットワーク バイト オーダーから変換することができますの<xref:System.BitConverter.IsLittleEndian?displayProperty=fullName>する 16 ビット、32 ビットまたは 64 ビット整数を渡すことによってフィールドの<xref:System.Net.IPAddress.HostToNetworkOrder%2A?displayProperty=fullName>メソッドです。  
   
    
   
-## Examples  
- The following code example illustrates the use of the `IsLittleEndian` field.  
+## 例  
+ 次のコード例の使用を示しています、`IsLittleEndian`フィールドです。  
   
- [!code-cpp[System.BitConverter.Class#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.Class/CPP/littleend.cpp#2)]
- [!code-csharp[System.BitConverter.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/littleend.cs#2)]
- [!code-vb[System.BitConverter.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/littleend.vb#2)]  
+ [!code-cpp[System.BitConverter.Class\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.Class/CPP/littleend.cpp#2)]
+ [!code-csharp[System.BitConverter.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.Class/CS/littleend.cs#2)]
+ [!code-vb[System.BitConverter.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.Class/VB/littleend.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -850,32 +863,33 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">A byte array.</param>
-        <param name="startIndex">The index of the byte within <c>value</c>.</param>
-        <summary>Returns a Boolean value converted from the byte at a specified position in a byte array.</summary>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">内のバイトのインデックス <c>value</c>します。</param>
+        <summary>バイト配列内の指定位置にあるバイトから変換されたブール値を返します。</summary>
         <returns>
-          <see langword="true" /> if the byte at <paramref name="startIndex" /> in <paramref name="value" /> is nonzero; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合にあるバイト <paramref name="startIndex" /> で <paramref name="value" /> は 0 以外。 それ以外の場合、は、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To convert a <xref:System.Boolean> value to its byte representation, call the <xref:System.BitConverter.ToBoolean%2A> method.  
+## 解説  
+ 変換する、 [ToBoolean メソッド \(Byte\<xref:System.Boolean> を呼び出し、バイト形式の値、 [ToBoolean メソッド \(Byte\<xref:System.BitConverter.ToBoolean%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.Boolean> values with the `ToBoolean` method.  
+## 例  
+ 次のコード例は、の要素を変換します。 [ToBoolean メソッド \(Byte\<xref:System.Byte> に配列 [ToBoolean メソッド \(Byte\<xref:System.Boolean> の値を使った、 `ToBoolean` メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.Others#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batobool.cpp#1)]
- [!code-csharp[System.BitConverter.ToXXX.Others#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batobool.cs#1)]
- [!code-vb[System.BitConverter.ToXXX.Others#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batobool.vb#1)]  
+ [!code-cpp[System.BitConverter.ToXXX.Others\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batobool.cpp#1)]
+ [!code-csharp[System.BitConverter.ToXXX.Others\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batobool.cs#1)]
+ [!code-vb[System.BitConverter.ToXXX.Others\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batobool.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" /> 0 の長さより大きいか小さい <paramref name="value" /> \-1 です。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Boolean)" />
       </Docs>
     </Member>
     <Member MemberName="ToChar">
@@ -907,33 +921,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a Unicode character converted from two bytes at a specified position in a byte array.</summary>
-        <returns>A character formed by two bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列の指定した位置にある 2 つのバイトから変換された Unicode 文字を返します。</summary>
+        <returns>文字が先頭の 2 バイトで形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToChar%2A> method converts the bytes from index `startIndex` to `startIndex` + 1 to a <xref:System.Char> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToChar メソッド \(Byte\<xref:System.BitConverter.ToChar%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ 1 に、[ToChar メソッド \(Byte\<xref:System.Char>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToChar メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.Char> values (Unicode characters) with the `ToChar` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToChar メソッド \(Byte\<xref:System.Byte>に配列[ToChar メソッド \(Byte\<xref:System.Char>値 \(Unicode 文字\) と、`ToChar`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.Others#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batochar.cpp#2)]
- [!code-csharp[System.BitConverter.ToXXX.Others#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batochar.cs#2)]
- [!code-vb[System.BitConverter.ToXXX.Others#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batochar.vb#2)]  
+ [!code-cpp[System.BitConverter.ToXXX.Others\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batochar.cpp#2)]
+ [!code-csharp[System.BitConverter.ToXXX.Others\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batochar.cs#2)]
+ [!code-vb[System.BitConverter.ToXXX.Others\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batochar.vb#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> equals the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さに等しくなる<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Char)" />
       </Docs>
     </Member>
     <Member MemberName="ToDouble">
@@ -970,33 +986,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a double-precision floating point number converted from eight bytes at a specified position in a byte array.</summary>
-        <returns>A double precision floating point number formed by eight bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列内の指定位置にある 8 バイトから変換された倍精度浮動小数点数を返します。</summary>
+        <returns>倍精度浮動小数点数が 8 バイトの先頭で形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToDouble%2A> method converts the bytes from index `startIndex` to `startIndex` + 7 to a <xref:System.Double> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToDouble メソッド \(Byte\<xref:System.BitConverter.ToDouble%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ を 7、[ToDouble メソッド \(Byte\<xref:System.Double>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToDouble メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.Double> values with the `ToDouble` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToDouble メソッド \(Byte\<xref:System.Byte>に配列[ToDouble メソッド \(Byte\<xref:System.Double>の値を使った、`ToDouble`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.Others#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batodouble.cpp#3)]
- [!code-csharp[System.BitConverter.ToXXX.Others#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batodouble.cs#3)]
- [!code-vb[System.BitConverter.ToXXX.Others#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batodouble.vb#3)]  
+ [!code-cpp[System.BitConverter.ToXXX.Others\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batodouble.cpp#3)]
+ [!code-csharp[System.BitConverter.ToXXX.Others\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batodouble.cs#3)]
+ [!code-vb[System.BitConverter.ToXXX.Others\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batodouble.vb#3)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="value" /> minus 7, and is less than or equal to the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さ以上<paramref name="value" />7、マイナスの長さ以下<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Double)" />
       </Docs>
     </Member>
     <Member MemberName="ToInt16">
@@ -1033,33 +1051,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a 16-bit signed integer converted from two bytes at a specified position in a byte array.</summary>
-        <returns>A 16-bit signed integer formed by two bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列の指定した位置にある 2 つのバイトから変換された 16 ビット符号付き整数を返します。</summary>
+        <returns>16 ビット符号付き整数が 2 バイトが先頭によって形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToInt16%2A> method converts the bytes from index `startIndex` to `startIndex` + 1 to an <xref:System.Int16> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToInt16 メソッド \(Byte\<xref:System.BitConverter.ToInt16%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`は \+ 1 に、[ToInt16 メソッド \(Byte\<xref:System.Int16>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToInt16 メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.Int16> values with the `ToInt16` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToInt16 メソッド \(Byte\<xref:System.Byte>に配列[ToInt16 メソッド \(Byte\<xref:System.Int16>の値を使った、`ToInt16`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.SInts#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CPP/batoint16.cpp#1)]
- [!code-csharp[System.BitConverter.ToXXX.SInts#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CS/batoint16.cs#1)]
- [!code-vb[System.BitConverter.ToXXX.SInts#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/VB/batoint16.vb#1)]  
+ [!code-cpp[System.BitConverter.ToXXX.SInts\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CPP/batoint16.cpp#1)]
+ [!code-csharp[System.BitConverter.ToXXX.SInts\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CS/batoint16.cs#1)]
+ [!code-vb[System.BitConverter.ToXXX.SInts\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/VB/batoint16.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> equals the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さに等しくなる<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Int16)" />
       </Docs>
     </Member>
     <Member MemberName="ToInt32">
@@ -1096,32 +1116,34 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a 32-bit signed integer converted from four bytes at a specified position in a byte array.</summary>
-        <returns>A 32-bit signed integer formed by four bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列の指定した位置にある 4 つのバイトから変換された 32 ビット符号付き整数を返します。</summary>
+        <returns>始まる 4 バイトで 32 ビット符号付き整数が形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToInt32%2A> method converts the bytes from index `startIndex` to `startIndex` + 3 to an <xref:System.Int32> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of <xref:System.BitConverter>.  
+## 解説  
+ [ToInt32 メソッド \(Byte\<xref:System.BitConverter.ToInt32%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ 3、[ToInt32 メソッド \(Byte\<xref:System.Int32>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください。[ToInt32 メソッド \(Byte\<xref:System.BitConverter>です。  
   
    
   
-## Examples  
- The following example uses the <xref:System.BitConverter.ToInt32%2A> method to create <xref:System.Int32> values from a four-byte array and from the upper four bytes of an eight-byte array. It also uses the <xref:System.BitConverter.GetBytes%28System.Int32%29> and <xref:System.BitConverter.ToInt32%2A> methods to round-trip an <xref:System.Int32> value.  
+## 例  
+ 次の例では、[ToInt32 メソッド \(Byte\<xref:System.BitConverter.ToInt32%2A>メソッドを作成[ToInt32 メソッド \(Byte\<xref:System.Int32>値と 8 バイト配列の上限の 4 バイト 4 バイトの配列から。 使用して、[ToInt32 メソッド \(Byte\<xref:System.BitConverter.GetBytes%28System.Int32%29>と[ToInt32 メソッド \(Byte\<xref:System.BitConverter.ToInt32%2A>ラウンドト リップするメソッド、[ToInt32 メソッド \(Byte\<xref:System.Int32>値。  
   
- [!code-csharp[System.BitConverter.ToInt32#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.bitconverter.toint32/cs/toint32.cs#1)]
- [!code-vb[System.BitConverter.ToInt32#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.bitconverter.toint32/vb/toint32.vb#1)]  
+ [!code-csharp[System.BitConverter.ToInt32\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.bitconverter.toint32/cs/toint32.cs#1)]
+ [!code-vb[System.BitConverter.ToInt32\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.bitconverter.toint32/vb/toint32.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="value" /> minus 3, and is less than or equal to the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さ以上<paramref name="value" />3、マイナスの長さ以下<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="ToInt64">
@@ -1158,33 +1180,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a 64-bit signed integer converted from eight bytes at a specified position in a byte array.</summary>
-        <returns>A 64-bit signed integer formed by eight bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列内の指定位置にある 8 バイトから変換された 64 ビット符号付き整数を返します。</summary>
+        <returns>64 ビット符号付き整数が 8 バイトの先頭で形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToInt64%2A> method converts the bytes from index `startIndex` to `startIndex` + 7 to a <xref:System.Int64> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToInt64 メソッド \(Byte\<xref:System.BitConverter.ToInt64%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ を 7、[ToInt64 メソッド \(Byte\<xref:System.Int64>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToInt64 メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.Int64> values with the `ToInt64` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToInt64 メソッド \(Byte\<xref:System.Byte>に配列[ToInt64 メソッド \(Byte\<xref:System.Int64>値を、`ToInt64`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.SInts#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CPP/batoint64.cpp#3)]
- [!code-csharp[System.BitConverter.ToXXX.SInts#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CS/batoint64.cs#3)]
- [!code-vb[System.BitConverter.ToXXX.SInts#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/VB/batoint64.vb#3)]  
+ [!code-cpp[System.BitConverter.ToXXX.SInts\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CPP/batoint64.cpp#3)]
+ [!code-csharp[System.BitConverter.ToXXX.SInts\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/CS/batoint64.cs#3)]
+ [!code-vb[System.BitConverter.ToXXX.SInts\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.SInts/VB/batoint64.vb#3)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="value" /> minus 7, and is less than or equal to the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さ以上<paramref name="value" />7、マイナスの長さ以下<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Int64)" />
       </Docs>
     </Member>
     <Member MemberName="ToSingle">
@@ -1221,33 +1245,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a single-precision floating point number converted from four bytes at a specified position in a byte array.</summary>
-        <returns>A single-precision floating point number formed by four bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列の指定した位置にある 4 つのバイトから変換された単精度浮動小数点数を返します。</summary>
+        <returns>始まる 4 バイト単精度浮動小数点数が形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToSingle%2A> method converts the bytes from index `startIndex` to `startIndex` + 3 to a <xref:System.Single> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of <xref:System.BitConverter>.  
+## 解説  
+ [ToSingle メソッド \(Byte\<xref:System.BitConverter.ToSingle%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ 3、[ToSingle メソッド \(Byte\<xref:System.Single>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください。[ToSingle メソッド \(Byte\<xref:System.BitConverter>です。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.Single> values with the `ToSingle` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToSingle メソッド \(Byte\<xref:System.Byte>に配列[ToSingle メソッド \(Byte\<xref:System.Single>の値を使った、`ToSingle`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.Others#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batosingle.cpp#4)]
- [!code-csharp[System.BitConverter.ToXXX.Others#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batosingle.cs#4)]
- [!code-vb[System.BitConverter.ToXXX.Others#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batosingle.vb#4)]  
+ [!code-cpp[System.BitConverter.ToXXX.Others\#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CPP/batosingle.cpp#4)]
+ [!code-csharp[System.BitConverter.ToXXX.Others\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/CS/batosingle.cs#4)]
+ [!code-vb[System.BitConverter.ToXXX.Others\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.Others/VB/batosingle.vb#4)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="value" /> minus 3, and is less than or equal to the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />以上の長さには、 <paramref name="value" /> 3、マイナスがの長さ未満と<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.Single)" />
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -1278,28 +1304,28 @@
         <Parameter Name="value" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <summary>Converts the numeric value of each element of a specified array of bytes to its equivalent hexadecimal string representation.</summary>
-        <returns>A string of hexadecimal pairs separated by hyphens, where each pair represents the corresponding element in <paramref name="value" />; for example, "7F-2C-4A-00".</returns>
+        <param name="value">バイト配列。</param>
+        <summary>指定されたバイト配列の各要素の数値を等価の 16 進数文字列形式に変換します。</summary>
+        <returns>16 進数のペアの文字列をそれぞれのペアに対応する要素を表し、ハイフンで区切った<paramref name="value" />。 たとえば、"7 f\-2c\-4A\-00"です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- All the elements of `value` are converted. The order of hexadecimal strings returned by the <xref:System.BitConverter.ToString%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ すべての要素`value`変換されます。 によって返される 16 進数の文字列の順序、<xref:System.BitConverter.ToString%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts <xref:System.Byte> arrays to <xref:System.String> objects with the `ToString` method.  
+## 例  
+ 次のコード例に変換<xref:System.Byte>に配列<xref:System.String>オブジェクトと、`ToString`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToString#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToString/CPP/batostring.cpp#1)]
- [!code-csharp[System.BitConverter.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToString/CS/batostring.cs#1)]
- [!code-vb[System.BitConverter.ToString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToString/VB/batostring.vb#1)]  
+ [!code-cpp[System.BitConverter.ToString\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToString/CPP/batostring.cpp#1)]
+ [!code-csharp[System.BitConverter.ToString\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToString/CS/batostring.cs#1)]
+ [!code-vb[System.BitConverter.ToString\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToString/VB/batostring.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -1331,31 +1357,32 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Converts the numeric value of each element of a specified subarray of bytes to its equivalent hexadecimal string representation.</summary>
-        <returns>A string of hexadecimal pairs separated by hyphens, where each pair represents the corresponding element in a subarray of <paramref name="value" />; for example, "7F-2C-4A-00".</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイトの指定した部分配列の各要素の数値を等価の 16 進数文字列形式に変換します。</summary>
+        <returns>16 進数のペアの文字列がそれぞれのペアがのサブ配列の対応する要素を表し、ハイフンで区切られた<paramref name="value" />。 たとえば、"7 f\-2c\-4A\-00"です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The elements from array position `startIndex` to the end of the array are converted. The order of hexadecimal strings returned by the <xref:System.BitConverter.ToString%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+## 解説  
+ 配列の位置から要素`startIndex`配列の末尾に変換されます。 によって返される 16 進数の文字列の順序、[ToString メソッド \(Byte\<xref:System.BitConverter.ToString%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following code example converts the part of a <xref:System.Byte> array starting at the specified `startIndex` to a <xref:System.String> with the `ToString` method.  
+## 例  
+ 次のコード例の一部を変換する、[ToString メソッド \(Byte\<xref:System.Byte>配列内の指定した開始`startIndex`を[ToString メソッド \(Byte\<xref:System.String>で、`ToString`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToString#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToString/CPP/batostringii.cpp#2)]
- [!code-csharp[System.BitConverter.ToString#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToString/CS/batostringii.cs#2)]
- [!code-vb[System.BitConverter.ToString#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToString/VB/batostringii.vb#2)]  
+ [!code-cpp[System.BitConverter.ToString\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToString/CPP/batostringii.cpp#2)]
+ [!code-csharp[System.BitConverter.ToString\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToString/CS/batostringii.cs#2)]
+ [!code-vb[System.BitConverter.ToString\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToString/VB/batostringii.vb#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -1388,39 +1415,40 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <param name="length">The number of array elements in <c>value</c> to convert.</param>
-        <summary>Converts the numeric value of each element of a specified subarray of bytes to its equivalent hexadecimal string representation.</summary>
-        <returns>A string of hexadecimal pairs separated by hyphens, where each pair represents the corresponding element in a subarray of <paramref name="value" />; for example, "7F-2C-4A-00".</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <param name="length">配列要素の数<c>value</c>に変換します。</param>
+        <summary>バイトの指定した部分配列の各要素の数値を等価の 16 進数文字列形式に変換します。</summary>
+        <returns>16 進数のペアの文字列をそれぞれのペアがのサブ配列の対応する要素を表し、ハイフンで区切った<paramref name="value" />。 たとえば、"7 f\-2c\-4A\-00"です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `length` elements from array position `startIndex` are converted. If `length` equals zero, the method returns <xref:System.String?displayProperty=fullName>.  
+## 解説  
+ `length`要素配列位置から`startIndex`変換されます。 場合`length`等しい場合は 0 を返します[ToString メソッド \(Byte\<xref:System.String.Empty?displayProperty=fullName>です。  
   
- The order of hexadecimal strings returned by the <xref:System.BitConverter.ToString%2A> method depends on whether the computer architecture is little-endian or big-endian.  
+ によって返される 16 進数の文字列の順序、[ToString メソッド \(Byte\<xref:System.BitConverter.ToString%2A>メソッドは、コンピューターのアーキテクチャは、リトル エンディアンまたはビッグ エンディアンかどうかによって異なります。  
   
    
   
-## Examples  
- The following example uses the <xref:System.BitConverter.ToString%2A> method to convert part of a byte array, starting at the specified `startIndex` and with the specified `length`, to a string.  
+## 例  
+ 次の例では、 [ToString メソッド \(Byte\<xref:System.BitConverter.ToString%2A> 、指定したバイト配列の一部を変換する方法の`startIndex`と指定した`length`文字列にします。  
   
- [!code-cpp[System.BitConverter.ToString#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToString/CPP/batostringii.cpp#2)]
- [!code-csharp[System.BitConverter.ToString#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToString/CS/batostringii.cs#2)]
- [!code-vb[System.BitConverter.ToString#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToString/VB/batostringii.vb#2)]  
+ [!code-cpp[System.BitConverter.ToString\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToString/CPP/batostringii.cpp#2)]
+ [!code-csharp[System.BitConverter.ToString\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToString/CS/batostringii.cs#2)]
+ [!code-vb[System.BitConverter.ToString\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToString/VB/batostringii.vb#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> or <paramref name="length" /> is less than zero.  
+          <paramref name="startIndex" /> または <paramref name="length" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="startIndex" /> is greater than zero and is greater than or equal to the length of <paramref name="value" />.</exception>
-        <exception cref="T:System.ArgumentException">The combination of <paramref name="startIndex" /> and <paramref name="length" /> does not specify a position within <paramref name="value" />; that is, the <paramref name="startIndex" /> parameter is greater than the length of <paramref name="value" /> minus the <paramref name="length" /> parameter.</exception>
+ <paramref name="startIndex" />0 より大きい値は、長さ以上<paramref name="value" />です。</exception>
+        <exception cref="T:System.ArgumentException">組み合わせ<paramref name="startIndex" />と<paramref name="length" />内での位置が指定されていません<paramref name="value" />です。 つまり、<paramref name="startIndex" />パラメーターがの長さより大きい<paramref name="value" />マイナス、<paramref name="length" />パラメーター。</exception>
       </Docs>
     </Member>
     <Member MemberName="ToUInt16">
@@ -1457,33 +1485,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">The array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a 16-bit unsigned integer converted from two bytes at a specified position in a byte array.</summary>
-        <returns>A 16-bit unsigned integer formed by two bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列の指定した位置にある 2 つのバイトから変換された 16 ビット符号なし整数を返します。</summary>
+        <returns>16 ビット符号なし整数が先頭の 2 バイトで形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToUInt16%2A> method converts the bytes from index `startIndex` to `startIndex` + 1 to a <xref:System.UInt16> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToUInt16 メソッド \(Byte\<xref:System.BitConverter.ToUInt16%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ 1 に、[ToUInt16 メソッド \(Byte\<xref:System.UInt16>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToUInt16 メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.UInt16> values with the `ToUInt16` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToUInt16 メソッド \(Byte\<xref:System.Byte>に配列[ToUInt16 メソッド \(Byte\<xref:System.UInt16>の値を使った、`ToUInt16`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.UInts#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CPP/batouint16.cpp#1)]
- [!code-csharp[System.BitConverter.ToXXX.UInts#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CS/batouint16.cs#1)]
- [!code-vb[System.BitConverter.ToXXX.UInts#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/VB/batouint16.vb#1)]  
+ [!code-cpp[System.BitConverter.ToXXX.UInts\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CPP/batouint16.cpp#1)]
+ [!code-csharp[System.BitConverter.ToXXX.UInts\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CS/batouint16.cs#1)]
+ [!code-vb[System.BitConverter.ToXXX.UInts\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/VB/batouint16.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> equals the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さに等しくなる<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.UInt16)" />
       </Docs>
     </Member>
     <Member MemberName="ToUInt32">
@@ -1520,33 +1550,35 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a 32-bit unsigned integer converted from four bytes at a specified position in a byte array.</summary>
-        <returns>A 32-bit unsigned integer formed by four bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列の指定した位置にある 4 つのバイトから変換された 32 ビット符号なし整数を返します。</summary>
+        <returns>始まる 4 バイトで 32 ビット符号なし整数が形成される<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToUInt32%2A> method converts the bytes from index `startIndex` to `startIndex` + 3 to a <xref:System.UInt32> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToUInt32 メソッド \(Byte\<xref:System.BitConverter.ToUInt32%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ 3、[ToUInt32 メソッド \(Byte\<xref:System.UInt32>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToUInt32 メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.UInt32> values with the `ToUInt32` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToUInt32 メソッド \(Byte\<xref:System.Byte>に配列[ToUInt32 メソッド \(Byte\<xref:System.UInt32>の値を使った、`ToUInt32`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.UInts#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CPP/batouint32.cpp#2)]
- [!code-csharp[System.BitConverter.ToXXX.UInts#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CS/batouint32.cs#2)]
- [!code-vb[System.BitConverter.ToXXX.UInts#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/VB/batouint32.vb#2)]  
+ [!code-cpp[System.BitConverter.ToXXX.UInts\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CPP/batouint32.cpp#2)]
+ [!code-csharp[System.BitConverter.ToXXX.UInts\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CS/batouint32.cs#2)]
+ [!code-vb[System.BitConverter.ToXXX.UInts\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/VB/batouint32.vb#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="value" /> minus 3, and is less than or equal to the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さ以上<paramref name="value" />3、マイナスの長さ以下<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.UInt32)" />
       </Docs>
     </Member>
     <Member MemberName="ToUInt64">
@@ -1583,34 +1615,60 @@
         <Parameter Name="startIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">An array of bytes.</param>
-        <param name="startIndex">The starting position within <c>value</c>.</param>
-        <summary>Returns a 64-bit unsigned integer converted from eight bytes at a specified position in a byte array.</summary>
-        <returns>A 64-bit unsigned integer formed by the eight bytes beginning at <paramref name="startIndex" />.</returns>
+        <param name="value">バイト配列。</param>
+        <param name="startIndex">
+          <c>value</c> 内の開始位置。</param>
+        <summary>バイト配列内の指定位置にある 8 バイトから変換された 64 ビット符号なし整数を返します。</summary>
+        <returns>64 ビット符号なし整数が 8 バイトから開始して形成された<paramref name="startIndex" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.BitConverter.ToUInt64%2A> method converts the bytes from index `startIndex` to `startIndex` + 7 to a <xref:System.UInt64> value. The order of bytes in the array must reflect the endianness of the computer system's architecture; for more information, see the Remarks section of the <xref:System.BitConverter> class topic.  
+## 解説  
+ [ToUInt64 メソッド \(Byte\<xref:System.BitConverter.ToUInt64%2A>メソッドは、インデックスからのバイトを変換`startIndex`に`startIndex`\+ を 7、[ToUInt64 メソッド \(Byte\<xref:System.UInt64>値。 配列内のバイトの順序は、コンピューター システムのアーキテクチャのエンディアンを反映する必要があります。詳細については、の「解説」セクションを参照してください、[ToUInt64 メソッド \(Byte\<xref:System.BitConverter>クラスに関するトピック。  
   
    
   
-## Examples  
- The following code example converts elements of <xref:System.Byte> arrays to <xref:System.UInt64> values with the `ToUInt64` method.  
+## 例  
+ 次のコード例は、の要素を変換します。[ToUInt64 メソッド \(Byte\<xref:System.Byte>に配列[ToUInt64 メソッド \(Byte\<xref:System.UInt64>の値を使った、`ToUInt64`メソッドです。  
   
- [!code-cpp[System.BitConverter.ToXXX.UInts#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CPP/batouint64.cpp#3)]
- [!code-csharp[System.BitConverter.ToXXX.UInts#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CS/batouint64.cs#3)]
- [!code-vb[System.BitConverter.ToXXX.UInts#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/VB/batouint64.vb#3)]  
+ [!code-cpp[System.BitConverter.ToXXX.UInts\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CPP/batouint64.cpp#3)]
+ [!code-csharp[System.BitConverter.ToXXX.UInts\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/CS/batouint64.cs#3)]
+ [!code-vb[System.BitConverter.ToXXX.UInts\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.BitConverter.ToXXX.UInts/VB/batouint64.vb#3)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="value" /> minus 7, and is less than or equal to the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />長さ以上<paramref name="value" />7、マイナスの長さ以下<paramref name="value" />から 1 を減算します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="value" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="startIndex" /> is less than zero or greater than the length of <paramref name="value" /> minus 1.</exception>
+          <paramref name="startIndex" />0 の長さより大きいか小さい<paramref name="value" />から 1 を減算します。</exception>
+        <altmember cref="M:System.BitConverter.GetBytes(System.UInt64)" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="GetBytes">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定されたデータをバイト配列に変換します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="ToString">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定されたバイト配列の各要素の数値を等価の 16 進数文字列形式に変換します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

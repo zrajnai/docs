@@ -24,11 +24,11 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides a buffer that allows a fallback handler to return an alternate string to an encoder when it cannot encode an input character.</summary>
+    <summary>入力文字をエンコードできない場合に、フォールバック ハンドラーがエンコーダーに代替文字列を返すことを可能にするためのバッファーを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  An encoding defines a mapping between a Unicode character and an encoded sequence of bytes. An encoding operation, which converts an input character to an output byte sequence, fails if no mapping is defined for a particular character.  
   
  The .NET Framework provides a failure handling mechanism, called a fallback, if a conversion cannot be performed. All encoder fallback handlers must implement the following:  
@@ -39,24 +39,29 @@
   
  Fallbacks can use three strategies to handle conversion failures:  
   
--   Best-fit mapping. The encoder fallback buffer can return a string that represents a close approximation to the input character. The .NET Framework does not provide a public best-fit <xref:System.Text.EncoderFallbackBuffer> implementation.  
+-   Best\-fit mapping. The encoder fallback buffer can return a string that represents a close approximation to the input character. The .NET Framework does not provide a public best\-fit <xref:System.Text.EncoderFallbackBuffer> implementation.  
   
--   Replacement. The encoder fallback buffer can return a string, such as a question mark ("?"), that indicates that a character could not be encoded. In the .NET Framework, the <xref:System.Text.EncoderReplacementFallback> and <xref:System.Text.EncoderReplacementFallbackBuffer> classes provide a public replacement fallback buffer implementation. The constructor of the <xref:System.Text.EncoderReplacementFallback> class enables you to define the replacement string.  
+-   Replacement. The encoder fallback buffer can return a string, such as a question mark \("?"\), that indicates that a character could not be encoded. In the .NET Framework, the <xref:System.Text.EncoderReplacementFallback> and <xref:System.Text.EncoderReplacementFallbackBuffer> classes provide a public replacement fallback buffer implementation. The constructor of the <xref:System.Text.EncoderReplacementFallback> class enables you to define the replacement string.  
   
 -   Exception. The <xref:System.Text.EncoderFallbackBuffer> implementation throws an exception, which indicates that a character cannot be encoded, and terminates the encoding operation. In this case, the fallback handler must provide an <xref:System.Text.EncoderFallbackBuffer> implementation, although it does not return a string to the encoder. In the .NET Framework, the <xref:System.Text.EncoderExceptionFallback> and <xref:System.Text.EncoderExceptionFallbackBuffer> classes provide a public exception fallback implementation that throws an <xref:System.Text.EncoderFallbackException> when a character cannot be encoded.  
   
  The buffer in an <xref:System.Text.EncoderFallbackBuffer> implementation represents the entire string to be returned to the encoder in response to an encoder fallback. Generally, implementations also include state information, such as the index of the next character to return to the encoder and the number of remaining characters to be returned. Because <xref:System.Text.EncoderFallbackBuffer> is an abstract class, it requires derived classes to implement the following members at a minimum:  
   
--   The overloaded <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method, which is called by the encoder when it cannot encode a character. The encoder passes two pieces of information to the fallback buffer implementation: the character or surrogate pair that could not be encoded and the index of the character in the input. In an encoder fallback exception handler, the exception is thrown in this method. Otherwise, the method returns `true` if it provides a fallback, or `false` if it does not.  
+-   The overloaded <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method, which is called by the encoder when it cannot encode a character. The encoder passes two pieces of information to the fallback buffer implementation: the character or surrogate pair that could not be encoded and the index of the character in the input. In an encoder fallback exception handler, the exception is thrown in this method. Otherwise, the method returns **languageKeyword tag is not supported!!!!**  
+     if it provides a fallback, or **languageKeyword tag is not supported!!!!**  
+     if it does not.  
   
--   The <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method, which is called repeatedly by the encoder if the <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method returns `true`. In successive calls, the handler should return each character in its buffer. When it has returned all characters, it should return U+0000. An exception handler always returns U+0000.  
+-   The <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method, which is called repeatedly by the encoder if the <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method returns **languageKeyword tag is not supported!!!!**  
+    . In successive calls, the handler should return each character in its buffer. When it has returned all characters, it should return U\+0000. An exception handler always returns U\+0000.  
   
--   The <xref:System.Text.EncoderFallbackBuffer.MovePrevious%2A> method, which tries to move the pointer to the previous position in the buffer and indicates whether the move was successful. An exception handler always returns `false`.  
+-   The <xref:System.Text.EncoderFallbackBuffer.MovePrevious%2A> method, which tries to move the pointer to the previous position in the buffer and indicates whether the move was successful. An exception handler always returns **languageKeyword tag is not supported!!!!**  
+    .  
   
 -   The <xref:System.Text.EncoderFallbackBuffer.Remaining%2A> property, which indicates the number of remaining characters to be returned to the encoder. An exception fallback handler always returns zero.  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Text.EncoderFallback" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -83,7 +88,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Text.EncoderFallbackBuffer" /> class.</summary>
+        <summary>
+          <see cref="T:System.Text.EncoderFallbackBuffer" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -117,17 +123,20 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="charUnknown">An input character.</param>
-        <param name="index">The index position of the character in the input buffer.</param>
-        <summary>When overridden in a derived class, prepares the fallback buffer to handle the specified input character.</summary>
+        <param name="charUnknown">入力文字です。</param>
+        <param name="index">入力バッファー内の文字のインデックス位置。</param>
+        <summary>派生クラスでオーバーライドされた場合は、指定した入力文字を処理するためのフォールバック バッファーを準備します。</summary>
         <returns>
-          <see langword="true" /> if the fallback buffer can process <paramref name="charUnknown" />; <see langword="false" /> if the fallback buffer ignores <paramref name="charUnknown" />.</returns>
+          <see langword="true" /> フォールバック バッファーを処理できる場合 <paramref name="charUnknown" />; <see langword="false" /> フォールバック バッファーを無視する場合 <paramref name="charUnknown" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.Encoding.GetBytes%2A?displayProperty=fullName> and <xref:System.Text.Encoder.Convert%2A?displayProperty=fullName> methods call <xref:System.Text.DecoderFallbackBuffer.Fallback%28System.Byte%5B%5D%2CSystem.Int32%29> if they encounter an unknown input character that cannot be encoded. A return value of `true` indicates that the fallback buffer can process the input character, which causes the calling method to call the <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method to obtain each character of the fallback buffer. Because it does not process individual characters, the <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method in an exception fallback handler throws an exception.  
+## 解説  
+ <xref:System.Text.Encoding.GetBytes%2A?displayProperty=fullName> と <xref:System.Text.Encoder.Convert%2A?displayProperty=fullName> メソッドを呼び出す <xref:System.Text.DecoderFallbackBuffer.Fallback%28System.Byte%5B%5D%2CSystem.Int32%29> 不明なエンコードできない入力文字が発生した場合。 戻り値 `true` フォールバック バッファーが呼び出し元のメソッドを呼び出すと、入力文字を処理できることを示します、 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> フォールバック バッファーの各文字を取得します。 個々 の文字を処理できないため、 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 例外フォールバック ハンドラーのメソッドは例外をスローします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -163,18 +172,21 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="charUnknownHigh">The high surrogate of the input pair.</param>
-        <param name="charUnknownLow">The low surrogate of the input pair.</param>
-        <param name="index">The index position of the surrogate pair in the input buffer.</param>
-        <summary>When overridden in a derived class, prepares the fallback buffer to handle the specified surrogate pair.</summary>
+        <param name="charUnknownHigh">入力のペアの上位サロゲート。</param>
+        <param name="charUnknownLow">入力のペアの下位サロゲート。</param>
+        <param name="index">入力バッファー内のサロゲート ペアのインデックス位置。</param>
+        <summary>派生クラスでオーバーライドされた場合は、指定したサロゲート ペアを処理するためのフォールバック バッファーを準備します。</summary>
         <returns>
-          <see langword="true" /> if the fallback buffer can process <paramref name="charUnknownHigh" /> and <paramref name="charUnknownLow" />; <see langword="false" /> if the fallback buffer ignores the surrogate pair.</returns>
+          <see langword="true" /> フォールバック バッファーを処理できる場合 <paramref name="charUnknownHigh" /> と <paramref name="charUnknownLow" />; <see langword="false" /> フォールバック バッファーがサロゲート ペアを無視する場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.Encoding.GetBytes%2A?displayProperty=fullName> and <xref:System.Text.Encoder.Convert%2A?displayProperty=fullName> methods call <xref:System.Text.EncoderFallbackBuffer.Fallback%28System.Char%2CSystem.Char%2CSystem.Int32%29> if they encounter a surrogate pair in their input. A return value of `true` indicates that the fallback buffer can process the surrogate pair, which causes the calling method to call the <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method to obtain each character of the fallback buffer.  Because it does not process individual characters, the <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method in an exception fallback handler throws an exception.  
+## 解説  
+ <xref:System.Text.Encoding.GetBytes%2A?displayProperty=fullName> と <xref:System.Text.Encoder.Convert%2A?displayProperty=fullName> メソッドを呼び出す <xref:System.Text.EncoderFallbackBuffer.Fallback%28System.Char%2CSystem.Char%2CSystem.Int32%29> が入力でサロゲート ペアが発生した場合。 戻り値 `true` フォールバック バッファーがサロゲート ペアは、呼び出し元のメソッドを呼び出すを処理できることを示します、 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> フォールバック バッファーの各文字を取得します。  個々 の文字を処理できないため、 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 例外フォールバック ハンドラーのメソッドは例外をスローします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -206,15 +218,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, retrieves the next character in the fallback buffer.</summary>
-        <returns>The next character in the fallback buffer.</returns>
+        <summary>派生クラスでオーバーライドされた場合は、フォールバック バッファー内の次の文字を取得します。</summary>
+        <returns>フォールバック バッファー内の次の文字。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An encoding operation calls the <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method if the operation encounters an unknown character or surrogate pair in the input. For example, in the case of a replacement fallback, if the <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method returns `true`, a substitute string exists that can be encoded instead of the unknown input. The encoding operation calls the <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method repeatedly and obtains the substitute string one character at a time. When all characters in the fallback buffer have been returned to the encoder, the <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method should return U+0000.  
+## 解説  
+ エンコード操作は、 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> メソッド操作では、不明な文字またはサロゲート ペアの入力が発生するとします。 置換フォールバック、if 場合など、 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> メソッドが返す `true`, 、代替文字列が存在する不明な入力の代わりにエンコードすることができます。 エンコード操作の呼び出し、 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> メソッド繰り返しし、一度に置換文字列の 1 つの文字を取得します。 フォールバック バッファー内のすべての文字が、エンコーダーに戻ったときに、 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> メソッドは u\+0000 を返す必要があります。  
   
- For an exception fallback handler, the <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> method should return U+0000.  
+ 例外フォールバック ハンドラーで、 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> メソッドは u\+0000 を返す必要があります。  
   
  ]]></format>
         </remarks>
@@ -247,14 +259,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, causes the next call to the <see cref="M:System.Text.EncoderFallbackBuffer.GetNextChar" /> method to access the data buffer character position that is prior to the current character position.</summary>
+        <summary>派生クラスでオーバーライドされると、原因を次に呼び出した、 <see cref="M:System.Text.EncoderFallbackBuffer.GetNextChar" /> メソッドは現在の文字位置の前に、データ バッファーの文字位置にアクセスします。</summary>
         <returns>
-          <see langword="true" /> if the <see cref="M:System.Text.EncoderFallbackBuffer.MovePrevious" /> operation was successful; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合、 <see cref="M:System.Text.EncoderFallbackBuffer.MovePrevious" /> 操作が成功した以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception fallback handler should return `false`.  
+## 解説  
+ 例外フォールバック ハンドラーが返す必要があります `false`します。  
   
  ]]></format>
         </remarks>
@@ -286,16 +298,19 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>When overridden in a derived class, gets the number of characters in the current <see cref="T:System.Text.EncoderFallbackBuffer" /> object that remain to be processed.</summary>
-        <value>The number of characters in the current fallback buffer that have not yet been processed.</value>
+        <summary>派生クラスでオーバーライドされた場合は、現在の文字数を取得 <see cref="T:System.Text.EncoderFallbackBuffer" /> 処理するための残存オブジェクトです。</summary>
+        <value>まだ処理されていない現在のフォールバック バッファー内の文字の数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> method returns `true` if <xref:System.Text.EncoderFallbackBuffer.Remaining%2A> is a nonzero value.  
+## 解説  
+ <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> メソッドが返す `true` 場合 <xref:System.Text.EncoderFallbackBuffer.Remaining%2A> は 0 以外の値。  
   
- For an exception fallback handler, the <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> method should return zero.  
+ 例外フォールバック ハンドラーで、 <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> メソッドは、0 を返す必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -327,12 +342,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Initializes all data and state information pertaining to this fallback buffer.</summary>
+        <summary>このフォールバック バッファーに関連するすべてのデータと状態情報を初期化します。</summary>
         <remarks>To be added.</remarks>
         <block subset="none" type="overrides">
           <para>After calling the <see cref="M:System.Text.EncoderFallbackBuffer.Reset" /> method, the <see cref="P:System.Text.EncoderFallbackBuffer.Remaining" /> property should return 0, the <see cref="M:System.Text.EncoderFallbackBuffer.GetNextChar" /> method should return U+0000, and the <see cref="M:System.Text.EncoderFallbackBuffer.MovePrevious" /> method should return <see langword="false" />.</para>
         </block>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Fallback">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>代替文字列を元の入力をエンコードできないとき、または元の入力を無視するかどうかが使用できるかどうかを示します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

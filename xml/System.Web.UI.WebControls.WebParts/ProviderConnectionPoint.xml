@@ -11,69 +11,71 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Defines a connection point object that enables a server control acting as a provider to form a connection with a consumer.</summary>
+    <summary>プロバイダーがコンシューマーとの接続を構成するプロバイダーとして機能するサーバー コントロールを有効にする接続ポイント オブジェクトを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In every Web Parts connection between two server controls, each control must have (among other requirements) an associated connection point object that enables it to connect to the other control and to either provide or consume data, depending on whether the control is designated as the provider or consumer for the connection. A <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> object in general contains the details for how a control can connect to another control and the type of data it can share. For a control acting as the provider in a connection, its connection point must be a <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object. For details on Web Parts connections and connection points, see the topics listed in the See Also section below.  
+## 解説  
+ すべての Web パーツには、2 つのサーバー コントロールの間の接続が、各コントロールは、その他のコントロールへの接続とを指定するか、プロバイダーまたは接続のコンシューマーと、コントロールが指定されているかどうかに応じて、データを使用できるようにするに関連付けられた接続ポイント オブジェクトの中でその他の要件\) が必要です。 A <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> オブジェクトには一般に他のコントロールと共有できるデータの種類にコントロールを接続する方法の詳細が含まれています。 接続でプロバイダーとして機能するコントロール、その接続ポイントがある必要があります、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトです。 詳細については、Web パーツ接続と接続ポイントは、下にある「参照」セクションのトピックを参照してください。  
   
- To create a <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object, several steps are required:  
+ 作成する、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトのいくつかの手順が必要。  
   
-1.  Create an interface. When a provider shares data with a consumer, it does so by getting an instance of an interface, and returning that instance to a consumer.  
+1.  インターフェイスを作成します。 プロバイダーがコンシューマーとプロバイダーの共有データをするときにこれは、インターフェイスのインスタンスを取得し、消費者にそのインスタンスを返すことで。  
   
-2.  Implement the interface in a provider. A <xref:System.Web.UI.WebControls.WebParts.WebPart> or other server control (any type of server control in a <xref:System.Web.UI.WebControls.WebParts.WebPartZoneBase> zone can be used) that will be the provider must implement the interface created in the first step.  
+2.  プロバイダーのインターフェイスを実装します。 A <xref:System.Web.UI.WebControls.WebParts.WebPart> またはその他のサーバー コントロール \(任意の種類でのサーバー コントロールの <xref:System.Web.UI.WebControls.WebParts.WebPartZoneBase> ゾーンを使用できます\) を付ける、プロバイダーは、最初の手順で作成されたインターフェイスを実装する必要があります。  
   
-3.  Identify a callback method. A method in the provider must be identified as the callback method to establish a connection. This method returns an instance of the implemented interface to a consumer. The Web Parts approach for identifying a callback method in the provider is to add a `ConnectionProvider` metadata attribute (defined by the <xref:System.Web.UI.WebControls.WebParts.ConnectionProviderAttribute> class) to the method that returns the interface instance. When the attribute is added, the only required parameter is a display name to use for the provider connection point. Optional parameters can also be added, such as an ID for the connection point.  
+3.  コールバック メソッドを識別します。 プロバイダーのメソッドは、接続を確立するコールバック メソッドとして識別する必要があります。 このメソッドは、コンシューマーに実装されたインターフェイスのインスタンスを返します。 プロバイダーのコールバック メソッドを識別するための Web パーツのアプローチは、追加する、 `ConnectionProvider` メタデータ属性 \(によって定義された、 <xref:System.Web.UI.WebControls.WebParts.ConnectionProviderAttribute> クラス\) をインターフェイスのインスタンスを返すメソッドにします。 属性が追加されると、プロバイダー接続ポイントとして使用する表示名は唯一の必須パラメーターです。 コネクション ポイントの ID などは、省略可能なパラメーターが追加されるもできます。  
   
- After a control has been equipped to act as a provider, the control can participate in connections (assuming that a consumer control is similarly equipped and available). To create a static, declarative connection in the markup of a Web page, developers can use the `<asp:webpartconnection>` element. If the `ConnectionProvider` attribute in the provider source code that identifies the callback method specifies an ID for the connection point, then that value must be assigned to the `ProviderConnectionPointID` attribute in the `<asp:webpartconnection>` element on a page. One reason that a developer might specify an ID for a provider connection point is if there are multiple connection points in the provider control. If an ID is not specified for the provider connection point in the provider control, a value does not have to be assigned to the `ProviderConnectionPointID` attribute in the page either, because the connection will be created using a default value obtained from the <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.DefaultID> field.  
+ プロバイダーとして機能するコントロールが与えられて後、は、コントロールが \(コンシューマー コントロールに装備され使用可能なが同様にあると仮定\) の接続に参加できます。 Web ページのマークアップで、宣言型の静的な接続を作成する開発者が使用できる、 `<asp:webpartconnection>` 要素。 場合、 `ConnectionProvider` コールバック メソッドを識別するプロバイダーのソース コード内の属性は、接続ポイントに ID を指定し、その値を割り当てる必要があります、 `ProviderConnectionPointID` 属性、 `<asp:webpartconnection>` ページの要素。 開発者がプロバイダーの接続ポイントの ID を指定する 1 つの理由は、プロバイダー コントロールに複数のコネクション ポイントがあるかどうかです。 割り当てられる値がないプロバイダー コントロールでのプロバイダー接続ポイントの ID を指定しない場合、 `ProviderConnectionPointID` から取得した既定値を使用して、接続が作成するためのページで、属性、 <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.DefaultID> フィールドです。  
   
- To create a connection in code, developers must create a new <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object by calling the <xref:System.Web.UI.WebControls.WebParts.WebPartManager.GetProviderConnectionPoints%2A> method and passing to it the ID of the provider control, along with the ID or index of the defined <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object in the provider control. The returned <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object, along with a reference to the provider control, a reference to the consumer control, and a corresponding <xref:System.Web.UI.WebControls.WebParts.ConsumerConnectionPoint> object, are all passed to the <xref:System.Web.UI.WebControls.WebParts.WebPartManager.ConnectWebParts%2A> method to create a new <xref:System.Web.UI.WebControls.WebParts.WebPartConnection> object.  
+ コード内の接続を作成するには、開発者を新規に作成する必要があります <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトを呼び出して、 <xref:System.Web.UI.WebControls.WebParts.WebPartManager.GetProviderConnectionPoints%2A> メソッドと ID または定義済のインデックスと共に、プロバイダー コントロールの ID を渡す <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> プロバイダー コントロール内のオブジェクト。 返された <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> プロバイダー コントロールへの参照と共に、コンシューマー コントロールと、対応するへの参照をオブジェクト <xref:System.Web.UI.WebControls.WebParts.ConsumerConnectionPoint> オブジェクトはすべてに渡される、 <xref:System.Web.UI.WebControls.WebParts.WebPartManager.ConnectWebParts%2A> を新規に作成メソッド <xref:System.Web.UI.WebControls.WebParts.WebPartConnection> オブジェクトです。  
   
- Although developers can use provider connection points as part of establishing connections either declaratively or programmatically, users can also interact with provider connection points to establish connections through the user interface (UI). If developers declare a <xref:System.Web.UI.WebControls.WebParts.ConnectionsZone> control on a Web page, it provides a run-time UI for users to create connections. If users choose the consumer control as the starting point for establishing the connection by clicking its connect verb (they could also choose the provider; there is no difference in the resulting connection), in the UI they will see a drop-down list control with the display name of the available provider connection point (or points if there are multiple ones). Users must select a provider connection point to create a connection.  
+ 開発者は、宣言やプログラムによって接続の確立の一部として、プロバイダー接続ポイントを使用できますが、ユーザーもユーザー インターフェイス \(UI\) を介して接続を確立するプロバイダー接続ポイントと対話できます。 開発者は、宣言する場合、 <xref:System.Web.UI.WebControls.WebParts.ConnectionsZone> コントロール、Web ページ上の接続を作成するランタイムの UI を提供します。 ユーザーをクリックして、接続を確立するための開始点として、コンシューマー コントロールを選択する場合、connect 動詞 \(プロバイダーを選択することも、確立された接続に違いはありません\)、使用可能なプロバイダー接続ポイント \(またはポイントが複数の場合\) の表示名のドロップダウン リスト コントロールが UI に表示されます。 ユーザーは、接続を作成するプロバイダー接続ポイントを選択する必要があります。  
   
- A <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object associates directly with a specific provider control, and stores details about a connection in the properties it inherits from the base <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> class. For example, in the inherited <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.InterfaceType%2A> property, a provider connection point keeps the type of interface returned by the provider. If the provider and consumer in a connection both work with the same interface type, the controls are compatible and capable of forming a direct connection. If the provider and consumer cannot work with the same interface type, they are incompatible and must use a <xref:System.Web.UI.WebControls.WebParts.WebPartTransformer> object to translate the provider connection point's <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.InterfaceType%2A> value into a type that the consumer can work with. Another important inherited property is the <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.DisplayName%2A> property, which provides a friendly name to display in the UI for users to choose a provider connection point when creating connections. The display name is the required parameter when developers add a `ConnectionProvider` attribute to the callback method in a provider control. The inherited <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.ID%2A> property is also useful, as indicated above, because it provides a unique identifier for a provider connection point in the event that a provider has multiple connection points. A provider can have multiple <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> objects defined in it, and in this case, when developers add the `ConnectionProvider` attribute to a method, they should specify an ID value to distinguish each connection point. One other notable inherited property is the <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.AllowsMultipleConnections%2A> property, which indicates whether a provider connection point can connect simultaneously to multiple consumers. This property value is `true` by default for provider connection points (whereas it defaults to `false` for consumer connection points).  
+ A <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトは、特定のプロバイダーのコントロールを直接関連付けます、基本から継承プロパティでの接続に関する詳細情報が格納 <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> クラスです。 などで、継承された <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.InterfaceType%2A> プロパティには、プロバイダー接続ポイントが、プロバイダーによって返されるインターフェイスの型を保持します。 プロバイダーとコンシューマー両方が扱う同じ接続では、インターフェイスの種類、コントロールを設定するは互換性のあるおよび対応の直接接続を構成するのです。 互換性がありませんし、使用する必要がありますと同じインターフェイス型プロバイダーとコンシューマーが機能できない場合、 <xref:System.Web.UI.WebControls.WebParts.WebPartTransformer> プロバイダー接続ポイントを変換するオブジェクト <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.InterfaceType%2A> 、コンシューマーが使用できる型に値です。 もう 1 つの重要な継承されたプロパティは、 <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.DisplayName%2A> をプロバイダーの接続を選択するユーザーの UI に表示する表示名を提供するプロパティが接続を作成するときにポイントします。 開発者は、追加すると、表示名は必須パラメーター、 `ConnectionProvider` 属性をプロバイダー コントロールのコールバック メソッド。 継承された <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.ID%2A> プロパティはプロバイダーが複数の接続ポイントを持つこと、プロバイダーの接続ポイントの一意の識別子を提供しているため、上記の説明に従って、便利です。 プロバイダーでは複数 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトで定義されていますが、ここでは開発者の追加と、 `ConnectionProvider` 属性をメソッドに各接続ポイントを区別するために ID 値を指定する必要があります。 他の注目すべき継承されたプロパティは 1 つは、 <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint.AllowsMultipleConnections%2A> プロパティで、プロバイダー接続ポイントが複数のコンシューマーに同時に接続できるかどうかを示します。 このプロパティの値が `true` 既定では、プロバイダー接続ポイント \(既定値は、 `false` コンシューマー接続ポイント\)。  
   
- The <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> class adds several unique methods to the members it inherits from the <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> class. The <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> method retrieves an instance of the interface that the callback method will return to consumers. The <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetSecondaryInterfaces%2A> method retrieves additional consumer interfaces that are part of an existing connection, but are not the interfaces used to establish the connection.  
+ <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> 固有のいくつかのメソッドを追加するクラスから継承してメンバーに、 <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> クラスです。<xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> メソッドは、コールバック メソッドをコンシューマーに返すインターフェイスのインスタンスを取得します。<xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetSecondaryInterfaces%2A> メソッドが既存の接続の一部である追加の消費者のインターフェイスを取得しますが、インターフェイスではない接続を確立するために使用します。  
   
    
   
-## Examples  
- The following code example shows simple ways to create a connection declaratively, programmatically, or through the UI, in each case making use of a provider connection point.  
+## 例  
+ 次のコード例では、宣言によって、接続を作成、プログラム、または UI の各ケースでは、プロバイダー接続ポイントを使用する簡単な方法を示します。  
   
- The example has four parts:  
+ この例では、4 つの部分があります。  
   
--   A user control that enables you to change the Web Parts display mode on a page.  
+-   Web パーツを変更することができますユーザー コントロールは、ページのモードを表示します。  
   
--   Source code for an interface and two <xref:System.Web.UI.WebControls.WebParts.WebPart> controls acting as the provider and the consumer for a connection.  
+-   インターフェイスと 2 つのコードをソース <xref:System.Web.UI.WebControls.WebParts.WebPart> プロバイダーと接続のコンシューマーとしての動作を制御します。  
   
--   A Web page to host all the controls and run the code example.  
+-   すべてのコントロールをホストし、コード例を実行する Web ページ。  
   
--   An explanation of how to run the example page.  
+-   ページの例を実行する方法の説明です。  
   
- The first part of this code example is the user control that enables users to change display modes on a Web page. Save the following source code to an .ascx file, giving it the file name that is assigned to the `Src` attribute of the `Register` directive for this user control, which is near the top of the hosting Web page. For details about display modes and a description of the source code in this control, see [Walkthrough: Changing Display Modes on a Web Parts Page](http://msdn.microsoft.com/library/24e42f74-82dc-4c13-8574-130398985fc0).  
+ このコード例の最初の部分は、ユーザーが Web ページの表示モードを変更できるユーザー コントロールです。 割り当てられているファイル名を付けます .ascx ファイルに次のソース コードを保存、 `Src` の属性、 `Register` ホストする Web ページの上部にあるディレクティブは、このユーザー コントロールをします。 詳細については、このコントロールのモードとソース コードの説明を表示、参照してください [Walkthrough: Changing Display Modes on a Web Parts Page](http://msdn.microsoft.com/ja-jp/24e42f74-82dc-4c13-8574-130398985fc0)します。  
   
- <!-- TODO: review snippet reference [!code-csharp[WebParts_ConnectionPoint_Overview#6](~/samples/snippets/csharp/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/CS/displaymodemenucs.ascx#6)]  -->
- <!-- TODO: review snippet reference [!code-vb[WebParts_ConnectionPoint_Overview#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/VB/DisplayModeMenuVB.ascx#6)]  -->  
+ [!code-csharp[WebParts\_ConnectionPoint\_Overview\#6](~/samples/snippets/csharp/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/CS/displaymodemenucs.ascx#6)]
+ [!code-vb[WebParts\_ConnectionPoint\_Overview\#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/VB/DisplayModeMenuVB.ascx#6)]  
   
- The second part of the code example is the source code for the interface and controls. The source file contains a simple interface named `IZipCode`. There is also a <xref:System.Web.UI.WebControls.WebParts.WebPart> class named `ZipCodeWebPart` that implements the interface and acts as the provider control. Its `ProvideIZipCode` method is the callback method that implements the interface's only member. The method simply returns an instance of the interface. Note that the method is marked with a `ConnectionProvider` attribute in its metadata. This is the mechanism for identifying the method as the callback method for the provider's connection point. The other <xref:System.Web.UI.WebControls.WebParts.WebPart> class is named `WeatherWebPart`, and it acts as the consumer for the connection. This class has a method named `GetZipCode` that gets an instance of the `IZipCode` interface from the provider control. Note that this method is marked as the consumer's connection point method with a `ConnectionConsumer` attribute in its metadata. This is the mechanism for identifying the connection point method in the consumer control.  
+ コード例の 2 番目の部分では、インターフェイスとコントロールのソース コードを示します。 ソース ファイルには、という名前の単純なインターフェイスが含まれています。 `IZipCode`します。<xref:System.Web.UI.WebControls.WebParts.WebPart> という名前のクラス `ZipCodeWebPart` インターフェイスを実装であり、プロバイダー コントロールとして機能します。 その `ProvideIZipCode` メソッドは、インターフェイスの唯一のメンバーを実装するコールバック メソッド。 メソッドは、単に、インターフェイスのインスタンスを返します。 メソッドが表示されているメモ、 `ConnectionProvider` メタデータ内の属性です。 これは、プロバイダーの接続ポイントのコールバック メソッドとしてメソッドを識別するためのメカニズムです。 他の <xref:System.Web.UI.WebControls.WebParts.WebPart> クラスの名前は `WeatherWebPart`, 、接続のコンシューマーとして機能するとします。 このクラスはという名前のメソッドを持つ `GetZipCode` のインスタンスを取得する、 `IZipCode` プロバイダー コントロールからのインターフェイスです。 このメソッドとコンシューマーのコネクション ポイントのメソッドとしてマークされることに注意してください、 `ConnectionConsumer` メタデータ内の属性です。 これは、コンシューマー コントロールに接続ポイント メソッドを識別するためのメカニズムです。  
   
- For the code example to run, you must compile this source code. You can compile it explicitly and put the resulting assembly in your Web site's Bin folder or the global assembly cache. Alternatively, you can put the source code in your site's App_Code folder, where it will be dynamically compiled at run time. This code example uses dynamic compilation. For a walkthrough that demonstrates how to compile, see [Walkthrough: Developing and Using a Custom Web Server Control](http://msdn.microsoft.com/library/6d90782a-a1a4-45a6-b2d4-cf6362b83b08).  
+ このコード例を実行するには、このソース コードをコンパイルする必要があります。 明示的にコンパイルし、Web サイトの Bin フォルダーまたはグローバル アセンブリ キャッシュに、生成されたアセンブリを配置できます。 また、ここで、動的にコンパイル実行時に、サイトの App\_Code フォルダーにソース コードを配置することができます。 このコード例では、動的なコンパイルを使用します。 コンパイルする方法について説明するチュートリアルは、次を参照してください。 [Walkthrough: Developing and Using a Custom Server Control](http://msdn.microsoft.com/ja-jp/6d90782a-a1a4-45a6-b2d4-cf6362b83b08)します。  
   
- [!code-csharp[WebParts_ConnectionPoint_Overview#2](~/samples/snippets/csharp/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/CS/ZipCodeComponent.cs#2)]
- [!code-vb[WebParts_ConnectionPoint_Overview#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/VB/ZipCodeComponent.vb#2)]  
+ [!code-csharp[WebParts\_ConnectionPoint\_Overview\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/CS/ZipCodeComponent.cs#2)]
+ [!code-vb[WebParts\_ConnectionPoint\_Overview\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/VB/ZipCodeComponent.vb#2)]  
   
- The third part of the code example is the Web page. Near the top are `Register` directives to register the custom controls that form the connection, and the user control that enables users to change display modes on the page. The connection itself is created declaratively within the `<staticconnections>` element on the page. This demonstrates one way of creating a connection--note the `ProviderConnectionPointID` attribute in the `<asp:webpartconnection>` element. You can also create the connection programmatically; the code for doing that is in the `Button1_Click` method. In this case, a <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object is created and then passed to a method that creates the actual connection. Whether the connection is created declaratively or programmatically, connection points must always be specified for both the provider and the consumer. The `Button2_Click` method accesses the <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> objects for both the provider and the consumer, and writes some of their property values to a label in the page.  
+ コード例の 3 番目の部分は、Web ページです。 上部にある、 `Register` 、接続を構成するカスタム コントロール、および変更できるように、ユーザー コントロールに登録するためのディレクティブは、モードをページに表示します。 接続が内に宣言によって作成された、 `<staticconnections>` ページ上の要素。 これは、接続を作成する 1 つの方法\-メモ、 `ProviderConnectionPointID` 属性、 `<asp:webpartconnection>` 要素。 プログラムで接続を作成することもできます。これを行うためのコードは、 `Button1_Click` メソッドです。 ここで、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトが作成され、実際の接続を作成するメソッドに渡されます。 宣言またはプログラムによって、接続が作成されるかどうかコネクション ポイントは、コンシューマーとプロバイダーの常に指定する必要があります。`Button2_Click` メソッドへのアクセス、 <xref:System.Web.UI.WebControls.WebParts.ConnectionPoint> 、コンシューマーとプロバイダーの両方のオブジェクトし、そのプロパティ値の一部をページ内のラベルに書き込みます。  
   
- <!-- TODO: review snippet reference [!code-csharp[WebParts_ConnectionPoint_Overview#1](~/samples/snippets/csharp/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/CS/connectionPointCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[WebParts_ConnectionPoint_Overview#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/VB/connectionPointVB.aspx#1)]  -->  
+ [!code-csharp[WebParts\_ConnectionPoint\_Overview\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/CS/connectionPointCS.aspx#1)]
+ [!code-vb[WebParts\_ConnectionPoint\_Overview\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/WebParts_ConnectionPoint_Overview/VB/connectionPointVB.aspx#1)]  
   
- After you load the page in a browser, click the **Connection Point Details** button. Information about the provider and consumer connection points established in the declarative connection appears. Next, use the **Display Mode** drop-down control to switch the page into connect mode. On the verbs menu of the **ZIP Code Consumer**<xref:System.Web.UI.WebControls.WebParts.WebPart> control (represented by a downward arrow in the title bar), click the connect verb. The connection UI appears, created automatically by the `<asp:connectionszone>` control declared in the page. This is another way of creating a connection (through the UI), along with the declarative and programmatic methods discussed earlier. Click the **Disconnect** button to terminate the existing static connection. Click the **Create a Connection to a Provider** link. The UI now displays a drop-down control that lists the provider connection point display name. Select the connection point in the drop-down list, and then click **Connect** to complete the connection. Next, click **Disconnect** again. Then, click the **Dynamic Connection** button to create a connection programmatically. Use the **Display Mode** control to return the page to browse mode. Click the **Connection Point Details** button again, to once more indicate details about the provider connection point object.  
+ ブラウザーでページを読み込んだ後、 **コネクション ポイントの詳細** \] ボタンをクリックします。 宣言型の接続で確立されたプロバイダーとコンシューマー接続ポイントに関する情報が表示されます。 次に、使用、 **表示モード** 接続モードのドロップダウン コントロールをページに切り替えます。 動詞メニューを開き、 **郵便コンシューマー**<xref:System.Web.UI.WebControls.WebParts.WebPart> コントロール \(タイトル バーの下向きの矢印で表される\)、connect 動詞をクリックします。 UI が表示されたら、接続がによって自動的に作成された、 `<asp:connectionszone>` コントロール、ページで宣言します。 これは、既に説明した宣言型およびプログラムによる方法と共に \(UI\) を経由して接続を作成する別の方法です。 クリックして、 **切断** を既存の静的な接続を終了する\] ボタンをクリックします。 クリックして、 **プロバイダーへの接続を作成する** リンクします。 UI では、プロバイダー接続ポイントの表示名を一覧表示するドロップダウン コントロールが表示されます。 ドロップダウン リストで、接続ポイントを選択し、クリックして **接続** 、接続を完了します。 次に、クリックして **切断** 再度します。 クリックして、 **動的接続** プログラムを使用して接続を作成する\] ボタンをクリックします。 使用して、 **表示モード** ページをブラウズ モードを返すときにします。 クリックして、 **接続ポイントの詳細** \] をもう一度プロバイダー接続ポイントのオブジェクトに関する詳細情報を示すために再度します。  
   
- The example has demonstrated establishing a connection and using a provider connection point in three ways: a static connection declared in the Web page markup; a connection created in code that used a <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object; and a connection created by a user through the connection UI.  
+ この例では接続を確立して、次の 3 つの方法でプロバイダー接続ポイントを使用してを示しました Web ページのマークアップで宣言された静的な接続。使用するコードで作成した接続、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクト、およびユーザー接続の UI を使って作成された接続。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Web.UI.WebControls.WebParts.WebPartConnection" />
+    <altmember cref="T:System.Web.UI.WebControls.WebParts.ConsumerConnectionPoint" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -94,64 +96,68 @@
         <Parameter Name="allowsMultipleConnections" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="callbackMethod">The method in the provider control that returns an interface instance to consumers to establish a connection.</param>
-        <param name="interfaceType">The <see cref="T:System.Type" /> of the interface that the provider serves to consumers.</param>
-        <param name="controlType">The <see cref="T:System.Type" /> of the provider control with which the provider connection point is associated.</param>
-        <param name="displayName">A friendly display name for the provider connection point that appears to users in the connection user interface (UI).</param>
-        <param name="id">A unique identifier for the provider connection point.</param>
-        <param name="allowsMultipleConnections">A Boolean value indicating whether the provider connection point can have multiple simultaneous connections with consumers.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint" /> class.</summary>
+        <param name="callbackMethod">接続を確立するコンシューマーにインターフェイスのインスタンスを返すプロバイダー コントロールのメソッド。</param>
+        <param name="interfaceType">
+          <see cref="T:System.Type" /> のプロバイダーがコンシューマーに提供するインターフェイスです。</param>
+        <param name="controlType">
+          <see cref="T:System.Type" /> のプロバイダー接続ポイントが関連付けられているプロバイダー コントロールです。</param>
+        <param name="displayName">接続のユーザー インターフェイス \(UI\) 内のユーザーに表示されるプロバイダー接続ポイントの表示名。</param>
+        <param name="id">プロバイダー接続ポイントの一意の識別子。</param>
+        <param name="allowsMultipleConnections">プロバイダー接続ポイントがコンシューマーと複数の同時接続を保持できるかどうかを示すブール値。</param>
+        <summary>
+          <see cref="T:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.%23ctor%2A> constructor for the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> class simply calls the base constructor, passing to it the various parameters and initializing the base class.  
+## 解説  
+ <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.%23ctor%2A> のコンス トラクター、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> クラスが基本のコンス トラクターのさまざまなパラメーターを渡すと、基本クラスの初期化を呼び出すだけです。  
   
- The base class constructor checks a number of the parameters for a connection point and can throw several exceptions. For a list of possible exceptions, see the Exceptions section.  
+ 基本クラス コンス トラクターでは、接続ポイントのパラメーターの数を確認し、いくつかの例外をスローすることができます。 可能性のある例外の一覧は、例外を参照してください。  
   
- You can call the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.%23ctor%2A> constructor to create your own instance of the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> class. However, in cases where you are simply establishing a connection and not extending the class, you should call the <xref:System.Web.UI.WebControls.WebParts.WebPartManager.GetProviderConnectionPoints%2A> method to return an existing connection point object from a provider.  
+ 呼び出すことができます、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.%23ctor%2A> のインスタンスを作成するコンス トラクター、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> クラスです。 ただし、単に接続が確立され、クラスを拡張しないお住まいの場合を呼び出す必要があります、 <xref:System.Web.UI.WebControls.WebParts.WebPartManager.GetProviderConnectionPoints%2A> プロバイダーの既存の接続ポイント オブジェクトを返します。  
   
    
   
-## Examples  
- The following code example demonstrates how to derive from the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> class to create a custom provider connection point.  
+## 例  
+ 派生する次のコード例には、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> カスタム プロバイダー接続ポイントを作成するクラス。  
   
- The code example has three parts:  
+ このコード例には、3 つの部分があります。  
   
--   A source file that contains a provider <xref:System.Web.UI.WebControls.WebParts.WebPart> control, a consumer <xref:System.Web.UI.WebControls.WebParts.WebPart> control, and a custom <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object.  
+-   プロバイダーを含むソース ファイル <xref:System.Web.UI.WebControls.WebParts.WebPart> を制御するコンシューマー <xref:System.Web.UI.WebControls.WebParts.WebPart> 制御、およびカスタム <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトです。  
   
--   A Web page that hosts the controls in a static connection.  
+-   静的な接続のコントロールをホストする Web ページ。  
   
--   An explanation of how to run the example code.  
+-   コード例を実行する方法の説明です。  
   
- The first part of the code example is the source for the provider and consumer <xref:System.Web.UI.WebControls.WebParts.WebPart> controls, and a custom <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> class, named `TableProviderConnectionPoint`. Note that the constructor of the `TableProviderConnectionPoint` class calls the base constructor, passing it the required parameters as indicated in the Parameters section. Also note that in the `TableProviderWebPart` class, the `GetConnectionInterface` method is specified as the callback method for connections, and the `ConnectionProvider` attribute declares the custom `TableProviderConnectionPoint` as a parameter. This demonstrates how to create a custom provider connection point and then associate it with a provider control. This example assumes that the source code is dynamically compiled, so you should place the source code file in an App_Code subfolder of your Web application.  
+ このコード例の最初の部分は、プロバイダーとコンシューマーのソース <xref:System.Web.UI.WebControls.WebParts.WebPart> コントロール、およびカスタム <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> という名前のクラス `TableProviderConnectionPoint`します。 なおのコンス トラクター、 `TableProviderConnectionPoint` クラスは、必須のパラメーターを渡すパラメーター セクションに示されていると、基本コンス トラクターを呼び出します。 注意してください、 `TableProviderWebPart` クラス、 `GetConnectionInterface` メソッドは、接続のコールバック メソッドとして指定し、 `ConnectionProvider` 属性宣言、カスタム `TableProviderConnectionPoint` をパラメーターとして。 これは、カスタム プロバイダー接続ポイントを作成し、それをプロバイダー コントロールに関連付ける方法を示しています。 この例では、ソース コードがコンパイルが動的に、Web アプリケーションの App\_Code サブフォルダーにソース コード ファイルを配置する必要があります。  
   
- [!code-csharp[UI.WebControls.WebParts.ProviderConnectionPoint#1](~/samples/snippets/csharp/VS_Snippets_WebNet/UI.WebControls.WebParts.ProviderConnectionPoint/CS/connectionControls.cs#1)]  
+ [!code-csharp[UI.WebControls.WebParts.ProviderConnectionPoint\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/UI.WebControls.WebParts.ProviderConnectionPoint/CS/connectionControls.cs#1)]  
   
- The second part of the code example is the Web page that hosts the custom controls in a static Web Parts connection. At the top of the page is a `Register` directive to declare a prefix and the namespace for the custom controls. The connection is declared by using an `<asp:webpartconnection>` element, and the provider and consumer controls are declared within an `<asp:webpartzone>` element.  
+ コード例の 2 番目の部分は、静的な Web パーツ接続でカスタム コントロールをホストする Web ページです。 ページの上部には、 `Register` ディレクティブで使用すると、プレフィックスとカスタム コントロールの名前空間を宣言します。 使用して、接続が宣言されている、 `<asp:webpartconnection>` 要素、およびプロバイダーとコンシューマーのコントロールは、内で宣言、 `<asp:webpartzone>` 要素。  
   
- <!-- TODO: review snippet reference [!code-csharp[UI.WebControls.WebParts.ProviderConnectionPoint#3](~/samples/snippets/csharp/VS_Snippets_WebNet/UI.WebControls.WebParts.ProviderConnectionPoint/CS/defaultcs.aspx#3)]  -->  
+ [!code-csharp[UI.WebControls.WebParts.ProviderConnectionPoint\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/UI.WebControls.WebParts.ProviderConnectionPoint/CS/defaultcs.aspx#3)]  
   
- Load the page in a browser. The connection between the controls already exists, and the consumer displays the data from the provider, because the connection was declared as a static connection in the page.  
+ ブラウザーでページを読み込みます。 既にコントロール間の接続が存在し、ページの静的な接続として接続が宣言されているために、コンシューマーが、プロバイダーからデータを表示します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="callbackMethod" /> is <see langword="null" />.  
+          <paramref name="callbackMethod" /> は <see langword="null" /> です。  
   
- \- or -  
+ または  
   
- <paramref name="interfaceType" /> is <see langword="null" />.  
+ <paramref name="interfaceType" /> は <see langword="null" /> です。  
   
- \- or -  
+ または  
   
- <paramref name="controlType" /> is <see langword="null" />.  
+ <paramref name="controlType" /> は <see langword="null" /> です。  
   
- \- or -  
+ または  
   
- <paramref name="displayName" /> is <see langword="null" /> or an empty string ("").</exception>
+ <paramref name="displayName" /> <see langword="null" /> または空の文字列 \(""\) です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="controlType" /> is not the same type as the provider control (or a valid class derived from it).</exception>
+          <paramref name="controlType " />プロバイダー コントロールと同じ型ではありません \(またはそこから派生した有効なクラス\)。</exception>
+        <altmember cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.GetProviderConnectionPoints(System.Web.UI.WebControls.WebParts.WebPart)" />
       </Docs>
     </Member>
     <Member MemberName="GetObject">
@@ -170,23 +176,24 @@
         <Parameter Name="control" Type="System.Web.UI.Control" />
       </Parameters>
       <Docs>
-        <param name="control">The control acting as the provider in a Web Parts connection.</param>
-        <summary>Invokes the callback method in a provider control that gets an interface instance to return to consumers.</summary>
-        <returns>An <see cref="T:System.Object" /> that is an instance of the interface a provider returns to consumers to establish a connection.</returns>
+        <param name="control">Web パーツの接続でプロバイダーとして機能するコントロール。</param>
+        <summary>コンシューマーに返すインターフェイス インスタンスを取得する、プロバイダー コントロールでのコールバック メソッドを呼び出します。</summary>
+        <returns>
+          <see cref="T:System.Object" /> は接続を確立するコンシューマーにプロバイダーのインターフェイスのインスタンスを返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method returns an object from the provider control that is an instance of the interface used to establish a connection. The type of the object will be the type of the implemented interface. For example, two interfaces that are implemented for connections in the Web Parts control set are <xref:System.Web.UI.WebControls.WebParts.IWebPartField> and <xref:System.Web.UI.WebControls.WebParts.IWebPartRow>. When the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> method is called on a <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object, if the associated provider implements one of these interfaces, the returned object will be of the same type.  
+## 解説  
+ このメソッドは、接続を確立するために使用されるインターフェイスのインスタンスは、プロバイダー コントロールからオブジェクトを返します。 オブジェクトの型は、実装済みインターフェイスの型になります。 たとえば、2 つのインターフェイス コントロール セットには Web パーツの接続に対して実装される <xref:System.Web.UI.WebControls.WebParts.IWebPartField> と <xref:System.Web.UI.WebControls.WebParts.IWebPartRow>です。 ときに、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> メソッドが、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクト、関連付けられているプロバイダーでは、これらのインターフェイスを実装して、返されたオブジェクトで、同じ種類のなります。  
   
- The <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> method is called by <xref:System.Web.UI.WebControls.WebParts.WebPartConnection> objects when a connection is being activated. This is a critical step that actually initiates a connection and begins the process that enables two controls to share data.  
+ <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> メソッドによって呼び出されます <xref:System.Web.UI.WebControls.WebParts.WebPartConnection> オブジェクトの接続をアクティブ化時にします。 これは、実際には接続を開始し、2 つのコントロールでデータを共有できるようにする処理を開始する重要なステップです。  
   
- The consumer control in a connection must be able to work with the same type of interface as the provider. If it does not, the controls are incompatible and a <xref:System.Web.UI.WebControls.WebParts.WebPartTransformer> object must be used to establish a connection.  
+ 接続のコンシューマー コントロールは、プロバイダーと同じ型のインターフェイスを使用できる必要があります。 コントロールとの互換性がない場合はそうでないと、 <xref:System.Web.UI.WebControls.WebParts.WebPartTransformer> オブジェクトは、接続を確立するために使用する必要があります。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="control" /> is <see langword="null" />.</exception>
+          <paramref name="control" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetSecondaryInterfaces">
@@ -205,16 +212,16 @@
         <Parameter Name="control" Type="System.Web.UI.Control" />
       </Parameters>
       <Docs>
-        <param name="control">The control acting as the provider in a Web Parts connection.</param>
-        <summary>Gets an optional collection of secondary interfaces that can be supported by a provider connection point.</summary>
-        <returns>A <see cref="T:System.Web.UI.WebControls.WebParts.ConnectionInterfaceCollection" /> of additional interfaces provided by the control acting as a provider.</returns>
+        <param name="control">Web パーツの接続でプロバイダーとして機能するコントロール。</param>
+        <summary>プロバイダー接続ポイントによるサポート可能なセカンダリのインターフェイスのオプションのコレクションを取得します。</summary>
+        <returns>A <see cref="T:System.Web.UI.WebControls.WebParts.ConnectionInterfaceCollection" /> プロバイダーとして機能するコントロールによって提供されるインターフェイスが追加されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A provider connection point object always has a default interface that is used to establish a connection with consumers. An instance of the default interface is retrieved by calling the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> method on a <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> object.  
+## 解説  
+ プロバイダー接続ポイントのオブジェクトは、常にコンシューマーとの接続を確立するために使用される既定のインターフェイスを持ちます。 既定のインターフェイスのインスタンスを呼び出すことによって取得、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> メソッドを <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint> オブジェクトです。  
   
- However, some provider controls will implement multiple interfaces to provide to consumers as part of a connection. These interfaces, which are not the default ones used to establish a connection, are called secondary interfaces. The <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetSecondaryInterfaces%2A> method provides a way to return a collection of references to the secondary interfaces, just as the <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> method returns a reference to the default interface.  
+ ただし、一部のプロバイダー コントロールは、接続文字列の一部としてコンシューマーに提供する複数のインターフェイスを実装します。 これらのインターフェイスでは、既定の接続を確立するために使用するものではないは、セカンダリ インターフェイスと呼ばれます。<xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetSecondaryInterfaces%2A> メソッドと同様にセカンダリ インターフェイスへの参照のコレクションを返す方法を提供する、 <xref:System.Web.UI.WebControls.WebParts.ProviderConnectionPoint.GetObject%2A> メソッドは、既定のインターフェイスへの参照を返します。  
   
  ]]></format>
         </remarks>

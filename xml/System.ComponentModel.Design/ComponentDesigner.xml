@@ -24,36 +24,39 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Extends the design mode behavior of a component.</summary>
+    <summary>コンポーネントのデザイン モードの動作を拡張します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.ComponentDesigner> base designer class provides a simple designer that can extend the behavior of an associated component in design mode.  
+## 解説  
+ <xref:System.ComponentModel.Design.ComponentDesigner> 基本デザイナー クラスには、デザイン モードでの関連するコンポーネントの動作を拡張できる単純なデザイナーが用意されています。  
   
- <xref:System.ComponentModel.Design.ComponentDesigner> provides an empty <xref:System.ComponentModel.Design.IDesignerFilter> interface implementation, whose methods can be overridden to adjust the attributes, properties and events of the associated component at design time.  
+ <xref:System.ComponentModel.Design.ComponentDesigner> 空の提供 <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスの実装では、そのメソッドをオーバーライドすると、デザイン時に、属性、プロパティおよび関連付けられたコンポーネントのイベントを調整できます。  
   
- You can associate a designer with a type using a <xref:System.ComponentModel.DesignerAttribute>. For an overview of customizing design-time behavior, see [Extending Design-Time Support](http://msdn.microsoft.com/library/d6ac8a6a-42fd-4bc8-bf33-b212811297e2).  
+ 使用して型をデザイナーを関連付けることができます、 <xref:System.ComponentModel.DesignerAttribute>です。 デザイン時動作のカスタマイズの概要については、次を参照してください。 [Extending Design\-Time Support](http://msdn.microsoft.com/ja-jp/d6ac8a6a-42fd-4bc8-bf33-b212811297e2)します。  
   
- The <xref:System.ComponentModel.Design.ComponentDesigner> class implements a special behavior for the property descriptors of inherited components. An internal type named `InheritedPropertyDescriptor` is used by the default <xref:System.ComponentModel.Design.ComponentDesigner> implementation to stand in for properties that are inherited from a base class. There are two cases in which these property descriptors are added.  
+ <xref:System.ComponentModel.Design.ComponentDesigner> クラスは継承されたコンポーネントのプロパティ記述子のための特別な動作を実装します。 という内部型 `InheritedPropertyDescriptor` 、既定で使用される <xref:System.ComponentModel.Design.ComponentDesigner> 基本クラスから継承されたプロパティの代わりに実装します。 これらのプロパティ記述子を追加する 2 つのケースもあります。  
   
-1.  To the root object itself, which is returned by the <xref:System.ComponentModel.Design.IDesignerHost.RootComponent%2A?displayProperty=fullName> property, because you are inheriting from its base class.  
+1.  返されるルート オブジェクト自体に、 <xref:System.ComponentModel.Design.IDesignerHost.RootComponent%2A?displayProperty=fullName> プロパティには、その基本クラスから継承しているためです。  
   
-2.  To fields found in the base class of the root object. Public and protected fields from the base class are added to the designer so that they can be manipulated by the user.  
+2.  フィールドについては、ルート オブジェクトの基本クラスです。 基本クラスからパブリック、プロテクト フィールドは、ユーザーが操作できるように、デザイナーに追加されます。  
   
- The `InheritedPropertyDescriptor` class modifies the default value of a property, so that the default value is the current value at object instantiation. This is because the property is inherited from another instance. The designer defines resetting the property value as setting it to the value that was set by the inherited class. This value may differ from the default value stored in metadata.  
+ `InheritedPropertyDescriptor` クラスは、既定値はオブジェクトのインスタンス化では、現在の値をように、プロパティの既定値を変更します。 これは、プロパティが別のインスタンスから継承されるためです。 デザイナーでは、継承クラスによって設定されたの値に設定すると、このプロパティの値を定義します。 この値は、メタデータに格納されている既定値に異なる場合があります。  
   
    
   
-## Examples  
- The following code example provides an example <xref:System.ComponentModel.Design.ComponentDesigner> implementation and an example component associated with the designer. The designer implements an override of the <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> method that calls the base `Initialize` method, an override of the <xref:System.ComponentModel.Design.ComponentDesigner.DoDefaultAction%2A> method that displays a <xref:System.Windows.Forms.MessageBox> when the component is double-clicked, and an override of the <xref:System.ComponentModel.Design.ComponentDesigner.Verbs%2A> property accessor that supplies a custom <xref:System.ComponentModel.Design.DesignerVerb> menu command to the shortcut menu for the component.  
+## 例  
+ 次のコード例は、例を示します <xref:System.ComponentModel.Design.ComponentDesigner> 実装と、デザイナーに関連付けられた例コンポーネントです。 デザイナーのオーバーライドの実装、 <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> メソッドを呼び出す基本 `Initialize` メソッドをオーバーライドした関数、 <xref:System.ComponentModel.Design.ComponentDesigner.DoDefaultAction%2A> を表示するメソッド、 <xref:System.Windows.Forms.MessageBox> コンポーネントをダブルクリックしたときとのオーバーライド、 <xref:System.ComponentModel.Design.ComponentDesigner.Verbs%2A> カスタムを提供するプロパティのアクセサー <xref:System.ComponentModel.Design.DesignerVerb> コンポーネントのショートカット メニューにメニュー コマンドです。  
   
- [!code-cpp[ComponentDesignerExample#1](~/samples/snippets/cpp/VS_Snippets_Winforms/ComponentDesignerExample/CPP/examplecomponent.cpp#1)]
- [!code-csharp[ComponentDesignerExample#1](~/samples/snippets/csharp/VS_Snippets_Winforms/ComponentDesignerExample/CS/examplecomponent.cs#1)]
- [!code-vb[ComponentDesignerExample#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ComponentDesignerExample/VB/examplecomponent.vb#1)]  
+ [!code-cpp[ComponentDesignerExample\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/ComponentDesignerExample/CPP/examplecomponent.cpp#1)]
+ [!code-csharp[ComponentDesignerExample\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/ComponentDesignerExample/CS/examplecomponent.cs#1)]
+ [!code-vb[ComponentDesignerExample\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ComponentDesignerExample/VB/examplecomponent.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+    <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+    <altmember cref="T:System.ComponentModel.DesignerAttribute" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -67,7 +70,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> class.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -84,8 +88,8 @@
         <ReturnType>System.ComponentModel.Design.DesignerActionListCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
-        <value>The design-time action lists supported by the component associated with the designer.</value>
+        <summary>デザイナーに関連付けられたコンポーネントでサポートされているデザイン時のアクションのリストを取得します。</summary>
+        <value>デザイナーに関連付けられたコンポーネントでサポートされているデザイン時のアクションの一覧表示されます。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -102,17 +106,17 @@
         <ReturnType>System.Collections.ICollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the collection of components associated with the component managed by the designer.</summary>
-        <value>The components that are associated with the component managed by the designer.</value>
+        <summary>デザイナーによって管理されているコンポーネントに関連するコンポーネントのコレクションを取得します。</summary>
+        <value>デザイナーによって管理されているコンポーネントに関連付けられているコンポーネントです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property indicates any components to copy or move along with the component managed by the designer during a copy, drag, or move operation.  
+## 解説  
+ このプロパティは、ドラッグ、または移動操作をコピーまたは移動、コピー中に、デザイナーによって管理されているコンポーネントとコンポーネントを示します。  
   
- If this collection contains references to other components in the current design mode document, those components will be copied along with the component managed by the designer during a copy operation.  
+ このコレクションに現在のデザイン モードのドキュメントの他のコンポーネントへの参照が含まれている場合は、コピー操作中に、デザイナーによって管理されているコンポーネントと共にこれらのコンポーネントがコピーされます。  
   
- When the component managed by the designer is selected, this collection is filled with any nested controls. This collection can also include other components, such as the buttons of a toolbar.  
+ デザイナーによって管理されているコンポーネントを選択すると、このコレクションには、入れ子になったコントロールが格納されます。 このコレクションは、ツールバーのボタンなど、他のコンポーネントもあります。  
   
  ]]></format>
         </remarks>
@@ -131,19 +135,21 @@
         <ReturnType>System.ComponentModel.IComponent</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the component this designer is designing.</summary>
-        <value>The component managed by the designer.</value>
+        <summary>デザイナーがデザイン コンポーネントを取得します。</summary>
+        <value>デザイナーによって管理されるコンポーネントです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> method of <xref:System.ComponentModel.Design.ComponentDesigner> sets this property.  
+## 解説  
+ <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> メソッドの <xref:System.ComponentModel.Design.ComponentDesigner> このプロパティを設定します。  
   
 > [!NOTE]
->  When overriding the <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> method, be sure to call the base class <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> method before using this property.  
+>  オーバーライドする場合、 <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> メソッド、基本クラスを呼び出して必ず <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> このプロパティを使用する前にメソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.ComponentModel.Design.ComponentDesigner.Initialize(System.ComponentModel.IComponent)" />
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -160,15 +166,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.ComponentModel.Design.ComponentDesigner" />.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> when you are finished using the <xref:System.ComponentModel.Design.ComponentDesigner>. The <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> method leaves the <xref:System.ComponentModel.Design.ComponentDesigner> in an unusable state. After calling <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A>, you must release all references to the <xref:System.ComponentModel.Design.ComponentDesigner> so the garbage collector can reclaim the memory that the <xref:System.ComponentModel.Design.ComponentDesigner> was occupying. For more information, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+## 解説  
+ Call <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> when you are finished using the <xref:System.ComponentModel.Design.ComponentDesigner>. The <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> method leaves the <xref:System.ComponentModel.Design.ComponentDesigner> in an unusable state. After calling <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A>, you must release all references to the <xref:System.ComponentModel.Design.ComponentDesigner> so the garbage collector can reclaim the memory that the <xref:System.ComponentModel.Design.ComponentDesigner> was occupying. For more information, see [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213) and [Implementing a Dispose Method](http://msdn.microsoft.com/ja-jp/eb4e1af0-3b48-4fbc-ad4e-fc2f64138bf9).  
   
 > [!NOTE]
->  Always call <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> before you release your last reference to the <xref:System.ComponentModel.Design.ComponentDesigner>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.ComponentModel.Design.ComponentDesigner> object's `Finalize` method.  
+>  Always call <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> before you release your last reference to the <xref:System.ComponentModel.Design.ComponentDesigner>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.ComponentModel.Design.ComponentDesigner> object's **languageKeyword tag is not supported!!!!**  
+>  method.  
   
  ]]></format>
         </remarks>
@@ -190,16 +198,16 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> and optionally releases the managed resources.</summary>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> によって使用されているアンマネージ リソースを解放し、オプションでマネージ リソースも解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the public `Dispose()` method and the <xref:System.Object.Finalize%2A> method. `Dispose()` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`. <xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.  
+## 解説  
+ このメソッドは、パブリック `Dispose()` メソッドおよび <xref:System.Object.Finalize%2A> メソッドです。`Dispose()` 保護対象の起動 `Dispose(Boolean)` メソッドを `disposing` パラメーターを設定する `true`です。<xref:System.Object.Finalize%2A> 呼び出す `Dispose` と `disposing` 設定 `false`します。  
   
- When the `disposing` parameter is true, this method releases all resources held by any managed objects that this <xref:System.ComponentModel.Design.ComponentDesigner> references. This method invokes the `Dispose()` method of each referenced object.  
+ ときに、 `disposing` パラメーターが true の場合、このメソッドは、すべてのマネージ オブジェクトによって保持されているすべてのリソースを解放します。 この <xref:System.ComponentModel.Design.ComponentDesigner> 参照します。 このメソッドは、参照される各オブジェクトの `Dispose()` メソッドを呼び出します。  
   
  ]]></format>
         </remarks>
@@ -225,16 +233,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a method signature in the source code file for the default event on the component and navigates the user's cursor to that location.</summary>
+        <summary>コンポーネントの既定のイベントのソース コード ファイルでメソッド署名を作成し、その場所にカーソルを移動します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In Windows Forms and Web Forms designers, this method is invoked when a user double-clicks a component.  
+## 解説  
+ Windows フォームおよび Web フォーム デザイナーでは、ユーザーが、コンポーネントをダブルクリックすると、このメソッドが呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ComponentModel.Design.CheckoutException">An attempt to check out a file that is checked into a source code management program failed.</exception>
+        <exception cref="T:System.ComponentModel.Design.CheckoutException">ソース コード管理プログラムにチェックインされているファイルをチェック アウトできませんでした。</exception>
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -251,16 +260,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Attempts to free resources by calling <see langword="Dispose(false)" /> before the object is reclaimed by garbage collection.</summary>
+        <summary>ガベージ コレクションでオブジェクトがクリアされる前に、<see langword="Dispose(false)" /> を呼び出して、リソースの解放を試みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overrides <xref:System.Object.Finalize%2A?displayProperty=fullName> and cleans up resources by calling `Dispose(false)`. Override `Dispose(Boolean)` to customize the cleanup.  
+## 解説  
+ このメソッドは <xref:System.Object.Finalize%2A?displayProperty=fullName> を呼び出してリソースをクリーンアップし、 `Dispose(false)`します。`Dispose(Boolean)` をオーバーライドしてクリーンアップをカスタマイズします。  
   
- Application code should not call this method; an object's `Finalize` method is automatically invoked during garbage collection, unless finalization by the garbage collector has been disabled by a call to the <xref:System.GC.SuppressFinalize%2A?displayProperty=fullName> method.  
+ アプリケーション コードは、このメソッドを呼び出さないようにオブジェクトの `Finalize` への呼び出しによって、ガベージ コレクターによって終了処理が無効になっていない限りガベージ コレクション中にメソッドが自動的に起動、 <xref:System.GC.SuppressFinalize%2A?displayProperty=fullName> メソッドです。  
   
- For more information, see [Finalize Methods and Destructors](http://msdn.microsoft.com/en-us/fd376774-1643-499b-869e-9546a3aeea70), [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md), and [Overriding the Finalize Method](http://msdn.microsoft.com/en-us/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).  
+ 詳細については、次を参照してください。 [Finalize メソッドおよびデストラクター](http://msdn.microsoft.com/ja-jp/fd376774-1643-499b-869e-9546a3aeea70), 、[Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213), 、および [Finalize メソッドをオーバーライドする](http://msdn.microsoft.com/ja-jp/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)します。  
   
  ]]></format>
         </remarks>
@@ -282,22 +291,22 @@
         <Parameter Name="serviceType" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="serviceType">The type of service to request.</param>
-        <summary>Attempts to retrieve the specified type of service from the design mode site of the designer's component.</summary>
-        <returns>An object implementing the requested service, or <see langword="null" /> if the service cannot be resolved.</returns>
+        <param name="serviceType">要求するサービスの型。</param>
+        <summary>デザイナーのコンポーネントのデザイン モードのサイトからのサービスを使用して型を取得しようとしています。</summary>
+        <returns>要求されたサービスを実装するオブジェクトまたは <see langword="null" /> 場合は、サービスを解決することはできません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method requests the service from the site of the component.  
+## 解説  
+ このメソッドの既定の実装では、コンポーネントのサイトから、サービスを要求します。  
   
    
   
-## Examples  
- The following code example demonstrates the use of the <xref:System.ComponentModel.Design.ComponentDesigner.GetService%2A> method to access designer services.  
+## 例  
+ 次のコード例では、使用、 <xref:System.ComponentModel.Design.ComponentDesigner.GetService%2A> デザイナー サービスへのアクセス方法です。  
   
- [!code-csharp[System.ComponentModel.Design.DesignerServices#7](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.Design.DesignerServices/CS/Form1.cs#7)]
- [!code-vb[System.ComponentModel.Design.DesignerServices#7](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.Design.DesignerServices/VB/Form1.vb#7)]  
+ [!code-csharp[System.ComponentModel.Design.DesignerServices\#7](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.Design.DesignerServices/CS/Form1.cs#7)]
+ [!code-vb[System.ComponentModel.Design.DesignerServices\#7](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.Design.DesignerServices/VB/Form1.vb#7)]  
   
  ]]></format>
         </remarks>
@@ -316,8 +325,9 @@
         <ReturnType>System.ComponentModel.InheritanceAttribute</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an attribute that indicates the type of inheritance of the associated component.</summary>
-        <value>The <see cref="T:System.ComponentModel.InheritanceAttribute" /> for the associated component.</value>
+        <summary>関連付けられたコンポーネントの継承の種類を示す属性を取得します。</summary>
+        <value>
+          <see cref="T:System.ComponentModel.InheritanceAttribute" /> に関連するコンポーネントです。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -334,9 +344,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether this component is inherited.</summary>
+        <summary>このコンポーネントを継承するかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the component is inherited; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> コンポーネントが継承されている場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -356,16 +366,18 @@
         <Parameter Name="component" Type="System.ComponentModel.IComponent" />
       </Parameters>
       <Docs>
-        <param name="component">The component for this designer.</param>
-        <summary>Prepares the designer to view, edit, and design the specified component.</summary>
+        <param name="component">このデザイナーのコンポーネントです。</param>
+        <summary>表示、編集、および指定したコンポーネントの設計時にデザイナーを準備します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The designer host calls this method when it is ready to use the designer.  
+## 解説  
+ デザイナーのホストは、デザイナーを使用する準備ができた場合、このメソッドを呼び出します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerHost" />
       </Docs>
     </Member>
     <Member MemberName="InitializeExistingComponent">
@@ -384,17 +396,17 @@
         <Parameter Name="defaultValues" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="defaultValues">A name/value dictionary of default values to apply to properties. May be <see langword="null" /> if no default values are specified.</param>
-        <summary>Reinitializes an existing component.</summary>
+        <param name="defaultValues">プロパティに適用する既定値の名前\/値のディクショナリ。 既定値が指定されていない場合は <see langword="null" />。</param>
+        <summary>既存のコンポーネントを再初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.ComponentDesigner.InitializeExistingComponent%2A> method is called when an existing component is being reinitialized. For example, this may occur after the user drags a component to another container.  
+## 解説  
+ <xref:System.ComponentModel.Design.ComponentDesigner.InitializeExistingComponent%2A> は既存のコンポーネントが再初期化されるときに、メソッドが呼び出されます。 たとえば、ユーザーが別のコンテナーにコンポーネントをドラッグした後に、この問題が発生する可能性があります。  
   
- You may use the `defaultValues` dictionary to apply recommended defaults to properties; however, you should not modify component properties aside from those stored in the dictionary, because this existing component may already have properties set on it.  
+ 使用することが、 `defaultValues` ディクショナリを適用する、プロパティに既定の設定を推奨します。 ただし、変更しないでコンポーネントのプロパティとは別に、ディクショナリに格納されているため、この既存のコンポーネントは、設定されているプロパティに既にある場合があります。  
   
- The default implementation of this method does nothing.  
+ このメソッドの既定の実装では、何も行いません。  
   
  ]]></format>
         </remarks>
@@ -416,17 +428,17 @@
         <Parameter Name="defaultValues" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="defaultValues">A name/value dictionary of default values to apply to properties. May be <see langword="null" /> if no default values are specified.</param>
-        <summary>Initializes a newly created component.</summary>
+        <param name="defaultValues">プロパティに適用する既定値の名前\/値のディクショナリ。 既定値が指定されていない場合は <see langword="null" />。</param>
+        <summary>新たに作成されたコンポーネントを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.ComponentDesigner.InitializeNewComponent%2A> method is called when a component is first initialized, typically after being first added to a design surface.  
+## 解説  
+ <xref:System.ComponentModel.Design.ComponentDesigner.InitializeNewComponent%2A> コンポーネントの初期化時に最初に、通常、デザイン サーフェイスに最初に追加された後にメソッドが呼び出されます。  
   
- You may perform any necessary initialization of this component, and you may ignore the `defaultValues` dictionary altogether.  
+ このコンポーネントのために必要な初期化を行うことがあり、無視しても、 `defaultValues` ディクショナリ全体です。  
   
- The default implementation of this method does nothing.  
+ このメソッドの既定の実装では、何も行いません。  
   
  ]]></format>
         </remarks>
@@ -451,12 +463,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Initializes the settings for an imported component that is already initialized to settings other than the defaults.</summary>
+        <summary>既定以外の設定を既に初期化されているインポートされたコンポーネントの設定を初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called when the designer is associated with a control that is not in its default state, such as a control that you paste or move with a drag-and-drop operation onto the designer. This method provides an opportunity for implementers to modify or shadow the properties of the component rather than initialize the properties for the component to their defaults. This method is called after the other initialization functions.  
+## 解説  
+ デザイナーが貼り付けるか、デザイナーにドラッグ アンド ドロップ操作で移動するコントロールなど、既定の状態に含まれていないコントロールに関連付けられている場合は、このメソッドが呼び出されます。 このメソッドは、変更、またはコンポーネントのプロパティをシャドウではなく、コンポーネントには既定のプロパティを初期化する実装についての機会を提供します。 このメソッドは、その他の関数の初期化後に呼び出されます。  
   
  ]]></format>
         </remarks>
@@ -478,10 +490,14 @@
         <Parameter Name="toInvoke" Type="System.ComponentModel.Design.ComponentDesigner" />
       </Parameters>
       <Docs>
-        <param name="toInvoke">The <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> whose inheritance attribute to retrieve.</param>
-        <summary>Gets the <see cref="T:System.ComponentModel.InheritanceAttribute" /> of the specified <see cref="T:System.ComponentModel.Design.ComponentDesigner" />.</summary>
-        <returns>The <see cref="T:System.ComponentModel.InheritanceAttribute" /> of the specified designer.</returns>
+        <param name="toInvoke">
+          <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> が継承属性を取得します。</param>
+        <summary>取得、 <see cref="T:System.ComponentModel.InheritanceAttribute" /> の指定した <see cref="T:System.ComponentModel.Design.ComponentDesigner" />します。</summary>
+        <returns>
+          <see cref="T:System.ComponentModel.InheritanceAttribute" /> の指定したデザイナーです。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
       </Docs>
     </Member>
     <Member MemberName="OnSetComponentDefaults">
@@ -503,16 +519,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Sets the default properties for the component.</summary>
+        <summary>コンポーネントの既定のプロパティを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.ComponentModel.Design.ComponentDesigner.OnSetComponentDefaults%2A> is called when the designer is initialized. This allows the designer to provide default values for the base component.  
+## 解説  
+ <xref:System.ComponentModel.Design.ComponentDesigner.OnSetComponentDefaults%2A> デザイナーの初期化時に呼び出されます。 これにより、デザイナーの基本コンポーネントの既定値を指定できます。  
   
- This method is called only once: when you first create the component by dragging it from the Toolbox to the design surface. Subsequent initializations of the designer do not invoke this method.  
+ このメソッドが 1 回だけ呼び出されます。 まずして作成する場合、コンポーネント、ツールボックスからデザイン画面にドラッグします。 後続のデザイナーの初期化では、このメソッドは呼び出されません。  
   
- The default implementation of this method sets the default property of the component to the name of the component if the default property is a string and the property is not already set. This method can be implemented in a derived class to customize the initialization of the component that this designer is designing.  
+ このメソッドの既定の実装では、既定のプロパティは、文字列と、プロパティが既に設定されていない場合に、コンポーネントの名前に、コンポーネントの既定のプロパティを設定します。 このメソッドは、デザイナーがデザイン コンポーネントの初期化をカスタマイズする派生クラスで実装することができます。  
   
  ]]></format>
         </remarks>
@@ -531,13 +547,13 @@
         <ReturnType>System.ComponentModel.IComponent</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the parent component for this designer.</summary>
-        <value>The parent component for this designer, or <see langword="null" /> if this designer is the root component.</value>
+        <summary>このデザイナーの親コンポーネントを取得します。</summary>
+        <value>このデザイナーの親コンポーネントまたは <see langword="null" /> このデザイナーがルート コンポーネントである場合。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property provides a generic mechanism for discovering parent relationships within designers, and is used by the <xref:System.ComponentModel.Design.ComponentDesigner> object's <xref:System.ComponentModel.Design.ITreeDesigner> interface implementation. This property should only return `null` when this designer is the root component. The default implementation of this property returns the root component for all components that are not the root component, and it returns `null` for the root component.  
+## 解説  
+ このプロパティは、デザイナー内の親のリレーションシップを検出するための一般的なメカニズムを提供で使用される、 <xref:System.ComponentModel.Design.ComponentDesigner> オブジェクトの <xref:System.ComponentModel.Design.ITreeDesigner> インターフェイスの実装です。 このプロパティが返すのみ `null` ルート コンポーネントがこのデザイナーの場合。 このプロパティの既定の実装がルート コンポーネントではないすべてのコンポーネントのルート要素を返し、 `null` ルート コンポーネント用です。  
   
  ]]></format>
         </remarks>
@@ -559,21 +575,23 @@
         <Parameter Name="attributes" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="attributes">The attributes for the class of the component.</param>
-        <summary>Allows a designer to change or remove items from the set of attributes that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.</summary>
+        <param name="attributes">コンポーネントのクラスの属性。</param>
+        <summary>デザイナーによって変更またはを通じて公開する属性のセットから項目を削除する、 <see cref="T:System.ComponentModel.TypeDescriptor" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides a way to change or remove the items within the dictionary of attributes that are exposed through a <xref:System.ComponentModel.TypeDescriptor>.  
+## 解説  
+ このメソッドを変更またはを通じて公開されている属性のディクショナリ内の項目を削除する方法を提供する、 <xref:System.ComponentModel.TypeDescriptor>です。  
   
- The keys in the dictionary of attributes are the type identifiers of the attributes, as specified by the value of their <xref:System.Attribute.TypeId%2A> property. The objects are of type <xref:System.ComponentModel.PropertyDescriptor>. This method is called immediately after the <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes%2A> method.  
+ 属性のディクショナリのキーの値で指定したとおり、属性の型識別子は、 <xref:System.Attribute.TypeId%2A> プロパティです。 オブジェクトが次の種類の <xref:System.ComponentModel.PropertyDescriptor>です。 直後後に、このメソッドが呼び出される、 <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You can directly filter the dictionary that is accessible through the <paramref name="attributes" /> parameter, or you can leave it unchanged. If you override this method, call the base implementation after you perform your own filtering. In addition, you must not remove items in the <see cref="M:System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes(System.Collections.IDictionary)" /> method. Instead, change attributes to hide items. You may also remove items in the <see cref="M:System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes(System.Collections.IDictionary)" /> method.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
       </Docs>
     </Member>
     <Member MemberName="PostFilterEvents">
@@ -592,21 +610,23 @@
         <Parameter Name="events" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="events">The events for the class of the component.</param>
-        <summary>Allows a designer to change or remove items from the set of events that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.</summary>
+        <param name="events">コンポーネントのクラスのイベント。</param>
+        <summary>デザイナーによって変更またはを通じて公開されるイベントのセットから項目を削除する、 <see cref="T:System.ComponentModel.TypeDescriptor" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides a way to change or remove the items within the dictionary of events that are exposed through a <xref:System.ComponentModel.TypeDescriptor>.  
+## 解説  
+ このメソッドを変更またはを通じて公開されているイベントのディクショナリ内の項目を削除する方法を提供する、 <xref:System.ComponentModel.TypeDescriptor>です。  
   
- The keys in the dictionary of events are the names of the events. The objects are of type <xref:System.ComponentModel.PropertyDescriptor>. This method is called immediately after the <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterEvents%2A> method.  
+ イベントのディクショナリのキーは、イベントの名前です。 オブジェクトが次の種類の <xref:System.ComponentModel.PropertyDescriptor>です。 直後後に、このメソッドが呼び出される、 <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterEvents%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You can directly filter the dictionary that is accessible through the <paramref name="events" /> parameter, or you can leave it unchanged. If you override this method, call the base implementation after you perform your own filtering. In addition, you must not remove items in the <see cref="M:System.ComponentModel.Design.ComponentDesigner.PostFilterEvents(System.Collections.IDictionary)" /> method. Instead, change attributes to hide items. You may also remove items in the <see cref="M:System.ComponentModel.Design.ComponentDesigner.PreFilterEvents(System.Collections.IDictionary)" /> method.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
       </Docs>
     </Member>
     <Member MemberName="PostFilterProperties">
@@ -625,21 +645,24 @@
         <Parameter Name="properties" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="properties">The properties for the class of the component.</param>
-        <summary>Allows a designer to change or remove items from the set of properties that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.</summary>
+        <param name="properties">コンポーネントのクラスのプロパティです。</param>
+        <summary>デザイナーによって変更またはを通じて公開されるプロパティのセットから項目を削除する、 <see cref="T:System.ComponentModel.TypeDescriptor" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides a way to change or remove the items within the dictionary of properties that are exposed through a <xref:System.ComponentModel.TypeDescriptor>.  
+## 解説  
+ このメソッドを変更またはを通じて公開されているプロパティのディクショナリ内の項目を削除する方法を提供する、 <xref:System.ComponentModel.TypeDescriptor>です。  
   
- The keys in the dictionary of properties are the names of the properties. The objects are of type <xref:System.ComponentModel.PropertyDescriptor>. This method is called immediately after the <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterProperties%2A> method.  
+ プロパティのディクショナリのキーは、プロパティの名前です。 オブジェクトが次の種類の <xref:System.ComponentModel.PropertyDescriptor>です。 直後後に、このメソッドが呼び出される、 <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterProperties%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You can directly filter the dictionary that is accessible through the <paramref name="properties" /> parameter, or you can leave it unchanged. If you override this method, call the base implementation after you perform your own filtering. In addition, you must not remove items in the <see cref="M:System.ComponentModel.Design.ComponentDesigner.PostFilterProperties(System.Collections.IDictionary)" /> method. Instead, change attributes to hide items. You may also remove items in the <see cref="M:System.ComponentModel.Design.ComponentDesigner.PreFilterProperties(System.Collections.IDictionary)" /> method.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
       </Docs>
     </Member>
     <Member MemberName="PreFilterAttributes">
@@ -658,21 +681,23 @@
         <Parameter Name="attributes" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="attributes">The attributes for the class of the component.</param>
-        <summary>Allows a designer to add to the set of attributes that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.</summary>
+        <param name="attributes">コンポーネントのクラスの属性。</param>
+        <summary>を通じて公開される属性のセットに追加するデザイナーが使用できる、 <see cref="T:System.ComponentModel.TypeDescriptor" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides a way to add items to the dictionary of attributes that a designer exposes through a <xref:System.ComponentModel.TypeDescriptor>.  
+## 解説  
+ このメソッドは、デザイナーがを通じて公開される属性のディクショナリに項目を追加する方法を提供する <xref:System.ComponentModel.TypeDescriptor>です。  
   
- The keys in the dictionary of attributes are the type identifiers of the attributes, as specified by the value of their <xref:System.Attribute.TypeId%2A> property. The objects are of type <xref:System.ComponentModel.PropertyDescriptor>. This method is called immediately before the <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes%2A> method.  
+ 属性のディクショナリのキーの値で指定したとおり、属性の型識別子は、 <xref:System.Attribute.TypeId%2A> プロパティです。 オブジェクトが次の種類の <xref:System.ComponentModel.PropertyDescriptor>です。 このメソッドは、直前に呼び出されますが、 <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You can directly modify the dictionary that is accessible through the <paramref name="attributes" /> parameter, or you can leave it unchanged. If you override this method, call the base implementation before you perform your own filtering.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
       </Docs>
     </Member>
     <Member MemberName="PreFilterEvents">
@@ -691,21 +716,23 @@
         <Parameter Name="events" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="events">The events for the class of the component.</param>
-        <summary>Allows a designer to add to the set of events that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.</summary>
+        <param name="events">コンポーネントのクラスのイベント。</param>
+        <summary>を通じて公開されるイベントのセットに追加するデザイナーが使用できる、 <see cref="T:System.ComponentModel.TypeDescriptor" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides a way to add items to the dictionary of events that a designer exposes through a <xref:System.ComponentModel.TypeDescriptor>.  
+## 解説  
+ このメソッドは、デザイナーがを通じて公開されるイベントのディクショナリに項目を追加する方法を提供する <xref:System.ComponentModel.TypeDescriptor>です。  
   
- The keys in the dictionary of events are the names of the events. The objects are of type <xref:System.ComponentModel.PropertyDescriptor>. This method is called immediately before the <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterEvents%2A> method.  
+ イベントのディクショナリのキーは、イベントの名前です。 オブジェクトが次の種類の <xref:System.ComponentModel.PropertyDescriptor>です。 このメソッドは、直前に呼び出されますが、 <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterEvents%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You can directly modify the dictionary that is accessible through the <paramref name="events" /> parameter, or you can leave it unchanged. If you override this method, call the base implementation before you perform your own filtering.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
       </Docs>
     </Member>
     <Member MemberName="PreFilterProperties">
@@ -724,21 +751,23 @@
         <Parameter Name="properties" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="properties">The properties for the class of the component.</param>
-        <summary>Allows a designer to add to the set of properties that it exposes through a <see cref="T:System.ComponentModel.TypeDescriptor" />.</summary>
+        <param name="properties">コンポーネントのクラスのプロパティです。</param>
+        <summary>を通じて公開されるプロパティのセットに追加するデザイナーが使用できる、 <see cref="T:System.ComponentModel.TypeDescriptor" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides a way to add items to the dictionary of properties that a designer exposes through a <xref:System.ComponentModel.TypeDescriptor>.  
+## 解説  
+ このメソッドは、デザイナーがを通じて公開されるプロパティのディクショナリに項目を追加する方法を提供する <xref:System.ComponentModel.TypeDescriptor>です。  
   
- The keys in the dictionary of properties are the names of the properties. The objects are of type <xref:System.ComponentModel.PropertyDescriptor>. This method is called immediately before the <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterProperties%2A> method.  
+ プロパティのディクショナリのキーは、プロパティの名前です。 オブジェクトが次の種類の <xref:System.ComponentModel.PropertyDescriptor>です。 このメソッドは、直前に呼び出されますが、 <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterProperties%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>You can directly modify the dictionary that is accessible through the <paramref name="properties" /> parameter, or you can leave it unchanged. If you override this method, call the base implementation before you perform your own filtering.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
       </Docs>
     </Member>
     <Member MemberName="RaiseComponentChanged">
@@ -759,18 +788,20 @@
         <Parameter Name="newValue" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="member">A <see cref="T:System.ComponentModel.MemberDescriptor" /> that indicates the member that has been changed.</param>
-        <param name="oldValue">The old value of the member.</param>
-        <param name="newValue">The new value of the member.</param>
-        <summary>Notifies the <see cref="T:System.ComponentModel.Design.IComponentChangeService" /> that this component has been changed.</summary>
+        <param name="member">A <see cref="T:System.ComponentModel.MemberDescriptor" /> が変更されているメンバーを示します。</param>
+        <param name="oldValue">メンバーの古い値。</param>
+        <param name="newValue">メンバーの新しい値。</param>
+        <summary>通知、 <see cref="T:System.ComponentModel.Design.IComponentChangeService" /> このコンポーネントが変更されています。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call this method only when you affect component properties directly and not through the accessors provided by <xref:System.ComponentModel.MemberDescriptor>.  
+## 解説  
+ によって提供されるアクセサーではなくとコンポーネントのプロパティに直接影響する場合にのみ、このメソッドを呼び出す <xref:System.ComponentModel.MemberDescriptor>します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IComponentChangeService" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
       </Docs>
     </Member>
     <Member MemberName="RaiseComponentChanging">
@@ -789,16 +820,18 @@
         <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
       </Parameters>
       <Docs>
-        <param name="member">A <see cref="T:System.ComponentModel.MemberDescriptor" /> that indicates the member that is about to be changed.</param>
-        <summary>Notifies the <see cref="T:System.ComponentModel.Design.IComponentChangeService" /> that this component is about to be changed.</summary>
+        <param name="member">A <see cref="T:System.ComponentModel.MemberDescriptor" /> が変更されるメンバーを示します。</param>
+        <summary>通知、 <see cref="T:System.ComponentModel.Design.IComponentChangeService" /> このコンポーネントの期限を変更することです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call this method only when you affect component properties directly and not through accessors provided by <xref:System.ComponentModel.MemberDescriptor>.  
+## 解説  
+ によって提供されるアクセサーではなくとコンポーネントのプロパティに直接影響する場合にのみ、このメソッドを呼び出す <xref:System.ComponentModel.MemberDescriptor>します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IComponentChangeService" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
       </Docs>
     </Member>
     <Member MemberName="ShadowProperties">
@@ -814,8 +847,8 @@
         <ReturnType>System.ComponentModel.Design.ComponentDesigner+ShadowPropertyCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of property values that override user settings.</summary>
-        <value>A <see cref="T:System.ComponentModel.Design.ComponentDesigner.ShadowPropertyCollection" /> that indicates the shadow properties of the design document.</value>
+        <summary>ユーザー設定をオーバーライドするプロパティ値のコレクションを取得します。</summary>
+        <value>A <see cref="T:System.ComponentModel.Design.ComponentDesigner.ShadowPropertyCollection" /> デザイン ドキュメントのプロパティをシャドウすることを示します。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -835,13 +868,14 @@
         <Parameter Name="attributes" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="attributes">The <see cref="T:System.Attribute" /> objects for the class of the component. The keys in the dictionary of attributes are the <see cref="P:System.Attribute.TypeId" /> values of the attributes.</param>
-        <summary>For a description of this member, see the <see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System.Collections.IDictionary)" /> method.</summary>
+        <param name="attributes">
+          <see cref="T:System.Attribute" /> コンポーネントのクラスのオブジェクト。 属性のディクショナリ内のキー、 <see cref="P:System.Attribute.TypeId" /> 属性の値。</param>
+        <summary>このメンバーの説明については、<see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System.Collections.IDictionary)" /> メソッドのトピックを参照してください。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.IDesignerFilter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -863,13 +897,14 @@
         <Parameter Name="events" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="events">The <see cref="T:System.ComponentModel.EventDescriptor" /> objects that represent the events of the class of the component. The keys in the dictionary of events are event names.</param>
-        <summary>For a description of this member, see the <see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System.Collections.IDictionary)" /> method.</summary>
+        <param name="events">
+          <see cref="T:System.ComponentModel.EventDescriptor" /> コンポーネントのクラスのイベントを表すオブジェクト。 イベントのディクショナリのキーは、イベント名です。</param>
+        <summary>このメンバーの説明については、<see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System.Collections.IDictionary)" /> メソッドのトピックを参照してください。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.IDesignerFilter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -891,13 +926,14 @@
         <Parameter Name="properties" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="properties">The <see cref="T:System.ComponentModel.PropertyDescriptor" /> objects that represent the properties of the class of the component. The keys in the dictionary of properties are property names.</param>
-        <summary>For a description of this member, see the <see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System.Collections.IDictionary)" /> method.</summary>
+        <param name="properties">
+          <see cref="T:System.ComponentModel.PropertyDescriptor" /> コンポーネントのクラスのプロパティを表すオブジェクト。 プロパティのディクショナリのキーは、プロパティ名です。</param>
+        <summary>このメンバーの説明については、<see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System.Collections.IDictionary)" /> メソッドのトピックを参照してください。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.IDesignerFilter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -919,13 +955,14 @@
         <Parameter Name="attributes" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="attributes">The <see cref="T:System.Attribute" /> objects for the class of the component. The keys in the dictionary of attributes are the <see cref="P:System.Attribute.TypeId" /> values of the attributes.</param>
-        <summary>For a description of this member, see the <see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System.Collections.IDictionary)" /> method.</summary>
+        <param name="attributes">
+          <see cref="T:System.Attribute" /> コンポーネントのクラスのオブジェクト。 属性のディクショナリ内のキー、 <see cref="P:System.Attribute.TypeId" /> 属性の値。</param>
+        <summary>このメンバーの説明については、<see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System.Collections.IDictionary)" /> メソッドのトピックを参照してください。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.IDesignerFilter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -947,13 +984,14 @@
         <Parameter Name="events" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="events">The <see cref="T:System.ComponentModel.EventDescriptor" /> objects that represent the events of the class of the component. The keys in the dictionary of events are event names.</param>
-        <summary>For a description of this member, see the <see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System.Collections.IDictionary)" /> method.</summary>
+        <param name="events">
+          <see cref="T:System.ComponentModel.EventDescriptor" /> コンポーネントのクラスのイベントを表すオブジェクト。 イベントのディクショナリのキーは、イベント名です。</param>
+        <summary>このメンバーの説明については、<see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System.Collections.IDictionary)" /> メソッドのトピックを参照してください。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.IDesignerFilter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -975,13 +1013,14 @@
         <Parameter Name="properties" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="properties">The <see cref="T:System.ComponentModel.PropertyDescriptor" /> objects that represent the properties of the class of the component. The keys in the dictionary of properties are property names.</param>
-        <summary>For a description of this member, see the <see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System.Collections.IDictionary)" /> method.</summary>
+        <param name="properties">
+          <see cref="T:System.ComponentModel.PropertyDescriptor" /> コンポーネントのクラスのプロパティを表すオブジェクト。 プロパティのディクショナリのキーは、プロパティ名です。</param>
+        <summary>このメンバーの説明については、<see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System.Collections.IDictionary)" /> メソッドのトピックを参照してください。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.IDesignerFilter> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.IDesignerFilter> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -1000,13 +1039,14 @@
         <ReturnType>System.Collections.ICollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>For a description of this member, see the <see cref="P:System.ComponentModel.Design.ITreeDesigner.Children" /> property.</summary>
-        <value>An <see cref="T:System.Collections.ICollection" /> that contains the collection of <see cref="T:System.ComponentModel.Design.IDesigner" /> designers contained in the current parent designer.</value>
+        <summary>このメンバーの詳細を参照してください、 <see cref="P:System.ComponentModel.Design.ITreeDesigner.Children" /> プロパティです。</summary>
+        <value>
+          <see cref="T:System.Collections.ICollection" /> のコレクションを含む <see cref="T:System.ComponentModel.Design.IDesigner" /> 現在の親デザイナーに含まれるデザイナー。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.ITreeDesigner> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.ITreeDesigner> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -1025,13 +1065,14 @@
         <ReturnType>System.ComponentModel.Design.IDesigner</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>For a description of this member, see the <see cref="P:System.ComponentModel.Design.ITreeDesigner.Parent" /> property.</summary>
-        <value>An <see cref="T:System.ComponentModel.Design.IDesigner" /> representing the parent designer, or <see langword="null" /> if there is no parent.</value>
+        <summary>このメンバーの詳細を参照してください、 <see cref="P:System.ComponentModel.Design.ITreeDesigner.Parent" /> プロパティです。</summary>
+        <value>
+          <see cref="T:System.ComponentModel.Design.IDesigner" /> 親デザイナーを表すまたは <see langword="null" /> 親が存在しない場合。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.ComponentModel.Design.ComponentDesigner> instance is cast to an <xref:System.ComponentModel.Design.ITreeDesigner> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.ComponentModel.Design.ComponentDesigner> のインスタンスが <xref:System.ComponentModel.Design.ITreeDesigner> インターフェイスにキャストされる場合にのみ、使用できます。  
   
  ]]></format>
         </remarks>
@@ -1050,22 +1091,33 @@
         <ReturnType>System.ComponentModel.Design.DesignerVerbCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-        <value>A <see cref="T:System.ComponentModel.Design.DesignerVerbCollection" /> of <see cref="T:System.ComponentModel.Design.DesignerVerb" /> objects, or <see langword="null" /> if no designer verbs are available. This default implementation always returns <see langword="null" />.</value>
+        <summary>デザイナーに関連付けられているコンポーネントでサポートされているデザイン時の動詞を取得します。</summary>
+        <value>A <see cref="T:System.ComponentModel.Design.DesignerVerbCollection" /> の <see cref="T:System.ComponentModel.Design.DesignerVerb" /> オブジェクト、または <see langword="null" /> デザイナー動詞が使用できない場合。 この既定の実装を常に <see langword="null" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method returns `null` if the component has no design-time verbs.  
+## 解説  
+ このメソッドが戻る `null` コンポーネントはデザイン時の動詞を持たない場合です。  
   
- The design-time environment typically displays verbs returned by this method in a shortcut (right-click) menu. When a user selects one of the verbs, the <xref:System.ComponentModel.Design.MenuCommand.Invoke%2A> method of the corresponding <xref:System.ComponentModel.Design.DesignerVerb> is invoked.  
+ 通常、デザイン時環境には、\(右クリック\) のショートカット メニューでこのメソッドによって返される動詞が表示されます。 ユーザーは、動詞のいずれかを選択すると、 <xref:System.ComponentModel.Design.MenuCommand.Invoke%2A> 対応するメソッド <xref:System.ComponentModel.Design.DesignerVerb> が呼び出されます。  
   
 > [!NOTE]
->  A design-time environment typically provides a **Properties** command on a component's shortcut menu. Therefore, do not include such an entry in the collection of designer-specified verbs.  
+>  デザイン時環境は、通常、 **プロパティ** コンポーネントのショートカット メニューのコマンドです。 そのため、このようなエントリは、デザイナーが指定した動詞のコレクションには含めないようにしてください。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.ComponentModel.Design.ComponentDesigner" /> で使用したリソースを解放します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

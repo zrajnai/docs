@@ -11,52 +11,56 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Installs a class that extends <see cref="T:System.ServiceProcess.ServiceBase" /> to implement a service. This class is called by the install utility when installing a service application.</summary>
+    <summary>拡張するクラスをインストール <see cref="T:System.ServiceProcess.ServiceBase" /> サービスを実装します。 このクラスは、サービス アプリケーションをインストールするときに、インストール ユーティリティによって呼び出されます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceProcess.ServiceInstaller> does work specific to the service with which it is associated. It is used by the installation utility to write registry values associated with the service to a subkey within the HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services registry key. The service is identified by its ServiceName within this subkey. The subkey also includes the name of the executable or .dll to which the service belongs.  
+## 解説  
+ <xref:System.ServiceProcess.ServiceInstaller> が関連付けられているサービスに固有の機能です。 Hkey\_local\_machine \\system\\currentcontrolset\\services レジストリ キーのサブキーにサービスに関連付けられたレジストリ値を書き込むため、インストール ユーティリティによって使用されます。 サービスは、このサブキー内で識別されます。 サブキーには、実行可能ファイルまたはサービスが属する .dll の名前も含まれています。  
   
- To install a service, create a project installer class that inherits from the <xref:System.Configuration.Install.Installer> class, and set the <xref:System.ComponentModel.RunInstallerAttribute> attribute on the class to `true`. Within your project, create one <xref:System.ServiceProcess.ServiceProcessInstaller> instance per service application, and one <xref:System.ServiceProcess.ServiceInstaller> instance for each service in the application. Within your project installer class constructor, set the installation properties for the service using the <xref:System.ServiceProcess.ServiceProcessInstaller> and <xref:System.ServiceProcess.ServiceInstaller> instances, and add the instances to the <xref:System.Configuration.Install.Installer.Installers%2A> collection.  
-  
-> [!NOTE]
->  It is recommended that you use the constructor for adding installer instances; however, if you need to add to the <xref:System.Configuration.Install.Installer.Installers%2A> collection in the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> method, be sure to perform the same additions to the collection in the <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> method.  
-  
- For all classes deriving from the <xref:System.Configuration.Install.Installer> class, the state of the <xref:System.Configuration.Install.Installer.Installers%2A> collection must be the same in the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> and <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> methods. However, you can avoid the maintenance of the collection across the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> and <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> methods if you add installer instances to the <xref:System.Configuration.Install.Installer.Installers%2A> collection in your custom installer class constructor.When the install utility is called, it looks for the <xref:System.ComponentModel.RunInstallerAttribute> attribute. If the attribute is `true`, the utility installs all the services that were added to the <xref:System.Configuration.Install.Installer.Installers%2A> collection that were associated with your project installer. If <xref:System.ComponentModel.RunInstallerAttribute> is `false` or does not exist, the install utility ignores the project installer.  
-  
- The <xref:System.ServiceProcess.ServiceProcessInstaller> associated with your project installation class installs information common to all <xref:System.ServiceProcess.ServiceInstaller> instances in the project. If this service has anything that separates it from the other services in the installation project, that service-specific information is installed by this method.  
+ 継承されるプロジェクト インストーラー クラスを作成、サービスをインストールする、 <xref:System.Configuration.Install.Installer> クラス、 <xref:System.ComponentModel.RunInstallerAttribute> クラスに属性 `true`します。 作成、プロジェクト内で <xref:System.ServiceProcess.ServiceProcessInstaller> サービス アプリケーションと 1 つあたりのインスタンス <xref:System.ServiceProcess.ServiceInstaller> アプリケーション内の各サービスのインスタンス。 クラスにコンス トラクター、プロジェクト インストーラー内でサービスを使用して、インストールのプロパティを設定、 <xref:System.ServiceProcess.ServiceProcessInstaller> と <xref:System.ServiceProcess.ServiceInstaller> インスタンスし、するインスタンスを追加、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションです。  
   
 > [!NOTE]
->  It is crucial that the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> be identical to the <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> of the class you derived from <xref:System.ServiceProcess.ServiceBase>. Normally, the value of the <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> property for the service is set within the Main() function of the service application's executable. The Service Control Manager uses the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A?displayProperty=fullName> property to locate the service within this executable.  
+>  インストーラーのインスタンスを追加するため、コンス トラクターを使用することをお勧めただしに追加する必要がある場合、 <xref:System.Configuration.Install.Installer.Installers%2A> 内のコレクション、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> メソッドでコレクションに同じ追加機能を実行してください、 <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドです。  
   
- You can modify other properties on the <xref:System.ServiceProcess.ServiceInstaller> either before or after adding it to the <xref:System.Configuration.Install.Installer.Installers%2A> collection of your project installer. For example, a service's <xref:System.ServiceProcess.ServiceInstaller.StartType%2A> may be set to start the service automatically at reboot or require a user to start the service manually.  
+ すべてのクラスから派生する、 <xref:System.Configuration.Install.Installer> クラスの状態、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションが同じである必要があります、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> と <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドです。 ただし、コレクション間でのメンテナンスをしないようにする、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> と <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドするインストーラーのインスタンスを追加する場合、 <xref:System.Configuration.Install.Installer.Installers%2A> カスタム インストーラー クラスのコンス トラクター内のコレクション。インストール ユーティリティが呼び出されると、検索、 <xref:System.ComponentModel.RunInstallerAttribute> 属性です。 属性がある場合 `true`, 、ユーティリティに追加されたすべてのサービスのインストール、 <xref:System.Configuration.Install.Installer.Installers%2A> プロジェクト インストーラーに関連付けられたコレクション。 場合 <xref:System.ComponentModel.RunInstallerAttribute> は `false` か、存在しないか、インストール ユーティリティには、プロジェクト インストーラーが無視されます。  
   
- Normally, you will not call the methods on <xref:System.ServiceProcess.ServiceInstaller> within your code; they are generally called only by the install utility. The install utility automatically calls the <xref:System.ServiceProcess.ServiceProcessInstaller.Install%2A?displayProperty=fullName> and <xref:System.ServiceProcess.ServiceInstaller.Install%2A?displayProperty=fullName> methods during the installation process. It backs out failures, if necessary, by calling <xref:System.ServiceProcess.ServiceProcessInstaller.Rollback%2A> (or <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A?displayProperty=fullName>) on all previously installed components.  
+ <xref:System.ServiceProcess.ServiceProcessInstaller> プロジェクト インストールのクラスのインストール情報すべてに共通に関連付けられている <xref:System.ServiceProcess.ServiceInstaller> プロジェクト内のインスタンス。 このサービスが何もインストール プロジェクト内の他のサービスから分離する場合、そのサービスに固有の情報は、このメソッドによってインストールされます。  
   
- The installation utility calls <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> to remove the object.  
+> [!NOTE]
+>  ために重要ですが、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> と同一である、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> から派生したクラスの <xref:System.ServiceProcess.ServiceBase>です。 値では、通常、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> サービス アプリケーションの実行可能ファイルの Main\(\) 関数内で、サービスのプロパティを設定します。 サービス コントロール マネージャーを使用して、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A?displayProperty=fullName> プロパティをこの実行可能ファイル内のサービスを検索します。  
   
- An application's install routine maintains information automatically about the components already installed, using the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>. This state information is continuously updated as the <xref:System.ServiceProcess.ServiceProcessInstaller> instance, and each <xref:System.ServiceProcess.ServiceInstaller> instance is installed by the utility. It is usually unnecessary for your code to modify state information explicitly.  
+ その他のプロパティを変更する、 <xref:System.ServiceProcess.ServiceInstaller> 前に、または後に追加すること、 <xref:System.Configuration.Install.Installer.Installers%2A> プロジェクト インストーラーのコレクション。 たとえば、サービスの <xref:System.ServiceProcess.ServiceInstaller.StartType%2A> 再起動時に自動的にサービスを開始またはサービスを手動で開始するユーザーが必要に設定することがあります。  
   
- When the installation is performed, it automatically creates an <xref:System.Diagnostics.EventLogInstaller> to install the event log source associated with the <xref:System.ServiceProcess.ServiceBase> derived class. The <xref:System.Diagnostics.EventLog.Log%2A> property for this source is set by the <xref:System.ServiceProcess.ServiceInstaller.%23ctor%2A> constructor to the computer's Application log. When you set the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> of the <xref:System.ServiceProcess.ServiceInstaller> (which should be identical to the <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> of the service), the <xref:System.Diagnostics.EventLog.Source%2A> is automatically set to the same value. In an installation failure, the source's installation is rolled-back along with previously installed services.  
+ 通常はないのメソッドを呼び出す <xref:System.ServiceProcess.ServiceInstaller> 、コード内で一般的にして呼び出されただけインストール ユーティリティです。 インストール ユーティリティは、 <xref:System.ServiceProcess.ServiceProcessInstaller.Install%2A?displayProperty=fullName> と <xref:System.ServiceProcess.ServiceInstaller.Install%2A?displayProperty=fullName> インストール プロセス中にメソッドです。 バックアップ実行の障害を必要に応じてを呼び出して <xref:System.ServiceProcess.ServiceProcessInstaller.Rollback%2A> \(または <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A?displayProperty=fullName>\) 以前にインストールされたすべてのコンポーネントにします。  
   
- The <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> method tries to stop the service if it is running. Whether this succeeds or not, <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> undoes the changes made by <xref:System.ServiceProcess.ServiceInstaller.Install%2A>. If a new source was created for event logging, the source is deleted.  
+ インストール ユーティリティ呼び出し <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> オブジェクトを削除します。  
+  
+ アプリケーションのインストールにはプロジェクトのインストーラーを使用して、既にインストールされているコンポーネントを自動的に情報が格納 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>します。 この状態が継続的に情報として、 <xref:System.ServiceProcess.ServiceProcessInstaller> インスタンス、および各 <xref:System.ServiceProcess.ServiceInstaller> ユーティリティによってインスタンスがインストールされています。 場合によっては、通常、状態情報を明示的に変更するコードの必要はありません。  
+  
+ 自動的に作成、インストールを実行するときに、 <xref:System.Diagnostics.EventLogInstaller> に関連付けられているイベント ログのソースをインストールする、 <xref:System.ServiceProcess.ServiceBase> クラスを派生します。<xref:System.Diagnostics.EventLog.Log%2A> このソースのプロパティで設定されて、 <xref:System.ServiceProcess.ServiceInstaller.%23ctor%2A> コンピューターのアプリケーション ログにコンス トラクターです。 設定すると、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> の <xref:System.ServiceProcess.ServiceInstaller> \(と同じにする必要がありますが、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> サービスの\)、 <xref:System.Diagnostics.EventLog.Source%2A> は自動的に同じ値に設定します。 インストールの失敗では、ソースのインストールは、ロールバックを以前にインストールされているサービスと共にです。  
+  
+ <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドは実行されている場合は、サービスを停止しようとしています。 か、これが成功するかどうか <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> による変更を元に戻します <xref:System.ServiceProcess.ServiceInstaller.Install%2A>します。 新しいソースは、イベント ログ用に作成されている場合は、ソースが削除されます。  
   
    
   
-## Examples  
- The following example creates a project installer, called `MyProjectInstaller`, which inherits from <xref:System.Configuration.Install.Installer>. It is assumed there is a service executable that contains two services, "Hello-World Service 1" and "Hello-World Service 2". Within the constructor for `MyProjectInstaller` (which would be called by the install utility), <xref:System.ServiceProcess.ServiceInstaller> objects are created for each of these services, and a <xref:System.ServiceProcess.ServiceProcessInstaller> is created for the executable. For the install utility to recognize `MyProjectInstaller` as a valid installer, the <xref:System.ComponentModel.RunInstallerAttribute> attribute is set to `true`.  
+## 例  
+ 次の例と呼ばれる、プロジェクト インストーラー `MyProjectInstaller`, から継承される <xref:System.Configuration.Install.Installer>します。 2 つのサービスでは、「Hello World サービス 1」を含むサービス実行可能ファイルがあることが前提とし、"Hello World サービス 2" です。 コンス トラクター内で `MyProjectInstaller` \(これと呼ぶことインストール ユーティリティによって\)、 <xref:System.ServiceProcess.ServiceInstaller> オブジェクトが作成されるはこれらの各サービス、および <xref:System.ServiceProcess.ServiceProcessInstaller> 実行可能ファイルが作成されます。 インストール ユーティリティが認識する `MyProjectInstaller` 有効なインストーラーとして、 <xref:System.ComponentModel.RunInstallerAttribute> に属性が設定されている `true`します。  
   
- Optional properties are set on the process installer and the service installers before the installers are added to the <xref:System.Configuration.Install.Installer.Installers%2A> collection. When the install utility accesses `MyProjectInstaller`, the objects added to the <xref:System.Configuration.Install.Installer.Installers%2A> collection through a call to <xref:System.Configuration.Install.InstallerCollection.Add%2A?displayProperty=fullName> will be installed in turn. During the process, the installer maintains state information indicating which objects have been installed, so each can be backed out in turn, if an installation failure occurs.  
+ インストーラーに追加される前に、プロセスのインストーラーおよびサービスのインストーラーで省略可能なプロパティが設定されて、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションです。 インストール ユーティリティにアクセスするとき `MyProjectInstaller`, に追加されたオブジェクト、 <xref:System.Configuration.Install.Installer.Installers%2A> を呼び出すことによってコレクション <xref:System.Configuration.Install.InstallerCollection.Add%2A?displayProperty=fullName> 順番でインストールされています。 処理中には、インストーラーには、それぞれのバックアップさらでインストール エラーが発生した場合、どのオブジェクトがインストールされているを示す状態情報が保持されます。  
   
- Normally, you would not create an instance of your project installer class explicitly. You would create it and add the <xref:System.ComponentModel.RunInstallerAttribute> attribute to the syntax, but it is the install utility that actually calls, and therefore instantiates, the class.  
+ 通常、プロジェクト インストーラー クラスのインスタンスを明示的に作成したはありません。 作成し、追加すると、 <xref:System.ComponentModel.RunInstallerAttribute> 、構文に属性しますが、実際に呼び出すし、そのため、クラスを初期化するインストール ユーティリティです。  
   
- [!code-cpp[Classic ServiceInstaller Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic ServiceInstaller Example/CPP/source.cpp#1)]
- [!code-csharp[Classic ServiceInstaller Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic ServiceInstaller Example/CS/source.cs#1)]
- [!code-vb[Classic ServiceInstaller Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic ServiceInstaller Example/VB/source.vb#1)]  
+ [!code-cpp[Classic ServiceInstaller Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic ServiceInstaller Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic ServiceInstaller Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic ServiceInstaller Example/CS/source.cs#1)]
+ [!code-vb[Classic ServiceInstaller Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic ServiceInstaller Example/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="P:System.ServiceProcess.ServiceBase.ServiceName" />
+    <altmember cref="T:System.ServiceProcess.ServiceProcessInstaller" />
+    <altmember cref="T:System.ServiceProcess.ServiceBase" />
+    <altmember cref="P:System.ServiceProcess.ServiceBase.EventLog" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -70,19 +74,22 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceProcess.ServiceInstaller" /> class.</summary>
+        <summary>
+          <see cref="T:System.ServiceProcess.ServiceInstaller" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To install a service, create a project installer class that inherits from the <xref:System.Configuration.Install.Installer> class, and set the <xref:System.ComponentModel.RunInstallerAttribute> attribute on the class to `true`. Within your project, create one <xref:System.ServiceProcess.ServiceProcessInstaller> instance per service application, and one <xref:System.ServiceProcess.ServiceInstaller> instance for each service in the application. Within your project installer class constructor, set the installation properties for the service using the <xref:System.ServiceProcess.ServiceProcessInstaller> and <xref:System.ServiceProcess.ServiceInstaller> instances, and add the instances to the <xref:System.Configuration.Install.Installer.Installers%2A> collection.  
+## 解説  
+ 継承されるプロジェクト インストーラー クラスを作成、サービスをインストールする、 <xref:System.Configuration.Install.Installer> クラス、 <xref:System.ComponentModel.RunInstallerAttribute> クラスに属性 `true`します。 作成、プロジェクト内で <xref:System.ServiceProcess.ServiceProcessInstaller> サービス アプリケーションと 1 つあたりのインスタンス <xref:System.ServiceProcess.ServiceInstaller> アプリケーション内の各サービスのインスタンス。 クラスにコンス トラクター、プロジェクト インストーラー内でサービスを使用して、インストールのプロパティを設定、 <xref:System.ServiceProcess.ServiceProcessInstaller> と <xref:System.ServiceProcess.ServiceInstaller> インスタンスし、するインスタンスを追加、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションです。  
   
- The <xref:System.ServiceProcess.ServiceInstaller.%23ctor%2A> constructor automatically generates an event log source whose <xref:System.Diagnostics.EventLog.Log%2A> property is set to the computer's Application log, and an <xref:System.Diagnostics.EventLogInstaller>. When you set the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> of the <xref:System.ServiceProcess.ServiceInstaller>, which should be identical to the <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> of the service, the <xref:System.Diagnostics.EventLog.Source%2A> property of the event log is automatically set to the same value. The source is deleted automatically in the case of an installation failure.  
+ <xref:System.ServiceProcess.ServiceInstaller.%23ctor%2A> コンス トラクターは、イベント ログを自動的に生成されますがソース <xref:System.Diagnostics.EventLog.Log%2A> プロパティが、コンピューターのアプリケーション ログと <xref:System.Diagnostics.EventLogInstaller>です。 設定すると、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> の <xref:System.ServiceProcess.ServiceInstaller>, と同じにする必要がありますが、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> 、サービスの <xref:System.Diagnostics.EventLog.Source%2A> イベント ログのプロパティは自動的に同じ値に設定します。 インストール エラーの場合、ソースが自動的に削除されます。  
   
- The <xref:System.ServiceProcess.ServiceInstaller.%23ctor%2A> constructor sets the <xref:System.ServiceProcess.ServiceInstaller.StartType%2A> property to `ServiceStartMode.Manual` to specify that a user start the service. You can reset the property to `ServiceStartMode.Automatic` to specify that the service start when the computer reboots.  
+ <xref:System.ServiceProcess.ServiceInstaller.%23ctor%2A> コンス トラクターのセット、 <xref:System.ServiceProcess.ServiceInstaller.StartType%2A> プロパティを `ServiceStartMode.Manual` をユーザーがサービスを開始することを指定します。 プロパティをリセットできます `ServiceStartMode.Automatic` コンピューターが再起動したら、サービスを開始するかを指定します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Diagnostics.EventLog" />
+        <altmember cref="T:System.ServiceProcess.ServiceStartMode" />
       </Docs>
     </Member>
     <Member MemberName="CopyFromComponent">
@@ -101,22 +108,24 @@
         <Parameter Name="component" Type="System.ComponentModel.IComponent" />
       </Parameters>
       <Docs>
-        <param name="component">The <see cref="T:System.ComponentModel.IComponent" /> from which to copy.</param>
-        <summary>Copies properties from an instance of <see cref="T:System.ServiceProcess.ServiceBase" /> to this installer.</summary>
+        <param name="component">
+          <see cref="T:System.ComponentModel.IComponent" /> コピー先となるからです。</param>
+        <summary>インスタンスからプロパティをコピー <see cref="T:System.ServiceProcess.ServiceBase" /> このインストーラーにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method will rarely be called within your code. <xref:System.ServiceProcess.ServiceInstaller.CopyFromComponent%2A> is usually called only by designers.  
+## 解説  
+ このメソッドは、コード内で呼び出すことはほとんどありません。<xref:System.ServiceProcess.ServiceInstaller.CopyFromComponent%2A> 通常、デザイナーによってのみ呼び出されます。  
   
- <xref:System.ServiceProcess.ServiceInstaller.CopyFromComponent%2A> saves the service name of the `component` parameter to the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> of the <xref:System.ServiceProcess.ServiceInstaller> instance. (Because the parameter must be an instance of a class that derives from <xref:System.ServiceProcess.ServiceBase>, `component` is guaranteed to have a <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> property.)  
+ <xref:System.ServiceProcess.ServiceInstaller.CopyFromComponent%2A> サービス名を保存、 `component` パラメーターを <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> の <xref:System.ServiceProcess.ServiceInstaller> インスタンス。 \(パラメーターから派生したクラスのインスタンスである必要がありますので <xref:System.ServiceProcess.ServiceBase>, 、`component` を持つという保証、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> プロパティです\)。  
   
 > [!NOTE]
->  If you are using the Visual Studio designer, this method is called at design time when the user clicks `Add Installer` on a component that specified this class as its installer. The installer takes all information it can from the live component and stores it for use at install time.  
+>  Visual Studio デザイナーを使用している場合は、このメソッドはデザイン時のユーザーがクリックしたときに `Add Installer` コンポーネントのインストーラーとしてこのクラスを指定します。 インストーラーは、すべての情報をライブのコンポーネントから、インストール時に使用するため保存します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The component you are associating with this installer does not inherit from <see cref="T:System.ServiceProcess.ServiceBase" />.</exception>
+        <exception cref="T:System.ArgumentException">このインストーラーとを関連付けるコンポーネントを継承しない <see cref="T:System.ServiceProcess.ServiceBase" />します。</exception>
+        <altmember cref="M:System.ServiceProcess.ServiceProcessInstaller.CopyFromComponent(System.ComponentModel.IComponent)" />
       </Docs>
     </Member>
     <Member MemberName="DelayedAutoStart">
@@ -140,19 +149,22 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the service should be delayed from starting until other automatically started services are running.</summary>
+        <summary>取得またはサービスを自動的に開始される他のサービスが実行するまでは開始遅延させるかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> to delay automatic start of the service; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+          <see langword="true" /> 自動遅延には、サービスを開始します。それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceProcess.ServiceInstaller.DelayedAutoStart%2A> property can be applied to any service, but it is ignored unless the service's start mode is <xref:System.ServiceProcess.ServiceStartMode.Automatic>. The setting takes effect the next time the system is restarted. The Service Control Manager does not guarantee a specific start time for the service.  
+## 解説  
+ <xref:System.ServiceProcess.ServiceInstaller.DelayedAutoStart%2A> プロパティは、任意のサービスに適用されることができますが、サービスの開始モードがない場合、これは無視されます <xref:System.ServiceProcess.ServiceStartMode.Automatic>します。 設定は、次に、システムが再起動したときに有効にします。 サービス コントロール マネージャーでは、サービスの特定の開始時刻は保証されません。  
   
- A delayed automatic start service cannot be a member of a load ordering group, but it can depend on another automatic start service. If an application calls a delayed automatic start service before it is loaded, the call fails.  
+ 遅延自動開始サービスが、読み込み順序グループのメンバーにすることはできませんが、別の自動開始サービスに依存できます。 アプリケーションで読み込まれる前に遅延自動起動サービスを呼び出す場合、呼び出しが失敗します。  
   
- On operating systems that do not support delayed automatic start, setting this property has no effect.  
+ 遅延自動起動をサポートしないオペレーティング システムでこのプロパティの設定は影響しません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -181,26 +193,28 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the description for the service.</summary>
-        <value>The description of the service. The default is an empty string ("").</value>
+        <summary>取得またはサービスの説明を設定します。</summary>
+        <value>サービスの説明。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.ServiceProcess.ServiceInstaller.Description%2A> property to describe the purpose of the installed service to the user. The user can view the service description in applications that display details for installed services.  
+## 解説  
+ 使用して、 <xref:System.ServiceProcess.ServiceInstaller.Description%2A> プロパティをユーザーがインストールされているサービスの目的を説明します。 ユーザーは、インストールされているサービスの詳細を表示するアプリケーションでサービスの説明を表示できます。  
   
- For example, using Windows XP, you can view the service description with the Service Control command-line utility (Sc.exe) or you can view the service description within the **Services** node of the **Computer Management** console.  
+ Windows XP を使用して、サービス コントロール コマンド ライン ユーティリティ \(Sc.exe\) を使用してサービスの説明を表示するなど、サービスの説明を表示する、 **サービス** のノード、 **コンピューターの管理** コンソールです。  
   
    
   
-## Examples  
- The following code example sets the installation properties for a new Windows service application. The example sets the service name, along with the display name and description. After assigning the installation properties for the service, the example adds the <xref:System.ServiceProcess.ServiceInstaller> object to the <xref:System.Configuration.Install.Installer.Installers%2A> collection.  
+## 例  
+ 次のコード例では、新しい Windows サービス アプリケーションのインストール プロパティを設定します。 この例では、表示名と説明のほか、サービス名を設定します。 この例で追加、サービスのインストール プロパティを割り当てた後、 <xref:System.ServiceProcess.ServiceInstaller> オブジェクトを <xref:System.Configuration.Install.Installer.Installers%2A> コレクションです。  
   
- [!code-csharp[ServiceProcess_ServiceInstaller#3](~/samples/snippets/csharp/VS_Snippets_CLR/ServiceProcess_serviceinstaller/CS/simpleserviceinstaller.cs#3)]
- [!code-vb[ServiceProcess_ServiceInstaller#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/ServiceProcess_serviceinstaller/VB/service1.vb#3)]  
+ [!code-csharp[ServiceProcess\_ServiceInstaller\#3](~/samples/snippets/csharp/VS_Snippets_CLR/ServiceProcess_serviceinstaller/CS/simpleserviceinstaller.cs#3)]
+ [!code-vb[ServiceProcess\_ServiceInstaller\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/ServiceProcess_serviceinstaller/VB/service1.vb#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.ServiceProcess.ServiceInstaller.ServiceName" />
+        <altmember cref="P:System.ServiceProcess.ServiceInstaller.DisplayName" />
       </Docs>
     </Member>
     <Member MemberName="DisplayName">
@@ -224,18 +238,20 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates the friendly name that identifies the service to the user.</summary>
-        <value>The name associated with the service, used frequently for interactive tools.</value>
+        <summary>ユーザーにサービスを識別するフレンドリ名を示します。</summary>
+        <value>対話型ツールに頻繁に使用する、サービスに関連付けられた名前。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceProcess.ServiceInstaller.DisplayName%2A> is used, for example, in the Service Control Manager to provide a user-readable descriptive name for the service. The <xref:System.ServiceProcess.ServiceInstaller.DisplayName%2A> is a registry value, but is never used as a registry key. Therefore, restrictions on the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> property value do not apply. <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> is used as the HKEY_LOCAL_MACHINES\System\CurrentControlSet\Services registry key, so it is restricted.  
+## 解説  
+ <xref:System.ServiceProcess.ServiceInstaller.DisplayName%2A> は、たとえばなど、使用、サービス コントロール マネージャーで、サービスにユーザーが判読できるわかりやすい名前を指定します。<xref:System.ServiceProcess.ServiceInstaller.DisplayName%2A> レジストリ値ですが、レジストリ キーとしては使用されません。 したがって、に関する制限事項、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> プロパティの値は適用されません。<xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> 制限されているので、HKEY\_LOCAL\_MACHINES\\System\\CurrentControlSet\\Services のレジストリ キーとして使用されます。  
   
- The display name is never used by the install utility to identify the service, so there are no restrictions on the choice of name, as there is for the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> property.  
+ 表示名はく使用インストール ユーティリティでためには、名前の選択に制限はありませんので、サービスを識別するために、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> プロパティです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.ServiceProcess.ServiceInstaller.ServiceName" />
+        <altmember cref="P:System.ServiceProcess.ServiceInstaller.Description" />
       </Docs>
     </Member>
     <Member MemberName="Install">
@@ -254,46 +270,53 @@
         <Parameter Name="stateSaver" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="stateSaver">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation.</param>
-        <summary>Installs the service by writing service application information to the registry. This method is meant to be used by installation tools, which process the appropriate methods automatically.</summary>
+        <param name="stateSaver">
+          <see cref="T:System.Collections.IDictionary" /> 、インストールに関連付けられているコンテキスト情報を格納します。</param>
+        <summary>サービス アプリケーションの情報をレジストリに書き込むことにより、サービスをインストールします。 このメソッドは、インストール ツールは、適切なメソッドを自動的に処理が使用することはできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Normally, you will not call the methods on <xref:System.ServiceProcess.ServiceInstaller> within your code; they are generally called only by the install utility. The install utility automatically calls the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> method during installation. It backs out failures, if necessary, by calling <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A> on the object that generated the exception.  
+## 解説  
+ 通常はないのメソッドを呼び出す <xref:System.ServiceProcess.ServiceInstaller> 、コード内で一般的にして呼び出されただけインストール ユーティリティです。 インストール ユーティリティは、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> のインストール中にメソッドです。 バックアップ実行の障害を必要に応じてを呼び出して <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A> 例外を生成したオブジェクトにします。  
   
- An application's install routine maintains information automatically about the components that were already installed, using the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>. This state information, passed into <xref:System.ServiceProcess.ServiceInstaller.Install%2A> as the `stateSaver` parameter, is continuously updated as the <xref:System.ServiceProcess.ServiceProcessInstaller> instance and each <xref:System.ServiceProcess.ServiceInstaller> instance is installed by the utility. It is usually unnecessary for your code to modify this state information explicitly.  
+ アプリケーションのインストールは既にインストールされて、プロジェクトのインストーラーを使用してコンポーネントを自動的に情報を格納 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>します。 この状態情報が渡された <xref:System.ServiceProcess.ServiceInstaller.Install%2A> として、 `stateSaver` パラメーターは継続的に更新、 <xref:System.ServiceProcess.ServiceProcessInstaller> インスタンスとその各 <xref:System.ServiceProcess.ServiceInstaller> ユーティリティによってインスタンスがインストールされています。 場合によっては、通常、この状態情報を明示的に変更するコードの必要はありません。  
   
- The <xref:System.ServiceProcess.ServiceProcessInstaller> associated with your project installation class installs information common to all <xref:System.ServiceProcess.ServiceInstaller> instances in the project. If this service has anything that separates it from the other services in the installation project, that service-specific information is installed by this method.  
+ <xref:System.ServiceProcess.ServiceProcessInstaller> プロジェクト インストールのクラスのインストール情報すべてに共通に関連付けられている <xref:System.ServiceProcess.ServiceInstaller> プロジェクト内のインスタンス。 このサービスが何もインストール プロジェクト内の他のサービスから分離する場合、そのサービスに固有の情報は、このメソッドによってインストールされます。  
   
- To install a service, create a project installer class that inherits from the <xref:System.Configuration.Install.Installer> class, and set the <xref:System.ComponentModel.RunInstallerAttribute> attribute on the class to `true`. Within your project, create one <xref:System.ServiceProcess.ServiceProcessInstaller> instance per service application, and one <xref:System.ServiceProcess.ServiceInstaller> instance for each service in the application. Within your project installer class constructor, set the installation properties for the service using the <xref:System.ServiceProcess.ServiceProcessInstaller> and <xref:System.ServiceProcess.ServiceInstaller> instances, and add the instances to the <xref:System.Configuration.Install.Installer.Installers%2A> collection.  
+ 継承されるプロジェクト インストーラー クラスを作成、サービスをインストールする、 <xref:System.Configuration.Install.Installer> クラス、 <xref:System.ComponentModel.RunInstallerAttribute> クラスに属性 `true`します。 作成、プロジェクト内で <xref:System.ServiceProcess.ServiceProcessInstaller> サービス アプリケーションと 1 つあたりのインスタンス <xref:System.ServiceProcess.ServiceInstaller> アプリケーション内の各サービスのインスタンス。 クラスにコンス トラクター、プロジェクト インストーラー内でサービスを使用して、インストールのプロパティを設定、 <xref:System.ServiceProcess.ServiceProcessInstaller> と <xref:System.ServiceProcess.ServiceInstaller> インスタンスし、するインスタンスを追加、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションです。  
   
 > [!NOTE]
->  It is recommended that you use the constructor for adding installer instances; however, if you need to add to the <xref:System.Configuration.Install.Installer.Installers%2A> collection in the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> method, be sure to perform the same additions to the collection in the <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> method.  
+>  インストーラーのインスタンスを追加するため、コンス トラクターを使用することをお勧めただしに追加する必要がある場合、 <xref:System.Configuration.Install.Installer.Installers%2A> 内のコレクション、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> メソッドでコレクションに同じ追加機能を実行してください、 <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドです。  
   
- For all classes deriving from the <xref:System.Configuration.Install.Installer> class, the state of the <xref:System.Configuration.Install.Installer.Installers%2A> collection must be the same in the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> and <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> methods. However, you can avoid the maintenance of the collection across the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> and <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> methods if you add installer instances to the <xref:System.Configuration.Install.Installer.Installers%2A> collection in your custom installer class constructor.  
+ すべてのクラスから派生する、 <xref:System.Configuration.Install.Installer> クラスの状態、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションが同じである必要があります、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> と <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドです。 ただし、コレクション間でのメンテナンスをしないようにする、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> と <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドするインストーラーのインスタンスを追加する場合、 <xref:System.Configuration.Install.Installer.Installers%2A> カスタム インストーラー クラスのコンス トラクター内のコレクション。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The installation does not contain a <see cref="T:System.ServiceProcess.ServiceProcessInstaller" /> for the executable.  
+        <exception cref="T:System.InvalidOperationException">インストールが含まれていない、 <see cref="T:System.ServiceProcess.ServiceProcessInstaller" /> 実行可能ファイルです。  
   
- -or-  
+ または  
   
- The file name for the assembly is <see langword="null" /> or an empty string.  
+ アセンブリのファイル名は <see langword="null" /> または空の文字列です。  
   
- -or-  
+ または  
   
- The service name is invalid.  
+ サービス名が正しくありません。  
   
- -or-  
+ または  
   
- The Service Control Manager could not be opened.</exception>
-        <exception cref="T:System.ArgumentException">The display name for the service is more than 255 characters in length.</exception>
-        <exception cref="T:System.ComponentModel.Win32Exception">The system could not generate a handle to the service.  
+ サービス コントロール マネージャーを開いていない可能性があります。</exception>
+        <exception cref="T:System.ArgumentException">サービスの表示名は、複数の 255 文字の長さです。</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">システムは、サービスへのハンドルを生成できませんでした。  
   
- -or-  
+ または  
   
- A service with that name is already installed.</exception>
+ この名前のサービスが既にインストールされています。</exception>
+        <altmember cref="T:System.ServiceProcess.ServiceProcessInstaller" />
+        <altmember cref="M:System.ServiceProcess.ServiceInstaller.Rollback(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Configuration.Install.Installer.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.ServiceProcess.ServiceInstaller.Uninstall(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Diagnostics.EventLogInstaller" />
+        <altmember cref="M:System.Diagnostics.EventLogInstaller.#ctor" />
       </Docs>
     </Member>
     <Member MemberName="IsEquivalentInstaller">
@@ -312,18 +335,20 @@
         <Parameter Name="otherInstaller" Type="System.Configuration.Install.ComponentInstaller" />
       </Parameters>
       <Docs>
-        <param name="otherInstaller">A <see cref="T:System.Configuration.Install.ComponentInstaller" /> to which you are comparing the current installer.</param>
-        <summary>Indicates whether two installers would install the same service.</summary>
+        <param name="otherInstaller">A <see cref="T:System.Configuration.Install.ComponentInstaller" /> 現在インストーラーを比較します。</param>
+        <summary>2 つのインストーラーが、同じサービスをインストールするかどうかを示します。</summary>
         <returns>
-          <see langword="true" /> if calling <see cref="M:System.ServiceProcess.ServiceInstaller.Install(System.Collections.IDictionary)" /> on both of these installers would result in installing the same service; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 呼び出す場合 <see cref="M:System.ServiceProcess.ServiceInstaller.Install(System.Collections.IDictionary)" /> これらのインストーラーの両方でのインストールと同じになるサービス以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.ServiceProcess.ServiceInstaller.IsEquivalentInstaller%2A> indicates, for example, whether two installers would install the same service under the same user account.  
+## 解説  
+ <xref:System.ServiceProcess.ServiceInstaller.IsEquivalentInstaller%2A> たとえば、2 つのインストーラーと同じユーザー アカウントで同じサービスをインストールするかどうかをも示します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.ServiceProcess.ServiceInstaller.CopyFromComponent(System.ComponentModel.IComponent)" />
+        <altmember cref="T:System.Configuration.Install.ComponentInstaller" />
       </Docs>
     </Member>
     <Member MemberName="Rollback">
@@ -342,18 +367,23 @@
         <Parameter Name="savedState" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation.</param>
-        <summary>Rolls back service application information written to the registry by the installation procedure. This method is meant to be used by installation tools, which process the appropriate methods automatically.</summary>
+        <param name="savedState">
+          <see cref="T:System.Collections.IDictionary" /> インストールに関連付けられているコンテキスト情報を格納します。</param>
+        <summary>インストール プロシージャによって、レジストリに書き込まれたサービス アプリケーションの情報をロールバックします。 このメソッドは、インストール ツールは、適切なメソッドを自動的に処理が使用することはできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Normally, you will not call the methods on <xref:System.ServiceProcess.ServiceInstaller> within your code; they are generally called only by the install utility. The install utility automatically calls the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> method during the installation process. It backs out failures, if necessary, by calling <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A> on the object that generated the exception.  
+## 解説  
+ 通常はないのメソッドを呼び出す <xref:System.ServiceProcess.ServiceInstaller> 、コード内で一般的にして呼び出されただけインストール ユーティリティです。 インストール ユーティリティは、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> インストール プロセス中にメソッドです。 バックアップ実行の障害を必要に応じてを呼び出して <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A> 例外を生成したオブジェクトにします。  
   
- An application's install routine maintains information automatically about the components already installed, using the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>. This state information, passed into <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A> as the `savedState` parameter, is continuously updated as the <xref:System.ServiceProcess.ServiceProcessInstaller> instance and each <xref:System.ServiceProcess.ServiceInstaller> instance is installed by the utility. It is usually unnecessary for your code to modify this state information explicitly.  
+ アプリケーションのインストールにはプロジェクトのインストーラーを使用して、既にインストールされているコンポーネントを自動的に情報が格納 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>します。 この状態情報が渡された <xref:System.ServiceProcess.ServiceInstaller.Rollback%2A> として、 `savedState` パラメーターは継続的に更新、 <xref:System.ServiceProcess.ServiceProcessInstaller> インスタンスとその各 <xref:System.ServiceProcess.ServiceInstaller> ユーティリティによってインスタンスがインストールされています。 場合によっては、通常、この状態情報を明示的に変更するコードの必要はありません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.ServiceProcess.ServiceProcessInstaller.Rollback(System.Collections.IDictionary)" />
+        <altmember cref="M:System.ServiceProcess.ServiceInstaller.Install(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Configuration.Install.Installer.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.ServiceProcess.ServiceInstaller.Uninstall(System.Collections.IDictionary)" />
       </Docs>
     </Member>
     <Member MemberName="ServiceName">
@@ -380,24 +410,27 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates the name used by the system to identify this service. This property must be identical to the <see cref="P:System.ServiceProcess.ServiceBase.ServiceName" /> of the service you want to install.</summary>
-        <value>The name of the service to be installed. This value must be set before the install utility attempts to install the service.</value>
+        <summary>このサービスを識別するために、システムで使用される名前を示します。 このプロパティと同一である、 <see cref="P:System.ServiceProcess.ServiceBase.ServiceName" /> をインストールするサービスです。</summary>
+        <value>インストールするサービスの名前。 この値は、サービスをインストールするのには、インストールする前に設定する必要があります。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- It is crucial that the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> be identical to the <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> of the class you derived from <xref:System.ServiceProcess.ServiceBase>. Normally, the value of the <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> property for the service is set within the Main() function of the service application's executable. The Service Control Manager uses the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A?displayProperty=fullName> property to locate the service within this executable.  
+## 解説  
+ ために重要ですが、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> と同一である、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> から派生したクラスの <xref:System.ServiceProcess.ServiceBase>です。 値では、通常、 <xref:System.ServiceProcess.ServiceBase.ServiceName%2A?displayProperty=fullName> サービス アプリケーションの実行可能ファイルの Main\(\) 関数内で、サービスのプロパティを設定します。 サービス コントロール マネージャーを使用して、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A?displayProperty=fullName> プロパティをこの実行可能ファイル内のサービスを検索します。  
   
- When you set the <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> of the service installer, the <xref:System.Diagnostics.EventLog.Source%2A> of the associated event log is set to the same value. This allows the service to automatically log service commands (such as Start and Stop) calls to the Application log on the computer.  
+ 設定すると、 <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> サービスのインストーラーの <xref:System.Diagnostics.EventLog.Source%2A> 関連のイベント ログの同じ値に設定されています。 これにより、コンピューター上のアプリケーション ログにサービスのコマンド \(開始、停止\) などの呼び出しを自動的にログオンするサービス。  
   
 > [!NOTE]
->  If a source by the same name already exists on the computer, but in a log other than the Application log, an exception will be thrown. If the source exists and is associated with the Application log, that source is used to report command calls to the service, and no exception is thrown.  
+>  同じ名前のソースが既に存在するコンピューターでがアプリケーション ログ以外のログで例外がスローされます。 ソースが存在し、アプリケーション ログに関連付けられている場合は、そのソースは、サービスにコマンドの呼び出しをレポートに使用し、例外はスローされません。  
   
- The <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> cannot be `null` or have zero length. Its maximum size is 256 characters. It also cannot contain forward or backward slashes, '/' or '\\', or characters from the ASCII character set with value less than decimal value 32.  
+ <xref:System.ServiceProcess.ServiceInstaller.ServiceName%2A> することはできません `null` か、長さがゼロです。 最大サイズは、256 文字です。 前方または後方のスラッシュ、含めることはできません '\/' または ' \\'、または文字セット 10 進値 32 未満の値の ascii 文字。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <see cref="P:System.ServiceProcess.ServiceInstaller.ServiceName" /> property is invalid.</exception>
+        <exception cref="T:System.ArgumentException">
+          <see cref="P:System.ServiceProcess.ServiceInstaller.ServiceName" /> プロパティが無効です。</exception>
+        <altmember cref="P:System.ServiceProcess.ServiceBase.ServiceName" />
+        <altmember cref="P:System.ServiceProcess.ServiceInstaller.DisplayName" />
       </Docs>
     </Member>
     <Member MemberName="ServicesDependedOn">
@@ -418,24 +451,25 @@
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates the services that must be running for this service to run.</summary>
-        <value>An array of services that must be running before the service associated with this installer can run.</value>
+        <summary>このサービスを実行するために実行されているサービスを示します。</summary>
+        <value>このインストーラーに関連するサービスを実行前に実行する必要があるサービスの配列。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A service can require other services to be running before it can start. The information from this property is written to a key in the registry. When the user (or the system, in the case of automatic startup) tries to run the service, the Service Control Manager (SCM) verifies that each of the services in the array has already been started.  
+## 解説  
+ サービスは、開始する前に実行するには、その他のサービスを要求できます。 このプロパティの情報は、レジストリのキーに書き込まれます。 ユーザー \(または自動的に起動した場合に、システム\) は、サービスの実行を試みると、サービス コントロール マネージャー \(SCM\) では、各配列内のサービスが既に開始されていることを確認します。  
   
- If any service in the array is not running then, the SCM tries to start them. This includes services with `Manual`<xref:System.ServiceProcess.ServiceInstaller.StartType%2A>.  
+ 配列内のサービスが、実行されていない場合、SCM は、開始しようとします。 これにより、サービスが含まれます。 `Manual`<xref:System.ServiceProcess.ServiceInstaller.StartType%2A>します。  
   
- If any service upon which this service depends fails to start, this service will not start. An exception is not thrown if the system is not started because there is no exception handling at the system level to detect this. Decide how to handle service start failures and implement this in your code. Typically, a dialog appears to the user at startup if a service fails to start.  
+ このサービスが依存しているすべてのサービスが開始しなかった場合、このサービスは開始されません。 これを検出するシステム レベル例外処理がないために、システムが開始されていない場合、例外はスローされません。 サービスの開始の失敗を処理して、コードに実装する方法を決定します。 通常、サービスが開始しない場合は、\[スタートアップ時にダイアログが表示されます。  
   
- If the service does not start, an entry is written to the Application event log.  
+ サービスが起動しない場合は、アプリケーション イベント ログにエントリが書き込まれます。  
   
- The services upon which this service depends do not need to be in the same executable.  
+ このサービスが依存しているサービスは、同じ実行可能ファイル内にある必要はありません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.ServiceProcess.ServiceInstaller.StartType" />
       </Docs>
     </Member>
     <Member MemberName="StartType">
@@ -459,19 +493,20 @@
         <ReturnType>System.ServiceProcess.ServiceStartMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates how and when this service is started.</summary>
-        <value>A <see cref="T:System.ServiceProcess.ServiceStartMode" /> that represents the way the service is started. The default is <see langword="Manual" />, which specifies that the service will not automatically start after reboot.</value>
+        <summary>このサービスを開始する方法とタイミングを示します。</summary>
+        <value>A <see cref="T:System.ServiceProcess.ServiceStartMode" /> を表すサービスを開始する方法です。 既定値は <see langword="Manual" />, 、再起動後に、サービスは自動的に開始されませんを指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Set the <xref:System.ServiceProcess.ServiceInstaller.StartType%2A> to specify either that the service be started automatically after reboot or that a user must manually start the service. A service can also be disabled, specifying that it cannot be started, either manually or programmatically, until it is enabled.  
+## 解説  
+ 設定、 <xref:System.ServiceProcess.ServiceInstaller.StartType%2A> を指定の再起動後に、サービスが自動的に開始するか、ユーザーが、サービスを手動で開始する必要があります。 サービスも無効にできますを起動できない、手動またはプログラムによってを有効にするまでを指定することです。  
   
- You cannot change <xref:System.ServiceProcess.ServiceInstaller> property values after installation. To change the <xref:System.ServiceProcess.ServiceInstaller.StartType%2A>, you either have to uninstall and reinstall your service, or manually change the setting using the Service Control Manager.  
+ 変更することはできません <xref:System.ServiceProcess.ServiceInstaller> インストール後にプロパティ値です。 変更する、 <xref:System.ServiceProcess.ServiceInstaller.StartType%2A>, 、か、アンインストールし、サービスを再インストールするか、サービス コントロール マネージャーを使用して、設定を手動で変更する必要があります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">The start mode is not a value of the <see cref="T:System.ServiceProcess.ServiceStartMode" /> enumeration.</exception>
+        <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">開始モードは、の値ではない、 <see cref="T:System.ServiceProcess.ServiceStartMode" /> 列挙します。</exception>
+        <altmember cref="P:System.ServiceProcess.ServiceProcessInstaller.Account" />
       </Docs>
     </Member>
     <Member MemberName="Uninstall">
@@ -490,29 +525,31 @@
         <Parameter Name="savedState" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="savedState">An <see cref="T:System.Collections.IDictionary" /> that contains the context information associated with the installation.</param>
-        <summary>Uninstalls the service by removing information about it from the registry.</summary>
+        <param name="savedState">
+          <see cref="T:System.Collections.IDictionary" /> インストールに関連付けられているコンテキスト情報を格納します。</param>
+        <summary>レジストリからその情報を削除することで、サービスをアンインストールします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Uninstall first attempts to stop the service before uninstalling it. If the service cannot be stopped, no exception is caught, and the method continues with the removal of the service.  
+## 解説  
+ これをアンインストールする前に、サービスを停止する最初の試みをアンインストールします。 サービスを停止できない場合は、例外がキャッチされないと、メソッドは、サービスの削除を続行します。  
   
- Normally, you will not call the methods on <xref:System.ServiceProcess.ServiceInstaller> within your code; they are generally called only by the install utility. InstallUtil is used to uninstall services as well as install them; uninstalling takes a switch in the command line call.  
+ 通常はないのメソッドを呼び出す <xref:System.ServiceProcess.ServiceInstaller> 、コード内で一般的にして呼び出されただけインストール ユーティリティです。 InstallUtil を使用してサービスをアンインストールするだけでなく、それらをインストールするにはアンインストールするには、コマンドラインの呼び出しで、スイッチです。  
   
- An application's uninstall routine maintains information automatically about the components being uninstalled, using the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>. This state information, passed into <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> as the `savedState` parameter, is continuously updated as the <xref:System.ServiceProcess.ServiceProcessInstaller> instance and each <xref:System.ServiceProcess.ServiceInstaller> instance is installed by the utility. It is usually unnecessary for your code to modify this state information explicitly.  
+ アプリケーションのアンインストール ルーチンに自動的に、コンポーネントに関する情報を保持プロジェクトのインストーラーを使用して、アンインストールして <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName>します。 この状態情報が渡された <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> として、 `savedState` パラメーターは継続的に更新、 <xref:System.ServiceProcess.ServiceProcessInstaller> インスタンスとその各 <xref:System.ServiceProcess.ServiceInstaller> ユーティリティによってインスタンスがインストールされています。 場合によっては、通常、この状態情報を明示的に変更するコードの必要はありません。  
   
- For all classes deriving from the <xref:System.Configuration.Install.Installer> class, the state of the <xref:System.Configuration.Install.Installer.Installers%2A> collection must be the same in the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> and <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> methods. However, you can avoid the maintenance of the collection across the <xref:System.ServiceProcess.ServiceInstaller.Install%2A> and <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> methods if you add installer instances to the <xref:System.Configuration.Install.Installer.Installers%2A> collection in your custom installer class constructor.  
+ すべてのクラスから派生する、 <xref:System.Configuration.Install.Installer> クラスの状態、 <xref:System.Configuration.Install.Installer.Installers%2A> コレクションが同じである必要があります、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> と <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドです。 ただし、コレクション間でのメンテナンスをしないようにする、 <xref:System.ServiceProcess.ServiceInstaller.Install%2A> と <xref:System.ServiceProcess.ServiceInstaller.Uninstall%2A> メソッドするインストーラーのインスタンスを追加する場合、 <xref:System.Configuration.Install.Installer.Installers%2A> カスタム インストーラー クラスのコンス トラクター内のコレクション。  
   
- There is no rollback mechanism for uninstalling, so if one service fails to uninstall, this does not affect the other services (usually within the same installation project) being uninstalled.  
+ 1 つのサービスは、アンインストールに失敗すると、これには影響しません、他のサービス \(通常、同じインストール プロジェクト\) 内でアンインストールされているためをアンインストールするためのロールバック メカニズムはありません。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ComponentModel.Win32Exception">The Service Control Manager could not be opened.  
+        <exception cref="T:System.ComponentModel.Win32Exception">サービス コントロール マネージャーを開いていない可能性があります。  
   
- -or-  
+ または  
   
- The system could not get a handle to the service.</exception>
+ システムは、サービスへのハンドルを取得できませんでした。</exception>
+        <altmember cref="M:System.ServiceProcess.ServiceInstaller.Install(System.Collections.IDictionary)" />
       </Docs>
     </Member>
   </Members>

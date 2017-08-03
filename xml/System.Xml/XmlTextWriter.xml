@@ -25,19 +25,19 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents a writer that provides a fast, non-cached, forward-only way of generating streams or files containing XML data that conforms to the W3C Extensible Markup Language (XML) 1.0 and the Namespaces in XML recommendations.  
+    <summary>W3C 勧告『Extensible Markup Language \(XML\) 1.0』および勧告『Namespaces in XML』に準拠する XML データを格納するストリームまたはファイルを高速に、非キャッシュで、前方向に生成する方法を提供するライターを表します。  
   
- Starting with the .NET Framework 2.0, we recommend that you use the <see cref="T:System.Xml.XmlWriter" /> class instead.</summary>
+ .NET Framework 2.0 以降では、代わりに <see cref="T:System.Xml.XmlWriter" /> クラスを使用することをお勧めします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This class implements the <xref:System.Xml.XmlWriter> class.  
+## 解説  
+ このクラスは、実装、 <xref:System.Xml.XmlWriter> クラスです。  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- `XmlTextWriter` maintains a namespace stack corresponding to all the namespaces defined in the current element stack. Using `XmlTextWriter` you can declare namespaces manually.  
+ `XmlTextWriter` 現在の要素のスタックで定義されているすべての名前空間に対応する名前空間スタックを保持します。 使用して `XmlTextWriter` 手動で名前空間を宣言することができます。  
   
 ```  
 w.WriteStartElement("root");  
@@ -49,7 +49,7 @@ w.WriteAttributeString("xmlns", "x", null, "urn:1");
 w.WriteEndElement();  
 ```  
   
- The above C# code produces the following output. `XmlTextWriter` promotes the namespace declaration to the root element to avoid having it duplicated on the two child elements. The child elements pick up the prefix from the namespace declaration.  
+ 上記の c\# コードでは、次の出力を生成します。`XmlTextWriter` 2 つの子要素で重複していることを避けるためにルート要素に名前空間宣言を昇格させます。 子要素は、名前空間宣言からのプレフィックスを取得します。  
   
 ```  
 <root xmlns:x="urn:1">  
@@ -58,14 +58,14 @@ w.WriteEndElement();
 </x:root>  
 ```  
   
- `XmlTextWriter` also allows you to override the current namespace declaration. In the following example, the namespace URI "123" is overridden by "abc" to produce the XML element `<x:node xmlns:x="abc"/>`.  
+ `XmlTextWriter` 現在の名前空間宣言をオーバーライドすることができます。 次の例では、名前空間 URI「123」は XML 要素を作成するには、"abc"によってオーバーライド `<x:node xmlns:x="abc"/>`します。  
   
 ```  
 w.WriteStartElement("x","node","123");  
 w.WriteAttributeString("xmlns","x",null,"abc");  
 ```  
   
- By using the write methods that take a prefix as an argument you can also specify which prefix to use. In the following example, two different prefixes are mapped to the same namespace URI to produce the XML text `<x:root xmlns:x="urn:1"><y:item xmlns:y="urn:1"/></x:root>`.  
+ 引数としてのプレフィックスを取得する書き込みメソッドを使用して、使用するプリフィックスも指定できます。 次の例では、2 つの異なるプレフィックスを同じ名前空間の XML テキストを生成する URI にマッピングされます `<x:root xmlns:x="urn:1"><y:item xmlns:y="urn:1"/></x:root>`します。  
   
 ```  
 XmlTextWriter w = new XmlTextWriter(Console.Out);  
@@ -76,7 +76,7 @@ w.WriteEndElement();
 w.Close();  
 ```  
   
- If there are multiple namespace declarations mapping different prefixes to the same namespace URI, `XmlTextWriter` walks the stack of namespace declarations backwards and picks the closest one.  
+ 複数の名前空間宣言が同じ名前空間 URI には、異なるプレフィックスのマッピングがある場合 `XmlTextWriter` 旧バージョンと名前空間宣言のスタックを走査して、最も近いものを取得します。  
   
 ```  
 XmlTextWriter w = new XmlTextWriter(Console.Out);  
@@ -89,7 +89,7 @@ w.WriteEndElement();
 w.Close();  
 ```  
   
- In the above C# example, because the `WriteAttributeString` call does not specify a prefix, the writer uses the last prefix pushed onto the namespace stack, and produces the following XML:  
+ 上記の C\# コード例であるため、 `WriteAttributeString` 呼び出しが、プレフィックスを指定しない場合、ライターは名前空間スタックにプッシュされた最後のプレフィックスを使用して、次の XML が生成されます。  
   
 ```  
 <x:root xmlns:x="urn:1">  
@@ -97,43 +97,43 @@ w.Close();
 </x:root>  
 ```  
   
- If namespace conflicts occur, `XmlTextWriter` resolves them by generating alternate prefixes. For example, if an attribute and element have the same prefix but different namespaces, `XmlWriter` generates an alternate prefix for the attribute. The generated prefixes are named `n{i}` where `i` is a number beginning at 1. The number is reset to 1 for each element.  
+ 名前空間の競合が発生した場合 `XmlTextWriter` 代替プレフィックスを生成することによってそれらを解決します。 たとえば、属性と要素がある場合、同じプレフィックスが異なる名前空間 `XmlWriter` 属性用の代替プレフィックスを生成します。 生成されたプレフィックスが名前付き `n{i}` 、 `i` は 1 にします。 数は、各要素に対して 1 にリセットされます。  
   
- Attributes which are associated with a namespace URI must have a prefix (default namespaces do not apply to attributes). This conforms to section 5.2 of the W3C Namespaces in XML recommendation. If an attribute references a namespace URI, but does not specify a prefix, the writer generates a prefix for the attribute.  
+ 名前空間 URI に関連付けられた属性には、プレフィックス \(既定値は名前空間は、属性には適用されません\) が必要です。 これは、w3c 勧告 『 Namespaces in XML 』 のセクション 5.2 に準拠しています。 属性で名前空間 URI を参照している場合、プレフィックスが指定されていなければ、ライターは、属性のプレフィックスを生成します。  
   
- When writing an empty element, an additional space is added between tag name and the closing tag, for example `<item />`. This provides compatibility with older browsers.  
+ 追加の領域がたとえば追加タグ名と終了タグの間で、空の要素を書き込むときに `<item />`します。 これは、古いブラウザーでの互換性を提供します。  
   
- When a `String` is used as method parameter, `null` and `String.Empty` are equivalent. `String.Empty` follows the W3C rules.  
+ ときに、 `String` メソッド パラメーターとして使用される `null` と `String.Empty` は同等です。`String.Empty` W3C 規則に従います。  
   
- To write strongly typed data, use the <xref:System.Xml.XmlConvert> class to convert data types to string. For example, the following C# code converts the data from `Double` to `String` and writes the element `<price>19.95</price>`.  
+ 厳密に型指定のデータの書き込みに使用して、 <xref:System.Xml.XmlConvert> クラスのデータ型を文字列に変換します。 たとえば、次の c\# コードからのデータに変換します。 `Double` に `String` 要素を書き込み `<price>19.95</price>`します。  
   
 ```  
 Double price = 19.95;  
 writer.WriteElementString("price", XmlConvert.ToString(price));  
 ```  
   
- `XmlTextWriter` does not check for the following:  
+ `XmlTextWriter` 次を確認しません。  
   
--   Invalid characters in attribute and element names.  
+-   属性および要素名に無効な文字です。  
   
--   Unicode characters that do not fit the specified encoding. If the Unicode characters do not fit the specified encoding, the `XmlTextWriter` does not escape the Unicode characters into character entities.  
+-   指定したエンコーディングが収まらない Unicode 文字。 Unicode 文字に指定したエンコーディングが収まらない場合、 `XmlTextWriter` 文字エン ティティに Unicode 文字をエスケープしません。  
   
--   Duplicate attributes.  
+-   重複する属性。  
   
--   Characters in the DOCTYPE public identifier or system identifier.  
+-   DOCTYPE パブリック id またはシステム識別子の文字。  
   
-## Security Considerations  
- The following items are things to consider when working with the <xref:System.Xml.XmlTextWriter> class.  
+## セキュリティの考慮事項  
+ 次の項目を使用する場合の考慮事項、 <xref:System.Xml.XmlTextWriter> クラスです。  
   
--   Exceptions thrown by the <xref:System.Xml.XmlTextWriter> can disclose path information that you do not want bubbled up to the application. Your applications must catch exceptions and process them appropriately.  
+-   によってスローされた例外、 <xref:System.Xml.XmlTextWriter> アプリケーションに送られたくないパス情報を開示することができます。 アプリケーションは例外をキャッチし、それらを適切に処理する必要があります。  
   
--   When you pass the <xref:System.Xml.XmlTextWriter> to another application the underlying stream is exposed to that application. If you need to pass the <xref:System.Xml.XmlTextWriter> to a semi-trusted application, you should use an <xref:System.Xml.XmlWriter> object created by the <xref:System.Xml.XmlWriter.Create%2A> method instead.  
+-   <xref:System.Xml.XmlTextWriter> を別のアプリケーションに渡すと、下位のストリームがそのアプリケーションに公開されます。<xref:System.Xml.XmlTextWriter> を信頼度の低いアプリケーションに渡す必要がある場合は、代わりに <xref:System.Xml.XmlWriter> メソッドによって作成される <xref:System.Xml.XmlWriter.Create%2A> オブジェクトを使用する必要があります。  
   
--   The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteDocType%2A> or <xref:System.Xml.XmlTextWriter.WriteRaw%2A> methods. You should not pass arbitrary data to these methods.  
+-   <xref:System.Xml.XmlTextWriter> に渡されるデータを検証しません、 <xref:System.Xml.XmlTextWriter.WriteDocType%2A> または <xref:System.Xml.XmlTextWriter.WriteRaw%2A> メソッドです。 これらのメソッドには、任意のデータをパスする必要があります。  
   
--   If the default settings are changed, there is no guarantee that the generated output is well-formed XML data.  
+-   既定の設定を変更する場合、生成された出力が整形式 XML データである保証はありません。  
   
--   Do not accept supporting components, such as an <xref:System.Text.Encoding> object, from an untrusted source.  
+-   など、サポート コンポーネントは受け入れない、 <xref:System.Text.Encoding> 信頼できないソースからのオブジェクト。  
   
  ]]></format>
     </remarks>
@@ -146,14 +146,15 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Creates an instance of the <see langword="XmlTextWriter" /> class.</summary>
+        <summary>
+          <see langword="XmlTextWriter" /> クラスのインスタンスを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
@@ -181,15 +182,15 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
         <Parameter Name="w" Type="System.IO.TextWriter" />
       </Parameters>
       <Docs>
-        <param name="w">The <see langword="TextWriter" /> to write to. It is assumed that the <see langword="TextWriter" /> is already set to the correct encoding.</param>
-        <summary>Creates an instance of the <see langword="XmlTextWriter" /> class using the specified <see cref="T:System.IO.TextWriter" />.</summary>
+        <param name="w">書き込み先の <see langword="TextWriter" />。 ように仮定、 <see langword="TextWriter" /> が既に正しいエンコーディングに設定します。</param>
+        <summary>インスタンスを作成、 <see langword="XmlTextWriter" /> クラスの指定して <see cref="T:System.IO.TextWriter" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
@@ -218,22 +219,22 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
         <Parameter Name="encoding" Type="System.Text.Encoding" />
       </Parameters>
       <Docs>
-        <param name="w">The stream to which you want to write.</param>
-        <param name="encoding">The encoding to generate. If encoding is <see langword="null" /> it writes out the stream as UTF-8 and omits the encoding attribute from the <see langword="ProcessingInstruction" />.</param>
-        <summary>Creates an instance of the <see langword="XmlTextWriter" /> class using the specified stream and encoding.</summary>
+        <param name="w">書き込み先のストリーム。</param>
+        <param name="encoding">生成するエンコーディング。 エンコーディングが場合 <see langword="null" /> からエンコーディング属性を省略し、ストリームを utf\-8 として書き込み、 <see langword="ProcessingInstruction" />です。</param>
+        <summary>インスタンスを作成、 <see langword="XmlTextWriter" /> クラスの指定のストリームを使用してエンコードします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The encoding is not supported or the stream cannot be written to.</exception>
+        <exception cref="T:System.ArgumentException">エンコーディングがサポートされていないかにストリームを書き込むことはできません。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="w" /> is <see langword="null" />.</exception>
+          <paramref name="w" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -259,25 +260,25 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
         <Parameter Name="encoding" Type="System.Text.Encoding" />
       </Parameters>
       <Docs>
-        <param name="filename">The filename to write to. If the file exists, it truncates it and overwrites it with the new content.</param>
-        <param name="encoding">The encoding to generate. If encoding is <see langword="null" /> it writes the file out as UTF-8, and omits the encoding attribute from the <see langword="ProcessingInstruction" />.</param>
-        <summary>Creates an instance of the <see cref="T:System.Xml.XmlTextWriter" /> class using the specified file.</summary>
+        <param name="filename">書き込むファイル名。 ファイルが存在する場合は、ファイルを切り詰め、新しい内容で上書きします。</param>
+        <param name="encoding">生成するエンコーディング。 エンコーディングが場合 <see langword="null" /> からエンコーディング属性を省略し、ファイルを utf\-8 として書き込みます、 <see langword="ProcessingInstruction" />です。</param>
+        <summary>インスタンスを作成、 <see cref="T:System.Xml.XmlTextWriter" /> クラスの指定のファイルを使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The encoding is not supported; the filename is empty, contains only white space, or contains one or more invalid characters.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access is denied.</exception>
-        <exception cref="T:System.ArgumentNullException">The filename is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.DirectoryNotFoundException">The directory to write to is not found.</exception>
-        <exception cref="T:System.IO.IOException">The filename includes an incorrect or invalid syntax for file name, directory name, or volume label syntax.</exception>
-        <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        <exception cref="T:System.ArgumentException">エンコードはサポートされていません。ファイル名は空で、空白しか含んでいないか、1 つまたは複数の無効な文字が含まれています。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">アクセスが拒否されました。</exception>
+        <exception cref="T:System.ArgumentNullException">ファイル名は <see langword="null" />です。</exception>
+        <exception cref="T:System.IO.DirectoryNotFoundException">書き込むディレクトリが見つかりませんでした。</exception>
+        <exception cref="T:System.IO.IOException">ファイル名には、ファイル名、ディレクトリ名、またはボリューム ラベル構文の正しくないか無効な構文が含まれています。</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元に、必要なアクセス許可がありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="BaseStream">
@@ -302,17 +303,17 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
         <ReturnType>System.IO.Stream</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the underlying stream object.</summary>
-        <value>The stream to which the <see langword="XmlTextWriter" /> is writing or <see langword="null" /> if the <see langword="XmlTextWriter" /> was constructed using a <see cref="T:System.IO.TextWriter" /> that does not inherit from the <see cref="T:System.IO.StreamWriter" /> class.</value>
+        <summary>基になるストリーム オブジェクトを取得します。</summary>
+        <value>先のストリームを <see langword="XmlTextWriter" /> 書き込みまたは <see langword="null" /> 場合、 <see langword="XmlTextWriter" /> を使用して作成された、 <see cref="T:System.IO.TextWriter" /> から継承していませんが、 <see cref="T:System.IO.StreamWriter" /> クラスです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If the writer was constructed using a `TextWriter` that is derived from the `StreamWriter` class, this property is equivalent to the <xref:System.IO.StreamWriter.BaseStream%2A?displayProperty=fullName> property. If the writer was constructed using a <xref:System.IO.Stream>, this property returns the `Stream` passed to the constructor. If the writer was constructed using a file name, this property returns the `Stream` representing the file.  
+ ライターを使用して構築した場合、 `TextWriter` から派生するが、 `StreamWriter` クラスでは、このプロパティは等価、 <xref:System.IO.StreamWriter.BaseStream%2A?displayProperty=fullName> プロパティです。 ライターを使用して構築した場合、 <xref:System.IO.Stream>, 、このプロパティを返します、 `Stream` コンス トラクターに渡されます。 このプロパティの取得のかどうか、ファイル名を使用して、ライターが構築された、 `Stream` ファイルを表します。  
   
  ]]></format>
         </remarks>
@@ -341,27 +342,27 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes this stream and the underlying stream.</summary>
+        <summary>このストリームおよび基になるストリームを閉じます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- Any elements or attributes left open are automatically closed.  
+ すべての要素または属性が開いたままにしては自動的に閉じられます。  
   
- This method does not throw any exceptions.  
+ このメソッドは、すべての例外をスローしません。  
   
    
   
-## Examples  
- The following example writes an XML fragment.  
+## 例  
+ 次の例では、XML フラグメントを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -390,25 +391,25 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Flushes whatever is in the buffer to the underlying streams and also flushes the underlying stream.</summary>
+        <summary>バッファー内のデータをすべて基になるストリームにフラッシュし、基になるストリームもフラッシュします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This is called instead of <xref:System.Xml.XmlTextWriter.Close%2A> when you want to write more to the underlying stream without losing what is still in the buffer.  
+ これは、代わりに呼び出されます <xref:System.Xml.XmlTextWriter.Close%2A> 、バッファー内の新機能を失うことがなく、基になるストリームに書き込みを行う場合します。  
   
    
   
-## Examples  
- The following example writes out two XML fragments.  
+## 例  
+ 次の例は、2 つの XML フラグメントを書き込みます。  
   
- [!code-cpp[XmlTextWriter.Flush#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlTextWriter.Flush/CPP/write2docs.cpp#1)]
- [!code-csharp[XmlTextWriter.Flush#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlTextWriter.Flush/CS/write2docs.cs#1)]
- [!code-vb[XmlTextWriter.Flush#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlTextWriter.Flush/VB/write2docs.vb#1)]  
+ [!code-cpp[XmlTextWriter.Flush\#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlTextWriter.Flush/CPP/write2docs.cpp#1)]
+ [!code-csharp[XmlTextWriter.Flush\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlTextWriter.Flush/CS/write2docs.cs#1)]
+ [!code-vb[XmlTextWriter.Flush\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlTextWriter.Flush/VB/write2docs.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -436,17 +437,18 @@ writer.WriteElementString("price", XmlConvert.ToString(price));
         <ReturnType>System.Xml.Formatting</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates how the output is formatted.</summary>
-        <value>One of the <see cref="T:System.Xml.Formatting" /> values. The default is <see langword="Formatting.None" /> (no special formatting).</value>
+        <summary>出力の書式設定方法を示します。</summary>
+        <value>
+          <see cref="T:System.Xml.Formatting" /> 値のいずれか。 既定値は <see langword="Formatting.None" /> \(特殊な書式設定なし\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If the `Indented` option is set, child elements are indented using the <xref:System.Xml.XmlTextWriter.Indentation%2A> and <xref:System.Xml.XmlTextWriter.IndentChar%2A> properties. Only element content is indented. The following C# code writes out HTML elements including mixed content:  
+ 場合、 `Indented` オプションの設定と、子要素がインデントを使用して、 <xref:System.Xml.XmlTextWriter.Indentation%2A> と <xref:System.Xml.XmlTextWriter.IndentChar%2A> プロパティです。 要素の内容だけがインデントされます。 次の c\# コードは、混合コンテンツを含む HTML 要素を書き込みます。  
   
 ```  
 XmlTextWriter w = new XmlTextWriter(Console.Out);   
@@ -461,7 +463,7 @@ XmlTextWriter w = new XmlTextWriter(Console.Out);
  w.WriteEndElement();  
 ```  
   
- The above code produces the following output:  
+ 上記のコードには、次の出力が生成されます。  
   
 ```  
 <ol>   
@@ -469,22 +471,23 @@ XmlTextWriter w = new XmlTextWriter(Console.Out);
 </ol>  
 ```  
   
- When this is viewed in HTML no white space appears between the bold and italic elements. In fact, in this example, if indenting was added between these elements the word "Elephant" would be incorrectly broken.  
+ これを HTML で表示太字と斜体の要素間の空白は表示されません。 実際には、この例では場合これらの要素間にインデントを追加"Elephant"という単語が誤って失われます。  
   
 > [!NOTE]
->  Writing any text content, excluding `String.Empty` puts that element into mixed content mode. Child elements do not inherit this "mixed" mode status. A child element of a "mixed" element does indenting, unless it is also contains "mixed" content. Element content (http://www.w3.org/TR/1998/REC-xml-19980210#sec-element-content) and mixed content (http://www.w3.org/TR/1998/REC-xml-19980210#sec-mixed-content) are defined according to the XML 1.0 definitions of these terms.  
+>  コンテンツを除く任意のテキストを書き込む `String.Empty` 混合コンテンツ モードにその要素を格納します。 子要素は、この「混合」モードの状態を継承しません。 「混合」要素の子要素、インデント幅がある場合を除いては、「混合」コンテンツも含まれます。 要素の内容 \(http:\/\/www.w3.org\/TR\/1998\/REC\-xml\-19980210\#sec\-element\-content\)、混在したコンテンツ \(http:\/\/www.w3.org\/TR\/1998\/REC\-xml\-19980210\#sec\-mixed\-content\) は、これらの用語の XML 1.0 の定義に従って定義されます。  
   
    
   
-## Examples  
- The following example writes an XML fragment.  
+## 例  
+ 次の例では、XML フラグメントを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Xml.Formatting" />
       </Docs>
     </Member>
     <Member MemberName="Indentation">
@@ -509,17 +512,17 @@ XmlTextWriter w = new XmlTextWriter(Console.Out);
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets how many IndentChars to write for each level in the hierarchy when <see cref="P:System.Xml.XmlTextWriter.Formatting" /> is set to <see langword="Formatting.Indented" />.</summary>
-        <value>Number of <see langword="IndentChars" /> for each level. The default is 2.</value>
+        <summary>取得または設定、階層内の各レベルに書き込む Indentchar の数と <see cref="P:System.Xml.XmlTextWriter.Formatting" /> に設定されている <see langword="Formatting.Indented" />します。</summary>
+        <value>数 <see langword="IndentChars" /> レベルごとにします。 既定値は 2 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- Indentation is performed on following node types: `DocumentType`, `Element`, `Comment`, `ProcessingInstruction`, and `CDATASection`. All other node types are not affected. The `XmlTextWriter` does not indent the internal DTD subset. However, you could do the following to apply formatting to the internal DTD subset.  
+ インデントはノード型の後に実行します。 `DocumentType`, 、`Element`, 、`Comment`, 、`ProcessingInstruction`, 、および `CDATASection`です。 その他のすべてのノード型は影響しません。`XmlTextWriter` 内部 DTD サブセットはインデントされません。 ただし、内部 DTD サブセットに書式を適用するには、次を実行できます。  
   
 ```  
 String name = "Employees";  
@@ -538,16 +541,18 @@ tw.WriteDocType(name, pubid, sysid, subset);
   
    
   
-## Examples  
- The following example writes an XML fragment.  
+## 例  
+ 次の例では、XML フラグメントを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Setting this property to a negative value.</exception>
+        <exception cref="T:System.ArgumentException">このプロパティは、負の値を設定します。</exception>
+        <altmember cref="P:System.Xml.XmlTextWriter.IndentChar" />
+        <altmember cref="T:System.Xml.Formatting" />
       </Docs>
     </Member>
     <Member MemberName="IndentChar">
@@ -572,23 +577,27 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <ReturnType>System.Char</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets which character to use for indenting when <see cref="P:System.Xml.XmlTextWriter.Formatting" /> is set to <see langword="Formatting.Indented" />.</summary>
-        <value>The character to use for indenting. The default is space.  
+        <summary>取得または設定インデントするときに使用する文字を <see cref="P:System.Xml.XmlTextWriter.Formatting" /> に設定されている <see langword="Formatting.Indented" />します。</summary>
+        <value>インデントに使用する文字。 既定値は空白です。  
   
- <block subset="none" type="note"><para>  
- The <see langword="XmlTextWriter" /> allows you to set this property to any character. To ensure valid XML, you must specify a valid white space character, 0x9, 0x10, 0x13 or 0x20.  
+ <block subset="none" type="note">  
+<para>  
+ <see langword="XmlTextWriter" /> 任意の文字にこのプロパティを設定することができます。 有効な XML を確認するには、有効な空白文字、0x9、0x10、0x13、または 0x20 を指定する必要があります。  
   
-</para></block></value>
+</para>  
+</block></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Xml.XmlTextWriter.Indentation" />
+        <altmember cref="T:System.Xml.Formatting" />
       </Docs>
     </Member>
     <Member MemberName="LookupPrefix">
@@ -616,30 +625,30 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="ns" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="ns">Namespace URI whose prefix you want to find.</param>
-        <summary>Returns the closest prefix defined in the current namespace scope for the namespace URI.</summary>
-        <returns>The matching prefix. Or <see langword="null" /> if no matching namespace URI is found in the current scope.</returns>
+        <param name="ns">検索する対象となるプリフィックスを持つ名前空間 URI。</param>
+        <summary>名前空間 URI の現在の名前空間スコープで定義されたものに最も近いプリフィックスを返します。</summary>
+        <returns>一致するプリフィックス。 または <see langword="null" /> 一致する名前空間のない URI は、現在のスコープで見つからない場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
    
   
-## Examples  
- The following example writes out a book.  
+## 例  
+ 次の例は、本を書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="ns" /> is either <see langword="null" /> or <see langword="String.Empty" />.</exception>
+          <paramref name="ns" /> いずれかが <see langword="null" /> または <see langword="String.Empty" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Namespaces">
@@ -664,24 +673,24 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether to do namespace support.</summary>
+        <summary>名前空間をサポートするかどうかを示す値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> to support namespaces; otherwise, <see langword="false" />.  
+          <see langword="true" /> 名前空間をサポートするためにそれ以外の場合、 <see langword="false" />です。  
   
- The default is <see langword="true" />.</value>
+ 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This property determines whether the writer supports the W3C Namespaces in XML recommendation located at www.w3.org/TR/REC-xml-names.  
+ このプロパティは、ライターが www.w3.org\/TR\/REC\-xml\-names にある XML 勧告での W3C 名前空間をサポートしているかどうかを決定します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">You can only change this property when in the <see langword="WriteState.Start" /> state.</exception>
+        <exception cref="T:System.InvalidOperationException">このプロパティを変更するだけの場合に、 <see langword="WriteState.Start" /> 状態です。</exception>
       </Docs>
     </Member>
     <Member MemberName="QuoteChar">
@@ -706,19 +715,19 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <ReturnType>System.Char</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets which character to use to quote attribute values.</summary>
-        <value>The character to use to quote attribute values. This must be a single quote (&amp;#39;) or a double quote (&amp;#34;). The default is a double quote.</value>
+        <summary>属性値を囲む引用符に使用する文字を取得または設定します。</summary>
+        <value>属性値を囲む引用符に使用する文字。 単一引用符 \(&amp;\#39;\) または二重引用符 \(&amp;\#34;\) を使用する必要があります。 既定値は二重引用符です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Setting this property to something other than either a single or double quote.</exception>
+        <exception cref="T:System.ArgumentException">いずれかの以外に、一重引用符または二重引用符のこのプロパティを設定します。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteBase64">
@@ -748,35 +757,36 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">Byte array to encode.</param>
-        <param name="index">The position within the buffer indicating the start of the bytes to write.</param>
-        <param name="count">The number of bytes to write.</param>
-        <summary>Encodes the specified binary bytes as base64 and writes out the resulting text.</summary>
+        <param name="buffer">エンコードするバイト配列。</param>
+        <param name="index">書き込むバイトの開始を示すバッファー内の位置。</param>
+        <param name="count">書き込むバイト数。</param>
+        <summary>指定したバイナリ バイトを base64 としてエンコードし、その結果生成されるテキストを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 [WriteBase64 メソッド \(Byte\<xref:System.Xml.XmlWriter> インスタンスを使用して、 [WriteBase64 メソッド \(Byte\<xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび [WriteBase64 メソッド \(Byte\<xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
    
   
-## Examples  
- The following example encodes an input file using `WriteBase64` and generates a temporary XML file. The temporary XML file is decoded using the <xref:System.Xml.XmlTextReader.ReadBase64%2A> method and compared to the original file.  
+## 例  
+ 次の例では、入力ファイルを使用して、エンコードした `WriteBase64` を一時 XML ファイルを生成します。 使用して、XML ファイルをデコード、 [WriteBase64 メソッド \(Byte\<xref:System.Xml.XmlTextReader.ReadBase64%2A> メソッドと、元のファイルを比較します。  
   
- [!code-cpp[XmlWriter.WriteBase64#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlWriter.WriteBase64/CPP/writebase64.cpp#1)]
- [!code-csharp[XmlWriter.WriteBase64#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlWriter.WriteBase64/CS/writebase64.cs#1)]
- [!code-vb[XmlWriter.WriteBase64#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlWriter.WriteBase64/VB/writebase64.vb#1)]  
+ [!code-cpp[XmlWriter.WriteBase64\#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlWriter.WriteBase64/CPP/writebase64.cpp#1)]
+ [!code-csharp[XmlWriter.WriteBase64\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlWriter.WriteBase64/CS/writebase64.cs#1)]
+ [!code-vb[XmlWriter.WriteBase64\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlWriter.WriteBase64/VB/writebase64.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="buffer" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The buffer length minus <paramref name="index" /> is less than <paramref name="count" />.</exception>
+          <paramref name="buffer" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">バッファーの長さから <paramref name="index" /> を引いた値が <paramref name="count" /> 未満です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</exception>
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Xml.XmlTextWriter.WriteState" /> が <see langword="Closed" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteBinHex">
@@ -806,26 +816,27 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">Byte array to encode.</param>
-        <param name="index">The position in the buffer indicating the start of the bytes to write.</param>
-        <param name="count">The number of bytes to write.</param>
-        <summary>Encodes the specified binary bytes as binhex and writes out the resulting text.</summary>
+        <param name="buffer">エンコードするバイト配列。</param>
+        <param name="index">書き込むバイトの開始を示すバッファー内の位置。</param>
+        <param name="count">書き込むバイト数。</param>
+        <summary>指定したバイナリ バイトを binhex としてエンコードし、その結果生成されるテキストを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 [WriteBinHex メソッド \(Byte\<xref:System.Xml.XmlWriter> インスタンスを使用して、 [WriteBinHex メソッド \(Byte\<xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび [WriteBinHex メソッド \(Byte\<xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="buffer" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The buffer length minus <paramref name="index" /> is less than <paramref name="count" />.</exception>
+          <paramref name="buffer" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">バッファーの長さから <paramref name="index" /> を引いた値が <paramref name="count" /> 未満です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is Closed.</exception>
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Xml.XmlTextWriter.WriteState" /> が閉じられます。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteCData">
@@ -853,31 +864,32 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="text">Text to place inside the CDATA block.</param>
-        <summary>Writes out a &lt;![CDATA[...]]&gt; block containing the specified text.</summary>
+        <param name="text">CDATA ブロック内に配置するテキスト。</param>
+        <summary>指定したテキストを格納する &lt;\!\[CDATA\[...\]\]&gt; ブロックを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If `text` is either `null` or `String.Empty`, this method writes an empty CDATA block, for example \<![CDATA[]]]><![CDATA[]>.  
+ 場合 `text` か `null` または `String.Empty`, 、このメソッドは次に例を空の CDATA ブロックを書き込みます \<\! \[CDATA \[\] \>。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The text would result in a non-well formed XML document.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</exception>
+        <exception cref="T:System.ArgumentException">テキストは、非整形式の XML ドキュメントになります。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Xml.XmlTextWriter.WriteState" /> が <see langword="Closed" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteCharEntity">
@@ -905,31 +917,32 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="ch" Type="System.Char" />
       </Parameters>
       <Docs>
-        <param name="ch">Unicode character for which to generate a character entity.</param>
-        <summary>Forces the generation of a character entity for the specified Unicode character value.</summary>
+        <param name="ch">文字エンティティを生成する対象の Unicode 文字。</param>
+        <summary>指定した Unicode 文字値の文字エンティティを強制的に生成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method writes the Unicode character in hexadecimal character entity reference format.  
+ このメソッドは、16 進数の文字エンティティ参照形式で指定した Unicode 文字を書き込みます。  
   
    
   
-## Examples  
- The following example uses the `WriteCharEntity` method to write an e-mail address.  
+## 例  
+ 次の例では、 `WriteCharEntity` に電子メール アドレスを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteTimeSpan Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteTimeSpan Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteTimeSpan Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteTimeSpan Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteTimeSpan Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteTimeSpan Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The character is in the surrogate pair character range, <see langword="0xd800" /> - <see langword="0xdfff" />; or the text would result in a non-well formed XML document.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</exception>
+        <exception cref="T:System.ArgumentException">文字がサロゲート ペアの文字範囲 <see langword="0xd800" /> \- <see langword="0xdfff" />; 非整形式の XML ドキュメントにない場合、テキストまたはです。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Xml.XmlTextWriter.WriteState" /> が <see langword="Closed" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteChars">
@@ -959,40 +972,41 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">Character array containing the text to write.</param>
-        <param name="index">The position in the buffer indicating the start of the text to write.</param>
-        <param name="count">The number of characters to write.</param>
-        <summary>Writes text one buffer at a time.</summary>
+        <param name="buffer">書き込むテキストを格納している文字配列。</param>
+        <param name="index">書き込むテキストの開始を示すバッファー内の位置。</param>
+        <param name="count">書き込む文字数。</param>
+        <summary>一度に 1 つのバッファーにテキストを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 [WriteChars メソッド \(Char\<xref:System.Xml.XmlWriter> インスタンスを使用して、 [WriteChars メソッド \(Char\<xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび [WriteChars メソッド \(Char\<xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method can be used to write large amounts of text one buffer at a time.  
+ このメソッドは、一度に大量の 1 つのバッファーにテキストを書き込むを使用できます。  
   
- Special handling must be done to ensure the `WriteChars` method does not split surrogate pair characters across multiple buffer writes. The XML specification defines the valid ranges for surrogate pairs.  
+ 特別な処理を行うことを確認する必要がある、 `WriteChars` メソッドでは複数のバッファーの書き込みでサロゲート ペア文字が分割されません。 XML 仕様では、サロゲート ペアの有効な範囲を定義します。  
   
- An exception is thrown if surrogate pair characters are written that would result in the surrogate pair characters being split in the buffer.  
+ により、バッファー内で分割されたサロゲート ペア文字のサロゲート ペア文字が記述されている場合は、例外がスローされます。  
   
    
   
-## Examples  
- [!code-csharp[XmlTextWriter.WriteChars#1](~/samples/snippets/csharp/VS_Snippets_Data/xmltextwriter.writechars/cs/xmlwriterwritecharsexample.cs#1)]  
+## 例  
+ [!code-csharp[XmlTextWriter.WriteChars\#1](~/samples/snippets/csharp/VS_Snippets_Data/xmltextwriter.writechars/cs/xmlwriterwritecharsexample.cs#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="buffer" /> is <see langword="null" />.</exception>
+          <paramref name="buffer" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.  
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The buffer length minus <paramref name="index" /> is less than <paramref name="count" />; the call results in surrogate pair characters being split or an invalid surrogate pair being written.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is Closed.</exception>
+ 引いたバッファー サイズ <paramref name="index" /> がより小さい <paramref name="count" />サロゲート ペア文字の呼び出しの結果が分割されている、または無効なサロゲート ペアが書き込まれます。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Xml.XmlTextWriter.WriteState" /> が閉じられます。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteComment">
@@ -1020,31 +1034,32 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="text">Text to place inside the comment.</param>
-        <summary>Writes out a comment &lt;!--...--&gt; containing the specified text.</summary>
+        <param name="text">コメント内に配置するテキスト。</param>
+        <summary>指定したテキストを格納するコメント &lt;\!\-\-...\-\-&gt; を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If `text` is either `null` or `String.Empty`, this method writes a `Comment` with no data content, for example \<!---->.  
+ 場合 `text` か `null` または `String.Empty`, 、このメソッドを書き込みます、 `Comment` 例については、コンテンツ データのない \<\!\-\-\-\> です。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The text would result in a non-well formed XML document</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</exception>
+        <exception cref="T:System.ArgumentException">非整形式の XML ドキュメントにテキストは、</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Xml.XmlTextWriter.WriteState" /> が <see langword="Closed" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteDocType">
@@ -1075,42 +1090,42 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="subset" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the DOCTYPE. This must be non-empty.</param>
-        <param name="pubid">If non-null it also writes PUBLIC "pubid" "sysid" where <c>pubid</c> and <c>sysid</c> are replaced with the value of the given arguments.</param>
-        <param name="sysid">If <c>pubid</c> is null and <c>sysid</c> is non-null it writes SYSTEM "sysid" where <c>sysid</c> is replaced with the value of this argument.</param>
-        <param name="subset">If non-null it writes [subset] where subset is replaced with the value of this argument.</param>
-        <summary>Writes the DOCTYPE declaration with the specified name and optional attributes.</summary>
+        <param name="name">DOCTYPE の名前。 これを空にすることはできません。</param>
+        <param name="pubid">かどうかは null、PUBLIC も書き込みます"pubid""sysid"を <c>pubid</c> と <c>sysid</c> は指定した引数の値に置き換えられます。</param>
+        <param name="sysid">場合 <c>pubid</c> が null と <c>sysid</c> が"null 以外で、SYSTEM sysid"を書き込みます <c>sysid</c> はこの引数の値に置き換えられます。</param>
+        <param name="subset">null でない場合は、\[subset\] を書き込みます。subset は、この引数の値に置き換えられます。</param>
+        <summary>名前とオプション属性を指定して、DOCTYPE 宣言を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method does not check for invalid characters in `pubid`, `sysid` or `subset`. It also does not check that the internal subset is well-formed.  
+ このメソッドに無効な文字をチェックしません `pubid`, 、`sysid` または `subset`です。 ない確認内部サブセットは、整形式です。  
   
 > [!IMPORTANT]
->  The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteDocType%2A> method. You should not pass arbitrary data to this method.  
+>  <xref:System.Xml.XmlTextWriter> に渡されるデータを検証しません、 <xref:System.Xml.XmlTextWriter.WriteDocType%2A> メソッドです。 このメソッドに、任意のデータを渡さないでください。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">This method was called outside the prolog (after the root element).</exception>
+        <exception cref="T:System.InvalidOperationException">このメソッドは、プロローグの外 \(ルート要素\) の後に呼び出されました。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is <see langword="null" /> or <see langword="String.Empty" />  
+          <paramref name="name" /> <see langword="null" /> または <see langword="String.Empty" />  
   
- -or-  
+ または  
   
- the value for <paramref name="name" /> would result in invalid XML.</exception>
+ 値 <paramref name="name" /> 無効な XML になります。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteEndAttribute">
@@ -1136,27 +1151,27 @@ tw.WriteDocType(name, pubid, sysid, subset);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes the previous <see cref="M:System.Xml.XmlTextWriter.WriteStartAttribute(System.String,System.String,System.String)" /> call.</summary>
+        <summary>以前に閉じ <see cref="M:System.Xml.XmlTextWriter.WriteStartAttribute(System.String,System.String,System.String)" /> 呼び出します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If you call `WriteStartAttribute`, you can close the attribute with this method.  
+ 呼び出した場合 `WriteStartAttribute`, 、このメソッドを使用して、属性を閉じることができます。  
   
- You can also close the attribute by calling `WriteStartAttribute` again, calling <xref:System.Xml.XmlWriter.WriteAttributeString%2A>, or calling <xref:System.Xml.XmlTextWriter.WriteEndElement%2A>.  
+ 呼び出して属性を終了することもできます `WriteStartAttribute` もう一度呼び出して <xref:System.Xml.XmlWriter.WriteAttributeString%2A>, 、またはを呼び出して <xref:System.Xml.XmlTextWriter.WriteEndElement%2A>します。  
   
    
   
-## Examples  
- The following example writes out a book.  
+## 例  
+ 次の例は、本を書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1185,27 +1200,27 @@ tw.WriteDocType(name, pubid, sysid, subset);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes any open elements or attributes and puts the writer back in the Start state.</summary>
+        <summary>開いている要素または属性を閉じ、ライターを Start 状態に戻します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The XML document is invalid.</exception>
+        <exception cref="T:System.ArgumentException">XML ドキュメントが正しくありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteEndElement">
@@ -1231,25 +1246,25 @@ tw.WriteDocType(name, pubid, sysid, subset);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes one element and pops the corresponding namespace scope.</summary>
+        <summary>1 つの要素を閉じ、対応する名前空間スコープをポップします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If the element contains no content a short end tag "/>" is written; otherwise a full end tag is written.  
+ 要素にコンテンツが含まれていない場合は、短い終了タグ"\/\>"が書き込まれます。それ以外の場合、完全な終了タグが書き込まれます。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteEndElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteEndElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteEndElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteEndElement Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteEndElement Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteEndElement Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1280,28 +1295,28 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">Name of the entity reference.</param>
-        <summary>Writes out an entity reference as <see langword="&amp;name;" />.</summary>
+        <param name="name">エンティティ参照の名前。</param>
+        <summary>などのエンティティ参照を書き込みます <see langword="&amp;name;" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The text would result in a non-well formed XML document or <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</exception>
+        <exception cref="T:System.ArgumentException">非整形式の XML ドキュメントにない場合、テキストまたは <paramref name="name" /> か <see langword="null" /> または <see langword="String.Empty" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteFullEndElement">
@@ -1327,25 +1342,25 @@ tw.WriteDocType(name, pubid, sysid, subset);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes one element and pops the corresponding namespace scope.</summary>
+        <summary>1 つの要素を閉じ、対応する名前空間スコープをポップします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method always writes the full end tag. This is useful when dealing with elements that must include a full end tag. For example, browsers expect HTML script blocks to be closed with "\</script>".  
+ このメソッドは、常に完全な終了タグを書き込みます。 これは、機能は、完全な終了タグを含める必要のある要素を処理するときに便利です。 たとえば、ブラウザーは、HTML スクリプト ブロックで終わる"\<\/script \>"を想定します。  
   
    
   
-## Examples  
- The following example writes out an element with no content. It uses WriteFullEndElement to write the full end element tag.  
+## 例  
+ 次の例は、コンテンツを持つ要素を書き込みます。 完全な終了要素タグを書き込む WriteFullEndElement を使用します。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteFullEndElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteFullEndElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteFullEndElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteFullEndElement Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteFullEndElement Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteFullEndElement Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1376,22 +1391,22 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">Name to write.</param>
-        <summary>Writes out the specified name, ensuring it is a valid name according to the W3C XML 1.0 recommendation (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).</summary>
+        <param name="name">書き込む名前。</param>
+        <summary>指定した名前が W3C 勧告『XML 1.0』\(http:\/\/www.w3.org\/TR\/1998\/REC\-xml\-19980210\#NT\-Name\) に準拠した有効な名前であることを確認して、それを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If <xref:System.Xml.XmlTextWriter.Namespaces%2A> is set to `true`, `WriteName` also checks that the name is also valid according to the W3C Namespaces in XML recommendation.  
+ 場合 <xref:System.Xml.XmlTextWriter.Namespaces%2A> に設定されている `true`, 、`WriteName` また、w3c 勧告 『 Namespaces in XML 』 に従って有効なも、名前を確認します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is not a valid XML name; or <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</exception>
+          <paramref name="name" /> 有効な XML 名ではありません。または <paramref name="name" /> か <see langword="null" /> または <see langword="String.Empty" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteNmToken">
@@ -1419,20 +1434,20 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">Name to write.</param>
-        <summary>Writes out the specified name, ensuring it is a valid <see langword="NmToken" /> according to the W3C XML 1.0 recommendation (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).</summary>
+        <param name="name">書き込む名前。</param>
+        <summary>指定した名前で、有効なことを確認書き込みます <see langword="NmToken" /> w3c 勧告 『 XML 1.0 勧告 』 \(http:\/\/www.w3.org\/TR\/1998\/REC\-xml\-19980210\#NT\-Name\)。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is not a valid <see langword="NmToken" />; or <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</exception>
+          <paramref name="name" /> 有効ではありません <see langword="NmToken" />; または <paramref name="name" /> か <see langword="null" /> または <see langword="String.Empty" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteProcessingInstruction">
@@ -1461,35 +1476,35 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">Name of the processing instruction.</param>
-        <param name="text">Text to include in the processing instruction.</param>
-        <summary>Writes out a processing instruction with a space between the name and text as follows: &lt;?name text?&gt;.</summary>
+        <param name="name">処理命令の名前。</param>
+        <param name="text">処理命令に含めるテキスト。</param>
+        <summary>次のように名前とテキスト間に空白が入った処理命令を書き込みます: &lt;? テキストという名前を? &gt;。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- If `text` is either `null` or `String.Empty`, this method writes a `ProcessingInstruction` with no data content, for example \<?name?>.  
+ 場合 `text` か `null` または `String.Empty`, を書き込む、 `ProcessingInstruction` 例については、コンテンツ データのない \< でしょうか。 名ですか? \>。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The text would result in a non-well formed XML document.  
+        <exception cref="T:System.ArgumentException">テキストは、非整形式の XML ドキュメントになります。  
   
- <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.  
+ <paramref name="name" /> いずれかが <see langword="null" /> または <see langword="String.Empty" />です。  
   
- This method is being used to create an XML declaration after <see cref="M:System.Xml.XmlTextWriter.WriteStartDocument" /> has already been called.</exception>
+ 後に、XML 宣言を作成するこの方法が使用される <see cref="M:System.Xml.XmlTextWriter.WriteStartDocument" /> は既に呼び出されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteQualifiedName">
@@ -1518,18 +1533,18 @@ tw.WriteDocType(name, pubid, sysid, subset);
         <Parameter Name="ns" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="localName">The local name to write.</param>
-        <param name="ns">The namespace URI to associate with the name.</param>
-        <summary>Writes out the namespace-qualified name. This method looks up the prefix that is in scope for the given namespace.</summary>
+        <param name="localName">書き込むローカル名。</param>
+        <param name="ns">名前に関連付ける名前空間 URI。</param>
+        <summary>名前空間の修飾名を書き込みます。 このメソッドは、指定した名前空間のスコープ内にあるプレフィックスを検索します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- For example, the following Microsoft Visual C# code:  
+ たとえば、次の Microsoft Visual c\# コード。  
   
 ```  
 writer.Formatting = Formatting.Indented;  
@@ -1545,7 +1560,7 @@ writer.WriteStartElement("root");
  writer.Close();  
 ```  
   
- Generates the following output:  
+ 次の出力が生成されます。  
   
 ```  
 <root xmlns:x="urn:abc">  
@@ -1553,27 +1568,27 @@ writer.WriteStartElement("root");
  </root>  
 ```  
   
- If `ns` maps to the current default namespace, no prefix is generated.  
+ 場合 `ns` 現在既定の名前空間、プレフィックスなしのマップを生成します。  
   
- When writing attribute values, this method generates a prefix if `ns` is not found. When writing element content, it throws an exception if `ns` is not found.  
+ 属性値を書き込むときにこのメソッドを生成、プレフィックス `ns` が見つかりません。 要素の内容を記述する場合に例外をスロー `ns` が見つかりません。  
   
- If this writer supports namespaces (<xref:System.Xml.XmlTextWriter.Namespaces%2A> is set to `true`), this method also checks that the name is valid according to the W3C Namespaces in XML recommendation (http://www.w3.org/TR/REC-xml-names).  
+ このライターは、名前空間をサポートしている場合 \(<xref:System.Xml.XmlTextWriter.Namespaces%2A> に設定されている `true`\)、このメソッドも名前が w3c 勧告 『 Namespaces in XML 』 勧告 \(http:\/\/www.w3.org\/TR\/REC\-xml\-names\) に従って有効なことを確認します。  
   
    
   
-## Examples  
- The following example writes out a portion of a XSD schema.  
+## 例  
+ 次の例は、XSD スキーマの一部を書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteQualifiedName Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteQualifiedName Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteQualifiedName Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteQualifiedName Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteQualifiedName Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteQualifiedName Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="localName" /> is either <see langword="null" /> or <see langword="String.Empty" />.  
+          <paramref name="localName" /> いずれかが <see langword="null" /> または <see langword="String.Empty" />です。  
   
- <paramref name="localName" /> is not a valid name according to the W3C Namespaces spec.</exception>
+ <paramref name="localName" /> 有効な名前が W3C 名前空間の仕様ではありません。</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="WriteRaw">
@@ -1583,14 +1598,14 @@ writer.WriteStartElement("root");
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Writes raw markup manually.</summary>
+        <summary>手動で生のマークアップを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
@@ -1621,29 +1636,29 @@ writer.WriteStartElement("root");
         <Parameter Name="data" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="data">String containing the text to write.</param>
-        <summary>Writes raw markup manually from a string.</summary>
+        <param name="data">書き込むテキストを格納している文字列。</param>
+        <summary>文字列から手動で生のマークアップを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method does not escape special characters.  
+ このメソッドは、特殊文字をエスケープしません。  
   
 > [!IMPORTANT]
->  The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteRaw%2A> method. You should not pass arbitrary data to this method.  
+>  <xref:System.Xml.XmlTextWriter> に渡されるデータを検証しません、 <xref:System.Xml.XmlTextWriter.WriteRaw%2A> メソッドです。 このメソッドに、任意のデータを渡さないでください。  
   
    
   
-## Examples  
- The following example writes a string using the `WriteRaw` method.  
+## 例  
+ 次の例を使用して文字列を書き込みます、 `WriteRaw` メソッドです。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteRaw1 Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteRaw1 Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteRaw1 Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteRaw1 Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteRaw1 Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteRaw1 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1676,33 +1691,33 @@ writer.WriteStartElement("root");
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">Character array containing the text to write.</param>
-        <param name="index">The position within the buffer indicating the start of the text to write.</param>
-        <param name="count">The number of characters to write.</param>
-        <summary>Writes raw markup manually from a character buffer.</summary>
+        <param name="buffer">書き込むテキストを格納している文字配列。</param>
+        <param name="index">書き込むテキストの開始を示すバッファー内の位置。</param>
+        <param name="count">書き込む文字数。</param>
+        <summary>文字バッファーから手動で生のマークアップを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 [WriteRaw メソッド \(Char\<xref:System.Xml.XmlWriter> インスタンスを使用して、 [WriteRaw メソッド \(Char\<xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび [WriteRaw メソッド \(Char\<xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method does not escape special characters.  
+ このメソッドは、特殊文字をエスケープしません。  
   
 > [!IMPORTANT]
->  The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteRaw%2A> method. You should not pass arbitrary data to this method.  
+>  [WriteRaw メソッド \(Char\<xref:System.Xml.XmlTextWriter> に渡されるデータを検証しません、 [WriteRaw メソッド \(Char\<xref:System.Xml.XmlTextWriter.WriteRaw%2A> メソッドです。 このメソッドに、任意のデータを渡さないでください。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="buffer" /> is <see langword="null" />.</exception>
+          <paramref name="buffer" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.  
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The buffer length minus <paramref name="index" /> is less than <paramref name="count" />.</exception>
+ バッファーの長さから <paramref name="index" /> を引いた値が <paramref name="count" /> 未満です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartAttribute">
@@ -1733,35 +1748,36 @@ writer.WriteStartElement("root");
       </Parameters>
       <Docs>
         <param name="prefix">
-          <see langword="Namespace" /> prefix of the attribute.</param>
+          <see langword="Namespace" /> 属性のプリフィックス。</param>
         <param name="localName">
-          <see langword="LocalName" /> of the attribute.</param>
+          <see langword="LocalName" /> 属性です。</param>
         <param name="ns">
-          <see langword="NamespaceURI" /> of the attribute</param>
-        <summary>Writes the start of an attribute.</summary>
+          <see langword="NamespaceURI" /> 属性の</param>
+        <summary>属性の開始を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This is a more advanced version of <xref:System.Xml.XmlWriter.WriteAttributeString%2A> that allows you to write an attribute value using multiple write methods, such as <xref:System.Xml.XmlTextWriter.WriteString%2A>.  
+ これはより高度なバージョンの <xref:System.Xml.XmlWriter.WriteAttributeString%2A> などの複数の書き込みメソッドを使用して属性値を記述することができる <xref:System.Xml.XmlTextWriter.WriteString%2A>です。  
   
    
   
-## Examples  
- The following example writes out a book.  
+## 例  
+ 次の例は、本を書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="localName" /> is either <see langword="null" /> or <see langword="String.Empty" />.</exception>
+          <paramref name="localName" /> いずれかが <see langword="null" /> または <see langword="String.Empty" />です。</exception>
+        <altmember cref="M:System.Xml.XmlTextWriter.WriteEndAttribute" />
       </Docs>
     </Member>
     <MemberGroup MemberName="WriteStartDocument">
@@ -1771,14 +1787,14 @@ writer.WriteStartElement("root");
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Writes the XML declaration with the version "1.0".</summary>
+        <summary>バージョン "1.0" で XML 宣言を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
@@ -1807,33 +1823,33 @@ writer.WriteStartElement("root");
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Writes the XML declaration with the version "1.0".</summary>
+        <summary>バージョン "1.0" で XML 宣言を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- The encoding level of the document is determined by how the writer is implemented. For example, if an <xref:System.Text.Encoding> object is specified in the `XmlTextWriter` constructor, this determines the value of the encoding attribute. This method does not create a standalone attribute.  
+ ドキュメントのエンコーディングのレベルは、ライターの実装方法によって決まります。 などの場合、 <xref:System.Text.Encoding> でオブジェクトが指定された、 `XmlTextWriter` コンス トラクター、エンコーディング属性の値を指定します。 このメソッドでは、スタンドアロン属性は作成されません。  
   
- When `WriteStartDocument` is called the writer validates that what you are writing is a well-formed XML document. For example, it checks that the XML declaration is the first node, that one and only one root-level element exists and so on. If this method is not called, the writer assumes an XML fragment is being written and applies no root level rules.  
+ `WriteStartDocument` と呼ばれる、ライターでは、作成するが、整形式 XML ドキュメントであることを検証します。 たとえば、XML 宣言が最初のノードでは、1 つあり、ルート レベルの 1 つだけの要素に存在するを確認します。 このメソッドが呼び出されない場合、ライターでは、XML フラグメントが書き込まれていると、ルート レベルの規則が適用されないと想定しています。  
   
- If `WriteStartDocument` has been called and then the <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> method is used to create another XML declaration, an exception is thrown.  
+ 場合 `WriteStartDocument` が呼び出されたし、 <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> メソッドの使用を別の XML 宣言を作成、例外がスローされます。  
   
    
   
-## Examples  
- The following example writes an XML file representing a book.  
+## 例  
+ 次の例では、本を表す XML ファイルを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">This is not the first write method called after the constructor.</exception>
+        <exception cref="T:System.InvalidOperationException">これは、コンス トラクターは、後に呼び出される最初の書き込みメソッドではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartDocument">
@@ -1861,25 +1877,25 @@ writer.WriteStartElement("root");
         <Parameter Name="standalone" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="standalone">If <see langword="true" />, it writes "standalone=yes"; if <see langword="false" />, it writes "standalone=no".</param>
-        <summary>Writes the XML declaration with the version "1.0" and the standalone attribute.</summary>
+        <param name="standalone">場合 <see langword="true" />, を書き込みます"スタンドアロン \= \[はい\]"場合 <see langword="false" />, 、書き込む"スタンドアロン \= no"です。</param>
+        <summary>バージョン "1.0" とスタントアロン属性を使用して XML 宣言を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- The encoding level of the document is determined by how the writer is implemented. For example, if an <xref:System.Text.Encoding> object is specified in the `XmlTextWriter` constructor, this determines the value of the encoding attribute.  
+ ドキュメントのエンコーディングのレベルは、ライターの実装方法によって決まります。 などの場合、 <xref:System.Text.Encoding> でオブジェクトが指定された、 `XmlTextWriter` コンス トラクター、エンコーディング属性の値を指定します。  
   
- When `WriteStartDocument` is called the writer validates that what you are writing is a well-formed XML document. For example, it checks that the XML declaration is the first node, that one and only one root-level element exists and so on. If this method is not called, the writer assumes an XML fragment is being written and applies no root level rules.  
+ `WriteStartDocument` と呼ばれる、ライターでは、作成するが、整形式 XML ドキュメントであることを検証します。 たとえば、XML 宣言が最初のノードでは、1 つあり、ルート レベルの 1 つだけの要素に存在するを確認します。 このメソッドが呼び出されない場合、ライターでは、XML フラグメントが書き込まれていると、ルート レベルの規則が適用されないと想定しています。  
   
- If `WriteStartDocument` has been called and then the <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> method is used to create another XML declaration, an exception is thrown.  
+ 場合 `WriteStartDocument` が呼び出されたし、 <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> メソッドの使用を別の XML 宣言を作成、例外がスローされます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">This is not the first write method called after the constructor.</exception>
+        <exception cref="T:System.InvalidOperationException">これは、コンス トラクターは、後に呼び出される最初の書き込みメソッドではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartElement">
@@ -1909,32 +1925,32 @@ writer.WriteStartElement("root");
         <Parameter Name="ns" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="prefix">The namespace prefix of the element.</param>
-        <param name="localName">The local name of the element.</param>
-        <param name="ns">The namespace URI to associate with the element. If this namespace is already in scope and has an associated prefix then the writer automatically writes that prefix also.</param>
-        <summary>Writes the specified start tag and associates it with the given namespace and prefix.</summary>
+        <param name="prefix">要素の名前空間プリフィックス。</param>
+        <param name="localName">要素のローカル名。</param>
+        <param name="ns">要素に関連付ける名前空間 URI。 この名前空間が既にスコープ内にあり、関連付けられたプリフィックスを持つ場合、ライターは、そのプリフィックスも自動的に書き込みます。</param>
+        <summary>指定した開始タグを書き込み、指定した名前空間とプレフィックスに関連付けます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- After calling this method you can either write attributes or create content using <xref:System.Xml.XmlTextWriter.WriteComment%2A>, <xref:System.Xml.XmlTextWriter.WriteString%2A>, or <xref:System.Xml.XmlTextWriter.WriteStartElement%2A> for child elements. You can close the element with <xref:System.Xml.XmlTextWriter.WriteEndElement%2A> at which time an end tag is written out.  
+ 使用して、コンテンツの属性を記述するか、作成は、このメソッドを呼び出した後 <xref:System.Xml.XmlTextWriter.WriteComment%2A>, 、<xref:System.Xml.XmlTextWriter.WriteString%2A>, 、または <xref:System.Xml.XmlTextWriter.WriteStartElement%2A> の子要素です。 持つ要素を閉じることができます <xref:System.Xml.XmlTextWriter.WriteEndElement%2A> れた時点で終了タグが書き込まれます。  
   
    
   
-## Examples  
- The following example writes out a book.  
+## 例  
+ 次の例は、本を書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The writer is closed.</exception>
+        <exception cref="T:System.InvalidOperationException">ライターは閉じられています。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteState">
@@ -1959,15 +1975,16 @@ writer.WriteStartElement("root");
         <ReturnType>System.Xml.WriteState</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the state of the writer.</summary>
-        <value>One of the <see cref="T:System.Xml.WriteState" /> values.</value>
+        <summary>ライターの状態を取得します。</summary>
+        <value>
+          <see cref="T:System.Xml.WriteState" /> 値のいずれか。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
  ]]></format>
         </remarks>
@@ -1998,44 +2015,44 @@ writer.WriteStartElement("root");
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="text">Text to write.</param>
-        <summary>Writes the given text content.</summary>
+        <param name="text">書き込むテキスト。</param>
+        <summary>指定したテキストの内容を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- `WriteString` does the following  
+ `WriteString` 次を処理します。  
   
--   The characters `&`, `<`, and `>` are replaced with `&amp;`, `&lt;`, and `&gt;`, respectively.  
+-   文字 `&`, 、`<`, 、および `>` に置き換えられます `&amp;`, 、`&lt;`, 、および `&gt;`, 、それぞれします。  
   
--   Character values in the range 0x-0x1F (excluding white space characters 0x9, 0xA, and 0xD) are replaced with numeric character entities (`&#0;` through `&#0x1F`).  
+-   0 の範囲 x\-0x1F \(除外の空白文字 0x9、0 xa、および 0 xd\) で文字の値は数値エンティティに置き換えられます \(`&#0;` を通じて `&#0x1F`\)。  
   
--   If `WriteString` is called in the context of an attribute value, double and single quotes are replaced with `&quot;` and `&apos;` respectively.  
+-   場合 `WriteString` と呼ばれる属性値のコンテキストでは、二重と単一引用符に置き換えられます `&quot;` と `&apos;` それぞれします。  
   
- For example, this input string `test<item>test` is written as  
+ たとえば、この文字列を入力 `test<item>test` として書き込まれます  
   
 ```  
 test&lt;item&gt;test  
 ```  
   
- If `text` is either `null` or `String.Empty`, this method writes a text node with no data content.  
+ 場合 `text` か `null` または `String.Empty`, 、このメソッドは、データ内容のないテキスト ノードを書き込みます。  
   
    
   
-## Examples  
- The following example writes an XML fragment.  
+## 例  
+ 次の例では、XML フラグメントを書き込みます。  
   
- [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The text string contains an invalid surrogate pair.</exception>
+        <exception cref="T:System.ArgumentException">テキスト文字列には、無効なサロゲート ペアが含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteSurrogateCharEntity">
@@ -2064,28 +2081,28 @@ test&lt;item&gt;test
         <Parameter Name="highChar" Type="System.Char" />
       </Parameters>
       <Docs>
-        <param name="lowChar">The low surrogate. This must be a value between <see langword="0xDC00" /> and <see langword="0xDFFF" />.</param>
-        <param name="highChar">The high surrogate. This must be a value between <see langword="0xD800" /> and <see langword="0xDBFF" />.</param>
-        <summary>Generates and writes the surrogate character entity for the surrogate character pair.</summary>
+        <param name="lowChar">下位サロゲート。 これは、間の値は <see langword="0xDC00" /> と <see langword="0xDFFF" />です。</param>
+        <param name="highChar">上位サロゲート。 これは、間の値は <see langword="0xD800" /> と <see langword="0xDBFF" />です。</param>
+        <summary>サロゲート文字ペアのサロゲート文字エンティティを生成し、書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method is only applicable on systems that use UTF-16 encoding.  
+ このメソッドは、utf\-16 エンコードを使用するシステムに該当するだけです。  
   
- The surrogate character entity is written in hexadecimal format. The range for surrogate characters is `#x10000` to `#x10FFFF`. The following formula is used to generate the surrogate character entity: (`highChar` - `0xD800`) * `0x400` + (`lowChar` - `0xDC00`) + `0x10000`.  
+ 16 進形式では、サロゲート文字エンティティが書き込まれます。 サロゲート文字の範囲は `#x10000` に `#x10FFFF`します。 サロゲート文字エンティティを生成する次の式を使用します。 \(`highChar` \- `0xD800`\) \* `0x400` \+ \(`lowChar` \- `0xDC00`\) \+ `0x10000`します。  
   
- For both HTML and XML, the document character set (and therefore the notation of numeric character references) is based on UCS [ISO-10646]. A single numeric character reference in a source document may therefore in some cases correspond to two 16-bit units in a string (a high surrogate and a low surrogate). These 16-bit units are referred to as a surrogate pair.  
+ HTML と XML の両方でドキュメントの文字セット \(および、したがって数字参照の表記法\) は UCS \[ISO 10646\] に基づいています。 ソース ドキュメント内の 1 つの数字参照可能性がありますので場合によってに対応 \(上位サロゲートと下位サロゲート\)、文字列内の 2 つの 16 ビット単位です。 これらの 16 ビット単位は、サロゲート ペアと呼ばれます。  
   
- For more information regarding surrogates or characters, refer to section 3.7 of the Unicode 3.0/Unicode 2.0 standard located at http://www.unicode.org, or section 2.2 of the W3C XML 1.0 Recommendation located at http://www.w3.org/TR/REC-xml#charsets.  
+ 詳細については関連のサロゲートまたは文字」を参照して 3.7 http:\/\/www.w3.org\/TR\/REC\-xml\#charsets ある 3.0 と Unicode 2.0 標準 http:\/\/www.unicode.org、または、w3c 勧告 『 XML 1.0 勧告のセクション 2.2 にある Unicode のです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Exception">An invalid surrogate character pair was passed.</exception>
+        <exception cref="T:System.Exception">無効なサロゲート文字ペアが渡されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteWhitespace">
@@ -2113,30 +2130,31 @@ test&lt;item&gt;test
         <Parameter Name="ws" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="ws">The string of white space characters.</param>
-        <summary>Writes out the given white space.</summary>
+        <param name="ws">空白文字の文字列。</param>
+        <summary>指定した空白を書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This method is used to manually format your document. Use the <xref:System.Xml.XmlTextWriter.Formatting%2A> property to have the writer format the output automatically.  
+ このメソッドは、ドキュメントの書式を手動で設定を使用します。 使用して、 <xref:System.Xml.XmlTextWriter.Formatting%2A> プロパティに、ライターが自動的に、出力の書式を設定します。  
   
    
   
-## Examples  
- The following example uses the `WriteWhitespace` method to control how the file is formatted.  
+## 例  
+ 次の例では、 `WriteWhitespace` ファイルが書式設定方法を制御します。  
   
- [!code-cpp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.XmlSpace Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.XmlSpace Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.XmlSpace Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The string contains non-white space characters.</exception>
+        <exception cref="T:System.ArgumentException">文字列には、空白文字以外の文字が含まれています。</exception>
+        <altmember cref="P:System.Xml.XmlTextWriter.Formatting" />
       </Docs>
     </Member>
     <Member MemberName="XmlLang">
@@ -2161,17 +2179,17 @@ test&lt;item&gt;test
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the current <see langword="xml:lang" /> scope.</summary>
-        <value>The current <see langword="xml:lang" /> or <see langword="null" /> if there is no <see langword="xml:lang" /> in the current scope.</value>
+        <summary>現在の <see langword="xml:lang" /> スコープを取得します。</summary>
+        <value>現在 <see langword="xml:lang" /> または <see langword="null" /> がある場合ない <see langword="xml:lang" /> 現在のスコープにします。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This property allows one component to find out what state another component has left the writer in. For example, perhaps one component wants to tell another which language help text to generate. The language information is communicated by writing an `xml:lang` attribute.  
+ このプロパティは、別のコンポーネントが設定したライターの状態を確認する 1 つのコンポーネントを使用します。 たとえば、おそらく 1 つのコンポーネントが別のヘルプ テキストを生成する言語を確認します。 言語に関する情報が書き込むことによって伝え、 `xml:lang` 属性です。  
   
  ]]></format>
         </remarks>
@@ -2199,44 +2217,62 @@ test&lt;item&gt;test
         <ReturnType>System.Xml.XmlSpace</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an <see cref="T:System.Xml.XmlSpace" /> representing the current <see langword="xml:space" /> scope.</summary>
-        <value>An <see langword="XmlSpace" /> representing the current <see langword="xml:space" /> scope.  
+        <summary>取得、 <see cref="T:System.Xml.XmlSpace" /> 現在を表す <see langword="xml:space" /> スコープ。</summary>
+        <value>
+          <see langword="XmlSpace" /> 現在を表す <see langword="xml:space" /> スコープ。  
   
- <list type="table"><listheader><term> Value  
+ <list type="table">  
+<listheader>  
+<term> 値  
   
- </term><description> Meaning  
+ </term>  
+<description> 説明  
   
- </description></listheader><item><term> None  
+ </description>  
+</listheader>  
+<item>  
+<term> なし  
   
- </term><description> This is the default if no <see langword="xml:space" /> scope exists.  
+ </term>  
+<description> これがない場合の既定 <see langword="xml:space" /> スコープが存在しません。  
   
- </description></item><item><term> Default  
+ </description>  
+</item>  
+<item>  
+<term> 既定  
   
- </term><description> The current scope is <see langword="xml:space" />="default".  
+ </term>  
+<description> 現在のスコープは <see langword="xml:space" />\="default"です。  
   
- </description></item><item><term> Preserve  
+ </description>  
+</item>  
+<item>  
+<term> Preserve  
   
- </term><description> The current scope is <see langword="xml:space" />="preserve".  
+ </term>  
+<description> 現在のスコープは <see langword="xml:space" />\="preserve"です。  
   
- </description></item></list></value>
+ </description>  
+</item>  
+</list></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.  
+>  作成することお勧め以降、.NET Framework 2.0 では、 <xref:System.Xml.XmlWriter> インスタンスを使用して、 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=fullName> メソッドおよび <xref:System.Xml.XmlWriterSettings> クラスの新しい機能を活用するためにします。  
   
- This property allows one component to find out in what state another component has left the writer.  
+ このプロパティは、別のコンポーネントが設定したライターの状態を確認する 1 つのコンポーネントを使用します。  
   
    
   
-## Examples  
- The following example uses the `WriteWhitespace` method to control how the file is formatted.  
+## 例  
+ 次の例では、 `WriteWhitespace` ファイルが書式設定方法を制御します。  
   
- [!code-cpp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CPP/source.cpp#1)]
- [!code-csharp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CS/source.cs#1)]
- [!code-vb[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/VB/source.vb#1)]  
+ [!code-cpp[Classic WebData XmlTextWriter.XmlSpace Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.XmlSpace Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.XmlSpace Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>

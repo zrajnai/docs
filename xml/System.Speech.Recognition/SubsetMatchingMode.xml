@@ -10,99 +10,99 @@
     <BaseTypeName>System.Enum</BaseTypeName>
   </Base>
   <Docs>
-    <summary>Enumerates values of subset matching mode.</summary>
+    <summary>一致モードのサブセットの値を列挙します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In System.Speech, you can construct a grammar that successfully recognizes a phrase even though only a subset of its contents is found in the audio input.  
+## 解説  
+ System.Speech、オーディオ入力内にその内容のサブセットのみが見つかった場合でも正常に語句を認識する文章を構築できます。  
   
- By default, a recognition engine requires an exact match against an entire phrase. The recognition engine can also match partial phrases according to parameters defined by a <xref:System.Speech.Recognition.SubsetMatchingMode> member used as an argument to the <xref:System.Speech.Recognition.GrammarBuilder.%23ctor%2A> or <xref:System.Speech.Recognition.SrgsGrammar.SrgsSubset.%23ctor%2A> constructors, or the <xref:System.Speech.Recognition.GrammarBuilder.Append%2A> method.  
+ 既定では、認識エンジンに語句全体に対して完全に一致する必要があります。 認識エンジンが、部分的な語句で定義されたパラメーターに従って調和させることも、 <xref:System.Speech.Recognition.SubsetMatchingMode> への引数として使用するメンバー、 <xref:System.Speech.Recognition.GrammarBuilder.%23ctor%2A> または <xref:System.Speech.Recognition.SrgsGrammar.SrgsSubset.%23ctor%2A> コンス トラクター、または <xref:System.Speech.Recognition.GrammarBuilder.Append%2A> メソッドです。  
   
- The following illustrates how each of the <xref:System.Speech.Recognition.SubsetMatchingMode> members affects recognition when used in a grammar that contains the phrase "a car the truck a boat that plane".  
+ 次に示しますそれぞれどのようにの <xref:System.Speech.Recognition.SubsetMatchingMode> メンバー「自動車トラック平面ボートを」という表現を含む文法で使用する場合の認識に影響を与えます。  
   
  **OrderedSubset**  
   
- This mode indicates that a subset of the phrase will be used to successfully recognize the entire phrase if the following are true:  
+ このモードでは、正常に次の条件に当てはまる場合に全フレーズを認識する語句のサブセットを使用することを示します。  
   
--   One or more words in the phrase are recognized in the audio input.  
+-   1 つまたは複数の単語、語句には、オーディオの入力で認識されます。  
   
--   The relative order of those recognized words is the same as in the phrase.  
+-   認識された単語の相対的な順序では、語句の場合と同じにします。  
   
--   Matched words may consist of only prepositions and articles.  
+-   一致する単語は、前置詞とアーティクルのみで構成されます。  
   
- Adding the phrase "a car the truck a boat that plane" to a grammar using OrderedSubset mode produces the following result on recognition:  
+ 文法を使用して、「自動車トラック平面ボートを」という語句を追加する <xref:System.Speech.Recognition.SubsetMatchingMode.OrderedSubset> モードには、認識を次の結果が得られます。  
   
-|**Input Phrase**|**Result**|  
-|----------------------|----------------|  
-|"a car the truck a boat that plane"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the truck a boat"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the that plane"|The entire phrase "a car the truck a boat that plane" is recognized. A recognized subset is not required to be a sequence of the original string.|  
-|"a car the boat a truck that plane"|Recognition is not successful. The words are out of order.|  
-|"a the"|The entire phrase "a car the truck a boat that plane" is recognized. Prepositions and articles are used for recognition.|  
+|**語句の入力**|**結果**|  
+|---------------|------------|  
+|「自動車トラック平面ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|「自動車トラック ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|"平面を car"|全フレーズ「自動車トラック平面ボートを」が認識されます。 認識されたサブセットは、元の文字列のシーケンスを指定する必要はありません。|  
+|「平面をトラック、ボート自動車」|認識が正常ではありません。 単語の順序が間違っています。|  
+|"は、"|全フレーズ「自動車トラック平面ボートを」が認識されます。 前置詞と記事は、認識のために使用されます。|  
   
  **OrderedSubsetContentRequired**  
   
- This mode indicates that a subset of the phrase will be used to successfully recognize the entire phrase if the following are true:  
+ このモードでは、正常に次の条件に当てはまる場合に全フレーズを認識する語句のサブセットを使用することを示します。  
   
--   One or more words in the phrase are recognized in the audio input, and  
+-   1 つまたは複数の単語、語句にはオーディオ入力では認識し、  
   
--   The relative order of those recognized words is the same as in the phrase.  
+-   認識された単語の相対的な順序では、語句の場合と同じにします。  
   
--   Matched words cannot consist of only prepositions and articles.  
+-   一致する単語は前置詞と記事のみ受け付けられません。  
   
- Adding the phrase "a car the truck a boat that plane" to a grammar using OrderedSubsetContentRequired mode produces the following result on recognition:  
+ 文法を使用して、「自動車トラック平面ボートを」という語句を追加する <xref:System.Speech.Recognition.SubsetMatchingMode.OrderedSubsetContentRequired> モードには、認識を次の結果が得られます。  
   
-|**Input Phrase**|**Result**|  
-|----------------------|----------------|  
-|"a car the truck a boat that plane"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the truck a boat"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the that plane"|The entire phrase "a car the truck a boat that plane" is recognized. A recognized subset is not required to be a sequence of the original string.|  
-|"a car the boat a truck that plane"|Recognition is not successful. The words are out of order.|  
-|"a the"|Recognition is not successful.  Speech input must contain words other than articles and prepositions.|  
+|**語句の入力**|**結果**|  
+|---------------|------------|  
+|「自動車トラック平面ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|「自動車トラック ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|"平面を car"|全フレーズ「自動車トラック平面ボートを」が認識されます。 認識されたサブセットは、元の文字列のシーケンスを指定する必要はありません。|  
+|「平面をトラック、ボート自動車」|認識が正常ではありません。 単語の順序が間違っています。|  
+|"は、"|認識が正常ではありません。  音声入力は、記事や前置詞以外の単語を含める必要があります。|  
   
- **Subsequence:**  
+ **サブシーケンス。**  
   
- This mode indicates that a subset of the phrase will be used to successfully recognize the entire phrase if the following are true:  
+ このモードでは、正常に次の条件に当てはまる場合に全フレーズを認識する語句のサブセットを使用することを示します。  
   
--   One or more words in the phrase are recognized in the audio input as a sequence of the phrase, and  
+-   1 つまたは複数の単語、語句にはオーディオ入力では、語句のシーケンスとして認識し、  
   
--   The relative order of those recognized words is the same as in the phrase.  
+-   認識された単語の相対的な順序では、語句の場合と同じにします。  
   
--   Matched words may consist of only prepositions and articles.  
+-   一致する単語は、前置詞とアーティクルのみで構成されます。  
   
- Adding the phrase "a car the truck a boat that plane" to a grammar using Subsequence mode produces the following result on recognition:  
+ 文法を使用して、「自動車トラック平面ボートを」という語句を追加する <xref:System.Speech.Recognition.SubsetMatchingMode.Subsequence> モードには、認識を次の結果が得られます。  
   
-|**Input Phrase**|**Result**|  
-|----------------------|----------------|  
-|"a car the truck a boat that plane"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the truck a boat"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the that plane"|Recognition is not successful. A recognized subset is required to be a sequence of the original string.|  
-|"a car the boat a truck that plane"|Recognition is not successful. The words are out of order.|  
-|"a the"|The entire phrase "a car the truck a boat that plane" is recognized. Prepositions and articles are used for recognition.|  
+|**語句の入力**|**結果**|  
+|---------------|------------|  
+|「自動車トラック平面ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|「自動車トラック ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|"平面を car"|認識が正常ではありません。 元の文字列のシーケンスを指定するには、認識されたサブセットが必要です。|  
+|「平面をトラック、ボート自動車」|認識が正常ではありません。 単語の順序が間違っています。|  
+|"は、"|全フレーズ「自動車トラック平面ボートを」が認識されます。 前置詞と記事は、認識のために使用されます。|  
   
  **SubsequenceContentRequired**  
   
- This mode indicates that a subset of the phrase will be used to successfully recognize the entire phrase if the following are true:  
+ このモードでは、正常に次の条件に当てはまる場合に全フレーズを認識する語句のサブセットを使用することを示します。  
   
--   One or more words in the match string are recognized in the audio input as a sequence of the phrase.  
+-   一致文字列の 1 つまたは複数の単語は、オーディオの入力でのフレーズのシーケンスとして認識されます。  
   
--   Matched words cannot consist of only prepositions and articles.  
+-   一致する単語は前置詞と記事のみ受け付けられません。  
   
- Adding the phrase "a car the truck a boat that plane" to a grammar using SubsequenceContentRequired mode produces the following result on recognition:  
+ 文法を使用して、「自動車トラック平面ボートを」という語句を追加する <xref:System.Speech.Recognition.SubsetMatchingMode.SubsequenceContentRequired> モードには、認識を次の結果が得られます。  
   
-|**Input Phrase**|**Result**|  
-|----------------------|----------------|  
-|"a car the truck a boat that plane"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the truck a boat"|The entire phrase "a car the truck a boat that plane" is recognized.|  
-|"a car the that plane"|Recognition is not successful. A recognized subset is required to be a sequence of the original string.|  
-|"a car the boat a truck that plane"|Recognition is not successful. The words are out of order.|  
-|"a the"|Recognition is not successful. Speech input must contain words other than articles and prepositions.|  
+|**語句の入力**|**結果**|  
+|---------------|------------|  
+|「自動車トラック平面ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|「自動車トラック ボートを」|全フレーズ「自動車トラック平面ボートを」が認識されます。|  
+|"平面を car"|認識が正常ではありません。 元の文字列のシーケンスを指定するには、認識されたサブセットが必要です。|  
+|「平面をトラック、ボート自動車」|認識が正常ではありません。 単語の順序が間違っています。|  
+|"は、"|認識が正常ではありません。 音声入力は、記事や前置詞以外の単語を含める必要があります。|  
   
    
   
-## Examples  
- Below is a test routine which generates four <xref:System.Speech.Recognition.Grammar> objects, using the same phrase, for each of the `SubsetMatchingModes`. These <xref:System.Speech.Recognition.Grammar> objects can then be tested.  
+## 例  
+ 4 つを生成するテスト ルーチンを以下に示します <xref:System.Speech.Recognition.Grammar> オブジェクトの場合、各の同じ句を使用して、 `SubsetMatchingModes`です。 これら <xref:System.Speech.Recognition.Grammar> オブジェクトを検査し、ことができます。  
   
 ```  
 private void CreateSubsetMatchTest()   
@@ -121,6 +121,9 @@ private void CreateSubsetMatchTest()
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Speech.Recognition.GrammarBuilder" />
+    <altmember cref="T:System.Speech.Recognition.SrgsGrammar.SrgsSubset" />
+    <altmember cref="N:System.Speech.Recognition.SrgsGrammar" />
   </Docs>
   <Members>
     <Member MemberName="OrderedSubset">
@@ -136,7 +139,7 @@ private void CreateSubsetMatchTest()
         <ReturnType>System.Speech.Recognition.SubsetMatchingMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates that subset matching mode is **OrderedSubset**.</summary>
+        <summary>そのサブセット モードに一致することを示します **OrderedSubset**します。</summary>
       </Docs>
     </Member>
     <Member MemberName="OrderedSubsetContentRequired">
@@ -152,7 +155,7 @@ private void CreateSubsetMatchTest()
         <ReturnType>System.Speech.Recognition.SubsetMatchingMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates that subset matching mode is **OrderedSubsetContentRequired**.</summary>
+        <summary>そのサブセット モードに一致することを示します **OrderedSubsetContentRequired**します。</summary>
       </Docs>
     </Member>
     <Member MemberName="Subsequence">
@@ -168,7 +171,7 @@ private void CreateSubsetMatchTest()
         <ReturnType>System.Speech.Recognition.SubsetMatchingMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates that subset matching mode is **Subsequence**.</summary>
+        <summary>そのサブセット モードに一致することを示します **サブシーケンス**します。</summary>
       </Docs>
     </Member>
     <Member MemberName="SubsequenceContentRequired">
@@ -184,7 +187,7 @@ private void CreateSubsetMatchTest()
         <ReturnType>System.Speech.Recognition.SubsetMatchingMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates that subset matching mode is **SubsequenceContentRequired**.</summary>
+        <summary>そのサブセット モードに一致することを示します **SubsequenceContentRequired**します。</summary>
       </Docs>
     </Member>
   </Members>

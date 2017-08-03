@@ -11,40 +11,40 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides for immediate loading and filtering of related data.</summary>
+    <summary>即時読み込みおよび関連するデータのフィルター処理を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
-## General  
- When you query for an object, you actually retrieve only the object you requested. The *related* objects are not automatically fetched at the same time. (For more information, see [Querying Across Relationships](~/docs/framework/data/adonet/sql/linq/querying-across-relationships.md).)  
+## 全般  
+ オブジェクトに対してクエリを実行すると、要求したオブジェクトだけが実際に取得されます。*関連*オブジェクトが自動で同時に取得されることはありません。 \(詳細については、「[Relationships \(LINQ to SQL\)](http://msdn.microsoft.com/ja-jp/297878d0-685b-4c01-b2e0-9d731b7322bc)」を参照してください\)。  
   
- The <xref:System.Data.Linq.DataLoadOptions> class provides two methods to achieve immediate loading of specified related data. The <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> method allows for immediate loading of data related to the main target. The <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> method allows for filtering related objects.  
+ <xref:System.Data.Linq.DataLoadOptions> クラスは、指定された関連データの即時読み込みを実現するために 2 つのメソッドを提供します。<xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> メイン ターゲットに関連するデータの即時読み込みメソッドを使用します。<xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> メソッドを使用して関連オブジェクトをフィルター処理します。  
   
-## Rules  
- Note the following rules regarding <xref:System.Data.Linq.DataLoadOptions> usage:  
+## 規則  
+ 次のルールに注意してくださいに関する <xref:System.Data.Linq.DataLoadOptions> 使用状況。  
   
--   Assigning a <xref:System.Data.Linq.DataLoadOptions> to a <xref:System.Data.Linq.DataContext> after the first query has been executed generates an exception.  
+-   割り当て、 <xref:System.Data.Linq.DataLoadOptions> に、 <xref:System.Data.Linq.DataContext> 最初のクエリが実行された後に例外が生成されます。  
   
--   Modifying a <xref:System.Data.Linq.DataLoadOptions> after it has been assigned to a <xref:System.Data.Linq.DataContext> generates an exception  
+-   変更、 <xref:System.Data.Linq.DataLoadOptions> に割り当てた後、 <xref:System.Data.Linq.DataContext> 例外が発生します。  
   
-## Cycle Handling  
- <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> and <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> directives must not create cycles. The following represent examples of such graphs:  
+## サイクル処理  
+ <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> ディレクティブは、サイクルを作成しないでください。 そのようなグラフの例を次に表します。  
   
--   Example 1: Self recursive  
+-   例 1: 自己再帰的な  
   
     -   `dlo.LoadWith<Employee>(e => e.Reports);`  
   
--   Example 2: Back-pointers  
+-   例 2: バック ポインター  
   
     -   `dlo.LoadWith <Customer>(c => C.Orders);`  
   
     -   `dlo.LoadWith <Order>(o => o.Customer);`  
   
--   Example 3: Longer cycles  
+-   例 3: サイクルが長い  
   
-     Although this should not occur in a well-normalized model, it is possible.  
+     適切な正規化されたモデルでは発生しません、ことができます。  
   
     -   `dlo.LoadWith <A>(a => a.Bs);`  
   
@@ -52,30 +52,30 @@
   
     -   `dlo.LoadWith <C>(c => c.As);`  
   
--   Example 4: Self recursive subQueries  
+-   例 4: 自己再帰的サブクエリ  
   
     -   `dlo.AssociateWith<A>(a=>a.As.Where(a=>a.Id=33));`  
   
--   Example 5: Longer recursive subqueries  
+-   例 5: 長い再帰的サブクエリ  
   
     -   `dlo.AssociateWith<A>(a=>a.Bs.Where(b=>b.Id==3));`  
   
     -   `dlo.AssociateWith<B>(b=>b.As.Where(a=>a.Id==3));`  
   
- The following are some general rules that help you understand what occurs in these scenarios.  
+ これらのシナリオで発生するイベントを理解するのに役立ついくつかの一般的な規則を次に示します。  
   
- **LoadWith** Each call to <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> checks whether cycles have been introduced into the graph. If there are, as in Examples 1, 2, and 3, an exception is thrown.  
+ **LoadWith** への各呼び出し <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> をグラフにサイクルが導入されているかどうかを確認します。 ある場合、例 1 と 2、および 3 の場合、例外がスローされます。  
   
- **AssociateWith** The engine at run time does not apply the existing SubQuery clauses to the relationship inside the expression.  
+ **AssociateWith** 実行時にエンジンでは、式内のリレーションシップには、既存のサブクエリ句は当てはまりません。  
   
--   In Example 4, the `Where` clause is executed against all `A`, not just the ones sub-filtered by the SubQuery expression itself (because that would be recursive)  
+-   例 4、 `Where` 句はすべてに対する実行 `A`, 、だけでなくサブために、フィルター、サブクエリ式自体で \(再帰的に使用すると\)  
   
--   In Example 5, the first `Where` clause is applied to all the `B`s, even though there are subqueries on `B`. The second `Where` clause is applied to all the `A`s even though there are subqueries on `A`.  
+-   例 5 で最初の `Where` 句はすべてに適用される、 `B`にサブクエリがある場合でも、s `B`します。 2 番目 `Where` 句はすべてに適用、 `A`で導かれるサブクエリがある場合でも s `A`します。  
   
    
   
-## Examples  
- When you retrieve `Customers` from the Northwind sample database, you can use <xref:System.Data.Linq.DataLoadOptions> to specify that `Orders` is also to be retrieved. You can even specify which subset of `Orders` to retrieve.  
+## 例  
+ 取得すると `Customers` 、Northwind サンプル データベースからを使用して <xref:System.Data.Linq.DataLoadOptions> ことを指定する `Orders` をも取得します。 うち、どのサブセットを指定することも `Orders` を取得します。  
   
  ]]></format>
     </remarks>
@@ -92,8 +92,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.Linq.DataLoadOptions" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Data.Linq.DataLoadOptions" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AssociateWith">
@@ -112,11 +121,11 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.LambdaExpression" />
       </Parameters>
       <Docs>
-        <param name="expression">Identifies the query to be used on a particular one-to-many field or property. Note the following:  
+        <param name="expression">一対多の特定のフィールドまたはプロパティで使用するクエリを識別します。 次の点に注意してください。  
   
- If the expression does not start with a field or property that represents a one-to-many relationship, an exception is thrown.  
+ フィールドまたは一対多のリレーションシップを表すプロパティを含む式が起動しない場合、例外がスローされます。  
   
- If an operator other than a valid operator appears in the expression, an exception is thrown. Valid operators are as follows:  
+ 式の有効な演算子以外の演算子が表示された場合、例外がスローされます。 有効な演算子は次のとおりです。  
   
  Where  
   
@@ -129,18 +138,18 @@
  ThenByDescending  
   
  Take</param>
-        <summary>Filters the objects retrieved for a particular relationship.</summary>
+        <summary>特定のリレーションシップに対して取得されるオブジェクトをフィルター処理します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In the following example, the inner loop iterates only over those `Orders` that have not been shipped today.  
+## 解説  
+ 次の例では、内側のループがもののみを反復処理 `Orders` 今日が出荷されていません。  
   
    
   
-## Examples  
- [!code-csharp[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#1)]
- [!code-vb[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#1)]  
+## 例  
+ [!code-csharp[System.Data.Linq.DataLoadOptions\#1](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#1)]
+ [!code-vb[System.Data.Linq.DataLoadOptions\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -165,14 +174,14 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.Expression&lt;System.Func&lt;T,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The type that is queried against.  
+        <typeparam name="T">照会する型。  
   
- If the type is unmapped, an exception is thrown.</typeparam>
-        <param name="expression">Identifies the query to be used on a particular one-to-many field or property. Note the following:  
+ 型が割り当てられていない場合、例外がスローされます。</typeparam>
+        <param name="expression">一対多の特定のフィールドまたはプロパティで使用するクエリを識別します。 次の点に注意してください。  
   
- If the expression does not start with a field or property that represents a one-to-many relationship, an exception is thrown.  
+ フィールドまたは一対多のリレーションシップを表すプロパティを含む式が起動しない場合、例外がスローされます。  
   
- If an operator other than a valid operator appears in the expression, an exception is thrown. Valid operators are as follows:  
+ 式の有効な演算子以外の演算子が表示された場合、例外がスローされます。 有効な演算子は次のとおりです。  
   
  Where  
   
@@ -185,20 +194,20 @@
  ThenByDescending  
   
  Take</param>
-        <summary>Filters objects retrieved for a particular relationship.</summary>
+        <summary>特定のリレーションシップに対して取得されるオブジェクトをフィルター処理します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For information about how to avoid cycles, see <xref:System.Data.Linq.DataLoadOptions>.  
+## 解説  
+ サイクルを回避する方法については、次を参照してください。 <xref:System.Data.Linq.DataLoadOptions>します。  
   
    
   
-## Examples  
- In the following example, the inner loop iterates only over those `Orders` that have not been shipped today.  
+## 例  
+ 次の例では、内側のループがもののみを反復処理 `Orders` 今日が出荷されていません。  
   
- [!code-csharp[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#1)]
- [!code-vb[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#1)]  
+ [!code-csharp[System.Data.Linq.DataLoadOptions\#1](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#1)]
+ [!code-vb[System.Data.Linq.DataLoadOptions\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -266,19 +275,19 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.LambdaExpression" />
       </Parameters>
       <Docs>
-        <param name="expression">A lambda expression that identifies the related material.</param>
-        <summary>Retrieves specified data related to the main target by using a lambda expression.</summary>
+        <param name="expression">関連資料を表すラムダ式です。</param>
+        <summary>指定したラムダ式を使用して、メイン ターゲットに関連するデータを取得します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In the following example, all the `Orders` for all the `Customers` who are located in London are retrieved when the query is executed. As a result, successive access to the `Orders` property on a `Customer` object does not trigger a new database query.  
+## 解説  
+ 次の例では、クエリを実行すると、ロンドンに住んでいるすべての `Orders` のすべての `Customers` が取得されます。 その結果、それ以降 `Orders` オブジェクトの `Customer` プロパティにアクセスしても、新しいデータベース クエリは実行されません。  
   
    
   
-## Examples  
- [!code-csharp[System.Data.Linq.DataLoadOptions#2](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#2)]
- [!code-vb[System.Data.Linq.DataLoadOptions#2](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#2)]  
+## 例  
+ [!code-csharp[System.Data.Linq.DataLoadOptions\#2](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#2)]
+ [!code-vb[System.Data.Linq.DataLoadOptions\#2](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -303,28 +312,28 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.Expression&lt;System.Func&lt;T,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Type that is queried against.  
+        <typeparam name="T">照会する型。  
   
- If this type is unmapped, an exception is thrown.</typeparam>
-        <param name="expression">Identifies the field or property to be retrieved.  
+ この型が割り当てられていない場合、例外がスローされます。</typeparam>
+        <param name="expression">フィールドまたは取得するプロパティを識別します。  
   
- If the expression does not identify a field or property that represents a one-to-one or one-to-many relationship, an exception is thrown.</param>
-        <summary>Specifies which sub-objects to retrieve when a query is submitted for an object of type T.</summary>
+ 式がフィールドまたはプロパティを一対一または一対多のリレーションシップを表すプロパティを識別しない場合、例外がスローされます。</param>
+        <summary>T 型のオブジェクトのクエリを送信するときに取得するサブオブジェクトを指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot specify the loading of two levels of relationships (for example, `Orders.OrderDetails`). In these scenarios you must specify two separate <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> methods.  
+## 解説  
+ 2 つのレベルのリレーションシップの読み込みを指定することはできません \(たとえば、 `Orders.OrderDetails`\)。 これらのシナリオでは、2 つの異なるを指定する必要があります <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> メソッドです。  
   
- To avoid cycling, see Remarks section in <xref:System.Data.Linq.DataLoadOptions>.  
+ 繰り返しを避けるためには、「解説」を参照してください。 セクション <xref:System.Data.Linq.DataLoadOptions>です。  
   
    
   
-## Examples  
- In the following example, all the `Orders` for all the `Customers` who are located in London are retrieved when the query is executed. As a result, successive access to the `Orders` property on a `Customer` object does not trigger a new database query.  
+## 例  
+ 次の例では、クエリを実行すると、ロンドンに住んでいるすべての `Orders` のすべての `Customers` が取得されます。 その結果、それ以降 `Orders` オブジェクトの `Customer` プロパティにアクセスしても、新しいデータベース クエリは実行されません。  
   
- [!code-csharp[System.Data.Linq.DataLoadOptions#2](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#2)]
- [!code-vb[System.Data.Linq.DataLoadOptions#2](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#2)]  
+ [!code-csharp[System.Data.Linq.DataLoadOptions\#2](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#2)]
+ [!code-vb[System.Data.Linq.DataLoadOptions\#2](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#2)]  
   
  ]]></format>
         </remarks>

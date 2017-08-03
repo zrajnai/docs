@@ -15,30 +15,33 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Implements the cache for a Web application. This class cannot be inherited.</summary>
+    <summary>Web アプリケーションのキャッシュを実装します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- One instance of this class is created per application domain, and it remains valid as long as the application domain remains active. Information about an instance of this class is available through the `Cache` property of the <xref:System.Web.HttpContext> object or the `Cache` property of the <xref:System.Web.UI.Page> object.  
+## 解説  
+ アプリケーション ドメインごとに、このクラスの 1 つのインスタンスが作成され、は、アプリケーション ドメインがアクティブな限り有効です。 このクラスのインスタンスに関する情報はを介して使用できる、`Cache`のプロパティ、<xref:System.Web.HttpContext>オブジェクトまたは`Cache`のプロパティ、<xref:System.Web.UI.Page>オブジェクト。  
   
 > [!NOTE]
->  The <xref:System.Web.Caching.Cache> class is not intended for use outside of ASP.NET applications. It was designed and tested for use in ASP.NET to provide caching for Web applications. For other types of applications, such as console applications or Windows Forms applications, use the <xref:System.Runtime.Caching.ObjectCache> class.  
+>  <xref:System.Web.Caching.Cache>クラスは、ASP.NET アプリケーションの外部で使用するものではありません。 Web アプリケーションのキャッシュを提供する ASP.NET で使用するためのテストし、設計にされました。 Windows フォーム アプリケーション、コンソール アプリケーションなど、アプリケーションの他の種類を使用して、<xref:System.Runtime.Caching.ObjectCache>クラスです。  
   
    
   
-## Examples  
- The following example is a page that shows users the value assigned to an item in the cache, and then notifies them when the item is removed from the cache. It creates a `RemovedCallback` method, which has the signature of the `CacheItemRemovedCallback` delegate, to notify users when the cache item is removed, and it uses the <xref:System.Web.Caching.CacheItemRemovedReason> enumeration to tell them why it was removed. In addition, it uses the <xref:System.Web.Caching.Cache.Item%2A?displayProperty=fullName> property to add objects to the cache and retrieve the value of those objects. In the `AddItemToCache` method, it uses the <xref:System.Web.Caching.Cache.Add%2A?displayProperty=fullName> method to add an item to the cache. To use the `CacheItemRemovedCallback` delegate, you must add an item to the cache with this method or the <xref:System.Web.Caching.Cache.Insert%2A?displayProperty=fullName> method, so that that ASP.NET can automatically make the proper method calls when the item is removed. The custom `RemoveItemFromCache` method uses the <xref:System.Web.Caching.Cache.Remove%2A?displayProperty=fullName> method to explicitly delete the item from the cache, causing the `RemovedCallback` method to be invoked.  
+## 例  
+ 次の例が、キャッシュ内の項目に割り当てられた値をユーザーに表示されるページで、項目がキャッシュから削除されたときに通知します。 作成、`RemovedCallback`メソッドのシグネチャを持つの`CacheItemRemovedCallback`キャッシュ項目が削除され、使用時にユーザーに通知する、デリゲート、<xref:System.Web.Caching.CacheItemRemovedReason>列挙型を削除された理由を伝えます。 また、使用、<xref:System.Web.Caching.Cache.Item%2A?displayProperty=fullName>プロパティ キャッシュにオブジェクトを追加し、それらのオブジェクトの値を取得します。`AddItemToCache`メソッドを使用して、<xref:System.Web.Caching.Cache.Add%2A?displayProperty=fullName>キャッシュにアイテムを追加するメソッド。 使用する、`CacheItemRemovedCallback`デリゲート、キャッシュにこのメソッドを使用して項目を追加する必要がありますまたは<xref:System.Web.Caching.Cache.Insert%2A?displayProperty=fullName>メソッド、ASP.NET が適切なメソッドを自動的に実行できることを呼び出して、項目が削除されるためです。 カスタム`RemoveItemFromCache`メソッドを使用、<xref:System.Web.Caching.Cache.Remove%2A?displayProperty=fullName>メソッドは明示的に、キャッシュから項目を削除する原因と、`RemovedCallback`呼び出されるメソッド。  
   
 > [!NOTE]
->  The instance of Cache that is accessed by the snippet below is a member of the <xref:System.Web.UI.Page> object that this sample inherits.  
+>  次のコードによってアクセスされるキャッシュのインスタンスのメンバーである、<xref:System.Web.UI.Page>このサンプルを継承するオブジェクト。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.Caching Examples#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.Caching Examples#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#1)]  -->  
+ [!code-csharp[System.Web.Caching Examples\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#1)]
+ [!code-vb[System.Web.Caching Examples\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>This type is thread safe.</threadsafe>
+    <threadsafe>この型はスレッド セーフです。</threadsafe>
+    <altmember cref="T:System.Web.HttpContext" />
+    <altmember cref="T:System.Web.Caching.CacheDependency" />
+    <altmember cref="T:System.Web.Caching.CacheItemRemovedCallback" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -52,7 +55,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.Caching.Cache" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.Caching.Cache" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -78,41 +82,47 @@
         <Parameter Name="onRemoveCallback" Type="System.Web.Caching.CacheItemRemovedCallback" />
       </Parameters>
       <Docs>
-        <param name="key">The cache key used to reference the item.</param>
-        <param name="value">The item to be added to the cache.</param>
-        <param name="dependencies">The file or cache key dependencies for the item. When any dependency changes, the object becomes invalid and is removed from the cache. If there are no dependencies, this parameter contains <see langword="null" />.</param>
-        <param name="absoluteExpiration">The time at which the added object expires and is removed from the cache. If you are using sliding expiration, the <c>absoluteExpiration</c> parameter must be <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />.</param>
-        <param name="slidingExpiration">The interval between the time the added object was last accessed and the time at which that object expires. If this value is the equivalent of 20 minutes, the object expires and is removed from the cache 20 minutes after it is last accessed. If you are using absolute expiration, the <c>slidingExpiration</c> parameter must be <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />.</param>
-        <param name="priority">The relative cost of the object, as expressed by the <see cref="T:System.Web.Caching.CacheItemPriority" /> enumeration. The cache uses this value when it evicts objects; objects with a lower cost are removed from the cache before objects with a higher cost.</param>
-        <param name="onRemoveCallback">A delegate that, if provided, is called when an object is removed from the cache. You can use this to notify applications when their objects are deleted from the cache.</param>
-        <summary>Adds the specified item to the <see cref="T:System.Web.Caching.Cache" /> object with dependencies, expiration and priority policies, and a delegate you can use to notify your application when the inserted item is removed from the <see langword="Cache" />.</summary>
-        <returns>An object that represents the item that was added if the item was previously stored in the cache; otherwise, <see langword="null" />.</returns>
+        <param name="key">キャッシュ キーは、項目を参照するために使用します。</param>
+        <param name="value">キャッシュに追加する項目。</param>
+        <param name="dependencies">ファイルまたはキャッシュ キーの依存関係アイテムです。 すべての依存関係が変更されたときにオブジェクトは無効なようになり、キャッシュから削除します。 このパラメーターが含まれる場合、依存関係がない、 <see langword="null" />です。</param>
+        <param name="absoluteExpiration">時間を追加するオブジェクトが有効期限が切れるし、キャッシュから削除します。 スライド式有効期限を使用している場合、 <c>absoluteExpiration</c> パラメーターである必要があります <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />します。</param>
+        <param name="slidingExpiration">追加されたオブジェクトが最後にアクセスし、そのオブジェクトの有効期限が切れる時刻間の間隔。 この値が 20 分のと同じである場合は、オブジェクトは有効期限が切れるしが最後にアクセスした後、20 分、キャッシュから削除します。 絶対有効期限を使用している場合、 <c>slidingExpiration</c> パラメーターである必要があります <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />します。</param>
+        <param name="priority">によって表されるオブジェクトの相対的なコスト、 <see cref="T:System.Web.Caching.CacheItemPriority" /> 列挙します。 キャッシュは、オブジェクトが削除されるときにこの値を使用してください。コストの低いオブジェクトは、コストの高いオブジェクトの前にキャッシュから削除されます。</param>
+        <param name="onRemoveCallback">指定した場合、オブジェクトがキャッシュから削除されたときに呼び出されるデリゲート。 アプリケーションに通知する、オブジェクトがキャッシュから削除されたときに、これを使用することができます。</param>
+        <summary>指定した項目を追加、 <see cref="T:System.Web.Caching.Cache" /> のオブジェクトの依存関係、有効期限と優先順位ポリシーとがデリゲートから挿入された項目が削除されると、アプリケーションに通知を使用することができます、 <see langword="Cache" />です。</summary>
+        <returns>項目がキャッシュに保存されていた場合に追加された項目を表すオブジェクトそれ以外の場合、 <see langword="null" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calls to this method will fail if an item with the same `key` parameter is already stored in the `Cache`. To overwrite an existing `Cache` item using the same `key` parameter, use the <xref:System.Web.Caching.Cache.Insert%2A> method.  
+## 解説  
+ このメソッドの呼び出しは失敗では、同じ項目 `key` にパラメーターが既に格納されている、 `Cache`です。 既存の上書き `Cache` 項目を使用して同じ `key` パラメーターを使用する、 <xref:System.Web.Caching.Cache.Insert%2A> メソッドです。  
   
- You cannot set both the `absoluteExpiration` and `slidingExpiration` parameters. If you intend the cache item to expire at a specific time, you set the `absoluteExpiration` parameter to the specific time, and the `slidingExpiration` parameter to <xref:System.Web.Caching.Cache.NoSlidingExpiration>.  
+ 両方を設定することはできません、 `absoluteExpiration` と `slidingExpiration` パラメーター。 キャッシュ項目の特定の時間に期限切れにする場合を設定する、 `absoluteExpiration` 特定の時点へのパラメーターと `slidingExpiration` パラメーターを <xref:System.Web.Caching.Cache.NoSlidingExpiration>します。  
   
- If you intend the cache item to expire after a certain amount of time has passed since the item was last accessed, you set the `slidingExpiration` parameter to the expiration interval, and the `absoluteExpiration` parameter to <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>.  
+ 一定時間後に有効期限が経過する項目が最後にアクセスする場合は、キャッシュ項目は、設定する、 `slidingExpiration` パラメーターの有効期限の間隔を `absoluteExpiration` パラメーターを <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>します。  
   
    
   
-## Examples  
- The following example creates an `AddItemToCache` method. When this method is called, it sets an `itemRemoved` property to `false` and registers an `onRemove` method with a new instance of the <xref:System.Web.Caching.CacheItemRemovedCallback> delegate. The delegate's signature is used in the `RemovedCallback` method. The `AddItemToCache` method then checks the value associated with the `Key1` key in the cache. If the value is `null`, the `Add` method places an item in the cache with a key of `Key1`, a value of `Value 1`, an absolute expiration of 60 seconds, and a high cache priority. It also uses the `onRemove` method as an argument. This allows the `RemovedCallback` method to be called when this item is removed from the cache.  
+## 例  
+ 次の例を作成し、 `AddItemToCache` メソッドです。 このメソッドが呼び出されるときに、設定、 `itemRemoved` プロパティを `false` し、登録、 `onRemove` メソッドの新しいインスタンスを <xref:System.Web.Caching.CacheItemRemovedCallback> を委任します。 デリゲートのシグネチャが使用される、 `RemovedCallback` メソッドです。`AddItemToCache` メソッドに関連付けられている値をチェックし、 `Key1` キャッシュ内のキー。 値の場合 `null`, 、 `Add` メソッド キャッシュ内のキーを持つ項目を配置する `Key1`, の値 `Value 1`, 、60 秒とキャッシュが高優先度の絶対有効期限。 使用して、 `onRemove` 引数としてメソッドです。 これにより、 `RemovedCallback` この項目がキャッシュから削除されたときに呼び出されるメソッド。  
   
 > [!NOTE]
->  For examples of how to use the <xref:System.Web.Caching.CacheDependency> class and the <xref:System.Web.Caching.CacheItemRemovedCallback> delegate, see [Caching Application Data](http://msdn.microsoft.com/library/206f977d-7860-4d20-bdd5-c3b3d8479f3d).  
+>  使用する方法の例については、 <xref:System.Web.Caching.CacheDependency> クラスおよび <xref:System.Web.Caching.CacheItemRemovedCallback> 委任は、「 [Caching Application Data](http://msdn.microsoft.com/ja-jp/206f977d-7860-4d20-bdd5-c3b3d8479f3d)します。  
   
- [!code-csharp[System.Web.Caching Examples#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#3)]
- [!code-vb[System.Web.Caching Examples#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#3)]  
+ [!code-csharp[System.Web.Caching Examples\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#3)]
+ [!code-vb[System.Web.Caching Examples\#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="key" /> or <paramref name="value" /> parameter is set to <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="slidingExpiration" /> parameter is set to less than <see langword="TimeSpan.Zero" /> or more than one year.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="absoluteExpiration" /> and <paramref name="slidingExpiration" /> parameters are both set for the item you are trying to add to the <see langword="Cache" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="key" /> または <paramref name="value" /> にパラメーターが設定されている <see langword="null" />します。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="slidingExpiration" /> に設定されているパラメーターより小さい <see langword="TimeSpan.Zero" /> または 1 年以上です。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="absoluteExpiration" /> と <paramref name="slidingExpiration" /> パラメーターは両方を追加しようとしている項目の設定、 <see langword="Cache" />です。</exception>
+        <altmember cref="T:System.Web.Caching.CacheDependency" />
+        <altmember cref="T:System.Web.Caching.CacheItemPriority" />
+        <altmember cref="T:System.Web.Caching.CacheItemRemovedCallback" />
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -128,21 +138,21 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of items stored in the cache.</summary>
-        <value>The number of items stored in the cache.</value>
+        <summary>キャッシュに格納された項目の数を取得します。</summary>
+        <value>キャッシュに格納された項目の数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property can be useful when monitoring your application's performance or when using ASP.NET tracing functionality.  
+## 解説  
+ このプロパティは、アプリケーションのパフォーマンスを監視する場合や、ASP.NET のトレース機能を使用する場合に便利で指定できます。  
   
    
   
-## Examples  
- The following example obtains the value of the `Count` property, converts it to a string, and assigns the string to the <xref:System.Web.UI.WebControls.Label.Text%2A> property of a <xref:System.Web.UI.WebControls.Label> Web server control, `Label1`.  
+## 例  
+ 次の例の値を取得する、 `Count` プロパティは、文字列に変換しに文字列を割り当てます、 <xref:System.Web.UI.WebControls.Label.Text%2A> のプロパティ、 <xref:System.Web.UI.WebControls.Label> Web サーバー コントロール `Label1`します。  
   
- [!code-csharp[System.Web.Caching.Cache.Count#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching.Cache.Count/CS/cachecountcs.aspx#1)]
- [!code-vb[System.Web.Caching.Cache.Count#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching.Cache.Count/VB/cachecountvb.aspx#1)]  
+ [!code-csharp[System.Web.Caching.Cache.Count\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching.Cache.Count/CS/cachecountcs.aspx#1)]
+ [!code-vb[System.Web.Caching.Cache.Count\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching.Cache.Count/VB/cachecountvb.aspx#1)]  
   
  ]]></format>
         </remarks>
@@ -161,20 +171,21 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the percentage of physical memory that can be consumed by an application before ASP.NET starts removing items from the cache.</summary>
-        <value>The percentage of physical memory available to the application.</value>
+        <summary>ASP.NET は、キャッシュからアイテムの削除を開始する前に、アプリケーションで使用できる物理メモリの割合を取得します。</summary>
+        <value>アプリケーションで使用できる物理メモリの割合。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> property returns the percentage of physical memory that is available to the application. When the available percentage becomes low, the cache algorithm begins removing items from the cache.  
+## 解説  
+ <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> プロパティは、アプリケーションに使用可能な物理メモリの割合を返します。 使用可能な割合が少なくなると、キャッシュ アルゴリズムは、キャッシュからアイテムの削除を開始します。  
   
- The <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> property can be set with the `percentagePhysicalMemoryUsedLimit` attribute of the [cache Element for caching (ASP.NET Settings Schema)](http://msdn.microsoft.com/en-us/68fa0040-5abf-4c73-93fc-17e3c6af3299) element in the application's configuration file. If the `percentagePhysicalMemoryUsedLimit` attribute is not set, the cache algorithm determines the maximum size of the cache, and the <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> property is calculated.  
+ <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> でプロパティを設定できる、 `percentagePhysicalMemoryUsedLimit` の属性、 [\(ASP.NET 設定スキーマ\) の caching の cache 要素](http://msdn.microsoft.com/ja-jp/68fa0040-5abf-4c73-93fc-17e3c6af3299) アプリケーションの構成ファイル内の要素。 場合、 `percentagePhysicalMemoryUsedLimit` 属性が設定されていない、キャッシュ アルゴリズムが、キャッシュの最大サイズを決定し、 <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> プロパティが計算されます。  
   
- <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> is introduced in the .NET Framework version 3.5.  For more information, see [Versions and Dependencies](~/docs/framework/migration-guide/versions-and-dependencies.md).  
+ <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A> .NET Framework version 3.5 で導入されました。  詳細については、「[The .NET Framework 3.5 Architecture](http://msdn.microsoft.com/ja-jp/f75a72de-e2f2-4a7a-9574-3f278684ea90)」を参照してください。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.Caching.Cache.EffectivePrivateBytesLimit" />
       </Docs>
     </Member>
     <Member MemberName="EffectivePrivateBytesLimit">
@@ -190,19 +201,19 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of bytes available for the cache.</summary>
-        <value>The number of bytes available for the cache.</value>
+        <summary>キャッシュの使用可能なバイト数を取得します。</summary>
+        <value>キャッシュの使用可能なバイト数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Caching.Cache.EffectivePrivateBytesLimit%2A> property returns the number of bytes that can be used by the application process. Once this limit is reached, the cache algorithm begins aggressively scavenging the cache.  
+## 解説  
+ <xref:System.Web.Caching.Cache.EffectivePrivateBytesLimit%2A> プロパティは、アプリケーションのプロセスで使用できるバイト数を返します。 この制限に達すると、キャッシュ アルゴリズムは、キャッシュを積極的に清掃を開始します。  
   
- The <xref:System.Web.Caching.Cache.EffectivePrivateBytesLimit%2A> property can be set with the `privateBytesLimit` attribute of the [cache Element for caching (ASP.NET Settings Schema)](http://msdn.microsoft.com/en-us/68fa0040-5abf-4c73-93fc-17e3c6af3299) element in the application's configuration file. When the `privateBytesLimit` attribute is not set, the cache algorithm determines the maximum size of the cache, and the <xref:System.Web.Caching.Cache.EffectivePrivateBytesLimit%2A> property contains the size chosen by the algorithm.  
+ <xref:System.Web.Caching.Cache.EffectivePrivateBytesLimit%2A> でプロパティを設定できる、 `privateBytesLimit` の属性、 [\(ASP.NET 設定スキーマ\) の caching の cache 要素](http://msdn.microsoft.com/ja-jp/68fa0040-5abf-4c73-93fc-17e3c6af3299) アプリケーションの構成ファイル内の要素。 ときに、 `privateBytesLimit` 属性が設定されていない、キャッシュ アルゴリズムが、キャッシュの最大サイズを決定し、 <xref:System.Web.Caching.Cache.EffectivePrivateBytesLimit%2A> プロパティには、アルゴリズムで選択したサイズが含まれています。  
   
    
   
-## Examples  
+## 例  
  <xref:System.Web.Caching.Cache.EffectivePercentagePhysicalMemoryLimit%2A>  
   
  ]]></format>
@@ -225,17 +236,17 @@
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="key">The identifier for the cache item to retrieve.</param>
-        <summary>Retrieves the specified item from the <see cref="T:System.Web.Caching.Cache" /> object.</summary>
-        <returns>The retrieved cache item, or <see langword="null" /> if the key is not found.</returns>
+        <param name="key">取得するキャッシュ項目の識別子。</param>
+        <summary>指定した項目を取得、 <see cref="T:System.Web.Caching.Cache" /> オブジェクトです。</summary>
+        <returns>取得するキャッシュ項目または <see langword="null" /> 、キーが見つからなかった場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example demonstrates how to retrieve the value cached for an ASP.NET text box server control.  
+## 例  
+ 次の例では、ASP.NET のテキスト ボックスのサーバー コントロール用にキャッシュ値を取得する方法を示します。  
   
- [!code-csharp[Classic Cache.Get Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Get Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.Get Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Get Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.Get Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Get Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.Get Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Get Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -255,21 +266,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Retrieves a dictionary enumerator used to iterate through the key settings and their values contained in the cache.</summary>
-        <returns>An enumerator to iterate through the <see cref="T:System.Web.Caching.Cache" /> object.</returns>
+        <summary>キーの設定を反復処理するために使用するディクショナリ列挙子と、キャッシュに格納されている値を取得します。</summary>
+        <returns>反復処理する列挙子、 <see cref="T:System.Web.Caching.Cache" /> オブジェクトです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Items can be added to or removed from the cache while this method is enumerating through the items.  
+## 解説  
+ 項目に追加またはこのメソッドは、項目の列挙処理中にキャッシュから削除します。  
   
    
   
-## Examples  
- The following example creates an <xref:System.Collections.IDictionaryEnumerator> object, `CacheEnum`, using the `GetEnumerator` method. The enumerator moves through the cache, converts the value of each cached item to a string, and then writes the values to a Web Forms page.  
+## 例  
+ 次の例を作成し、 <xref:System.Collections.IDictionaryEnumerator> オブジェクト、 `CacheEnum`, を使用して、 `GetEnumerator` メソッドです。 列挙子は、キャッシュから移動しながら各キャッシュ項目の値を文字列に変換し、Web フォーム ページに値を書き込みます。  
   
- [!code-csharp[Cache.GetEnumerator#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Cache.GetEnumerator/CS/getenumcs.aspx#1)]
- [!code-vb[Cache.GetEnumerator#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Cache.GetEnumerator/VB/getenumvb.aspx#1)]  
+ [!code-csharp[Cache.GetEnumerator\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Cache.GetEnumerator/CS/getenumcs.aspx#1)]
+ [!code-vb[Cache.GetEnumerator\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Cache.GetEnumerator/VB/getenumvb.aspx#1)]  
   
  ]]></format>
         </remarks>
@@ -292,26 +303,27 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="key">The cache key used to reference the item.</param>
-        <param name="value">The object to be inserted into the cache.</param>
-        <summary>Inserts an item into the <see cref="T:System.Web.Caching.Cache" /> object with a cache key to reference its location, using default values provided by the <see cref="T:System.Web.Caching.CacheItemPriority" /> enumeration.</summary>
+        <param name="key">キャッシュ キーは、項目を参照するために使用します。</param>
+        <param name="value">キャッシュに挿入するオブジェクト。</param>
+        <summary>項目を挿入、 <see cref="T:System.Web.Caching.Cache" /> によって提供される既定値を使用して、その場所を参照するキャッシュ キーのオブジェクト、 <see cref="T:System.Web.Caching.CacheItemPriority" /> 列挙します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method will overwrite an existing cache item whose key matches the `key` parameter. The object added to the cache using this overload of the `Insert` method is inserted with no file or cache dependencies, a priority of <xref:System.Web.Caching.CacheItemPriority.Default>, a sliding expiration value of <xref:System.Web.Caching.Cache.NoSlidingExpiration>, and an absolute expiration value of <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>.  
+## 解説  
+ このメソッドは既存のキーを持つと一致するキャッシュ アイテムを上書き、 `key` パラメーター。 このオーバー ロードを使用して、キャッシュに追加されたオブジェクト、 `Insert` メソッドがファイルまたはキャッシュ依存関係のない、優先度が挿入される <xref:System.Web.Caching.CacheItemPriority.Default>, 、スライディング有効期限の値の <xref:System.Web.Caching.Cache.NoSlidingExpiration>, との絶対有効期限値 <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>です。  
   
    
   
-## Examples  
- The following example demonstrates how to insert an item into an application's cache.  
+## 例  
+ 次の例では、アプリケーションのキャッシュに項目を挿入する方法を示します。  
   
- [!code-csharp[Classic Cache.Insert Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.Insert Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.Insert Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.Insert Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="key" /> or <paramref name="value" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="key" /> パラメーターまたは <paramref name="value" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Insert">
@@ -332,27 +344,29 @@
         <Parameter Name="dependencies" Type="System.Web.Caching.CacheDependency" />
       </Parameters>
       <Docs>
-        <param name="key">The cache key used to identify the item.</param>
-        <param name="value">The object to be inserted in the cache.</param>
-        <param name="dependencies">The file or cache key dependencies for the inserted object. When any dependency changes, the object becomes invalid and is removed from the cache. If there are no dependencies, this parameter contains <see langword="null" />.</param>
-        <summary>Inserts an object into the <see cref="T:System.Web.Caching.Cache" /> that has file or key dependencies.</summary>
+        <param name="key">キャッシュ キーは、アイテムを識別するために使用します。</param>
+        <param name="value">キャッシュに挿入するオブジェクト。</param>
+        <param name="dependencies">ファイルまたはキャッシュ キーの依存関係挿入されたオブジェクト。 すべての依存関係が変更されたときにオブジェクトは無効なようになり、キャッシュから削除します。 このパラメーターが含まれる場合、依存関係がない、 <see langword="null" />です。</param>
+        <summary>オブジェクトを挿入、 <see cref="T:System.Web.Caching.Cache" /> ファイルまたはキーの依存関係を持ちます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method will overwrite an existing cache item whose key matches the `key` parameter. The object added to the cache using this overload of the `Insert` method is inserted with no file or cache dependencies, a priority of <xref:System.Web.Caching.CacheItemPriority.Default>, a sliding expiration value of <xref:System.Web.Caching.Cache.NoSlidingExpiration>, and an absolute expiration value of <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>.  
+## 解説  
+ このメソッドは既存のキーを持つと一致するキャッシュ アイテムを上書き、 `key` パラメーター。 このオーバー ロードを使用して、キャッシュに追加されたオブジェクト、 `Insert` メソッドがファイルまたはキャッシュ依存関係のない、優先度が挿入される <xref:System.Web.Caching.CacheItemPriority.Default>, 、スライディング有効期限の値の <xref:System.Web.Caching.Cache.NoSlidingExpiration>, との絶対有効期限値 <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>です。  
   
    
   
-## Examples  
- The following example demonstrates how to insert an item into an application's cache with a cache dependency on an XML configuration file.  
+## 例  
+ 次の例では、XML 構成ファイルのキャッシュ依存関係と、アプリケーションのキャッシュに項目を挿入する方法を示します。  
   
- [!code-csharp[Classic Cache.Insert1 Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert1 Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.Insert1 Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert1 Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.Insert1 Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert1 Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.Insert1 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert1 Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="key" /> or <paramref name="value" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="key" /> パラメーターまたは <paramref name="value" /> パラメーターが <see langword="null" /> です。</exception>
+        <altmember cref="T:System.Web.Caching.CacheDependency" />
       </Docs>
     </Member>
     <Member MemberName="Insert">
@@ -375,41 +389,45 @@
         <Parameter Name="slidingExpiration" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="key">The cache key used to reference the object.</param>
-        <param name="value">The object to be inserted in the cache.</param>
-        <param name="dependencies">The file or cache key dependencies for the inserted object. When any dependency changes, the object becomes invalid and is removed from the cache. If there are no dependencies, this parameter contains <see langword="null" />.</param>
-        <param name="absoluteExpiration">The time at which the inserted object expires and is removed from the cache. To avoid possible issues with local time such as changes from standard time to daylight saving time, use <see cref="P:System.DateTime.UtcNow" /> rather than <see cref="P:System.DateTime.Now" /> for this parameter value. If you are using absolute expiration, the <c>slidingExpiration</c> parameter must be <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />.</param>
-        <param name="slidingExpiration">The interval between the time the inserted object is last accessed and the time at which that object expires. If this value is the equivalent of 20 minutes, the object will expire and be removed from the cache 20 minutes after it was last accessed. If you are using sliding expiration, the <c>absoluteExpiration</c> parameter must be <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />.</param>
-        <summary>Inserts an object into the <see cref="T:System.Web.Caching.Cache" /> with dependencies and expiration policies.</summary>
+        <param name="key">オブジェクトを参照するために使用するキャッシュ キー。</param>
+        <param name="value">キャッシュに挿入するオブジェクト。</param>
+        <param name="dependencies">ファイルまたはキャッシュ キーの依存関係挿入されたオブジェクト。 すべての依存関係が変更されたときにオブジェクトは無効なようになり、キャッシュから削除します。 このパラメーターが含まれる場合、依存関係がない、 <see langword="null" />です。</param>
+        <param name="absoluteExpiration">時間を挿入されたオブジェクトが有効期限が切れるし、キャッシュから削除します。 標準時から夏時間への変更などのローカル時刻と考えられる問題を避けるためには、次のように使用します。 <see cref="P:System.DateTime.UtcNow" /> なく <see cref="P:System.DateTime.Now" /> このパラメーターの値にします。 絶対有効期限を使用している場合、 <c>slidingExpiration</c> パラメーターである必要があります <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />します。</param>
+        <param name="slidingExpiration">そのオブジェクトの有効期限が切れる時刻と、挿入されたオブジェクトが最後にアクセスした時刻の間の間隔。 この値が 20 分のと同じである場合は、オブジェクトは有効期限が切れるし、最後にアクセスした後、20 分、キャッシュから削除します。 スライド式有効期限を使用している場合、 <c>absoluteExpiration</c> パラメーターである必要があります <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />します。</param>
+        <summary>オブジェクトを挿入、 <see cref="T:System.Web.Caching.Cache" /> の依存関係と有効期限ポリシーを使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method will overwrite an existing `Cache` item with the same `key` parameter.  
+## 解説  
+ このメソッドは既存の上書き `Cache` では、同じ項目 `key` パラメーター。  
   
- If the `slidingExpiration` parameter is set to <xref:System.Web.Caching.Cache.NoSlidingExpiration>, sliding expiration is disabled. If you set the `slidingExpiration` parameter to greater than <xref:System.TimeSpan.Zero>, the `absoluteExpiration` parameter is set to <xref:System.DateTime.Now%2A> plus the value contained in the `slidingExpiration` parameter. If the item is requested from the cache before the amount of time specified by the `absoluteExpiration` parameter, the item will be placed in the cache again, and `absoluteExpiration` will again be set to `DateTime.Now` plus the value contained in the `slidingExpiration` parameter. If the item is not requested from the cache before the date in the `absoluteExpiration` parameter, the item is removed from the cache. . The item added to the cache using this overload of the insert method is inserted with a priority of <xref:System.Web.Caching.CacheItemPriority.Default>.  
+ 場合、 `slidingExpiration` にパラメーターが設定されている <xref:System.Web.Caching.Cache.NoSlidingExpiration>, 、スライディング有効期限が無効になっています。 設定した場合、 `slidingExpiration` よりも大きな値をパラメーター <xref:System.TimeSpan.Zero>, 、 `absoluteExpiration` にパラメーターが設定されている <xref:System.DateTime.Now%2A> に格納された値と、 `slidingExpiration` パラメーター。 指定された時間内にアイテムがキャッシュから要求された場合、 `absoluteExpiration` 、パラメーター、項目をもう一度キャッシュに配置されますと `absoluteExpiration` に再設定されます `DateTime.Now` に格納された値と、 `slidingExpiration` パラメーター。 かどうか、項目が要求されていないキャッシュからの日付のうち、 `absoluteExpiration` パラメーター、アイテムがキャッシュから削除します。 」を参照してください。 優先順位で、insert メソッドのこのオーバー ロードを使用してキャッシュに追加された項目が挿入された <xref:System.Web.Caching.CacheItemPriority.Default>します。  
   
    
   
-## Examples  
- The following example demonstrates how to insert an item into an application's cache with an absolute expiration.  
+## 例  
+ 次の例では、絶対有効期限とアプリケーションのキャッシュに項目を挿入する方法を示します。  
   
 > [!NOTE]
->  Since this form of the `Insert` method supports cache dependencies, if the item has no dependencies, you must declare the `dependency` parameter as `null` (`Nothing` in Visual Basic) in the comma-delimited list of parameters.  
+>  この形式の後、 `Insert` メソッドは、アイテムが依存関係を持たない場合に、キャッシュ依存関係をサポートする必要がありますを宣言する、 `dependency` パラメーターとして `null` \(`Nothing` Visual Basic で\) パラメーターのコンマ区切りの一覧でします。  
   
- [!code-csharp[Classic Cache.Insert2 Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert2 Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.Insert2 Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert2 Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.Insert2 Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert2 Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.Insert2 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert2 Example/VB/source.vb#1)]  
   
- The following example demonstrates how to insert an item into the cache with a sliding expiration.  
+ 次の例では、スライド式有効期限を設定してキャッシュに項目を挿入する方法を示します。  
   
- [!code-csharp[Classic Cache.Insert2 Example#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert2 Example/CS/source.cs#2)]
- [!code-vb[Classic Cache.Insert2 Example#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert2 Example/VB/source.vb#2)]  
+ [!code-csharp[Classic Cache.Insert2 Example\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert2 Example/CS/source.cs#2)]
+ [!code-vb[Classic Cache.Insert2 Example\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert2 Example/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="key" /> or <paramref name="value" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">You set the <paramref name="slidingExpiration" /> parameter to less than <see langword="TimeSpan.Zero" /> or the equivalent of more than one year.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="absoluteExpiration" /> and <paramref name="slidingExpiration" /> parameters are both set for the item you are trying to add to the <see langword="Cache" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="key" /> パラメーターまたは <paramref name="value" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">設定する、 <paramref name="slidingExpiration" /> パラメーターより小さい <see langword="TimeSpan.Zero" /> または 1 年以上に相当します。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="absoluteExpiration" /> と <paramref name="slidingExpiration" /> パラメーターは両方を追加しようとしている項目の設定、 <see langword="Cache" />です。</exception>
+        <altmember cref="T:System.DateTime" />
+        <altmember cref="T:System.TimeSpan" />
       </Docs>
     </Member>
     <Member MemberName="Insert">
@@ -433,34 +451,37 @@
         <Parameter Name="onUpdateCallback" Type="System.Web.Caching.CacheItemUpdateCallback" />
       </Parameters>
       <Docs>
-        <param name="key">The cache key that is used to reference the object.</param>
-        <param name="value">The object to insert into the cache.</param>
-        <param name="dependencies">The file or cache key dependencies for the item. When any dependency changes, the object becomes invalid and is removed from the cache. If there are no dependencies, this parameter contains <see langword="null" />.</param>
-        <param name="absoluteExpiration">The time at which the inserted object expires and is removed from the cache. To avoid possible issues with local time such as changes from standard time to daylight saving time, use <see cref="P:System.DateTime.UtcNow" /> instead of <see cref="P:System.DateTime.Now" /> for this parameter value. If you are using absolute expiration, the <c>slidingExpiration</c> parameter must be set to <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />.</param>
-        <param name="slidingExpiration">The interval between the time that the cached object was last accessed and the time at which that object expires. If this value is the equivalent of 20 minutes, the object will expire and be removed from the cache 20 minutes after it was last accessed. If you are using sliding expiration, the <c>absoluteExpiration</c> parameter must be set to <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />.</param>
-        <param name="onUpdateCallback">A delegate that will be called before the object is removed from the cache. You can use this to update the cached item and ensure that it is not removed from the cache.</param>
-        <summary>Inserts an object into the <see cref="T:System.Web.Caching.Cache" /> object together with dependencies, expiration policies, and a delegate that you can use to notify the application before the item is removed from the cache.</summary>
+        <param name="key">オブジェクトを参照するために使用するキャッシュ キー。</param>
+        <param name="value">キャッシュに挿入するオブジェクト。</param>
+        <param name="dependencies">ファイルまたはキャッシュ キーの依存関係アイテムです。 すべての依存関係が変更されたときにオブジェクトは無効なようになり、キャッシュから削除します。 このパラメーターが含まれる場合、依存関係がない、 <see langword="null" />です。</param>
+        <param name="absoluteExpiration">時間を挿入されたオブジェクトが有効期限が切れるし、キャッシュから削除します。 標準時から夏時間への変更などのローカル時刻と考えられる問題を避けるためには、次のように使用します。 <see cref="P:System.DateTime.UtcNow" /> の代わりに <see cref="P:System.DateTime.Now" /> このパラメーターの値にします。 絶対有効期限を使用している場合、 <c>slidingExpiration</c> パラメーターを設定する必要があります <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />します。</param>
+        <param name="slidingExpiration">キャッシュされたオブジェクトが最後にアクセス時間とそのオブジェクトの有効期限が切れる時刻間の間隔。 この値が 20 分のと同じである場合は、オブジェクトは有効期限が切れるし、最後にアクセスした後、20 分、キャッシュから削除します。 スライド式有効期限を使用している場合、 <c>absoluteExpiration</c> パラメーターを設定する必要があります <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />します。</param>
+        <param name="onUpdateCallback">オブジェクトがキャッシュから削除される前に呼び出されるデリゲート。 キャッシュされた項目を更新し、キャッシュから削除されていないことを確認するには、これを使用できます。</param>
+        <summary>オブジェクトを挿入、 <see cref="T:System.Web.Caching.Cache" /> オブジェクトと依存関係、有効期限ポリシー、およびアプリケーションに通知する、キャッシュから項目を削除する前に使用できるデリゲートです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Caching.Cache.Insert%2A> method enables you to insert a new item in the cache and provide a delegate that is called before the item is removed from the cache. In the delegate, you can update the cached item and thereby prevent it from being removed from the cache.  
+## 解説  
+ <xref:System.Web.Caching.Cache.Insert%2A> メソッドを使用すると、キャッシュに新しい項目を挿入し、項目がキャッシュから削除する前に呼び出されるデリゲートを指定します。 デリゲートでは、キャッシュされたアイテムを更新し、これにより、キャッシュから削除されないようにできます。  
   
- This method will overwrite an existing `Cache` item with the same `key` parameter.  
+ このメソッドは既存の上書き `Cache` では、同じ項目 `key` パラメーター。  
   
- You cannot set both the `absoluteExpiration` and `slidingExpiration` parameters. If you intend the cache item to expire at a specific time, you set the `absoluteExpiration` parameter to the specific time, and the `slidingExpiration` parameter to <xref:System.Web.Caching.Cache.NoSlidingExpiration>.  
+ 両方を設定することはできません、 `absoluteExpiration` と `slidingExpiration` パラメーター。 キャッシュ項目の特定の時間に期限切れにする場合を設定する、 `absoluteExpiration` 特定の時点へのパラメーターと `slidingExpiration` パラメーターを <xref:System.Web.Caching.Cache.NoSlidingExpiration>します。  
   
- If you intend the cache item to expire after a set period of time since the item was last accessed, you set the `slidingExpiration` parameter to the expiration interval, and you set the `absoluteExpiration` parameter to <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>.  
+ 項目からの経過時間の設定時間後に期限切れに最後にアクセスする場合は、キャッシュ項目設定する必要が、 `slidingExpiration` パラメーターを \[有効期限の間隔の設定、 `absoluteExpiration` パラメーターを <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="key" />, <paramref name="value" />, or <paramref name="onUpdateCallback" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">You set the <paramref name="slidingExpiration" /> parameter to less than <see langword="TimeSpan.Zero" /> or the equivalent of more than one year.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="absoluteExpiration" /> and <paramref name="slidingExpiration" /> parameters are both set for the item you are trying to add to the <see langword="Cache" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="key" />, 、<paramref name="value" />, 、または <paramref name="onUpdateCallback" /> パラメーターは <see langword="null" />です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">設定する、 <paramref name="slidingExpiration" /> パラメーターより小さい <see langword="TimeSpan.Zero" /> または 1 年以上に相当します。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="absoluteExpiration" /> と <paramref name="slidingExpiration" /> パラメーターは両方を追加しようとしている項目の設定、 <see langword="Cache" />です。  
   
- -or-  
+ または  
   
- The <paramref name="dependencies" /> parameter is <see langword="null" />, and the <paramref name="absoluteExpiration" /> parameter is set to <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />, and the <paramref name="slidingExpiration" /> parameter is set to <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />.</exception>
+ <paramref name="dependencies" /> パラメーターは <see langword="null" />, 、および <paramref name="absoluteExpiration" /> にパラメーターが設定されている <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />, 、および <paramref name="slidingExpiration" /> にパラメーターが設定されている <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />します。</exception>
+        <altmember cref="T:System.Web.Caching.CacheItemUpdateCallback" />
       </Docs>
     </Member>
     <Member MemberName="Insert">
@@ -485,40 +506,46 @@
         <Parameter Name="onRemoveCallback" Type="System.Web.Caching.CacheItemRemovedCallback" />
       </Parameters>
       <Docs>
-        <param name="key">The cache key used to reference the object.</param>
-        <param name="value">The object to be inserted in the cache.</param>
-        <param name="dependencies">The file or cache key dependencies for the item. When any dependency changes, the object becomes invalid and is removed from the cache. If there are no dependencies, this parameter contains <see langword="null" />.</param>
-        <param name="absoluteExpiration">The time at which the inserted object expires and is removed from the cache. To avoid possible issues with local time such as changes from standard time to daylight saving time, use <see cref="P:System.DateTime.UtcNow" /> rather than <see cref="P:System.DateTime.Now" /> for this parameter value. If you are using absolute expiration, the <c>slidingExpiration</c> parameter must be <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />.</param>
-        <param name="slidingExpiration">The interval between the time the inserted object was last accessed and the time at which that object expires. If this value is the equivalent of 20 minutes, the object will expire and be removed from the cache 20 minutes after it was last accessed. If you are using sliding expiration, the <c>absoluteExpiration</c> parameter must be <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />.</param>
-        <param name="priority">The cost of the object relative to other items stored in the cache, as expressed by the <see cref="T:System.Web.Caching.CacheItemPriority" /> enumeration. This value is used by the cache when it evicts objects; objects with a lower cost are removed from the cache before objects with a higher cost.</param>
-        <param name="onRemoveCallback">A delegate that, if provided, will be called when an object is removed from the cache. You can use this to notify applications when their objects are deleted from the cache.</param>
-        <summary>Inserts an object into the <see cref="T:System.Web.Caching.Cache" /> object with dependencies, expiration and priority policies, and a delegate you can use to notify your application when the inserted item is removed from the <see langword="Cache" />.</summary>
+        <param name="key">オブジェクトを参照するために使用するキャッシュ キー。</param>
+        <param name="value">キャッシュに挿入するオブジェクト。</param>
+        <param name="dependencies">ファイルまたはキャッシュ キーの依存関係アイテムです。 すべての依存関係が変更されたときにオブジェクトは無効なようになり、キャッシュから削除します。 このパラメーターが含まれる場合、依存関係がない、 <see langword="null" />です。</param>
+        <param name="absoluteExpiration">時間を挿入されたオブジェクトが有効期限が切れるし、キャッシュから削除します。 標準時から夏時間への変更などのローカル時刻と考えられる問題を避けるためには、次のように使用します。 <see cref="P:System.DateTime.UtcNow" /> なく <see cref="P:System.DateTime.Now" /> このパラメーターの値にします。 絶対有効期限を使用している場合、 <c>slidingExpiration</c> パラメーターである必要があります <see cref="F:System.Web.Caching.Cache.NoSlidingExpiration" />します。</param>
+        <param name="slidingExpiration">挿入されたオブジェクトが最後にアクセスし、そのオブジェクトの有効期限が切れる時刻間の間隔。 この値が 20 分のと同じである場合は、オブジェクトは有効期限が切れるし、最後にアクセスした後、20 分、キャッシュから削除します。 スライド式有効期限を使用している場合、 <c>absoluteExpiration</c> パラメーターである必要があります <see cref="F:System.Web.Caching.Cache.NoAbsoluteExpiration" />します。</param>
+        <param name="priority">オブジェクトによって表される、キャッシュに格納されているその他の項目のコスト、 <see cref="T:System.Web.Caching.CacheItemPriority" /> 列挙します。 オブジェクトが削除されるときに、この値が、キャッシュで使用されます。コストの低いオブジェクトは、コストの高いオブジェクトの前にキャッシュから削除されます。</param>
+        <param name="onRemoveCallback">指定した場合ときに、呼び出されるオブジェクトがキャッシュから削除するデリゲート。 アプリケーションに通知する、オブジェクトがキャッシュから削除されたときに、これを使用することができます。</param>
+        <summary>オブジェクトを挿入、 <see cref="T:System.Web.Caching.Cache" /> のオブジェクトの依存関係、有効期限と優先順位ポリシーとがデリゲートから挿入された項目が削除されると、アプリケーションに通知を使用することができます、 <see langword="Cache" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method will overwrite an existing `Cache` item with the same `key` parameter.  
+## 解説  
+ このメソッドは既存の上書き `Cache` では、同じ項目 `key` パラメーター。  
   
- You cannot set both the `absoluteExpiration` and `slidingExpiration` parameters. If you intend the cache item to expire at a specific time, you set the `absoluteExpiration` parameter to the specific time, and the `slidingExpiration` parameter to <xref:System.Web.Caching.Cache.NoSlidingExpiration>.  
+ 両方を設定することはできません、 `absoluteExpiration` と `slidingExpiration` パラメーター。 キャッシュ項目の特定の時間に期限切れにする場合を設定する、 `absoluteExpiration` 特定の時点へのパラメーターと `slidingExpiration` パラメーターを <xref:System.Web.Caching.Cache.NoSlidingExpiration>します。  
   
- If you intend the cache item to expire after a certain amount of time has passed since the last access to the item, you set the `slidingExpiration` parameter to the expiration interval, and the `absoluteExpiration` parameter to <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>.  
+ 場合は、キャッシュ項目を一定時間後に期限切れが最後のアクセス以降に渡す、項目を設定する、 `slidingExpiration` パラメーターの有効期限の間隔を `absoluteExpiration` パラメーターを <xref:System.Web.Caching.Cache.NoAbsoluteExpiration>します。  
   
    
   
-## Examples  
- The following example demonstrates how to assign an item high priority when you insert it into your application's `Cache` object.  
+## 例  
+ 次の例では、アプリケーションに挿入すると、項目に高い優先度を割り当てる `Cache` オブジェクトです。  
   
 > [!NOTE]
->  For more information about how to use this method with the <xref:System.Web.Caching.CacheItemRemovedCallback> delegate, see [How to: Notify an Application When an Item Is Removed from the Cache](http://msdn.microsoft.com/library/38c33aa0-afe9-40ba-a1a4-1ebab95286ef).  
+>  このメソッドを使用する方法の詳細についての <xref:System.Web.Caching.CacheItemRemovedCallback> 委任は、「 [How to: Notify an Application When an Item Is Removed from the Cache](http://msdn.microsoft.com/ja-jp/38c33aa0-afe9-40ba-a1a4-1ebab95286ef)します。  
   
- [!code-csharp[Classic Cache.Insert3 Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert3 Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.Insert3 Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert3 Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.Insert3 Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.Insert3 Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.Insert3 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.Insert3 Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="key" /> or <paramref name="value" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">You set the <paramref name="slidingExpiration" /> parameter to less than <see langword="TimeSpan.Zero" /> or the equivalent of more than one year.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="absoluteExpiration" /> and <paramref name="slidingExpiration" /> parameters are both set for the item you are trying to add to the <see langword="Cache" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="key" /> パラメーターまたは <paramref name="value" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">設定する、 <paramref name="slidingExpiration" /> パラメーターより小さい <see langword="TimeSpan.Zero" /> または 1 年以上に相当します。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="absoluteExpiration" /> と <paramref name="slidingExpiration" /> パラメーターは両方を追加しようとしている項目の設定、 <see langword="Cache" />です。</exception>
+        <altmember cref="T:System.DateTime" />
+        <altmember cref="T:System.TimeSpan" />
+        <altmember cref="T:System.Web.Caching.CacheItemPriority" />
+        <altmember cref="T:System.Web.Caching.CacheItemRemovedCallback" />
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -537,27 +564,27 @@
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="key">A <see cref="T:System.String" /> object that represents the key for the cache item.</param>
-        <summary>Gets or sets the cache item at the specified key.</summary>
-        <value>The specified cache item.</value>
+        <param name="key">A <see cref="T:System.String" /> キャッシュ項目のキーを表すオブジェクト。</param>
+        <summary>取得またはキャッシュ項目を指定したキーに設定します。</summary>
+        <value>指定されたキャッシュ項目。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use this property to retrieve the value of a specified cache item, or to add an item and a key for it to the cache. Adding a cache item using the <xref:System.Web.Caching.Cache.Item%2A> property is equivalent to calling the <xref:System.Web.Caching.Cache.Insert%2A?displayProperty=fullName> method.  
+## 解説  
+ 指定されたキャッシュ項目の値を取得またはのキャッシュに項目と、キーを追加するのには、このプロパティを使用できます。 項目を使用してキャッシュに追加する、 <xref:System.Web.Caching.Cache.Item%2A> プロパティを呼び出すことは、 <xref:System.Web.Caching.Cache.Insert%2A?displayProperty=fullName> メソッドです。  
   
    
   
-## Examples  
- The following example uses the `Item` property to retrieve the value of a cached object associated with the `Key1` key. It then uses the <xref:System.Web.HttpResponse.Write%2A?displayProperty=fullName> method to write the value and introductory text and the B HTML element to a Web Forms page.  
+## 例  
+ 次の例では、 `Item` に関連付けられているキャッシュされたオブジェクトの値を取得するプロパティを `Key1` キー。 次を使用して、 <xref:System.Web.HttpResponse.Write%2A?displayProperty=fullName> Web フォーム ページに、値と説明テキストと B の HTML 要素を書き込みます。  
   
- [!code-csharp[System.Web.Caching Examples#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#5)]
- [!code-vb[System.Web.Caching Examples#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#5)]  
+ [!code-csharp[System.Web.Caching Examples\#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#5)]
+ [!code-vb[System.Web.Caching Examples\#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#5)]  
   
- The following example demonstrates using this property to insert the value of a text box into the cache.  
+ 次の例では、このプロパティを使用して、キャッシュにテキスト ボックスの値を挿入するを示します。  
   
- [!code-csharp[Classic Cache.this Example#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.this Example/CS/source.cs#2)]
- [!code-vb[Classic Cache.this Example#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.this Example/VB/source.vb#2)]  
+ [!code-csharp[Classic Cache.this Example\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.this Example/CS/source.cs#2)]
+ [!code-vb[Classic Cache.this Example\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.this Example/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -576,23 +603,25 @@
         <ReturnType>System.DateTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Used in the <paramref name="absoluteExpiration" /> parameter in an <see cref="M:System.Web.Caching.Cache.Insert(System.String,System.Object)" /> method call to indicate the item should never expire. This field is read-only.</summary>
+        <summary>使用される、 <paramref name="absoluteExpiration" /> 内のパラメーター、 <see cref="M:System.Web.Caching.Cache.Insert(System.String,System.Object)" /> した項目のメソッド呼び出しは有効期限はありません。 このフィールドは読み取り専用です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When used, this field sets the `absoluteExpiration` parameter equal to <xref:System.DateTime.MaxValue>, which is a constant representing the largest possible `DateTime` value, 12/31/9999 11:59:59 PM.  
+## 解説  
+ 使用すると、このフィールドを設定、 `absoluteExpiration` パラメーターと等しい <xref:System.DateTime.MaxValue>, 、これは、定数を表す最大の可能な `DateTime` 値、12\/31\/9999 11時 59分: 59 PM。  
   
    
   
-## Examples  
- The following example demonstrates how to use the `NoAbsoluteExpiration` field to disable absolute expirations when inserting an item in the `Cache`.  
+## 例  
+ 次の例では、使用して、 `NoAbsoluteExpiration` 内の項目を挿入するときに、絶対有効期限を無効にするフィールド、 `Cache`です。  
   
- [!code-csharp[Classic Cache.NoAbsoluteExpiration Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.NoAbsoluteExpiration Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.NoAbsoluteExpiration Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.NoAbsoluteExpiration Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.NoAbsoluteExpiration Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.NoAbsoluteExpiration Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.NoAbsoluteExpiration Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.NoAbsoluteExpiration Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.DateTime" />
+        <altmember cref="M:System.Web.Caching.Cache.Insert(System.String,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="NoSlidingExpiration">
@@ -608,23 +637,25 @@
         <ReturnType>System.TimeSpan</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Used as the <paramref name="slidingExpiration" /> parameter in an <see cref="M:System.Web.Caching.Cache.Insert(System.String,System.Object)" /> or <see cref="M:System.Web.Caching.Cache.Add(System.String,System.Object,System.Web.Caching.CacheDependency,System.DateTime,System.TimeSpan,System.Web.Caching.CacheItemPriority,System.Web.Caching.CacheItemRemovedCallback)" /> method call to disable sliding expirations. This field is read-only.</summary>
+        <summary>として使用される、 <paramref name="slidingExpiration" /> 内のパラメーター、 <see cref="M:System.Web.Caching.Cache.Insert(System.String,System.Object)" /> または <see cref="M:System.Web.Caching.Cache.Add(System.String,System.Object,System.Web.Caching.CacheDependency,System.DateTime,System.TimeSpan,System.Web.Caching.CacheItemPriority,System.Web.Caching.CacheItemRemovedCallback)" /> スライディング有効期限を無効にするメソッドの呼び出しです。 このフィールドは読み取り専用です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When used, this field sets the `slidingExpiration` parameter to the <xref:System.TimeSpan?displayProperty=fullName> field, which has a constant value of zero. The cached item expires in accordance with the `absoluteExpiration` parameter associated with the `Insert` or `Add` method call.  
+## 解説  
+ このフィールドが設定を使用する場合、 `slidingExpiration` パラメーターを <xref:System.TimeSpan.Zero?displayProperty=fullName> を定数値 0 を持つフィールドです。 に従ってキャッシュされた項目は期限切れ、 `absoluteExpiration` パラメーターに関連付けられている、 `Insert` または `Add` メソッドの呼び出しです。  
   
    
   
-## Examples  
- The following example demonstrates how to use the Insert method to add an item to the <xref:System.Web.Caching.Cache> object using the `NoSlidingExpiration` field.  
+## 例  
+ 次の例では、Insert メソッドを使用して項目を追加する方法、 <xref:System.Web.Caching.Cache> オブジェクトを使用して、 `NoSlidingExpiration` フィールドです。  
   
- [!code-csharp[Classic Cache.NoSlidingExpiration Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.NoSlidingExpiration Example/CS/source.cs#1)]
- [!code-vb[Classic Cache.NoSlidingExpiration Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.NoSlidingExpiration Example/VB/source.vb#1)]  
+ [!code-csharp[Classic Cache.NoSlidingExpiration Example\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic Cache.NoSlidingExpiration Example/CS/source.cs#1)]
+ [!code-vb[Classic Cache.NoSlidingExpiration Example\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic Cache.NoSlidingExpiration Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="F:System.TimeSpan.Zero" />
+        <altmember cref="M:System.Web.Caching.Cache.Insert(System.String,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -643,17 +674,17 @@
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="key">A <see cref="T:System.String" /> identifier for the cache item to remove.</param>
-        <summary>Removes the specified item from the application's <see cref="T:System.Web.Caching.Cache" /> object.</summary>
-        <returns>The item removed from the <see langword="Cache" />. If the value in the key parameter is not found, returns <see langword="null" />.</returns>
+        <param name="key">A <see cref="T:System.String" /> を削除するキャッシュ項目の識別子。</param>
+        <summary>指定した項目をアプリケーションから削除 <see cref="T:System.Web.Caching.Cache" /> オブジェクトです。</summary>
+        <returns>削除される項目、 <see langword="Cache" />です。 キー パラメーターの値が見つからない場合 <see langword="null" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example creates a `RemoveItemFromCache` method. When this method is called, it uses the <xref:System.Web.Caching.Cache.Item%2A> property to check whether the cache contains an object that is associated with a `Key1` key value. If it does, the `Remove` method is called to remove the object.  
+## 例  
+ 次の例を作成し、 `RemoveItemFromCache` メソッドです。 このメソッドが呼び出されると、それを使用して、 <xref:System.Web.Caching.Cache.Item%2A> プロパティ キャッシュに関連付けられているオブジェクトが含まれているかどうか確認を `Key1` キーの値。 そのような場合、 `Remove` オブジェクトを削除するメソッドが呼び出されます。  
   
- [!code-csharp[System.Web.Caching Examples#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#4)]
- [!code-vb[System.Web.Caching Examples#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#4)]  
+ [!code-csharp[System.Web.Caching Examples\#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Caching Examples/CS/cachecs.aspx#4)]
+ [!code-vb[System.Web.Caching Examples\#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Caching Examples/VB/cachevb.aspx#4)]  
   
  ]]></format>
         </remarks>
@@ -673,10 +704,27 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an enumerator that can iterate through the <see cref="T:System.Web.Caching.Cache" /> object collection.</summary>
-        <returns>An enumerator that can iterate through the <see cref="T:System.Web.Caching.Cache" /> object collection.</returns>
-        <remarks>To be added.</remarks>
+        <summary>反復処理できる列挙子を返します、 <see cref="T:System.Web.Caching.Cache" /> オブジェクトのコレクション。</summary>
+        <returns>反復処理できる列挙子、 <see cref="T:System.Web.Caching.Cache" /> オブジェクトのコレクション。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Insert">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>項目を挿入、 <see cref="T:System.Web.Caching.Cache" /> オブジェクトです。 このメソッドのバージョンのいずれかを使用して、既存の上書き <see langword="Cache" /> では、同じ項目 <paramref name="key" /> パラメーター。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

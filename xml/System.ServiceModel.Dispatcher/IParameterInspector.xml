@@ -9,37 +9,37 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Defines the contract implemented by custom parameter inspectors that enables inspection or modification of information prior to and subsequent to calls on either the client or the service.</summary>
+    <summary>クライアントまたはサービスでの呼び出しの前および後に情報を検査または変更できるようにする、カスタム パラメーター インスペクターによって実装されるコントラクトを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Dispatcher.IParameterInspector> interface to create a custom parameter inspector that can view and modify the contents of a call both before the call and after the call in either client or service applications.  
+## 解説  
+ クライアントまたはサービス アプリケーションにおいて、呼び出しの前と後の両方で、呼び出しの内容を表示および変更できるカスタム パラメーター インスペクターを作成するには、<xref:System.ServiceModel.Dispatcher.IParameterInspector> インターフェイスを実装します。  
   
- On outbound calls from a client, the inspector is invoked before the request contents are serialized and sent to the service. The inspector is also called after the response has been deserialized but before the return values have been dispatched to the proxy method.  
+ クライアントからの送信呼び出しの際には、要求コンテンツがシリアル化されてサービスに送信される前に、インスペクターが呼び出されます。 応答が逆シリアル化された後、かつ戻り値がプロキシ メソッドにディスパッチされる前にも、インスペクターが呼び出されます。  
   
- On inbound calls to a service, the inspector is invoked after parameters are deserialized but before they are dispatched to the service operation.  
+ サービスへの受信呼び出しの際には、パラメーターが逆シリアル化された後、かつサービスにディスパッチされる前に、インスペクターが呼び出されます。  
   
- Use the <xref:System.ServiceModel.Dispatcher.ClientOperation.ParameterInspectors%2A?displayProperty=fullName> or the <xref:System.ServiceModel.Dispatcher.DispatchOperation.ParameterInspectors%2A?displayProperty=fullName> properties to add an <xref:System.ServiceModel.Dispatcher.IParameterInspector> implementation to the inspectors collection for a particular operation.  
+ 特定の操作のインスペクター コレクションに <xref:System.ServiceModel.Dispatcher.ClientOperation.ParameterInspectors%2A?displayProperty=fullName> の実装を追加するには、<xref:System.ServiceModel.Dispatcher.DispatchOperation.ParameterInspectors%2A?displayProperty=fullName> プロパティまたは <xref:System.ServiceModel.Dispatcher.IParameterInspector> プロパティを使用します。  
   
- **Note** Developers and administrators must ensure that the interaction with other <xref:System.ServiceModel.Dispatcher.IParameterInspector> implementations is understood.  
+ **メモ :** 開発者と管理者は、他の <xref:System.ServiceModel.Dispatcher.IParameterInspector> 実装との対話が認識されることを確実にする必要があります。  
   
    
   
-## Examples  
- The following code example shows an <xref:System.ServiceModel.Dispatcher.IParameterInspector> implementation that:  
+## 例  
+ 以下の操作を行う <xref:System.ServiceModel.Dispatcher.IParameterInspector> の実装例を、次のコード例に示します。  
   
--   Writes the operation name and return value to the console after a response has been deserialized by the service or a request has been serialized by a client.  
+-   応答がサービスによって逆シリアル化されるか、または要求がクライアントによってシリアル化されたら、操作名と戻り値をコンソールに出力します。  
   
--   Writes the operation name to the console after deserializing a response on the client or after a response has been serialized on the service.  
+-   クライアント側で応答が逆シリアル化されるか、またはサービス側で応答がシリアル化されたら、操作名をコンソールに出力します。  
   
- [!code-csharp[Interceptors#4](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#4)]
- [!code-vb[Interceptors#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#4)]  
+ [!code-csharp[Interceptors\#4](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#4)]
+ [!code-vb[Interceptors\#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#4)]  
   
- The following code example shows how to use either <xref:System.ServiceModel.Description.IOperationBehavior?displayProperty=fullName>, <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> or <xref:System.ServiceModel.Description.IServiceBehavior?displayProperty=fullName> to insert <xref:System.ServiceModel.Dispatcher.IParameterInspector> objects.  
+ 次のコード例では、<xref:System.ServiceModel.Description.IOperationBehavior?displayProperty=fullName>、<xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName>、または <xref:System.ServiceModel.Description.IServiceBehavior?displayProperty=fullName> を使用して、<xref:System.ServiceModel.Dispatcher.IParameterInspector> オブジェクトを挿入する方法を示します。  
   
- [!code-csharp[Interceptors#5](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#5)]
- [!code-vb[Interceptors#5](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#5)]  
+ [!code-csharp[Interceptors\#5](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#5)]
+ [!code-vb[Interceptors\#5](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#5)]  
   
  ]]></format>
     </remarks>
@@ -65,35 +65,36 @@
         <Parameter Name="correlationState" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="operationName">The name of the invoked operation.</param>
-        <param name="outputs">Any output objects.</param>
-        <param name="returnValue">The return value of the operation.</param>
-        <param name="correlationState">Any correlation state returned from the <see cref="M:System.ServiceModel.Dispatcher.IParameterInspector.BeforeCall(System.String,System.Object[])" /> method, or <see langword="null" />.</param>
-        <summary>Called after client calls are returned and before service responses are sent.</summary>
+        <param name="operationName">呼び出された操作の名前。</param>
+        <param name="outputs">出力オブジェクト。</param>
+        <param name="returnValue">操作の戻り値。</param>
+        <param name="correlationState">
+          <see cref="M:System.ServiceModel.Dispatcher.IParameterInspector.BeforeCall(System.String,System.Object[])" /> から返された相関状態または <see langword="null" />。</param>
+        <summary>クライアントの呼び出しが返された後、サービス応答が送信される前に呼び出されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- On outbound calls from a client, the inspector is invoked before the request contents are serialized and sent to the service. The inspector is also called after the response has been deserialized but before the return values have been dispatched to the proxy method.  
+## 解説  
+ クライアントからの送信呼び出しの際には、要求コンテンツがシリアル化されてサービスに送信される前に、インスペクターが呼び出されます。 応答が逆シリアル化された後、かつ戻り値がプロキシ メソッドにディスパッチされる前にも、インスペクターが呼び出されます。  
   
- On inbound calls to a service, the inspector is invoked after parameters are deserialized but before they are dispatched to the service operation.  
+ サービスへの受信呼び出しの際には、パラメーターが逆シリアル化された後、かつサービスにディスパッチされる前に、インスペクターが呼び出されます。  
   
    
   
-## Examples  
- The following code example shows an <xref:System.ServiceModel.Dispatcher.IParameterInspector> implementation that:  
+## 例  
+ 以下の操作を行う [AfterCall メソッド \(String, Object\<xref:System.ServiceModel.Dispatcher.IParameterInspector> の実装例を、次のコード例に示します。  
   
--   Writes the operation name and return value to the console after a response has been deserialized by the service or a request has been serialized by a client.  
+-   応答がサービスによって逆シリアル化されるか、または要求がクライアントによってシリアル化されたら、操作名と戻り値をコンソールに出力します。  
   
--   Writes the operation name to the console after deserializing a response on the client or after a response has been serialized on the service.  
+-   クライアント側で応答が逆シリアル化されるか、またはサービス側で応答がシリアル化されたら、操作名をコンソールに出力します。  
   
- [!code-csharp[Interceptors#4](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#4)]
- [!code-vb[Interceptors#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#4)]  
+ [!code-csharp[Interceptors\#4](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#4)]
+ [!code-vb[Interceptors\#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#4)]  
   
- The following code example shows how to use either <xref:System.ServiceModel.Description.IOperationBehavior?displayProperty=fullName>, <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName>, or <xref:System.ServiceModel.Description.IServiceBehavior?displayProperty=fullName> to insert <xref:System.ServiceModel.Dispatcher.IParameterInspector> objects.  
+ 次のコード例では、[AfterCall メソッド \(String, Object\<xref:System.ServiceModel.Description.IOperationBehavior?displayProperty=fullName>、[AfterCall メソッド \(String, Object\<xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName>、または [AfterCall メソッド \(String, Object\<xref:System.ServiceModel.Description.IServiceBehavior?displayProperty=fullName> を使用して、[AfterCall メソッド \(String, Object\<xref:System.ServiceModel.Dispatcher.IParameterInspector> オブジェクトを挿入する方法を示します。  
   
- [!code-csharp[Interceptors#5](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#5)]
- [!code-vb[Interceptors#5](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#5)]  
+ [!code-csharp[Interceptors\#5](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#5)]
+ [!code-vb[Interceptors\#5](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#5)]  
   
  ]]></format>
         </remarks>
@@ -117,34 +118,35 @@
         <Parameter Name="inputs" Type="System.Object[]" />
       </Parameters>
       <Docs>
-        <param name="operationName">The name of the operation.</param>
-        <param name="inputs">The objects passed to the method by the client.</param>
-        <summary>Called before client calls are sent and after service responses are returned.</summary>
-        <returns>The correlation state that is returned as the <paramref name="correlationState" /> parameter in <see cref="M:System.ServiceModel.Dispatcher.IParameterInspector.AfterCall(System.String,System.Object[],System.Object,System.Object)" />. Return <see langword="null" /> if you do not intend to use correlation state.</returns>
+        <param name="operationName">操作の名前。</param>
+        <param name="inputs">クライアントからメソッドに渡されたオブジェクト。</param>
+        <summary>クライアントの呼び出しが送信される前、かつサービス応答が返された後に呼び出されます。</summary>
+        <returns>
+          <paramref name="correlationState" /> 内で <see cref="M:System.ServiceModel.Dispatcher.IParameterInspector.AfterCall(System.String,System.Object[],System.Object,System.Object)" /> パラメーターとして返される相関状態。 相関状態を使用しない場合は、<see langword="null" /> を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- On outbound calls from a client, the inspector is invoked before the request contents are serialized and sent to the service. The inspector is also called after the response has been deserialized but before the return values have been dispatched to the proxy method.  
+## 解説  
+ クライアントからの送信呼び出しの際には、要求コンテンツがシリアル化されてサービスに送信される前に、インスペクターが呼び出されます。 応答が逆シリアル化された後、かつ戻り値がプロキシ メソッドにディスパッチされる前にも、インスペクターが呼び出されます。  
   
- On inbound calls to a service, the inspector is invoked after the request contents are deserialized and dispatched to the service operation and before the response contents are serialized and sent to the client.  
+ サービスへの受信呼び出しでは、要求コンテンツが逆シリアル化されてサービス操作にディスパッチされた後、および応答コンテンツがシリアル化されてクライアントに送信される前に、インスペクターが呼び出されます。  
   
    
   
-## Examples  
- The following code example shows an <xref:System.ServiceModel.Dispatcher.IParameterInspector> implementation that:  
+## 例  
+ 以下の操作を行う <xref:System.ServiceModel.Dispatcher.IParameterInspector> の実装例を、次のコード例に示します。  
   
--   Writes the operation name and return value to the console after a response has been deserialized by the service or a request has been serialized by a client.  
+-   応答がサービスによって逆シリアル化されるか、または要求がクライアントによってシリアル化されたら、操作名と戻り値をコンソールに出力します。  
   
--   Writes the operation name to the console after deserializing a response on the client or after a response is serialized on the service.  
+-   クライアント側で応答が逆シリアル化されるか、またはサービス側で応答がシリアル化されたら、操作名をコンソールに出力します。  
   
- [!code-csharp[Interceptors#4](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#4)]
- [!code-vb[Interceptors#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#4)]  
+ [!code-csharp[Interceptors\#4](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/interceptors.cs#4)]
+ [!code-vb[Interceptors\#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/interceptors.vb#4)]  
   
- The following code example shows how to use either <xref:System.ServiceModel.Description.IOperationBehavior?displayProperty=fullName>, <xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName> or <xref:System.ServiceModel.Description.IServiceBehavior?displayProperty=fullName> to insert <xref:System.ServiceModel.Dispatcher.IParameterInspector> objects.  
+ 次のコード例では、<xref:System.ServiceModel.Description.IOperationBehavior?displayProperty=fullName>、<xref:System.ServiceModel.Description.IEndpointBehavior?displayProperty=fullName>、または <xref:System.ServiceModel.Description.IServiceBehavior?displayProperty=fullName> を使用して、<xref:System.ServiceModel.Dispatcher.IParameterInspector> オブジェクトを挿入する方法を示します。  
   
- [!code-csharp[Interceptors#5](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#5)]
- [!code-vb[Interceptors#5](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#5)]  
+ [!code-csharp[Interceptors\#5](~/samples/snippets/csharp/VS_Snippets_CFX/interceptors/cs/insertingbehaviors.cs#5)]
+ [!code-vb[Interceptors\#5](~/samples/snippets/visualbasic/VS_Snippets_CFX/interceptors/vb/insertingbehaviors.vb#5)]  
   
  ]]></format>
         </remarks>

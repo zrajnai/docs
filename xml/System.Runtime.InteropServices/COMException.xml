@@ -31,36 +31,37 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>The exception that is thrown when an unrecognized HRESULT is returned from a COM method call.</summary>
+    <summary>COM メソッドの呼び出しによって、認識されない HRESULT が返された場合にスローされる例外。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The common language runtime transforms well-known HRESULTs to .NET Framework exceptions, enabling COM objects to return meaningful error information to managed clients. The HRESULT to exception mapping also works in the other direction by returning specific HRESULTs to unmanaged clients. For mapping details, see [How to: Map HRESULTs and Exceptions](~/docs/framework/interop/how-to-map-hresults-and-exceptions.md).  
+## 解説  
+ 共通言語ランタイムは、わかりやすいエラー情報をクライアントに返すマネージ COM オブジェクトを有効にすると、既知の Hresult を .NET Framework の例外を変換します。 HRESULT と例外の割り当てをアンマネージ クライアントに特定の Hresult を返すことによって逆方向にでも動作します。 マッピングの詳細については、「[&#91;\<topic:\/\/cpconhresultsexceptions\>&#93;](http://msdn.microsoft.com/ja-jp/610b364b-2761-429d-9c4a-afbc3e66f1b9)です。  
   
- When the runtime encounters an unfamiliar HRESULT (an HRESULT that lacks a specific, corresponding exception), it throws an instance of the <xref:System.Runtime.InteropServices.COMException> class. This all-purpose exception exposes the same members as any exception, and inherits a public <xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A> property that contains the HRESULT returned by the callee. If an error message is available to the runtime (obtained from the [IErrorInfo](https://msdn.microsoft.com/library/windows/desktop/ms723041\(v=vs.85\).aspx) interface or the `Err` object in Visual Basic, or in some cases from the operating system), the message is returned to the caller. However, if the COM component developer fails to include an error message, the runtime returns the eight-digit HRESULT in place of a message string. Having an HRESULT allows the caller to determine the cause of the generic exception.  
+ インスタンス、実行時に、\(対応する、特定の例外が欠落している HRESULT\) 特異な HRESULT が検出されると、スロー、<xref:System.Runtime.InteropServices.COMException>クラスです。 この汎用例外は、任意の例外と同じメンバーを公開し、パブリック継承<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>呼び出し先によって返される HRESULT を含むプロパティです。 エラー メッセージが、実行時に使用可能な場合 \(から取得した、 [IErrorInfo](https://msdn.microsoft.com/library/windows/desktop/ms723041\(v=vs.85\).aspx)インターフェイスまたは`Err`Visual Basic、または場合によっては、オペレーティング システムからのオブジェクト\)、呼び出し元に、メッセージが返されます。 ただし、COM コンポーネントの開発者がエラー メッセージを含めなかった場合、ランタイムは、メッセージ文字列の代わりに 8 桁の HRESULT を返します。 HRESULT ことにより、呼び出し元の一般的な例外の原因を特定できます。  
   
-## Handling a COMException exception  
- The following are some considerations for troubleshooting a <xref:System.Runtime.InteropServices.COMException> exception.  
+## COMException 例外を処理します。  
+ トラブルシューティングの考慮事項は、次のとおり、<xref:System.Runtime.InteropServices.COMException>例外。  
   
- Check the <xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A> property  
- When the runtime encounters an unfamiliar HRESULT and throws a <xref:System.Runtime.InteropServices.COMException> exception,  the <xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A> property includes either the error message or, if an error message is unavailable, the eight-digit HRESULT value.  The error message or the HRESULT value can help you determine the cause of the exception.  
+ チェック、<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>プロパティ  
+ ランタイムで特異な HRESULT が発生した、スローした場合、<xref:System.Runtime.InteropServices.COMException>例外、<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>プロパティには、エラー メッセージが含まれています。 または、エラー メッセージが使用できない場合、8 桁の HRESULT 値。  エラー メッセージと HRESULT 値を例外の原因を特定することができます。  
   
- For a list of HRESULT values, see [Common HRESULT Values](https://msdn.microsoft.com/library/windows/desktop/aa378137\(v=vs.85\).aspx).  
+ HRESULT 値の一覧は、次を参照してください。 [Common HRESULT Values](https://msdn.microsoft.com/library/windows/desktop/aa378137\(v=vs.85\).aspx)です。  
   
- Late-bound arguments and Microsoft Office objects  
- When passing late-bound arguments to methods of Microsoft Office objects, a <xref:System.Runtime.InteropServices.COMException> exception may be thrown when the objects are COM objects. The late binder assumes that such method calls involve a `ByRef` parameter and that the property you pass has a `set` accessor. If the property does not, the .NET Framework generates a <xref:System.MissingMethodException> exception (with a `CORE_E_MISSINGMETHOD` HRESULT ). To work around this behavior, use early-bound objects or pass a variable instead of a property of the object.  
+ 遅延バインディング引数と Microsoft Office オブジェクト  
+ Microsoft Office オブジェクトのメソッドに遅延バインディング引数を渡すときに、<xref:System.Runtime.InteropServices.COMException>オブジェクトが COM オブジェクトの場合、例外がスローされます。 遅延バインダーは、そのようなメソッド呼び出しには `ByRef` パラメーターが関連し、受け渡すプロパティに `set` アクセサーがあるものと想定します。 以外の場合、プロパティは、.NET Framework の生成、<xref:System.MissingMethodException>例外 \(で、 `CORE_E_MISSINGMETHOD` HRESULT\) です。 このような動作に対処するには、事前バインディングされたオブジェクトを使用するか、またはオブジェクトのプロパティの代わりに変数を渡します。  
   
- Visual Studio and the hosting process  
- COM is used to communicate between Visual Studio and the [hosting process](https://msdn.microsoft.com/library/ms185331.aspx). Because it is used before code runs, a call to [CoInitializeSecurity](https://msdn.microsoft.com/library/windows/desktop/ms693736\(v=vs.85\).aspx) causes this exception to be thrown.  
+ Visual Studio とホスト プロセス  
+ Visual Studio の間で通信するために、COM が使用され、 [hosting process](https://msdn.microsoft.com/library/ms185331.aspx)です。 呼び出すコードを実行する前に使用されているため[CoInitializeSecurity](https://msdn.microsoft.com/library/windows/desktop/ms693736\(v=vs.85\).aspx)をスローするには、この例外が発生します。  
   
- In some cases, running Visual Studio as Administrator may resolve the issue. You can also [disable the hosting process](https://msdn.microsoft.com/library/ms185330.aspx).  
+ 場合によっては、管理者として Visual Studio を実行すると、問題が解決する可能性があります。 You can also [disable the hosting process](https://msdn.microsoft.com/library/ms185330.aspx).  
   
-## Throwing a COMException exception  
- Although you can use the <xref:System.Runtime.InteropServices.COMException> class to return specific HRESULTs to unmanaged clients, throwing a specific .NET Framework exception is better than using a generic exception. Consider that managed clients as well as unmanaged clients can use your .NET Framework object, and throwing an HRESULT to a managed caller is less comprehensible than throwing an exception.  
+## COMException 例外をスロー  
+ 使用できますが、<xref:System.Runtime.InteropServices.COMException>アンマネージ クライアントは、.NET Framework の特定の例外をスローする特定の Hresult を返すためには汎用的な例外を使用するよりも向上します。 マネージ クライアントとアンマネージ クライアントは、.NET Framework オブジェクトを使用できますがあり、例外をスローするよりも小さいわかりやすく、マネージ呼び出し元に HRESULT をスローする検討してください。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Exception" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -88,17 +89,18 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.COMException" /> class with default values.</summary>
+        <summary>
+          <see cref="T:System.Runtime.InteropServices.COMException" /> クラスの新しいインスタンスを既定値で初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Runtime.InteropServices.COMException> inherits from <xref:System.Runtime.InteropServices.ExternalException>. The following table shows how this constructor sets the properties of the <xref:System.Exception> object.  
+## 解説  
+ <xref:System.Runtime.InteropServices.COMException> は <xref:System.Runtime.InteropServices.ExternalException> を継承します。 次の表は、このコンス トラクターでのプロパティを設定する方法を示しています、 <xref:System.Exception> オブジェクトです。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|A localized error message string.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|ローカライズされたエラー メッセージ文字列。|  
   
  ]]></format>
         </remarks>
@@ -131,16 +133,16 @@
         <Parameter Name="message" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="message">The message that indicates the reason for the exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.COMException" /> class with a specified message.</summary>
+        <param name="message">例外の原因を示すメッセージ。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Runtime.InteropServices.COMException" /> メッセージが指定されたクラスです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Runtime.InteropServices.COMException> inherits from <xref:System.Runtime.InteropServices.ExternalException>. The following table shows how this constructor sets the properties of the <xref:System.Exception> object.  
+## 解説  
+ <xref:System.Runtime.InteropServices.COMException> は <xref:System.Runtime.InteropServices.ExternalException> を継承します。 次の表は、このコンス トラクターでのプロパティを設定する方法を示しています、 <xref:System.Exception> オブジェクトです。  
   
-|Property|Value|  
-|--------------|-----------|  
+|プロパティ|値|  
+|-----------|-------|  
 |<xref:System.Exception.InnerException%2A>|`null`|  
 |<xref:System.Exception.Message%2A>|`message`|  
   
@@ -171,21 +173,24 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object that holds the serialized object data.</param>
-        <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> object that supplies the contextual information about the source or destination.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.COMException" /> class from serialization data.</summary>
+        <param name="info">
+          <see cref="T:System.Runtime.Serialization.SerializationInfo" /> シリアル化されたオブジェクト データを保持するオブジェクト。</param>
+        <param name="context">
+          <see cref="T:System.Runtime.Serialization.StreamingContext" /> をソースまたは転送先に関するコンテキスト情報を提供するオブジェクト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Runtime.InteropServices.COMException" /> シリアル化データからのクラスです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor is called during deserialization to reconstitute the exception object transmitted over a stream. For more information, see [XML and SOAP Serialization](~/docs/framework/serialization/xml-and-soap-serialization.md).  
+## 解説  
+ このコンストラクターは、逆シリアル化中に、ストリームで送信された例外オブジェクトを再構築するために呼び出されます。 詳細については、「[&#91;\<topic:\/\/cpconSerialization\>&#93;](http://msdn.microsoft.com/ja-jp/832ac524-21bc-419a-a27b-ca8bfc45840f)」を参照してください。  
   
- <xref:System.Runtime.InteropServices.COMException> inherits from <xref:System.Runtime.InteropServices.ExternalException>.  
+ <xref:System.Runtime.InteropServices.COMException> は <xref:System.Runtime.InteropServices.ExternalException> を継承します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="info" /> is <see langword="null" />.</exception>
+          <paramref name="info" /> は <see langword="null" /> です。</exception>
+        <altmember cref="T:System.Runtime.InteropServices.ExternalException" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -216,14 +221,15 @@
         <Parameter Name="inner" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="message">The error message that explains the reason for the exception.</param>
-        <param name="inner">The exception that is the cause of the current exception. If the <c>inner</c> parameter is not <see langword="null" />, the current exception is raised in a <see langword="catch" /> block that handles the inner exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.COMException" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <param name="inner">現在の例外の原因となった例外。<c>inner</c> パラメーターが <see langword="null" /> でない場合は、内部例外を処理する <see langword="catch" /> ブロックで現在の例外が発生します。</param>
+        <summary>指定したエラー メッセージおよびこの例外の原因となった内部例外への参照を使用して、<see cref="T:System.Runtime.InteropServices.COMException" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or `null` if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
+## 解説  
+ An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or **languageKeyword tag is not supported!!!!**  
+ if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
   
  The following table shows how this constructor sets the properties of the <xref:System.Exception> object.  
   
@@ -234,6 +240,7 @@
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Exception" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -264,19 +271,19 @@
         <Parameter Name="errorCode" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="message">The message that indicates the reason the exception occurred.</param>
-        <param name="errorCode">The error code (HRESULT) value associated with this exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.COMException" /> class with a specified message and error code.</summary>
+        <param name="message">例外の理由を示すメッセージが発生しました。</param>
+        <param name="errorCode">この例外に関連付けられているエラー コード \(HRESULT\) 値。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Runtime.InteropServices.COMException" /> クラスを指定したメッセージとエラー コードとします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This <xref:System.Runtime.InteropServices.COMException> constructor sets the base message with the error code.  
+## 解説  
+ これは、 <xref:System.Runtime.InteropServices.COMException> コンス トラクターは、基本メッセージと、エラー コードを設定します。  
   
- <xref:System.Runtime.InteropServices.COMException> inherits from <xref:System.Runtime.InteropServices.ExternalException>. The following table shows how this constructor sets the properties of the <xref:System.Exception> object.  
+ <xref:System.Runtime.InteropServices.COMException> は <xref:System.Runtime.InteropServices.ExternalException> を継承します。 次の表は、このコンス トラクターでのプロパティを設定する方法を示しています、 <xref:System.Exception> オブジェクトです。  
   
-|Property|Value|  
-|--------------|-----------|  
+|プロパティ|値|  
+|-----------|-------|  
 |<xref:System.Exception.InnerException%2A>|`null`|  
 |<xref:System.Exception.Message%2A>|`message`|  
   
@@ -307,10 +314,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Converts the contents of the exception to a string.</summary>
-        <returns>A string containing the <see cref="P:System.Exception.HResult" />, <see cref="P:System.Exception.Message" />, <see cref="P:System.Exception.InnerException" />, and <see cref="P:System.Exception.StackTrace" /> properties of the exception.</returns>
+        <summary>例外の内容を文字列に変換します。</summary>
+        <returns>含む文字列、 <see cref="P:System.Exception.HResult" />, 、<see cref="P:System.Exception.Message" />, 、<see cref="P:System.Exception.InnerException" />, 、および <see cref="P:System.Exception.StackTrace" /> 例外のプロパティです。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Exception.HResult" />
+        <altmember cref="P:System.Exception.Message" />
+        <altmember cref="P:System.Exception.InnerException" />
+        <altmember cref="P:System.Exception.StackTrace" />
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Runtime.InteropServices.COMException" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

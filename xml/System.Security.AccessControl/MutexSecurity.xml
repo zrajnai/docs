@@ -17,63 +17,68 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents the Windows access control security for a named mutex. This class cannot be inherited.</summary>
+    <summary>名前付きミュー テックスの Windows アクセス制御セキュリティを表します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.Security.AccessControl.MutexSecurity> object specifies access rights for a named system mutex, and also specifies how access attempts are audited. Access rights to the mutex are expressed as rules, with each access rule represented by a <xref:System.Security.AccessControl.MutexAccessRule> object. Each auditing rule is represented by a <xref:System.Security.AccessControl.MutexAuditRule> object.  
+## 解説  
+ A <xref:System.Security.AccessControl.MutexSecurity> オブジェクトが、名前付きシステム ミュー テックスのアクセス権限を指定し、アクセス試行を監査する方法を指定します。 によって表される各アクセス規則との規則で表され、ミュー テックスへのアクセス権、 <xref:System.Security.AccessControl.MutexAccessRule> オブジェクトです。 各監査規則は、 <xref:System.Security.AccessControl.MutexAuditRule> オブジェクトです。  
   
- This mirrors the underlying Windows security system, in which each securable object has at most one discretionary access control list (DACL) that controls access to the secured object, and at most one system access control list (SACL) that specifies which access attempts are audited. The DACL and SACL are ordered lists of access control entries (ACE) that specify access and auditing for users and groups. A <xref:System.Security.AccessControl.MutexAccessRule> or <xref:System.Security.AccessControl.MutexAuditRule> object might represent more than one ACE.  
+ これには、セキュリティ保護可能な各オブジェクトに含まれる最大で 1 つ随意アクセス制御リスト \(DACL\) をセキュリティで保護されたオブジェクトと最大で 1 つシステム アクセス制御リスト \(SACL\) 指定するアクセス試行を監査するアクセスを制御する、基になる Windows セキュリティ システムがミラー化します。 DACL と SACL は、アクセスおよびユーザーとグループの監査を指定するアクセス制御エントリ \(ACE\) の一覧を並べ替えられます。 A <xref:System.Security.AccessControl.MutexAccessRule> または <xref:System.Security.AccessControl.MutexAuditRule> オブジェクトは 1 つ以上の ACE を表すことがあります。  
   
 > [!NOTE]
->  A <xref:System.Threading.Mutex> object can represent a local mutex or a named system mutex. Windows access control security is meaningful only for named system mutexes.  
+>  A <xref:System.Threading.Mutex> オブジェクトは、ローカル ミュー テックスまたは名前付きシステム ミュー テックスを表すことができます。 Windows のアクセス制御セキュリティは、名前付きシステム ミュー テックスに対してのみ有効です。  
   
- The <xref:System.Security.AccessControl.MutexSecurity>, <xref:System.Security.AccessControl.MutexAccessRule>, and <xref:System.Security.AccessControl.MutexAuditRule> classes hide the implementation details of ACLs and ACEs. They allow you to ignore the seventeen different ACE types and the complexity of correctly maintaining inheritance and propagation of access rights. These objects are also designed to prevent the following common access control errors:  
+ <xref:System.Security.AccessControl.MutexSecurity>, 、<xref:System.Security.AccessControl.MutexAccessRule>, 、および <xref:System.Security.AccessControl.MutexAuditRule> クラスは、Acl、Ace の実装の詳細を非表示にします。 17 のさまざまな ACE 型と正しく継承とアクセス権の反映を維持するための複雑さを無視できます。 また、これらのオブジェクトは次の一般的なアクセス制御エラーを回避する設計に。  
   
--   Creating a security descriptor with a null DACL. A null reference to a DACL allows any user to add access rules to an object, potentially creating a denial-of-service attack. A new <xref:System.Security.AccessControl.MutexSecurity> object always starts with an empty DACL, which denies all access for all users.  
+-   Null DACL のセキュリティ記述子を作成しています。 DACL を null 参照は、すべてのユーザーにサービス拒否攻撃の可能性のある作成のオブジェクトにアクセス規則を追加できます。 新しい <xref:System.Security.AccessControl.MutexSecurity> オブジェクトは常にすべてのユーザーのすべてのアクセスを拒否する空の DACL で始まります。  
   
--   Violating the canonical ordering of ACEs. If the ACE list in the DACL is not kept in the canonical order, users might inadvertently be given access to the secured object. For example, denied access rights must always appear before allowed access rights. <xref:System.Security.AccessControl.MutexSecurity> objects maintain the correct order internally.  
+-   Ace の正規の順序に違反しています。 DACL の ACE リストが正規順序で維持されない場合は、ユーザー誤ってを付与するアクセス セキュリティで保護されたオブジェクト。 たとえば、拒否するアクセス権は必要があります許可されるアクセス権の前に常に表示されます。<xref:System.Security.AccessControl.MutexSecurity> オブジェクトは、内部で適切な順序を保持します。  
   
--   Manipulating security descriptor flags, which should be under resource manager control only.  
+-   操作に使用するセキュリティ記述子のフラグをリソース マネージャーの管理のみの対象にする必要があります。  
   
--   Creating invalid combinations of ACE flags.  
+-   ACE のフラグの無効な組み合わせを作成しています。  
   
--   Manipulating inherited ACEs. Inheritance and propagation are handled by the resource manager, in response to changes you make to access and audit rules.  
+-   継承された Ace を操作します。 継承と伝達は、アクセスおよび監査のルールに加えた変更に応答のリソース マネージャーによって処理されます。  
   
--   Inserting meaningless ACEs into ACLs.  
+-   Acl に無意味な Ace を挿入します。  
   
- The only capabilities not supported by the .NET security objects are dangerous activities that should be avoided by the majority of application developers, such as the following:  
+ .NET セキュリティ オブジェクトでサポートされていない機能だけでは、次のようなアプリケーションの開発者の大部分は避ける必要が危険なアクティビティが。  
   
--   Low-level tasks that are normally performed by the resource manager.  
+-   通常、リソース マネージャーで実行される低レベルのタスクです。  
   
--   Adding or removing access control entries in ways that do not maintain the canonical ordering.  
+-   追加または標準の順序を保持しない方法でアクセス制御エントリを削除します。  
   
- To modify Windows access control security for a named mutex, use the <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> method to get the <xref:System.Security.AccessControl.MutexSecurity> object. Modify the security object by adding and removing rules, and then use the <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName> method to reattach it.  
+ 名前付きミュー テックスの Windows アクセス制御セキュリティを変更するには、使用、 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> 取得するメソッド、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトです。 追加と削除の規則では、セキュリティ オブジェクトを変更し、 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName> メソッドを再添付します。  
   
 > [!IMPORTANT]
->  Changes you make to a <xref:System.Security.AccessControl.MutexSecurity> object do not affect the access levels of the named mutex until you call the <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName> method to assign the altered security object to the named mutex.  
+>  対して行った変更、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトに名前付きミュー テックスのアクセス レベルは影響しませんが呼び出されるまで、 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName> メソッドを名前付きミュー テックスに変更されたセキュリティ オブジェクトを割り当てます。  
   
- To copy access control security from one mutex to another, use the <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> method to get a <xref:System.Security.AccessControl.MutexSecurity> object representing the access and audit rules for the first mutex, and then use the <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName> method, or a constructor that accepts a <xref:System.Security.AccessControl.MutexSecurity> object, to assign those rules to the second mutex.  
+ ミュー テックスの 1 つから別のアクセス制御セキュリティをコピーするには、使用、 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> 取得するメソッド、 <xref:System.Security.AccessControl.MutexSecurity> 最初ミュー テックスのアクセスおよび監査規則を表すオブジェクトをクリックして、 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName> メソッド、またはを受け取るコンス トラクター、 <xref:System.Security.AccessControl.MutexSecurity> を 2 つ目のミュー テックスにそれらの規則を割り当てるオブジェクト。  
   
- Users with an investment in the security descriptor definition language (SDDL) can use the <xref:System.Security.AccessControl.ObjectSecurity.SetSecurityDescriptorSddlForm%2A> method to set access rules for a named mutex, and the <xref:System.Security.AccessControl.ObjectSecurity.GetSecurityDescriptorSddlForm%2A> method to obtain a string that represents the access rules in SDDL format. This is not recommended for new development.  
+ ユーザー セキュリティ記述子定義言語 \(SDDL\) への投資で使用して、 <xref:System.Security.AccessControl.ObjectSecurity.SetSecurityDescriptorSddlForm%2A> 名前付きミュー テックスのアクセス ルールを設定するメソッドを <xref:System.Security.AccessControl.ObjectSecurity.GetSecurityDescriptorSddlForm%2A> SDDL 形式のアクセス ルールを表す文字列を取得します。 これは、説明は、新規の開発は推奨されません。  
   
 > [!NOTE]
->  Security on synchronization objects is not supported for Windows 98 or Windows Millennium Edition.  
+>  Windows 98 または Windows Millennium Edition には、同期オブジェクト上のセキュリティはサポートされていません。  
   
    
   
-## Examples  
- The following code example demonstrates the separation between <xref:System.Security.AccessControl.AccessControlType.Allow> rules and <xref:System.Security.AccessControl.AccessControlType.Deny> rules, and shows the combination of rights in compatible rules. The example creates a <xref:System.Security.AccessControl.MutexSecurity> object, adds rules that allow and deny various rights for the current user, and displays the resulting pair of rules. The example then allows new rights for the current user and displays the result, showing that the new rights are merged with the existing <xref:System.Security.AccessControl.AccessControlType.Allow> rule.  
+## 例  
+ 次のコード例に示します間の分離 <xref:System.Security.AccessControl.AccessControlType.Allow> ルールと <xref:System.Security.AccessControl.AccessControlType.Deny> ルール、および互換性のあるルールで権限の組み合わせを示しています。 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトを許可し、現在のユーザーのさまざまな権限を拒否するルールを追加し、ルールの結果のペアが表示されます。 例では、現在のユーザーに対して新しい権限を許可し、新しい権限が、既存のマージされることを示す結果を表示 <xref:System.Security.AccessControl.AccessControlType.Allow> ルール。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> and <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> と <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.AddAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.AddAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Security.AccessControl.MutexAccessRule" />
+    <altmember cref="T:System.Security.AccessControl.MutexAuditRule" />
+    <altmember cref="T:System.Security.AccessControl.MutexRights" />
+    <altmember cref="M:System.Threading.Mutex.GetAccessControl" />
+    <altmember cref="M:System.Threading.Mutex.SetAccessControl(System.Security.AccessControl.MutexSecurity)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -93,16 +98,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.AccessControl.MutexSecurity" /> class with default values.</summary>
+        <summary>
+          <see cref="T:System.Security.AccessControl.MutexSecurity" /> クラスの新しいインスタンスを既定値で初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A new <xref:System.Security.AccessControl.MutexSecurity> object always starts with an empty discretionary access list (DACL), which denies all access for all users.  
+## 解説  
+ 新しい <xref:System.Security.AccessControl.MutexSecurity> オブジェクトは常にすべてのユーザーのすべてのアクセスを拒否する空の随意アクセス リスト \(DACL\) で始まります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">This class is not supported on Windows 98 or Windows Millennium Edition.</exception>
+        <exception cref="T:System.NotSupportedException">このクラスは、Windows 98 または Windows Millennium Edition でサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -125,21 +131,21 @@
         <Parameter Name="includeSections" Type="System.Security.AccessControl.AccessControlSections" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the system mutex whose access control security rules are to be retrieved.</param>
-        <param name="includeSections">A combination of <see cref="T:System.Security.AccessControl.AccessControlSections" /> flags specifying the sections to retrieve.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.AccessControl.MutexSecurity" /> class with the specified sections of the access control security rules from the system mutex with the specified name.</summary>
+        <param name="name">取得するアクセス制御のセキュリティ規則が、システムのミュー テックスの名前。</param>
+        <param name="includeSections">組み合わせた <see cref="T:System.Security.AccessControl.AccessControlSections" /> を取得するセクションを指定するフラグ。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Security.AccessControl.MutexSecurity" /> 指定の名前を持つシステム ミュー テックスからのアクセス制御セキュリティ規則の指定されたセクションを持つクラス。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor allows you to obtain the access control security for a named system mutex without first creating a <xref:System.Threading.Mutex> object.  
+## 解説  
+ このコンス トラクターでは、最初に作成せずに、名前付きシステム ミュー テックスのアクセス制御セキュリティを取得することができます、 <xref:System.Threading.Mutex> オブジェクトです。  
   
- Caution must be exercised when working with named system objects. If there is a system object named `name` that is not a mutex, its control access security might be retrieved.  
+ 名前付きシステム オブジェクトを使用する場合、十分に注意してください。 という名前のシステム オブジェクトがあるかどうかは `name` ミュー テックスが、そのアクセス制御セキュリティを取得する可能性があります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.IO.FileNotFoundException">There is no system object with the specified name.</exception>
-        <exception cref="T:System.NotSupportedException">This class is not supported on Windows 98 or Windows Millennium Edition.</exception>
+        <exception cref="T:System.IO.FileNotFoundException">指定した名前のシステム オブジェクトはありません。</exception>
+        <exception cref="T:System.NotSupportedException">このクラスは、Windows 98 または Windows Millennium Edition でサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="AccessRightType">
@@ -161,13 +167,13 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the enumeration that the <see cref="T:System.Security.AccessControl.MutexSecurity" /> class uses to represent access rights.</summary>
-        <value>A <see cref="T:System.Type" /> object representing the <see cref="T:System.Security.AccessControl.MutexRights" /> enumeration.</value>
+        <summary>列挙体を取得、 <see cref="T:System.Security.AccessControl.MutexSecurity" /> クラスのアクセス権を表現するために使用します。</summary>
+        <value>A <see cref="T:System.Type" /> を表すオブジェクト、 <see cref="T:System.Security.AccessControl.MutexRights" /> 列挙します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Security.AccessControl.ObjectSecurity> class override the <xref:System.Security.AccessControl.ObjectSecurity.AccessRightType%2A> property and return the type they use to represent access rights. When you work with arrays or collections that contain multiple types of security objects, use this property to determine the correct enumeration type to use with each security object.  
+## 解説  
+ 派生するクラス、 <xref:System.Security.AccessControl.ObjectSecurity> クラスのオーバーライド、 <xref:System.Security.AccessControl.ObjectSecurity.AccessRightType%2A> プロパティと戻り値を使用してアクセス権を表す型。 配列または複数のセキュリティ オブジェクトの種類が含まれているコレクションを使用する場合は、このプロパティを使用して、各セキュリティ オブジェクトで使用する適切な列挙型を判断します。  
   
  ]]></format>
         </remarks>
@@ -200,35 +206,36 @@
         <Parameter Name="type" Type="System.Security.AccessControl.AccessControlType" />
       </Parameters>
       <Docs>
-        <param name="identityReference">An <see cref="T:System.Security.Principal.IdentityReference" /> that identifies the user or group the rule applies to.</param>
-        <param name="accessMask">A bitwise combination of <see cref="T:System.Security.AccessControl.MutexRights" /> values specifying the access rights to allow or deny, cast to an integer.</param>
-        <param name="isInherited">Meaningless for named mutexes, because they have no hierarchy.</param>
-        <param name="inheritanceFlags">Meaningless for named mutexes, because they have no hierarchy.</param>
-        <param name="propagationFlags">Meaningless for named mutexes, because they have no hierarchy.</param>
-        <param name="type">One of the <see cref="T:System.Security.AccessControl.AccessControlType" /> values specifying whether the rights are allowed or denied.</param>
-        <summary>Creates a new access control rule for the specified user, with the specified access rights, access control, and flags.</summary>
-        <returns>A <see cref="T:System.Security.AccessControl.MutexAccessRule" /> object representing the specified rights for the specified user.</returns>
+        <param name="identityReference">
+          <see cref="T:System.Security.Principal.IdentityReference" /> 、ユーザーを識別する、またはにグループのルールが適用されます。</param>
+        <param name="accessMask">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.MutexRights" /> 、許可または拒否するアクセス権を指定する値が整数にキャストします。</param>
+        <param name="isInherited">名前付きミュー テックスに無意味な階層がないためです。</param>
+        <param name="inheritanceFlags">名前付きミュー テックスに無意味な階層がないためです。</param>
+        <param name="propagationFlags">名前付きミュー テックスに無意味な階層がないためです。</param>
+        <param name="type">いずれか、 <see cref="T:System.Security.AccessControl.AccessControlType" /> 権限を許可または拒否するかどうかを指定する値。</param>
+        <summary>指定したアクセス権、アクセス制御、およびフラグで指定されたユーザーの新しいアクセス制御規則を作成します。</summary>
+        <returns>A <see cref="T:System.Security.AccessControl.MutexAccessRule" /> 指定されたユーザーの指定された権限を表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The recommended way to create access control rules is to use the constructors of the <xref:System.Security.AccessControl.MutexAccessRule> class.  
+## 解説  
+ アクセス制御規則を作成することをお勧めのコンス トラクターを使用して、 <xref:System.Security.AccessControl.MutexAccessRule> クラスです。  
   
 > [!NOTE]
->  Although inheritance and propagation flags are meaningless for named mutexes, it is still possible to specify them. This is not recommended, because it needlessly complicates the maintenance of rules, for example by interfering with the combination of rules that would otherwise be compatible.  
+>  継承と伝達フラグは名前付きミュー テックスに意味がないはそれらを指定することも可能です。 これは使用しないで、不必要に複雑になる、ルールのメンテナンスなど互換性があるそれ以外の場合、規則の組み合わせに干渉するためです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="accessMask" />, <paramref name="inheritanceFlags" />, <paramref name="propagationFlags" />, or <paramref name="type" /> specifies an invalid value.</exception>
+          <paramref name="accessMask" />, 、<paramref name="inheritanceFlags" />, 、<paramref name="propagationFlags" />, 、または <paramref name="type" /> 無効な値を指定します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="identityReference" /> is <see langword="null" />.  
+          <paramref name="identityReference" /> は <see langword="null" /> です。  
   
- -or-  
+ または  
   
- <paramref name="accessMask" /> is zero.</exception>
+ <paramref name="accessMask" /> 0 です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="identityReference" /> is neither of type <see cref="T:System.Security.Principal.SecurityIdentifier" />, nor of a type such as <see cref="T:System.Security.Principal.NTAccount" /> that can be converted to type <see cref="T:System.Security.Principal.SecurityIdentifier" />.</exception>
+          <paramref name="identityReference" /> 型のどちらも、 <see cref="T:System.Security.Principal.SecurityIdentifier" />, 、やなどの型の <see cref="T:System.Security.Principal.NTAccount" /> 型に変換できる <see cref="T:System.Security.Principal.SecurityIdentifier" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AccessRuleType">
@@ -250,13 +257,13 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type that the <see cref="T:System.Security.AccessControl.MutexSecurity" /> class uses to represent access rules.</summary>
-        <value>A <see cref="T:System.Type" /> object representing the <see cref="T:System.Security.AccessControl.MutexAccessRule" /> class.</value>
+        <summary>型を取得、 <see cref="T:System.Security.AccessControl.MutexSecurity" /> クラスのアクセス ルールを表現するために使用します。</summary>
+        <value>A <see cref="T:System.Type" /> を表すオブジェクト、 <see cref="T:System.Security.AccessControl.MutexAccessRule" /> クラスです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Security.AccessControl.ObjectSecurity> class override the <xref:System.Security.AccessControl.ObjectSecurity.AccessRuleType%2A> property and return the type they use to represent access rules. When you work with arrays or collections that contain multiple types of security objects, use this property to determine the correct access rule type to use with each security object.  
+## 解説  
+ 派生するクラス、 <xref:System.Security.AccessControl.ObjectSecurity> クラスのオーバーライド、 <xref:System.Security.AccessControl.ObjectSecurity.AccessRuleType%2A> プロパティと戻り値を使用して、アクセス ルールを表す型。 配列または複数のセキュリティ オブジェクトの種類が含まれているコレクションを使用する場合は、このプロパティを使用して、各セキュリティ オブジェクトで使用する適切なアクセス規則の種類を決定します。  
   
  ]]></format>
         </remarks>
@@ -284,31 +291,31 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The access control rule to add.</param>
-        <summary>Searches for a matching access control rule with which the new rule can be merged. If none are found, adds the new rule.</summary>
+        <param name="rule">追加するアクセス制御規則。</param>
+        <summary>使用する新しい規則をマージできる対応するアクセス制御規則を検索します。 何も見つからない場合は、新しい規則を追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Security.AccessControl.MutexSecurity.AddAccessRule%2A> method searches for rules with the same user or group and the same <xref:System.Security.AccessControl.AccessControlType> as `rule`. If none are found, `rule` is added. If a matching rule is found, the rights in `rule` are merged with the existing rule.  
+## 解説  
+ <xref:System.Security.AccessControl.MutexSecurity.AddAccessRule%2A> メソッドは、同じユーザーまたはグループと同じ規則を検索 <xref:System.Security.AccessControl.AccessControlType> として `rule`します。 何も見つからない場合 `rule` が追加されます。 照合ルールが見つからないかどうかは、rights in `rule` は既存の規則にマージされます。  
   
    
   
-## Examples  
- The following code example demonstrates the separation between <xref:System.Security.AccessControl.AccessControlType.Allow> rules and <xref:System.Security.AccessControl.AccessControlType.Deny> rules, and shows the combination of rights in compatible rules. The example creates a <xref:System.Security.AccessControl.MutexSecurity> object, adds rules that allow and deny various rights for the current user, and displays the resulting pair of rules. The example then allows new rights for the current user and displays the result, showing that the new rights are merged with the existing <xref:System.Security.AccessControl.AccessControlType.Allow> rule.  
+## 例  
+ 次のコード例に示します間の分離 <xref:System.Security.AccessControl.AccessControlType.Allow> ルールと <xref:System.Security.AccessControl.AccessControlType.Deny> ルール、および互換性のあるルールで権限の組み合わせを示しています。 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトを許可し、現在のユーザーのさまざまな権限を拒否するルールを追加し、ルールの結果のペアが表示されます。 例では、現在のユーザーに対して新しい権限を許可し、新しい権限が、既存のマージされることを示す結果を表示 <xref:System.Security.AccessControl.AccessControlType.Allow> ルール。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName><xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName><xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>します。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.AddAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.AddAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.Security.Principal.IdentityNotMappedException">
-          <paramref name="rule" /> cannot be mapped to a known identity.</exception>
+          <paramref name="rule " />既知の id にマップすることはできません。</exception>
       </Docs>
     </Member>
     <Member MemberName="AddAuditRule">
@@ -333,13 +340,13 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The audit rule to add. The user specified by this rule determines the search.</param>
-        <summary>Searches for an audit rule with which the new rule can be merged. If none are found, adds the new rule.</summary>
+        <param name="rule">追加する監査規則。 このルールで指定されたユーザーは、検索を決定します。</param>
+        <summary>使用する新しい規則をマージできる監査規則を検索します。 何も見つからない場合は、新しい規則を追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Security.AccessControl.MutexSecurity.AddAuditRule%2A> method searches for rules with the same user or group as `rule`. If none are found, `rule` is added. If a matching rule is found, the flags in `rule` are merged into the existing rule.  
+## 解説  
+ <xref:System.Security.AccessControl.MutexSecurity.AddAuditRule%2A> メソッドを探してルールと同じユーザーまたはグループとして `rule`します。 何も見つからない場合 `rule` が追加されます。 照合ルールが見つからないかどうかでフラグ `rule` 既存のルールにマージされます。  
   
  ]]></format>
         </remarks>
@@ -372,35 +379,39 @@
         <Parameter Name="flags" Type="System.Security.AccessControl.AuditFlags" />
       </Parameters>
       <Docs>
-        <param name="identityReference">An <see cref="T:System.Security.Principal.IdentityReference" /> that identifies the user or group the rule applies to.</param>
-        <param name="accessMask">A bitwise combination of <see cref="T:System.Security.AccessControl.MutexRights" /> values specifying the access rights to audit, cast to an integer.</param>
-        <param name="isInherited">Meaningless for named wait handles, because they have no hierarchy.</param>
-        <param name="inheritanceFlags">Meaningless for named wait handles, because they have no hierarchy.</param>
-        <param name="propagationFlags">Meaningless for named wait handles, because they have no hierarchy.</param>
-        <param name="flags">A bitwise combination of <see cref="T:System.Security.AccessControl.AuditFlags" /> values that specify whether to audit successful access, failed access, or both.</param>
-        <summary>Creates a new audit rule, specifying the user the rule applies to, the access rights to audit, and the outcome that triggers the audit rule.</summary>
-        <returns>A <see cref="T:System.Security.AccessControl.MutexAuditRule" /> object representing the specified audit rule for the specified user. The return type of the method is the base class, <see cref="T:System.Security.AccessControl.AuditRule" />, but the return value can be cast safely to the derived class.</returns>
+        <param name="identityReference">
+          <see cref="T:System.Security.Principal.IdentityReference" /> 、ユーザーを識別する、またはにグループのルールが適用されます。</param>
+        <param name="accessMask">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.MutexRights" /> を監査するアクセス権を指定する値が整数にキャストします。</param>
+        <param name="isInherited">名前付きの待機ハンドルの無意味な階層がないためです。</param>
+        <param name="inheritanceFlags">名前付きの待機ハンドルの無意味な階層がないためです。</param>
+        <param name="propagationFlags">名前付きの待機ハンドルの無意味な階層がないためです。</param>
+        <param name="flags">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.AuditFlags" /> 成功したアクセス、アクセスの失敗、またはその両方を監査するかどうかを指定する値。</param>
+        <summary>監査へのアクセス権、および監査規則をトリガーする結果に規則が適用されるユーザーを指定して、新しい監査規則を作成します。</summary>
+        <returns>A <see cref="T:System.Security.AccessControl.MutexAuditRule" /> 指定されたユーザーの指定した監査規則を表すオブジェクト。 メソッドの戻り値の型は、基本クラス <see cref="T:System.Security.AccessControl.AuditRule" />, 、戻り値は、派生クラスを安全にキャストすることができますが、します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The recommended way to create audit rules is to use the constructors of the <xref:System.Security.AccessControl.MutexAuditRule> class.  
+## 解説  
+ 監査規則を作成することをお勧めのコンス トラクターを使用して、 <xref:System.Security.AccessControl.MutexAuditRule> クラスです。  
   
 > [!NOTE]
->  Although inheritance and propagation flags are meaningless for named mutexes, it is still possible to specify them. This is not recommended, because it needlessly complicates the maintenance of rules, for example by interfering with the combination of rules that would otherwise be compatible.  
+>  継承と伝達フラグは名前付きミュー テックスに意味がないはそれらを指定することも可能です。 これは使用しないで、不必要に複雑になる、ルールのメンテナンスなど互換性があるそれ以外の場合、規則の組み合わせに干渉するためです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="accessMask" />, <paramref name="inheritanceFlags" />, <paramref name="propagationFlags" />, or <paramref name="flags" /> specifies an invalid value.</exception>
+          <paramref name="accessMask" />, 、<paramref name="inheritanceFlags" />, 、<paramref name="propagationFlags" />, 、または <paramref name="flags" /> 無効な値を指定します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="identityReference" /> is <see langword="null" />.  
+          <paramref name="identityReference" /> は <see langword="null" /> です。  
   
- -or-  
+ または  
   
- <paramref name="accessMask" /> is zero.</exception>
+ <paramref name="accessMask" /> 0 です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="identityReference" /> is neither of type <see cref="T:System.Security.Principal.SecurityIdentifier" />, nor of a type such as <see cref="T:System.Security.Principal.NTAccount" /> that can be converted to type <see cref="T:System.Security.Principal.SecurityIdentifier" />.</exception>
+          <paramref name="identityReference" /> 型のどちらも、 <see cref="T:System.Security.Principal.SecurityIdentifier" />, 、やなどの型の <see cref="T:System.Security.Principal.NTAccount" /> 型に変換できる <see cref="T:System.Security.Principal.SecurityIdentifier" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AuditRuleType">
@@ -422,13 +433,13 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type that the <see cref="T:System.Security.AccessControl.MutexSecurity" /> class uses to represent audit rules.</summary>
-        <value>A <see cref="T:System.Type" /> object representing the <see cref="T:System.Security.AccessControl.MutexAuditRule" /> class.</value>
+        <summary>型を取得、 <see cref="T:System.Security.AccessControl.MutexSecurity" /> 監査規則を表すクラスします。</summary>
+        <value>A <see cref="T:System.Type" /> を表すオブジェクト、 <see cref="T:System.Security.AccessControl.MutexAuditRule" /> クラスです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Security.AccessControl.ObjectSecurity> class override the <xref:System.Security.AccessControl.ObjectSecurity.AuditRuleType%2A> property and return the type they use to represent audit rights. When you work with arrays or collections that contain multiple types of security objects, use this property to determine the correct audit rule type to use with each security object.  
+## 解説  
+ 派生するクラス、 <xref:System.Security.AccessControl.ObjectSecurity> クラスのオーバーライド、 <xref:System.Security.AccessControl.ObjectSecurity.AuditRuleType%2A> プロパティと戻り値を使用して監査権限を表す型。 配列または複数のセキュリティ オブジェクトの種類が含まれているコレクションを使用する場合は、このプロパティを使用して、各セキュリティ オブジェクトで使用する適切な監査規則の種類を決定します。  
   
  ]]></format>
         </remarks>
@@ -456,36 +467,36 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAccessRule" /> that specifies the user and <see cref="T:System.Security.AccessControl.AccessControlType" /> to search for, and a set of inheritance and propagation flags that a matching rule, if found, must be compatible with. Specifies the rights to remove from the compatible rule, if found.</param>
-        <summary>Searches for an access control rule with the same user and <see cref="T:System.Security.AccessControl.AccessControlType" /> (allow or deny) as the specified rule, and with compatible inheritance and propagation flags; if such a rule is found, the rights contained in the specified access rule are removed from it.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAccessRule" /> ユーザーを指定し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> 検索、および一連のルール、一致する場合の継承と伝達のフラグに見つかると、互換性がある必要があります。 互換性のある規則から削除する権限を指定します。</param>
+        <summary>同じユーザーがアクセス制御規則を検索し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> \(許可または拒否\) ようなルールが見つかった場合、指定されたアクセス ルールに含まれている権限がそのから削除されます、指定されたルールとは互換性のある継承と伝達フラグを使用します。</summary>
         <returns>
-          <see langword="true" /> if a compatible rule is found; otherwise <see langword="false" />.</returns>
+          <see langword="true" /> 互換性のある規則が見つかった場合それ以外の場合 <see langword="false" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.MutexSecurity> is searched for a rule that has the same user and the same <xref:System.Security.AccessControl.AccessControlType> value as `rule`. If no such rule is found, no action is taken, and the method returns `false`. If matching rules are found, their inheritance and compatibility flags are checked for compatibility with the flags specified in `rule`. If no compatible rule is found, no action is taken, and the method returns `false`. If a rule with compatible flags is found, the rights specified in `rule` are removed from the compatible rule, and the method returns `true`. If `rule` specifies rights not contained in the compatible rule, no action is taken with respect to those rights. If all rights are removed from the compatible rule, the entire rule is removed from the current <xref:System.Security.AccessControl.MutexSecurity> object.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.MutexSecurity> は同じユーザーと同じを持つルールの検索は <xref:System.Security.AccessControl.AccessControlType> として値 `rule`です。 このような規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 照合ルールが見つからない場合は、継承との互換性フラグがチェックされてで指定されたフラグと互換性のため `rule`です。 互換性のある規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 権限が指定された互換性フラグを含むルールが見つかった場合 `rule` 互換性のある規則から削除されますが返されます `true`します。 場合 `rule` 互換性のあるルールに含まれていない権限をこれらの権限に関する処理は行われません。 現在の全体の規則が削除される場合は、互換性のある規則ですべての権限が削除されて <xref:System.Security.AccessControl.MutexSecurity> オブジェクトです。  
   
 > [!IMPORTANT]
->  Although you can specify inheritance and propagation flags for mutex access rules, by creating them with the <xref:System.Security.AccessControl.MutexSecurity.AccessRuleFactory%2A> method, this is not recommended. Inheritance and propagation have no meaning for named mutexes, and they make the maintenance of access rules more complicated.  
+>  これらを作成することで、ミュー テックスのアクセス規則の継承と伝達のフラグを指定できますが、 <xref:System.Security.AccessControl.MutexSecurity.AccessRuleFactory%2A> メソッド、お勧めしません。 継承と反映しないにとって意味を持つ名前付きミュー テックスし、アクセス ルールのメンテナンスより複雑なします。  
   
    
   
-## Examples  
- The following code example demonstrates the use of the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRule%2A> method to remove rights from an <xref:System.Security.AccessControl.AccessControlType.Allow> rule in a <xref:System.Security.AccessControl.MutexSecurity> object. It also shows that other rights in `rule` are ignored.  
+## 例  
+ 次のコード例では、使用、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRule%2A> から権限を削除する方法、 <xref:System.Security.AccessControl.AccessControlType.Allow> でルール、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトです。 内の他の権限も示します `rule` は無視されます。  
   
- The example creates a <xref:System.Security.AccessControl.MutexSecurity> object and adds rules that allow and deny various rights for the current user. The rights allowed include <xref:System.Security.AccessControl.MutexRights.Modify>, <xref:System.Security.AccessControl.MutexRights.ReadPermissions>, and <xref:System.Security.AccessControl.MutexRights.Synchronize>. The example then creates a new rule for the current user, including <xref:System.Security.AccessControl.MutexRights.ReadPermissions> and <xref:System.Security.AccessControl.MutexRights.TakeOwnership> rights, and uses that rule with the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRule%2A> method to remove <xref:System.Security.AccessControl.MutexRights.ReadPermissions> from the <xref:System.Security.AccessControl.AccessControlType.Allow> rule in the <xref:System.Security.AccessControl.MutexSecurity> object. The extraneous <xref:System.Security.AccessControl.MutexRights.TakeOwnership> right in `rule` is ignored.  
+ 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトし、許可し、現在のユーザーのさまざまな権限を拒否する規則を追加します。 権限の許可を含める <xref:System.Security.AccessControl.MutexRights.Modify>, 、<xref:System.Security.AccessControl.MutexRights.ReadPermissions>, 、および <xref:System.Security.AccessControl.MutexRights.Synchronize>です。 現在のユーザーに関する新しいルールを作成しなど <xref:System.Security.AccessControl.MutexRights.ReadPermissions> と <xref:System.Security.AccessControl.MutexRights.TakeOwnership> 、および権限と、そのルールを使用、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRule%2A> を削除する <xref:System.Security.AccessControl.MutexRights.ReadPermissions> から、 <xref:System.Security.AccessControl.AccessControlType.Allow> でルール、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトです。 不要な <xref:System.Security.AccessControl.MutexRights.TakeOwnership> 右 `rule` は無視されます。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> and <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> と <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAccessRuleAll">
@@ -510,31 +521,31 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAccessRule" /> that specifies the user and <see cref="T:System.Security.AccessControl.AccessControlType" /> to search for. Any rights specified by this rule are ignored.</param>
-        <summary>Searches for all access control rules with the same user and <see cref="T:System.Security.AccessControl.AccessControlType" /> (allow or deny) as the specified rule and, if found, removes them.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAccessRule" /> ユーザーを指定し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> を検索します。 このルールで指定された権限は無視されます。</param>
+        <summary>同じユーザーが制御規則をアクセスするすべての検索と <see cref="T:System.Security.AccessControl.AccessControlType" /> \(許可または拒否\) 指定したと削除、見つかった場合にします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.MutexSecurity> object is searched for rules that have the same user and the same <xref:System.Security.AccessControl.AccessControlType> value as `rule`. Any rights specified by `rule` are ignored when performing this search. If no matching rules are found, no action is taken.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトで同じユーザーと同じルールの検索 <xref:System.Security.AccessControl.AccessControlType> として値 `rule`です。 によって指定された権限 `rule` は、この検索を実行するときに無視されます。 照合ルールが見つからない場合、処理は行われません。  
   
    
   
-## Examples  
- The following code example shows that the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll%2A> method removes all rules that match user and <xref:System.Security.AccessControl.AccessControlType>, ignoring rights.  
+## 例  
+ 次のコード例を示していますが、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll%2A> メソッドは、ユーザーに一致するすべてのルールを削除と <xref:System.Security.AccessControl.AccessControlType>, 、権限を無視します。  
   
- The example creates a <xref:System.Security.AccessControl.MutexSecurity> object, adds rules that allow and deny various rights for the current user, and then merges additional rights into the <xref:System.Security.AccessControl.AccessControlType.Allow> rule. The example then creates a new rule that allows the current user to take ownership, and uses that rule to remove the <xref:System.Security.AccessControl.AccessControlType.Allow> rule from the <xref:System.Security.AccessControl.MutexSecurity> object.  
+ 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトを許可し、現在のユーザーのさまざまな権限を拒否するルールを追加しに追加の権利をマージ、 <xref:System.Security.AccessControl.AccessControlType.Allow> ルール。 所有権を現在のユーザーは、そのルールを使用して削除する新しいルールを作成し、 <xref:System.Security.AccessControl.AccessControlType.Allow> からルール、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトです。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> and <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> と <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAccessRuleSpecific">
@@ -559,34 +570,34 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.MutexAccessRule" /> to remove.</param>
-        <summary>Searches for an access control rule that exactly matches the specified rule and, if found, removes it.</summary>
+        <param name="rule">削除する <see cref="T:System.Security.AccessControl.MutexAccessRule" />。</param>
+        <summary>厳密に一致する指定されたアクセス制御規則を検索し、削除を見つかった場合は、そのします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The rule is removed only if it exactly matches `rule` in all details, including flags. Other rules with the same user and <xref:System.Security.AccessControl.AccessControlType> are not affected.  
+## 解説  
+ ルールが削除されるは、完全に一致する場合にのみ `rule` フラグを含むすべての詳細にします。 同じユーザーが他のルールと <xref:System.Security.AccessControl.AccessControlType> は影響しません。  
   
 > [!IMPORTANT]
->  A rule represents one or more underlying access control entries (ACE), and these entries are split or combined as necessary when you modify the access security rules for a user. Thus, a rule might no longer exist in the specific form it had when it was added, and in that case the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> method cannot remove it.  
+>  以上基になるアクセス制御エントリ \(ACE\) およびこれらのエントリが分割またはユーザーのアクセスのセキュリティ規則を変更する場合に、必要に応じて、結合またはルールが 1 つを表します。 そのため、ルールが存在しなくで追加されたときに存在していた特定のフォームおよびそのケース、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> 方法はそれを削除することはできません。  
   
    
   
-## Examples  
- The following code example shows that the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> method requires an exact match in order to remove a rule, and that rules to allow and deny rights are independent of each other.  
+## 例  
+ 次のコード例を示していますが、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> メソッドが、ルールを削除するために厳密な一致を必要とし、許可し、権限を拒否するためのルールは、互いに独立しています。  
   
- The example creates a <xref:System.Security.AccessControl.MutexSecurity> object, adds rules that allow and deny various rights for the current user, and then merges additional rights into the <xref:System.Security.AccessControl.AccessControlType.Allow> access rule. The example then passes the original <xref:System.Security.AccessControl.AccessControlType.Allow> rule to the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> method, and displays the results, showing that nothing is deleted. The example then constructs a rule that matches the <xref:System.Security.AccessControl.AccessControlType.Allow> rule in the <xref:System.Security.AccessControl.MutexSecurity> object, and successfully uses the <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> method to remove the rule.  
+ 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトを許可し、現在のユーザーのさまざまな権限を拒否するルールを追加しに追加の権利をマージ、 <xref:System.Security.AccessControl.AccessControlType.Allow> アクセス規則。 元の渡します <xref:System.Security.AccessControl.AccessControlType.Allow> の規則を <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> メソッド、および何が削除されたことを示す結果を表示します。 例では、一致する規則を作成、 <xref:System.Security.AccessControl.AccessControlType.Allow> でルール、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトが正常に使用して、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> のルールを削除する方法です。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> and <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> と <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAuditRule">
@@ -611,23 +622,23 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAuditRule" /> that specifies the user to search for, and a set of inheritance and propagation flags that a matching rule, if found, must be compatible with. Specifies the rights to remove from the compatible rule, if found.</param>
-        <summary>Searches for an audit control rule with the same user as the specified rule, and with compatible inheritance and propagation flags; if a compatible rule is found, the rights contained in the specified rule are removed from it.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAuditRule" /> を検索して、ユーザーと一致する規則の場合の継承と伝達のフラグのセットを指定する場合は、互換性がある必要があります。 互換性のある規則から削除する権限を指定します。</param>
+        <summary>監査の制御規則として、互換性のある継承および伝達フラグと、指定されたルールと同じユーザーの検索互換性のある規則が見つかった場合、指定されたルールに含まれる権限は、そこから削除されます。</summary>
         <returns>
-          <see langword="true" /> if a compatible rule is found; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 互換性のある規則が見つかった場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.MutexSecurity> is searched for an audit rule that has the same user as `rule`. If no such rule is found, no action is taken, and the method returns `false`. If matching rules are found, their inheritance and compatibility flags are checked for compatibility with the flags specified in `rule`. If no compatible rule is found, no action is taken, and the method returns `false`. If a rule with compatible flags is found, the rights specified in `rule` are removed from the compatible rule, and the method returns `true`. If `rule` specifies rights not contained in the compatible rule, no action is taken with respect to those rights. If all rights are removed from the compatible rule, the entire rule is removed from the current <xref:System.Security.AccessControl.MutexSecurity> object.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.MutexSecurity> を同一のユーザーを持つ監査規則の検索 `rule`します。 このような規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 照合ルールが見つからない場合は、継承との互換性フラグがチェックされてで指定されたフラグと互換性のため `rule`です。 互換性のある規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 権限が指定された互換性フラグを含むルールが見つかった場合 `rule` 互換性のある規則から削除されますが返されます `true`します。 場合 `rule` 互換性のあるルールに含まれていない権限をこれらの権限に関する処理は行われません。 現在の全体の規則が削除される場合は、互換性のある規則ですべての権限が削除されて <xref:System.Security.AccessControl.MutexSecurity> オブジェクトです。  
   
 > [!IMPORTANT]
->  Although you can specify inheritance and propagation flags for mutex audit rules, by creating them with the <xref:System.Security.AccessControl.MutexSecurity.AccessRuleFactory%2A> method, this is not recommended. Inheritance and propagation have no meaning for named mutexes, and they make the maintenance of audit rules more complicated.  
+>  これらを作成することで、ミュー テックス監査規則の継承と伝達のフラグを指定できますが、 <xref:System.Security.AccessControl.MutexSecurity.AccessRuleFactory%2A> メソッド、お勧めしません。 継承と反映しないにとって意味を持つ名前付きミュー テックスし、監査規則の保守より複雑なします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAuditRuleAll">
@@ -652,18 +663,18 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAuditRule" /> that specifies the user to search for. Any rights specified by this rule are ignored.</param>
-        <summary>Searches for all audit rules with the same user as the specified rule and, if found, removes them.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.MutexAuditRule" /> を検索するユーザーを指定します。 このルールで指定された権限は無視されます。</param>
+        <summary>場合とすべての監査、指定されたルールと同じユーザーが規則の検索を発見し、それらを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.MutexSecurity> is searched for audit rules that have the same user as `rule`. Any rights specified by `rule` are ignored when performing this search. All matching rules are removed. If no matching rules are found, no action is taken.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.MutexSecurity> 監査規則を持つユーザーと同じユーザーが検索 `rule`します。 によって指定された権限 `rule` は、この検索を実行するときに無視されます。 すべての照合ルールが削除されます。 照合ルールが見つからない場合、処理は行われません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAuditRuleSpecific">
@@ -688,21 +699,21 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.MutexAuditRule" /> to be removed.</param>
-        <summary>Searches for an audit rule that exactly matches the specified rule and, if found, removes it.</summary>
+        <param name="rule">削除する <see cref="T:System.Security.AccessControl.MutexAuditRule" />。</param>
+        <summary>厳密に一致する指定された監査規則を検索し、削除を見つかった場合は、そのします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The rule is removed only if it exactly matches `rule` in all details, including flags. Other audit rules for the same user are not affected.  
+## 解説  
+ ルールが削除されるは、完全に一致する場合にのみ `rule` フラグを含むすべての詳細にします。 同じユーザーの場合は、その他の監査規則には影響しません。  
   
 > [!IMPORTANT]
->  A rule represents one or more underlying access control entries (ACE), and these entries are split or combined as necessary when you modify the audit security rules for a user. Thus, a rule might no longer exist in the specific form it had when it was added, and in that case the <xref:System.Security.AccessControl.MutexSecurity.RemoveAuditRuleSpecific%2A> method cannot remove it.  
+>  以上基になるアクセス制御エントリ \(ACE\) およびこれらのエントリが分割またはユーザーの監査のセキュリティの規則を変更する場合に、必要に応じて、結合またはルールが 1 つを表します。 そのため、ルールが存在しなくで追加されたときに存在していた特定のフォームおよびそのケース、 <xref:System.Security.AccessControl.MutexSecurity.RemoveAuditRuleSpecific%2A> 方法はそれを削除することはできません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="ResetAccessRule">
@@ -727,31 +738,31 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.MutexAccessRule" /> to add. The user specified by this rule determines the rules to remove before this rule is added.</param>
-        <summary>Removes all access control rules with the same user as the specified rule, regardless of <see cref="T:System.Security.AccessControl.AccessControlType" />, and then adds the specified rule.</summary>
+        <param name="rule">追加する <see cref="T:System.Security.AccessControl.MutexAccessRule" />。 このルールで指定されたユーザーは、このルールが追加される前に削除する規則を決定します。</param>
+        <summary>関係なく、指定されたルールと同じユーザーを持つすべてのアクセス制御規則を削除 <see cref="T:System.Security.AccessControl.AccessControlType" />, 、し、指定されたルールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If there are no access rules whose user matches the specified rule, `rule` is added.  
+## 解説  
+ ユーザーが、指定されたルールに一致するアクセス ルールがない場合 `rule` が追加されます。  
   
    
   
-## Examples  
- The following code example shows how the <xref:System.Security.AccessControl.MutexSecurity.ResetAccessRule%2A> method replaces all rules for the matching user with the rule specified for the match.  
+## 例  
+ 次のコード例に示す方法、 <xref:System.Security.AccessControl.MutexSecurity.ResetAccessRule%2A> メソッドは、一致する指定された規則に一致するユーザーのすべての規則を置き換えます。  
   
- The example creates a <xref:System.Security.AccessControl.MutexSecurity> object and adds rules that allow and deny various rights for the current user. The example then creates a new rule that allows the current user full control, and uses the <xref:System.Security.AccessControl.MutexSecurity.ResetAccessRule%2A> method to replace both of the existing rules with the new rule.  
+ 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトし、許可し、現在のユーザーのさまざまな権限を拒否する規則を追加します。 現在のユーザーのフル コントロールを許可しを使用して、新しいルールを作成し、 <xref:System.Security.AccessControl.MutexSecurity.ResetAccessRule%2A> メソッドを新しい規則の両方の既存の規則を置換します。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> and <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> と <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.ResetAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.ResetAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.ResetAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.ResetAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.ResetAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.ResetAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.ResetAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.ResetAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="SetAccessRule">
@@ -776,33 +787,33 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.MutexAccessRule" /> to add. The user and <see cref="T:System.Security.AccessControl.AccessControlType" /> of this rule determine the rules to remove before this rule is added.</param>
-        <summary>Removes all access control rules with the same user and <see cref="T:System.Security.AccessControl.AccessControlType" /> (allow or deny) as the specified rule, and then adds the specified rule.</summary>
+        <param name="rule">追加する <see cref="T:System.Security.AccessControl.MutexAccessRule" />。 ユーザーと <see cref="T:System.Security.AccessControl.AccessControlType" /> この規則には、この規則を追加する前に削除の規則を決定します。</param>
+        <summary>同じユーザーを持つすべてのアクセス制御規則を削除し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> \(許可または拒否\)、指定されたルールとし、指定されたルールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the specified rule has <xref:System.Security.AccessControl.AccessControlType.Allow>, the effect of this method is to remove all <xref:System.Security.AccessControl.AccessControlType.Allow> rules for the specified user, replacing them with the specified rule. If the specified rule has <xref:System.Security.AccessControl.AccessControlType.Deny>, all <xref:System.Security.AccessControl.AccessControlType.Deny> rules for the specified user are replaced with the specified rule.  
+## 解説  
+ 指定されたルールがある場合 <xref:System.Security.AccessControl.AccessControlType.Allow>, 、このメソッドの効果がすべて削除するには <xref:System.Security.AccessControl.AccessControlType.Allow> を指定されたルールに置き換えること、指定したユーザーの規則。 指定されたルールがある場合 <xref:System.Security.AccessControl.AccessControlType.Deny>, すべて <xref:System.Security.AccessControl.AccessControlType.Deny> 指定されたユーザーのルールは、指定されたルールに置き換えられます。  
   
- If there are no rules whose user and <xref:System.Security.AccessControl.AccessControlType> match the specified rule, `rule` is added.  
+ 規則がないユーザーの場合と <xref:System.Security.AccessControl.AccessControlType> 指定のルールと一致する `rule` が追加されます。  
   
    
   
-## Examples  
- The following code example shows how the <xref:System.Security.AccessControl.MutexSecurity.SetAccessRule%2A> method removes all rules that match both the user and the <xref:System.Security.AccessControl.AccessControlType> of `rule`, replacing them with `rule`.  
+## 例  
+ 次のコード例に示す方法、 <xref:System.Security.AccessControl.MutexSecurity.SetAccessRule%2A> メソッドは両方のユーザーと一致するすべてのルールを削除し、 <xref:System.Security.AccessControl.AccessControlType> の `rule`, に置き換えられます `rule`します。  
   
- The example creates a <xref:System.Security.AccessControl.MutexSecurity> object and adds rules that allow and deny various rights for the current user. The example then creates a new rule that allows the current user full control, and uses the <xref:System.Security.AccessControl.MutexSecurity.SetAccessRule%2A> method to replace the existing Allow rule with the new rule. The rule that denies access is not affected.  
+ 例を作成し、 <xref:System.Security.AccessControl.MutexSecurity> オブジェクトし、許可し、現在のユーザーのさまざまな権限を拒否する規則を追加します。 現在のユーザーのフル コントロールを許可しを使用して、新しいルールを作成し、 <xref:System.Security.AccessControl.MutexSecurity.SetAccessRule%2A> メソッドを既存の置換が新しいルールとルールを許可します。 アクセスを拒否するルールが影響を受けません。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:System.Threading.Mutex> object. Examples that attach security objects can be found in <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> and <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:System.Threading.Mutex> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=fullName> と <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.MutexSecurity.SetAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.SetAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.MutexSecurity.SetAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.SetAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.SetAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.SetAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.SetAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.SetAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="SetAuditRule">
@@ -827,19 +838,36 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.MutexAuditRule" /> to add. The user specified by this rule determines the rules to remove before this rule is added.</param>
-        <summary>Removes all audit rules with the same user as the specified rule, regardless of the <see cref="T:System.Security.AccessControl.AuditFlags" /> value, and then adds the specified rule.</summary>
+        <param name="rule">追加する <see cref="T:System.Security.AccessControl.MutexAuditRule" />。 このルールで指定されたユーザーは、このルールが追加される前に削除する規則を決定します。</param>
+        <summary>すべてに関係なく、指定されたルールと同じユーザーが規則の監査を削除、 <see cref="T:System.Security.AccessControl.AuditFlags" /> 値に設定して、指定されたルールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If there are no audit rules whose user matches the specified rule, `rule` is added.  
+## 解説  
+ ユーザーが、指定されたルールに一致する監査規則がない場合 `rule` が追加されます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Security.AccessControl.MutexSecurity" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

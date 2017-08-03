@@ -28,58 +28,59 @@
   </TypeParameters>
   <Interfaces />
   <Docs>
-    <typeparam name="T">The object that provides notification information.</typeparam>
-    <summary>Defines a provider for push-based notification.</summary>
+    <typeparam name="T">通知情報を提供するオブジェクト。</typeparam>
+    <summary>プッシュ ベースの通知用プロバイダーを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IObserver%601> and <xref:System.IObservable%601> interfaces provide a generalized mechanism for push-based notification, also known as the observer design pattern. The <xref:System.IObservable%601> interface represents the class that sends notifications (the provider); the <xref:System.IObserver%601> interface represents the class that receives them (the observer). `T` represents the class that provides the notification information. In some push-based notifications, the <xref:System.IObserver%601> implementation and `T` can represent the same type.  
+## 解説  
+ <xref:System.IObserver%601> と <xref:System.IObservable%601> インターフェイスは、プッシュ ベースの通知、オブザーバー デザイン パターンとも呼ばれますを汎用化されたメカニズムを提供します。<xref:System.IObservable%601> インターフェイスを表します \(プロバイダー\) の場合は通知を送信するクラス、 <xref:System.IObserver%601> インターフェイスは、受信する \(observer\) クラスを表します。`T` 通知情報を提供するクラスを表します。 いくつかのプッシュ ベースの通知で、 <xref:System.IObserver%601> 実装と `T` は同じ型を表すことができます。  
   
- The provider must implement a single method, <xref:System.IObservable%601.Subscribe%2A>, that indicates that an observer wants to receive push-based notifications. Callers to the method pass an instance of the observer. The method returns an <xref:System.IDisposable> implementation that enables observers to cancel notifications at any time before the provider has stopped sending them.  
+ プロバイダーは 1 つのメソッドを実装する必要があります <xref:System.IObservable%601.Subscribe%2A>, 、オブザーバーがプッシュ ベースの通知を受信することを示します。 メソッドの呼び出し元は、オブザーバーのインスタンスを渡します。 このメソッドを返します、 <xref:System.IDisposable> により、オブザーバーで通知をいつでも、プロバイダーが送信を停止する前にキャンセルを実装します。  
   
- At any given time, a given provider may have zero, one, or multiple observers. The provider is responsible for storing references to observers and ensuring that they are valid before it sends notifications. The <xref:System.IObservable%601> interface does not make any assumptions about the number of observers or the order in which notifications are sent.  
+ どの時点において、指定されたプロバイダーは、0、1、または複数のオブザーバーがあります。 プロバイダーは、オブザーバーへの参照を格納して、確実に有効な通知を送信する前にします。<xref:System.IObservable%601> インターフェイスはオブザーバーや通知が送信される注文の数はどのような想定を行いません。  
   
- The provider sends the following three kinds of notifications to the observer by calling <xref:System.IObserver%601> methods:  
+ プロバイダーはオブザーバーを呼び出して次の 3 種類の通知を送信する <xref:System.IObserver%601> メソッド。  
   
--   The current data. The provider can call the <xref:System.IObserver%601.OnNext%2A?displayProperty=fullName> method to pass the observer a `T` object that has current data, changed data, or fresh data.  
+-   現在のデータです。 プロバイダーが呼び出すことができます、 <xref:System.IObserver%601.OnNext%2A?displayProperty=fullName> をオブザーバーに渡す方法、 `T` を現在のデータ、変更されたデータ、または新しいデータを持つオブジェクト。  
   
--   An error condition. The provider can call the <xref:System.IObserver%601.OnError%2A?displayProperty=fullName> method to notify the observer that some error condition has occurred.  
+-   エラーが発生します。 プロバイダーが呼び出すことができます、 <xref:System.IObserver%601.OnError%2A?displayProperty=fullName> 何らかのエラー状態が発生したこと、オブザーバーに通知します。  
   
--   No further data. The provider can call the <xref:System.IObserver%601.OnCompleted%2A?displayProperty=fullName> method to notify the observer that it has finished sending notifications.  
+-   さらにデータがありません。 プロバイダーが呼び出すことができます、 <xref:System.IObserver%601.OnCompleted%2A?displayProperty=fullName> 通知の送信が完了したことをオブザーバーに通知するメソッドです。  
   
    
   
-## Examples  
- The following example illustrates the observer design pattern. It defines a `Location` class that contains latitude and longitude information.  
+## 例  
+ 次の例では、オブザーバー デザイン パターンを示します。 定義、 `Location` 緯度と経度の情報を含むクラスです。  
   
- [!code-csharp[System.IObserver.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#5)]
- [!code-vb[System.IObserver.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#5)]  
+ [!code-csharp[System.IObserver.Class\#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#5)]
+ [!code-vb[System.IObserver.Class\#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#5)]  
   
- The `LocationTracker` class provides the <xref:System.IObservable%601> implementation. Its `TrackLocation` method is passed a nullable `Location` object that contains the latitude and longitude data. If the `Location` value is not `null`, the `TrackLocation` method calls the <xref:System.IObserver%601.OnNext%2A> method of each observer.  
+ `LocationTracker` クラスには、 <xref:System.IObservable%601> 実装します。 その `TrackLocation` メソッドが渡される null 値を許容 `Location` 緯度と経度のデータを含むオブジェクト。 場合、 `Location` の値が `null`, 、 `TrackLocation` メソッドの呼び出し、 <xref:System.IObserver%601.OnNext%2A> 各オブザーバーのメソッドです。  
   
- [!code-csharp[System.IObserver.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#6)]
- [!code-vb[System.IObserver.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#6)]  
+ [!code-csharp[System.IObserver.Class\#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#6)]
+ [!code-vb[System.IObserver.Class\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#6)]  
   
- If the `Location` value is `null`, the `TrackLocation` method instantiates a `LocationUnknownException` object, which is shown in the following example. It then calls each observer's <xref:System.IObserver%601.OnError%2A> method and passes it the `LocationUnknownException` object. Note that `LocationUnknownException` derives from <xref:System.Exception>, but does not add any new members.  
+ 場合、 `Location` 値は `null`, 、 `TrackLocation` メソッドをインスタンス化、 `LocationUnknownException` 次の例に示されているオブジェクト。 各オブザーバーの順に呼び出して <xref:System.IObserver%601.OnError%2A> メソッドに渡すと、 `LocationUnknownException` オブジェクトです。`LocationUnknownException` から派生 <xref:System.Exception>, 、新しいメンバーを追加しません。  
   
- [!code-csharp[System.IObserver.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#7)]
- [!code-vb[System.IObserver.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#7)]  
+ [!code-csharp[System.IObserver.Class\#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#7)]
+ [!code-vb[System.IObserver.Class\#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#7)]  
   
- Observers register to receive notifications from a `TrackLocation` object by calling its <xref:System.IObservable%601.Subscribe%2A?displayProperty=fullName> method, which assigns a reference to the observer object to a private generic <xref:System.Collections.Generic.List%601> object. The method returns an `Unsubscriber` object, which is an <xref:System.IDisposable> implementation that enables observers to stop receiving notifications. The `LocationTracker` class also includes an `EndTransmission` method. When no further location data is available, the method calls each observer's <xref:System.IObserver%601.OnCompleted%2A> method and then clears the internal list of observers.  
+ 通知を受信するオブザーバーを登録、 `TrackLocation` オブジェクトを呼び出してその <xref:System.IObservable%601.Subscribe%2A?displayProperty=fullName> オブザーバー オブジェクトへの参照をプライベート ジェネリックに割り当てる方法 <xref:System.Collections.Generic.List%601> オブジェクトです。 このメソッドを返します、 `Unsubscriber` オブジェクトを <xref:System.IDisposable> オブザーバーで通知の受信を停止することができる実装します。`LocationTracker` クラスも含まれます、 `EndTransmission` メソッドです。 場所のデータをさらに利用できない場合は、メソッドの各オブザーバーの <xref:System.IObserver%601.OnCompleted%2A> メソッドしオブザーバーの内部の一覧をクリアします。  
   
- In this example, the `LocationReporter` class provides the <xref:System.IObserver%601> implementation. It displays information about the current location to the console. Its constructor includes a `name` parameter, which enables the `LocationReporter` instance to identify itself in its string output. It also includes a `Subscribe` method, which wraps a call to the provider's <xref:System.IObservable%601.Subscribe%2A> method. This allows the method to assign the returned <xref:System.IDisposable> reference to a private variable. The `LocationReporter` class also includes an `Unsubscribe` method, which calls the <xref:System.IDisposable.Dispose%2A?displayProperty=fullName> method of the object that is returned by the <xref:System.IObservable%601.Subscribe%2A?displayProperty=fullName> method. The following code defines the `LocationReporter` class.  
+ この例では、 `LocationReporter` クラスには、 <xref:System.IObserver%601> 実装します。 コンソールには、現在の場所に関する情報が表示されます。 コンス トラクターが含まれています、 `name` パラメーターは、これにより、 `LocationReporter` の文字列の出力で自身を識別するインスタンス。 含まれています、 `Subscribe` をプロバイダーの呼び出しをラップするメソッドを <xref:System.IObservable%601.Subscribe%2A> メソッドです。 これにより、メソッドは、返された割り当てる <xref:System.IDisposable> プライベート変数への参照。`LocationReporter` クラスも含まれます、 `Unsubscribe` メソッドを呼び出す、 <xref:System.IDisposable.Dispose%2A?displayProperty=fullName> によって返されるオブジェクトのメソッド、 <xref:System.IObservable%601.Subscribe%2A?displayProperty=fullName> メソッドです。 次のコード定義、 `LocationReporter` クラスです。  
   
- [!code-csharp[System.IObserver.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/observer.cs#8)]
- [!code-vb[System.IObserver.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/observer.vb#8)]  
+ [!code-csharp[System.IObserver.Class\#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/observer.cs#8)]
+ [!code-vb[System.IObserver.Class\#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/observer.vb#8)]  
   
- The following code then instantiates the provider and the observer.  
+ 次のコードは、プロバイダーとオブザーバーにし、インスタンス化します。  
   
- [!code-csharp[System.IObserver.Class#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/program.cs#9)]
- [!code-vb[System.IObserver.Class#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/module1.vb#9)]  
+ [!code-csharp[System.IObserver.Class\#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/program.cs#9)]
+ [!code-vb[System.IObserver.Class\#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/module1.vb#9)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.IObserver`1" />
   </Docs>
   <Members>
     <Member MemberName="Subscribe">
@@ -111,31 +112,32 @@
         <Parameter Name="observer" Type="System.IObserver&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="observer">The object that is to receive notifications.</param>
-        <summary>Notifies the provider that an observer is to receive notifications.</summary>
-        <returns>A reference to an interface that allows observers to stop receiving notifications before the provider has finished sending them.</returns>
+        <param name="observer">通知を受け取るオブジェクト。</param>
+        <summary>オブザーバーが通知を受け取ることをプロバイダーに通知します。</summary>
+        <returns>プロバイダーが通知の送信を完了する前に、オブザーバーが通知の受信を停止できるインターフェイスへの参照。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IObservable%601.Subscribe%2A> method must be called to register an observer for push-based notifications. A typical implementation of the <xref:System.IObservable%601.Subscribe%2A> method does the following:  
+## 解説  
+ <xref:System.IObservable%601.Subscribe%2A>プッシュ ベースの通知のオブザーバーを登録するメソッドを呼び出す必要があります。 一般的な実装、<xref:System.IObservable%601.Subscribe%2A>メソッドは、次を実行します。  
   
--   It stores a reference to the observer in a collection object, such as a <xref:System.Collections.Generic.List%601> object.  
+-   格納、オブザーバーへの参照をコレクション オブジェクト内など、<xref:System.Collections.Generic.List%601>オブジェクト。  
   
--   It returns a reference to an <xref:System.IDisposable> interface. This enables observers to unsubscribe (that is, to stop receiving notifications) before the provider has finished sending them and called the subscriber's <xref:System.IObserver%601.OnCompleted%2A> method.  
+-   参照を返します、<xref:System.IDisposable>インターフェイスです。 これにより、オブザーバーをアンサブスク ライブする \(つまり、通知の受信を停止する\) プロバイダーが送信を完了し、サブスクライバーのと呼ばれる前に<xref:System.IObserver%601.OnCompleted%2A>メソッドです。  
   
- At any given time, a particular instance of an <xref:System.IObservable%601> implementation is responsible for handling all subscriptions and notifying all subscribers. Unless the documentation for a particular <xref:System.IObservable%601> implementation indicates otherwise, observers should make no assumptions about the <xref:System.IObservable%601> implementation, such as the order of notifications that multiple observers will receive.  
+ ある一定期間の特定のインスタンス、<xref:System.IObservable%601>実装はすべてのサブスクリプションを処理して、すべてのサブスクライバーに通知します。 しない限り、特定のドキュメント<xref:System.IObservable%601>実装がそれ以外の場合を示しますオブザーバーを作成してはならない前提条件に関する、<xref:System.IObservable%601>など複数のオブザーバーを受信する通知の順番の実装です。  
   
    
   
-## Examples  
- The following example illustrates the <xref:System.IObservable%601.Subscribe%2A> method for an application that reports latitude and longitude information. It defines an <xref:System.Collections.Generic.IList%601> collection object that stores references to all observers. It also returns a private class named `Unsubscriber` that implements the <xref:System.IDisposable> interface and enables subscribers to stop receiving event notifications.  See the Example section of the <xref:System.IObservable%601> topic for the complete example.  
+## 例  
+ 次の例を示しています、<xref:System.IObservable%601.Subscribe%2A>緯度と経度の情報を報告するアプリケーションのメソッドです。 定義する、<xref:System.Collections.Generic.IList%601>すべてオブザーバーへの参照を格納するコレクション オブジェクト。 という名前のプライベート クラスも返します`Unsubscriber`を実装する、<xref:System.IDisposable>インターフェイスし、イベント通知を受け取らないようにするためのサブスクライバーを有効にします。  使用例を参照してください、<xref:System.IObservable%601>コード例全体についてのトピックです。  
   
- [!code-csharp[System.IObserver.Class#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#13)]
- [!code-vb[System.IObserver.Class#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#13)]  
+ [!code-csharp[System.IObserver.Class\#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.iobserver.class/cs/provider.cs#13)]
+ [!code-vb[System.IObserver.Class\#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.iobserver.class/vb/provider.vb#13)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.IObserver`1" />
       </Docs>
     </Member>
   </Members>

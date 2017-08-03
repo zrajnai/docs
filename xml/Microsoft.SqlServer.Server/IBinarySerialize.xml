@@ -9,17 +9,20 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Provides custom implementation for user-defined type (UDT) and user-defined aggregate serialization and deserialization.</summary>
+    <summary>ユーザー定義型 \(UDT\) とユーザー定義集計のシリアル化および逆シリアル化のカスタム実装を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- User-defined types (UDTs) and user-defined aggregates are required to define a storage format, which can be either <xref:Microsoft.SqlServer.Server.Format>.`Native` or <xref:Microsoft.SqlServer.Server.Format>.`UserDefined`.  
+## 解説  
+ ユーザー定義型 \(Udt\) およびユーザー定義集計は、のいずれかのストレージ形式を定義する必要が <xref:Microsoft.SqlServer.Server.Format>.`Native` または <xref:Microsoft.SqlServer.Server.Format>.`UserDefined`します。  
   
- <xref:Microsoft.SqlServer.Server.Format>.`Native` allows SQL Server to handle serialization and deserialization automatically, but the format has restrictions on the kind of types it can handle. <xref:Microsoft.SqlServer.Server.Format>.`UserDefined` allows user-defined types and aggregates to handle their own serialization. User-defined types and aggregates must be marked with <xref:Microsoft.SqlServer.Server.Format>.`UserDefined` in the `SqlUserDefinedType` or `SqlUserDefinedAggregate` attribute, and must implement the <xref:Microsoft.SqlServer.Server.IBinarySerialize> interface.  
+ <xref:Microsoft.SqlServer.Server.Format>.`Native` SQL Server をシリアル化を処理し、自動的に逆シリアル化が、形式が処理できる型の種類に制限されます。<xref:Microsoft.SqlServer.Server.Format>.`UserDefined` 独自のシリアル化を処理するには、ユーザー定義型と集計を使用します。 ユーザー定義型および集計をマークする必要があります <xref:Microsoft.SqlServer.Server.Format>.`UserDefined` で、 `SqlUserDefinedType` または `SqlUserDefinedAggregate` 属性があり、実装する必要があります、 <xref:Microsoft.SqlServer.Server.IBinarySerialize> インターフェイスです。  
   
- Note that even with custom serialization, the total size of each instance must be under the maximum allowed limit, currently 8000 bytes.  
+ カスタムのシリアル化しても各インスタンスの合計サイズは 8,000 バイトを現在の制限を許可する最大する必要がありますに注意してください。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -41,21 +44,22 @@
         <Parameter Name="r" Type="System.IO.BinaryReader" />
       </Parameters>
       <Docs>
-        <param name="r">The <see cref="T:System.IO.BinaryReader" /> stream from which the object is deserialized.</param>
-        <summary>Generates a user-defined type (UDT) or user-defined aggregate from its binary form.</summary>
+        <param name="r">
+          <see cref="T:System.IO.BinaryReader" /> 、オブジェクトが逆シリアル化ストリーム配信します。</param>
+        <summary>バイナリ形式にからユーザー定義型 \(UDT\) またはユーザー定義集計を生成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> method must reconstitute your object using the information written by the <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A> method.  
+## 解説  
+ <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> メソッドがによって書き込まれた情報を使用して、オブジェクトを再構成する必要があります、 <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A> メソッドです。  
   
    
   
-## Examples  
- The following example shows the implementation of the <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> method of a UDT, which uses a <xref:System.IO.BinaryReader> to de-serialize a previously persisted UDT. This example assumes that the UDT has two data properties: `StringValue` and `DoubleValue`.  
+## 例  
+ 実装の次の例を <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> を使用すると、UDT のメソッド、 <xref:System.IO.BinaryReader> に保持されていた UDT を逆シリアル化します。 この例では、UDT が 2 つのデータ プロパティを持つ: `StringValue` と `DoubleValue`です。  
   
- [!code-csharp[DataWorks IBinarySerialize Samples#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/CS/source.cs#1)]
- [!code-vb[DataWorks IBinarySerialize Samples#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/VB/source.vb#1)]  
+ [!code-csharp[DataWorks IBinarySerialize Samples\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/CS/source.cs#1)]
+ [!code-vb[DataWorks IBinarySerialize Samples\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -78,21 +82,22 @@
         <Parameter Name="w" Type="System.IO.BinaryWriter" />
       </Parameters>
       <Docs>
-        <param name="w">The <see cref="T:System.IO.BinaryWriter" /> stream to which the UDT or user-defined aggregate is serialized.</param>
-        <summary>Converts a user-defined type (UDT) or user-defined aggregate into its binary format so that it may be persisted.</summary>
+        <param name="w">
+          <see cref="T:System.IO.BinaryWriter" /> UDT またはユーザー定義集計がシリアル化するストリーム。</param>
+        <summary>永続化されるように、バイナリ形式にユーザー定義型 \(UDT\) またはユーザー定義集計を変換します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Write sufficient information to the binary stream to allow the <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> method to reconstitute your UDT or user-defined aggregate.  
+## 解説  
+ 十分な情報を許可するようにバイナリ ストリームに書き込み、 <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> UDT またはユーザー定義集計を構築する方法です。  
   
    
   
-## Examples  
- The following example shows the implementation of the <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A>method of a UDT, which uses a <xref:System.IO.BinaryWriter> to serialize the UDT in the user-defined binary format. The purpose of the null character padding is to ensure that the string value is completely separated from the double value, so that one UDT is compared to another in Transact-SQL code, string bytes are compared to string bytes and double bytes are compared to double bytes.  
+## 例  
+ 実装の次の例を <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A>を使用すると、UDT のメソッド、 <xref:System.IO.BinaryWriter> をユーザー定義のバイナリ形式で UDT をシリアル化します。 Null 文字の埋め込みの目的は、TRANSACT\-SQL コード内の他に 1 つの UDT を比較し、文字列のバイトを文字列のバイトを比較し、2 バイト、2 バイトと比較ように文字列の値が完全に double 型の値から分離するためです。  
   
- [!code-csharp[DataWorks IBinarySerialize Samples#2](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/CS/source.cs#2)]
- [!code-vb[DataWorks IBinarySerialize Samples#2](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/VB/source.vb#2)]  
+ [!code-csharp[DataWorks IBinarySerialize Samples\#2](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/CS/source.cs#2)]
+ [!code-vb[DataWorks IBinarySerialize Samples\#2](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>

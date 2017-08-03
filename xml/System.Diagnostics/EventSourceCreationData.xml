@@ -11,43 +11,45 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents the configuration settings used to create an event log source on the local computer or a remote computer.</summary>
+    <summary>ローカル コンピューターまたはリモート コンピューター上のイベント ログ ソースの作成に使用する構成設定を表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Diagnostics.EventSourceCreationData> class to configure a new source for writing localized entries to an event log. It is not necessary to use this class to read from an event log.  
+## 解説  
+ 使用して、 <xref:System.Diagnostics.EventSourceCreationData> ローカライズされたエントリをイベント ログに書き込むための新しいソースを構成するクラス。 イベント ログから読み取りにこのクラスを使用する必要はありません。  
   
- This class defines the configuration settings for a new event source and its associated event log. The associated event log can be on the local computer or a remote computer. To create a new source for a new or existing event log on the local computer, set the <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> and <xref:System.Diagnostics.EventSourceCreationData.Source%2A> properties of an <xref:System.Diagnostics.EventSourceCreationData> and call the <xref:System.Diagnostics.EventLog.CreateEventSource%28System.Diagnostics.EventSourceCreationData%29?displayProperty=fullName> method. This method creates the event source you specify in the <xref:System.Diagnostics.EventSourceCreationData.Source%2A> property and registers it for the event log specified in <xref:System.Diagnostics.EventSourceCreationData.LogName%2A>. This behavior is similar to using the <xref:System.Diagnostics.EventLogInstaller> class to register an event source for an event log.  
+ このクラスは、新しいイベント ソースおよびその関連のイベント ログの構成設定を定義します。 関連付けられているイベント ログは、ローカル コンピューターまたはリモート コンピューターに配置できます。 ローカル コンピューター上には、新規または既存のイベント ログの新しいソースを作成するには、設定、 <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> と <xref:System.Diagnostics.EventSourceCreationData.Source%2A> のプロパティ、 <xref:System.Diagnostics.EventSourceCreationData> を呼び出すと、 <xref:System.Diagnostics.EventLog.CreateEventSource%28System.Diagnostics.EventSourceCreationData%29?displayProperty=fullName> メソッドです。 このメソッドで指定したイベント ソースの作成、 <xref:System.Diagnostics.EventSourceCreationData.Source%2A> で指定されたイベント ログのプロパティとレジスタ <xref:System.Diagnostics.EventSourceCreationData.LogName%2A>します。 この動作を使用するような <xref:System.Diagnostics.EventLogInstaller> をイベント ログのイベント ソースを登録します。  
   
- Use the <xref:System.Diagnostics.EventLog.WriteEvent%2A> and <xref:System.Diagnostics.EventLog.WriteEntry%2A> methods to write events to an event log. You must specify an event source to write events; you must create and configure the event source before writing the first entry with the source.  
+ 使用して、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> と <xref:System.Diagnostics.EventLog.WriteEntry%2A> イベントをイベント ログに書き込む方法です。 イベントを書き込むイベント ソースを指定する必要があります。作成および、ソースとの最初のエントリを書き込む前にイベント ソースを構成する必要があります。  
   
- Create the new event source during the installation of your application. This allows time for the operating system to refresh its list of registered event sources and their configurations. If the operating system has not refreshed its list of event sources, and you attempt to write an event with the new source, the write operation will fail. You can configure a new source using an <xref:System.Diagnostics.EventLogInstaller>, or using the <xref:System.Diagnostics.EventLog.CreateEventSource%2A> method. You must have administrative rights on the computer to create a new event source.  
+ アプリケーションのインストール中に新しいイベント ソースを作成します。 これにより、オペレーティング システムの構成と登録されたイベント ソースの一覧を更新するためのタイミングです。 オペレーティング システムがイベント ソースの一覧を更新するいないと書き込もうとした新しいソースを持つイベントの書き込み操作は失敗します。 使用して新しいソースを構成することができます、 <xref:System.Diagnostics.EventLogInstaller>, 、またはを使用して、 <xref:System.Diagnostics.EventLog.CreateEventSource%2A> メソッドです。 新しいイベント ソースを作成するコンピューターで管理者権限が必要です。  
   
- You can create an event source for an existing event log or a new event log. When you create a new source for a new event log, the system registers the source for that log, but the log is not created until the first entry is written to it.  
+ 既存のイベント ログまたは新しいイベント ログのイベント ソースを作成することができます。 新しいイベント ログの新しいソースを作成するときにそのログのソースが登録されますが、最初のエントリが書き込まれるまで、ログは作成されません。  
   
- Each source can only write to one event log at a time; however, your application can use multiple sources to write to multiple event logs. For example, your application might need multiple sources configured for different event logs or different resource files.  
+ 同時に、各ソースは 1 つのイベント ログに書き込むだけことができます。ただし、アプリケーションでは、複数のソースを使用して、複数のイベント ログに書き込みます。 たとえば、アプリケーションでは、別のイベント ログまたは別のリソース ファイル用に構成された複数のソースを必要があります。  
   
- To change the configuration details of an existing source, you must delete the source and then create it with the new configuration. If other applications or components use the existing source, create a new source with the updated configuration rather than deleting the existing source.  
+ 既存のソースの構成の詳細を変更するには、ソースを削除してから、新しい構成を使用して作成します。 他のアプリケーションやコンポーネントは、既存のソースを使用して、既存のソースを削除するのではなく、更新された構成で新しいソースを作成します。  
   
- You can register the event source with localized resources for your event category and message strings. Your application can write event log entries using resource identifiers, rather than specifying the actual string. The Event Viewer uses the resource identifier to find and display the corresponding string from the localized resource file based on current language settings. You can register a separate file for event categories, messages, and parameter insertion strings, or you can register the same resource file for all three types of strings. Use the <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A>, <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A>, <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>, and <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> properties to configure the source to write localized entries to the event log. If your application writes string values directly to the event log, you do not need to set these properties.  
+ イベント カテゴリおよびメッセージ文字列のローカライズされたリソースをイベント ソースを登録できます。 アプリケーションでは、実際の文字列を指定するのではなく、リソース識別子を使用してイベント ログ エントリを書き込むことができます。 イベント ビューアーでは、リソース識別子を使用して、検索し、現在の言語設定に基づくローカライズされたリソース ファイルから対応する文字列を表示します。 イベントのカテゴリ、メッセージ、およびパラメーターの挿入文字列の個別のファイルを登録するまたはすべての 3 種類の文字列に同じリソース ファイルを登録することができます。 使用して、 <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A>, 、<xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A>, 、<xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>, 、および <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> ローカライズされたエントリをイベント ログに書き込むにソースを構成するプロパティです。 アプリケーションがイベント ログに直接文字列の値を書き込む場合は、これらのプロパティを設定する必要はありません。  
   
- The source must be configured either for writing localized entries or for writing direct strings. The <xref:System.Diagnostics.EventLog.WriteEntry%2A> method writes the given string directly to the event log; it does not use a localizable message resource file. Use the <xref:System.Diagnostics.EventLog.WriteEvent%2A> method to write events using a localized message resource file.  
+ ローカライズされたエントリを書き込むか、または直接の文字列を作成するため、ソースを構成する必要があります。<xref:System.Diagnostics.EventLog.WriteEntry%2A> メソッドは、イベント ログを直接指定した文字列を書き込む場合、ローカライズ可能なメッセージ リソース ファイルは使用されません。 使用して、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> にローカライズされたメッセージ リソース ファイルを使用してイベントを書き込みます。  
   
- If your application writes entries using both resource identifiers and string values, you must register two separate sources. For example, configure one source with resource files, and then use that source in the <xref:System.Diagnostics.EventLog.WriteEvent%2A> method to write entries using resource identifiers to the event log. Then create a different source without resource files and use that source in the <xref:System.Diagnostics.EventLog.WriteEntry%2A> method to write strings directly to the event log using that source.  
+ アプリケーションがリソース識別子と文字列の値の両方を使用してエントリを書き込む場合は、2 つの異なるソースを登録する必要があります。 たとえば、リソース ファイルを 1 つのソースを構成しでそのソースを使用して、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> リソース id、イベント ログを使用してエントリを書き込みます。 リソース ファイルがない場合、別のソースを作成しでそのソースを使用して、 <xref:System.Diagnostics.EventLog.WriteEntry%2A> そのソースを使用して、イベント ログに直接文字列を書き込みます。  
   
    
   
-## Examples  
- The following code example sets the configuration properties for an event source from command-line arguments. The input arguments specify the event source name, event log name, computer name, and event message resource file. The code example verifies that the source does not conflict with an existing event source, and then creates the new event source for the specified event log.  
+## 例  
+ 次のコード例では、コマンドライン引数から、イベント ソースの構成プロパティを設定します。 入力引数は、イベント ソース名、イベント ログ名、コンピューター名、およびイベント メッセージ リソース ファイルを指定します。 コード例は、ソース既存のイベント ソースと競合しないことを検証して指定されたイベント ログの新しいイベント ソースを作成します。  
   
- [!code-cpp[EventLog_EventSourceCreation_Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#1)]
- [!code-csharp[EventLog_EventSourceCreation_Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#1)]
- [!code-vb[EventLog_EventSourceCreation_Properties#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#1)]  
+ [!code-cpp[EventLog\_EventSourceCreation\_Properties\#1](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#1)]
+ [!code-csharp[EventLog\_EventSourceCreation\_Properties\#1](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#1)]
+ [!code-vb[EventLog\_EventSourceCreation\_Properties\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
     <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+    <altmember cref="T:System.Diagnostics.EventLog" />
+    <altmember cref="T:System.Diagnostics.EventLogInstaller" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -64,41 +66,41 @@
         <Parameter Name="logName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="source">The name to register with the event log as a source of entries.</param>
-        <param name="logName">The name of the log to which entries from the source are written.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Diagnostics.EventSourceCreationData" /> class with a specified event source and event log name.</summary>
+        <param name="source">イベント ログ エントリのソースとして登録する名前です。</param>
+        <param name="logName">ソースのエントリが書き込まれるログの名前。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Diagnostics.EventSourceCreationData" /> クラスを指定したイベント ソースおよびイベント ログ名を使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To write entries to an event log, you must first create an event source for the event log. To register a new source, initialize an <xref:System.Diagnostics.EventSourceCreationData> instance, configure the instance properties for your application, and call the <xref:System.Diagnostics.EventLog.CreateEventSource%28System.Diagnostics.EventSourceCreationData%29?displayProperty=fullName> method. After the source is registered, you can write entries from the source using the <xref:System.Diagnostics.EventLog.WriteEvent%2A> or <xref:System.Diagnostics.EventLog.WriteEntry%2A> methods.  
+## 解説  
+ エントリをイベント ログに書き込むには、まず、イベント ログのイベント ソースを作成する必要があります。 新しいソースを登録するには、初期化、 <xref:System.Diagnostics.EventSourceCreationData> インスタンスで、アプリケーション、および呼び出しのインスタンスのプロパティを構成、 <xref:System.Diagnostics.EventLog.CreateEventSource%28System.Diagnostics.EventSourceCreationData%29?displayProperty=fullName> メソッドです。 使用してソースからエントリを書き込むことができます、ソースが登録されると、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> または <xref:System.Diagnostics.EventLog.WriteEntry%2A> メソッドです。  
   
- You can register the event source with localized resources for your event category and message strings. Your application can write event log entries using resource identifiers, rather than specifying the actual string. The Event Viewer uses the resource identifier to find and display the corresponding string from the localized resource file based on current language settings. You can register a separate file for event categories, messages, and parameter insertion strings, or you can register the same resource file for all three types of strings. Use the <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A>, <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A>, <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>, and <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> properties to configure the source to write localized entries to the event log. If your application writes string values directly to the event log, you do not need to set these properties.  
+ イベント カテゴリおよびメッセージ文字列のローカライズされたリソースをイベント ソースを登録できます。 アプリケーションでは、実際の文字列を指定するのではなく、リソース識別子を使用してイベント ログ エントリを書き込むことができます。 イベント ビューアーでは、リソース識別子を使用して、検索し、現在の言語設定に基づくローカライズされたリソース ファイルから対応する文字列を表示します。 イベントのカテゴリ、メッセージ、およびパラメーターの挿入文字列の個別のファイルを登録するまたはすべての 3 種類の文字列に同じリソース ファイルを登録することができます。 使用して、 <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A>, 、<xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A>, 、<xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>, 、および <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> ローカライズされたエントリをイベント ログに書き込むにソースを構成するプロパティです。 アプリケーションがイベント ログに直接文字列の値を書き込む場合は、これらのプロパティを設定する必要はありません。  
   
- The source must be configured either for writing localized entries or for writing direct strings. If your application writes entries using both resource identifiers and string values, you must register two separate sources. For example, configure one source with resource files, and then use that source in the <xref:System.Diagnostics.EventLog.WriteEvent%2A> method to write entries using resource identifiers to the event log. Then create a different source without resource files and use that source in the <xref:System.Diagnostics.EventLog.WriteEntry%2A> method to write strings directly to the event log.  
+ ローカライズされたエントリを書き込むか、または直接の文字列を作成するため、ソースを構成する必要があります。 アプリケーションがリソース識別子と文字列の値の両方を使用してエントリを書き込む場合は、2 つの異なるソースを登録する必要があります。 たとえば、リソース ファイルを 1 つのソースを構成しでそのソースを使用して、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> リソース id、イベント ログを使用してエントリを書き込みます。 リソース ファイルがない場合、別のソースを作成しでそのソースを使用して、 <xref:System.Diagnostics.EventLog.WriteEntry%2A> イベント ログに直接文字列を書き込みます。  
   
- The following table shows initial property values for an <xref:System.Diagnostics.EventSourceCreationData>.  
+ 次の表の初期プロパティ値、 <xref:System.Diagnostics.EventSourceCreationData>です。  
   
-|Property|Initial Value|  
-|--------------|-------------------|  
-|<xref:System.Diagnostics.EventSourceCreationData.Source%2A>|The `source` parameter.|  
-|<xref:System.Diagnostics.EventSourceCreationData.LogName%2A>|The `logName` parameter.|  
-|<xref:System.Diagnostics.EventSourceCreationData.MachineName%2A>|The local computer (".").|  
-|<xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A>|Zero|  
-|<xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A>|`null` (`Nothing` in Visual Basic).|  
-|<xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>|`null` (`Nothing` in Visual Basic).|  
-|<xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A>|`null` (`Nothing` in Visual Basic).|  
+|プロパティ|初期値|  
+|-----------|---------|  
+|<xref:System.Diagnostics.EventSourceCreationData.Source%2A>|`source` パラメーター。|  
+|<xref:System.Diagnostics.EventSourceCreationData.LogName%2A>|`logName` パラメーター。|  
+|<xref:System.Diagnostics.EventSourceCreationData.MachineName%2A>|ローカル コンピューター \("です。"\) です。|  
+|<xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A>|0|  
+|<xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A>|`null` \(Visual Basic の場合は `Nothing`\)。|  
+|<xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>|`null` \(Visual Basic の場合は `Nothing`\)。|  
+|<xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A>|`null` \(Visual Basic の場合は `Nothing`\)。|  
   
    
   
-## Examples  
- The following code example determines whether the event source named `SampleApplicationSource` is registered on the local computer. If the event source does not exist, the example sets the message resource file for the source and creates the new event source. Finally, the code example sets the localized display name for the event log, using the resource identifier value in `DisplayNameMsgId` and the resource file path in `messageFile`.  
+## 例  
+ 次のコード例では、イベント ソースが名前付きかどうかを判断 `SampleApplicationSource` をローカル コンピューターに登録します。 イベント ソースが存在しない場合の例は、ソースのメッセージ リソース ファイルを設定し、新しいイベント ソースを作成します。 コード例でのリソース識別子の値を使用して、イベント ログのローカライズされた表示名を設定する最後に、 `DisplayNameMsgId` とリソース ファイルのパスに `messageFile`します。  
   
- [!code-cpp[EventLog_WriteEvent#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
- [!code-csharp[EventLog_WriteEvent#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
- [!code-vb[EventLog_WriteEvent#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
+ [!code-cpp[EventLog\_WriteEvent\#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
+ [!code-csharp[EventLog\_WriteEvent\#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
+ [!code-vb[EventLog\_WriteEvent\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
   
- The code example uses the following message text file, built into the resource library EventLogMsgs.dll. A message text file is the source from which the message resource file is created. The message text file defines the resource identifiers and text for the category, event message, and parameter insertion strings.  
+ このコード例では、EventLogMsgs.dll リソース ライブラリに組み込まれている次のメッセージのテキスト ファイルを使用します。 メッセージのテキスト ファイルは、メッセージ リソース ファイルの作成元のソースです。 メッセージのテキスト ファイルでは、リソース識別子とカテゴリ、イベント メッセージは、パラメーターの挿入文字列のテキストを定義します。  
   
 ```  
 ; // EventLogMsgs.mc  
@@ -214,6 +216,8 @@ SVC_UPDATE.EXE
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventSourceCreationData.Source" />
+        <altmember cref="P:System.Diagnostics.EventSourceCreationData.LogName" />
       </Docs>
     </Member>
     <Member MemberName="CategoryCount">
@@ -229,28 +233,28 @@ SVC_UPDATE.EXE
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the number of categories in the category resource file.</summary>
-        <value>The number of categories in the category resource file. The default value is zero.</value>
+        <summary>取得またはカテゴリのリソース ファイル内の項目数を設定します。</summary>
+        <value>カテゴリのリソース ファイル内のカテゴリの数。 既定値は 0 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> and <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> properties to write events with localized category strings. The Event Viewer displays the category for an event entry if you supply a category when you write the event. Event log categories are application-defined strings that help filter events, or provide further information on the event. For example, your application can define separate categories for different components or different operations.  
+## 解説  
+ 使用して、 <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> と <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> でイベントを書き込むプロパティがカテゴリ文字列をローカライズします。 イベント ビューアーでは、イベントを記述するときに、カテゴリを指定した場合、対応するエントリをイベント カテゴリが表示されます。 イベント ログのカテゴリは、イベントをフィルター処理、またはイベントで詳細情報を提供するアプリケーション定義の文字列です。 たとえば、アプリケーションでは、さまざまなコンポーネントまたは操作ごとに個別のカテゴリを定義できます。  
   
- Event categories are optional; if your application does not use categories, do not set the <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> and <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> properties.  
+ イベント カテゴリは省略可能です。アプリケーションでのカテゴリを使用しない場合は設定しないで、 <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> と <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> プロパティです。  
   
- For details about defining event messages and building event resource files, see the "Message Compiler" topic in the Platform SDK documentation at [http://msdn.microsoft.com](http://msdn.microsoft.com/).  
+ 詳細については、イベント メッセージを定義し、イベントのリソース ファイルを構築するには、プラットフォーム SDK のドキュメントで「メッセージ コンパイラ」トピックを参照してください [http:\/\/msdn.microsoft.com](http://msdn.microsoft.com/)します。  
   
    
   
-## Examples  
- The following code example determines whether the event source named `SampleApplicationSource` is registered on the local computer. If the event source does not exist, the example sets the message resource file for the source and creates the new event source. Finally, the code example sets the localized display name for the event log, using the resource identifier value in `DisplayNameMsgId` and the resource file path in `messageFile`.  
+## 例  
+ 次のコード例では、イベント ソースが名前付きかどうかを判断 `SampleApplicationSource` をローカル コンピューターに登録します。 イベント ソースが存在しない場合の例は、ソースのメッセージ リソース ファイルを設定し、新しいイベント ソースを作成します。 コード例でのリソース識別子の値を使用して、イベント ログのローカライズされた表示名を設定する最後に、 `DisplayNameMsgId` とリソース ファイルのパスに `messageFile`します。  
   
- [!code-cpp[EventLog_WriteEvent#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
- [!code-csharp[EventLog_WriteEvent#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
- [!code-vb[EventLog_WriteEvent#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
+ [!code-cpp[EventLog\_WriteEvent\#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
+ [!code-csharp[EventLog\_WriteEvent\#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
+ [!code-vb[EventLog\_WriteEvent\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
   
- The code example uses the following message text file, built into the resource library EventLogMsgs.dll. A message text file is the source from which the message resource file is created. The message text file defines the resource identifiers and text for the category, event message, and parameter insertion strings.  
+ このコード例では、EventLogMsgs.dll リソース ライブラリに組み込まれている次のメッセージのテキスト ファイルを使用します。 メッセージのテキスト ファイルは、メッセージ リソース ファイルの作成元のソースです。 メッセージのテキスト ファイルでは、リソース識別子とカテゴリ、イベント メッセージは、パラメーターの挿入文字列のテキストを定義します。  
   
 ```  
 ; // EventLogMsgs.mc  
@@ -365,8 +369,11 @@ SVC_UPDATE.EXE
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The property is set to a negative value or to a value larger than <see cref="F:System.UInt16.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">プロパティは、負の値または値よりも大きい設定 <see cref="F:System.UInt16.MaxValue" />します。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventSourceCreationData.CategoryResourceFile" />
+        <altmember cref="P:System.Diagnostics.EventLogInstaller.CategoryCount" />
+        <altmember cref="Overload:System.Diagnostics.EventLog.WriteEvent" />
       </Docs>
     </Member>
     <Member MemberName="CategoryResourceFile">
@@ -382,28 +389,28 @@ SVC_UPDATE.EXE
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the path of the resource file that contains category strings for the source.</summary>
-        <value>The path of the category resource file. The default is an empty string ("").</value>
+        <summary>取得またはソースのカテゴリ文字列を含むリソース ファイルのパスを設定します。</summary>
+        <value>カテゴリのリソース ファイルのパス。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> and <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> properties to write events with localized category strings. The Event Viewer displays the category for an event entry if you supply a category when you write the event. Event log categories are application-defined strings that help filter events, or provide further information on the event. For example, your application can define separate categories for different components or different operations.  
+## 解説  
+ 使用して、 <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> と <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> でイベントを書き込むプロパティがカテゴリ文字列をローカライズします。 イベント ビューアーでは、イベントを記述するときに、カテゴリを指定した場合、対応するエントリをイベント カテゴリが表示されます。 イベント ログのカテゴリは、イベントをフィルター処理、またはイベントで詳細情報を提供するアプリケーション定義の文字列です。 たとえば、アプリケーションでは、さまざまなコンポーネントまたは操作ごとに個別のカテゴリを定義できます。  
   
- Event categories are optional; if your application does not use categories, do not set the <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> and <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> properties.  
+ イベント カテゴリは省略可能です。アプリケーションでのカテゴリを使用しない場合は設定しないで、 <xref:System.Diagnostics.EventSourceCreationData.CategoryCount%2A> と <xref:System.Diagnostics.EventSourceCreationData.CategoryResourceFile%2A> プロパティです。  
   
- For details about defining event messages and building event resource files, see the "Message Compiler" topic in the Platform SDK documentation at [http://msdn.microsoft.com](http://msdn.microsoft.com/).  
+ 詳細については、イベント メッセージを定義し、イベントのリソース ファイルを構築するには、プラットフォーム SDK のドキュメントで「メッセージ コンパイラ」トピックを参照してください [http:\/\/msdn.microsoft.com](http://msdn.microsoft.com/)します。  
   
    
   
-## Examples  
- The following code example determines whether the event source named `SampleApplicationSource` is registered on the local computer. If the event source does not exist, the example sets the message resource file for the source and creates the new event source. Finally, the code example sets the localized display name for the event log, using the resource identifier value in `DisplayNameMsgId` and the resource file path in `messageFile`.  
+## 例  
+ 次のコード例では、イベント ソースが名前付きかどうかを判断 `SampleApplicationSource` をローカル コンピューターに登録します。 イベント ソースが存在しない場合の例は、ソースのメッセージ リソース ファイルを設定し、新しいイベント ソースを作成します。 コード例でのリソース識別子の値を使用して、イベント ログのローカライズされた表示名を設定する最後に、 `DisplayNameMsgId` とリソース ファイルのパスに `messageFile`します。  
   
- [!code-cpp[EventLog_WriteEvent#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
- [!code-csharp[EventLog_WriteEvent#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
- [!code-vb[EventLog_WriteEvent#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
+ [!code-cpp[EventLog\_WriteEvent\#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
+ [!code-csharp[EventLog\_WriteEvent\#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
+ [!code-vb[EventLog\_WriteEvent\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
   
- The code example uses the following message text file, built into the resource library EventLogMsgs.dll. A message text file is the source from which the message resource file is created. The message text file defines the resource identifiers and text for the category, event message, and parameter insertion strings.  
+ このコード例では、EventLogMsgs.dll リソース ライブラリに組み込まれている次のメッセージのテキスト ファイルを使用します。 メッセージのテキスト ファイルは、メッセージ リソース ファイルの作成元のソースです。 メッセージのテキスト ファイルでは、リソース識別子とカテゴリ、イベント メッセージは、パラメーターの挿入文字列のテキストを定義します。  
   
 ```  
 ; // EventLogMsgs.mc  
@@ -519,6 +526,8 @@ SVC_UPDATE.EXE
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventSourceCreationData.CategoryCount" />
+        <altmember cref="P:System.Diagnostics.EventLogInstaller.CategoryResourceFile" />
       </Docs>
     </Member>
     <Member MemberName="LogName">
@@ -534,33 +543,35 @@ SVC_UPDATE.EXE
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the event log to which the source writes entries.</summary>
-        <value>The name of the event log. This can be Application, System, or a custom log name. The default value is "Application."</value>
+        <summary>取得またはソースがエントリを書き込むイベント ログの名前を設定します。</summary>
+        <value>イベント ログの名前。 アプリケーション、システム、またはカスタム ログ名を指定できます。 既定値は「アプリケーション」</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> property to identify the event log that your application writes entries to using the new source. The event log can be a new log or an existing log. Applications and services should write to the Application log or a custom log. Device drivers should write to the System log. If you do not explicitly set the <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> property, the event log defaults to the Application log.  
+## 解説  
+ 使用して、 <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> アプリケーションが、新しいソースを使用するエントリを書き込むことは、イベント ログを識別するプロパティです。 イベント ログには、新しいログまたは既存のログを指定できます。 アプリケーションとサービスは、アプリケーション ログまたはカスタムのログに書き込む必要があります。 デバイス ドライバーは、システム ログに書き込む必要があります。 明示的に設定しない場合、 <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> プロパティ、アプリケーション ログにイベント ログの既定値です。  
   
 > [!NOTE]
->  The Security log is read-only.  
+>  セキュリティ ログとは、読み取り専用です。  
   
- To target an existing log for the new source, set the <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> property to the existing event log name. To create a new event log for the source, you must set the <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> property. Event log names must consist of printable characters, and cannot include the characters '*', '?', or '\\'. The first 8 characters of the event log name must be different from the first 8 characters of existing names of event logs on the specified computer.  
+ 新しいソースの既存のログを対象とする設定、 <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> プロパティを既存のイベント ログの名前にします。 ソースの新しいイベント ログを作成するに設定する必要があります、 <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> プロパティです。 イベント ログ名が印刷可能な文字で構成されている必要があり、文字を含めることはできません '\* ','?'、または' \\' です。 イベント ログ名の最初の 8 文字は、指定したコンピューター上のイベント ログの既存の名前の最初の 8 文字から異なる必要があります。  
   
- The operating system stores event logs as files. When you use <xref:System.Diagnostics.EventLogInstaller> or the <xref:System.Diagnostics.EventLog.CreateEventSource%2A> method to create a new event log, the associated file is stored in the %SystemRoot%\System32\Config directory on the specified computer. The file name is set by appending the first 8 characters of the <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> property with the ".evt" file name extension.  
+ オペレーティング システムは、イベント ログをファイルとして保存されます。 使用すると <xref:System.Diagnostics.EventLogInstaller> または <xref:System.Diagnostics.EventLog.CreateEventSource%2A> 新しいイベント ログでは、関連付けられているファイルを作成する方法は、指定されたコンピューター上の %SystemRoot%\\System32\\Config ディレクトリに格納します。 最初の 8 文字を追加することにより、ファイル名を設定、 <xref:System.Diagnostics.EventSourceCreationData.LogName%2A> ".evt"ファイル名拡張子を持つプロパティです。  
   
    
   
-## Examples  
- The following code example sets the configuration properties for an event source from command-line arguments. The input arguments specify the event source name, event log name, computer name, and event message resource file. This example is part of a larger example provided for the <xref:System.Diagnostics.EventSourceCreationData> class.  
+## 例  
+ 次のコード例では、コマンドライン引数から、イベント ソースの構成プロパティを設定します。 入力引数は、イベント ソース名、イベント ログ名、コンピューター名、およびイベント メッセージ リソース ファイルを指定します。 この例に示されている例の一部である、 <xref:System.Diagnostics.EventSourceCreationData> クラスです。  
   
- [!code-cpp[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#2)]
- [!code-csharp[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#2)]
- [!code-vb[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#2)]  
+ [!code-cpp[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#2)]
+ [!code-csharp[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#2)]
+ [!code-vb[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventLogInstaller.Log" />
+        <altmember cref="M:System.Diagnostics.EventLog.Exists(System.String)" />
       </Docs>
     </Member>
     <Member MemberName="MachineName">
@@ -576,29 +587,32 @@ SVC_UPDATE.EXE
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the computer on which to register the event source.</summary>
-        <value>The name of the system on which to register the event source. The default is the local computer (".").</value>
+        <summary>取得またはイベント ソースを登録するコンピューターの名前を設定します。</summary>
+        <value>イベント ソースを登録するシステムの名前。 既定値はローカル コンピューター \("."\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Diagnostics.EventSourceCreationData.MachineName%2A> value cannot be an empty string. If the machine name is not explicitly set, it defaults to the local computer (".").  
+## 解説  
+ <xref:System.Diagnostics.EventSourceCreationData.MachineName%2A> 値が空の文字列にすることはできません。 コンピューター名が明示的に設定されていない場合は、既定によりローカル コンピューター \("です。"\) です。  
   
- When registering a source on a remote computer, you must have administrative rights on that computer to write the registry values with sufficient permissions.  
+ リモート コンピューター上のソースを登録するときに、十分なアクセス許可を持つレジストリ値を書き込むためには、そのコンピューターの管理者権限があります。  
   
    
   
-## Examples  
- The following code example sets the configuration properties for an event source from command-line arguments. The input arguments specify the event source name, event log name, computer name, and event message resource file. This example is part of a larger example provided for the <xref:System.Diagnostics.EventSourceCreationData> class.  
+## 例  
+ 次のコード例では、コマンドライン引数から、イベント ソースの構成プロパティを設定します。 入力引数は、イベント ソース名、イベント ログ名、コンピューター名、およびイベント メッセージ リソース ファイルを指定します。 この例に示されている例の一部である、 <xref:System.Diagnostics.EventSourceCreationData> クラスです。  
   
- [!code-cpp[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#2)]
- [!code-csharp[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#2)]
- [!code-vb[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#2)]  
+ [!code-cpp[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#2)]
+ [!code-csharp[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#2)]
+ [!code-vb[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The computer name is invalid.</exception>
+        <exception cref="T:System.ArgumentException">コンピューター名が正しくありません。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventLog.MachineName" />
+        <altmember cref="P:System.Diagnostics.EventSourceCreationData.Source" />
+        <altmember cref="M:System.Diagnostics.EventLog.Exists(System.String)" />
       </Docs>
     </Member>
     <Member MemberName="MessageResourceFile">
@@ -614,32 +628,32 @@ SVC_UPDATE.EXE
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the path of the message resource file that contains message formatting strings for the source.</summary>
-        <value>The path of the message resource file. The default is an empty string ("").</value>
+        <summary>取得またはメッセージのソースの文字列を書式設定を含むメッセージ リソース ファイルのパスを設定します。</summary>
+        <value>メッセージ リソース ファイルのパス。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> property to configure an event log source to write localized event messages. Event messages are application-defined strings that describe the event to the user.  
+## 解説  
+ 使用して、 <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> プロパティのローカライズされたイベント メッセージを記述するデータをイベント ログ ソースを構成するためです。 イベント メッセージは、ユーザーにイベントを記述するアプリケーション定義の文字列です。  
   
- Your application can write event log entries using resource identifiers. A resource identifier indexes a message located in the <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>. The Event Viewer uses the resource identifier to find and display the corresponding string from the localized message resource file based on current language settings.  
+ アプリケーションでは、リソース識別子を使用してイベント ログ エントリを書き込むことができます。 リソース識別子であるメッセージのインデックスを作成、 <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A>です。 イベント ビューアーでは、リソース識別子を使用して、検索し、現在の言語設定に基づくローカライズされたメッセージ リソース ファイルの対応する文字列を表示します。  
   
- The event source must be configured either for writing localized entries or for writing direct strings. Use the <xref:System.Diagnostics.EventLog.WriteEvent%2A> method to write localized entries for a source configured with a message resource file.  
+ ローカライズされたエントリを書き込むか、または直接の文字列を書き込むには、イベント ソースを構成する必要があります。 使用して、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> メッセージ リソース ファイルで構成されたソースのローカライズされたエントリを書き込みます。  
   
- If your application writes event message strings directly, rather than using a resource identifier in a localized resource file, do not set the <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> property.  
+ 書き込み中の場合、アプリケーション イベント メッセージの文字列を直接リソース識別子を使用して、ローカライズされたリソース ファイル内ではなくは設定しないでください、 <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> プロパティです。  
   
- For details about defining event messages and building event resource files, see the "Message Compiler" topic in the Platform SDK documentation at [http://msdn.microsoft.com](http://msdn.microsoft.com/).  
+ 詳細については、イベント メッセージを定義し、イベントのリソース ファイルを構築するには、プラットフォーム SDK のドキュメントで「メッセージ コンパイラ」トピックを参照してください [http:\/\/msdn.microsoft.com](http://msdn.microsoft.com/)します。  
   
    
   
-## Examples  
- The following code example determines whether the event source named `SampleApplicationSource` is registered on the local computer. If the event source does not exist, the example sets the message resource file for the source and creates the new event source. Finally, the code example sets the localized display name for the event log, using the resource identifier value in `DisplayNameMsgId` and the resource file path in `messageFile`.  
+## 例  
+ 次のコード例では、イベント ソースが名前付きかどうかを判断 `SampleApplicationSource` をローカル コンピューターに登録します。 イベント ソースが存在しない場合の例は、ソースのメッセージ リソース ファイルを設定し、新しいイベント ソースを作成します。 コード例でのリソース識別子の値を使用して、イベント ログのローカライズされた表示名を設定する最後に、 `DisplayNameMsgId` とリソース ファイルのパスに `messageFile`します。  
   
- [!code-cpp[EventLog_WriteEvent#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
- [!code-csharp[EventLog_WriteEvent#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
- [!code-vb[EventLog_WriteEvent#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
+ [!code-cpp[EventLog\_WriteEvent\#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
+ [!code-csharp[EventLog\_WriteEvent\#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
+ [!code-vb[EventLog\_WriteEvent\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
   
- The code example uses the following message text file, built into the resource library EventLogMsgs.dll. A message text file is the source from which the message resource file is created. The message text file defines the resource identifiers and text for the category, event message, and parameter insertion strings.  
+ このコード例では、EventLogMsgs.dll リソース ライブラリに組み込まれている次のメッセージのテキスト ファイルを使用します。 メッセージのテキスト ファイルは、メッセージ リソース ファイルの作成元のソースです。 メッセージのテキスト ファイルでは、リソース識別子とカテゴリ、イベント メッセージは、パラメーターの挿入文字列のテキストを定義します。  
   
 ```  
 ; // EventLogMsgs.mc  
@@ -755,6 +769,7 @@ SVC_UPDATE.EXE
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventLogInstaller.MessageResourceFile" />
       </Docs>
     </Member>
     <Member MemberName="ParameterResourceFile">
@@ -770,15 +785,15 @@ SVC_UPDATE.EXE
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the path of the resource file that contains message parameter strings for the source.</summary>
-        <value>The path of the parameter resource file. The default is an empty string ("").</value>
+        <summary>取得または設定を元のメッセージ パラメーター文字列を含むリソース ファイルのパス。</summary>
+        <value>パラメーターのリソース ファイルのパス。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> property to configure an event log source to write localized event messages with inserted parameter strings. Each localized event message specified in the <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> property can contain placeholders for insertion strings. These placeholders are used to specify the position and resource identifier for a language-independent string within the event message. The Event Viewer fills in the placeholders using the corresponding strings from the <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> and formats the event log message for the localized event entry.  
+## 解説  
+ 使用して、 <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> プロパティでローカライズされたイベント メッセージを書き込むようにイベント ログのソースを構成するためパラメーター文字列を挿入します。 指定した各ローカライズされたイベント メッセージ、 <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> プロパティは、挿入文字列のプレース ホルダーを含めることができます。 これらのプレース ホルダーを使用して、位置と、イベント メッセージ内の言語に依存しない文字列のリソース識別子を指定します。 イベント ビューアーから対応する文字列を使用して、プレース ホルダーを入力、 <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> とローカライズされたイベント エントリのイベント ログ メッセージを書式設定します。  
   
- For example, the following section of a message text file defines a string with a parameter placeholder:  
+ たとえば、メッセージのテキスト ファイルの次のセクションでは、パラメーター プレース ホルダーを持つ文字列を定義します。  
   
 ```  
   
@@ -791,7 +806,7 @@ Component %%6050 is starting.
 .  
 ```  
   
- Within the parameter resource file, the insertion string must be defined with the resource identifier that corresponds to the placeholder, as shown below:  
+ パラメーターのリソース ファイル内では次のように挿入文字列、プレース ホルダーに対応するリソース識別子を持つ定義する必要があります。  
   
 ```  
 MessageId = 6050  
@@ -803,22 +818,22 @@ TRIGGER.EXE
 .  
 ```  
   
- The event source must be configured either for writing localized entries or for writing direct strings. Use the <xref:System.Diagnostics.EventLog.WriteEvent%2A> method to write localized entries for a source configured with a message resource file.  
+ ローカライズされたエントリを書き込むか、または直接の文字列を書き込むには、イベント ソースを構成する必要があります。 使用して、 <xref:System.Diagnostics.EventLog.WriteEvent%2A> メッセージ リソース ファイルで構成されたソースのローカライズされたエントリを書き込みます。  
   
- If your application writes event message strings directly to the event log, or if your <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> property does not contain messages with parameter insertion placeholders, do not set the <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> property.  
+ アプリケーションがイベント ログに直接イベント メッセージの文字列を書き込む場合、または、 <xref:System.Diagnostics.EventSourceCreationData.MessageResourceFile%2A> プロパティにはパラメーターの挿入のプレース ホルダーでメッセージが含まれていない場合、設定しないでください、 <xref:System.Diagnostics.EventSourceCreationData.ParameterResourceFile%2A> プロパティです。  
   
- For details about defining event messages and building event resource files, see the "Message Compiler" topic in the Platform SDK documentation at [http://msdn.microsoft.com](http://msdn.microsoft.com/).  
+ 詳細については、イベント メッセージを定義し、イベントのリソース ファイルを構築するには、プラットフォーム SDK のドキュメントで「メッセージ コンパイラ」トピックを参照してください [http:\/\/msdn.microsoft.com](http://msdn.microsoft.com/)します。  
   
    
   
-## Examples  
- The following code example determines whether the event source named `SampleApplicationSource` is registered on the local computer. If the event source does not exist, the example sets the message resource file for the source and creates the new event source. Finally, the code example sets the localized display name for the event log, using the resource identifier value in `DisplayNameMsgId` and the resource file path in `messageFile`.  
+## 例  
+ 次のコード例では、イベント ソースが名前付きかどうかを判断 `SampleApplicationSource` をローカル コンピューターに登録します。 イベント ソースが存在しない場合の例は、ソースのメッセージ リソース ファイルを設定し、新しいイベント ソースを作成します。 コード例でのリソース識別子の値を使用して、イベント ログのローカライズされた表示名を設定する最後に、 `DisplayNameMsgId` とリソース ファイルのパスに `messageFile`します。  
   
- [!code-cpp[EventLog_WriteEvent#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
- [!code-csharp[EventLog_WriteEvent#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
- [!code-vb[EventLog_WriteEvent#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
+ [!code-cpp[EventLog\_WriteEvent\#6](~/samples/snippets/cpp/VS_Snippets_CLR/eventlog_WriteEvent/CPP/source.cpp#6)]
+ [!code-csharp[EventLog\_WriteEvent\#6](~/samples/snippets/csharp/VS_Snippets_CLR/eventlog_WriteEvent/CS/source.cs#6)]
+ [!code-vb[EventLog\_WriteEvent\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/eventlog_WriteEvent/VB/source.vb#6)]  
   
- The code example uses the following message text file, built into the resource library EventLogMsgs.dll. A message text file is the source from which the message resource file is created. The message text file defines the resource identifiers and text for the category, event message, and parameter insertion strings. Specifically, the message defined for resource identifier 1004 uses a placeholder for a parameter string defined for resource identifier 5002.  
+ このコード例では、EventLogMsgs.dll リソース ライブラリに組み込まれている次のメッセージのテキスト ファイルを使用します。 メッセージのテキスト ファイルは、メッセージ リソース ファイルの作成元のソースです。 メッセージのテキスト ファイルでは、リソース識別子とカテゴリ、イベント メッセージは、パラメーターの挿入文字列のテキストを定義します。 具体的には、リソース識別子 1004年に対して定義されたメッセージは、リソース識別子 5002 に対して定義されたパラメーター文字列のプレース ホルダーを使用します。  
   
 ```  
 ; // EventLogMsgs.mc  
@@ -934,6 +949,7 @@ SVC_UPDATE.EXE
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventLogInstaller.ParameterResourceFile" />
       </Docs>
     </Member>
     <Member MemberName="Source">
@@ -949,30 +965,32 @@ SVC_UPDATE.EXE
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name to register with the event log as an event source.</summary>
-        <value>The name to register with the event log as a source of entries. The default is an empty string ("").</value>
+        <summary>取得またはイベント ソースとしてイベント ログに登録する名前を設定します。</summary>
+        <value>イベント ログ エントリのソースとして登録する名前です。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The source name is often the name of the application, or the name of a component within a large application. The <xref:System.Diagnostics.EventLog.CreateEventSource%28System.Diagnostics.EventSourceCreationData%29?displayProperty=fullName> method uses the <xref:System.Diagnostics.EventSourceCreationData.Source%2A>, <xref:System.Diagnostics.EventSourceCreationData.LogName%2A>, and <xref:System.Diagnostics.EventSourceCreationData.MachineName%2A> properties to create registry values on the target computer for the new source and its associated event log. A new source name cannot match an existing source name or an existing event log name on the target computer.  
+## 解説  
+ ソース名は、多くの場合、アプリケーションの名前またはアプリケーションが大規模なコンポーネントの名前。<xref:System.Diagnostics.EventLog.CreateEventSource%28System.Diagnostics.EventSourceCreationData%29?displayProperty=fullName> メソッドの使用方法、 <xref:System.Diagnostics.EventSourceCreationData.Source%2A>, 、<xref:System.Diagnostics.EventSourceCreationData.LogName%2A>, 、および <xref:System.Diagnostics.EventSourceCreationData.MachineName%2A> 新しいソースとその関連のイベント ログのターゲット コンピューター上のレジストリ値を作成するプロパティです。 新しいソース名には、既存のソース名またはターゲット コンピューター上の既存のイベント ログ名を一致ことはできません。  
   
- After the registry values for the source are created, your application can use the source to write entries to the configured event log.  
+ ソースのレジストリ値が作成されると、アプリケーションは、ソースを使用して構成済みのイベント ログにエントリを書き込みます。  
   
- Each source can only write to one event log at a time; however, your application can use multiple sources to write to multiple event logs. For example, your application might require multiple sources configured for different event logs or different resource files.  
+ 同時に、各ソースは 1 つのイベント ログに書き込むだけことができます。ただし、アプリケーションでは、複数のソースを使用して、複数のイベント ログに書き込みます。 たとえば、アプリケーションでは、別のイベント ログまたは別のリソース ファイル用に構成された複数のソースを必要があります。  
   
    
   
-## Examples  
- The following code example sets the configuration properties for an event source from command-line arguments. The input arguments specify the event source name, event log name, computer name, and event message resource file. This example is part of a larger example provided for the <xref:System.Diagnostics.EventSourceCreationData> class.  
+## 例  
+ 次のコード例では、コマンドライン引数から、イベント ソースの構成プロパティを設定します。 入力引数は、イベント ソース名、イベント ログ名、コンピューター名、およびイベント メッセージ リソース ファイルを指定します。 この例に示されている例の一部である、 <xref:System.Diagnostics.EventSourceCreationData> クラスです。  
   
- [!code-cpp[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#2)]
- [!code-csharp[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#2)]
- [!code-vb[EventLog_EventSourceCreation_Properties#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#2)]  
+ [!code-cpp[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/cpp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CPP/source.cpp#2)]
+ [!code-csharp[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/csharp/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/CS/source.cs#2)]
+ [!code-vb[EventLog\_EventSourceCreation\_Properties\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/EventLog_EventSourceCreation_Properties/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for calling any member of <see cref="T:System.Diagnostics.EventSourceCreationData" /> with full trust. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" /></permission>
+        <altmember cref="P:System.Diagnostics.EventLogInstaller.Source" />
+        <altmember cref="M:System.Diagnostics.EventLog.SourceExists(System.String)" />
       </Docs>
     </Member>
   </Members>

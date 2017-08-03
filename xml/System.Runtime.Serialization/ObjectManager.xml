@@ -25,21 +25,21 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Keeps track of objects as they are deserialized.</summary>
+    <summary>オブジェクトので追跡とは逆シリアル化します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- During deserialization, the <xref:System.Runtime.Serialization.Formatter> queries the <xref:System.Runtime.Serialization.ObjectManager> to determine whether a reference to an object in the serialized stream refers to an object that has already been deserialized (a backward reference), or to an object that has not yet been deserialized (a forward reference). If the reference in the serialized stream is a forward reference, then the <xref:System.Runtime.Serialization.Formatter> can register a fixup with the <xref:System.Runtime.Serialization.ObjectManager>. If the reference in the serialized stream is a backward reference, the <xref:System.Runtime.Serialization.Formatter> immediately completes the reference. Fixup refers to the process of finalizing object references not already completed during the object deserialization process. After the required object has been deserialized, the <xref:System.Runtime.Serialization.ObjectManager> will complete the reference.  
+## 解説  
+ 逆シリアル化中に、 <xref:System.Runtime.Serialization.Formatter> クエリ、 <xref:System.Runtime.Serialization.ObjectManager> 逆シリアル化されたオブジェクトには参照シリアル化ストリーム内のオブジェクトへの参照が、\(後方参照\) を使用するかどうかを判断するか、またはがないまだ逆シリアル化されたオブジェクト \(前方参照\)。 シリアル化ストリーム内の参照が前方参照の場合、 <xref:System.Runtime.Serialization.Formatter> と修正を登録できる、 <xref:System.Runtime.Serialization.ObjectManager>です。 シリアル化ストリーム内の参照が旧バージョンとの参照の場合、 <xref:System.Runtime.Serialization.Formatter> の参照をすぐに完了します。 フィックス アップは、既に完了していないオブジェクトの逆シリアル化プロセス中にオブジェクト参照を最終処理中のプロセスを指します。 必須のオブジェクトが逆シリアル化された後、 <xref:System.Runtime.Serialization.ObjectManager> の参照を完了します。  
   
- The <xref:System.Runtime.Serialization.ObjectManager> follows a set of rules that dictate the fixup order. All objects that implement <xref:System.Runtime.Serialization.ISerializable> or have a <xref:System.Runtime.Serialization.ISerializationSurrogate> can expect to have all the objects that they transmitted through <xref:System.Runtime.Serialization.SerializationInfo> available when the object tree is deserialized. However, a parent object cannot presume that all its child objects will be fully completed when it is fully deserialized. All child objects will be present but not all the grandchild objects will necessarily be present. If an object needs to take certain actions that depend on executing code on its child objects, it can delay these actions, implement the <xref:System.Runtime.Serialization.IDeserializationCallback> interface, and execute the code only when it is called back on this interface.  
+ <xref:System.Runtime.Serialization.ObjectManager> フィックス アップの順序を決定するルールのセットに依存しています。 実装するすべてのオブジェクト <xref:System.Runtime.Serialization.ISerializable> ことも、 <xref:System.Runtime.Serialization.ISerializationSurrogate> を通じて送信されるすべてのオブジェクトに予想される、 <xref:System.Runtime.Serialization.SerializationInfo> オブジェクト ツリーが逆シリアル化される場合に使用できます。 ただし、親オブジェクトでは、すべての子オブジェクトが完全に完了すること完全に逆シリアル化されることはできません推測します。 すべての子オブジェクトは存在しますが、孫のすべてのオブジェクトが存在するとは限りません。 オブジェクトは、その子オブジェクトのコードの実行に依存する特定のアクションを実行する必要がある場合、これらの操作を遅らせる、実装、 <xref:System.Runtime.Serialization.IDeserializationCallback> インターフェイス、および戻るこのインターフェイスで呼び出された場合にのみコードを実行します。  
   
    
   
-## Examples  
- The following code example shows how to use the <xref:System.Runtime.Serialization.ObjectManager> class to walk through an object graph, traversing to each object only once.  
+## 例  
+ 次のコード例を使用する方法を示しています、 <xref:System.Runtime.Serialization.ObjectManager> オブジェクトごとに 1 回だけを通過する、オブジェクト グラフを処理するクラス。  
   
- [!code-csharp[ObjectManager#1](~/samples/snippets/csharp/VS_Snippets_Misc/ObjectManager/CS/ObjectManager.cs#1)]  
+ [!code-csharp[ObjectManager\#1](~/samples/snippets/csharp/VS_Snippets_Misc/ObjectManager/CS/ObjectManager.cs#1)]  
   
  ]]></format>
     </remarks>
@@ -73,11 +73,12 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="selector">The surrogate selector to use. The <see cref="T:System.Runtime.Serialization.ISurrogateSelector" /> determines the correct surrogate to use when deserializing objects of a given type. At deserialization time, the surrogate selector creates a new instance of the object from the information transmitted on the stream.</param>
-        <param name="context">The streaming context. The <see cref="T:System.Runtime.Serialization.StreamingContext" /> is not used by <see langword="ObjectManager" />, but is passed as a parameter to any objects implementing <see cref="T:System.Runtime.Serialization.ISerializable" /> or having a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. These objects can take specific actions depending on the source of the information to deserialize.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.Serialization.ObjectManager" /> class.</summary>
+        <param name="selector">使用して対象のサロゲート セレクター。<see cref="T:System.Runtime.Serialization.ISurrogateSelector" /> 指定された型のオブジェクトを逆シリアル化するときに使用する正しいサロゲートを指定します。 逆シリアル化時に、サロゲート セレクターは、ストリームで送信される情報から、オブジェクトの新しいインスタンスを作成します。</param>
+        <param name="context">ストリーム コンテキスト。<see cref="T:System.Runtime.Serialization.StreamingContext" /> で使用されていない <see langword="ObjectManager" />, を実装する任意のオブジェクトをパラメーターとして渡されますが、 <see cref="T:System.Runtime.Serialization.ISerializable" /> 句または having、 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />です。 これらのオブジェクトは、逆シリアル化する情報のソースに応じて特定のアクションを実行できます。</param>
+        <summary>
+          <see cref="T:System.Runtime.Serialization.ObjectManager" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元に、必要なアクセス許可がありません。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for providing serialization services. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />.</permission>
       </Docs>
     </Member>
@@ -109,16 +110,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Performs all the recorded fixups.</summary>
+        <summary>記録されたすべての修正を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The fixups are carried out by any appropriate surrogate, the object itself (if it implements <xref:System.Runtime.Serialization.ISerializable>), or the default implementation.  
+## 解説  
+ フィックス アップがすべて該当するサロゲート、オブジェクト自体によって実行されます \(これを実装する場合 <xref:System.Runtime.Serialization.ISerializable>\)、または既定の実装です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">A fixup was not successfully completed.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">フィックス アップが正常に完了しませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetObject">
@@ -146,18 +147,19 @@
         <Parameter Name="objectID" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="objectID">The ID of the requested object.</param>
-        <summary>Returns the object with the specified object ID.</summary>
-        <returns>The object with the specified object ID if it has been previously stored or <see langword="null" /> if no such object has been registered.</returns>
+        <param name="objectID">要求されたオブジェクトの ID です。</param>
+        <summary>指定したオブジェクト ID を持つオブジェクトを返します</summary>
+        <returns>以前格納されている場合は、指定したオブジェクト ID を持つオブジェクトまたは <see langword="null" /> 場合、このようなオブジェクトが登録されていません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An object can be registered and issued an object ID with a call to the <xref:System.Runtime.Serialization.ObjectManager.RegisterObject%2A> method.  
+## 解説  
+ オブジェクトを登録しを呼び出して、オブジェクト ID を発行、 <xref:System.Runtime.Serialization.ObjectManager.RegisterObject%2A> メソッドです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="objectID" /> parameter is less than or equal to zero.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="objectID" /> パラメーターが 0 未満です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RaiseDeserializationEvent">
@@ -183,7 +185,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Raises the deserialization event to any registered object that implements <see cref="T:System.Runtime.Serialization.IDeserializationCallback" />.</summary>
+        <summary>実装する登録済みのオブジェクトに逆シリアル化イベントを発生させる <see cref="T:System.Runtime.Serialization.IDeserializationCallback" />します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -212,9 +214,17 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The instance of the type that contains the method to be invoked.</param>
-        <summary>Invokes the method marked with the <see cref="T:System.Runtime.Serialization.OnDeserializingAttribute" />.</summary>
-        <remarks>To be added.</remarks>
+        <param name="obj">呼び出されるメソッドを含む型のインスタンス。</param>
+        <summary>マークされたメソッドを呼び出し、 <see cref="T:System.Runtime.Serialization.OnDeserializingAttribute" />です。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RecordArrayElementFixup">
@@ -244,20 +254,22 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="arrayToBeFixed">The ID of the array used to record a fixup.</param>
-        <param name="index">The index within <c>arrayFixup</c> that a fixup is requested for.</param>
-        <param name="objectRequired">The ID of the object that the current array element will point to after fixup is completed.</param>
-        <summary>Records a fixup for one element in an array.</summary>
+        <param name="arrayToBeFixed">フィックス アップを記録するために使用する配列の ID です。</param>
+        <param name="index">内のインデックス <c>arrayFixup</c> フィックス アップが要求されます。</param>
+        <param name="objectRequired">修正が完了した後に、現在の配列要素が指すオブジェクトの ID。</param>
+        <summary>配列内の 1 つの要素の修正を記録します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The fixup is for a specified element of a specified array. The value used during the fixup process is provided in the `objectRequired` parameter.  
+## 解説  
+ フィックス アップは、指定した配列の指定した要素のことです。 修正プロセス中に使用される値が提供される、 `objectRequired` パラメーター。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="arrayToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="index" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="arrayToBeFixed" /> または <paramref name="objectRequired" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="index" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RecordArrayElementFixup">
@@ -287,20 +299,22 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="arrayToBeFixed">The ID of the array used to record a fixup.</param>
-        <param name="indices">The indexes within the multidimensional array that a fixup is requested for.</param>
-        <param name="objectRequired">The ID of the object the array elements will point to after fixup is completed.</param>
-        <summary>Records fixups for the specified elements in an array, to be executed later.</summary>
+        <param name="arrayToBeFixed">フィックス アップを記録するために使用する配列の ID です。</param>
+        <param name="indices">フィックス アップが要求される多次元配列内のインデックス。</param>
+        <param name="objectRequired">オブジェクトの ID、配列要素は、修正が完了した後をポイントします。</param>
+        <summary>後で実行するために、配列内の指定した要素フィックス アップを記録します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The fixup is for specified elements of a specified array. The value used during the fixup process is provided in the `objectRequired` parameter.  
+## 解説  
+ フィックス アップでは、指定した配列の指定した要素用です。 修正プロセス中に使用される値が提供される、 `objectRequired` パラメーター。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="arrayToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="indices" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="arrayToBeFixed" /> または <paramref name="objectRequired" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="indices" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RecordDelayedFixup">
@@ -330,21 +344,22 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="objectToBeFixed">The ID of the object that needs the reference to <c>objectRequired</c>.</param>
-        <param name="memberName">The member name of <c>objectToBeFixed</c> where the fixup will be performed.</param>
-        <param name="objectRequired">The ID of the object required by <c>objectToBeFixed</c>.</param>
-        <summary>Records a fixup for an object member, to be executed later.</summary>
+        <param name="objectToBeFixed">参照を必要とするオブジェクトの ID <c>objectRequired</c>します。</param>
+        <param name="memberName">メンバー名 <c>objectToBeFixed</c> フィックス アップが実行されます。</param>
+        <param name="objectRequired">必要なオブジェクトの ID <c>objectToBeFixed</c>します。</param>
+        <summary>オブジェクトのメンバー、後で実行するための修正を記録します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The fixup is for a specified member of a specified object. The value to be used during the fixup process is provided as the `objectRequired` argument.  
+## 解説  
+ フィックス アップは、指定したオブジェクトの指定したメンバーのことです。 修正プロセス中に使用される値は、 `objectRequired` 引数。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="objectToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="memberName" /> parameter is <see langword="null" />.</exception>
+          <paramref name="objectToBeFixed" /> または <paramref name="objectRequired" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="memberName" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RecordFixup">
@@ -374,20 +389,22 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="objectToBeFixed">The ID of the object that needs the reference to the <c>objectRequired</c> object.</param>
-        <param name="member">The member of <c>objectToBeFixed</c> where the fixup will be performed.</param>
-        <param name="objectRequired">The ID of the object required by <c>objectToBeFixed</c>.</param>
-        <summary>Records a fixup for a member of an object, to be executed later.</summary>
+        <param name="objectToBeFixed">参照を必要とするオブジェクトの ID、 <c>objectRequired</c> オブジェクトです。</param>
+        <param name="member">メンバー <c>objectToBeFixed</c> フィックス アップが実行されます。</param>
+        <param name="objectRequired">必要なオブジェクトの ID <c>objectToBeFixed</c>します。</param>
+        <summary>後で実行するには、オブジェクトのメンバーの修正を記録します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The fixup is for a specified member of a specified object. The value to be used during the fixup process is provided as the `objectRequired` parameter.  
+## 解説  
+ フィックス アップは、指定したオブジェクトの指定したメンバーのことです。 修正プロセス中に使用される値は、 `objectRequired` パラメーター。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="objectToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="member" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="objectToBeFixed" /> または <paramref name="objectRequired" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="member" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -421,20 +438,23 @@
         <Parameter Name="objectID" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to register.</param>
-        <param name="objectID">The ID of the object to register.</param>
-        <summary>Registers an object as it is deserialized, associating it with <paramref name="objectID" />.</summary>
+        <param name="obj">登録するオブジェクト。</param>
+        <param name="objectID">登録するオブジェクトの ID。</param>
+        <summary>オブジェクトが逆シリアル化、関連付けるレジスタ <paramref name="objectID" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Runtime.Serialization.ObjectManager> retains information about both the object and its ID. Later during deserialization, <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> can be used to determine whether a particular object ID has already been deserialized, or whether it is a forward reference to an object that has not yet been deserialized.  
+## 解説  
+ <xref:System.Runtime.Serialization.ObjectManager> オブジェクトと ID の両方に関する情報を保持します。 逆シリアル化を行っているときに <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> かどうか、特定のオブジェクト ID は既に逆シリアル化された、またはがないまだ逆シリアル化されたオブジェクトへの前方参照はかどうかを判断するために使用できます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="objectID" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="obj" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="objectID" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <paramref name="objectID" /> 以外のオブジェクトに対して登録されて既に <paramref name="obj" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -469,21 +489,25 @@
         <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to register.</param>
-        <param name="objectID">The ID of the object to register.</param>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used if <c>obj</c> implements <see cref="T:System.Runtime.Serialization.ISerializable" /> or has a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <c>info</c> will be completed with any required fixup information and then passed to the required object when that object is completed.</param>
-        <summary>Registers an object as it is deserialized, associating it with <paramref name="objectID" />, and recording the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used with it.</summary>
+        <param name="obj">登録するオブジェクト。</param>
+        <param name="objectID">登録するオブジェクトの ID。</param>
+        <param name="info">
+          <see cref="T:System.Runtime.Serialization.SerializationInfo" /> 場合に使用 <c>obj</c> 実装 <see cref="T:System.Runtime.Serialization.ISerializable" /> かが、 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />です。<c>info</c> 完了、修正が必要な情報がされ、そのオブジェクトが完了したときに必要なオブジェクトに渡されます。</param>
+        <summary>オブジェクトが逆シリアル化を関連付けることのレジスタ <paramref name="objectID" />, 、および記録する、 <see cref="T:System.Runtime.Serialization.SerializationInfo" /> 一緒に使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Runtime.Serialization.ObjectManager> retains the information about both the object and its ID. Later during deserialization, you can use <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> to discover whether a particular object ID has already been deserialized, or if it is a forward reference to an object that has not yet been deserialized.  
+## 解説  
+ <xref:System.Runtime.Serialization.ObjectManager> オブジェクトと ID の両方に関する情報を保持します。 逆シリアル化中に後で使用することができます <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> がないまだ逆シリアル化されたオブジェクトへの前方参照である場合または ID は既に逆シリアル化された、特定のオブジェクトかどうかを検出します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="objectID" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="obj" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="objectID" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <paramref name="objectID" /> 以外のオブジェクトに対して登録されて既に <paramref name="obj" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -520,25 +544,29 @@
         <Parameter Name="member" Type="System.Reflection.MemberInfo" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to register.</param>
-        <param name="objectID">The ID of the object to register.</param>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used if <c>obj</c> implements <see cref="T:System.Runtime.Serialization.ISerializable" /> or has a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <c>info</c> will be completed with any required fixup information and then passed to the required object when that object is completed.</param>
-        <param name="idOfContainingObj">The ID of the object that contains <c>obj</c>. This parameter is required only if <c>obj</c> is a value type.</param>
-        <param name="member">The field in the containing object where <c>obj</c> exists. This parameter has meaning only if <c>obj</c> is a value type.</param>
-        <summary>Registers a member of an object as it is deserialized, associating it with <paramref name="objectID" />, and recording the <see cref="T:System.Runtime.Serialization.SerializationInfo" />.</summary>
+        <param name="obj">登録するオブジェクト。</param>
+        <param name="objectID">登録するオブジェクトの ID。</param>
+        <param name="info">
+          <see cref="T:System.Runtime.Serialization.SerializationInfo" /> 場合に使用 <c>obj</c> 実装 <see cref="T:System.Runtime.Serialization.ISerializable" /> かが、 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />です。<c>info</c> 完了、修正が必要な情報がされ、そのオブジェクトが完了したときに必要なオブジェクトに渡されます。</param>
+        <param name="idOfContainingObj">含むオブジェクトの ID <c>obj</c>します。 このパラメーターは必要な場合にのみ <c>obj</c> 値型です。</param>
+        <param name="member">親オブジェクトのフィールド位置 <c>obj</c> が存在します。 このパラメーターには意味がある場合にのみ <c>obj</c> 値型です。</param>
+        <summary>オブジェクトのメンバーを逆シリアル化、関連付けるレジスタ <paramref name="objectID" />, 、および記録する、 <see cref="T:System.Runtime.Serialization.SerializationInfo" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You need to provide the `member` and `idOfContainingObj` parameters if `obj` is a <xref:System.ValueType> because of the way fixups are performed on <xref:System.ValueType> objects. The space to store the information for a <xref:System.ValueType> is allocated inline with its containing object. However, when the <xref:System.ValueType> is boxed to be registered with the <xref:System.Runtime.Serialization.ObjectManager>, it loses the connection with its containing object. To guarantee that fixups occur in the instance of the <xref:System.ValueType> stored in the containing object and not in the boxed instance, the <xref:System.Runtime.Serialization.ObjectManager> retains some additional information.  
+## 解説  
+ 指定する必要があります、 `member` と `idOfContainingObj` パラメーター場合 `obj` は、 <xref:System.ValueType> 方法により、フィックス アップを実行して、 <xref:System.ValueType> オブジェクトです。 情報を格納するための領域、 <xref:System.ValueType> インラインで含まれるオブジェクトが割り当てられます。 ただし、 <xref:System.ValueType> を登録することをボックス化、 <xref:System.Runtime.Serialization.ObjectManager>, 、含まれるオブジェクトとの接続が失われます。 インスタンスでフィックス アップが発生することを保証するために、 <xref:System.ValueType> とボックス化されたインスタンスではなく親オブジェクトに格納、 <xref:System.Runtime.Serialization.ObjectManager> 追加情報が保持されます。  
   
- <xref:System.Runtime.Serialization.ObjectManager> retains information about both the object and its ID. Later during deserialization, <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> can be used to discover whether a particular object ID has already been deserialized, or whether it is a forward reference to an object not yet deserialized.  
+ <xref:System.Runtime.Serialization.ObjectManager> オブジェクトと ID の両方に関する情報を保持します。 逆シリアル化を行っているときに <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> 特定のオブジェクト ID は既に逆シリアル化された、または、まだ逆シリアル化するかどうかは、オブジェクトへの前方参照するかどうかを検出するために使用できます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="objectID" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />, or <paramref name="member" /> is not a <see cref="T:System.Reflection.FieldInfo" /> and <paramref name="member" /> is not <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="obj" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="objectID" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <paramref name="objectID" /> 以外のオブジェクトに対して登録されて既に <paramref name="obj" />, 、または <paramref name="member" /> は、 <see cref="T:System.Reflection.FieldInfo" /> と <paramref name="member" /> は <see langword="null" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -576,27 +604,51 @@
         <Parameter Name="arrayIndex" Type="System.Int32[]" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to register.</param>
-        <param name="objectID">The ID of the object to register.</param>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used if <c>obj</c> implements <see cref="T:System.Runtime.Serialization.ISerializable" /> or has a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <c>info</c> will be completed with any required fixup information and then passed to the required object when that object is completed.</param>
-        <param name="idOfContainingObj">The ID of the object that contains <c>obj</c>. This parameter is required only if <c>obj</c> is a value type.</param>
-        <param name="member">The field in the containing object where <c>obj</c> exists. This parameter has meaning only if <c>obj</c> is a value type.</param>
-        <param name="arrayIndex">If <c>obj</c> is a <see cref="T:System.ValueType" /> and a member of an array, <c>arrayIndex</c> contains the index within that array where <c>obj</c> exists. <c>arrayIndex</c> is ignored if <c>obj</c> is not both a <see cref="T:System.ValueType" /> and a member of an array.</param>
-        <summary>Registers a member of an array contained in an object while it is deserialized, associating it with <paramref name="objectID" />, and recording the <see cref="T:System.Runtime.Serialization.SerializationInfo" />.</summary>
+        <param name="obj">登録するオブジェクト。</param>
+        <param name="objectID">登録するオブジェクトの ID。</param>
+        <param name="info">
+          <see cref="T:System.Runtime.Serialization.SerializationInfo" /> 場合に使用 <c>obj</c> 実装 <see cref="T:System.Runtime.Serialization.ISerializable" /> かが、 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />です。<c>info</c> 完了、修正が必要な情報がされ、そのオブジェクトが完了したときに必要なオブジェクトに渡されます。</param>
+        <param name="idOfContainingObj">含むオブジェクトの ID <c>obj</c>します。 このパラメーターは必要な場合にのみ <c>obj</c> 値型です。</param>
+        <param name="member">親オブジェクトのフィールド位置 <c>obj</c> が存在します。 このパラメーターには意味がある場合にのみ <c>obj</c> 値型です。</param>
+        <param name="arrayIndex">場合 <c>obj</c> は、 <see cref="T:System.ValueType" /> であり、配列のメンバー <c>arrayIndex</c> 配列内のインデックスが含まれて、 <c>obj</c> が存在します。<c>arrayIndex</c> 場合は無視されます <c>obj</c> が両方とも、 <see cref="T:System.ValueType" /> と配列のメンバーです。</param>
+        <summary>関連付けることが逆シリアル化中に、オブジェクトに含まれる配列のメンバーを登録 <paramref name="objectID" />, 、および録画、 <see cref="T:System.Runtime.Serialization.SerializationInfo" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You need to provide the `member` and `idOfContainingObj` parameters if `obj` is a <xref:System.ValueType> because of the way fixups are performed on <xref:System.ValueType> objects. The space to store the information for a <xref:System.ValueType> is allocated inline with its containing object. However, when the <xref:System.ValueType> is boxed to be registered with the <xref:System.Runtime.Serialization.ObjectManager>, it loses the connection with its containing object. To guarantee that fixups occur in the instance of the <xref:System.ValueType> stored in the containing object and not in the boxed instance, the <xref:System.Runtime.Serialization.ObjectManager> retains some additional information.  
+## 解説  
+ 指定する必要があります、 `member` と `idOfContainingObj` パラメーター場合 `obj` は、 <xref:System.ValueType> 方法により、フィックス アップを実行して、 <xref:System.ValueType> オブジェクトです。 情報を格納するための領域、 <xref:System.ValueType> インラインで含まれるオブジェクトが割り当てられます。 ただし、 <xref:System.ValueType> を登録することをボックス化、 <xref:System.Runtime.Serialization.ObjectManager>, 、含まれるオブジェクトとの接続が失われます。 インスタンスでフィックス アップが発生することを保証するために、 <xref:System.ValueType> とボックス化されたインスタンスではなく親オブジェクトに格納、 <xref:System.Runtime.Serialization.ObjectManager> 追加情報が保持されます。  
   
- <xref:System.Runtime.Serialization.ObjectManager> retains information about both the object and its ID. Later during deserialization, <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> can be used to discover whether a particular object ID has already been deserialized, or whether it is a forward reference to an object not yet deserialized.  
+ <xref:System.Runtime.Serialization.ObjectManager> オブジェクトと ID の両方に関する情報を保持します。 逆シリアル化を行っているときに <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> 特定のオブジェクト ID は既に逆シリアル化された、または、まだ逆シリアル化するかどうかは、オブジェクトへの前方参照するかどうかを検出するために使用できます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="objectID" /> parameter is less than or equal to zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />, or <paramref name="member" /> is not a <see cref="T:System.Reflection.FieldInfo" /> and <paramref name="member" /> isn't <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="obj" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="objectID" /> パラメーターが 0 未満です。</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <paramref name="objectID" /> 以外のオブジェクトに対して登録されて既に <paramref name="obj" />, 、または <paramref name="member" /> は、 <see cref="T:System.Reflection.FieldInfo" /> と <paramref name="member" /> いない <see langword="null" />します。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName="RecordArrayElementFixup">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>後で実行するために、配列に 1 つの要素の修正を記録します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="RegisterObject">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>逆シリアル化オブジェクトを登録します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

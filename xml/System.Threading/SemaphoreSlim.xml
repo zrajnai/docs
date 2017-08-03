@@ -34,18 +34,18 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents a lightweight alternative to <see cref="T:System.Threading.Semaphore" /> that limits the number of threads that can access a resource or pool of resources concurrently.</summary>
+    <summary>リソースまたはリソースのプールに同時にアクセスできるスレッドの数を制限する <see cref="T:System.Threading.Semaphore" /> の軽量版を表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Semaphores are of two types: local semaphores and named system semaphores. The former is local to an app. The latter is visible throughout the operating system and is suitable for inter-process synchronization. The <xref:System.Threading.SemaphoreSlim> is a lightweight alternative to the <xref:System.Threading.Semaphore> class that doesn't use Windows kernel semaphores. Unlike the <xref:System.Threading.Semaphore> class, the <xref:System.Threading.SemaphoreSlim> class doesn't support named system semaphores. You can use it as a local semaphore only. The <xref:System.Threading.SemaphoreSlim> class is the recommended semaphore for synchronization within a single app.  
+## 解説  
+ 次の 2 種類のセマフォは: ローカル セマフォや名前付きシステム セマフォです。 前者は、アプリに対してローカルです。 後者は、オペレーティング システム全体にわたって参照し、プロセス間の同期に適しています。<xref:System.Threading.SemaphoreSlim> は軽量版を <xref:System.Threading.Semaphore> Windows カーネルのセマフォを使用していないクラス。 異なり、 <xref:System.Threading.Semaphore> 、クラス、 <xref:System.Threading.SemaphoreSlim> クラスは、名前付きシステム セマフォをサポートしていません。 これは、ローカル セマフォのみとして使用できます。<xref:System.Threading.SemaphoreSlim> クラスは、単一のアプリ内での同期の推奨されるセマフォです。  
   
- A lightweight semaphore controls access to a pool of resources that is local to your application. When you instantiate a semaphore, you can specify the maximum number of threads that can enter the semaphore concurrently. You also specify the initial number of threads that can enter the semaphore concurrently. This defines the semaphore's count.  
+ 軽量セマフォは、ローカル アプリケーションにあるリソースのプールへのアクセスを制御します。 セマフォをインスタンス化するときは、セマフォに入る、同時にスレッドの最大数を指定できます。 また、セマフォを同時に入力できるスレッドの初期数を指定します。 これは、セマフォの数を定義します。  
   
- The count is decremented each time a thread enters the semaphore, and incremented each time a thread releases the semaphore. To enter the semaphore, a thread calls one of the <xref:System.Threading.SemaphoreSlim.Wait%2A> or <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> overloads. To release the semaphore, it calls one of the <xref:System.Threading.SemaphoreSlim.Release%2A> overloads. When the count reaches zero, subsequent calls to one of the `Wait` methods block until other threads release the semaphore. If multiple threads are blocked, there is no guaranteed order, such as FIFO or LIFO, that controls when threads enter the semaphore.  
+ カウントがデクリメントします、スレッドがセマフォに入るたびにし、毎回増加、スレッドがセマフォを解放します。 セマフォに入るにスレッドのいずれかが呼び出す、 <xref:System.Threading.SemaphoreSlim.Wait%2A> または <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> オーバー ロードします。 呼び出しのいずれかのセマフォを解放する、 <xref:System.Threading.SemaphoreSlim.Release%2A> オーバー ロードします。 カウントが 0 のいずれかに後続の呼び出しに達したら、 `Wait` メソッドは、他のスレッドがセマフォを解放するまでブロックします。 複数のスレッドがブロックされる場合は、保証された順序はありません、FIFO や LIFO などを制御しているスレッドがセマフォに入るとします。  
   
- The basic structure for code that uses a semaphore to protect resources is:  
+ リソースを保護する、セマフォを使用するコードの基本的な構造です。  
   
 ```  
   
@@ -58,22 +58,22 @@ SemaphoreSlim.Release()
   
 ```  
   
- When all threads have released the semaphore, the count is at the maximum value specified when the semaphore was created. The semaphore's count is available from the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property.  
+ すべてのスレッドがセマフォを解放、ときに、数が最大値で指定、セマフォが作成されたときにします。 セマフォのカウントは、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティです。  
   
 > [!IMPORTANT]
->  The <xref:System.Threading.SemaphoreSlim> class doesn't enforce thread or task identity on calls to the <xref:System.Threading.SemaphoreSlim.Wait%2A>, <xref:System.Threading.SemaphoreSlim.WaitAsync%2A>, and <xref:System.Threading.SemaphoreSlim.Release%2A> methods. In addition, if the <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%29> constructor is used to instantiate the <xref:System.Threading.SemaphoreSlim> object, the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property can increase beyond the value set by the constructor. It is the programmer's responsibility to ensure that calls to <xref:System.Threading.SemaphoreSlim.Wait%2A> or <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> methods are appropriately paired with calls to <xref:System.Threading.SemaphoreSlim.Release%2A> methods.  
+>  <xref:System.Threading.SemaphoreSlim> クラスへの呼び出しでスレッドまたはタスクの id を適用しない、 <xref:System.Threading.SemaphoreSlim.Wait%2A>, 、<xref:System.Threading.SemaphoreSlim.WaitAsync%2A>, 、および <xref:System.Threading.SemaphoreSlim.Release%2A> メソッドです。 さらに場合、 <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%29> コンス トラクターがインスタンス化に使用、 <xref:System.Threading.SemaphoreSlim> オブジェクト、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> コンス トラクターによって設定された値を超えるプロパティを増やすことができます。 呼び出していることを確認するプログラマの役目です <xref:System.Threading.SemaphoreSlim.Wait%2A> または <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> メソッドが呼び出しと組み合わされ、適切に <xref:System.Threading.SemaphoreSlim.Release%2A> メソッドです。  
   
    
   
-## Examples  
- The following example creates a semaphore with a maximum count of three threads and an initial count of zero threads. The example starts five tasks, all of which block waiting for the semaphore. The main thread calls the <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> overload to increase the semaphore count to its maximum, which allows three tasks to enter the semaphore. Each time the semaphore is released, the previous semaphore count is displayed. Console messages track semaphore use. The simulated work interval is increased slightly for each thread to make the output easier to read.  
+## 例  
+ 次の例では、3 つのスレッドの最大数で初期カウントが 0 個のスレッドのセマフォを作成します。 この例では、セマフォの待機をブロックできるすべての 5 つのタスクを開始します。 メイン スレッドの呼び出し、 <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> をその最大値は、セマフォに入るための 3 つのタスクは、セマフォのカウントを増やすにはオーバー ロードします。 セマフォが解放されるたびに、前のセマフォのカウントが表示されます。 コンソール メッセージ追跡セマフォを使用します。 シミュレートされた動作の間隔は、各スレッドの出力を読みやすくするために少し増加します。  
   
- [!code-csharp[System.Threading.SemaphoreSlim#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.semaphoreslim/cs/example.cs#1)]
- [!code-vb[System.Threading.SemaphoreSlim#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.semaphoreslim/vb/example.vb#1)]  
+ [!code-csharp[System.Threading.SemaphoreSlim\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.semaphoreslim/cs/example.cs#1)]
+ [!code-vb[System.Threading.SemaphoreSlim\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.semaphoreslim/vb/example.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>All public and protected members of <see cref="T:System.Threading.SemaphoreSlim" /> are thread-safe and may be used concurrently from multiple threads, with the exception of <see cref="M:System.Threading.SemaphoreSlim.Dispose" />, which must be used only when all other operations on the <see cref="T:System.Threading.SemaphoreSlim" /> have completed.</threadsafe>
+    <threadsafe>すべてのパブリック、プロテクト メンバー <see cref="T:System.Threading.SemaphoreSlim" /> スレッド セーフでは、例外として複数のスレッドから同時に使用可能性があります <see cref="M:System.Threading.SemaphoreSlim.Dispose" />, を使用する必要がありますされる場合にのみに対して他のすべての操作、 <see cref="T:System.Threading.SemaphoreSlim" /> が完了します。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -100,18 +100,21 @@ SemaphoreSlim.Release()
         <Parameter Name="initialCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="initialCount">The initial number of requests for the semaphore that can be granted concurrently.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.SemaphoreSlim" /> class, specifying the initial number of requests that can be granted concurrently.</summary>
+        <param name="initialCount">同時に許可されるセマフォの要求の初期数。</param>
+        <summary>同時に許可される要求の初期数を指定して、<see cref="T:System.Threading.SemaphoreSlim" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `initialCount` parameter defines the number of concurrent requests to enter the semaphore that can be granted. However, it doesn't define the maximum number of requests that can be granted concurrently. A   <xref:System.Threading.SemaphoreSlim> object instantiated by calling this constructor doesn't throw a <xref:System.Threading.SemaphoreFullException> exception if a call to the <xref:System.Threading.SemaphoreSlim.Release%2A> method increases the value of the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property beyond `initialCount`. This occurs if there are more calls to <xref:System.Threading.SemaphoreSlim.Release%2A> methods than there are to <xref:System.Threading.SemaphoreSlim.Wait%2A> or <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> methods. To set the maximum number of concurrent requests to enter the semaphore that can be granted, call the <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%2CSystem.Int32%29> constructor.  
+## 解説  
+ `initialCount` パラメーターが許可されるセマフォに入るへの同時要求の数を定義します。 ただし、同時に許可される要求の最大数を定義してされません。 A   <xref:System.Threading.SemaphoreSlim> このコンス トラクターを呼び出すことによってインスタンス化されたオブジェクトの例外がスローされない、 <xref:System.Threading.SemaphoreFullException> 例外への呼び出し、 <xref:System.Threading.SemaphoreSlim.Release%2A> メソッドは、の値を増加、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を超えてプロパティ `initialCount`します。 これは、呼び出しをより多くがある場合に発生 <xref:System.Threading.SemaphoreSlim.Release%2A> よりメソッドが <xref:System.Threading.SemaphoreSlim.Wait%2A> または <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> メソッドです。 許可されるセマフォに入るへの同時要求の最大数を設定する、 <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%2CSystem.Int32%29> コンス トラクターです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="initialCount" /> is less than 0.</exception>
+          <paramref name="initialCount" /> が 0 未満です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -139,12 +142,20 @@ SemaphoreSlim.Release()
         <Parameter Name="maxCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="initialCount">The initial number of requests for the semaphore that can be granted concurrently.</param>
-        <param name="maxCount">The maximum number of requests for the semaphore that can be granted concurrently.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.SemaphoreSlim" /> class, specifying the initial and maximum number of requests that can be granted concurrently.</summary>
-        <remarks>To be added.</remarks>
+        <param name="initialCount">同時に許可されるセマフォの要求の初期数。</param>
+        <param name="maxCount">同時に許可されるセマフォの要求の最大数。</param>
+        <summary>同時に許可される要求の初期数および最大数を指定して、<see cref="T:System.Threading.SemaphoreSlim" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="initialCount" /> is less than 0, or <paramref name="initialCount" /> is greater than <paramref name="maxCount" />, or <paramref name="maxCount" /> is equal to or less than 0.</exception>
+          <paramref name="initialCount" /> 0 未満または <paramref name="initialCount" /> よりも大きい <paramref name="maxCount" />, 、または <paramref name="maxCount" /> が同じか、または 0 より小さい。</exception>
       </Docs>
     </Member>
     <Member MemberName="AvailableWaitHandle">
@@ -171,17 +182,21 @@ SemaphoreSlim.Release()
         <ReturnType>System.Threading.WaitHandle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns a <see cref="T:System.Threading.WaitHandle" /> that can be used to wait on the semaphore.</summary>
-        <value>A <see cref="T:System.Threading.WaitHandle" /> that can be used to wait on the semaphore.</value>
+        <summary>セマフォの待機に使用できる <see cref="T:System.Threading.WaitHandle" /> を返します。</summary>
+        <value>セマフォの待機に使用できる <see cref="T:System.Threading.WaitHandle" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this property only when you must wait on a SemaphoreSlim together with other kernel-based synchronization objects with the same wait handle. A successful wait on the <xref:System.Threading.SemaphoreSlim.AvailableWaitHandle%2A> does not imply a successful wait on the <xref:System.Threading.SemaphoreSlim> itself, nor does it decrement the semaphore's count. After the available wait handle is signaled, you should wait on the <xref:System.Threading.SemaphoreSlim> specifically.  
+## 解説  
+ 同じ待機ハンドルを使用して他のカーネル ベースの同期オブジェクトと SemaphoreSlim を待機する必要がある場合にのみ、このプロパティを使用します。 に対する成功の待機時間、 <xref:System.Threading.SemaphoreSlim.AvailableWaitHandle%2A> の待機時間は成功とは限りません、 <xref:System.Threading.SemaphoreSlim> 自体、セマフォのカウントがデクリメントされることもできます。 使用可能な待機ハンドルがシグナル通知された後、待機する必要があります、 <xref:System.Threading.SemaphoreSlim> 具体的にします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.SemaphoreSlim" /> has been disposed.</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.SemaphoreSlim" /> は破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="CurrentCount">
@@ -208,14 +223,18 @@ SemaphoreSlim.Release()
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of remaining threads that can enter the <see cref="T:System.Threading.SemaphoreSlim" /> object.</summary>
-        <value>The number of remaining threads that can enter the semaphore.</value>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> オブジェクトに入る、残りのスレッド数を取得します。</summary>
+        <value>セマフォに入る、残りのスレッド数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The initial value of the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property is set by the call to the <xref:System.Threading.SemaphoreSlim.%23ctor%2A> class constructor. It is decremented by each call to the <xref:System.Threading.SemaphoreSlim.Wait%2A> or <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> method, and incremented by each call to the <xref:System.Threading.SemaphoreSlim.Release%2A> method.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -245,17 +264,23 @@ SemaphoreSlim.Release()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the current instance of the <see cref="T:System.Threading.SemaphoreSlim" /> class.</summary>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> クラスの現在のインスタンスによって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call `Dispose` when you are finished using the <xref:System.Threading.SemaphoreSlim>. The `Dispose` method leaves the <xref:System.Threading.SemaphoreSlim> in an unusable state. After calling `Dispose`, you must release all references to the <xref:System.Threading.SemaphoreSlim> so the garbage collector can reclaim the memory that the <xref:System.Threading.SemaphoreSlim> was occupying.  
+## 解説  
+ Call **languageKeyword tag is not supported!!!!**  
+ when you are finished using the <xref:System.Threading.SemaphoreSlim>. The **languageKeyword tag is not supported!!!!**  
+ method leaves the <xref:System.Threading.SemaphoreSlim> in an unusable state. After calling **languageKeyword tag is not supported!!!!**  
+, you must release all references to the <xref:System.Threading.SemaphoreSlim> so the garbage collector can reclaim the memory that the <xref:System.Threading.SemaphoreSlim> was occupying.  
   
- For more information, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+ For more information, see [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213) and [Implementing a Dispose Method](http://msdn.microsoft.com/ja-jp/eb4e1af0-3b48-4fbc-ad4e-fc2f64138bf9).  
   
 > [!NOTE]
->  Always call `Dispose` before you release your last reference to the <xref:System.Threading.SemaphoreSlim>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.Threading.SemaphoreSlim> object's `Finalize` method.  
+>  Always call **languageKeyword tag is not supported!!!!**  
+>  before you release your last reference to the <xref:System.Threading.SemaphoreSlim>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.Threading.SemaphoreSlim> object's **languageKeyword tag is not supported!!!!**  
+>  method.  
   
  ]]></format>
         </remarks>
@@ -288,15 +313,18 @@ SemaphoreSlim.Release()
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Threading.SemaphoreSlim" />, and optionally releases the managed resources.</summary>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> が使用しているアンマネージ リソースを解放します。オプションとして、マネージ リソースを解放することもできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Unlike most of the members of <xref:System.Threading.SemaphoreSlim>, <xref:System.Threading.SemaphoreSlim.Dispose%2A> is not thread-safe and may not be used concurrently with other members of this instance.  
+## 解説  
+ Unlike most of the members of <xref:System.Threading.SemaphoreSlim>, <xref:System.Threading.SemaphoreSlim.Dispose%2A> is not thread\-safe and may not be used concurrently with other members of this instance.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -326,18 +354,24 @@ SemaphoreSlim.Release()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the <see cref="T:System.Threading.SemaphoreSlim" /> object once.</summary>
-        <returns>The previous count of the <see cref="T:System.Threading.SemaphoreSlim" />.</returns>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> のオブジェクトを一度解放します。</summary>
+        <returns>
+          <see cref="T:System.Threading.SemaphoreSlim" /> の前のカウント。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A call to the <xref:System.Threading.SemaphoreSlim.Release> method increments the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one. If the value of the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property is zero before this method is called, the method also allows one thread or task blocked by a call to the <xref:System.Threading.SemaphoreSlim.Wait%2A> or <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> method to enter the semaphore.  
+## 解説  
+ 呼び出し、 <xref:System.Threading.SemaphoreSlim.Release> メソッド、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。 場合の値、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> このメソッドが呼び出される前に、プロパティが 0 であり、メソッドも 1 つのスレッドまたはタスクへの呼び出しによってブロックされている、 <xref:System.Threading.SemaphoreSlim.Wait%2A> または <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> セマフォに入るためのメソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
-        <exception cref="T:System.Threading.SemaphoreFullException">The <see cref="T:System.Threading.SemaphoreSlim" /> has already reached its maximum size.</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
+        <exception cref="T:System.Threading.SemaphoreFullException">
+          <see cref="T:System.Threading.SemaphoreSlim" /> の最大サイズに既に達しています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Release">
@@ -367,21 +401,26 @@ SemaphoreSlim.Release()
         <Parameter Name="releaseCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="releaseCount">The number of times to exit the semaphore.</param>
-        <summary>Releases the <see cref="T:System.Threading.SemaphoreSlim" /> object a specified number of times.</summary>
-        <returns>The previous count of the <see cref="T:System.Threading.SemaphoreSlim" />.</returns>
+        <param name="releaseCount">セマフォから出る回数。</param>
+        <summary>指定された回数だけ、<see cref="T:System.Threading.SemaphoreSlim" /> オブジェクトを解放します。</summary>
+        <returns>
+          <see cref="T:System.Threading.SemaphoreSlim" /> の前のカウント。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A call to the <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> method increments the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by `releaseCount`. If the value of the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property is zero before this method is called, the method also allows `releaseCount` threads or tasks blocked by a call to the <xref:System.Threading.SemaphoreSlim.Wait%2A> or <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> method to enter the semaphore.  
+## 解説  
+ 呼び出し、 <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> メソッド、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティによる `releaseCount`します。 場合の値、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティは、このメソッドが呼び出される前にゼロは、メソッドもを使用、 `releaseCount` スレッドまたはタスクへの呼び出しによってブロックされている、 <xref:System.Threading.SemaphoreSlim.Wait%2A> または <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> セマフォに入るためのメソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="releaseCount" /> is less than 1.</exception>
-        <exception cref="T:System.Threading.SemaphoreFullException">The <see cref="T:System.Threading.SemaphoreSlim" /> has already reached its maximum size.</exception>
+          <paramref name="releaseCount" /> 1 より小さいです。</exception>
+        <exception cref="T:System.Threading.SemaphoreFullException">
+          <see cref="T:System.Threading.SemaphoreSlim" /> の最大サイズに既に達しています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -409,16 +448,20 @@ SemaphoreSlim.Release()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If a thread or task is able to enter the semaphore, it decrements the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one.  
+## 解説  
+ スレッドまたはタスクをできない場合は、セマフォに入ることをデクリメント、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -448,29 +491,24 @@ SemaphoreSlim.Release()
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, <see cref="F:System.Threading.Timeout.Infinite" />(-1) to wait indefinitely, or zero to test the state of the wait handle and return immediately.</param>
-        <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a 32-bit signed integer that specifies the timeout.</summary>
-        <returns>
-          <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">待機するミリ秒数。無制限に待機する場合は <see cref="F:System.Threading.Timeout.Infinite" /> \(\-1\)。</param>
+        <summary>タイムアウト値を 32 ビット符号付き整数で指定して、<see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
+        <returns>現在のスレッドが <see cref="T:System.Threading.SemaphoreSlim" /> に正常に入った場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks 
-If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
-If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately.
-
-If a thread or task is able to enter the semaphore, it decrements the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one.  
+## 解説  
+ スレッドまたはタスクをできない場合は、セマフォに入ることをデクリメント、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。  
   
-If a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%29> and the timeout interval specified by `millisecondsTimeout` expires:
-
-- The thread or task doesn't enter the semaphore.
-- The <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property isn't decremented.  
+ 呼び出すときに、スレッドまたはタスクがブロックされた場合 <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%29>, 、およびで指定されたタイムアウト時間 `millisecondsTimeout` 経過すると、スレッドまたはタスクが、セマフォに入るしないと、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティは、デクリメントします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+          <paramref name="millisecondsTimeout" /> は無限のタイムアウトを表す \-1 以外の負の数です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -500,25 +538,29 @@ If a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> token to observe.</param>
-        <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />, while observing a <see cref="T:System.Threading.CancellationToken" />.</summary>
+        <param name="cancellationToken">観察する <see cref="T:System.Threading.CancellationToken" /> トークン。</param>
+        <summary>
+          <see cref="T:System.Threading.CancellationToken" /> を観察すると同時に、<see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If a thread or task is able to enter the semaphore, it decrements the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one.  
+## 解説  
+ スレッドまたはタスクをできない場合は、セマフォに入ることをデクリメント、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。  
   
- If `cancellationToken` is cancelled, the thread or task doesn't enter the semaphore, and the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property isn't decremented. Instead, the method throws an <xref:System.OperationCanceledException> exception.  
+ 場合 `cancellationToken` が取り消されると、スレッドやタスクはセマフォに入ると、および <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティは、デクリメントします。 メソッドの代わりに、スロー、 <xref:System.OperationCanceledException> 例外です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.OperationCanceledException">
-          <paramref name="cancellationToken" /> was canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.  
+          <paramref name="cancellationToken" /> 取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。  
   
- -or-  
+ または  
   
- The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
+ <see cref="T:System.Threading.CancellationTokenSource" /> 作成<paramref name=" cancellationToken" /> 既に破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -548,30 +590,26 @@ If a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely, or a <see cref="T:System.TimeSpan" /> that represents 0 milliseconds to test the wait handle and return immediately.</param>
-        <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a <see cref="T:System.TimeSpan" /> to specify the timeout.</summary>
-        <returns>
-          <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
+        <param name="timeout">待機するミリ秒数を表す <see cref="T:System.TimeSpan" />。無制限に待機する場合は、\-1 ミリ秒を表す <see cref="T:System.TimeSpan" />。</param>
+        <summary>
+          <see cref="T:System.TimeSpan" /> を使用してタイムアウトを指定し、<see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
+        <returns>現在のスレッドが <see cref="T:System.Threading.SemaphoreSlim" /> に正常に入った場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
-If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
-If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately. 
- 
-If a thread or task is able to enter the semaphore, it decrements the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one.  
+## 解説  
+ スレッドまたはタスクをできない場合は、セマフォに入ることをデクリメント、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。  
   
-If a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%29> and the timeout interval specified by `millisecondsTimeout` expires:
-
-- The thread or task doesn't enter the semaphore.
-- The <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property isn't decremented.   
+ 呼び出すときに、スレッドまたはタスクがブロックされた場合 <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%29> と指定されたタイムアウト間隔 `timeout` 経過すると、スレッドまたはタスクは、セマフォを入力しないと <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティは、デクリメントします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="timeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">The semaphoreSlim instance has been disposed <paramref name="." /></exception>
+          <paramref name="timeout" /> \-1 ミリ秒を表す、タイムアウトが無制限 \- または \- タイムアウトよりも大きい以外の負の値は、 <see cref="F:System.Int32.MaxValue" />です。</exception>
+        <exception cref="T:System.ObjectDisposedException">SemaphoreSlim インスタンスが破棄されています。<paramref name="." /></exception>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -602,35 +640,30 @@ If a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, <see cref="F:System.Threading.Timeout.Infinite" />(-1) to wait indefinitely, or zero to test the state of the wait handle and return immediately.</param>
-        <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> to observe.</param>
-        <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a 32-bit signed integer that specifies the timeout, while observing a <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>
-          <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">待機するミリ秒数。無制限に待機する場合は <see cref="F:System.Threading.Timeout.Infinite" /> \(\-1\)。</param>
+        <param name="cancellationToken">観察する <see cref="T:System.Threading.CancellationToken" />。</param>
+        <summary>
+          <see cref="T:System.Threading.CancellationToken" /> を観察すると同時に、タイムアウト値を 32 ビット符号付き整数で指定して、<see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
+        <returns>現在のスレッドが <see cref="T:System.Threading.SemaphoreSlim" /> に正常に入った場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
-If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
-If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately.
-
-If a thread or task is able to enter the semaphore, it decrements the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one.  
+## 解説  
+ スレッドまたはタスクをできない場合は、セマフォに入ることをデクリメント、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。  
   
-If `cancellationToken` is cancelled, or if a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%2CSystem.Threading.CancellationToken%29> and the timeout interval specified by `millisecondsTimeout` expires:
-
-- The thread or task doesn't enter the semaphore.
-- The <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property isn't decremented.  
- 
-If `cancellationToken` is cancelled, the method throws an   <xref:System.OperationCanceledException> exception.  
+ 場合 `cancellationToken` が取り消された場合を呼び出すときに、スレッドまたはタスクがブロックされた場合、または <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%2CSystem.Threading.CancellationToken%29> と指定されたタイムアウト間隔 `millisecondsTimeout` 経過すると、スレッドまたはタスクは、セマフォを入力しないと <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティは、デクリメントします。 場合 `cancellationToken` が取り消されると、メソッドをスローする   <xref:System.OperationCanceledException> 例外です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.OperationCanceledException">
-          <paramref name="cancellationToken" /> was canceled.</exception>
+          <paramref name="cancellationToken" /> 取り消されました。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.SemaphoreSlim" /> instance has been disposed, or the <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has been disposed.</exception>
+          <paramref name="millisecondsTimeout" /> は無限のタイムアウトを表す \-1 以外の負の数です。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.SemaphoreSlim" /> インスタンスが破棄されると、または <see cref="T:System.Threading.CancellationTokenSource" /> 作成 <paramref name="cancellationToken" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -661,37 +694,33 @@ If `cancellationToken` is cancelled, the method throws an   <xref:System.Operati
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely, or a <see cref="T:System.TimeSpan" /> that represents 0 milliseconds to test the wait handle and return immediately.</param>
-        <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> to observe.</param>
-        <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a <see cref="T:System.TimeSpan" /> that specifies the timeout, while observing a <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>
-          <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
+        <param name="timeout">待機するミリ秒数を表す <see cref="T:System.TimeSpan" />。無制限に待機する場合は、\-1 ミリ秒を表す <see cref="T:System.TimeSpan" />。</param>
+        <param name="cancellationToken">観察する <see cref="T:System.Threading.CancellationToken" />。</param>
+        <summary>
+          <see cref="T:System.Threading.CancellationToken" /> を観察すると同時に、タイムアウトを指定する <see cref="T:System.TimeSpan" /> を使用して、<see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
+        <returns>現在のスレッドが <see cref="T:System.Threading.SemaphoreSlim" /> に正常に入った場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
-If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
-If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately. 
-
-If a thread or task is able to enter the semaphore, it decrements the <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property by one.  
+## 解説  
+ スレッドまたはタスクをできない場合は、セマフォに入ることをデクリメント、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> を 1 つのプロパティです。  
   
-If `cancellationToken` is cancelled, or if a thread or task is blocked when calling <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%2CSystem.Threading.CancellationToken%29> and the timeout interval specified by `millisecondsTimeout` expires:
-
-- The thread or task doesn't enter the semaphore.
-- The <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> property isn't decremented.  
-
-If `cancellationToken` is cancelled, the method throws an <xref:System.OperationCanceledException> exception.  
+ 場合 `cancellationToken` が取り消されるとを呼び出すときに、スレッドまたはタスクがブロックされた場合、または <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%2CSystem.Threading.CancellationToken%29> によって指定されたタイムアウト間隔と `timeout` 経過すると、スレッドまたはタスクは、セマフォを入力しないと、 <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> プロパティは、デクリメントです。 場合 `cancellationToken` が取り消されると、メソッドをスローする <xref:System.OperationCanceledException> 例外です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.OperationCanceledException">
-          <paramref name="cancellationToken" /> was canceled.</exception>
+          <paramref name="cancellationToken" /> 取り消されました。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="timeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">The semaphoreSlim instance has been disposed <paramref name="." /><paramref name="-or-" />  
+          <paramref name="timeout" /> \-1 ミリ秒を表す、タイムアウトが無制限 \- または \- タイムアウトよりも大きい以外の負の値は、 <see cref="F:System.Int32.MaxValue" />です。</exception>
+        <exception cref="T:System.ObjectDisposedException">SemaphoreSlim インスタンスが破棄されています。<paramref name="." />  
   
- The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
+ <paramref name="-or-" />  
+  
+ <see cref="T:System.Threading.CancellationTokenSource" /> 作成 <paramref name="cancellationToken" /> 既に破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -719,9 +748,15 @@ If `cancellationToken` is cancelled, the method throws an <xref:System.Operation
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Asynchronously waits to enter the <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
-        <returns>A task that will complete when the semaphore has been entered.</returns>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <returns>セマフォに入っているときに完了するタスク。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -751,22 +786,18 @@ If `cancellationToken` is cancelled, the method throws an <xref:System.Operation
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, <see cref="F:System.Threading.Timeout.Infinite" /> (-1) to wait indefinitely, or zero to test the state of the wait handle and return immediately.</param>
-        <summary>Asynchronously waits to enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a 32-bit signed integer to measure the time interval.</summary>
-        <returns>A task that will complete with a result of <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />, otherwise with a result of <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">待機するミリ秒数。無制限に待機する場合は <see cref="F:System.Threading.Timeout.Infinite" /> \(\-1\)。</param>
+        <summary>32 ビット符号付き整数を使用して時間間隔を測定しながら、<see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <returns>現在のスレッドが正常に <see cref="T:System.Threading.SemaphoreSlim" /> を入力した場合は <see langword="true" />、それ以外の場合は <see langword="false" /> で完了するタスク。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
- If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately. 
-  
+## 解説  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+          <paramref name="millisecondsTimeout" /> は無限のタイムアウトを表す \-1 以外の負の数です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -796,13 +827,19 @@ If `cancellationToken` is cancelled, the method throws an <xref:System.Operation
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> token to observe.</param>
-        <summary>Asynchronously waits to enter the <see cref="T:System.Threading.SemaphoreSlim" />, while observing a <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>A task that will complete when the semaphore has been entered.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+        <param name="cancellationToken">観察する <see cref="T:System.Threading.CancellationToken" /> トークン。</param>
+        <summary>
+          <see cref="T:System.Threading.CancellationToken" /> を観察すると同時に、<see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <returns>セマフォに入っているときに完了するタスク。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
         <exception cref="T:System.OperationCanceledException">
-          <paramref name="cancellationToken" /> was canceled.</exception>
+          <paramref name="cancellationToken" /> 取り消されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -832,22 +869,23 @@ If `cancellationToken` is cancelled, the method throws an <xref:System.Operation
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely, or a <see cref="T:System.TimeSpan" /> that represents 0 milliseconds to test the wait handle and return immediately.</param>
-        <summary>Asynchronously waits to enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a <see cref="T:System.TimeSpan" /> to measure the time interval.</summary>
-        <returns>A task that will complete with a result of <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />, otherwise with a result of <see langword="false" />.</returns>
+        <param name="timeout">待機するミリ秒数を表す <see cref="T:System.TimeSpan" />。無制限に待機する場合は、\-1 ミリ秒を表す <see cref="T:System.TimeSpan" />。</param>
+        <summary>
+          <see cref="T:System.TimeSpan" /> を使用して時間間隔を測定しながら、<see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <returns>現在のスレッドが正常に <see cref="T:System.Threading.SemaphoreSlim" /> を入力した場合は <see langword="true" />、それ以外の場合は <see langword="false" /> で完了するタスク。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
- If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately. 
-  
+## 解説  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+          <paramref name="millisecondsTimeout" /> 無限のタイムアウトを表す\-1 以外の負の値は、します。  
+  
+ または  
+  
+ タイムアウトがより大きい <see cref="F:System.Int32.MaxValue" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -878,25 +916,21 @@ If `cancellationToken` is cancelled, the method throws an <xref:System.Operation
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, <see cref="F:System.Threading.Timeout.Infinite" /> (-1) to wait indefinitely, or zero to test the state of the wait handle and return immediately.</param>
-        <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> to observe.</param>
-        <summary>Asynchronously waits to enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a 32-bit signed integer to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>A task that will complete with a result of <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />, otherwise with a result of <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">待機するミリ秒数。無制限に待機する場合は <see cref="F:System.Threading.Timeout.Infinite" /> \(\-1\)。</param>
+        <param name="cancellationToken">観察する <see cref="T:System.Threading.CancellationToken" />。</param>
+        <summary>32 ビット符号付き整数を使用して時間間隔を測定しながら、<see cref="T:System.Threading.CancellationToken" /> を観察すると同時に、<see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <returns>現在のスレッドが正常に <see cref="T:System.Threading.SemaphoreSlim" /> を入力した場合は <see langword="true" />、それ以外の場合は <see langword="false" /> で完了するタスク。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the timeout is set to -1 milliseconds, the method waits indefinitely.
- 
- If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately. 
-  
+## 解説  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> is a number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
+          <paramref name="millisecondsTimeout" /> は無限のタイムアウトを表す \-1 以外の負の数です。</exception>
+        <exception cref="T:System.ObjectDisposedException">現在のインスタンスは既に破棄されています。</exception>
         <exception cref="T:System.OperationCanceledException">
-          <paramref name="cancellationToken" /> was canceled.</exception>
+          <paramref name="cancellationToken" /> 取り消されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -927,25 +961,116 @@ If `cancellationToken` is cancelled, the method throws an <xref:System.Operation
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely, or a <see cref="T:System.TimeSpan" /> that represents 0 milliseconds to test the wait handle and return immediately.</param>
-        <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> token to observe.</param>
-        <summary>Asynchronously waits to enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a <see cref="T:System.TimeSpan" /> to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>A task that will complete with a result of <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />, otherwise with a result of <see langword="false" />.</returns>
+        <param name="timeout">待機するミリ秒数を表す <see cref="T:System.TimeSpan" />。無制限に待機する場合は、\-1 ミリ秒を表す <see cref="T:System.TimeSpan" />。</param>
+        <param name="cancellationToken">観察する <see cref="T:System.Threading.CancellationToken" /> トークン。</param>
+        <summary>
+          <see cref="T:System.TimeSpan" /> を使用して時間間隔を測定しながら、<see cref="T:System.Threading.CancellationToken" /> を観察すると同時に、<see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <returns>現在のスレッドが正常に <see cref="T:System.Threading.SemaphoreSlim" /> を入力した場合は <see langword="true" />、それ以外の場合は <see langword="false" /> で完了するタスク。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the timeout is set to -1 milliseconds, the method waits indefinitely.
-
- If the timeout is set to zero milliseconds, the method doesn't block. It tests the state of the wait handle and returns immediately. 
-  
+## 解説  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+          <paramref name="millisecondsTimeout" /> 無限のタイムアウトを表す\-1 以外の負の値は、します。  
+  
+ または  
+  
+ タイムアウトがより大きい <see cref="F:System.Int32.MaxValue" />します。</exception>
         <exception cref="T:System.OperationCanceledException">
-          <paramref name="cancellationToken" /> was canceled.</exception>
+          <paramref name="cancellationToken" /> 取り消されました。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Wait">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> に入れるようになるまで、現在のスレッドをブロックします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Release">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> のオブジェクトを解放します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> クラスの現在のインスタンスによって使用されているリソースを解放します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="WaitAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.SemaphoreSlim" /> に移行するために非同期に待機します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

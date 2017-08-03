@@ -30,41 +30,44 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Enumerates the elements of a nongeneric dictionary.</summary>
+    <summary>非ジェネリック ディクショナリの要素を列挙します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- [Visual Basic, C#]  
+## 解説  
+ \[Visual Basic、C\# の場合\]  
   
- The `foreach` statement of the C# language (`for each` in Visual Basic) hides the complexity of the enumerators.  Therefore, using `foreach` is recommended instead of directly manipulating the enumerator.  
+ C\# 言語の `foreach` ステートメント \(Visual Basic の場合は `for each`\) を使用することで列挙子の複雑さを回避できます。  したがってを使用して `foreach` 、列挙子を直接操作するのではなくをお勧めします。  
   
- Enumerators can be used to read the data in the collection, but they cannot be used to modify the underlying collection.  
+ 列挙子を使用すると、コレクション内のデータを読み取ることができますが、基になるコレクションを変更することはできません。  
   
- Initially, the enumerator is positioned before the first element in the collection. The <xref:System.Collections.IEnumerator.Reset%2A> method also brings the enumerator back to this position. At this position, calling the <xref:System.Collections.IEnumerator.Current%2A> property throws an exception. Therefore, you must call the <xref:System.Collections.IEnumerator.MoveNext%2A> method to advance the enumerator to the first element of the collection before reading the value of <xref:System.Collections.IEnumerator.Current%2A>.  
+ 最初に、列挙子はコレクション内の 1 番目の要素の前に位置付けられます。<xref:System.Collections.IEnumerator.Reset%2A> メソッドがこの位置に戻さも、列挙子を表示します。 この位置を呼び出す、 <xref:System.Collections.IEnumerator.Current%2A> プロパティは例外をスローします。 そのため、呼び出す必要があります、 <xref:System.Collections.IEnumerator.MoveNext%2A> メソッドの値を読み取る前にコレクションの最初の要素を列挙子を進める <xref:System.Collections.IEnumerator.Current%2A>します。  
   
- <xref:System.Collections.IEnumerator.Current%2A> returns the same object until either <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> is called. <xref:System.Collections.IEnumerator.MoveNext%2A> sets <xref:System.Collections.IEnumerator.Current%2A> to the next element.  
+ <xref:System.Collections.IEnumerator.Current%2A> は、<xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> が呼び出されるまでは同じオブジェクトを返します。<xref:System.Collections.IEnumerator.MoveNext%2A> は、<xref:System.Collections.IEnumerator.Current%2A> を次の要素に設定します。  
   
- If <xref:System.Collections.IEnumerator.MoveNext%2A> passes the end of the collection, the enumerator is positioned after the last element in the collection and <xref:System.Collections.IEnumerator.MoveNext%2A> returns `false`. When the enumerator is at this position, subsequent calls to <xref:System.Collections.IEnumerator.MoveNext%2A> also return `false`. If the last call to <xref:System.Collections.IEnumerator.MoveNext%2A> returned `false`, calling <xref:System.Collections.IEnumerator.Current%2A> throws an exception. To set <xref:System.Collections.IEnumerator.Current%2A> to the first element of the collection again, you can call <xref:System.Collections.IEnumerator.Reset%2A> followed by <xref:System.Collections.IEnumerator.MoveNext%2A>.  
+ 場合 <xref:System.Collections.IEnumerator.MoveNext%2A> コレクション、列挙子の末尾が、コレクション内の最後の要素の後に配置されているパスと <xref:System.Collections.IEnumerator.MoveNext%2A> 返します `false`します。 列挙子があるときはこの位置にある場合、それ以降の呼び出しは、 <xref:System.Collections.IEnumerator.MoveNext%2A> を返すことも `false`です。 最後の呼び出しの場合 <xref:System.Collections.IEnumerator.MoveNext%2A> 返される `false`, 、呼び出し元 <xref:System.Collections.IEnumerator.Current%2A> 例外をスローします。<xref:System.Collections.IEnumerator.Current%2A> をコレクションの最初の要素にもう一度設定するには、<xref:System.Collections.IEnumerator.Reset%2A> を呼び出してから <xref:System.Collections.IEnumerator.MoveNext%2A> を呼び出します。  
   
- An enumerator remains valid as long as the collection remains unchanged. If changes are made to the collection, such as adding, modifying, or deleting elements, the enumerator is irrecoverably invalidated and the next call to <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> throws an <xref:System.InvalidOperationException>. If the collection is modified between <xref:System.Collections.IEnumerator.MoveNext%2A> and <xref:System.Collections.IEnumerator.Current%2A>, <xref:System.Collections.IEnumerator.Current%2A> returns the element that it is set to, even if the enumerator is already invalidated.  
+ コレクションが変更されない限り、列挙子は有効です。 無効になり、次の呼び出しの変更が加えられた場合を追加するなど、コレクションを変更すると、要素を削除するには、列挙子は回復不可能 <xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> スロー、 <xref:System.InvalidOperationException>です。 間にコレクションが変更された場合 <xref:System.Collections.IEnumerator.MoveNext%2A> と <xref:System.Collections.IEnumerator.Current%2A>, 、<xref:System.Collections.IEnumerator.Current%2A> 、列挙子が既に無効になっている場合でもに設定されている要素を返します。  
   
- The enumerator does not have exclusive access to the collection; therefore, enumerating through a collection is intrinsically not a thread-safe procedure. Even when a collection is synchronized, other threads can still modify the collection, which causes the enumerator to throw an exception. To guarantee thread safety during enumeration, you can either lock the collection during the entire enumeration or catch the exceptions resulting from changes made by other threads.  
+ 列挙子にはコレクションへの排他アクセス権限はないため、コレクションの列挙処理は本質的にスレッド セーフな処理ではありません。 コレクションの同期がとられている場合でも、別のスレッドによってそのコレクションを変更できるため、変更の結果として列挙子は例外をスローします。 列挙処理を確実にスレッド セーフに行うには、列挙中にコレクションをロックするか、他のスレッドによって行われた変更によってスローされる例外をキャッチします。  
   
    
   
-## Examples  
- This code example shows how to define a dictionary enumerator that implements the <xref:System.Collections.IDictionaryEnumerator> interface.  
+## 例  
+ このコード例は、ディクショナリ列挙子を実装するを定義する方法、 <xref:System.Collections.IDictionaryEnumerator> インターフェイスです。  
   
- [!code-cpp[Dictionary#1](~/samples/snippets/cpp/VS_Snippets_CLR/Dictionary/cpp/Dictionary.cpp#1)]
- [!code-csharp[Dictionary#1](~/samples/snippets/csharp/VS_Snippets_CLR/Dictionary/CS/Dictionary.cs#1)]
- [!code-vb[Dictionary#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Dictionary/VB/Dictionary.vb#1)]  
+ [!code-cpp[Dictionary\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Dictionary/cpp/Dictionary.cpp#1)]
+ [!code-csharp[Dictionary\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Dictionary/CS/Dictionary.cs#1)]
+ [!code-vb[Dictionary\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Dictionary/VB/Dictionary.vb#1)]  
   
  ]]></format>
     </remarks>
     <block subset="none" type="overrides">
       <para>The <see cref="P:System.Collections.IEnumerator.Current" /> property that is inherited from <see cref="T:System.Collections.IEnumerator" /> returns an <see cref="T:System.Object" /> that is a boxed <see cref="T:System.Collections.DictionaryEntry" />, similar to the return value of the <see cref="P:System.Collections.IDictionaryEnumerator.Entry" /> property.</para>
     </block>
+    <altmember cref="T:System.Collections.IDictionary" />
+    <altmember cref="T:System.Collections.IEnumerator" />
+    <altmember cref="T:System.Collections.Generic.IEnumerator`1" />
   </Docs>
   <Members>
     <Member MemberName="Entry">
@@ -93,24 +96,29 @@
         <ReturnType>System.Collections.DictionaryEntry</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets both the key and the value of the current dictionary entry.</summary>
-        <value>A <see cref="T:System.Collections.DictionaryEntry" /> containing both the key and the value of the current dictionary entry.</value>
+        <summary>キーと現在のディクショナリ エントリの値の両方を取得します。</summary>
+        <value>A <see cref="T:System.Collections.DictionaryEntry" /> キーと現在のディクショナリ エントリの値の両方を含みます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- After an enumerator is created or after the <xref:System.Collections.IEnumerator.Reset%2A> method is called, the <xref:System.Collections.IEnumerator.MoveNext%2A> method must be called to advance the enumerator to the first element of the collection before reading the value of the <xref:System.Collections.IDictionaryEnumerator.Entry%2A> property; otherwise, <xref:System.Collections.IDictionaryEnumerator.Entry%2A> is undefined.  
+## 解説  
+ 列挙子を作成した後、または後に、 <xref:System.Collections.IEnumerator.Reset%2A> メソッドが呼び出されると、 <xref:System.Collections.IEnumerator.MoveNext%2A> の値を読み取る前にコレクションの最初の要素を列挙子を進めるメソッドを呼び出す必要があります、 <xref:System.Collections.IDictionaryEnumerator.Entry%2A> プロパティ。 そうしないと、 <xref:System.Collections.IDictionaryEnumerator.Entry%2A> は定義されていません。  
   
- <xref:System.Collections.IDictionaryEnumerator.Entry%2A> also throws an exception if the last call to <xref:System.Collections.IEnumerator.MoveNext%2A> returned `false`, which indicates the end of the collection.  
+ <xref:System.Collections.IDictionaryEnumerator.Entry%2A> 最後の呼び出しの場合も、例外をスロー <xref:System.Collections.IEnumerator.MoveNext%2A> 返される `false`, 、コレクションの末尾を示します。  
   
- <xref:System.Collections.IDictionaryEnumerator.Entry%2A> does not move the position of the enumerator, and consecutive calls to <xref:System.Collections.IDictionaryEnumerator.Entry%2A> return the same object until either <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> is called.  
+ <xref:System.Collections.IDictionaryEnumerator.Entry%2A> 連続して呼び出すと、列挙子の位置を移動しません <xref:System.Collections.IDictionaryEnumerator.Entry%2A> まで同じオブジェクトが返されます <xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> が呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.IDictionaryEnumerator" /> is positioned before the first entry of the dictionary or after the last entry.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="T:System.Collections.IDictionaryEnumerator" /> はディクショナリのまたは最後のエントリの後の最初のエントリ前に配置します。</exception>
         <block subset="none" type="overrides">
           <para>The <see cref="P:System.Collections.IEnumerator.Current" /> property that is inherited from <see cref="T:System.Collections.IEnumerator" /> returns an <see cref="T:System.Object" /> that is a boxed <see cref="T:System.Collections.DictionaryEntry" />, similar to the return value of the <see cref="P:System.Collections.IDictionaryEnumerator.Entry" /> property.</para>
         </block>
+        <altmember cref="M:System.Collections.IEnumerator.Reset" />
+        <altmember cref="M:System.Collections.IEnumerator.MoveNext" />
+        <altmember cref="P:System.Collections.IDictionaryEnumerator.Key" />
+        <altmember cref="P:System.Collections.IDictionaryEnumerator.Value" />
       </Docs>
     </Member>
     <Member MemberName="Key">
@@ -139,21 +147,26 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the key of the current dictionary entry.</summary>
-        <value>The key of the current element of the enumeration.</value>
+        <summary>現在のディクショナリ エントリのキーを取得します。</summary>
+        <value>列挙体の現在の要素のキー。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- After an enumerator is created or after the <xref:System.Collections.IEnumerator.Reset%2A> method is called, the <xref:System.Collections.IEnumerator.MoveNext%2A> method must be called to advance the enumerator to the first element of the collection before reading the value of the <xref:System.Collections.IDictionaryEnumerator.Key%2A> property; otherwise, <xref:System.Collections.IDictionaryEnumerator.Key%2A> is undefined.  
+## 解説  
+ 列挙子を作成した後、または後に、 <xref:System.Collections.IEnumerator.Reset%2A> メソッドが呼び出されると、 <xref:System.Collections.IEnumerator.MoveNext%2A> の値を読み取る前にコレクションの最初の要素を列挙子を進めるメソッドを呼び出す必要があります、 <xref:System.Collections.IDictionaryEnumerator.Key%2A> プロパティ。 そうしないと、 <xref:System.Collections.IDictionaryEnumerator.Key%2A> は定義されていません。  
   
- <xref:System.Collections.IDictionaryEnumerator.Key%2A> also throws an exception if the last call to <xref:System.Collections.IEnumerator.MoveNext%2A> returned `false`, which indicates the end of the collection.  
+ <xref:System.Collections.IDictionaryEnumerator.Key%2A> 最後の呼び出しの場合も、例外をスロー <xref:System.Collections.IEnumerator.MoveNext%2A> 返される `false`, 、コレクションの末尾を示します。  
   
- <xref:System.Collections.IDictionaryEnumerator.Key%2A> does not move the position of the enumerator, and consecutive calls to <xref:System.Collections.IDictionaryEnumerator.Key%2A> return the same object until either <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> is called.  
+ <xref:System.Collections.IDictionaryEnumerator.Key%2A> 連続して呼び出すと、列挙子の位置を移動しません <xref:System.Collections.IDictionaryEnumerator.Key%2A> まで同じオブジェクトが返されます <xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> が呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.IDictionaryEnumerator" /> is positioned before the first entry of the dictionary or after the last entry.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="T:System.Collections.IDictionaryEnumerator" /> はディクショナリのまたは最後のエントリの後の最初のエントリ前に配置します。</exception>
+        <altmember cref="M:System.Collections.IEnumerator.Reset" />
+        <altmember cref="M:System.Collections.IEnumerator.MoveNext" />
+        <altmember cref="P:System.Collections.IDictionaryEnumerator.Value" />
+        <altmember cref="P:System.Collections.IDictionaryEnumerator.Entry" />
       </Docs>
     </Member>
     <Member MemberName="Value">
@@ -182,21 +195,26 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the value of the current dictionary entry.</summary>
-        <value>The value of the current element of the enumeration.</value>
+        <summary>現在のディクショナリ エントリの値を取得します。</summary>
+        <value>列挙体の現在の要素の値。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- After an enumerator is created or after the <xref:System.Collections.IEnumerator.Reset%2A> method is called, the <xref:System.Collections.IEnumerator.MoveNext%2A> method must be called to advance the enumerator to the first element of the collection before reading the value of the <xref:System.Collections.IDictionaryEnumerator.Value%2A> property; otherwise, <xref:System.Collections.IDictionaryEnumerator.Value%2A> is undefined.  
+## 解説  
+ 列挙子を作成した後、または後に、 <xref:System.Collections.IEnumerator.Reset%2A> メソッドが呼び出されると、 <xref:System.Collections.IEnumerator.MoveNext%2A> の値を読み取る前にコレクションの最初の要素を列挙子を進めるメソッドを呼び出す必要があります、 <xref:System.Collections.IDictionaryEnumerator.Value%2A> プロパティ。 そうしないと、 <xref:System.Collections.IDictionaryEnumerator.Value%2A> は定義されていません。  
   
- <xref:System.Collections.IDictionaryEnumerator.Value%2A> also throws an exception if the last call to <xref:System.Collections.IEnumerator.MoveNext%2A> returned `false`, which indicates the end of the collection.  
+ <xref:System.Collections.IDictionaryEnumerator.Value%2A> 最後の呼び出しの場合も、例外をスロー <xref:System.Collections.IEnumerator.MoveNext%2A> 返される `false`, 、コレクションの末尾を示します。  
   
- <xref:System.Collections.IDictionaryEnumerator.Value%2A> does not move the position of the enumerator, and consecutive calls to <xref:System.Collections.IDictionaryEnumerator.Value%2A> return the same object until either <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> is called.  
+ <xref:System.Collections.IDictionaryEnumerator.Value%2A> 連続して呼び出すと、列挙子の位置を移動しません <xref:System.Collections.IDictionaryEnumerator.Value%2A> まで同じオブジェクトが返されます <xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> が呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.IDictionaryEnumerator" /> is positioned before the first entry of the dictionary or after the last entry.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="T:System.Collections.IDictionaryEnumerator" /> はディクショナリのまたは最後のエントリの後の最初のエントリ前に配置します。</exception>
+        <altmember cref="M:System.Collections.IEnumerator.Reset" />
+        <altmember cref="M:System.Collections.IEnumerator.MoveNext" />
+        <altmember cref="P:System.Collections.IDictionaryEnumerator.Key" />
+        <altmember cref="P:System.Collections.IDictionaryEnumerator.Entry" />
       </Docs>
     </Member>
   </Members>

@@ -31,46 +31,48 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides access to custom attribute data for assemblies, modules, types, members and parameters that are loaded into the reflection-only context.</summary>
+    <summary>リフレクションのみのコンテキストに読み込まれているアセンブリ、モジュール、型、メンバー、およびパラメーターのカスタム属性データへのアクセスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Code that is being examined in the reflection-only context cannot be executed, so it is not always possible to examine custom attributes by creating instances of them and then examining their properties, using methods like <xref:System.Attribute.GetCustomAttributes%2A?displayProperty=fullName>, <xref:System.Reflection.MemberInfo.GetCustomAttributes%2A?displayProperty=fullName>, and so on. If the code for the attribute type itself is loaded into the reflection-only context, it cannot be executed.  
+## 解説  
+ リフレクションのみのコンテキストで検査されているコードは常にそれらのプロパティを調べてなどのメソッドを使用してそれらのインスタンスを作成することでカスタム属性を確認することはできませんので、実行できない <xref:System.Attribute.GetCustomAttributes%2A?displayProperty=fullName>, 、<xref:System.Reflection.MemberInfo.GetCustomAttributes%2A?displayProperty=fullName>, 、という具合です。 属性型自体のコードがリフレクションのみのコンテキストに読み込まれている場合は実行できません。  
   
- The <xref:System.Reflection.CustomAttributeData> class allows examination of custom attributes in the reflection-only context by providing an abstraction for attributes. The members of this class can be used to obtain the positional arguments and named arguments of the attribute. Use the <xref:System.Reflection.CustomAttributeData.ConstructorArguments%2A> property to get a list of <xref:System.Reflection.CustomAttributeTypedArgument> structures that represent the positional arguments, and use the <xref:System.Reflection.CustomAttributeData.NamedArguments%2A> property to get a list of <xref:System.Reflection.CustomAttributeNamedArgument> structures that represent the named arguments.  
-  
-> [!NOTE]
->  The <xref:System.Reflection.CustomAttributeNamedArgument> structure only provides information about the attribute property used to get and set the argument value. To obtain the type and value of the argument, use the <xref:System.Reflection.CustomAttributeNamedArgument.TypedValue%2A?displayProperty=fullName> property to obtain a <xref:System.Reflection.CustomAttributeTypedArgument> structure.  
-  
- When you have a <xref:System.Reflection.CustomAttributeTypedArgument> structure for an argument, whether named or positional, use the <xref:System.Reflection.CustomAttributeTypedArgument.ArgumentType%2A?displayProperty=fullName> property to get the type and the <xref:System.Reflection.CustomAttributeTypedArgument.Value%2A?displayProperty=fullName> property to get the value.  
+ <xref:System.Reflection.CustomAttributeData> クラスは、属性の抽象化を提供することにより、リフレクションのみのコンテキストでカスタム属性の調査を使用します。 このクラスのメンバーを位置指定引数を取得するために使用し、名前付き属性の引数。 使用して、 <xref:System.Reflection.CustomAttributeData.ConstructorArguments%2A> の一覧を取得するプロパティ <xref:System.Reflection.CustomAttributeTypedArgument> 構造体を使用して位置指定引数を表す、 <xref:System.Reflection.CustomAttributeData.NamedArguments%2A> の一覧を取得するプロパティ <xref:System.Reflection.CustomAttributeNamedArgument> を名前付き引数を表す構造体。  
   
 > [!NOTE]
->  For an array argument, the <xref:System.Reflection.CustomAttributeTypedArgument.Value%2A?displayProperty=fullName> property returns a generic <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> of <xref:System.Reflection.CustomAttributeTypedArgument> objects. Each <xref:System.Reflection.CustomAttributeTypedArgument> object in the collection represents the corresponding element of the array.  
+>  <xref:System.Reflection.CustomAttributeNamedArgument> 構造がのみを取得および引数の値を設定するために使用する属性のプロパティに関する情報を提供します。 種類と、引数の値を取得するには、 <xref:System.Reflection.CustomAttributeNamedArgument.TypedValue%2A?displayProperty=fullName> を取得するプロパティ、 <xref:System.Reflection.CustomAttributeTypedArgument> 構造体。  
   
- <xref:System.Reflection.CustomAttributeData> can be used in the execution context as well as in the reflection-only context. For example, you might want to avoid loading the assembly that contains the code for a custom attribute. Using the <xref:System.Reflection.CustomAttributeData> class is different from using methods like <xref:System.Attribute.GetCustomAttributes%2A?displayProperty=fullName>:  
+ ある場合、 <xref:System.Reflection.CustomAttributeTypedArgument> 名前付きまたは位置指定するかどうかを引数の構成を使用して、 <xref:System.Reflection.CustomAttributeTypedArgument.ArgumentType%2A?displayProperty=fullName> 型を取得するプロパティと <xref:System.Reflection.CustomAttributeTypedArgument.Value%2A?displayProperty=fullName> プロパティ値を取得します。  
   
--   The properties and methods of <xref:System.Reflection.CustomAttributeData> only provide you with the values that were specified for the attribute instance, not the semantics of the constructor. For example, a string argument of an attribute might be converted internally to some other representation, and returned in a canonical form; or a property might have side effects when the actual attribute code is executed.  
+> [!NOTE]
+>  配列引数に対して、 <xref:System.Reflection.CustomAttributeTypedArgument.Value%2A?displayProperty=fullName> プロパティは、ジェネリック型を返します。 <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> の <xref:System.Reflection.CustomAttributeTypedArgument> オブジェクトです。 各 <xref:System.Reflection.CustomAttributeTypedArgument> コレクション内のオブジェクトが配列の対応する要素を表します。  
   
--   The properties and methods of <xref:System.Reflection.CustomAttributeData> do not allow you to retrieve the custom attributes inherited from base classes.  
+ <xref:System.Reflection.CustomAttributeData> 実行コンテキストにもリフレクションのみのコンテキストで使用できます。 たとえば、カスタム属性のコードを含むアセンブリが読み込まれないようにすることができます。 使用して、 <xref:System.Reflection.CustomAttributeData> クラスとは異なるようなメソッドを使用して <xref:System.Attribute.GetCustomAttributes%2A?displayProperty=fullName>:  
   
- To create instances of the <xref:System.Reflection.CustomAttributeData> class, use the `static` (`Shared` in Visual Basic) <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> factory methods.  
+-   プロパティとメソッドの <xref:System.Reflection.CustomAttributeData> のみ属性のインスタンス、コンス トラクターのセマンティクスではないに関する指定された値を提供します。 たとえば、属性の文字列引数を他のいくつかの形式内部的に変換され、正規の形式で返される可能性があります。または、実際の属性コードを実行すると、プロパティに副作用がある可能性があります。  
+  
+-   プロパティとメソッドの <xref:System.Reflection.CustomAttributeData> 基本クラスから継承されたカスタム属性を取得するようにします。  
+  
+ インスタンスを作成する、 <xref:System.Reflection.CustomAttributeData> クラスを使用して、 `static` \(`Shared` Visual Basic で\) <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> ファクトリ メソッド。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用し、コンス トラクターの位置指定パラメーターを使用して設定します。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列で、1 つの名前付きプロパティは整数の配列です。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays information about the custom attributes that were applied to it and to the type and members it contains.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターに適用されます。 さまざまなコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリがリフレクションのみのコンテキストに読み込まされ、型とメンバーが含まれていることに適用されているカスタム属性に関する情報が表示されます。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性は、位置指定引数と名前付きの両方の引数の配列プロパティを示します。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
+    <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -93,12 +95,13 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Reflection.CustomAttributeData" /> class.</summary>
+        <summary>
+          <see cref="T:System.Reflection.CustomAttributeData" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor is invoked by derived classes during the construction of <xref:System.Reflection.CustomAttributeData> objects.  
+## 解説  
+ このコンス トラクターは、構築する際に派生クラスによって呼び出される <xref:System.Reflection.CustomAttributeData> オブジェクトです。  
   
  ]]></format>
         </remarks>
@@ -133,9 +136,14 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type of the attribute.</summary>
-        <value>The type of the attribute.</value>
-        <remarks>To be added.</remarks>
+        <summary>属性の型を取得します。</summary>
+        <value>属性の型。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Constructor">
@@ -169,31 +177,34 @@
         <ReturnType>System.Reflection.ConstructorInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a <see cref="T:System.Reflection.ConstructorInfo" /> object that represents the constructor that would have initialized the custom attribute.</summary>
-        <value>An object that represents the constructor that would have initialized the custom attribute represented by the current instance of the <see cref="T:System.Reflection.CustomAttributeData" /> class.</value>
+        <summary>カスタム属性を初期化したはずのコンストラクターを表す <see cref="T:System.Reflection.ConstructorInfo" /> オブジェクトを取得します。</summary>
+        <value>
+          <see cref="T:System.Reflection.CustomAttributeData" /> クラスの現在のインスタンスで表されるカスタム属性を初期化したであろうコンストラクターを表すオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If an attribute type has multiple constructors, this property returns only the particular constructor that would have initialized the attribute instance represented by the current <xref:System.Reflection.CustomAttributeData> object.  
+## 解説  
+ このプロパティは現在によって表される属性のインスタンスを初期化するを特定のコンス トラクターのみ返します属性の種類に複数のコンス トラクターがある場合は、<xref:System.Reflection.CustomAttributeData>オブジェクト。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用され、コンス トラクターの位置指定パラメーターを使用して設定されます。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列と、1 つの名前付きプロパティは、整数の配列。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターが適用されます。 別のコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリはリフレクション専用コンテキストに読み込みます自体し、カスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性では、位置指定および名前付きの両方の引数を指定して、配列のプロパティを示します。  
   
- The <xref:System.Reflection.CustomAttributeData.Constructor%2A> property is used in the `ShowAttributeData` method that displays custom attribute data. In this code example, the <xref:System.Reflection.ConstructorInfo> returned by this property is used to display a text string that describes the constructor, demonstrating that the property returns the constructor that would initialize the attribute.  
+ <xref:System.Reflection.CustomAttributeData.Constructor%2A>でプロパティを使用、`ShowAttributeData`をカスタム属性データを表示するメソッド。 このコード例では、<xref:System.Reflection.ConstructorInfo>これによって返されるプロパティの使用にプロパティには、属性を初期化するコンス トラクターを返すことを示す、コンス トラクターを説明するテキスト文字列を表示します。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
+        <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
       </Docs>
     </Member>
     <Member MemberName="ConstructorArguments">
@@ -229,33 +240,36 @@
         <ReturnType>System.Collections.Generic.IList&lt;System.Reflection.CustomAttributeTypedArgument&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the list of positional arguments specified for the attribute instance represented by the <see cref="T:System.Reflection.CustomAttributeData" /> object.</summary>
-        <value>A collection of structures that represent the positional arguments specified for the custom attribute instance.</value>
+        <summary>によって表される属性のインスタンスに対して指定された位置指定引数の一覧を取得、 <see cref="T:System.Reflection.CustomAttributeData" /> オブジェクトです。</summary>
+        <value>カスタム属性のインスタンスに対して指定された位置指定引数を表す構造のコレクション。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method gets the positional arguments that were specified for the custom attribute instance without executing any of the custom attribute code. Thus, it can be used in the reflection-only context.  
+## 解説  
+ このメソッドは、カスタム属性のコードを実行せずにカスタム属性のインスタンスに対して指定されている位置指定引数を取得します。 このため、リフレクションのみのコンテキストで使用できます。  
   
- Use the <xref:System.Reflection.CustomAttributeData.NamedArguments%2A> method to get the named arguments specified for the attribute instance.  
+ 使用して、 <xref:System.Reflection.CustomAttributeData.NamedArguments%2A> 属性のインスタンスに対して指定された名前付き引数を取得します。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用し、コンス トラクターの位置指定パラメーターを使用して設定します。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列で、1 つの名前付きプロパティは整数の配列です。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターに適用されます。 さまざまなコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリがリフレクションのみのコンテキストに読み込まし、カスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性は、位置指定引数と名前付きの両方の引数の配列プロパティを示します。  
   
- The <xref:System.Reflection.CustomAttributeData.ConstructorArguments%2A> property is used in the `ShowAttributeData` method that displays custom attribute data. In this code example, this property is used to display the list of arguments passed to the constructor that initialized the attribute.  
+ <xref:System.Reflection.CustomAttributeData.ConstructorArguments%2A> プロパティを使用、 `ShowAttributeData` メソッドをカスタム属性のデータを表示します。 このコード例はこのプロパティは使用して属性を初期化するコンス トラクターに渡される引数の一覧を表示します。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Reflection.CustomAttributeData.NamedArguments" />
+        <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
+        <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
       </Docs>
     </Member>
     <Member MemberName="Equals">
@@ -283,10 +297,10 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">An object to compare with this instance, or <see langword="null" />.</param>
-        <summary>Returns a value that indicates whether this instance is equal to a specified object.</summary>
+        <param name="obj">対象のインスタンスと比較する対象のオブジェクト、または <see langword="null" />。</param>
+        <summary>このインスタンスが、指定されたオブジェクトと等価であるかどうかを示す値を返します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="obj" /> is equal to the current instance; otherwise, <see langword="false" />.</returns>
+          <paramref name="obj" /> が現在のインスタンスと等しい場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -319,34 +333,36 @@
         <Parameter Name="target" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="target">The assembly whose custom attribute data is to be retrieved.</param>
-        <summary>Returns a list of <see cref="T:System.Reflection.CustomAttributeData" /> objects representing data about the attributes that have been applied to the target assembly.</summary>
-        <returns>A list of objects that represent data about the attributes that have been applied to the target assembly.</returns>
+        <param name="target">取得するカスタム属性データが含まれるアセンブリ。</param>
+        <summary>ターゲット アセンブリに適用されている属性に関するデータを表す <see cref="T:System.Reflection.CustomAttributeData" /> オブジェクトのリストを返します。</summary>
+        <returns>ターゲット アセンブリに適用されている属性に関するデータを表すオブジェクトのリスト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides an alternative to the <xref:System.Reflection.Assembly.GetCustomAttributes%2A> method that can always be used in the Reflection-only context.  
+## 解説  
+ このメソッドを提供する代わりに、<xref:System.Reflection.Assembly.GetCustomAttributes%2A>リフレクションのみのコンテキストで常に使用できるメソッドです。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用され、コンス トラクターの位置指定パラメーターを使用して設定されます。 他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列および 1 つの名前付きプロパティは、整数の配列。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターが適用されます。 別のコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリ自体、リフレクション専用コンテキストに読み込んでカスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性では、位置指定および名前付きの両方の引数を持つ配列のプロパティを示します。  
   
- The <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> method is used in `Main()` to get the custom attributes applied to the assembly. The return value of the method is passed to the `ShowAttributeData` method.  
+ <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A>でメソッドが使用される`Main()`をアセンブリに適用されるカスタム属性を取得します。 メソッドの戻り値が渡される、`ShowAttributeData`メソッドです。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="target" /> is <see langword="null" />.</exception>
+          <paramref name="target" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
+        <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
       </Docs>
     </Member>
     <Member MemberName="GetCustomAttributes">
@@ -378,35 +394,37 @@
         <Parameter Name="target" Type="System.Reflection.MemberInfo" />
       </Parameters>
       <Docs>
-        <param name="target">The member whose attribute data is to be retrieved.</param>
-        <summary>Returns a list of <see cref="T:System.Reflection.CustomAttributeData" /> objects representing data about the attributes that have been applied to the target member.</summary>
-        <returns>A list of objects that represent data about the attributes that have been applied to the target member.</returns>
+        <param name="target">取得する属性データが含まれるメンバー。</param>
+        <summary>ターゲット メンバーに適用されている属性に関するデータを表す <see cref="T:System.Reflection.CustomAttributeData" /> オブジェクトのリストを返します。</summary>
+        <returns>ターゲット メンバーに適用されている属性に関するデータを表すオブジェクトのリスト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overload gets custom attribute data for types, nested types, and type members, because the <xref:System.Type> class and the classes in the <xref:System.Reflection> namespace that represent type members all derive from <xref:System.Reflection.MemberInfo>.  
+## 解説  
+ このメソッドのオーバー ロードでの型や入れ子にされた型は、型のメンバー、カスタム属性データが取得、<xref:System.Type>クラスと、クラス、<xref:System.Reflection>型からメンバーを表す名前空間<xref:System.Reflection.MemberInfo>です。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用され、コンス トラクターの位置指定パラメーターを使用して設定されます。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列と、1 つの名前付きプロパティは、整数の配列。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターが適用されます。 別のコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリはリフレクション専用コンテキストに読み込みます自体し、カスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性では、位置指定および名前付きの両方の引数を指定して、配列のプロパティを示します。  
   
- The <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> method is used in `Main()` to get the custom attributes that were applied to a type and to a test method (<xref:System.Type> derives from <xref:System.Reflection.MemberInfo>). The return value of <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> is passed to the `ShowAttributeData` method.  
+ <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A>でメソッドが使用される`Main()`型にし、テスト メソッドに適用されたカスタム属性を取得する \(<xref:System.Type>から派生した<xref:System.Reflection.MemberInfo>\)。 戻り値<xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A>に渡される、`ShowAttributeData`メソッドです。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <altCompliant cref="Overload:System.Reflection.MemberInfo.GetCustomAttributes" />
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="target" /> is <see langword="null" />.</exception>
+          <paramref name="target" /> は <see langword="null" /> です。</exception>
+        <altCompliant cref="Overload:System.Reflection.MemberInfo.GetCustomAttributes" />
+        <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
+        <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
       </Docs>
     </Member>
     <Member MemberName="GetCustomAttributes">
@@ -438,12 +456,12 @@
         <Parameter Name="target" Type="System.Reflection.Module" />
       </Parameters>
       <Docs>
-        <param name="target">The module whose custom attribute data is to be retrieved.</param>
-        <summary>Returns a list of <see cref="T:System.Reflection.CustomAttributeData" /> objects representing data about the attributes that have been applied to the target module.</summary>
-        <returns>A list of objects that represent data about the attributes that have been applied to the target module.</returns>
+        <param name="target">取得するカスタム属性データが含まれるモジュール。</param>
+        <summary>ターゲット モジュールに適用されている属性に関するデータを表す <see cref="T:System.Reflection.CustomAttributeData" /> オブジェクトのリストを戻します。</summary>
+        <returns>ターゲット モジュールに適用されている属性に関するデータを表すオブジェクトのリスト。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="target" /> is <see langword="null" />.</exception>
+          <paramref name="target" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetCustomAttributes">
@@ -475,34 +493,36 @@
         <Parameter Name="target" Type="System.Reflection.ParameterInfo" />
       </Parameters>
       <Docs>
-        <param name="target">The parameter whose attribute data is to be retrieved.</param>
-        <summary>Returns a list of <see cref="T:System.Reflection.CustomAttributeData" /> objects representing data about the attributes that have been applied to the target parameter.</summary>
-        <returns>A list of objects that represent data about the attributes that have been applied to the target parameter.</returns>
+        <param name="target">取得する属性データが含まれるパラメーター。</param>
+        <summary>ターゲット パラメーターに適用されている属性に関するデータを表す <see cref="T:System.Reflection.CustomAttributeData" /> オブジェクトのリストを戻します。</summary>
+        <returns>ターゲット パラメーターに適用されている属性に関するデータを表すオブジェクトのリスト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides an alternative to the <xref:System.Reflection.ParameterInfo.GetCustomAttributes%2A> method that can always be used in the Reflection-only context.  
+## 解説  
+ このメソッドを提供する代わりに、<xref:System.Reflection.ParameterInfo.GetCustomAttributes%2A>リフレクションのみのコンテキストで常に使用できるメソッドです。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用され、コンス トラクターの位置指定パラメーターを使用して設定されます。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列および 1 つの名前付きプロパティは、整数の配列。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターが適用されます。 別のコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリはリフレクション専用コンテキストに読み込みます自体し、カスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性では、位置指定および名前付きの両方の引数を指定して、配列のプロパティを示します。  
   
- The <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> method is used in `Main()` to retrieve the custom attributes applied to a parameter of a test method. The return value of <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A> is passed to the `ShowAttributeData` method.  
+ <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A>でメソッドが使用される`Main()`テスト メソッドのパラメーターに適用されたカスタム属性を取得します。 戻り値<xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A>に渡される、`ShowAttributeData`メソッドです。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="target" /> is <see langword="null" />.</exception>
+          <paramref name="target" /> は <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
+        <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
       </Docs>
     </Member>
     <Member MemberName="GetHashCode">
@@ -528,9 +548,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Serves as a hash function for a particular type.</summary>
-        <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
+        <summary>特定の型のハッシュ関数として機能します。</summary>
+        <returns>現在の <see cref="T:System.Object" /> のハッシュ コード。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Object.GetHashCode" />
       </Docs>
     </Member>
     <Member MemberName="NamedArguments">
@@ -561,35 +582,38 @@
         <ReturnType>System.Collections.Generic.IList&lt;System.Reflection.CustomAttributeNamedArgument&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the list of named arguments specified for the attribute instance represented by the <see cref="T:System.Reflection.CustomAttributeData" /> object.</summary>
-        <value>A collection of structures that represent the named arguments specified for the custom attribute instance.</value>
+        <summary>によって表される属性のインスタンスに対して指定された名前付き引数の一覧を取得、 <see cref="T:System.Reflection.CustomAttributeData" /> オブジェクトです。</summary>
+        <value>カスタム属性のインスタンスに対して指定された名前付き引数を表す構造のコレクション。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method gets the named arguments that were specified for the custom attribute instance without executing any of the custom attribute code. Thus, it can be used in the Reflection-only context.  
+## 解説  
+ このメソッドは、カスタム属性のコードを実行せずにカスタム属性のインスタンスに対して指定されている名前付き引数を取得します。 このため、リフレクションのみのコンテキストで使用できます。  
   
- The list that is returned contains only the named arguments that were specified for the attribute instance.  
+ 返される一覧には、属性のインスタンスに対して指定されている名前付き引数のみが含まれています。  
   
- Use the <xref:System.Reflection.CustomAttributeData.ConstructorArguments%2A> method to get the positional arguments that were specified for the attribute instance.  
+ 使用して、 <xref:System.Reflection.CustomAttributeData.ConstructorArguments%2A> 属性のインスタンスの指定された位置指定引数を取得します。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用し、コンス トラクターの位置指定パラメーターを使用して設定します。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列で、1 つの名前付きプロパティは整数の配列です。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターに適用されます。 さまざまなコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリがリフレクションのみのコンテキストに読み込まし、カスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性は、位置指定引数と名前付きの両方の引数の配列プロパティを示します。  
   
- The <xref:System.Reflection.CustomAttributeData.NamedArguments%2A> property is used in the `ShowAttributeData` method that displays custom attribute data. In this code example, this property is used to display the list of named arguments specified for the attribute.  
+ <xref:System.Reflection.CustomAttributeData.NamedArguments%2A> プロパティを使用、 `ShowAttributeData` メソッドをカスタム属性のデータを表示します。 このコード例はこのプロパティは使用して属性の指定された名前付き引数の一覧を表示します。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Reflection.CustomAttributeData.ConstructorArguments" />
+        <altmember cref="M:System.Type.ReflectionOnlyGetType(System.String,System.Boolean,System.Boolean)" />
+        <altmember cref="Overload:System.Reflection.Assembly.ReflectionOnlyLoad" />
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -615,32 +639,41 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a string representation of the custom attribute.</summary>
-        <returns>A string value that represents the custom attribute.</returns>
+        <summary>カスタム属性の文字列表現を返します。</summary>
+        <returns>カスタム属性を表す文字列値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The string value includes the attribute type, the attribute parameters, and the named parameters.  
+## 解説  
+ 文字列値には、属性の型、属性のパラメーターおよび名前付きパラメーターが含まれています。  
   
    
   
-## Examples  
- The following example defines a custom attribute with four constructors and four properties. Two of the properties are read-only, and are set by using the positional parameters of the constructors. The other two properties are read/write, and can be set only by using named arguments. One positional property is an array of strings, and one named property is an array of integers.  
+## 例  
+ 次の例では、次の 4 つのコンス トラクターと 4 つのプロパティを持つカスタム属性を定義します。 2 つのプロパティは読み取り専用し、コンス トラクターの位置指定パラメーターを使用して設定します。 その他の 2 つのプロパティは読み取り\/書き込み、および名前付き引数を使用して設定できます。 1 つの位置指定プロパティは、文字列の配列で、1 つの名前付きプロパティは整数の配列です。  
   
- The attribute is applied to the assembly, to a type declared in the assembly, to a method of the type, and to a parameter of the method. Different constructors are used for these cases. When executed, the assembly loads itself into the reflection-only context and displays the custom attributes.  
+ 属性は、アセンブリ、アセンブリで宣言された型、型のメソッドおよびメソッドのパラメーターに適用されます。 さまざまなコンス トラクターは、このような場合に使用されます。 実行すると、アセンブリがリフレクションのみのコンテキストに読み込まし、カスタム属性を表示します。  
   
- The attribute that is applied to the type demonstrates array properties, with both positional and named arguments.  
+ 型に適用される属性は、位置指定引数と名前付きの両方の引数の配列プロパティを示します。  
   
- In this example, the <xref:System.Reflection.CustomAttributeData.ToString%2A> method is used in the `ShowAttributeData` method, to identify the attribute whose data is being displayed.  
+ この例では、 <xref:System.Reflection.CustomAttributeData.ToString%2A> を使用する方法、 `ShowAttributeData` メソッドを持つデータが表示されている属性を識別します。  
   
- [!code-cpp[CustomAttributeData#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
- [!code-csharp[CustomAttributeData#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
- [!code-vb[CustomAttributeData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
+ [!code-cpp[CustomAttributeData\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CustomAttributeData/CPP/source.cpp#1)]
+ [!code-csharp[CustomAttributeData\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CustomAttributeData/CS/source.cs#1)]
+ [!code-vb[CustomAttributeData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CustomAttributeData/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="GetCustomAttributes">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>一覧を返す <see cref="T:System.Reflection.CustomAttributeData" /> ターゲットに適用されている属性に関するデータを表すオブジェクト。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

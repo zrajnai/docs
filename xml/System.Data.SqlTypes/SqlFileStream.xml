@@ -11,23 +11,23 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Exposes SQL Server data that is stored with the FILESTREAM column attribute as a sequence of bytes.</summary>
+    <summary>バイトのシーケンスとして FILESTREAM 列属性に格納されている SQL Server のデータを公開します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Data.SqlTypes.SqlFileStream> class is used to work with `varbinary(max)` data stored with the FILESTREAM attribute in a SQL Server 2008 database. You must install the .NET Framework 3.5 SP1 (or later) to use <xref:System.Data.SqlTypes.SqlFileStream> to work with FILESTREAM data.  
+## 解説  
+ <xref:System.Data.SqlTypes.SqlFileStream> を使用するクラスが使用される `varbinary(max)` SQL Server 2008 データベースに FILESTREAM 属性を持つ格納されているデータ。 .NET Framework 3.5 SP1 をインストールする必要があります \(またはそれ以降\) を使用する <xref:System.Data.SqlTypes.SqlFileStream> の FILESTREAM データを操作します。  
   
- Specifying the FILESTREAM attribute on a `varbinary(max)` column causes SQL Server to store the data in the local NTFS file system instead of in the database file. Transact-SQL statements provide data manipulation capabilities within the server, and Win32 file system interfaces provide streaming access to the data.  
+ FILESTREAM を指定する属性を `varbinary(max)` 列により、ローカルで NTFS ファイル システムの代わりに、データベース ファイルにデータを格納する SQL Server です。 Transact SQL ステートメントは、サーバー内のデータ操作機能を提供し、Win32 ファイル システム インターフェイスは、データへのストリーミング アクセスを提供します。  
   
 > [!NOTE]
->  Individual files stored in a FILESTREAM column cannot be opened directly from the NTFS file system. Streaming FILESTREAM data works only in the context of a SQL Server transaction.  
+>  FILESTREAM 列に格納されている個々 のファイルは、NTFS ファイル システムから直接開くことができません。 FILESTREAM データのストリーミングは、SQL Server トランザクションのコンテキストでのみ動作します。  
   
- The <xref:System.Data.SqlTypes.SqlFileStream> class is derived from the <xref:System.IO.Stream> class, which represents an abstraction of a sequence of bytes from some arbitrary data source such as a file or a block of memory. You can read from a FILESTREAM by transferring data from a stream into a data structure such as an array of bytes. You can write to a FILESTREAM by transferring the data from a data structure into a stream. You can also seek within the stream, which allows you to query and modify data at the current position within the stream.  
+ <xref:System.Data.SqlTypes.SqlFileStream> クラスから派生して、 <xref:System.IO.Stream> クラスで、ファイルやメモリのブロックなどのいくつかの任意のデータ ソースからのバイト シーケンスを抽象化を表します。 ストリームからバイト配列などのデータ構造にデータを転送することによって、FILESTREAM から読み取ることができます。 データ構造からストリームにデータを転送することによって、FILESTREAM に記述できます。 クエリし、ストリーム内の現在位置にあるデータを変更することができるストリーム内でシークすることもできます。  
   
- For conceptual documentation and code examples, see [FILESTREAM Data](~/docs/framework/data/adonet/sql/filestream-data.md).  
+ 概念説明のドキュメントとコード例では、次を参照してください。 [FILESTREAM Data in SQL Server 2008 \(ADO.NET\)](http://msdn.microsoft.com/ja-jp/bd8b845c-0f09-4295-b466-97ef106eefa8)します。  
   
- For documentation about setting up and configuring FILESTREAM data on SQL Server,  see [Designing and Implementing FILESTREAM Storage](http://go.microsoft.com/fwlink/?LinkId=121499) in SQL Server 2008 Books Online.  
+ ドキュメントを設定して、SQL Server の FILESTREAM データの構成については、次を参照してください。 [Designing and Implementing FILESTREAM Storage](http://go.microsoft.com/fwlink/?LinkId=121499) SQL Server 2008 オンライン ブック。  
   
  ]]></format>
     </remarks>
@@ -39,20 +39,21 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlTypes.SqlFileStream" /> class.</summary>
+        <summary>
+          <see cref="T:System.Data.SqlTypes.SqlFileStream" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The following table lists the code access security (CAS) permissions that all callers in the stack must have to use the `SqlFileStream` constructors.  
+## 解説  
+ 次の表に、使用するため、スタック内のすべての呼び出し元が必要なコード アクセス セキュリティ \(CAS\) アクセス許可、 `SqlFileStream` コンス トラクターです。  
   
-|File access|Permission|  
-|-----------------|----------------|  
-|Read|<xref:System.Security.Permissions.FileIOPermissionAccess.Read>|  
+|ファイルへのアクセス|アクセス許可|  
+|----------------|------------|  
+|読み取り|<xref:System.Security.Permissions.FileIOPermissionAccess.Read>|  
 |Write|<xref:System.Security.Permissions.FileIOPermissionAccess.Write>|  
-|ReadWrite|<xref:System.Security.Permissions.FileIOPermissionAccess.Read> and <xref:System.Security.Permissions.FileIOPermissionAccess.Write>|  
+|読み取り\/書き込み|<xref:System.Security.Permissions.FileIOPermissionAccess.Read> および <xref:System.Security.Permissions.FileIOPermissionAccess.Write>|  
   
- For more information about CAS, see [Code Access Security and ADO.NET](~/docs/framework/data/adonet/code-access-security.md).  
+ CA の詳細については、次を参照してください。 [Code Access Security and ADO.NET](http://msdn.microsoft.com/ja-jp/93e099eb-daa1-4f1e-b031-c1e10a996f88)します。  
   
  ]]></format>
         </remarks>
@@ -73,40 +74,42 @@
         <Parameter Name="access" Type="System.IO.FileAccess" />
       </Parameters>
       <Docs>
-        <param name="path">The logical path to the file. The path can be retrieved by using the Transact-SQL Pathname function on the underlying FILESTREAM column in the table.</param>
-        <param name="transactionContext">The transaction context for the <see langword="SqlFileStream" /> object. Applications should return the byte array returned by calling the GET_FILESTREAM_TRANSACTION_CONTEXT method.</param>
-        <param name="access">The access mode to use when opening the file. Supported <see cref="T:System.IO.FileAccess" /> enumeration values are <see cref="F:System.IO.FileAccess.Read" />, <see cref="F:System.IO.FileAccess.Write" />, and <see cref="F:System.IO.FileAccess.ReadWrite" />.  
+        <param name="path">ファイルへの論理パス。 テーブル内の基になる FILESTREAM 列で Transact\-SQL Pathname 関数を使用して、パスを取得できます。</param>
+        <param name="transactionContext">
+          <see langword="SqlFileStream" /> オブジェクトのトランザクション コンテキスト。 アプリケーションが、GET\_FILESTREAM\_TRANSACTION\_CONTEXT メソッドの呼び出しで返されるバイト配列を返す必要があります。</param>
+        <param name="access">ファイルを開くときに使用するアクセス モード。 サポートされている <see cref="T:System.IO.FileAccess" /> 列挙値は <see cref="F:System.IO.FileAccess.Read" />、<see cref="F:System.IO.FileAccess.Write" />、および <see cref="F:System.IO.FileAccess.ReadWrite" /> です。  
   
- When using <see langword="FileAccess.Read" />, the <see langword="SqlFileStream" /> object can be used to read all of the existing data.  
+ <see langword="FileAccess.Read" /> を使用する際には、<see langword="SqlFileStream" /> オブジェクトを使用して、既存のデータをすべて読み取ることができます。  
   
- When using <see langword="FileAccess.Write" />, <see langword="SqlFileStream" /> points to a zero byte file. Existing data will be overwritten when the object is closed and the transaction is committed.  
+ <see langword="FileAccess.Write" /> を使用する際に、<see langword="SqlFileStream" /> は 0 バイトのファイルを指します。 オブジェクトが閉じ、トランザクションがコミットされると、既存のデータが上書きされます。  
   
- When using <see langword="FileAccess.ReadWrite" />, the <see langword="SqlFileStream" /> points to a file which has all the existing data in it. The handle is positioned at the beginning of the file. You can use one of the <see langword="System.IO" /><see langword="Seek" /> methods to move the handle position within the file to write or append new data.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlTypes.SqlFileStream" /> class.</summary>
+ <see langword="FileAccess.ReadWrite" /> を使用する際に、<see langword="SqlFileStream" /> はすべての既存のデータがあるファイルを指します。 このファイルの先頭にハンドルが配置されます。<see langword="System.IO" /><see langword="Seek" /> メソッドの 1 つを使用して、ファイル内でハンドルの位置を移動し、新しいデータを書き込んだり付加したりできます。</param>
+        <summary>
+          <see cref="T:System.Data.SqlTypes.SqlFileStream" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If an exception is thrown, any open transactions should be rolled back. Otherwise, data loss can occur.  
+## 解説  
+ 例外がスローされた場合、開いているトランザクション ロールバックする必要があります。 それ以外の場合、データ損失が発生することができます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is a null reference, or <paramref name="transactionContext" /> is null.</exception>
+          <paramref name="path" /> が null 参照か、<paramref name="transactionContext" /> が null です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="path" /> is an empty string (""), contains only white space, or contains one or more invalid characters.  
+          <paramref name="path" /> は空の文字列 \(""\) であるか、空白のみで構成されているか、または 1 つ以上の正しくない文字を含んでいます。  
   
- <paramref name="path" /> begins with "\\\\.\\", for example "\\\\.\PHYSICALDRIVE0 ".  
+ <paramref name="path" /> は "\\\\.\\" で始まります。たとえば、"\\\\.\\PHYSICALDRIVE0 " のようになります。  
   
- The handle returned by the call to NTCreateFile is not of type FILE_TYPE_DISK.  
+ NTCreateFile に対する呼び出しで返されたハンドルの型が FILE\_TYPE\_DISK ではありません。  
   
- <paramref name="options" /> contains an unsupported value.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurred.</exception>
-        <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
-        <exception cref="T:System.IO.DirectoryNotFoundException">The specified <paramref name="path" /> is invalid, such as being on an unmapped drive.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified path. This occurs when Write or ReadWrite access is specified, and the file or directory is set for read-only access.</exception>
-        <exception cref="T:System.InvalidOperationException">NtCreateFile fails with error code set to ERROR_SHARING_VIOLATION.</exception>
+ サポートされていない値が <paramref name="options" /> に含まれています。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元に、必要なアクセス許可がありません。</exception>
+        <exception cref="T:System.IO.DirectoryNotFoundException">マップされていないドライブにあるなど、指定された <paramref name="path" /> が正しくありません。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定されたパスへの要求されたアクセスは、オペレーティング システムによって許可されていません。 これは、書き込みアクセスか読み取り\/書き込みアクセスが指定されており、ファイルまたはディレクトリが読み取り専用アクセス用に設定されている場合に発生します。</exception>
+        <exception cref="T:System.InvalidOperationException">NtCreateFile は失敗し、エラー コードは ERROR\_SHARING\_VIOLATION に設定されます。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -126,42 +129,44 @@
         <Parameter Name="allocationSize" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="path">The logical path to the file. The path can be retrieved by using the Transact-SQL Pathname function on the underlying FILESTREAM column in the table.</param>
-        <param name="transactionContext">The transaction context for the <see langword="SqlFileStream" /> object. When set to null, an implicit transaction will be used for the <see langword="SqlFileStream" /> object. Applications should return the byte array returned by calling the GET_FILESTREAM_TRANSACTION_CONTEXT method.</param>
-        <param name="access">The access mode to use when opening the file. Supported <see cref="T:System.IO.FileAccess" /> enumeration values are <see cref="F:System.IO.FileAccess.Read" />, <see cref="F:System.IO.FileAccess.Write" />, and <see cref="F:System.IO.FileAccess.ReadWrite" />.  
+        <param name="path">ファイルへの論理パス。 テーブル内の基になる FILESTREAM 列で Transact\-SQL Pathname 関数を使用して、パスを取得できます。</param>
+        <param name="transactionContext">
+          <see langword="SqlFileStream" /> オブジェクトのトランザクション コンテキスト。 null に設定されている場合、<see langword="SqlFileStream" />オブジェクトには暗黙のトランザクションが使用されます。 アプリケーションは、GET\_FILESTREAM\_TRANSACTION\_CONTEXT メソッドの呼び出しで返されるバイト配列を返す必要があります。</param>
+        <param name="access">ファイルを開くときに使用するアクセス モード。 サポートされている <see cref="T:System.IO.FileAccess" /> 列挙値は <see cref="F:System.IO.FileAccess.Read" />、<see cref="F:System.IO.FileAccess.Write" />、および <see cref="F:System.IO.FileAccess.ReadWrite" /> です。  
   
- When using <see langword="FileAccess.Read" />, the <see langword="SqlFileStream" /> object can be used to read all of the existing data.  
+ <see langword="FileAccess.Read" /> を使用する際には、<see langword="SqlFileStream" /> オブジェクトを使用して、既存のデータをすべて読み取ることができます。  
   
- When using <see langword="FileAccess.Write" />, <see langword="SqlFileStream" /> points to a zero byte file. Existing data will be overwritten when the object is closed and the transaction is committed.  
+ <see langword="FileAccess.Write" /> を使用する際に、<see langword="SqlFileStream" /> は 0 バイトのファイルを指します。 オブジェクトが閉じ、トランザクションがコミットされると、既存のデータが上書きされます。  
   
- When using <see langword="FileAccess.ReadWrite" />, the <see langword="SqlFileStream" /> points to a file which has all the existing data in it. The handle is positioned at the beginning of the file. You can use one of the <see langword="System.IO" /><see langword="Seek" /> methods to move the handle position within the file to write or append new data.</param>
-        <param name="options">Specifies the option to use while opening the file. Supported <see cref="T:System.IO.FileOptions" /> values are <see cref="F:System.IO.FileOptions.Asynchronous" />, <see cref="F:System.IO.FileOptions.WriteThrough" />, <see cref="F:System.IO.FileOptions.SequentialScan" />, and <see cref="F:System.IO.FileOptions.RandomAccess" />.</param>
-        <param name="allocationSize">The allocation size to use while creating a file. If set to 0, the default value is used.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Data.SqlTypes.SqlFileStream" /> class.</summary>
+ <see langword="FileAccess.ReadWrite" /> を使用する際に、<see langword="SqlFileStream" /> はすべての既存のデータがあるファイルを指します。 このファイルの先頭にハンドルが配置されます。<see langword="System.IO" /><see langword="Seek" /> メソッドの 1 つを使用して、ファイル内でハンドルの位置を移動し、新しいデータを書き込んだり付加したりできます。</param>
+        <param name="options">ファイルを開く際に使用するオプションを指定します。 サポートされる <see cref="T:System.IO.FileOptions" /> 値は <see cref="F:System.IO.FileOptions.Asynchronous" />、<see cref="F:System.IO.FileOptions.WriteThrough" />、<see cref="F:System.IO.FileOptions.SequentialScan" />、および <see cref="F:System.IO.FileOptions.RandomAccess" /> です。</param>
+        <param name="allocationSize">ファイル作成時に使用する割り当てサイズ。 0 に設定されている場合、既定値が使用されます。</param>
+        <summary>
+          <see cref="T:System.Data.SqlTypes.SqlFileStream" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  If an exception is thrown, any open transactions should be rolled back. Otherwise, data loss can occur.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is a null reference, or <paramref name="transactionContext" /> is null.</exception>
+          <paramref name="path" /> が null 参照か、<paramref name="transactionContext" /> が null です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="path" /> is an empty string (""), contains only white space, or contains one or more invalid characters.  
+          <paramref name="path" /> は空の文字列 \(""\) であるか、空白のみで構成されているか、または 1 つ以上の正しくない文字を含んでいます。  
   
- <paramref name="path" /> begins with "\\\\.\\", for example "\\\\.\PHYSICALDRIVE0 ".  
+ <paramref name="path" /> は "\\\\.\\" で始まります。たとえば、"\\\\.\\PHYSICALDRIVE0 " のようになります。  
   
- The handle returned by call to NTCreateFile is not of type FILE_TYPE_DISK.  
+ NTCreateFile に対する呼び出しで返されたハンドルの型が FILE\_TYPE\_DISK ではありません。  
   
- <paramref name="options" /> contains an unsupported value.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurred.</exception>
-        <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
-        <exception cref="T:System.IO.DirectoryNotFoundException">The specified <paramref name="path" /> is invalid, such as being on an unmapped drive.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified path. This occurs when Write or ReadWrite access is specified, and the file or directory is set for read-only access.</exception>
-        <exception cref="T:System.InvalidOperationException">NtCreateFile fails with error code set to ERROR_SHARING_VIOLATION.</exception>
+ サポートされていない値が <paramref name="options" /> に含まれています。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元に、必要なアクセス許可がありません。</exception>
+        <exception cref="T:System.IO.DirectoryNotFoundException">マップされていないドライブにあるなど、指定された <paramref name="path" /> が正しくありません。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定されたパスへの要求されたアクセスは、オペレーティング システムによって許可されていません。 これは、書き込みアクセスか読み取り\/書き込みアクセスが指定されており、ファイルまたはディレクトリが読み取り専用アクセス用に設定されている場合に発生します。</exception>
+        <exception cref="T:System.InvalidOperationException">NtCreateFile は失敗し、エラー コードは ERROR\_SHARING\_VIOLATION に設定されます。</exception>
       </Docs>
     </Member>
     <Member MemberName="BeginRead">
@@ -184,22 +189,22 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="buffer">The buffer to read the data into.</param>
-        <param name="offset">The byte offset in <c>buffer</c> at which to begin writing data read from the stream.</param>
-        <param name="count">The maximum number of bytes to read.</param>
-        <param name="callback">An optional asynchronous callback, to be called when the read is complete.</param>
-        <param name="state">A user-provided object that distinguishes this particular asynchronous read request from other requests</param>
-        <summary>Begins an asynchronous read operation.</summary>
-        <returns>An <see cref="T:System.IAsyncResult" /> that represents the asynchronous read, which could still be pending.</returns>
+        <param name="buffer">データを読み込むバッファー。</param>
+        <param name="offset">ストリームから読み込んだデータの書き込み開始位置を示す <c>buffer</c> 内のバイト オフセット。</param>
+        <param name="count">読み取る最大バイト数。</param>
+        <param name="callback">読み取り完了時に呼び出されるオプションの非同期コールバック。</param>
+        <param name="state">この特定の非同期読み取り要求を他の要求と区別するために使用するユーザー指定のオブジェクト。</param>
+        <summary>非同期の読み込み動作を開始します。</summary>
+        <returns>非同期の読み込みを表す <see cref="T:System.IAsyncResult" />。まだ保留状態の場合もあります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> property to determine whether the current instance supports reading.  
+## 解説  
+ Use the [BeginRead メソッド \(Byte\<xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> property to determine whether the current instance supports reading.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Reading data is not supported on the stream.</exception>
+        <exception cref="T:System.NotSupportedException">データの読み取り操作は、ストリームではサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="BeginWrite">
@@ -222,22 +227,22 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="buffer">The buffer to write data from.</param>
-        <param name="offset">The byte offset in <c>buffer</c> from which to begin writing.</param>
-        <param name="count">The maximum number of bytes to write.</param>
-        <param name="callback">An optional asynchronous callback, to be called when the write is complete.</param>
-        <param name="state">A user-provided object that distinguishes this particular asynchronous write request from other requests.</param>
-        <summary>Begins an asynchronous write operation.</summary>
-        <returns>An <see cref="T:System.IAsyncResult" /> that represents the asynchronous write, which could still be pending.</returns>
+        <param name="buffer">データの書き込み元となるバッファー。</param>
+        <param name="offset">書き込むデータの開始位置を示す <c>buffer</c> 内のバイト オフセット。</param>
+        <param name="count">書き込む最大バイト数。</param>
+        <param name="callback">書き込みの完了時に呼び出されるオプションの非同期コールバック。</param>
+        <param name="state">この特定の非同期書き込み要求を他の要求と区別するために使用するユーザー指定のオブジェクト。</param>
+        <summary>非同期の書き込み操作を開始します。</summary>
+        <returns>非同期の書き込みを表す <see cref="T:System.IAsyncResult" />。まだ保留状態の場合もあります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanWrite%2A> property to determine whether the current instance supports writing.  
+## 解説  
+ Use the [BeginWrite メソッド \(Byte\<xref:System.Data.SqlTypes.SqlFileStream.CanWrite%2A> property to determine whether the current instance supports writing.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Writing data is not supported on the stream.</exception>
+        <exception cref="T:System.NotSupportedException">データの書き込み操作は、ストリームではサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -253,10 +258,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the current stream supports reading.</summary>
-        <value>
-          <see langword="true" /> if the current stream supports reading; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のストリームが読み取りをサポートしているかどうかを示す値を取得します。</summary>
+        <value>現在のストリームが読み込みをサポートしている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CanSeek">
@@ -272,10 +281,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the current stream supports seeking.</summary>
-        <value>
-          <see langword="true" /> if the current stream supports seeking; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のストリームがシークをサポートしているかどうかを示す値を取得します。</summary>
+        <value>現在のストリームがシークをサポートしている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CanTimeout">
@@ -296,10 +309,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the current stream can time out.</summary>
-        <value>
-          <see langword="true" /> if the current stream can time out; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のストリームがタイム アウトになる可能性があるかどうかを示す値を取得します。</summary>
+        <value>現在のストリームがタイム アウトになる可能性がある場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CanWrite">
@@ -315,10 +332,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the current stream supports writing.</summary>
-        <value>
-          <see langword="true" /> if the current stream supports writing; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のストリームが書き込みをサポートしているかどうかを示す値を取得します。</summary>
+        <value>現在のストリームが書き込みをサポートしている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -358,11 +379,17 @@
         <Parameter Name="asyncResult" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="asyncResult">The reference to the pending asynchronous request to finish.</param>
-        <summary>Waits for the pending asynchronous read to complete.</summary>
-        <returns>The number of bytes read from the stream, between zero (0) and the number of bytes you requested. Streams return zero (0) only at the end of the stream, otherwise, they should block until at least one byte is available.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">The <see cref="T:System.IAsyncResult" /> object did not come from the corresponding <see langword="BeginRead" /> method.</exception>
+        <param name="asyncResult">終了させる保留状態の非同期リクエストへの参照。</param>
+        <summary>保留中の非同期読み取りが完了するまで待機します。</summary>
+        <returns>ストリームから読み取ったバイト数 \(0 ～要求したバイト数の間の数値\)。 ゼロ \(0\) が返されるのは、ストリームの末尾で読み取ろうとしたときだけです。それ以外の場合は、少なくとも 1 バイトが読み込み可能になるまでブロックします。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <see cref="T:System.IAsyncResult" /> オブジェクトが、対応する <see langword="BeginRead" /> メソッドからのものではありませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName="EndWrite">
@@ -381,10 +408,16 @@
         <Parameter Name="asyncResult" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="asyncResult">A reference to the outstanding asynchronous I/O request.</param>
-        <summary>Ends an asynchronous write operation.</summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">The <see cref="T:System.IAsyncResult" /> object did not come from the corresponding <see langword="BeginWrite" /> method.</exception>
+        <param name="asyncResult">保留状態の非同期 I\/O リクエストへの参照。</param>
+        <summary>非同期書き込み操作を終了します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <see cref="T:System.IAsyncResult" /> オブジェクトが、対応する <see langword="BeginWrite" /> メソッドからのものではありませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -401,8 +434,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ensures that resources are freed and other cleanup operations are performed when the garbage collector reclaims the <see cref="T:System.Data.SqlTypes.SqlFileStream" />.</summary>
-        <remarks>To be added.</remarks>
+        <summary>ガベージ コレクターが <see cref="T:System.Data.SqlTypes.SqlFileStream" /> を再利用するときに、リソースの解放およびその他のクリーンアップ操作を確実に実行するようにします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Flush">
@@ -419,8 +457,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
-        <remarks>To be added.</remarks>
+        <summary>ストリームに対応するすべてのバッファーをクリアし、バッファー内のデータを基になるデバイスに書き込みます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Length">
@@ -436,9 +479,14 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating the length of the current stream in bytes.</summary>
-        <value>An <see cref="T:System.Int64" /> indicating the length of the current stream in bytes.</value>
-        <remarks>To be added.</remarks>
+        <summary>バイト単位の現在のストリームの長さを示す値を取得します。</summary>
+        <value>バイト単位の現在のストリームの長さを示す <see cref="T:System.Int64" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -454,9 +502,15 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the logical path of the <see cref="T:System.Data.SqlTypes.SqlFileStream" /> passed to the constructor.</summary>
-        <value>A string value indicating the name of the <see cref="T:System.Data.SqlTypes.SqlFileStream" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>コンストラクターに渡される <see cref="T:System.Data.SqlTypes.SqlFileStream" /> の論理パスを取得します。</summary>
+        <value>
+          <see cref="T:System.Data.SqlTypes.SqlFileStream" /> の名前を示す文字列値。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Position">
@@ -472,9 +526,15 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the position within the current stream.</summary>
-        <value>The current position within the <see cref="T:System.Data.SqlTypes.SqlFileStream" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のストリーム内の位置を取得または設定します。</summary>
+        <value>
+          <see cref="T:System.Data.SqlTypes.SqlFileStream" /> 内の現在位置。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Read">
@@ -495,20 +555,20 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
-        <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
-        <param name="count">The maximum number of bytes to be read from the current stream.</param>
-        <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
-        <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
+        <param name="buffer">バイト配列。 このメソッドが返されるとき、バッファーは現在のソースから読み取ったバイトにより置き換えられた、オフセットから \(オフセット \+ データの個数 \- 1\) の間の値を持つ指定されたバイト配列を含みます。</param>
+        <param name="offset">現在のストリームから読み取ったデータの格納を開始する位置を示す バッファ内の0 から始まるバイト オフセット。</param>
+        <param name="count">現在のストリームから読み取る最大バイト数。</param>
+        <summary>現在のストリームからバイト シーケンスを読み取り、読み取ったバイト数だけストリーム内の位置を進めます。</summary>
+        <returns>バッファーに読み取られた合計バイト数。 要求しただけのバイト数を読み取ることができなかった場合、この値は要求したバイト数より小さくなります。ストリームの末尾に到達した場合は 0 \(ゼロ\) になることがあります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> property to determine whether the current instance supports writing.  
+## 解説  
+ 使用して、 [Read メソッド \(Byte\<xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> プロパティを現在のインスタンスが書き込みをサポートするかどうかを判断します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The object does not support reading of data.</exception>
+        <exception cref="T:System.NotSupportedException">このオブジェクトはデータの読み取りをサポートしていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ReadByte">
@@ -525,17 +585,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at the end of the stream.</summary>
-        <returns>The unsigned byte cast to an <see cref="T:System.Int32" />, or -1 if at the end of the stream.</returns>
+        <summary>ストリームから 1 バイトを読み取り、ストリーム内の位置を 1 バイト進めます。ストリームの末尾の場合は \-1 を返します。</summary>
+        <returns>
+          <see cref="T:System.Int32" /> にキャストされた符号なしバイト。ストリームの末尾の場合は \-1。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> property to determine whether the current instance supports reading.  
+## 解説  
+ 使用して、 <xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> プロパティを現在のインスタンスが読み取りをサポートするかどうかを判断します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The object does not support reading of data.</exception>
+        <exception cref="T:System.NotSupportedException">このオブジェクトはデータの読み取りをサポートしていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ReadTimeout">
@@ -556,9 +617,14 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value, in milliseconds, that determines how long the stream will attempt to read before timing out.</summary>
-        <value>A value, in milliseconds, that determines how long the stream will attempt to read before timing out.</value>
-        <remarks>To be added.</remarks>
+        <summary>ストリームがタイムアウト前に読み取りを試みる期間を決定する値 \(ミリ秒単位\) を取得または設定します。</summary>
+        <value>ストリームがタイムアウト前に読み取りを試みる期間を決定する値 \(ミリ秒単位\)。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Seek">
@@ -578,11 +644,17 @@
         <Parameter Name="origin" Type="System.IO.SeekOrigin" />
       </Parameters>
       <Docs>
-        <param name="offset">A byte offset relative to the <c>origin</c> parameter</param>
-        <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position</param>
-        <summary>Sets the position within the current stream.</summary>
-        <returns>The new position within the current stream.</returns>
-        <remarks>To be added.</remarks>
+        <param name="offset">
+          <c>origin</c> パラメーターからの相対バイト オフセット</param>
+        <param name="origin">新しい位置を取得するために使用する参照ポイントを示す <see cref="T:System.IO.SeekOrigin" /> 型の値</param>
+        <summary>現在のストリーム内の位置を設定します。</summary>
+        <returns>現在のストリーム内の新しい位置。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetLength">
@@ -601,17 +673,17 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="value">The desired length of the current stream in bytes.</param>
-        <summary>Sets the length of the current stream.</summary>
+        <param name="value">現在のストリームの希望の長さ \(バイト数\)。</param>
+        <summary>現在のストリームの長さを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> property to determine whether the current instance supports reading.  
+## 解説  
+ 使用して、 <xref:System.Data.SqlTypes.SqlFileStream.CanRead%2A> プロパティを現在のインスタンスが読み取りをサポートするかどうかを判断します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The object does not support reading of data.</exception>
+        <exception cref="T:System.NotSupportedException">このオブジェクトはデータの読み取りをサポートしていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="TransactionContext">
@@ -627,9 +699,14 @@
         <ReturnType>System.Byte[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the transaction context for this <see cref="T:System.Data.SqlTypes.SqlFileStream" /> object.</summary>
-        <value>The <paramref name="transactionContext" /> array that was passed to the constructor for this <see cref="T:System.Data.SqlTypes.SqlFileStream" /> object.</value>
-        <remarks>To be added.</remarks>
+        <summary>この <see cref="T:System.Data.SqlTypes.SqlFileStream" /> オブジェクトのトランザクション コンテキストを取得または設定します。</summary>
+        <value>この <see cref="T:System.Data.SqlTypes.SqlFileStream" /> オブジェクトのコンストラクターに渡された <paramref name="transactionContext" /> 配列。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -650,19 +727,19 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">An array of bytes. This method copies <c>count</c> bytes from <c>buffer</c> to the current stream.</param>
-        <param name="offset">The zero-based byte offset in <c>buffer</c> at which to begin copying bytes to the current stream.</param>
-        <param name="count">The number of bytes to be written to the current stream.</param>
-        <summary>Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.</summary>
+        <param name="buffer">バイト配列。 このメソッドは、<c>buffer</c> から現在のストリームに、<c>count</c> で指定されたバイト数だけコピーします。</param>
+        <param name="offset">現在のストリームへのバイトのコピーを開始する位置を示す <c>buffer</c> 内のバイト オフセット。インデックス番号は 0 から始まります。</param>
+        <param name="count">現在のストリームに書き込むバイト数。</param>
+        <summary>現在のストリームにバイト シーケンスを書き込み、書き込んだバイト数だけストリーム内の現在位置を進めます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanWrite%2A> property to determine whether the current instance supports writing.  
+## 解説  
+ 使用して、 [Write メソッド \(Byte\<xref:System.Data.SqlTypes.SqlFileStream.CanWrite%2A> プロパティを現在のインスタンスが書き込みをサポートするかどうかを判断します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The object does not support writing of data.</exception>
+        <exception cref="T:System.NotSupportedException">このオブジェクトにおいて、データの書き込みはサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteByte">
@@ -681,17 +758,17 @@
         <Parameter Name="value" Type="System.Byte" />
       </Parameters>
       <Docs>
-        <param name="value">The byte to write to the stream.</param>
-        <summary>Writes a byte to the current position in the stream and advances the position within the stream by one byte.</summary>
+        <param name="value">ストリームに書き込むバイト。</param>
+        <summary>ストリームの現在位置にバイトを書き込み、ストリームの位置を 1 バイトだけ進めます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.SqlTypes.SqlFileStream.CanWrite%2A> property to determine whether the current instance supports writing.  
+## 解説  
+ 使用して、 <xref:System.Data.SqlTypes.SqlFileStream.CanWrite%2A> プロパティを現在のインスタンスが書き込みをサポートするかどうかを判断します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The object does not support writing of data.</exception>
+        <exception cref="T:System.NotSupportedException">このオブジェクトにおいて、データの書き込みはサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteTimeout">
@@ -712,9 +789,14 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value, in milliseconds, that determines how long the stream will attempt to write before timing out.</summary>
-        <value>A value, in milliseconds, that determines how long the stream will attempt to write before timing out.</value>
-        <remarks>To be added.</remarks>
+        <summary>ストリームがタイムアウト前に書き込みを試行する期間を決定する値 \(ミリ秒単位\) を取得または設定します。</summary>
+        <value>ストリームがタイムアウト前に書き込みを試行する期間を決定する値 \(ミリ秒単位\)。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

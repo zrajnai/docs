@@ -50,11 +50,11 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Describes an assembly's unique identity in full.</summary>
+    <summary>アセンブリの一意の ID を詳細に記述します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Reflection.AssemblyName> object contains information about an assembly, which you can use to bind to that assembly. An assembly's identity consists of the following:  
   
 -   Simple name.  
@@ -65,21 +65,21 @@
   
 -   Supported culture.  
   
- The simple name is typically the file name for the manifest file without its extension. The key pair includes a public and private key, used to create strong-name signatures for assemblies.  
+ The simple name is typically the file name for the manifest file without its extension. The key pair includes a public and private key, used to create strong\-name signatures for assemblies.  
   
  All compilers that support the common language runtime will emit the simple name of a nested class, and reflection constructs a mangled name when queried, in accordance with the following conventions.  
   
 |Delimiter|Meaning|  
 |---------------|-------------|  
-|Backslash (\\)|Escape character.|  
-|Comma (,)|Precedes the assembly name.|  
-|Plus sign (+)|Precedes a nested class.|  
+|Backslash \(\\\)|Escape character.|  
+|Comma \(,\)|Precedes the assembly name.|  
+|Plus sign \(\+\)|Precedes a nested class.|  
   
  For example, the fully qualified name for a class might look like this:  
   
- ContainingClass+NestedClass,MyAssembly  
+ ContainingClass\+NestedClass,MyAssembly  
   
- A "++" becomes "\\+\\+", and a "\\" becomes "\\\\".  
+ A "\+\+" becomes "\\\+\\\+", and a "\\" becomes "\\\\".  
   
  This qualified name can be persisted and later used to load the <xref:System.Type>. To search for and load a <xref:System.Type>, use <xref:System.Type.GetType%2A> either with the type name only or with the assembly qualified type name. <xref:System.Type.GetType%2A> with the type name only will look for the <xref:System.Type> in the caller's assembly and then in the System assembly. <xref:System.Type.GetType%2A> with the assembly qualified type name will look for the <xref:System.Type> in any assembly.  
   
@@ -97,25 +97,26 @@
   
 -   <xref:System.Type.AssemblyQualifiedName%2A?displayProperty=fullName>  
   
- You can also get the name by using the `/l` option with the [Gacutil.exe (Global Assembly Cache Tool)](~/docs/framework/tools/gacutil-exe-gac-tool.md)  
+ You can also get the name by using the **userInput tag is not supported!!!!**  
+ option with the [Global Assembly Cache Tool \(Gacutil.exe\)](http://msdn.microsoft.com/ja-jp/4c7be9c8-72ae-481f-a01c-1a4716806e99)  
   
- For a partially specified strong name, create an <xref:System.Reflection.AssemblyName> object using the default constructor and set the name and public key. An assembly created using such an <xref:System.Reflection.AssemblyName> can be signed later using the Assembly Linker (Al.exe).  
+ For a partially specified strong name, create an <xref:System.Reflection.AssemblyName> object using the default constructor and set the name and public key. An assembly created using such an <xref:System.Reflection.AssemblyName> can be signed later using the Assembly Linker \(Al.exe\).  
   
  It is possible to specify a public key and a <xref:System.Reflection.AssemblyName.KeyPair%2A> with inconsistent values. This can be useful in developer scenarios. In this case, the public key retrieved with <xref:System.Reflection.AssemblyName.GetPublicKey%2A> specifies the correct public key, while the <xref:System.Reflection.AssemblyName.KeyPair%2A> specifies the public and private keys used during development. When the runtime detects a mismatch between the <xref:System.Reflection.AssemblyName.KeyPair%2A> and the public key, it looks up in the registry the correct key that matches the public key.  
   
- The format of the display name of an <xref:System.Reflection.AssemblyName> is a comma-delimited Unicode string that begins with the name, as follows:  
+ The format of the display name of an <xref:System.Reflection.AssemblyName> is a comma\-delimited Unicode string that begins with the name, as follows:  
   
  `Name <,Culture = CultureInfo> <,Version = Major.Minor.Build.Revision> <, StrongName> <,PublicKeyToken> '\0'`  
   
- `Name` is the textual name of the assembly. `CultureInfo` is the RFC1766-format-defined culture. `Major`, `Minor`, `Build`, and `Revision` are the major version, minor version, build number, and revision number of the assembly. `StrongName` is the hexadecimal-encoded low-order 64 bits of the hash value of the public key generated using the SHA-1 hashing algorithm and the public key specified by <xref:System.Reflection.AssemblyName.SetPublicKey%2A>. `PublicKeyToken` is the hexadecimal-encoded public key specified by <xref:System.Reflection.AssemblyName.SetPublicKey%2A>.  
+ `Name` is the textual name of the assembly. `CultureInfo` is the RFC1766\-format\-defined culture. `Major`, `Minor`, `Build`, and `Revision` are the major version, minor version, build number, and revision number of the assembly. `StrongName` is the hexadecimal\-encoded low\-order 64 bits of the hash value of the public key generated using the SHA\-1 hashing algorithm and the public key specified by <xref:System.Reflection.AssemblyName.SetPublicKey%2A>. `PublicKeyToken` is the hexadecimal\-encoded public key specified by <xref:System.Reflection.AssemblyName.SetPublicKey%2A>.  
   
  Hexadecimal encoding is defined as the conversion of each byte of a binary object to two hexadecimal characters, progressing from least to most significant byte. Additional display values will be added as deemed necessary.  
   
  If the full public key is known, then PublicKey may be substituted for StrongName.  
   
- Also note that except for `Name`, which must come first, the lexical order of parameters is unimportant. However, any parameter (`Version`, `Culture`, `StrongName` or `PublicKey`) not specifically set is considered to be omitted, and the <xref:System.Reflection.AssemblyName> is then considered partial. When specifying partial information, Name parameters must be specified in the order described above.  
+ Also note that except for `Name`, which must come first, the lexical order of parameters is unimportant. However, any parameter \(`Version`, `Culture`, `StrongName` or `PublicKey`\) not specifically set is considered to be omitted, and the <xref:System.Reflection.AssemblyName> is then considered partial. When specifying partial information, Name parameters must be specified in the order described above.  
   
- When supplying a display name, the convention `StrongName =null` or `PublicKey= null` indicates that binding and matching against a simply named assembly is required. Additionally, the convention `Culture= ""` (double quote representing an empty string) indicates matching against the default culture.  
+ When supplying a display name, the convention `StrongName =null` or `PublicKey= null` indicates that binding and matching against a simply named assembly is required. Additionally, the convention `Culture= ""` \(double quote representing an empty string\) indicates matching against the default culture.  
   
  The following example shows an <xref:System.Reflection.AssemblyName> for a simply named assembly with default culture.  
   
@@ -131,15 +132,23 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
   
    
   
-## Examples  
+## 例  
  This example shows how to use various reflection classes to analyze the metadata contained in an assembly.  
   
- [!code-cpp[Reflection#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection/CPP/reflection.cpp#1)]
- [!code-csharp[Reflection#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection/CS/Reflection.cs#1)]
- [!code-vb[Reflection#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection/VB/Reflection.vb#1)]  
+ [!code-cpp[Reflection\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Reflection/CPP/reflection.cpp#1)]
+ [!code-csharp[Reflection\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Reflection/CS/Reflection.cs#1)]
+ [!code-vb[Reflection\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Reflection/VB/Reflection.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Version" />
+    <altmember cref="M:System.Reflection.AssemblyName.GetPublicKey" />
+    <altmember cref="M:System.Reflection.AssemblyName.GetPublicKeyToken" />
+    <altmember cref="M:System.Reflection.AssemblyName.SetPublicKey(System.Byte[])" />
+    <altmember cref="M:System.Reflection.AssemblyName.SetPublicKeyToken(System.Byte[])" />
+    <altmember cref="P:System.Type.FullName" />
+    <altmember cref="M:System.Type.GetType" />
+    <altmember cref="P:System.Type.AssemblyQualifiedName" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -168,16 +177,17 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Reflection.AssemblyName" /> class.</summary>
+        <summary>
+          <see cref="T:System.Reflection.AssemblyName" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example creates a dynamic assembly named `MyAssembly.exe` and saves it to your hard disk. After running the example, you can use the [Ildasm.exe (IL Disassembler)](~/docs/framework/tools/ildasm-exe-il-disassembler.md) to examine the assembly metadata.  
+## 例  
+ 次の例では、という名前の動的アセンブリ `MyAssembly.exe` され、ハード\_ディスクに保存します。 例を実行すると、使用することができます、 [MSIL Disassembler \(Ildasm.exe\)](http://msdn.microsoft.com/ja-jp/db27f6b2-f1ec-499e-be3a-7eecf95ca42b) アセンブリ メタデータを確認します。  
   
- [!code-cpp[AssemblyName_Constructor#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor/CPP/assemblyname_constructor.cpp#1)]
- [!code-csharp[AssemblyName_Constructor#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor/CS/assemblyname_constructor.cs#1)]
- [!code-vb[AssemblyName_Constructor#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor/VB/assemblyname_constructor.vb#1)]  
+ [!code-cpp[AssemblyName\_Constructor\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor/CPP/assemblyname_constructor.cpp#1)]
+ [!code-csharp[AssemblyName\_Constructor\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor/CS/assemblyname_constructor.cs#1)]
+ [!code-vb[AssemblyName\_Constructor\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor/VB/assemblyname_constructor.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -211,38 +221,40 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <Parameter Name="assemblyName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="assemblyName">The display name of the assembly, as returned by the <see cref="P:System.Reflection.AssemblyName.FullName" /> property.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Reflection.AssemblyName" /> class with the specified display name.</summary>
+        <param name="assemblyName">
+          <see cref="P:System.Reflection.AssemblyName.FullName" /> プロパティによって返される、アセンブリの表示名。</param>
+        <summary>指定した表示名を使用して、<see cref="T:System.Reflection.AssemblyName" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The supplied `assemblyName` is parsed, and the appropriate fields of the new <xref:System.Reflection.AssemblyName> are initialized with values from the display name. This is the recommended way of parsing display names. Writing your own code to parse display names is not recommended.  
+## 解説  
+ The supplied **parameterReference tag is not supported!!!!**  
+ is parsed, and the appropriate fields of the new <xref:System.Reflection.AssemblyName> are initialized with values from the display name. This is the recommended way of parsing display names. Writing your own code to parse display names is not recommended.  
   
    
   
-## Examples  
+## 例  
  The following example creates an instance of <xref:System.Reflection.AssemblyName> from a display name. The individual elements of the display name are output to the console as properties of the <xref:System.Reflection.AssemblyName>object.  
   
- [!code-cpp[AssemblyName_Constructor_2#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor_2/CPP/source.cpp#1)]
- [!code-csharp[AssemblyName_Constructor_2#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor_2/CS/source.cs#1)]
- [!code-vb[AssemblyName_Constructor_2#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor_2/VB/source.vb#1)]  
+ [!code-cpp[AssemblyName\_Constructor\_2\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor_2/CPP/source.cpp#1)]
+ [!code-csharp[AssemblyName\_Constructor\_2\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor_2/CS/source.cs#1)]
+ [!code-vb[AssemblyName\_Constructor\_2\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor_2/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="assemblyName" /> is <see langword="null" />.</exception>
+          <paramref name="assemblyName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="assemblyName" /> is a zero length string.</exception>
+          <paramref name="assemblyName" /> は長さゼロの文字列です。</exception>
         <exception cref="T:System.IO.FileLoadException">
-          <block subset="none" type="note">
-            <para>  
- In the [.NET for Windows Store apps](http://go.microsoft.com/fwlink/?LinkID=247912) or the [Portable Class Library](~/docs/standard/cross-platform/cross-platform-development-with-the-portable-class-library.md), catch the base class exception, <see cref="T:System.IO.IOException" />, instead.  
+          <block subset="none" type="note">  
+<para>  
+ [Windows ストア アプリ用 .NET](http://go.microsoft.com/fwlink/?LinkID=247912) または [ポータブル クラス ライブラリ](http://msdn.microsoft.com/ja-jp/c31e1663-c164-4e65-b66d-d3aa8750a154)では、基本クラスの例外である <see cref="T:System.IO.IOException" /> を代わりにキャッチします。  
   
-</para>
-          </block>  
+</para>  
+</block>  
   
- The referenced assembly could not be found, or could not be loaded.</exception>
+ 参照アセンブリは見つからない、または読み込めませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -268,13 +280,13 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Makes a copy of this <see cref="T:System.Reflection.AssemblyName" /> object.</summary>
-        <returns>An object that is a copy of this <see cref="T:System.Reflection.AssemblyName" /> object.</returns>
+        <summary>このコピーを作成 <see cref="T:System.Reflection.AssemblyName" /> オブジェクトです。</summary>
+        <returns>このコピーであるオブジェクト <see cref="T:System.Reflection.AssemblyName" /> オブジェクトです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A new object is created, identical to the original.  
+## 解説  
+ 新しいオブジェクトは作成元と同じです。  
   
  ]]></format>
         </remarks>
@@ -302,27 +314,27 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the location of the assembly as a URL.</summary>
-        <value>A string that is the URL location of the assembly.</value>
+        <summary>取得または URL として、アセンブリの場所を設定します。</summary>
+        <value>アセンブリの場所を表す文字列。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When an assembly is loaded, this value can also be obtained using the <xref:System.Reflection.Assembly.CodeBase%2A?displayProperty=fullName> property.  
+## 解説  
+ アセンブリが読み込まれると、この値も取得できますを使用して、 <xref:System.Reflection.Assembly.CodeBase%2A?displayProperty=fullName> プロパティです。  
   
- If the assembly was loaded as a byte array, this property returns the location of the caller of the <xref:System.Reflection.Assembly.Load%28System.Byte%5B%5D%29> method overload, not the location of the loaded assembly.  
+ アセンブリがバイト配列として読み込まれた、このプロパティはの呼び出し元の場所を返します、 <xref:System.Reflection.Assembly.Load%28System.Byte%5B%5D%29> メソッドのオーバー ロード、読み込まれたアセンブリの場所ではありません。  
   
 > [!NOTE]
->  Do not use an <xref:System.Reflection.AssemblyName> with only the <xref:System.Reflection.AssemblyName.CodeBase%2A> property set. The <xref:System.Reflection.AssemblyName.CodeBase%2A> property does not supply any elements of the assembly identity (such as name or version), so loading does not occur according to load-by-identity rules, as you would expect from the <xref:System.Reflection.Assembly.Load%2A> method. Instead, the assembly is loaded using load-from rules. For information about the disadvantages of using the load-from context, see the <xref:System.Reflection.Assembly.LoadFrom%2A?displayProperty=fullName> method overload or [Best Practices for Assembly Loading](~/docs/framework/deployment/best-practices-for-assembly-loading.md).  
+>  使用しないでください、 <xref:System.Reflection.AssemblyName> だけを持つ、 <xref:System.Reflection.AssemblyName.CodeBase%2A> プロパティ セット。<xref:System.Reflection.AssemblyName.CodeBase%2A> プロパティがすべての要素を提供しないアセンブリの id \(名前、バージョンなど\) のための読み込みが存在しない id での負荷の規則に従ってから想像のとおり、 <xref:System.Reflection.Assembly.Load%2A> メソッドです。 代わりに、アセンブリでは、読み込み元の規則を使用してが読み込まれます。 読み込み元コンテキストを使用して、短所については、次を参照してください。、 <xref:System.Reflection.Assembly.LoadFrom%2A?displayProperty=fullName> メソッドのオーバー ロードまたは [Best Practices for Assembly Loading](http://msdn.microsoft.com/ja-jp/68d1c539-6a47-4614-ab59-4b071c9d4b4c)です。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.CodeBase%2A> property is used to specify the directory where the assembly is saved.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.CodeBase%2A> アセンブリが保存されているディレクトリを指定するプロパティが使用されます。  
   
- [!code-cpp[AssemblyName_CodeBase#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#1)]
- [!code-csharp[AssemblyName_CodeBase#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#1)]
- [!code-vb[AssemblyName_CodeBase#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#1)]  
+ [!code-cpp[AssemblyName\_CodeBase\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#1)]
+ [!code-csharp[AssemblyName\_CodeBase\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#1)]
+ [!code-vb[AssemblyName\_CodeBase\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -361,9 +373,14 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.Reflection.AssemblyContentType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates what type of content the assembly contains.</summary>
-        <value>A value that indicates what type of content the assembly contains.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得またはアセンブリに含まれるコンテンツの種類を示す値を設定します。</summary>
+        <value>アセンブリのコンテンツの種類を示す値が含まれています。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CultureInfo">
@@ -388,17 +405,17 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.Globalization.CultureInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the culture supported by the assembly.</summary>
-        <value>An object that represents the culture supported by the assembly.</value>
+        <summary>取得またはアセンブリによってサポートされているカルチャを設定します。</summary>
+        <value>アセンブリによってサポートされているカルチャを表すオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.CultureInfo%2A> property is used to specify the culture, which is part of the assembly's display name.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.CultureInfo%2A> プロパティを使用して、これは、アセンブリの表示名の一部と、カルチャを指定します。  
   
- [!code-cpp[AssemblyName_CodeBase#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#2)]
- [!code-csharp[AssemblyName_CodeBase#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#2)]
- [!code-vb[AssemblyName_CodeBase#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#2)]  
+ [!code-cpp[AssemblyName\_CodeBase\#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#2)]
+ [!code-csharp[AssemblyName\_CodeBase\#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#2)]
+ [!code-vb[AssemblyName\_CodeBase\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -432,9 +449,14 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the culture associated with the assembly.</summary>
-        <value>The culture name.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得またはアセンブリに関連付けられているカルチャの名前を設定します。</summary>
+        <value>カルチャ名。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EscapedCodeBase">
@@ -459,8 +481,8 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the URI, including escape characters, that represents the codebase.</summary>
-        <value>A URI with escape characters.</value>
+        <summary>コードベースを表す URI を、エスケープ文字も含めて取得します。</summary>
+        <value>エスケープ文字を含んだ URI。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -492,17 +514,17 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.Reflection.AssemblyNameFlags</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the attributes of the assembly.</summary>
-        <value>A value that represents the attributes of the assembly.</value>
+        <summary>取得またはアセンブリの属性を設定します。</summary>
+        <value>アセンブリの属性を表す値。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.Flags%2A> property is used to specify that the assembly has a public key.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.Flags%2A> プロパティを使用して、アセンブリに公開キーがあることを指定します。  
   
- [!code-cpp[AssemblyName_KeyPair#4](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#4)]
- [!code-csharp[AssemblyName_KeyPair#4](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#4)]
- [!code-vb[AssemblyName_KeyPair#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#4)]  
+ [!code-cpp[AssemblyName\_KeyPair\#4](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#4)]
+ [!code-csharp[AssemblyName\_KeyPair\#4](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#4)]
+ [!code-vb[AssemblyName\_KeyPair\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#4)]  
   
  ]]></format>
         </remarks>
@@ -536,30 +558,30 @@ ExampleAssembly, Version=1.0.0.0, Culture=en, PublicKeyToken=a5d015c7d5a0b012
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the full name of the assembly, also known as the display name.</summary>
-        <value>A string that is the full name of the assembly, also known as the display name.</value>
+        <summary>表示名とも呼ばれる、アセンブリの完全名を取得します。</summary>
+        <value>表示名とも呼ばれる、アセンブリの完全名を表す文字列です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The display name typically consists of the simple name, version number, supported culture, and public key. For example:  
+## 解説  
+ 表示名は通常、単純な名前、バージョン番号、サポートされるカルチャ、および公開キーで構成されます。 例:  
   
 ```  
 mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840  
 ```  
   
- Writing your own code to parse display names is not recommended. Instead, pass the display name to the <xref:System.Reflection.AssemblyName.%23ctor%2A> constructor, which parses it and populates the appropriate fields of the new <xref:System.Reflection.AssemblyName>.  
+ 表示名を解析するコードを作成することは推奨されません。 代わりに、表示名を渡す、 <xref:System.Reflection.AssemblyName.%23ctor%2A> に解析し、新しいの適切なフィールドを設定するコンス トラクター <xref:System.Reflection.AssemblyName>します。  
   
- When an assembly is loaded, this value can also be obtained using the <xref:System.Reflection.Assembly.FullName%2A?displayProperty=fullName> property.  
+ アセンブリが読み込まれると、この値も取得できますを使用して、 <xref:System.Reflection.Assembly.FullName%2A?displayProperty=fullName> プロパティです。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the code example sets the <xref:System.Reflection.AssemblyName.Name%2A>, <xref:System.Reflection.AssemblyName.Version%2A>, <xref:System.Reflection.AssemblyName.CultureInfo%2A>, and <xref:System.Reflection.AssemblyName.KeyPair%2A> properties, which together comprise an assembly's full name, or display name. The <xref:System.Reflection.AssemblyName.FullName%2A> property is then used to retrieve the display name.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリが作成されると、コード例を設定、 <xref:System.Reflection.AssemblyName.Name%2A>, 、<xref:System.Reflection.AssemblyName.Version%2A>, 、<xref:System.Reflection.AssemblyName.CultureInfo%2A>, 、および <xref:System.Reflection.AssemblyName.KeyPair%2A> プロパティでは、一緒にアセンブリのフルネームを構成または表示名。<xref:System.Reflection.AssemblyName.FullName%2A> 表示名を取得するプロパティを使用しています。  
   
- [!code-cpp[AssemblyName_CodeBase#4](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#4)]
- [!code-csharp[AssemblyName_CodeBase#4](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#4)]
- [!code-vb[AssemblyName_CodeBase#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#4)]  
+ [!code-cpp[AssemblyName\_CodeBase\#4](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#4)]
+ [!code-csharp[AssemblyName\_CodeBase\#4](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#4)]
+ [!code-vb[AssemblyName\_CodeBase\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#4)]  
   
  ]]></format>
         </remarks>
@@ -590,36 +612,36 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="assemblyFile" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="assemblyFile">The path for the assembly whose <see cref="T:System.Reflection.AssemblyName" /> is to be returned.</param>
-        <summary>Gets the <see cref="T:System.Reflection.AssemblyName" /> for a given file.</summary>
-        <returns>An object that represents the given assembly file.</returns>
+        <param name="assemblyFile">アセンブリのパスが <see cref="T:System.Reflection.AssemblyName" /> が返されます。</param>
+        <summary>取得、 <see cref="T:System.Reflection.AssemblyName" /> ファイルにします。</summary>
+        <returns>指定したアセンブリ ファイルを表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This will only work if the file contains an assembly manifest. This method causes the file to be opened and closed, but the assembly is not added to this domain.  
+## 解説  
+ これは、ファイルには、アセンブリ マニフェストが含まれている場合のみ機能します。 このメソッドにより、ファイルを開いたり、閉じたりが、アセンブリは、このドメインには追加されません。  
   
    
   
-## Examples  
- The following example gets the <xref:System.Reflection.AssemblyName> for an assembly on disk. It will not run unless you replace the string "MyAssembly.exe" with the file name of an assembly (including the path, if necessary) on your hard disk. Alternatively, you can compile this example as "MyAssembly.exe".  
+## 例  
+ 次の例では取得、 <xref:System.Reflection.AssemblyName> ディスク上のアセンブリ。 これは実行されません"MyAssembly.exe"文字列に置換する場合を除き、\(必要な場合、パスを含む\) アセンブリのファイル名と、ハード\_ディスク。 また、"MyAssembly.exe"として、この例をコンパイルできます。  
   
- [!code-cpp[AssemblyName_GetAssemblyName#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CPP/assemblyname_getassemblyname.cpp#1)]
- [!code-csharp[AssemblyName_GetAssemblyName#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CS/assemblyname_getassemblyname.cs#1)]
- [!code-vb[AssemblyName_GetAssemblyName#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_GetAssemblyName/VB/assemblyname_getassemblyname.vb#1)]  
+ [!code-cpp[AssemblyName\_GetAssemblyName\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CPP/assemblyname_getassemblyname.cpp#1)]
+ [!code-csharp[AssemblyName\_GetAssemblyName\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CS/assemblyname_getassemblyname.cs#1)]
+ [!code-vb[AssemblyName\_GetAssemblyName\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_GetAssemblyName/VB/assemblyname_getassemblyname.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="assemblyFile" /> is <see langword="null" />.</exception>
+          <paramref name="assemblyFile" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="assemblyFile" /> is invalid, such as an assembly with an invalid culture.</exception>
+          <paramref name="assemblyFile" /> 無効なカルチャでのアセンブリなど、無効です。</exception>
         <exception cref="T:System.IO.FileNotFoundException">
-          <paramref name="assemblyFile" /> is not found.</exception>
-        <exception cref="T:System.Security.SecurityException">The caller does not have path discovery permission.</exception>
+          <paramref name="assemblyFile" /> が見つかりません。</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元には、パス検出のアクセス許可がありません。</exception>
         <exception cref="T:System.BadImageFormatException">
-          <paramref name="assemblyFile" /> is not a valid assembly.</exception>
-        <exception cref="T:System.IO.FileLoadException">An assembly or module was loaded twice with two different sets of evidence.</exception>
+          <paramref name="assemblyFile" /> は有効なアセンブリ名ではありません。</exception>
+        <exception cref="T:System.IO.FileLoadException">アセンブリまたはモジュールが、2 つの異なる証拠セットを使用して 2 回読み込まれました。</exception>
         <permission cref="T:System.Security.Permissions.FileIOPermission">for access to information in the path. Associated enumeration: <see cref="F:System.Security.Permissions.FileIOPermissionAccess.PathDiscovery" />.</permission>
       </Docs>
     </Member>
@@ -649,12 +671,12 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The object to be populated with serialization information.</param>
-        <param name="context">The destination context of the serialization.</param>
-        <summary>Gets serialization information with all the data needed to recreate an instance of this <see langword="AssemblyName" />.</summary>
+        <param name="info">シリアル化情報が設定されるオブジェクト。</param>
+        <param name="context">シリアル化の対象コンテキスト。</param>
+        <summary>このインスタンスの再作成に必要なすべてのデータをシリアル化情報を取得 <see langword="AssemblyName" />します。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="info" /> is <see langword="null" />.</exception>
+          <paramref name="info" /> は <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -687,21 +709,21 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets the public key of the assembly.</summary>
-        <returns>A byte array that contains the public key of the assembly.</returns>
+        <summary>アセンブリの公開キーを取得します。</summary>
+        <returns>アセンブリの公開キーを含むバイト配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.SetPublicKey%2A> method is used to give the assembly a public key. The <xref:System.Reflection.AssemblyName.GetPublicKey%2A> method is then used to retrieve the public key, which is displayed to the console.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.SetPublicKey%2A> メソッドは、アセンブリの名前は公開キーを使用します。<xref:System.Reflection.AssemblyName.GetPublicKey%2A> をコンソールに表示される公開キーを取得するメソッドを使用しています。  
   
- [!code-cpp[AssemblyName_KeyPair#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#2)]
- [!code-csharp[AssemblyName_KeyPair#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#2)]
- [!code-vb[AssemblyName_KeyPair#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#2)]  
+ [!code-cpp[AssemblyName\_KeyPair\#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#2)]
+ [!code-csharp[AssemblyName\_KeyPair\#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#2)]
+ [!code-vb[AssemblyName\_KeyPair\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">A public key was provided (for example, by using the <see cref="M:System.Reflection.AssemblyName.SetPublicKey(System.Byte[])" /> method), but no public key token was provided.</exception>
+        <exception cref="T:System.Security.SecurityException">公開キーが提供された \(たとえばを使用して、 <see cref="M:System.Reflection.AssemblyName.SetPublicKey(System.Byte[])" /> メソッド\)、公開キー トークンが指定されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetPublicKeyToken">
@@ -733,17 +755,17 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets the public key token, which is the last 8 bytes of the SHA-1 hash of the public key under which the application or assembly is signed.</summary>
-        <returns>A byte array that contains the public key token.</returns>
+        <summary>アプリケーションまたはアセンブリが署名に使用された公開キーの sha\-1 ハッシュの最後の 8 バイトは、公開キー トークンを取得します。</summary>
+        <returns>公開キー トークンを格納するバイト配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> method is used to set the assembly's public key token. The <xref:System.Reflection.AssemblyName.GetPublicKeyToken%2A> method is then used to retrieve the public key token, which is displayed to the console.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> メソッドの使用をアセンブリの公開キー トークンを設定します。<xref:System.Reflection.AssemblyName.GetPublicKeyToken%2A> がコンソールに表示される公開キー トークンを取得するメソッドを使用しています。  
   
- [!code-cpp[AssemblyName_KeyPair#3](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#3)]
- [!code-csharp[AssemblyName_KeyPair#3](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#3)]
- [!code-vb[AssemblyName_KeyPair#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#3)]  
+ [!code-cpp[AssemblyName\_KeyPair\#3](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#3)]
+ [!code-csharp[AssemblyName\_KeyPair\#3](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#3)]
+ [!code-vb[AssemblyName\_KeyPair\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -771,24 +793,24 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <ReturnType>System.Configuration.Assemblies.AssemblyHashAlgorithm</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the hash algorithm used by the assembly manifest.</summary>
-        <value>The hash algorithm used by the assembly manifest.</value>
+        <summary>取得またはアセンブリ マニフェストで使用されるハッシュ アルゴリズムを設定します。</summary>
+        <value>アセンブリ マニフェストが使用するハッシュ アルゴリズム。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  Starting with the [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], the <xref:System.Reflection.AssemblyName.HashAlgorithm%2A> property of an <xref:System.Reflection.AssemblyName> object that is returned by the <xref:System.Reflection.Assembly.GetReferencedAssemblies%2A?displayProperty=fullName> method is <xref:System.Configuration.Assemblies.AssemblyHashAlgorithm?displayProperty=fullName> if there is no hash algorithm for the referenced assembly, or if the hash algorithm of the referenced assembly is not identified by the <xref:System.Configuration.Assemblies.AssemblyHashAlgorithm?displayProperty=fullName> enumeration. In previous versions of the .NET Framework, the <xref:System.Reflection.AssemblyName.HashAlgorithm%2A> property returned <xref:System.Configuration.Assemblies.AssemblyHashAlgorithm?displayProperty=fullName> in this situation.  
+>  以降で、 [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], 、 <xref:System.Reflection.AssemblyName.HashAlgorithm%2A> のプロパティ、 <xref:System.Reflection.AssemblyName> によって返されるオブジェクト、 <xref:System.Reflection.Assembly.GetReferencedAssemblies%2A?displayProperty=fullName> メソッドは <xref:System.Configuration.Assemblies.AssemblyHashAlgorithm.None?displayProperty=fullName> 参照アセンブリのハッシュ アルゴリズムが存在しない場合、または参照先アセンブリのハッシュ アルゴリズムがで認識されない場合、 <xref:System.Configuration.Assemblies.AssemblyHashAlgorithm?displayProperty=fullName> 列挙します。 .NET Framework の以前のバージョンで、 <xref:System.Reflection.AssemblyName.HashAlgorithm%2A> プロパティによって返される <xref:System.Configuration.Assemblies.AssemblyHashAlgorithm.SHA1?displayProperty=fullName> このような場合です。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.HashAlgorithm%2A> property is used to set the hash algorithm for the assembly manifest.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.HashAlgorithm%2A> プロパティを使用して、アセンブリ マニフェストのハッシュ アルゴリズムを設定します。  
   
- [!code-cpp[AssemblyName_CodeBase#3](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#3)]
- [!code-csharp[AssemblyName_CodeBase#3](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#3)]
- [!code-vb[AssemblyName_CodeBase#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#3)]  
+ [!code-cpp[AssemblyName\_CodeBase\#3](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_CodeBase/CPP/assemblyname_codebase.cpp#3)]
+ [!code-csharp[AssemblyName\_CodeBase\#3](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_CodeBase/CS/assemblyname_codebase.cs#3)]
+ [!code-vb[AssemblyName\_CodeBase\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_CodeBase/VB/assemblyname_codebase.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -816,22 +838,22 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <ReturnType>System.Reflection.StrongNameKeyPair</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the public and private cryptographic key pair that is used to create a strong name signature for the assembly.</summary>
-        <value>The public and private cryptographic key pair to be used to create a strong name for the assembly.</value>
+        <summary>取得または設定、パブリックとプライベートの暗号キー ペアをアセンブリの厳密な名前の署名を作成するために使用します。</summary>
+        <value>パブリックおよびプライベート暗号化するキー ペア、アセンブリの厳密な名前の作成に使用します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the runtime loads an assembly, it does not set the <xref:System.Reflection.AssemblyName.KeyPair%2A> property. The getter for the property is only useful if the user set the property before using the <xref:System.Reflection.AssemblyName> object to create a dynamic assembly, and subsequently wants to retrieve the key pair.  
+## 解説  
+ ランタイムがアセンブリを読み込んだときに設定せず、 <xref:System.Reflection.AssemblyName.KeyPair%2A> プロパティです。 プロパティの get アクセス操作子は、ユーザーは、使用する前に、プロパティを設定する場合に役立ちます。 のみ、 <xref:System.Reflection.AssemblyName> オブジェクトの動的アセンブリを作成すると、後で取得しようとするキーのペアです。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.KeyPair%2A> property is used to set the assembly's public and private cryptographic keys. .  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.KeyPair%2A> プロパティを使用してアセンブリの公開キーと秘密暗号化キーを設定します。 」を参照してください。  
   
- [!code-cpp[AssemblyName_KeyPair#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#1)]
- [!code-csharp[AssemblyName_KeyPair#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#1)]
- [!code-vb[AssemblyName_KeyPair#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#1)]  
+ [!code-cpp[AssemblyName\_KeyPair\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_KeyPair/CPP/assemblyname_keypair.cpp#1)]
+ [!code-csharp[AssemblyName\_KeyPair\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_KeyPair/CS/assemblyname_keypair.cs#1)]
+ [!code-vb[AssemblyName\_KeyPair\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_KeyPair/VB/assemblyname_keypair.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -865,24 +887,24 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the simple name of the assembly. This is usually, but not necessarily, the file name of the manifest file of the assembly, minus its extension.</summary>
-        <value>The simple name of the assembly.</value>
+        <summary>アセンブリの簡易名を取得または設定します。 これは通常、限りませんが、その拡張子を除く、アセンブリのマニフェスト ファイルのファイル名です。</summary>
+        <value>アセンブリの簡易名。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The manifest file is the file that contains the assembly manifest.  
+## 解説  
+ マニフェスト ファイルは、アセンブリ マニフェストを含むファイルです。  
   
- For example, the simple name of a single-file assembly named "MyAssembly.dll" is "MyAssembly".  
+ たとえば、"MyAssembly.dll"という名前の単一ファイル アセンブリの簡易名には、"MyAssembly"が、します。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.Name%2A> property is used to set the simple name of the dynamic assembly.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.Name%2A> プロパティを使用して動的アセンブリの簡易名を設定します。  
   
- [!code-cpp[AssemblyName_Constructor#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor/CPP/assemblyname_constructor.cpp#2)]
- [!code-csharp[AssemblyName_Constructor#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor/CS/assemblyname_constructor.cs#2)]
- [!code-vb[AssemblyName_Constructor#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor/VB/assemblyname_constructor.vb#2)]  
+ [!code-cpp[AssemblyName\_Constructor\#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor/CPP/assemblyname_constructor.cpp#2)]
+ [!code-csharp[AssemblyName\_Constructor\#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor/CS/assemblyname_constructor.cs#2)]
+ [!code-vb[AssemblyName\_Constructor\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor/VB/assemblyname_constructor.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -913,9 +935,12 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="sender" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="sender">The source of the deserialization event.</param>
-        <summary>Implements the <see cref="T:System.Runtime.Serialization.ISerializable" /> interface and is called back by the deserialization event when deserialization is complete.</summary>
+        <param name="sender">逆シリアル化イベントのソース。</param>
+        <summary>
+          <see cref="T:System.Runtime.Serialization.ISerializable" /> インターフェイスを実装し、逆シリアル化が完了したときに逆シリアル化イベントによってコールバックされます。</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="T:System.Runtime.Serialization.ISerializable" />
+        <altmember cref="M:System.Reflection.AssemblyName.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)" />
       </Docs>
     </Member>
     <Member MemberName="ProcessorArchitecture">
@@ -945,16 +970,17 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <ReturnType>System.Reflection.ProcessorArchitecture</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that identifies the processor and bits-per-word of the platform targeted by an executable.</summary>
-        <value>One of the enumeration values that identifies the processor and bits-per-word of the platform targeted by an executable.</value>
+        <summary>取得またはプロセッサと、実行可能ファイルの対象となるプラットフォームのワードあたりのビットを示す値を設定します。</summary>
+        <value>プロセッサと、実行可能ファイルの対象となるプラットフォームのワードあたりのビットを識別する列挙値の 1 つ。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Beginning with the [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], this property always returns <xref:System.Reflection.ProcessorArchitecture?displayProperty=fullName> for reference assemblies.  
+## 解説  
+ 以降で、 [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], 、このプロパティは常に返します <xref:System.Reflection.ProcessorArchitecture.None?displayProperty=fullName> 参照アセンブリ。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Reflection.Module.GetPEKind(System.Reflection.PortableExecutableKinds@,System.Reflection.ImageFileMachine@)" />
       </Docs>
     </Member>
     <Member MemberName="ReferenceMatchesDefinition">
@@ -983,16 +1009,16 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="definition" Type="System.Reflection.AssemblyName" />
       </Parameters>
       <Docs>
-        <param name="reference">The reference assembly name.</param>
-        <param name="definition">The assembly name that is compared to the reference assembly.</param>
-        <summary>Returns a value indicating whether two assembly names are the same. The comparison is based on the simple assembly names.</summary>
+        <param name="reference">参照アセンブリ名。</param>
+        <param name="definition">参照アセンブリと比較するアセンブリ名。</param>
+        <summary>2 つのアセンブリ名が同じであるかどうかを示す値を返します。 比較は、単純なアセンブリの名前に基づいています。</summary>
         <returns>
-          <see langword="true" /> if the simple assembly names are the same; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 単純なアセンブリ名が同じである場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The comparison depends only on the simple assembly name. It ignores version, culture, and public key token.  
+## 解説  
+ 比較は、単純なアセンブリ名だけに依存します。 これは、バージョン、カルチャ、および公開キー トークンは無視されます。  
   
  ]]></format>
         </remarks>
@@ -1029,22 +1055,22 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="publicKey" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="publicKey">A byte array containing the public key of the assembly.</param>
-        <summary>Sets the public key identifying the assembly.</summary>
+        <param name="publicKey">アセンブリの公開キーを含むバイト配列。</param>
+        <summary>アセンブリを識別する公開キーを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You must also use the <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> method to provide a public key token. Otherwise, a <xref:System.Security.SecurityException> is thrown when the <xref:System.Reflection.AssemblyName.GetPublicKey%2A> method is called.  
+## 解説  
+ 使用することも必要があります、 <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> メソッドを公開キー トークンを提供します。 それ以外の場合、 <xref:System.Security.SecurityException> 場合にスローされますが、 <xref:System.Reflection.AssemblyName.GetPublicKey%2A> メソッドが呼び出されます。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.SetPublicKey%2A> method is used to give the assembly a public key. The <xref:System.Reflection.AssemblyName.GetPublicKey%2A> method is then used to retrieve the public key, which is displayed to the console.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.SetPublicKey%2A> メソッドは、アセンブリの名前は公開キーを使用します。<xref:System.Reflection.AssemblyName.GetPublicKey%2A> をコンソールに表示される公開キーを取得するメソッドを使用しています。  
   
- [!code-cpp[AssemblyName_SetPublicKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CPP/assemblyname_setpublickey.cpp#1)]
- [!code-csharp[AssemblyName_SetPublicKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CS/assemblyname_setpublickey.cs#1)]
- [!code-vb[AssemblyName_SetPublicKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_SetPublicKey/VB/assemblyname_setpublickey.vb#1)]  
+ [!code-cpp[AssemblyName\_SetPublicKey\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CPP/assemblyname_setpublickey.cpp#1)]
+ [!code-csharp[AssemblyName\_SetPublicKey\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CS/assemblyname_setpublickey.cs#1)]
+ [!code-vb[AssemblyName\_SetPublicKey\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_SetPublicKey/VB/assemblyname_setpublickey.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1081,22 +1107,22 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="publicKeyToken" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="publicKeyToken">A byte array containing the public key token of the assembly.</param>
-        <summary>Sets the public key token, which is the last 8 bytes of the SHA-1 hash of the public key under which the application or assembly is signed.</summary>
+        <param name="publicKeyToken">アセンブリの公開キー トークンを含むバイト配列。</param>
+        <summary>公開キー トークン、アプリケーションまたはアセンブリが署名に使用された公開キーの sha\-1 ハッシュの最後の 8 バイトを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you set the public key by calling the <xref:System.Reflection.AssemblyName.SetPublicKey%2A> method, you must also use the <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> method to provide a public key token. Otherwise, a <xref:System.Security.SecurityException> is thrown when the <xref:System.Reflection.AssemblyName.GetPublicKey%2A> method is called.  
+## 解説  
+ 呼び出すことによって、公開キーを設定すると、 <xref:System.Reflection.AssemblyName.SetPublicKey%2A> メソッドを使用することがありますも、 <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> 公開キー トークンを提供するメソッドです。 それ以外の場合、 <xref:System.Security.SecurityException> 場合にスローされますが、 <xref:System.Reflection.AssemblyName.GetPublicKey%2A> メソッドが呼び出されます。  
   
    
   
-## Examples  
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> method is used to set the assembly's public key token. The <xref:System.Reflection.AssemblyName.GetPublicKeyToken%2A> method is then used to retrieve the public key token, which is displayed to the console.  
+## 例  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.SetPublicKeyToken%2A> メソッドの使用をアセンブリの公開キー トークンを設定します。<xref:System.Reflection.AssemblyName.GetPublicKeyToken%2A> がコンソールに表示される公開キー トークンを取得するメソッドを使用しています。  
   
- [!code-cpp[AssemblyName_SetPublicKey#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CPP/assemblyname_setpublickey.cpp#2)]
- [!code-csharp[AssemblyName_SetPublicKey#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CS/assemblyname_setpublickey.cs#2)]
- [!code-vb[AssemblyName_SetPublicKey#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_SetPublicKey/VB/assemblyname_setpublickey.vb#2)]  
+ [!code-cpp[AssemblyName\_SetPublicKey\#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CPP/assemblyname_setpublickey.cpp#2)]
+ [!code-csharp[AssemblyName\_SetPublicKey\#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_SetPublicKey/CS/assemblyname_setpublickey.cs#2)]
+ [!code-vb[AssemblyName\_SetPublicKey\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_SetPublicKey/VB/assemblyname_setpublickey.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -1122,21 +1148,24 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="rgDispId" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="riid">Reserved for future use. Must be IID_NULL.</param>
-        <param name="rgszNames">Passed-in array of names to be mapped.</param>
-        <param name="cNames">Count of the names to be mapped.</param>
-        <param name="lcid">The locale context in which to interpret the names.</param>
-        <param name="rgDispId">Caller-allocated array that receives the IDs corresponding to the names.</param>
-        <summary>Maps a set of names to a corresponding set of dispatch identifiers.</summary>
+        <param name="riid">将来使用するために予約されています。 IID\_NULL にする必要があります。</param>
+        <param name="rgszNames">マッピング対象として渡される名前の配列。</param>
+        <param name="cNames">マッピングされる名前のカウント。</param>
+        <param name="lcid">名前を解釈するロケール コンテキスト。</param>
+        <param name="rgDispId">名前に対応する ID を受け取る、呼び出し元割り当て済み配列。</param>
+        <summary>一連の名前を対応する一連のディスパッチ識別子に割り当てます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is for access to managed classes from unmanaged code, and should not be called from managed code. For more information about `IDispatch::GetIDsOfNames`, see the MSDN Library.  
+## 解説  
+ このメソッドは、アンマネージ コードからマネージ クラスにアクセスするため、およびないマネージ コードから呼び出す必要があります。 詳細については `IDispatch::GetIDsOfNames`, 、MSDN ライブラリを参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotImplementedException">Late-bound access using the COM <c>IDispatch</c> interface is not supported.</exception>
+        <exception cref="T:System.NotImplementedException">COM <c>IDispatch</c> インターフェイスを使用した遅延バインディング アクセスはサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="System.Runtime.InteropServices._AssemblyName.GetTypeInfo">
@@ -1157,19 +1186,22 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="ppTInfo" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="iTInfo">The type information to return.</param>
-        <param name="lcid">The locale identifier for the type information.</param>
-        <param name="ppTInfo">Receives a pointer to the requested type information object.</param>
-        <summary>Retrieves the type information for an object, which can then be used to get the type information for an interface.</summary>
+        <param name="iTInfo">返される型情報。</param>
+        <param name="lcid">型情報のロケール ID。</param>
+        <param name="ppTInfo">要求された型情報オブジェクトへのポインターを取得します。</param>
+        <summary>オブジェクトの型情報を取得します。この型情報を使用して、インターフェイスの型情報を取得できます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is for access to managed classes from unmanaged code, and should not be called from managed code. For more information about `IDispatch::GetTypeInfo`, see the MSDN Library.  
+## 解説  
+ このメソッドは、アンマネージ コードからマネージ クラスにアクセスするため、およびないマネージ コードから呼び出す必要があります。 詳細については `IDispatch::GetTypeInfo`, 、MSDN ライブラリを参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotImplementedException">Late-bound access using the COM <c>IDispatch</c> interface is not supported.</exception>
+        <exception cref="T:System.NotImplementedException">COM <c>IDispatch</c> インターフェイスを使用した遅延バインディング アクセスはサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="System.Runtime.InteropServices._AssemblyName.GetTypeInfoCount">
@@ -1188,17 +1220,20 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="pcTInfo" Type="System.UInt32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="pcTInfo">Points to a location that receives the number of type information interfaces provided by the object.</param>
-        <summary>Retrieves the number of type information interfaces that an object provides (either 0 or 1).</summary>
+        <param name="pcTInfo">オブジェクトにより提供される型タイプ情報インターフェイスの数を受け取る場所を指定します。</param>
+        <summary>オブジェクトが提供する型情報インターフェイスの数 \(0 または 1\) を取得します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is for access to managed classes from unmanaged code, and should not be called from managed code. For more information about `IDispatch::GetTypeInfoCount`, see the MSDN Library.  
+## 解説  
+ このメソッドは、アンマネージ コードからマネージ クラスにアクセスするため、およびないマネージ コードから呼び出す必要があります。 詳細については `IDispatch::GetTypeInfoCount`, 、MSDN ライブラリを参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotImplementedException">Late-bound access using the COM <c>IDispatch</c> interface is not supported.</exception>
+        <exception cref="T:System.NotImplementedException">COM <c>IDispatch</c> インターフェイスを使用した遅延バインディング アクセスはサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="System.Runtime.InteropServices._AssemblyName.Invoke">
@@ -1224,24 +1259,27 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <Parameter Name="puArgErr" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="dispIdMember">Identifies the member.</param>
-        <param name="riid">Reserved for future use. Must be IID_NULL.</param>
-        <param name="lcid">The locale context in which to interpret arguments.</param>
-        <param name="wFlags">Flags describing the context of the call.</param>
-        <param name="pDispParams">Pointer to a structure containing an array of arguments, an array of argument DispIDs for named arguments, and counts for the number of elements in the arrays.</param>
-        <param name="pVarResult">Pointer to the location where the result is to be stored.</param>
-        <param name="pExcepInfo">Pointer to a structure that contains exception information.</param>
-        <param name="puArgErr">The index of the first argument that has an error.</param>
-        <summary>Provides access to properties and methods exposed by an object.</summary>
+        <param name="dispIdMember">メンバーを識別します。</param>
+        <param name="riid">将来使用するために予約されています。 IID\_NULL にする必要があります。</param>
+        <param name="lcid">引数を解釈する対象のロケール コンテキスト。</param>
+        <param name="wFlags">呼び出しのコンテキストを記述するフラグ。</param>
+        <param name="pDispParams">引数の配列、名前付き引数の DISPID の配列、配列内の要素数のカウントを格納している構造体へのポインター。</param>
+        <param name="pVarResult">結果が格納される場所へのポインター。</param>
+        <param name="pExcepInfo">例外情報を格納する構造体へのポインター。</param>
+        <param name="puArgErr">エラーが存在する最初の引数のインデックス。</param>
+        <summary>オブジェクトによって公開されたプロパティおよびメソッドへのアクセスを提供します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is for access to managed classes from unmanaged code, and should not be called from managed code. For more information about `IDispatch::Invoke`, see the MSDN Library.  
+## 解説  
+ このメソッドは、アンマネージ コードからマネージ クラスにアクセスするため、およびないマネージ コードから呼び出す必要があります。 詳細については `IDispatch::Invoke`, 、MSDN ライブラリを参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotImplementedException">Late-bound access using the COM <c>IDispatch</c> interface is not supported.</exception>
+        <exception cref="T:System.NotImplementedException">COM <c>IDispatch</c> インターフェイスを使用した遅延バインディング アクセスはサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -1273,22 +1311,22 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the full name of the assembly, also known as the display name.</summary>
-        <returns>The full name of the assembly, or the class name if the full name cannot be determined.</returns>
+        <summary>アセンブリの完全名を返します。この名前は表示名とも呼ばれます。</summary>
+        <returns>アセンブリの完全名または完全な名前を特定できない場合は、クラス名。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- See the description of <xref:System.Reflection.AssemblyName> for the format of the returned string.  
+## 解説  
+ 説明を参照して <xref:System.Reflection.AssemblyName> 返される文字列の形式にします。  
   
    
   
-## Examples  
- The following example gets an <xref:System.Reflection.AssemblyName> object for a hypothetical `MyAssembly.exe` assembly, and then uses the <xref:System.Reflection.AssemblyName.ToString%2A> method to retrieve the full assembly name, or display name.  
+## 例  
+ 次の例では取得、 <xref:System.Reflection.AssemblyName> 仮定のオブジェクト `MyAssembly.exe` アセンブリ、および、使用して、 <xref:System.Reflection.AssemblyName.ToString%2A> メソッドの完全なアセンブリ名を取得または表示名にします。  
   
- [!code-cpp[AssemblyName_GetAssemblyName#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CPP/assemblyname_getassemblyname.cpp#2)]
- [!code-csharp[AssemblyName_GetAssemblyName#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CS/assemblyname_getassemblyname.cs#2)]
- [!code-vb[AssemblyName_GetAssemblyName#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_GetAssemblyName/VB/assemblyname_getassemblyname.vb#2)]  
+ [!code-cpp[AssemblyName\_GetAssemblyName\#2](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CPP/assemblyname_getassemblyname.cpp#2)]
+ [!code-csharp[AssemblyName\_GetAssemblyName\#2](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_GetAssemblyName/CS/assemblyname_getassemblyname.cs#2)]
+ [!code-vb[AssemblyName\_GetAssemblyName\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_GetAssemblyName/VB/assemblyname_getassemblyname.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -1322,34 +1360,34 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <ReturnType>System.Version</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the major, minor, build, and revision numbers of the assembly.</summary>
-        <value>An object that represents the major, minor, build, and revision numbers of the assembly.</value>
+        <summary>取得または設定のメジャー、マイナー、ビルド、およびアセンブリのリビジョン番号。</summary>
+        <value>オブジェクトを表すメジャー、マイナー、ビルド、およびアセンブリのリビジョン番号、します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- All components of the version must be integers greater than or equal to zero. Metadata restricts the major, minor, build, and revision components for an assembly to a maximum value of <xref:System.UInt16.MaxValue?displayProperty=fullName> - 1. If a component exceeds this value, no error is thrown; however, in a dynamic assembly, that component is zero.  
+## 解説  
+ バージョンのすべてのコンポーネントは、0 以上の整数である必要があります。 メタデータによって、メジャー、マイナー、ビルド、および最大値はアセンブリのリビジョン コンポーネント <xref:System.UInt16.MaxValue?displayProperty=fullName> \- 1 です。 コンポーネントは、この値を超えると、エラーはスローされません。ただし、動的アセンブリでそのコンポーネントは 0 です。  
   
    
   
-## Examples  
- This section contains two examples. The first example shows how to retrieve the version of the currently executing assembly. The second example shows how to use the <xref:System.Reflection.AssemblyName.Version%2A> property to specify the assembly version when you emit a dynamic assembly.  
+## 例  
+ このセクションには、2 つの例が含まれています。 最初の例では、現在実行中のアセンブリのバージョンを取得する方法を示します。 2 番目の例では、使用する方法、 <xref:System.Reflection.AssemblyName.Version%2A> プロパティを動的アセンブリを生成するときに、アセンブリのバージョンを指定します。  
   
- **Example 1**  
+ **例 1**  
   
- The following example retrieves and displays the version numbers of the currently executing assembly and the assembly that contains the <xref:System.String> class.  
+ 次の例は、取得し、実行中のアセンブリと格納するアセンブリのバージョン番号を表示、 <xref:System.String> クラスです。  
   
- [!code-cpp[AssemblyName.Version#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName.Version/cpp/Example.cpp#1)]
- [!code-csharp[AssemblyName.Version#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName.Version/cs/Example.cs#1)]
- [!code-vb[AssemblyName.Version#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName.Version/vb/Example.vb#1)]  
+ [!code-cpp[AssemblyName.Version\#1](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName.Version/cpp/Example.cpp#1)]
+ [!code-csharp[AssemblyName.Version\#1](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName.Version/cs/Example.cs#1)]
+ [!code-vb[AssemblyName.Version\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName.Version/vb/Example.vb#1)]  
   
- **Example 2**  
+ **例 2**  
   
- The following example emits a dynamic assembly and saves it to the current directory. When the assembly is created, the <xref:System.Reflection.AssemblyName.Version%2A> property is used to specify version information for the assembly.  
+ 次の例では、動的アセンブリを生成し、現在のディレクトリに保存します。 アセンブリの作成時に、 <xref:System.Reflection.AssemblyName.Version%2A> プロパティの使用をアセンブリのバージョン情報を指定します。  
   
- [!code-cpp[AssemblyName_Constructor#3](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor/CPP/assemblyname_constructor.cpp#3)]
- [!code-csharp[AssemblyName_Constructor#3](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor/CS/assemblyname_constructor.cs#3)]
- [!code-vb[AssemblyName_Constructor#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor/VB/assemblyname_constructor.vb#3)]  
+ [!code-cpp[AssemblyName\_Constructor\#3](~/samples/snippets/cpp/VS_Snippets_CLR/AssemblyName_Constructor/CPP/assemblyname_constructor.cpp#3)]
+ [!code-csharp[AssemblyName\_Constructor\#3](~/samples/snippets/csharp/VS_Snippets_CLR/AssemblyName_Constructor/CS/assemblyname_constructor.cs#3)]
+ [!code-vb[AssemblyName\_Constructor\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/AssemblyName_Constructor/VB/assemblyname_constructor.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -1377,19 +1415,31 @@ mylib, Version=1.2.1900.0, Culture=neutral, PublicKeyToken=a14f3033def15840
         <ReturnType>System.Configuration.Assemblies.AssemblyVersionCompatibility</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the information related to the assembly's compatibility with other assemblies.</summary>
-        <value>A value that represents information about the assembly's compatibility with other assemblies.</value>
+        <summary>取得またはとその他のアセンブリとの互換性に関連する情報を設定します。</summary>
+        <value>その他のアセンブリとの互換性に関する情報を表す値。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Reflection.AssemblyName.VersionCompatibility%2A> information indicates, for example, that the assembly cannot execute side-by-side with other versions due to conflicts over a device driver.  
+## 解説  
+ <xref:System.Reflection.AssemblyName.VersionCompatibility%2A> 情報を示します、たとえば、アセンブリがデバイス ドライバーで競合のためには、他のバージョンと並行してを実行できません。  
   
- Currently, <xref:System.Reflection.AssemblyName.VersionCompatibility%2A> always returns <xref:System.Configuration.Assemblies.AssemblyVersionCompatibility?displayProperty=fullName>, and is not used by the loader. This property is reserved for a future feature.  
+ 現在のところ、 <xref:System.Reflection.AssemblyName.VersionCompatibility%2A> は常に返します <xref:System.Configuration.Assemblies.AssemblyVersionCompatibility.SameMachine?displayProperty=fullName>, 、ローダーでは使用されません。 将来の機能では、このプロパティは予約されています。  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Reflection.AssemblyName" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

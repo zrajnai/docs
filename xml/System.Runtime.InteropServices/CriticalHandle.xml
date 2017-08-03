@@ -39,19 +39,24 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents a wrapper class for handle resources.</summary>
+    <summary>ハンドル リソースのラッパー クラスを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Runtime.InteropServices.CriticalHandle> class is similar to the <xref:System.Runtime.InteropServices.SafeHandle> class, except that <xref:System.Runtime.InteropServices.SafeHandle> implements reference counting. You can use <xref:System.Runtime.InteropServices.CriticalHandle> instead of <xref:System.Runtime.InteropServices.SafeHandle> to address performance considerations when you can provide the necessary synchronization more efficiently yourself.  
   
- Because the <xref:System.Runtime.InteropServices.CriticalHandle> class does not perform reference counting, it does not provide protection from handle recycling security attacks. Because the reference counting algorithm implicitly serializes operations, a certain amount of thread safety is also lost. If you call the <xref:System.IDisposable.Dispose%2A?displayProperty=fullName> or <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> method while an operation that is using the handle is outstanding on another thread, or if you call <xref:System.IDisposable.Dispose%2A?displayProperty=fullName> or <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> from two threads at the same time, the results are non-deterministic. The <xref:System.Runtime.InteropServices.CriticalHandle> class still provides the guaranteed critical finalization provided by the <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> class.  
+ Because the <xref:System.Runtime.InteropServices.CriticalHandle> class does not perform reference counting, it does not provide protection from handle recycling security attacks. Because the reference counting algorithm implicitly serializes operations, a certain amount of thread safety is also lost. If you call the <xref:System.IDisposable.Dispose%2A?displayProperty=fullName> or <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> method while an operation that is using the handle is outstanding on another thread, or if you call <xref:System.IDisposable.Dispose%2A?displayProperty=fullName> or <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> from two threads at the same time, the results are non\-deterministic. The <xref:System.Runtime.InteropServices.CriticalHandle> class still provides the guaranteed critical finalization provided by the <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> class.  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
     <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">for full trust for inheritors. This member cannot be inherited by partially trusted code.</permission>
     <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This class cannot be used by partially trusted or transparent code.</permission>
+    <altmember cref="T:System.Runtime.InteropServices.SafeHandle" />
+    <altmember cref="N:Microsoft.Win32.SafeHandles" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -90,12 +95,13 @@
         <Parameter Name="invalidHandleValue" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="invalidHandleValue">The value of an invalid handle (usually 0 or -1).</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.CriticalHandle" /> class with the specified invalid handle value.</summary>
+        <param name="invalidHandleValue">無効なハンドルの値 \(通常は 0 または \-1\)。</param>
+        <summary>指定した無効なハンドル値を使用して、<see cref="T:System.Runtime.InteropServices.CriticalHandle" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.TypeLoadException">The derived class resides in an assembly without unmanaged code access permission.</exception>
+        <exception cref="T:System.TypeLoadException">派生クラスがアンマネージ コードのアクセス許可なしにアセンブリに存在しています。</exception>
         <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">for full trust for inheritors. This member cannot be inherited by partially trusted code.</permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This class cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Runtime.InteropServices.SafeHandle.#ctor(System.IntPtr,System.Boolean)" />
       </Docs>
     </Member>
     <Member MemberName="Close">
@@ -129,12 +135,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Marks the handle for releasing and freeing resources.</summary>
+        <summary>リソースを解放するためのハンドルをマークします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method allows the resources to be freed. Unlike the <xref:System.Runtime.InteropServices.SafeHandle> class, this will always happen immediately since there is no reference count to indicate that other threads are using this handle. Therefore, you must employ a synchronization mechanism to ensure it is safe to call the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> method. Although most classes that use the <xref:System.Runtime.InteropServices.CriticalHandle> class do not need to provide a finalizer, this is sometimes necessary (for example, to flush out file buffers or to write some data back into memory). In this case, the class can provide a finalizer that is guaranteed to run before the <xref:System.Runtime.InteropServices.CriticalHandle> critical finalizer runs.  
+## 解説  
+ Calling the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method allows the resources to be freed. Unlike the <xref:System.Runtime.InteropServices.SafeHandle> class, this will always happen immediately since there is no reference count to indicate that other threads are using this handle. Therefore, you must employ a synchronization mechanism to ensure it is safe to call the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> method. Although most classes that use the <xref:System.Runtime.InteropServices.CriticalHandle> class do not need to provide a finalizer, this is sometimes necessary \(for example, to flush out file buffers or to write some data back into memory\). In this case, the class can provide a finalizer that is guaranteed to run before the <xref:System.Runtime.InteropServices.CriticalHandle> critical finalizer runs.  
   
  Call the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method when you are finished using the <xref:System.Runtime.InteropServices.CriticalHandle> object. The <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> method leaves the <xref:System.Runtime.InteropServices.CriticalHandle> object in an unusable state.  
   
@@ -184,12 +190,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.Runtime.InteropServices.CriticalHandle" />.</summary>
+        <summary>
+          <see cref="T:System.Runtime.InteropServices.CriticalHandle" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method allows the resources to be freed. Unlike the <xref:System.Runtime.InteropServices.SafeHandle> class, this will always happen immediately since there is no reference count to indicate that other threads are using this handle. Therefore, you must employ a synchronization mechanism to ensure it is safe to call the <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method. Although most classes that use the <xref:System.Runtime.InteropServices.CriticalHandle> class do not need to provide a finalizer, this is sometimes necessary (for example, to flush out file buffers or to write some data back into memory). In this case, the class can provide a finalizer that is guaranteed to run before the <xref:System.Runtime.InteropServices.CriticalHandle> critical finalizer runs.  
+## 解説  
+ Calling the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method allows the resources to be freed. Unlike the <xref:System.Runtime.InteropServices.SafeHandle> class, this will always happen immediately since there is no reference count to indicate that other threads are using this handle. Therefore, you must employ a synchronization mechanism to ensure it is safe to call the <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method. Although most classes that use the <xref:System.Runtime.InteropServices.CriticalHandle> class do not need to provide a finalizer, this is sometimes necessary \(for example, to flush out file buffers or to write some data back into memory\). In this case, the class can provide a finalizer that is guaranteed to run before the <xref:System.Runtime.InteropServices.CriticalHandle> critical finalizer runs.  
   
  Call the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method when you are finished using the <xref:System.Runtime.InteropServices.CriticalHandle> object. The <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> method leaves the <xref:System.Runtime.InteropServices.CriticalHandle> object in an unusable state.  
   
@@ -241,14 +248,15 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> for a normal dispose operation; <see langword="false" /> to finalize the handle.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Runtime.InteropServices.CriticalHandle" /> class specifying whether to perform a normal dispose operation.</summary>
+        <param name="disposing">通常の破棄操作を実行する場合は <see langword="true" />。ハンドルを終了する場合は <see langword="false" />。</param>
+        <summary>通常の破棄操作を実行するかどうかを指定して、<see cref="T:System.Runtime.InteropServices.CriticalHandle" /> クラスによって使用されているアンマネージ リソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You should never explicitly call the <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method with the `disposing` parameter set to `false`.  
+## 解説  
+ You should never explicitly call the <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method with the **parameterReference tag is not supported!!!!**  
+ parameter set to **languageKeyword tag is not supported!!!!**  
+.  
   
  ]]></format>
         </remarks>
@@ -294,15 +302,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Frees all resources associated with the handle.</summary>
+        <summary>ハンドルに関連付けられたすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.InteropServices.CriticalHandle.Finalize%2A> method is the destructor for the <xref:System.Runtime.InteropServices.CriticalHandle> class. Application code should not call this method directly.  
+## 解説  
+ <xref:System.Runtime.InteropServices.CriticalHandle.Finalize%2A> メソッドは、デストラクター、 <xref:System.Runtime.InteropServices.CriticalHandle> クラスです。 アプリケーション コードでは、このメソッドを直接呼び出さないでください。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Runtime.InteropServices.CriticalHandle.Dispose" />
       </Docs>
     </Member>
     <Member MemberName="handle">
@@ -336,12 +345,12 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Specifies the handle to be wrapped.</summary>
+        <summary>ラップするハンドルを指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Do not expose the handle publicly (that is, outside of the derived class).  
+## 解説  
+ Do not expose the handle publicly \(that is, outside of the derived class\).  
   
  ]]></format>
         </remarks>
@@ -383,21 +392,21 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the handle is closed.</summary>
-        <value>
-          <see langword="true" /> if the handle is closed; otherwise, <see langword="false" />.</value>
+        <summary>ハンドルが閉じているかどうかを示す値を取得します。</summary>
+        <value>ハンドルが閉じている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> method returns a value indicating whether the <xref:System.Runtime.InteropServices.CriticalHandle> object's handle is no longer associated with a native resource. This differs from the definition of the <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> property, which computes whether a given handle is always considered invalid. The <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> method returns a `true` value in the following cases:  
+## 解説  
+ <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> メソッドを示す値を返すかどうか、 <xref:System.Runtime.InteropServices.CriticalHandle> オブジェクトのハンドルは、ネイティブのリソースの関連付けがなくなってします。 定義とこれに対し、 <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> かどうか指定したハンドルは常に無効とみなさを計算するプロパティです。<xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> メソッドが返される、 `true` 値は、次の場合。  
   
--   The <xref:System.Runtime.InteropServices.CriticalHandle.SetHandleAsInvalid%2A> method was called.  
+-   <xref:System.Runtime.InteropServices.CriticalHandle.SetHandleAsInvalid%2A> メソッドが呼び出されました。  
   
--   The <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method or <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> method was called and there are no references to the <xref:System.Runtime.InteropServices.CriticalHandle> object on other threads.  
+-   <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> メソッドまたは <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> メソッドが呼び出されへの参照がない、 <xref:System.Runtime.InteropServices.CriticalHandle> 他のスレッド上のオブジェクト。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Runtime.InteropServices.SafeHandle.IsInvalid" />
       </Docs>
     </Member>
     <Member MemberName="IsInvalid">
@@ -436,19 +445,19 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
-        <value>
-          <see langword="true" /> if the handle is valid; otherwise, <see langword="false" />.</value>
+        <summary>派生クラスでオーバーライドされると、ハンドル値が無効かどうかを示す値を取得します。</summary>
+        <value>ハンドルが有効な場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Derived classes must implement the <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> property so that the common language runtime can determine whether critical finalization is required. Derived classes must provide an implementation that suits the general type of handle they support (0 or -1 is invalid). These classes can then be further derived for specific safe handle types.  
+## 解説  
+ 派生クラスで実装する必要があります、 <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> プロパティ、共通言語ランタイムでは、重大な終了処理が必要かどうかを確認できるようにします。 派生クラスでサポートしているハンドルの一般的な型に合った実装を提供する必要があります \(0 または\-1 が正しくありません\)。 これらのクラスは、特定のセーフ ハンドルの種類のさらに派生します。  
   
- Unlike the <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> property, which reports whether the <xref:System.Runtime.InteropServices.CriticalHandle> object has finished using the underlying handle, the <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> property calculates whether the given handle value is always considered invalid. Therefore, the <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> property always returns the same value for any one handle value.  
+ 異なり、 <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> プロパティは、レポートをかどうか、 <xref:System.Runtime.InteropServices.CriticalHandle> 基になるハンドルを使用してオブジェクトが完了した、 <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> プロパティがあるかどうか、指定したハンドルの値は常に無効とみなさを計算します。 したがって、 <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> プロパティは常に 1 つのハンドル値を同じ値を返します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Runtime.InteropServices.SafeHandle.IsInvalid" />
       </Docs>
     </Member>
     <Member MemberName="ReleaseHandle">
@@ -488,20 +497,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
-        <returns>
-          <see langword="true" /> if the handle is released successfully; otherwise, in the event of a catastrophic failure, <see langword="false" />. In this case, it generates a [releaseHandleFailed](~/docs/framework/debug-trace-profile/releasehandlefailed-mda.md) Managed Debugging Assistant.</returns>
+        <summary>派生クラスでオーバーライドされると、ハンドルを解放するために必要なコードを実行します。</summary>
+        <returns>ハンドルが正常に解放された場合は <see langword="true" />。深刻なエラーが発生した場合は <see langword=" false" />。 この場合、[ReleaseHandleFailed](http://msdn.microsoft.com/ja-jp/44cd98ba-95e5-40a1-874d-e8e163612c51) マネージ デバッグ アシスタントが生成されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> method is guaranteed to be called only once, provided that you employ proper synchronization mechanisms to ensure that only one call to the <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> method is made. The <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> method will not be called if the <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> or <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> property is `true`. Implement this method in your <xref:System.Runtime.InteropServices.CriticalHandle> derived classes to execute any code that is required to free the handle. Because one of the functions of <xref:System.Runtime.InteropServices.CriticalHandle> is to guarantee prevention of resource leaks, the code in your implementation of <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> must never fail. The garbage collector calls <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> after normal finalizers have been run for objects that were garbage collected at the same time, and guarantees the resources to invoke it and that it will not be interrupted while it is in progress. This method will be prepared as a constrained execution region (CER) at instance construction time (along with all the methods in its statically determinable call graph). Although this prevents thread abort interrupts, you must still be careful not to introduce any fault paths in your overridden <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> method. In particular, apply the <xref:System.Runtime.ConstrainedExecution.ReliabilityContractAttribute> attribute to any methods you call from <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A>. In most cases this code should be:  
+## 解説  
+ <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> メソッドは、その 1 つだけの呼び出しを確認する適切な同期メカニズムを採用することを 1 回だけ呼び出される保証は、 <xref:System.Runtime.InteropServices.CriticalHandle.Close%2A> または <xref:System.Runtime.InteropServices.CriticalHandle.Dispose%2A> メソッドを作成します。<xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> 場合、メソッドは呼び出されません、 <xref:System.Runtime.InteropServices.CriticalHandle.IsInvalid%2A> または <xref:System.Runtime.InteropServices.CriticalHandle.IsClosed%2A> プロパティは `true`です。 このメソッドの実装、 <xref:System.Runtime.InteropServices.CriticalHandle> ハンドルを解放するために必要なコードを実行するクラスを派生します。 の機能の 1 つ <xref:System.Runtime.InteropServices.CriticalHandle> は、コードの実装で、リソース リークの防止を保証する <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> 失敗しない必要があります。 ガベージ コレクター <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> ガベージ コレクションを同時になったオブジェクトの通常のファイナライザーが実行され、保証を呼び出すことは中断しないとリソースがときに実行中です。 このメソッドは、\(静的に確定できる呼び出しグラフの中ですべてのメソッド\) およびインスタンスの構築時に制約された実行領域 \(CER\) として準備されます。 オーバーライドされた場合は、どのエラー パスを導入しないように注意する必要がありますが、これには、スレッドの中止の割り込みが防止されますが、 <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> メソッドです。 具体的には、適用、 <xref:System.Runtime.ConstrainedExecution.ReliabilityContractAttribute> から呼び出すメソッドが存在する属性 <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A>します。 ほとんどの場合、このコードがあります。  
   
  `ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)`  
   
- Additionally, for simple cleanup (for example, calling the Win32 API `CloseHandle` on a file handle) you can check the return value for the single platform invoke call. For complex cleanup, you may have a lot of program logic and many method calls, some of which might fail. You must ensure that your program logic has fallback code for each of those cases.  
+ 簡単なクリーンアップをさらに、\(たとえば、Win32 API を呼び出す `CloseHandle` ファイル ハンドルで\) 1 つのプラットフォーム呼び出しの戻り値をチェックすることができます。 複雑なクリーンアップのためには、多くのプログラム ロジックとその一部が失敗する多くのメソッド呼び出しがあります。 プログラム ロジックが、このような場合の各フォールバック コードを持つことを確認する必要があります。  
   
- If the <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> method returns `false` for any reason, it generates a [releaseHandleFailed](~/docs/framework/debug-trace-profile/releasehandlefailed-mda.md) Managed Debugging Assistant.  
+ 場合、 <xref:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle%2A> メソッドが返す `false` 生成何らかの理由で、 [ReleaseHandleFailed](http://msdn.microsoft.com/ja-jp/44cd98ba-95e5-40a1-874d-e8e163612c51) マネージ デバッグ アシスタントです。  
   
  ]]></format>
         </remarks>
@@ -546,13 +554,13 @@
         <Parameter Name="handle" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="handle">The pre-existing handle to use.</param>
-        <summary>Sets the handle to the specified pre-existing handle.</summary>
+        <param name="handle">使用する既存のハンドル。</param>
+        <summary>ハンドルを指定した既存のハンドルに設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Runtime.InteropServices.CriticalHandle.SetHandle%2A> method only if you need to support a pre-existing handle (for example, if the handle is returned in a structure) because the .NET Framework COM interop infrastructure does not support marshaling handles in a structure.  
+## 解説  
+ 使用して、 <xref:System.Runtime.InteropServices.CriticalHandle.SetHandle%2A> 構造体のメソッドを .NET Framework の COM 相互運用機能のインフラストラクチャがマーシャ リングをサポートしていないために、\(構造体には、ハンドルが返されます\) の場合など、既存のハンドルをサポートする必要がある場合にのみを処理します。  
   
  ]]></format>
         </remarks>
@@ -595,18 +603,33 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Marks a handle as invalid.</summary>
+        <summary>ハンドルを無効としてマークします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call the <xref:System.Runtime.InteropServices.CriticalHandle.SetHandleAsInvalid%2A> method only when you know that your handle is invalid and you want to mark it as such. Doing so does not change the value of the <xref:System.Runtime.InteropServices.CriticalHandle.handle> field; it only marks the handle as invalid. The handle might then contain a potentially stale value. The effect of this call is that no attempt is made to free the resources.  
+## 解説  
+ 呼び出す、 <xref:System.Runtime.InteropServices.CriticalHandle.SetHandleAsInvalid%2A> 、ハンドルが無効と、としてマークすることがわかっている場合にのみ方法です。 これは、値を変更しない、 <xref:System.Runtime.InteropServices.CriticalHandle.handle> フィールドは無効としてハンドルをマークするのみです。 ハンドルが古い値が含まれます。 この呼び出しの効果は、ことは行われませんリソースを解放します。  
   
- As with the <xref:System.Runtime.InteropServices.CriticalHandle.SetHandle%2A> method, use <xref:System.Runtime.InteropServices.CriticalHandle.SetHandleAsInvalid%2A> only if you need to support a pre-existing handle.  
+ 場合と同様、 <xref:System.Runtime.InteropServices.CriticalHandle.SetHandle%2A> メソッドを使用して <xref:System.Runtime.InteropServices.CriticalHandle.SetHandleAsInvalid%2A> を既存のハンドルをサポートする必要がある場合にのみです。  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Handles</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>リソースを解放するためのハンドルをマークします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

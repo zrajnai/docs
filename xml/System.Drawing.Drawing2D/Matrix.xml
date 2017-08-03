@@ -15,45 +15,45 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Encapsulates a 3-by-3 affine matrix that represents a geometric transform. This class cannot be inherited.</summary>
+    <summary>ジオメトリック変換を表現する 3 × 3 のアフィン行列をカプセル化します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In [!INCLUDE[ndptecgdiplus](~/includes/ndptecgdiplus-md.md)] you can store an affine transformation in a <xref:System.Drawing.Drawing2D.Matrix> object. Because the third column of a matrix that represents an affine transformation is always (0, 0, 1), you specify only the six numbers in the first two columns when you construct a <xref:System.Drawing.Drawing2D.Matrix> object. The statement `Matrix myMatrix = new Matrix(0, 1, -1, 0, 3, 4)` constructs the matrix shown in the following figure.  
+## 解説  
+ [!INCLUDE[ndptecgdiplus](~/includes/ndptecgdiplus-md.md)] でアフィン変換を格納する、 <xref:System.Drawing.Drawing2D.Matrix> オブジェクトです。 表すアフィン変換行列の 3 番目の列は常にので \(0, 0, 1\) を構築するときに、最初の 2 つの列で 6 桁の数字のみを指定する、 <xref:System.Drawing.Drawing2D.Matrix> オブジェクトです。 ステートメント `Matrix myMatrix = new Matrix(0, 1, -1, 0, 3, 4)` 次の図に示すようにマトリックスを作成します。  
   
- ![Transformations](~/add/media/aboutgdip05-art10.gif "Transformations")  
+ 7EC72E31-520D-46B6-AA67-1D5F00ECD758  
   
-## Composite Transformations  
- A composite transformation is a sequence of transformations, one followed by the other. Consider the matrices and transformations in the following list:  
+## 複合変換  
+ 複合変換では、変換、他の後に 1 つのシーケンスです。 マトリックスおよび次の一覧で、変換を考慮してください。  
   
 |||  
 |-|-|  
-|Matrix A|Rotate 90 degrees|  
-|Matrix B|Scale by a factor of 2 in the x direction|  
-|Matrix C|Translate 3 units in the y direction|  
+|行列 A|90 度回転します。|  
+|マトリックス B|X 方向の 2 倍の規模の設定します。|  
+|マトリックス C|Y 方向の 3 つの単位に変換します。|  
   
- If we start with the point (2, 1) — represented by the matrix [2 1 1] — and multiply by A, then B, then C, the point (2, 1) will undergo the three transformations in the order listed.  
+ まずかどうかは、点 \(2, 1\)、\-行列 \[2 1 1\] で表される — 掛け合わせます A、B、C、点 \(2, 1\) が行われる順に 3 つの変換、およびします。  
   
- [2 1 1]ABC = [-2 5 1]  
+ \[2 1 1\]ABC \= \[\-2 5 1\]  
   
- Rather than store the three parts of the composite transformation in three separate matrices, you can multiply A, B, and C together to get a single 3×3 matrix that stores the entire composite transformation. Suppose ABC = D. Then a point multiplied by D gives the same result as a point multiplied by A, then B, then C.  
+ はなく 3 つの独立した行列に複合変換の 3 つの部分を格納は、A を乗算できます複合変換全体を格納する 1 つの 3 × 3 行列を取得するには、まとめて、B、および C です。 たとえば、ABC D. \=ポイント D を掛けた値が A、B、C の乗算ポイントと同じ結果を提供し、  
   
- [2 1 1]D = [-2 5 1]  
+ \[2 1 1\]D \= \[\-2 5 1\]  
   
- The following illustration shows the matrices A, B, C, and D.  
+ 次の図は、A、B、C および D のマトリックスを示しています。  
   
- ![Transformations](~/add/media/aboutgdip05-art12.gif "Transformations")  
+ 79DCADA9-1B5B-4F14-91D5-46EC3A25FA1F  
   
- The fact that the matrix of a composite transformation can be formed by multiplying the individual transformation matrices means that any sequence of affine transformations can be stored in a single <xref:System.Drawing.Drawing2D.Matrix> object.  
+ 複合変換の行列は、個々 の変換行列を乗算することによって確立できるという事実では、1 つのアフィン変換の任意のシーケンスを格納できることを意味 <xref:System.Drawing.Drawing2D.Matrix> オブジェクトです。  
   
 > [!CAUTION]
->  The order of a composite transformation is important. In general, rotate, then scale, then translate is not the same as scale, then rotate, then translate. Similarly, the order of matrix multiplication is important. In general, ABC is not the same as BAC.  
+>  複合変換の順序が重要です。 一般に、回転、拡大縮小、変換は異なりますとして、スケール、回転し、変換します。 同様に、行列乗算の順序が重要です。 一般に、ABC はこうと同じです。  
   
- The <xref:System.Drawing.Drawing2D.Matrix> class provides several methods for building a composite transformation: <xref:System.Drawing.Drawing2D.Matrix.Multiply%2A>, <xref:System.Drawing.Drawing2D.Matrix.Rotate%2A>, <xref:System.Drawing.Drawing2D.Matrix.RotateAt%2A>, <xref:System.Drawing.Drawing2D.Matrix.Scale%2A>, <xref:System.Drawing.Drawing2D.Matrix.Shear%2A>, and <xref:System.Drawing.Drawing2D.Matrix.Translate%2A>. The following example creates the matrix of a composite transformation that first rotates 30 degrees, then scales by a factor of 2 in the y direction, and then translates 5 units in the x direction:  
+ <xref:System.Drawing.Drawing2D.Matrix> クラスが複合変換を構築するためのいくつかの方法を提供します。 <xref:System.Drawing.Drawing2D.Matrix.Multiply%2A>, 、<xref:System.Drawing.Drawing2D.Matrix.Rotate%2A>, 、<xref:System.Drawing.Drawing2D.Matrix.RotateAt%2A>, 、<xref:System.Drawing.Drawing2D.Matrix.Scale%2A>, 、<xref:System.Drawing.Drawing2D.Matrix.Shear%2A>, 、および <xref:System.Drawing.Drawing2D.Matrix.Translate%2A>です。 次の例では、30 度の回転し、y 方向の 2 倍のスケールを設定し、x 軸方向の 5 つのユニットを変換する複合変換の行列を作成します。  
   
- [!code-csharp[System.Drawing.CoordinateSystems#11](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.CoordinateSystems/CS/Class1.cs#11)]
- [!code-vb[System.Drawing.CoordinateSystems#11](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.CoordinateSystems/VB/Class1.vb#11)]  
+ [!code-csharp[System.Drawing.CoordinateSystems\#11](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.CoordinateSystems/CS/Class1.cs#11)]
+ [!code-vb[System.Drawing.CoordinateSystems\#11](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.CoordinateSystems/VB/Class1.vb#11)]  
   
  ]]></format>
     </remarks>
@@ -70,7 +70,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> class as the identity matrix.</summary>
+        <summary>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> クラスの新しいインスタンスを単位行列として初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -88,14 +89,15 @@
         <Parameter Name="plgpts" Type="System.Drawing.Point[]" />
       </Parameters>
       <Docs>
-        <param name="rect">A <see cref="T:System.Drawing.Rectangle" /> structure that represents the rectangle to be transformed.</param>
-        <param name="plgpts">An array of three <see cref="T:System.Drawing.Point" /> structures that represents the points of a parallelogram to which the upper-left, upper-right, and lower-left corners of the rectangle is to be transformed. The lower-right corner of the parallelogram is implied by the first three corners.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> class to the geometric transform defined by the specified rectangle and array of points.</summary>
+        <param name="rect">変換する四角形を表す <see cref="T:System.Drawing.Rectangle" /> 構造体。</param>
+        <param name="plgpts">四角形の左上、右上、左下の各隅の変換先となる平行四辺形の点を表す 3 つの <see cref="T:System.Drawing.Point" /> 構造体の配列。 平行四辺形の右下隅は、最初の 3 点から導き出されます。</param>
+        <summary>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> クラスの新しいインスタンスを初期化し、指定した四角形および点の配列で定義されたジオメトリック変換に設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method initializes the new Matrix such that it represents the geometric transform that maps the rectangle specified by the `rect` parameter to the parallelogram defined by the three points in the `plgpts` parameter. The upper-left corner of the rectangle is mapped to the first point in the `plgpts` array, the upper-right corner is mapped to the second point, and the lower-left corner is mapped to the third point. The lower-right point of the parallelogram is implied by the first three.  
+## 解説  
+ 指定された四角形にマッピングするジオメトリック変換を表すように、このメソッドが新しいマトリックスを初期化、 `rect` パラメーターに 3 つのポイントで定義された平行四辺形を `plgpts` パラメーター。 四角形の左上隅は、最初の要素にマップされて、 `plgpts` 、配列は、右上隅が 2 つ目のポイントに割り当てられ、左下隅は、3 番目のポイントにマップされます。 平行四辺形の右下隅の点については、最初の 3 つで指定します。  
   
  ]]></format>
         </remarks>
@@ -115,14 +117,15 @@
         <Parameter Name="plgpts" Type="System.Drawing.PointF[]" />
       </Parameters>
       <Docs>
-        <param name="rect">A <see cref="T:System.Drawing.RectangleF" /> structure that represents the rectangle to be transformed.</param>
-        <param name="plgpts">An array of three <see cref="T:System.Drawing.PointF" /> structures that represents the points of a parallelogram to which the upper-left, upper-right, and lower-left corners of the rectangle is to be transformed. The lower-right corner of the parallelogram is implied by the first three corners.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> class to the geometric transform defined by the specified rectangle and array of points.</summary>
+        <param name="rect">変換する四角形を表す <see cref="T:System.Drawing.RectangleF" /> 構造体。</param>
+        <param name="plgpts">四角形の左上、右上、左下の各隅の変換先となる平行四辺形の点を表す 3 つの <see cref="T:System.Drawing.PointF" /> 構造体の配列。 平行四辺形の右下隅は、最初の 3 点から導き出されます。</param>
+        <summary>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> クラスの新しいインスタンスを初期化し、指定した四角形および点の配列で定義されたジオメトリック変換に設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method initializes the new <xref:System.Drawing.Drawing2D.Matrix> such that it represents the geometric transform that maps the rectangle specified by the `rect` parameter to the parallelogram defined by the three points in the `plgpts` parameter. The upper-left corner of the rectangle is mapped to the first point in the `plgpts` array, the upper-right corner is mapped to the second point, and the lower-left corner is mapped to the third point. The lower-right point of the parallelogram is implied by the first three.  
+## 解説  
+ このメソッドは、新しい初期化 <xref:System.Drawing.Drawing2D.Matrix> などをジオメトリック変換によって指定された四角形を表す、 `rect` パラメーターに 3 つのポイントで定義された平行四辺形を `plgpts` パラメーター。 四角形の左上隅は、最初の要素にマップされて、 `plgpts` 、配列は、右上隅が 2 つ目のポイントに割り当てられ、左下隅は、3 番目のポイントにマップされます。 平行四辺形の右下隅の点については、最初の 3 つで指定します。  
   
  ]]></format>
         </remarks>
@@ -146,13 +149,13 @@
         <Parameter Name="dy" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="m11">The value in the first row and first column of the new <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="m12">The value in the first row and second column of the new <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="m21">The value in the second row and first column of the new <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="m22">The value in the second row and second column of the new <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="dx">The value in the third row and first column of the new <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="dy">The value in the third row and second column of the new <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Drawing.Drawing2D.Matrix" /> class with the specified elements.</summary>
+        <param name="m11">新しい <see cref="T:System.Drawing.Drawing2D.Matrix" /> の最初の行の最初の列の値。</param>
+        <param name="m12">新しい <see cref="T:System.Drawing.Drawing2D.Matrix" /> の最初の行の 2 番目の列の値。</param>
+        <param name="m21">新しい <see cref="T:System.Drawing.Drawing2D.Matrix" /> の 2 番目の行の最初の列の値。</param>
+        <param name="m22">新しい <see cref="T:System.Drawing.Drawing2D.Matrix" /> の 2 番目の行の 2 番目の列の値。</param>
+        <param name="dx">新しい <see cref="T:System.Drawing.Drawing2D.Matrix" /> の 3 番目の行の最初の列の値。</param>
+        <param name="dy">新しい <see cref="T:System.Drawing.Drawing2D.Matrix" /> の 3 番目の行の 2 番目の列の値。</param>
+        <summary>指定した要素を使用して、<see cref="T:System.Drawing.Drawing2D.Matrix" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -170,8 +173,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates an exact copy of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-        <returns>The <see cref="T:System.Drawing.Drawing2D.Matrix" /> that this method creates.</returns>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の同一コピーを作成します。</summary>
+        <returns>このメソッドが作成する <see cref="T:System.Drawing.Drawing2D.Matrix" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -189,12 +192,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling `Dispose` allows the resources used by this <xref:System.Drawing.Drawing2D.Matrix> object to be reallocated for other purposes.  
+## 解説  
+ Calling **languageKeyword tag is not supported!!!!**  
+ allows the resources used by this <xref:System.Drawing.Drawing2D.Matrix> object to be reallocated for other purposes.  
   
  ]]></format>
         </remarks>
@@ -213,13 +217,13 @@
         <ReturnType>System.Single[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an array of floating-point values that represents the elements of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-        <value>An array of floating-point values that represents the elements of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</value>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の要素を表す浮動小数点値の配列を取得します。</summary>
+        <value>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の要素を表す浮動小数点値の配列。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The elements m11, m12, m21, m22, dx, and dy of the <xref:System.Drawing.Drawing2D.Matrix> are represented by the values in the array in that order.  
+## 解説  
+ 要素の m11、m12、m21、m22、dx、およびの dy、 <xref:System.Drawing.Drawing2D.Matrix> 順番で配列内の値によって表されます。  
   
  ]]></format>
         </remarks>
@@ -241,9 +245,9 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to test.</param>
-        <summary>Tests whether the specified object is a <see cref="T:System.Drawing.Drawing2D.Matrix" /> and is identical to this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-        <returns>This method returns <see langword="true" /> if <paramref name="obj" /> is the specified <see cref="T:System.Drawing.Drawing2D.Matrix" /> identical to this <see cref="T:System.Drawing.Drawing2D.Matrix" />; otherwise, <see langword="false" />.</returns>
+        <param name="obj">テストするオブジェクト。</param>
+        <summary>指定されたオブジェクトが <see cref="T:System.Drawing.Drawing2D.Matrix" /> であるかどうか、またこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> と同一であるかどうかをテストします。</summary>
+        <returns>このメソッドは、<paramref name="obj" /> がこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> と同じオブジェクトで、指定した <see cref="T:System.Drawing.Drawing2D.Matrix" /> と同一である場合は <see langword="true" /> を返します。それ以外の場合は <see langword="false" /> を返します。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -261,7 +265,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        <summary>オブジェクトが、ガベージ コレクションによって収集される前に、リソースの解放とその他のクリーンアップ操作の実行を試みることができるようにします。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -279,8 +283,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a hash code.</summary>
-        <returns>The hash code for this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</returns>
+        <summary>ハッシュ コードを返します。</summary>
+        <returns>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> のハッシュ コード。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -298,12 +302,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Inverts this <see cref="T:System.Drawing.Drawing2D.Matrix" />, if it is invertible.</summary>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> が反転できる場合に反転します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example creates a matrix and inverts it:  
+## 例  
+ 次のコード例では、行列を作成し、それを反転します。  
   
 ```csharp  
 Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);  
@@ -327,8 +331,9 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is the identity matrix.</summary>
-        <value>This property is <see langword="true" /> if this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is identity; otherwise, <see langword="false" />.</value>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> が単位行列かどうかを示す値を取得します。</summary>
+        <value>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> が単位行列の場合、このプロパティは <see langword="true" /> になります。それ以外の場合は <see langword="false" /> になります。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -345,8 +350,9 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is invertible.</summary>
-        <value>This property is <see langword="true" /> if this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is invertible; otherwise, <see langword="false" />.</value>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> が反転できるかどうかを示す値を取得します。</summary>
+        <value>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> が反転できる場合、このプロパティは <see langword="true" /> になります。それ以外の場合は <see langword="false" /> になります。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -366,13 +372,13 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="matrix" Type="System.Drawing.Drawing2D.Matrix" />
       </Parameters>
       <Docs>
-        <param name="matrix">The <see cref="T:System.Drawing.Drawing2D.Matrix" /> by which this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is to be multiplied.</param>
-        <summary>Multiplies this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by the matrix specified in the <paramref name="matrix" /> parameter, by prepending the specified <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
+        <param name="matrix">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> と乗算する <see cref="T:System.Drawing.Drawing2D.Matrix" />。</param>
+        <summary>指定した <see cref="T:System.Drawing.Drawing2D.Matrix" /> を前に付加することで、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> と <paramref name="matrix" /> パラメーターで指定した行列を乗算します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.Multiply%2A>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.Multiply%2A>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -395,43 +401,43 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="order" Type="System.Drawing.Drawing2D.MatrixOrder" />
       </Parameters>
       <Docs>
-        <param name="matrix">The <see cref="T:System.Drawing.Drawing2D.Matrix" /> by which this <see cref="T:System.Drawing.Drawing2D.Matrix" /> is to be multiplied.</param>
-        <param name="order">The <see cref="T:System.Drawing.Drawing2D.MatrixOrder" /> that represents the order of the multiplication.</param>
-        <summary>Multiplies this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by the matrix specified in the <paramref name="matrix" /> parameter, and in the order specified in the <paramref name="order" /> parameter.</summary>
+        <param name="matrix">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> と乗算する <see cref="T:System.Drawing.Drawing2D.Matrix" />。</param>
+        <param name="order">乗算の順序を表す <see cref="T:System.Drawing.Drawing2D.MatrixOrder" />。</param>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> と <paramref name="matrix" /> パラメーターで指定した行列を、<paramref name="order" /> パラメーターで指定した順序で乗算します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the specified order is <xref:System.Drawing.Drawing2D.MatrixOrder.Prepend>, this <xref:System.Drawing.Drawing2D.Matrix> is multiplied by the specified matrix in a prepended order. If the specified order is <xref:System.Drawing.Drawing2D.MatrixOrder.Append>, this <xref:System.Drawing.Drawing2D.Matrix> is multiplied by the specified matrix in an appended order.  
+## 解説  
+ 指定された順序の場合 <xref:System.Drawing.Drawing2D.MatrixOrder.Prepend>, 、この <xref:System.Drawing.Drawing2D.Matrix> が先頭に追加された順序で指定した行列乗算します。 指定された順序の場合 <xref:System.Drawing.Drawing2D.MatrixOrder.Append>, 、この <xref:System.Drawing.Drawing2D.Matrix> が追加された順序で指定した行列乗算します。  
   
    
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Creates three matrices.  
+-   3 つの行列を作成します。  
   
--   Lists the contents of matrix 1 to the screen.  
+-   画面にマトリックス 1 の内容を一覧表示します。  
   
--   Multiplies matrix 1 by matrix 2 and stores the result in matrix 1.  
+-   行列 1 と 2 の行列を乗算し、行列 1 で、結果を格納します。  
   
--   Lists the contents of matrix 1 to the screen.  
+-   画面にマトリックス 1 の内容を一覧表示します。  
   
--   Multiplies the result stored in matrix 1 by matrix 3, and again stores the result in matrix 1.  
+-   行列 1 と第 3 の行列に格納されている結果を乗算し、もう一度行列 1 で、結果を格納します。  
   
--   Lists the contents of matrix 1 to the screen.  
+-   画面にマトリックス 1 の内容を一覧表示します。  
   
--   Draws a rectangle to the screen prior to applying the matrix 1 transform (the blue rectangle).  
+-   行列 1 の変換 \(青い四角形\) を適用する前に画面に四角形を描画します。  
   
--   Applies the transform to the rectangle.  
+-   四角形に、変換を適用します。  
   
--   Draws the transformed rectangle to the screen (the red rectangle), using the same coordinates as the previous rectangle.  
+-   前の四角形として同じ座標を使用して画面 \(赤い四角形\) に変換された四角形を描画します。  
   
- Notice that the red rectangle has been scaled by a factor of two in the horizontal direction, then rotated 90 degrees, and then moved (translated) 250 points in the x direction and 50 points in the y direction.  
+ 水平方向に 2 つの要素に赤色の四角形が拡大され、通知では、90 ° を回転され、y 方向の \(翻訳\) の 250 ポイントの x 方向と 50 ポイントを移動します。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#1)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#1)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#1)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#1)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#1)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -450,8 +456,8 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the x translation value (the dx value, or the element in the third row and first column) of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-        <value>The x translation value of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</value>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の x 方向の平行移動値 \(dx 値、すなわち 3 番目の行の最初の列の要素\) を取得します。</summary>
+        <value>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の x 方向の平行移動値。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -468,8 +474,9 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the y translation value (the dy value, or the element in the third row and second column) of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
-        <value>The y translation value of this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</value>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の y 方向の平行移動値 \(dy 値、すなわち 3 番目の行の 2 番目の列の要素\) を取得します。</summary>
+        <value>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> の y 方向の平行移動値。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -487,41 +494,41 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Resets this <see cref="T:System.Drawing.Drawing2D.Matrix" /> to have the elements of the identity matrix.</summary>
+        <summary>単位行列の要素を持つように対象の <see cref="T:System.Drawing.Drawing2D.Matrix" /> をリセットします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The elements on the main diagonal of the identity matrix are 1. All other elements of the identity matrix are 0.  
+## 解説  
+ 単位行列のメインの対角線の要素は 1 です。 単位行列の他のすべての要素は、0 です。  
   
    
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Creates a scaling matrix.  
+-   拡大縮小行列を作成します。  
   
--   Lists the matrix elements to the screen.  
+-   画面にマトリックス要素の一覧を示します。  
   
--   Resets the matrix to identity.  
+-   Identity 行列にリセットします。  
   
--   Lists the elements to the screen.  
+-   画面に要素を示します。  
   
--   Translates the matrix by 50 points in the x-axis and 40 points in the y-axis.  
+-   50 のポイントの x 軸と y 軸に 40 ポイントして、マトリックスを変換します。  
   
--   Lists the elements of the translated matrix to the screen.  
+-   画面に翻訳された行列の要素を一覧表示します。  
   
--   Draws a rectangle is drawn to the screen prior to applying the matrix transform (the blue rectangle).  
+-   行列変換の \(青い四角形\) を適用する前に画面に描画する四角形を描画します。  
   
--   Applies the transform to the rectangle.  
+-   四角形に、変換を適用します。  
   
--   Draws the transformed rectangle is drawn to the screen (the red rectangle), using the same coordinates as the previous rectangle.  
+-   描画 \(赤い四角形\)、前の四角形として同じ座標を使用して、画面に変換された四角形を描画します。  
   
- Notice that the red rectangle was not scaled (because of the reset) but was translated in the x-axis and y-axis.  
+ 赤色の四角形が \(リセット\) によってスケールがされていないが、変換されたか、x 軸と y 軸に注目してください。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#2](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#2)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#2](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#2)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#2)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#2](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#2)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#2](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#2)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -543,13 +550,13 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="angle" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="angle">The angle of the rotation, in degrees.</param>
-        <summary>Prepend to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> a clockwise rotation, around the origin and by the specified angle.</summary>
+        <param name="angle">回転角度。</param>
+        <summary>原点を中心とする指定した角度の時計回りの回転を、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> の前に付加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.Rotate%28System.Single%2CSystem.Drawing.Drawing2D.MatrixOrder%29>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.Rotate%28System.Single%2CSystem.Drawing.Drawing2D.MatrixOrder%29>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -572,28 +579,29 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="order" Type="System.Drawing.Drawing2D.MatrixOrder" />
       </Parameters>
       <Docs>
-        <param name="angle">The angle (extent) of the rotation, in degrees.</param>
-        <param name="order">A <see cref="T:System.Drawing.Drawing2D.MatrixOrder" /> that specifies the order (append or prepend) in which the rotation is applied to this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <summary>Applies a clockwise rotation of an amount specified in the <paramref name="angle" /> parameter, around the origin (zero x and y coordinates) for this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</summary>
+        <param name="angle">回転の角度 \(エクステント\)。</param>
+        <param name="order">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> に回転を適用する順序 \(前後どちらに付加するか\) を指定する <see cref="T:System.Drawing.Drawing2D.MatrixOrder" />。</param>
+        <summary>
+          <paramref name="angle" /> パラメーターで指定した量の、原点 \(x 座標と y 座標が 0\) を中心とする時計回りの回転を、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Draws a rectangle to the screen prior to applying a rotation transform (the blue rectangle).  
+-   回転変換 \(青い四角形\) を適用する前に画面に四角形を描画します。  
   
--   Creates a matrix and rotates it 45 degrees.  
+-   行列を作成し、それを 45 度回転します。  
   
--   Applies this matrix transform to the rectangle.  
+-   四角形に、この行列変換を適用します。  
   
--   Draws the transformed rectangle to the screen (the red rectangle).  
+-   画面 \(赤色の四角形\) に変換された四角形を描画します。  
   
- Notice that the red rectangle has been rotated around the 0, 0 screen coordinates.  
+ 赤色の四角形を回転することに注意してください。 0 を、0 を中心には、画面の座標。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#3](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#3)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#3](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#3)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#3)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#3](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#3)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#3](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#3)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -616,18 +624,18 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="point" Type="System.Drawing.PointF" />
       </Parameters>
       <Docs>
-        <param name="angle">The angle (extent) of the rotation, in degrees.</param>
-        <param name="point">A <see cref="T:System.Drawing.PointF" /> that represents the center of the rotation.</param>
-        <summary>Applies a clockwise rotation to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> around the point specified in the <paramref name="point" /> parameter, and by prepending the rotation.</summary>
+        <param name="angle">回転の角度 \(エクステント\)。</param>
+        <param name="point">回転の中心を表す <see cref="T:System.Drawing.PointF" />。</param>
+        <summary>回転を前に付加することで、<paramref name="point" /> パラメーターで指定した点を中心とする時計回りの回転を、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example demonstrates using a <xref:System.Drawing.Drawing2D.Matrix> and the <xref:System.Drawing.Drawing2D.GraphicsPath.Transform%2A> method to rotate a string. This example is designed to be used with Windows Forms. Create a form and paste the following code into it. Call the `DrawVerticalStringFromBottomUp` method in the form's <xref:System.Windows.Forms.Control.Paint> event handler, passing `e` as <xref:System.Windows.Forms.PaintEventArgs>.  
+## 例  
+ 次のコード例では、使用方法を示します、 <xref:System.Drawing.Drawing2D.Matrix> と <xref:System.Drawing.Drawing2D.GraphicsPath.Transform%2A> 文字列を回転するメソッドです。 この例は、Windows フォームで使用される設計されています。 フォームを作成し、次のコードを貼り付けます。 呼び出す、 `DrawVerticalStringFromBottomUp` フォームの <xref:System.Windows.Forms.Control.Paint> イベント ハンドラーを渡す `e` として <xref:System.Windows.Forms.PaintEventArgs>します。  
   
- [!code-cpp[System.Drawing.MiscExamples#5](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.MiscExamples/CPP/form1.cpp#5)]
- [!code-csharp[System.Drawing.MiscExamples#5](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.MiscExamples/CS/form1.cs#5)]
- [!code-vb[System.Drawing.MiscExamples#5](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.MiscExamples/VB/form1.vb#5)]  
+ [!code-cpp[System.Drawing.MiscExamples\#5](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.MiscExamples/CPP/form1.cpp#5)]
+ [!code-csharp[System.Drawing.MiscExamples\#5](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.MiscExamples/CS/form1.cs#5)]
+ [!code-vb[System.Drawing.MiscExamples\#5](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.MiscExamples/VB/form1.vb#5)]  
   
  ]]></format>
         </remarks>
@@ -651,29 +659,29 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="order" Type="System.Drawing.Drawing2D.MatrixOrder" />
       </Parameters>
       <Docs>
-        <param name="angle">The angle of the rotation, in degrees.</param>
-        <param name="point">A <see cref="T:System.Drawing.PointF" /> that represents the center of the rotation.</param>
-        <param name="order">A <see cref="T:System.Drawing.Drawing2D.MatrixOrder" /> that specifies the order (append or prepend) in which the rotation is applied.</param>
-        <summary>Applies a clockwise rotation about the specified point to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the specified order.</summary>
+        <param name="angle">回転角度。</param>
+        <param name="point">回転の中心を表す <see cref="T:System.Drawing.PointF" />。</param>
+        <param name="order">回転を適用する順序 \(前後どちらに付加するか\) を指定する <see cref="T:System.Drawing.Drawing2D.MatrixOrder" />。</param>
+        <summary>指定した点を中心とする時計回りの回転を、指定した順序でこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Draws a rectangle to the screen prior to applying a rotation transform (the blue rectangle).  
+-   回転変換 \(青い四角形\) を適用する前に画面に四角形を描画します。  
   
--   Creates a matrix and rotates it 45 degrees around a specified point.  
+-   行列を作成し、指定の点を中心 45 度回転させます。  
   
--   Applies this matrix transform is to the rectangle.  
+-   この行列を適用する変換は、四角形にします。  
   
--   Draws the transformed rectangle to the screen (the red rectangle).  
+-   画面 \(赤色の四角形\) に変換された四角形を描画します。  
   
- Notice that the red rectangle has been rotated around the upper left-hand corner of the rectangle (the rotation point specified the <xref:System.Drawing.Drawing2D.Matrix.RotateAt%2A> method).  
+ 四角形の左上隅に赤い四角形を回転に注意してください \(指定した回転点、 <xref:System.Drawing.Drawing2D.Matrix.RotateAt%2A> メソッド\)。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#4](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#4)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#4](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#4)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#4](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#4)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#4](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#4)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#4](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#4)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#4](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#4)]  
   
  ]]></format>
         </remarks>
@@ -696,14 +704,14 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="scaleY" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="scaleX">The value by which to scale this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the x-axis direction.</param>
-        <param name="scaleY">The value by which to scale this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the y-axis direction.</param>
-        <summary>Applies the specified scale vector to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by prepending the scale vector.</summary>
+        <param name="scaleX">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を x 軸方向にスケールする値。</param>
+        <param name="scaleY">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を y 軸方向にスケールする値。</param>
+        <summary>スケール ベクターを前に付加することで、指定したスケール ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.Scale%28System.Single%2CSystem.Single%2CSystem.Drawing.Drawing2D.MatrixOrder%29>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.Scale%28System.Single%2CSystem.Single%2CSystem.Drawing.Drawing2D.MatrixOrder%29>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -727,29 +735,29 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="order" Type="System.Drawing.Drawing2D.MatrixOrder" />
       </Parameters>
       <Docs>
-        <param name="scaleX">The value by which to scale this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the x-axis direction.</param>
-        <param name="scaleY">The value by which to scale this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the y-axis direction.</param>
-        <param name="order">A <see cref="T:System.Drawing.Drawing2D.MatrixOrder" /> that specifies the order (append or prepend) in which the scale vector is applied to this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <summary>Applies the specified scale vector (<paramref name="scaleX" /> and <paramref name="scaleY" />) to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> using the specified order.</summary>
+        <param name="scaleX">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を x 軸方向にスケールする値。</param>
+        <param name="scaleY">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を y 軸方向にスケールする値。</param>
+        <param name="order">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> にスケール ベクターを適用する順序 \(前後どちらに付加するか\) を指定する <see cref="T:System.Drawing.Drawing2D.MatrixOrder" />。</param>
+        <summary>指定した順序を使用して、指定したスケール ベクター \(<paramref name="scaleX" /> と <paramref name="scaleY" />\) をこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Draws a rectangle to the screen prior to applying a scaling transform (the blue rectangle).  
+-   スケーリングの変換 \(青い四角形\) を適用する前に画面に四角形を描画します。  
   
--   Creates a matrix and scales it by 3 in the x-axis and 2 in the y-axis.  
+-   行列を作成し、x 軸に 3 と 2 y 軸を拡大します。  
   
--   Applies this matrix transform to the rectangle.  
+-   四角形に、この行列変換を適用します。  
   
--   Draws the transformed rectangle to the screen (the red rectangle).  
+-   画面 \(赤色の四角形\) に変換された四角形を描画します。  
   
- Notice that the red rectangle has been scaled by a factor of 3 in the x-axis and by 2 in the y-axis, including the upper left-hand corner of the rectangle (the beginning point of the rectangle).  
+ 赤色の四角形のサイズを変更、x 軸に 3 倍、および 2 \(四角形の開始点\) の四角形の左上隅を含め、y 軸に注目してください。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#5](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#5)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#5](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#5)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#5](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#5)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#5](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#5)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#5](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#5)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#5](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#5)]  
   
  ]]></format>
         </remarks>
@@ -772,33 +780,33 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="shearY" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="shearX">The horizontal shear factor.</param>
-        <param name="shearY">The vertical shear factor.</param>
-        <summary>Applies the specified shear vector to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by prepending the shear transformation.</summary>
+        <param name="shearX">水平方向の傾斜係数。</param>
+        <param name="shearY">垂直方向の傾斜係数。</param>
+        <summary>傾斜変換を前に付加することで、指定した傾斜ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The transformation applied in this method is a pure shear only if one of the parameters is 0. Applied to a rectangle at the origin, when the `shearY` factor is 0, the transformation moves the bottom edge horizontally by `shearX` times the height of the rectangle. When the `shearX` factor is 0, it moves the right edge vertically by `shearY` times the width of the rectangle. Caution is in order when both parameters are nonzero, because the results are hard to predict. For example, if both factors are 1, the transformation is singular (hence noninvertible), squeezing the entire plane to a single line.  
+## 解説  
+ このメソッドに適用する変換は、0 は、パラメーターのいずれかの場合にのみ、純粋な傾斜です。 原点に四角形に適用されるときに、 `shearY` 要素が 0 の場合、変換が下端を水平方向に移動 `shearX` 四角形の高さがタイムアウトします。 ときに、 `shearX` 要素が 0 の場合、右端で垂直方向に移動 `shearY` 四角形の幅がタイムアウトします。 注意での順序では予測が困難になるために、両方のパラメーターがゼロ以外の場合です。 たとえば、両方の要素が 1 の場合は、変換は特異な \(したがって押しつぶされて\) を 1 行全体の平面を引き出します。  
   
    
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following action:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードでは、次の操作を実行します。  
   
--   Draws a rectangle to the screen, using a green pen, prior to applying a scaling transform.  
+-   スケーリングの変換を適用する前に、緑のペンを使用して、画面に四角形を描画します。  
   
--   Creates a <xref:System.Drawing.Drawing2D.Matrix> and uses it to set a world-coordinate transform for the <xref:System.Drawing.Graphics>.  
+-   作成、 <xref:System.Drawing.Drawing2D.Matrix> オブジェクトの変換をワールド座標の設定を使用して、 <xref:System.Drawing.Graphics>です。  
   
--   Draws another rectangle using a red pen.  
+-   赤のペンを使用して別の四角形を描画します。  
   
--   Draws an ellipse using a blue pen.  
+-   青のペンを使用して、楕円を描画します。  
   
- The result is a green rectangle, a red parallelogram and a transformed, blue ellipse. Notice that the green rectangle (drawn prior to setting the transform) directly uses the coordinates supplied in the <xref:System.Drawing.Graphics.DrawRectangle%2A> call. The other two figures are transformed prior to drawing. The rectangle is transformed to a parallelogram (red), and the ellipse (blue) is transformed to fit into the transformed parallelogram. Notice the bottom of the rectangle is moved (sheared) in the x-axis by a factor of two times the height of the rectangle, thus forming the parallelogram.  
+ 緑の四角形、赤い平行四辺形および変換された、青い楕円になります。 緑の四角形 \(トランス フォームを設定する前に描画された\) ことに注意してで指定された座標を直接使用して、 <xref:System.Drawing.Graphics.DrawRectangle%2A> を呼び出します。 その他の 2 つの図は、描画の前に変換されます。 四角形が \(赤\)、平行四辺形に変換され、省略記号ボタン \(青\) を変換した平行四辺形に収まるように変換します。 四角形の底辺に注意してください \(傾斜\) 平行四辺形の四角形の高さの 2 倍の係数で x 軸に移動します。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#6](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#6)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#6](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#6)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#6](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#6)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#6](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#6)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#6](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#6)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#6](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#6)]  
   
  ]]></format>
         </remarks>
@@ -822,20 +830,20 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="order" Type="System.Drawing.Drawing2D.MatrixOrder" />
       </Parameters>
       <Docs>
-        <param name="shearX">The horizontal shear factor.</param>
-        <param name="shearY">The vertical shear factor.</param>
-        <param name="order">A <see cref="T:System.Drawing.Drawing2D.MatrixOrder" /> that specifies the order (append or prepend) in which the shear is applied.</param>
-        <summary>Applies the specified shear vector to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the specified order.</summary>
+        <param name="shearX">水平方向の傾斜係数。</param>
+        <param name="shearY">垂直方向の傾斜係数。</param>
+        <param name="order">傾斜を適用する順序 \(前後どちらに付加するか\) を指定する <see cref="T:System.Drawing.Drawing2D.MatrixOrder" />。</param>
+        <summary>指定した順序で、指定した傾斜ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The transformation applied in this method is a pure shear only if one of the parameters is 0. Applied to a rectangle at the origin, when the `shearY` factor is 0, the transformation moves the bottom edge horizontally by `shearX` times the height of the rectangle. When the `shearX` factor is 0, it moves the right edge vertically by `shearY` times the width of the rectangle. Caution is in order when both parameters are nonzero, because the results are hard to predict. For example, if both factors are 1, the transformation is singular (hence noninvertible), squeezing the entire plane to a single line.  
+## 解説  
+ このメソッドに適用する変換は、0 は、パラメーターのいずれかの場合にのみ、純粋な傾斜です。 原点に四角形に適用されるときに、 `shearY` 要素が 0 の場合、変換が下端を水平方向に移動 `shearX` 四角形の高さがタイムアウトします。 ときに、 `shearX` 要素が 0 の場合、右端で垂直方向に移動 `shearY` 四角形の幅がタイムアウトします。 注意での順序では予測が困難になるために、両方のパラメーターがゼロ以外の場合です。 たとえば、両方の要素が 1 の場合は、変換は特異な \(したがって押しつぶされて\) を 1 行全体の平面を引き出します。  
   
    
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.Shear%28System.Single%2CSystem.Single%29>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.Shear%28System.Single%2CSystem.Single%29>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -857,29 +865,29 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="pts" Type="System.Drawing.Point[]" />
       </Parameters>
       <Docs>
-        <param name="pts">An array of <see cref="T:System.Drawing.Point" /> structures that represents the points to transform.</param>
-        <summary>Applies the geometric transform represented by this <see cref="T:System.Drawing.Drawing2D.Matrix" /> to a specified array of points.</summary>
+        <param name="pts">変換する複数の点を表す <see cref="T:System.Drawing.Point" /> 構造体の配列。</param>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> が表すジオメトリック変換を、指定した点の配列に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Creates an array of points that form a rectangle.  
+-   四角形を形成する点の配列を作成します。  
   
--   Draws this array of points (to the screen prior to applying a scaling transform (the blue rectangle).  
+-   \(倍率変換 \(青い四角形\) を適用する前に画面この点の配列に描画です。  
   
--   Creates a matrix and scales it by 3 in the x-axis and 2 in the y-axis.  
+-   行列を作成し、x 軸に 3 と 2 y 軸を拡大します。  
   
--   Applies this matrix transform to the array of points.  
+-   この行列変換を点の配列に適用します。  
   
--   Draws the transformed array to the screen (the red rectangle).  
+-   画面 \(赤色の四角形\) に変換された配列を描画します。  
   
- Notice that the red rectangle has been scaled by a factor of 3 in the x-axis and by 2 in the y-axis, including the upper left-hand corner of the rectangle (the beginning point of the rectangle).  
+ 赤色の四角形のサイズを変更、x 軸に 3 倍、および 2 \(四角形の開始点\) の四角形の左上隅を含め、y 軸に注目してください。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#7](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#7)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#7](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#7)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#7](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#7)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#7](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#7)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#7](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#7)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#7](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#7)]  
   
  ]]></format>
         </remarks>
@@ -901,13 +909,13 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="pts" Type="System.Drawing.PointF[]" />
       </Parameters>
       <Docs>
-        <param name="pts">An array of <see cref="T:System.Drawing.PointF" /> structures that represents the points to transform.</param>
-        <summary>Applies the geometric transform represented by this <see cref="T:System.Drawing.Drawing2D.Matrix" /> to a specified array of points.</summary>
+        <param name="pts">変換する複数の点を表す <see cref="T:System.Drawing.PointF" /> 構造体の配列。</param>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> が表すジオメトリック変換を、指定した点の配列に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.TransformPoints%28System.Drawing.Point%5B%5D%29>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.TransformPoints%28System.Drawing.Point%5B%5D%29>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -929,31 +937,31 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="pts" Type="System.Drawing.Point[]" />
       </Parameters>
       <Docs>
-        <param name="pts">An array of <see cref="T:System.Drawing.Point" /> structures that represents the points to transform.</param>
-        <summary>Applies only the scale and rotate components of this <see cref="T:System.Drawing.Drawing2D.Matrix" /> to the specified array of points.</summary>
+        <param name="pts">変換する複数の点を表す <see cref="T:System.Drawing.Point" /> 構造体の配列。</param>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> のスケールおよび回転の成分だけを、指定した点の配列に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Creates an array of points that form a rectangle.  
+-   四角形を形成する点の配列を作成します。  
   
--   Draws this array of points to the screen prior to applying a scaling transform (the blue rectangle).  
+-   この点の配列を拡大\/縮小変換 \(青い四角形\) を適用する前に、画面に描画します。  
   
--   Creates a matrix and scales it by 3 in the x-axis and 2 in the y-axis, and translates it by 100 in both axes.  
+-   行列を作成し、x 軸に 3 と 2、y 軸を拡大し、両方の軸に 100 ずつ変換します。  
   
--   Lists the matrix elements to the screen.  
+-   画面にマトリックス要素の一覧を示します。  
   
--   Applies this matrix transform to the array of points.  
+-   この行列変換を点の配列に適用します。  
   
--   Draws the transformed array to the screen (the red rectangle).  
+-   画面 \(赤色の四角形\) に変換された配列を描画します。  
   
- Notice that the red rectangle has been scaled by a factor of 3 in the x-axis and by 2 in the y-axis, including the upper left-hand corner of the rectangle (the beginning point of the rectangle) but the translation vector (the last two elements of the matrix) is ignored.  
+ 赤色の四角形のサイズを変更、x 軸に 3 倍、および 2 \(四角形の開始点\) の四角形の左上隅を含め、y 軸に平行移動ベクター \(マトリックスの最後の 2 つの要素\) は無視されますが注目してください。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#8](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#8)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#8](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#8)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#8](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#8)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#8](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#8)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#8](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#8)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#8](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#8)]  
   
  ]]></format>
         </remarks>
@@ -975,13 +983,13 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="pts" Type="System.Drawing.PointF[]" />
       </Parameters>
       <Docs>
-        <param name="pts">An array of <see cref="T:System.Drawing.Point" /> structures that represents the points to transform.</param>
-        <summary>Multiplies each vector in an array by the matrix. The translation elements of this matrix (third row) are ignored.</summary>
+        <param name="pts">変換する複数の点を表す <see cref="T:System.Drawing.Point" /> 構造体の配列。</param>
+        <summary>配列内の各ベクターを行列で乗算します。 この行列の平行移動要素 \(3 番目の行\) は無視されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.TransformVectors%28System.Drawing.Point%5B%5D%29>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.TransformVectors%28System.Drawing.Point%5B%5D%29>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -1004,14 +1012,14 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="offsetY" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="offsetX">The x value by which to translate this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="offsetY">The y value by which to translate this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <summary>Applies the specified translation vector (<paramref name="offsetX" /> and <paramref name="offsetY" />) to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> by prepending the translation vector.</summary>
+        <param name="offsetX">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を平行移動する x の値。</param>
+        <param name="offsetY">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を平行移動する y の値。</param>
+        <summary>平行移動ベクターを前に付加することで、指定した平行移動ベクター \(<paramref name="offsetX" /> と <paramref name="offsetY" />\) をこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- For an example, see <xref:System.Drawing.Drawing2D.Matrix.Translate%28System.Single%2CSystem.Single%2CSystem.Drawing.Drawing2D.MatrixOrder%29>.  
+## 例  
+ 例については、「<xref:System.Drawing.Drawing2D.Matrix.Translate%28System.Single%2CSystem.Single%2CSystem.Drawing.Drawing2D.MatrixOrder%29>」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -1035,29 +1043,29 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="order" Type="System.Drawing.Drawing2D.MatrixOrder" />
       </Parameters>
       <Docs>
-        <param name="offsetX">The x value by which to translate this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="offsetY">The y value by which to translate this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <param name="order">A <see cref="T:System.Drawing.Drawing2D.MatrixOrder" /> that specifies the order (append or prepend) in which the translation is applied to this <see cref="T:System.Drawing.Drawing2D.Matrix" />.</param>
-        <summary>Applies the specified translation vector to this <see cref="T:System.Drawing.Drawing2D.Matrix" /> in the specified order.</summary>
+        <param name="offsetX">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を平行移動する x の値。</param>
+        <param name="offsetY">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> を平行移動する y の値。</param>
+        <param name="order">この <see cref="T:System.Drawing.Drawing2D.Matrix" /> に平行移動を適用する順序 \(前後どちらに付加するか\) を指定する <see cref="T:System.Drawing.Drawing2D.MatrixOrder" />。</param>
+        <summary>指定した順序で、指定した平行移動ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example is designed for use with Windows Forms, and it requires <xref:System.Windows.Forms.PaintEventArgs>`e`, an <xref:System.Windows.Forms.Control.Paint> event object. The code performs the following actions:  
+## 例  
+ 次のコード例は、Windows フォームで使用するために設計されていて、必要な <xref:System.Windows.Forms.PaintEventArgs>`e`, 、 <xref:System.Windows.Forms.Control.Paint> イベント オブジェクトです。 コードは、次のアクションを実行します。  
   
--   Draws a rectangle to the screen prior to applying a translate transform (the blue rectangle).  
+-   四角形を平行移動変換 \(青い四角形\) を適用する前に画面に描画します。  
   
--   Creates a matrix and translates it by 100 in both axes.  
+-   行列を作成し、両方の軸に 100 ずつ変換します。  
   
--   Applies this matrix transform to the rectangle,  
+-   この行列変換を四角形に適用します。  
   
--   Draws the transformed rectangle to the screen (the red rectangle).  
+-   画面 \(赤色の四角形\) に変換された四角形を描画します。  
   
- Notice that the beginning of the red rectangle is located 100 points in both axes from the beginning of the blue triangle.  
+ 赤色の四角形の先頭は、青い三角形の先頭からの両方の軸である 100 ポイントであることを確認します。  
   
- [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples#9](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#9)]
- [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples#9](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#9)]
- [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples#9](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#9)]  
+ [!code-cpp[System.Drawing.Drawing2D.ClassicMatrixExamples\#9](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CPP/form1.cpp#9)]
+ [!code-csharp[System.Drawing.Drawing2D.ClassicMatrixExamples\#9](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/CS/form1.cs#9)]
+ [!code-vb[System.Drawing.Drawing2D.ClassicMatrixExamples\#9](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Drawing.Drawing2D.ClassicMatrixExamples/VB/form1.vb#9)]  
   
  ]]></format>
         </remarks>
@@ -1079,10 +1087,100 @@ Matrix myMatrix = new Matrix(3, 5, 1, 2, 2, 4);
         <Parameter Name="pts" Type="System.Drawing.Point[]" />
       </Parameters>
       <Docs>
-        <param name="pts">An array of <see cref="T:System.Drawing.Point" /> structures that represents the points to transform.</param>
-        <summary>Multiplies each vector in an array by the matrix. The translation elements of this matrix (third row) are ignored.</summary>
-        <remarks>To be added.</remarks>
+        <param name="pts">変換する複数の点を表す <see cref="T:System.Drawing.Point" /> 構造体の配列。</param>
+        <summary>配列内の各ベクターを行列で乗算します。 この行列の平行移動要素 \(3 番目の行\) は無視されます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="TransformPoints">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>この <see cref="T:System.Drawing.Drawing2D.Matrix" /> が表すジオメトリック変換を、点の配列に適用します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Shear">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>傾斜ベクターを前に付加することで、指定した傾斜ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Multiply">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定した <see cref="T:System.Drawing.Drawing2D.Matrix" /> を前に付加することで、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> と指定した <see cref="T:System.Drawing.Drawing2D.Matrix" /> を乗算します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Rotate">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>原点を中心とする指定した角度の時計回りの回転を、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Scale">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>スケール ベクターを前に付加することで、指定したスケール ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="RotateAt">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>回転を前に付加することで、指定した点を中心とする時計回りの回転を、この <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Translate">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>平行移動ベクターを前に付加することで、指定した平行移動ベクターをこの <see cref="T:System.Drawing.Drawing2D.Matrix" /> に適用します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Drawing.Drawing2D.Matrix" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="TransformVectors">
+      <AssemblyInfo>
+        <AssemblyName>System.Drawing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>配列内の各ベクターを行列で乗算します。 この行列の平行移動要素 \(3 番目の行\) は無視されます。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

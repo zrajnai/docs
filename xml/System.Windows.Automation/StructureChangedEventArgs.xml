@@ -11,8 +11,19 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Contains information about the event that is raised when the UI Automation tree structure has changed.</summary>
-    <remarks>To be added.</remarks>
+    <summary>イベントに関する情報が格納されたときに発生、 UI オートメーション ツリー構造が変更されました。</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Windows.Automation.StructureChangedEventArgs" />
+    <altmember cref="M:System.Windows.Automation.Automation.AddStructureChangedEventHandler(System.Windows.Automation.AutomationElement,System.Windows.Automation.TreeScope,System.Windows.Automation.StructureChangedEventHandler)" />
+    <altmember cref="M:System.Windows.Automation.Automation.RemoveStructureChangedEventHandler(System.Windows.Automation.AutomationElement,System.Windows.Automation.StructureChangedEventHandler)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -29,37 +40,39 @@
         <Parameter Name="runtimeId" Type="System.Int32[]" />
       </Parameters>
       <Docs>
-        <param name="structureChangeType">A single value that specifies the type of change.</param>
-        <param name="runtimeId">The runtime [!INCLUDE[TLA#tla_id](~/includes/tlasharptla-id-md.md)] of the [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] element whose structure changed.</param>
-        <summary>Initializes a new instance of the <see cref="P:System.Windows.Automation.StructureChangedEventArgs.StructureChangeType" /> class, specifying the type of change and the [!INCLUDE[TLA#tla_id](~/includes/tlasharptla-id-md.md)] of the element whose structure changed.</summary>
+        <param name="structureChangeType">変更の種類を指定する単一の値。</param>
+        <param name="runtimeId">構造が変更された UI オートメーション 要素のランタイム 識別子 \(ID\)。 「解説」を参照してください。</param>
+        <summary>
+          <see cref="P:System.Windows.Automation.StructureChangedEventArgs.StructureChangeType" /> クラスの新しいインスタンスを初期化します。その際、変更の種類と、構造が変更された要素の 識別子 \(ID\) を指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The values that can be returned in `structureChangeType` depend on the implementation of the UI Automation provider. For example, when items are added to or removed from a [!INCLUDE[TLA2#tla_win32](~/includes/tla2sharptla-win32-md.md)] list box, if the provider is not able to determine the number of items added or removed, it might specify <xref:System.Windows.Automation.StructureChangeType.ChildrenInvalidated> and not <xref:System.Windows.Automation.StructureChangeType.ChildAdded> or <xref:System.Windows.Automation.StructureChangeType.ChildRemoved>.  
+## 解説  
+ 返される値 `structureChangeType` UI オートメーション プロバイダーの実装に依存します。 たとえば、ときに項目に追加されたり削除されたり、 [!INCLUDE[TLA2#tla_win32](~/includes/tla2sharptla-win32-md.md)] 指定が、プロバイダーが追加または削除された項目の数を決定できない場合は、リスト ボックス、 <xref:System.Windows.Automation.StructureChangeType.ChildrenInvalidated> および not <xref:System.Windows.Automation.StructureChangeType.ChildAdded> または <xref:System.Windows.Automation.StructureChangeType.ChildRemoved>です。  
   
- The following table describes the information in the event received by the <xref:System.Windows.Automation.StructureChangedEventHandler> for different structure changes.  
+ 次の表の情報が受信したイベントに、 <xref:System.Windows.Automation.StructureChangedEventHandler> の別の構造の変更。  
   
-|`structureChangeType`|Event source|`runtimeId`|  
-|---------------------------|------------------|-----------------|  
-|<xref:System.Windows.Automation.StructureChangeType.ChildAdded>|The child that was added.|The child that was added.|  
-|<xref:System.Windows.Automation.StructureChangeType.ChildRemoved>|The parent of the child that was removed.|The child that was removed.|  
-|<xref:System.Windows.Automation.StructureChangeType.ChildrenBulkAdded>|The parent of the children that were added.|The parent of the children that were added.|  
-|<xref:System.Windows.Automation.StructureChangeType.ChildrenBulkRemoved>|The parent of the children that were removed.|The parent of the children that were removed.|  
-|<xref:System.Windows.Automation.StructureChangeType.ChildrenInvalidated>|The parent of the children that were invalidated.|The parent of the children that were invalidated|  
+|`structureChangeType`|イベント ソース|`runtimeId`|  
+|---------------------------|--------------|-----------------|  
+|<xref:System.Windows.Automation.StructureChangeType.ChildAdded>|この子が追加されました。|この子が追加されました。|  
+|<xref:System.Windows.Automation.StructureChangeType.ChildRemoved>|削除された子の親です。|削除された子。|  
+|<xref:System.Windows.Automation.StructureChangeType.ChildrenBulkAdded>|追加された子の親です。|追加された子の親です。|  
+|<xref:System.Windows.Automation.StructureChangeType.ChildrenBulkRemoved>|削除された子の親です。|削除された子の親です。|  
+|<xref:System.Windows.Automation.StructureChangeType.ChildrenInvalidated>|無効化された子の親です。|無効化された子の親|  
   
- Custom controls might not be able to provide a meaningful value in `runtimeId`. For more information, see <xref:System.Windows.Automation.Provider.AutomationInteropProvider.RaiseStructureChangedEvent%2A>.  
+ カスタム コントロールでの意味のある値を指定できない `runtimeId`します。 詳細については、「<xref:System.Windows.Automation.Provider.AutomationInteropProvider.RaiseStructureChangedEvent%2A>」を参照してください。  
   
    
   
-## Examples  
- The following example shows how to construct and raise an event when children are added to, or removed from, a custom list box.  
+## 例  
+ 次の例では、構築してに子を追加したときにイベントを発生させる方法を示しています。 または、カスタム リスト ボックスから削除します。  
   
- [!code-csharp[FragmentProvider#101](~/samples/snippets/csharp/VS_Snippets_Wpf/FragmentProvider/CSharp/ListFragment.cs#101)]
- [!code-vb[FragmentProvider#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/FragmentProvider/VisualBasic/ListFragment.vb#101)]  
+ [!code-csharp[FragmentProvider\#101](~/samples/snippets/csharp/VS_Snippets_Wpf/FragmentProvider/CSharp/ListFragment.cs#101)]
+ [!code-vb[FragmentProvider\#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/FragmentProvider/VisualBasic/ListFragment.vb#101)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="F:System.Windows.Automation.AutomationElementIdentifiers.RuntimeIdProperty" />
       </Docs>
     </Member>
     <Member MemberName="GetRuntimeId">
@@ -76,18 +89,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Retrieves the [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] runtime [!INCLUDE[TLA#tla_id](~/includes/tlasharptla-id-md.md)] of the [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] element whose structure changed.</summary>
-        <returns>The runtime [!INCLUDE[TLA2#tla_id](~/includes/tla2sharptla-id-md.md)] of the [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] element whose structure changed.</returns>
+        <summary>取得、 UI オートメーション ランタイム 識別子 \(ID\) の UI オートメーション 構造が変更された要素です。</summary>
+        <returns>構造が変更された UI オートメーション 要素のランタイム ID。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The return value may be the identifier of the child that was added or removed or, in the case of many children being added, removed, or invalidated, the identifier of the parent. For more information, see <xref:System.Windows.Automation.StructureChangedEventArgs.%23ctor%2A>.  
+## 解説  
+ 戻り値には、追加、削除、または、親の識別子を無効にされている子を追加または削除されたのか、多数の子の識別子を指定できます。 詳細については、「<xref:System.Windows.Automation.StructureChangedEventArgs.%23ctor%2A>」を参照してください。  
   
- Custom controls might not provide a valid runtime identifier.  
+ カスタム コントロールは、有効なランタイム識別子を指定しない場合があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="F:System.Windows.Automation.AutomationElementIdentifiers.RuntimeIdProperty" />
       </Docs>
     </Member>
     <Member MemberName="StructureChangeType">
@@ -103,9 +120,17 @@
         <ReturnType>System.Windows.Automation.StructureChangeType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating the type of change that occurred in the [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] tree structure.</summary>
-        <value>The type of changed that occurred.</value>
-        <remarks>To be added.</remarks>
+        <summary>発生した変更の種類を示す値を取得、 UI オートメーション のツリー構造。</summary>
+        <value>型は変更が発生しました。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

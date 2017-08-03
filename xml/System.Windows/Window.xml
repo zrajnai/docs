@@ -16,86 +16,90 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides the ability to create, configure, show, and manage the lifetime of windows and dialog boxes.</summary>
+    <summary>作成、構成、表示、およびウィンドウとダイアログ ボックスの有効期間を管理する機能を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The point of interaction between a user and a standalone application is a window. A [!INCLUDE[TLA#tla_winclient](~/includes/tlasharptla-winclient-md.md)] window consists of two distinct areas:  
+## 解説  
+ ユーザーとスタンドアロン アプリケーションの間の対話ポイントは、ウィンドウです。 A [!INCLUDE[TLA#tla_winclient](~/includes/tlasharptla-winclient-md.md)] ウィンドウは、2 つの領域で構成されます。  
   
--   A non-client area, which hosts the windows adornments, including an icon, title, System menu, minimize button, maximize button, restore button, close button, and a border.  
+-   アイコン、タイトル、システム メニューの windows の表示要素をホストする非クライアント領域は、最小化ボタン、ボタン、\[復元\] ボタン、\[閉じる\] ボタン、および罫線を最大化します。  
   
--   A client area, which hosts application-specific content.  
+-   アプリケーション固有のコンテンツをホストしているクライアント領域です。  
   
- A standard window is shown in the following figure:  
+ 標準のウィンドウは、次の図で示されます。  
   
- ![Window elements](~/add/media/windowoverviewfigure1.PNG "Window elements")  
+ 271ac3d9-a442-4ef9-b596-8104944a513e  
   
- <xref:System.Windows.Window> encapsulates the ability to create, configure, show, and manage the lifetime of both windows and dialog boxes, and provides the following key services:  
+ <xref:System.Windows.Window> 作成、構成、表示、および windows とダイアログ ボックスの両方の有効期間を管理する機能をカプセル化し、次の主要サービスを提供します。  
   
  **Lifetime Management**: <xref:System.Windows.Window.Activate%2A>, <xref:System.Windows.Window.Activated>, <xref:System.Windows.Window.Close%2A>, <xref:System.Windows.Window.Closed>, <xref:System.Windows.Window.Closing>, <xref:System.Windows.Window.Deactivated>, <xref:System.Windows.Window.Hide%2A>, <xref:System.Windows.Window.IsActive%2A>, <xref:System.Windows.Window.Show%2A>, <xref:System.Windows.Window.SourceInitialized>.  
   
- **Window Management**: <xref:System.Windows.Window.GetWindow%2A>, <xref:System.Windows.Window.OwnedWindows%2A>, <xref:System.Windows.Window.Owner%2A>.  
+ **ウィンドウ管理**: <xref:System.Windows.Window.GetWindow%2A>, 、<xref:System.Windows.Window.OwnedWindows%2A>, 、<xref:System.Windows.Window.Owner%2A>です。  
   
  **Appearance and Behavior**: <xref:System.Windows.Window.AllowsTransparency%2A>, <xref:System.Windows.Window.ContentRendered>, <xref:System.Windows.Window.DragMove%2A>, <xref:System.Windows.Window.Icon%2A>, <xref:System.Windows.Window.Left%2A>, <xref:System.Windows.Window.LocationChanged>, <xref:System.Windows.Window.ResizeMode%2A>, <xref:System.Windows.Window.RestoreBounds%2A>, <xref:System.Windows.Window.ShowActivated%2A>, <xref:System.Windows.Window.ShowInTaskbar%2A>, <xref:System.Windows.Window.SizeToContent%2A>, <xref:System.Windows.Window.StateChanged>, <xref:System.Windows.Window.Title%2A>, <xref:System.Windows.Window.Top%2A>, <xref:System.Windows.Window.Topmost%2A>, <xref:System.Windows.Window.WindowStartupLocation%2A>, <xref:System.Windows.Window.WindowState%2A>, <xref:System.Windows.Window.WindowStyle%2A>  
   
- **Dialog Boxes**: <xref:System.Windows.Window.DialogResult%2A>, <xref:System.Windows.Window.ShowDialog%2A>.  
+ **ダイアログ ボックス**: <xref:System.Windows.Window.DialogResult%2A>, 、<xref:System.Windows.Window.ShowDialog%2A>です。  
   
- Additionally, <xref:System.Windows.Application> exposes special support for managing all of the windows in an application:  
+ さらに、 <xref:System.Windows.Application> のすべてのアプリケーションでウィンドウを管理するための特別なサポートを公開します。  
   
--   Application maintains a list of all the windows that are currently instantiated in the application. This list is exposed by the <xref:System.Windows.Application.Windows%2A> property.  
+-   アプリケーションでは、現在アプリケーションでインスタンス化されているすべてのウィンドウのリストを保持します。 この一覧がによって公開されている、 <xref:System.Windows.Application.Windows%2A> プロパティです。  
   
--   By default, <xref:System.Windows.Application.MainWindow%2A> is automatically set with a reference to the first <xref:System.Windows.Window> that is instantiated in an application. This thereby making the window the main application window.  
+-   既定では、 <xref:System.Windows.Application.MainWindow%2A> 最初への参照で自動的に設定されている <xref:System.Windows.Window> アプリケーションでインスタンス化されています。 そのため、このウィンドウ アプリケーションのメイン ウィンドウ。  
   
- A <xref:System.Windows.Window> can be implemented using markup, markup and code-behind, or code.  
+ A <xref:System.Windows.Window> マークアップ、マークアップおよび分離コード、またはコードを使用して実装できます。  
   
- <xref:System.Windows.Window> is primarily used to display windows and dialog boxes for standalone applications. However, for applications that require navigation at the window level, such as wizards, you can use <xref:System.Windows.Navigation.NavigationWindow> instead; <xref:System.Windows.Navigation.NavigationWindow> derives from <xref:System.Windows.Window> and extends it with browser-style navigation support.  
-  
-> [!NOTE]
->  Islands of navigable content can be incorporated into other content and content containers using <xref:System.Windows.Controls.Frame>.  
-  
- <xref:System.Windows.Window> needs `UnmanagedCode` security permission to be instantiated. This has the following consequences:  
-  
--   [!INCLUDE[TLA#tla_clickonce](~/includes/tlasharptla-clickonce-md.md)]-deployed standalone applications will request permission elevation when launched from either the Internet or Local Intranet zones.  
-  
--   [!INCLUDE[TLA2#tla_xbap#plural](~/includes/tla2sharptla-xbapsharpplural-md.md)] that request anything less than full permissions will not be able to instantiate windows or dialog boxes.  
-  
- For information about standalone application deployment and security considerations, see [WPF Security Strategy - Platform Security](~/docs/framework/wpf/wpf-security-strategy-platform-security.md).  
-  
- A <xref:System.Windows.Window> is a <xref:System.Windows.Controls.ContentControl>, which means that it can contain a single object of any type (such as a string, an image, or a panel). For more information, see the <xref:System.Windows.Controls.ContentControl> class. Also, <xref:System.Windows.Window> is a root element and, therefore, cannot be part of another element's content.  
+ <xref:System.Windows.Window> windows およびスタンドアロン アプリケーションのダイアログ ボックスを表示する、主に使用します。 ただし、ウィザードなど、ウィンドウ レベルのナビゲーションを必要とするアプリケーションを使用できます <xref:System.Windows.Navigation.NavigationWindow> 代わりに、 <xref:System.Windows.Navigation.NavigationWindow> から派生 <xref:System.Windows.Window> し、ブラウザ スタイルのナビゲーションのサポートを拡張します。  
   
 > [!NOTE]
->  The <xref:System.Windows.FrameworkElement.Height%2A>, <xref:System.Windows.FrameworkElement.Width%2A>, <xref:System.Windows.Window.Top%2A>, and <xref:System.Windows.Window.Left%2A> properties set on a <xref:System.Windows.Window> through a style will not be applied at run time.  
+>  使用して他のコンテンツおよびコンテンツのコンテナーにナビゲート可能なコンテンツの島を組み込むことが <xref:System.Windows.Controls.Frame>です。  
   
-## Customizing the Window Control  
- To apply the same property settings to multiple <xref:System.Windows.Window> controls, use the <xref:System.Windows.FrameworkElement.Style%2A> property. You can modify the default <xref:System.Windows.Controls.ControlTemplate> to give the control a unique appearance. For more information about creating a <xref:System.Windows.Controls.ControlTemplate>, see [Customizing the Appearance of an Existing Control by Creating a ControlTemplate](~/docs/framework/wpf/controls/customizing-the-appearance-of-an-existing-control.md).  To see the parts and states that are specific to the <xref:System.Windows.Window>, see [Window Styles and Templates](~/docs/framework/wpf/controls/window-styles-and-templates.md).  
+ <xref:System.Windows.Window> 必要な `UnmanagedCode` をインスタンス化するためのセキュリティ アクセス許可。 これは、次のような影響があります。  
   
- Dependency properties for this control might be set by the control’s default style.  If a property is set by a default style, the property might change from its default value when the control appears in the application. The default style is determined by which desktop theme is used when the application is running.  For more information, see [Default WPF Themes](http://go.microsoft.com/fwlink/?LinkID=158252).  
+-   [!INCLUDE[TLA#tla_clickonce](~/includes/tlasharptla-clickonce-md.md)]\-展開済みのスタンドアロン アプリケーションは、インターネットまたはローカル イントラネット ゾーンから起動すると、アクセス許可の昇格を要求します。  
+  
+-   [!INCLUDE[TLA2#tla_xbap#plural](~/includes/tla2sharptla-xbapsharpplural-md.md)] 何も依頼未満の完全なアクセス許可では、ウィンドウやダイアログ ボックスのインスタンスを作成できません。  
+  
+ スタンドアロン アプリケーションの配置とセキュリティの考慮事項については、次を参照してください。 [WPF のセキュリティ方針 \- プラットフォーム セキュリティ](http://msdn.microsoft.com/ja-jp/2a39a054-3e2a-4659-bcb7-8bcea490ba31)します。  
+  
+ A <xref:System.Windows.Window> は、 <xref:System.Windows.Controls.ContentControl>, 、つまり、任意の型 \(文字列、イメージ、パネルなど\) の 1 つのオブジェクトを含めることができます。 詳細については、<xref:System.Windows.Controls.ContentControl> クラスを参照してください。 また、 <xref:System.Windows.Window> がルートであり、そのため、別の要素のコンテンツの一部をすることはできません。  
   
 > [!NOTE]
->  Setting a visual property will only have an effect if that property is both present in <xref:System.Windows.Window> control's default template and is set by using a . You can find a list of visual properties in the "Changing the Visual Structure of a Control" section in [Customizing the Appearance of an Existing Control by Creating a ControlTemplate](~/docs/framework/wpf/controls/customizing-the-appearance-of-an-existing-control.md).  
+>  <xref:System.Windows.FrameworkElement.Height%2A>, 、<xref:System.Windows.FrameworkElement.Width%2A>, 、<xref:System.Windows.Window.Top%2A>, 、および <xref:System.Windows.Window.Left%2A> に設定されたプロパティ、 <xref:System.Windows.Window> スタイルでは適用されません実行時にします。  
+  
+## ウィンドウ コントロールのカスタマイズ  
+ 複数に同じプロパティ設定を適用する <xref:System.Windows.Window> コントロールを使用して、 <xref:System.Windows.FrameworkElement.Style%2A> プロパティです。 既定値を変更する <xref:System.Windows.Controls.ControlTemplate> コントロール固有の外観を与えるためです。 作成の詳細については、 <xref:System.Windows.Controls.ControlTemplate>, を参照してください [ControlTemplate を作成することで、既存のコントロールの外観のカスタマイズ](http://msdn.microsoft.com/ja-jp/678dd116-43a2-4b8c-82b5-6b826f126e31)します。  パーツおよびに固有の状態を確認する、 <xref:System.Windows.Window>, を参照してください [ウィンドウのスタイルとテンプレート](http://msdn.microsoft.com/ja-jp/2dfdf025-347b-4342-bf28-95206c273f35)します。  
+  
+ コントロールの既定のスタイルでは、このコントロールの依存関係プロパティを設定する場合があります。  プロパティが既定のスタイルが設定されている場合、アプリケーションでコントロールが表示されたときに、プロパティが既定値から変更可能性があります。 既定のスタイルは、デスクトップ テーマでは、アプリケーションが実行されているときに使用が決定されます。  詳細については、次を参照してください。 [Default WPF Themes](http://go.microsoft.com/fwlink/?LinkID=158252)します。  
+  
+> [!NOTE]
+>  Visual プロパティの設定は効果プロパティは、両方に存在する場合 <xref:System.Windows.Window> コントロールの既定のテンプレートとを使用して設定します。 「を変更する視覚的構造の、」の「コントロール」セクションで visual プロパティの一覧が見つかります [ControlTemplate 作成することで、既存のコントロールの外観のカスタマイズ](http://msdn.microsoft.com/ja-jp/678dd116-43a2-4b8c-82b5-6b826f126e31)します。  
   
    
   
-## Examples  
- The following example shows how a standard window is defined using only markup:  
+## 例  
+ 次の例は、ウィンドウの標準的なのマークアップのみを使用して定義します。  
   
- [!code-xaml[WindowSnippets#WindowMARKUPONLY](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/MarkupOnlyWindow.xaml#windowmarkuponly)]  
+ [!code-xml[WindowSnippets\#WindowMARKUPONLY](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/MarkupOnlyWindow.xaml#windowmarkuponly)]  
   
- The following example shows how a standard window is defined using only code:  
+ コードのみを使用して標準的なウィンドウを定義する方法を例を示します。  
   
- [!code-csharp[WindowSnippets#WindowCODEONLY](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/CodeOnlyWindow.cs#windowcodeonly)]
- [!code-vb[WindowSnippets#WindowCODEONLY](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowSnippets/visualbasic/codeonlywindow.vb#windowcodeonly)]  
+ [!code-csharp[WindowSnippets\#WindowCODEONLY](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/CodeOnlyWindow.cs#windowcodeonly)]
+ [!code-vb[WindowSnippets\#WindowCODEONLY](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowSnippets/visualbasic/codeonlywindow.vb#windowcodeonly)]  
   
- The following example shows how a standard window is defined using a combination of markup and code-behind.  
+ 次の例は、ウィンドウの標準的なのマークアップおよび分離コードの組み合わせを使用して定義します。  
   
- [!code-xaml[WindowSnippets#WindowXAML](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/MainWindow.xaml#windowxaml)]  
+ [!code-xml[WindowSnippets\#WindowXAML](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/MainWindow.xaml#windowxaml)]  
   
- [!code-csharp[WindowSnippets#WindowCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/MainWindow.xaml.cs#windowcodebehind)]
- [!code-vb[WindowSnippets#WindowCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowSnippets/visualbasic/mainwindow.xaml.vb#windowcodebehind)]  
+ [!code-csharp[WindowSnippets\#WindowCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowSnippets/CSharp/MainWindow.xaml.cs#windowcodebehind)]
+ [!code-vb[WindowSnippets\#WindowCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowSnippets/visualbasic/mainwindow.xaml.vb#windowcodebehind)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="M:System.Windows.Window.Show" />
+    <altmember cref="M:System.Windows.Window.ShowDialog" />
+    <altmember cref="P:System.Windows.Window.DialogResult" />
+    <altmember cref="T:System.Windows.Application" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -114,14 +118,15 @@
       </Attributes>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Window" /> class.</summary>
+        <summary>
+          <see cref="T:System.Windows.Window" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The constructor initializes the <xref:System.Windows.FrameworkElement.Width%2A>, <xref:System.Windows.FrameworkElement.Height%2A>, <xref:System.Windows.Window.Top%2A>, and <xref:System.Windows.Window.Left%2A> properties to their default <xref:System.Windows.Window> values.  
+## 解説  
+ コンス トラクターは、 <xref:System.Windows.FrameworkElement.Width%2A>, 、<xref:System.Windows.FrameworkElement.Height%2A>, 、<xref:System.Windows.Window.Top%2A>, 、および <xref:System.Windows.Window.Left%2A> プロパティを既定の <xref:System.Windows.Window> 値。  
   
- If a window is created within an <xref:System.AppDomain> that has an <xref:System.Windows.Application> object, the constructor adds the <xref:System.Windows.Window> object to the set of <xref:System.Windows.Application>-managed windows via the <xref:System.Windows.Application.Windows%2A> property of the <xref:System.Windows.Application> object.  
+ 内で、ウィンドウが作成された場合、 <xref:System.AppDomain> を持つ、 <xref:System.Windows.Application> オブジェクトのコンス トラクターを追加、 <xref:System.Windows.Window> オブジェクトのセットを <xref:System.Windows.Application>\-経由で windows の管理、 <xref:System.Windows.Application.Windows%2A> のプロパティ、 <xref:System.Windows.Application> オブジェクトです。  
   
  ]]></format>
         </remarks>
@@ -147,23 +152,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Attempts to bring the window to the foreground and activates it.</summary>
+        <summary>ウィンドウが前面に移動しようとしてアクティブ化します。</summary>
         <returns>
-          <see langword="true" /> if the <see cref="T:System.Windows.Window" /> was successfully activated; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合、 <see cref="T:System.Windows.Window" /> が正常に有効になっているそれ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The rules that determine whether the window is activated are the same as those used by the [!INCLUDE[TLA2#tla_win32](~/includes/tla2sharptla-win32-md.md)] `SetForegroundWindow` function (User32.dll).  
+## 解説  
+ ウィンドウがアクティブかどうかを決定する規則で使用されるものと同じ、 [!INCLUDE[TLA2#tla_win32](~/includes/tla2sharptla-win32-md.md)] `SetForegroundWindow` 関数 \(User32.dll\)。  
   
- If the window is activated in a [!INCLUDE[TLA#tla_wpf](~/includes/tlasharptla-wpf-md.md)] application that is not the user's foreground application, <xref:System.Windows.Application.Activated> event is raised.  
+ ウィンドウがアクティブ化される場合、 [!INCLUDE[TLA#tla_wpf](~/includes/tlasharptla-wpf-md.md)] ユーザーのフォア グラウンドのアプリケーションではないアプリケーションを <xref:System.Windows.Application.Activated> イベントが発生します。  
   
 > [!NOTE]
->  This method cannot be called when a window is hosted in a browser.  
+>  ウィンドウがブラウザーでホストされている場合、このメソッドを呼び出すことはできません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.UIPermission">for permission to activate a window. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></permission>
+        <altmember cref="E:System.Windows.Window.Activated" />
+        <altmember cref="E:System.Windows.Window.Deactivated" />
+        <altmember cref="P:System.Windows.Window.IsActive" />
       </Docs>
     </Member>
     <Member MemberName="Activated">
@@ -179,16 +190,16 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when a window becomes the foreground window.</summary>
+        <summary>ウィンドウがフォアグラウンド ウィンドウになったときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A window is activated (becomes the foreground window) when:  
+## 解説  
+ A window is activated \(becomes the foreground window\) when:  
   
 -   The window is first opened.  
   
--   A user switches to a window by selecting it with the mouse, pressing ALT+TAB, or from Task Manager.  
+-   A user switches to a window by selecting it with the mouse, pressing ALT\+TAB, or from Task Manager.  
   
 -   A user clicks the window's taskbar button.  
   
@@ -198,8 +209,14 @@
   
  An application can also be <xref:System.Windows.Application.Activated>.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="E:System.Windows.Window.Deactivated" />
+        <altmember cref="M:System.Windows.Window.Activate" />
+        <altmember cref="P:System.Windows.Window.IsActive" />
       </Docs>
     </Member>
     <Member MemberName="AllowsTransparency">
@@ -215,28 +232,31 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether a window's client area supports transparency.</summary>
+        <summary>取得またはウィンドウのクライアント領域が透明度をサポートするかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if the window supports transparency; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> ウィンドウが透明度をサポートしている場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the <xref:System.Windows.Controls.Control.Background%2A> property of a window is set to a transparent color, using <xref:System.Windows.Media.Brushes.Transparent%2A> for example, the window remains opaque. This means that the desktop and any running applications "beneath" the window cannot be seen. To enable this type of transparency, <xref:System.Windows.Window.AllowsTransparency%2A> must be set to `true`.  
+## 解説  
+ ときに、 <xref:System.Windows.Controls.Control.Background%2A> ウィンドウのプロパティが、透明に設定を使用したカラー <xref:System.Windows.Media.Brushes.Transparent%2A> ウィンドウは非透過的なままなどです。 つまり、デスクトップと、実行中のアプリケーション"beneath"ウィンドウを表示できません。 この種類の透明度を有効にする <xref:System.Windows.Window.AllowsTransparency%2A> に設定する必要があります `true`します。  
   
- <xref:System.Windows.Window.AllowsTransparency%2A> exists to facilitate the creation of non-rectangular windows, and, consequently, when <xref:System.Windows.Window.AllowsTransparency%2A> is set to `true`, a window's <xref:System.Windows.Window.WindowStyle%2A> property must be set to <xref:System.Windows.WindowStyle.None>.  
+ <xref:System.Windows.Window.AllowsTransparency%2A> 四角形以外の windows の作成を支援するが存在して、その結果、ときに <xref:System.Windows.Window.AllowsTransparency%2A> に設定されている `true`, 、ウィンドウの <xref:System.Windows.Window.WindowStyle%2A> にプロパティを設定する必要があります <xref:System.Windows.WindowStyle.None>します。  
   
 <a name="dependencyPropertyInfo_WindowAllowsTransparency"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.AllowsTransparencyProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.AllowsTransparencyProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">A window that has a <see cref="P:System.Windows.Window.WindowStyle" /> value of anything other than <see cref="F:System.Windows.WindowStyle.None" />.</exception>
+        <exception cref="T:System.InvalidOperationException">持つウィンドウ、 <see cref="P:System.Windows.Window.WindowStyle" /> 以外の値の値 <see cref="F:System.Windows.WindowStyle.None" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AllowsTransparencyProperty">
@@ -252,8 +272,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.AllowsTransparency" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.AllowsTransparency" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ArrangeOverride">
@@ -272,20 +301,25 @@
         <Parameter Name="arrangeBounds" Type="System.Windows.Size" />
       </Parameters>
       <Docs>
-        <param name="arrangeBounds">A <see cref="T:System.Windows.Size" /> that reflects the final size that the window should use to arrange itself and its children.</param>
-        <summary>Override this method to arrange and size a window and its child elements.</summary>
-        <returns>A <see cref="T:System.Windows.Size" /> that reflects the actual size that was used.</returns>
+        <param name="arrangeBounds">A <see cref="T:System.Windows.Size" /> ウィンドウが自体とその子を配置に使用する最終的なサイズを反映します。</param>
+        <summary>配置やウィンドウとその子要素のサイズを変更するには、このメソッドをオーバーライドします。</summary>
+        <returns>A <see cref="T:System.Windows.Size" /> 使用された実際のサイズを反映します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.ArrangeOverride%2A> is not called when the <xref:System.Windows.UIElement.Visibility%2A> property has a value of <xref:System.Windows.Visibility.Collapsed>. If the value of the <xref:System.Windows.UIElement.Visibility%2A> property is either <xref:System.Windows.Visibility.Hidden> or <xref:System.Windows.Visibility.Visible>, <xref:System.Windows.Window.ArrangeOverride%2A> is called.  
+## 解説  
+ <xref:System.Windows.Window.ArrangeOverride%2A> 場合に呼び出さない、 <xref:System.Windows.UIElement.Visibility%2A> プロパティの値を持つ <xref:System.Windows.Visibility.Collapsed>です。 場合の値、 <xref:System.Windows.UIElement.Visibility%2A> プロパティが、 <xref:System.Windows.Visibility.Hidden> または <xref:System.Windows.Visibility.Visible>, 、<xref:System.Windows.Window.ArrangeOverride%2A> が呼び出されます。  
   
 > [!NOTE]
->  When either <xref:System.Windows.Window.Show%2A> or <xref:System.Windows.Window.ShowDialog%2A> are called, the <xref:System.Windows.UIElement.Visibility%2A> property of a <xref:System.Windows.Window> is set to <xref:System.Windows.Visibility.Visible>.  
+>  ときにいずれか <xref:System.Windows.Window.Show%2A> または <xref:System.Windows.Window.ShowDialog%2A> を呼び出すと、 <xref:System.Windows.UIElement.Visibility%2A> のプロパティ、 <xref:System.Windows.Window> に設定されている <xref:System.Windows.Visibility.Visible>します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.FrameworkElement.ArrangeOverride(System.Windows.Size)" />
+        <altmember cref="M:System.Windows.Window.MeasureOverride(System.Windows.Size)" />
       </Docs>
     </Member>
     <Member MemberName="Close">
@@ -307,63 +341,68 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Manually closes a <see cref="T:System.Windows.Window" />.</summary>
+        <summary>手動で閉じる、 <see cref="T:System.Windows.Window" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.Windows.Window> can be closed using one of several, well-known, system-provided mechanisms located in its title bar, including:  
+## 解説  
+ A <xref:System.Windows.Window> いくつかは、いずれかを使用して閉じることがよく知られている、システムによって提供されるメカニズムは、そのなど、タイトル バーにあります。  
   
--   ALT+F4.  
+-   ALT キーを押しながら F4 キー。  
   
--   System menu &#124; **Close**.  
+-   システム メニュー &#124; **Close**.  
   
--   **Close** button.  
+-   **閉じる** \] ボタンをクリックします。  
   
- A <xref:System.Windows.Window> can also be closed using one of several well-known mechanisms within the client area that are provided by developers, including:  
+ A <xref:System.Windows.Window> を含めて、開発者から提供されているクライアント領域内のいくつかのよく知られているメカニズムのいずれかを使用して終了することもできます。  
   
--   **File** &#124; **Exit** on a main window.  
+-   **File** &#124; **終了** メイン ウィンドウにします。  
   
--   **File** &#124; **Close** or a **Close** button on a child window.  
-  
-> [!NOTE]
->  **OK** and **Cancel** buttons on a dialog box are also developer-provided, although will likely set <xref:System.Windows.Window.DialogResult%2A>, which automatically closes a window that was opened by calling <xref:System.Windows.Window.ShowDialog%2A>.  
-  
- These mechanisms require you to explicitly call <xref:System.Windows.Window.Close%2A> to close a window.  
+-   **File** &#124; **閉じる** または **閉じる** 子ウィンドウのボタンをクリックします。  
   
 > [!NOTE]
->  If a window, opened by calling <xref:System.Windows.Window.ShowDialog%2A>, and with a <xref:System.Windows.Controls.Button> with its <xref:System.Windows.Controls.Button.IsCancel%2A> property set to true, will automatically close when the button is either clicked, or ESC is pressed. If the window was opened using <xref:System.Windows.Window.Show%2A>, however, <xref:System.Windows.Window.Close%2A> must be explicitly called, such as from <xref:System.Windows.Controls.Primitives.ButtonBase.Click> event handler for the <xref:System.Windows.Controls.Button>.  
+>  **\[Ok\]** と **キャンセル** をダイアログ ボックスにボタンがもと、開発者が提供が、可能性は <xref:System.Windows.Window.DialogResult%2A>, 、呼び出すことによって開かれたウィンドウを自動的に終了する <xref:System.Windows.Window.ShowDialog%2A>です。  
   
- Closing a window causes the <xref:System.Windows.Window.Closing> event to be raised. If the <xref:System.Windows.Window.Closing> event isn't canceled, the following occurs:  
-  
--   The <xref:System.Windows.Window> is removed from <xref:System.Windows.Application.Windows%2A?displayProperty=fullName> (if an <xref:System.Windows.Application> object exists).  
-  
--   The <xref:System.Windows.Window> is removed from the owner <xref:System.Windows.Window> if the owner/owned relationship was established before the owned <xref:System.Windows.Window> was shown and after the owner <xref:System.Windows.Window> was opened.  
-  
--   The <xref:System.Windows.Window.Closed> event is raised.  
-  
--   Unmanaged resources created by the <xref:System.Windows.Window> are disposed.  
-  
--   If <xref:System.Windows.Window.ShowDialog%2A> was called to show the <xref:System.Windows.Window>, <xref:System.Windows.Window.ShowDialog%2A> returns.  
-  
- Closing a <xref:System.Windows.Window> causes any windows that it owns to be closed. Furthermore, closing a <xref:System.Windows.Window> may cause an application to stop running depending on how the <xref:System.Windows.Application.ShutdownMode%2A?displayProperty=fullName> property is set.  
+ これらのメカニズムを必要とすると、明示的に呼び出す <xref:System.Windows.Window.Close%2A> 、ウィンドウを閉じます。  
   
 > [!NOTE]
->  This method cannot be called when a window is hosted in a browser.  
+>  呼び出して、ウィンドウが開かれている場合 <xref:System.Windows.Window.ShowDialog%2A>, を使用して、 <xref:System.Windows.Controls.Button> とその <xref:System.Windows.Controls.Button.IsCancel%2A> プロパティが true に設定をボタンがクリックされたか、または esc キーが押されたときに自動的に閉じます。 使用して、ウィンドウが開かれた場合 <xref:System.Windows.Window.Show%2A>, 、ただし、 <xref:System.Windows.Window.Close%2A> からこのような明示的に呼び出す必要があります <xref:System.Windows.Controls.Primitives.ButtonBase.Click> のイベント ハンドラー、 <xref:System.Windows.Controls.Button>です。  
+  
+ ウィンドウを閉じると、 <xref:System.Windows.Window.Closing> イベントが発生します。 場合、 <xref:System.Windows.Window.Closing> イベントがキャンセルされていない次のようにします。  
+  
+-   <xref:System.Windows.Window> から削除 <xref:System.Windows.Application.Windows%2A?displayProperty=fullName> \(場合、 <xref:System.Windows.Application> オブジェクトが存在する\)。  
+  
+-   <xref:System.Windows.Window> 所有者から削除 <xref:System.Windows.Window> 所有者\/所有している関係が確立された場合、所有する前に <xref:System.Windows.Window> が表示された前後所有者 <xref:System.Windows.Window> を開きました。  
+  
+-   <xref:System.Windows.Window.Closed> イベントが発生します。  
+  
+-   アンマネージ リソースによって作成された、 <xref:System.Windows.Window> に破棄されます。  
+  
+-   場合 <xref:System.Windows.Window.ShowDialog%2A> 表示に対して呼び出された、 <xref:System.Windows.Window>, 、<xref:System.Windows.Window.ShowDialog%2A> を返します。  
+  
+ 閉じる、 <xref:System.Windows.Window> が原因で終了する、所有するすべての windows です。 さらに、終了、 <xref:System.Windows.Window> 方法に応じて実行を停止するアプリケーションが発生する可能性があります <xref:System.Windows.Application.ShutdownMode%2A?displayProperty=fullName> プロパティを設定します。  
+  
+> [!NOTE]
+>  ウィンドウがブラウザーでホストされている場合、このメソッドを呼び出すことはできません。  
   
    
   
-## Examples  
- The following example shows a **File** &#124; **Exit** menu being handled to explicitly call <xref:System.Windows.Window.Close%2A>.  
+## 例  
+ 例を次に、 **ファイル** &#124; **終了** を明示的に呼び出す処理されているメニュー <xref:System.Windows.Window.Close%2A>します。  
   
- [!code-xaml[WindowCloseSnippets#WindowCloseXAML](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowCloseSnippets/CSharp/MainWindow.xaml#windowclosexaml)]  
+ [!code-xml[WindowCloseSnippets\#WindowCloseXAML](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowCloseSnippets/CSharp/MainWindow.xaml#windowclosexaml)]  
   
- [!code-csharp[WindowCloseSnippets#WindowCloseCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowCloseSnippets/CSharp/MainWindow.xaml.cs#windowclosecodebehind)]
- [!code-vb[WindowCloseSnippets#WindowCloseCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowCloseSnippets/visualbasic/mainwindow.xaml.vb#windowclosecodebehind)]  
+ [!code-csharp[WindowCloseSnippets\#WindowCloseCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowCloseSnippets/CSharp/MainWindow.xaml.cs#windowclosecodebehind)]
+ [!code-vb[WindowCloseSnippets\#WindowCloseCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowCloseSnippets/visualbasic/mainwindow.xaml.vb#windowclosecodebehind)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.UIPermission">for permission to use all windows and user input events without restriction. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></permission>
+        <altmember cref="M:System.Windows.Window.Show" />
+        <altmember cref="M:System.Windows.Window.ShowDialog" />
+        <altmember cref="P:System.Windows.Window.DialogResult" />
+        <altmember cref="P:System.Windows.Window.Owner" />
+        <altmember cref="P:System.Windows.Window.OwnedWindows" />
       </Docs>
     </Member>
     <Member MemberName="Closed">
@@ -379,17 +418,25 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the window is about to close.</summary>
+        <summary>ウィンドウが閉じるときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Once this event is raised, a window cannot be prevented from closing.  
+## 解説  
+ このイベントが発生した後、ウィンドウを閉じるを防ぐことはできません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="P:System.Windows.UIElement.Visibility" /> is set, or <see cref="M:System.Windows.Window.Show" />, <see cref="M:System.Windows.Window.ShowDialog" />, or <see cref="M:System.Windows.Window.Hide" /> is called while a window is closing.</exception>
+          <see cref="P:System.Windows.UIElement.Visibility" /> 設定すると、または <see cref="M:System.Windows.Window.Show" />, 、<see cref="M:System.Windows.Window.ShowDialog" />, 、または <see cref="M:System.Windows.Window.Hide" /> ウィンドウを閉じて中に呼び出されます。</exception>
+        <altmember cref="M:System.Windows.Window.Close" />
+        <altmember cref="E:System.Windows.Window.Closing" />
+        <altmember cref="M:System.Windows.Application.Shutdown" />
+        <altmember cref="P:System.Windows.Application.ShutdownMode" />
+        <altmember cref="E:System.Windows.Application.SessionEnding" />
       </Docs>
     </Member>
     <Member MemberName="Closing">
@@ -405,30 +452,30 @@
         <ReturnType>System.ComponentModel.CancelEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs directly after <see cref="M:System.Windows.Window.Close" /> is called, and can be handled to cancel window closure.</summary>
+        <summary>直後に発生する <see cref="M:System.Windows.Window.Close" /> が呼び出され、処理することで、ウィンドウのクロージャをキャンセルします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.Closing> can be handled to detect when a window is being closed (for example, when <xref:System.Windows.Window.Close%2A> is called). Furthermore, <xref:System.Windows.Window.Closing> can be used to prevent a window from closing. To prevent a window from closing, you can set the <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> property of the <xref:System.ComponentModel.CancelEventArgs> argument to `true`.  
+## 解説  
+ <xref:System.Windows.Window.Closing> ウィンドウが閉じられるときを検出するために処理することができます \(ときなど、 <xref:System.Windows.Window.Close%2A> と呼びます\)。 さらに、 <xref:System.Windows.Window.Closing> が閉じないようにするのには使用できます。 ウィンドウの終了を回避するのに設定することができます、 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> のプロパティ、 <xref:System.ComponentModel.CancelEventArgs> 引数 `true`します。  
   
- The <xref:System.Windows.Window.Closing> event is raised when <xref:System.Windows.Window.Close%2A> is called, if a window's Close button is clicked, or if the user presses ALT+F4.  
+ <xref:System.Windows.Window.Closing> イベントが発生したときに <xref:System.Windows.Window.Close%2A> と呼ばれる場合は、ウィンドウの閉じるボタンがクリックされた場合、または alt キーを押しながら f4 キーを押した場合。  
   
- If an owned window was opened by its owner window using <xref:System.Windows.Window.Show%2A>, and the owner window is closed, the owned window's <xref:System.Windows.Window.Closing> event is not raised. If the owner of a window is closed (see <xref:System.Windows.Window.Owner%2A>), <xref:System.Windows.Window.Closing> is not raised on the owned window.  
+ その所有者を使用してウィンドウによって所有されるウィンドウが開いていたかどうか <xref:System.Windows.Window.Show%2A>, 、および所有者は、ウィンドウが閉じられる、所有されているウィンドウの <xref:System.Windows.Window.Closing> イベントは発生しません。 ウィンドウの所有者が閉じている場合 \(を参照してください <xref:System.Windows.Window.Owner%2A>\)、 <xref:System.Windows.Window.Closing> 所有されるウィンドウでは発生しません。  
   
- If <xref:System.Windows.Application.Shutdown%2A> is called, the <xref:System.Windows.Window.Closing> event for each window is raised. However, if <xref:System.Windows.Window.Closing> is canceled, cancellation is ignored.  
+ 場合 <xref:System.Windows.Application.Shutdown%2A> が呼び出される、 <xref:System.Windows.Window.Closing> 各ウィンドウのイベントが発生します。 ただし場合、 <xref:System.Windows.Window.Closing> が取り消されると、キャンセルが無視されます。  
   
- If a session ends because a user logs off or shuts down, <xref:System.Windows.Window.Closing> is not raised; handle <xref:System.Windows.Application.SessionEnding> to implement code that cancels application closure.  
+ ユーザーのログオフまたはシャット ダウンするために、セッションが終了した場合 <xref:System.Windows.Window.Closing> は発生しません。 処理 <xref:System.Windows.Application.SessionEnding> アプリケーション クロージャをキャンセルするコードを実装します。  
   
- If you want to show and hide a window multiple times during the lifetime of an application, and you don't want to reinstantiate the window each time you show it, you can handle the <xref:System.Windows.Window.Closing> event, cancel it, and call the <xref:System.Windows.Window.Hide%2A> method. Then, you can call <xref:System.Windows.Window.Show%2A> on the same instance to reopen it.  
+ 表示し、アプリケーションの有効期間中に複数回ウィンドウを非表示にして、ウィンドウのたびに再インスタンス化したくない場合は、これを表示する、処理できる、 <xref:System.Windows.Window.Closing> イベント、キャンセルするか、および呼び出し、 <xref:System.Windows.Window.Hide%2A> メソッドです。 次に、呼び出します <xref:System.Windows.Window.Show%2A> に開き直すの同じインスタンスでします。  
   
    
   
-## Examples  
- The following example demonstrates a <xref:System.Windows.Window> that determines whether it needs user intervention to close.  
+## 例  
+ 次の例は、 <xref:System.Windows.Window> を閉じるには、ユーザーが必要かどうかを決定します。  
   
- [!code-xaml[WindowClosingSnippets#WindowClosingXAML1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowClosingSnippets/CSharp/DataWindow.xaml#windowclosingxaml1)]  
-[!code-xaml[WindowClosingSnippets#WindowClosingXAML2](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowClosingSnippets/CSharp/DataWindow.xaml#windowclosingxaml2)]  
+ [!code-xml[WindowClosingSnippets#WindowClosingXAML1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowClosingSnippets/CSharp/DataWindow.xaml#windowclosingxaml1)]  
+[!code-xml[WindowClosingSnippets#WindowClosingXAML2](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowClosingSnippets/CSharp/DataWindow.xaml#windowclosingxaml2)]  
   
  [!code-csharp[WindowClosingSnippets#WindowClosingCODEBEHIND1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowClosingSnippets/CSharp/DataWindow.xaml.cs#windowclosingcodebehind1)]
  [!code-vb[WindowClosingSnippets#WindowClosingCODEBEHIND1](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowClosingSnippets/visualbasic/datawindow.xaml.vb#windowclosingcodebehind1)]  
@@ -438,7 +485,10 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="P:System.Windows.UIElement.Visibility" /> is set, or <see cref="M:System.Windows.Window.Show" />, <see cref="M:System.Windows.Window.ShowDialog" />, or <see cref="M:System.Windows.Window.Close" /> is called while a window is closing.</exception>
+          <see cref="P:System.Windows.UIElement.Visibility" /> 設定すると、または <see cref="M:System.Windows.Window.Show" />, 、<see cref="M:System.Windows.Window.ShowDialog" />, 、または <see cref="M:System.Windows.Window.Close" /> ウィンドウを閉じて中に呼び出されます。</exception>
+        <altmember cref="P:System.Windows.Application.ShutdownMode" />
+        <altmember cref="M:System.Windows.Window.Close" />
+        <altmember cref="E:System.Windows.Window.Closed" />
       </Docs>
     </Member>
     <Member MemberName="ContentRendered">
@@ -454,15 +504,20 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs after a window's content has been rendered.</summary>
+        <summary>ウィンドウのコンテンツがレンダリングされた後に発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  If the window has no content, this event is not raised.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Controls.ContentControl.Content" />
+        <altmember cref="E:System.Windows.FrameworkElement.Loaded" />
       </Docs>
     </Member>
     <Member MemberName="Deactivated">
@@ -478,16 +533,16 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when a window becomes a background window.</summary>
+        <summary>ウィンドウが背景ウィンドウになったときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A window is deactivated (becomes a background window) when:  
+## 解説  
+ A window is deactivated \(becomes a background window\) when:  
   
 -   A user switches to another window in the current application.  
   
--   A user switches to the window in another application by using ALT+TAB or by using Task Manager.  
+-   A user switches to the window in another application by using ALT\+TAB or by using Task Manager.  
   
 -   A user clicks the taskbar button for a window in another application.  
   
@@ -497,8 +552,14 @@
   
  An application can also be <xref:System.Windows.Application.Deactivated>.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="E:System.Windows.Window.Activated" />
+        <altmember cref="M:System.Windows.Window.Activate" />
+        <altmember cref="P:System.Windows.Window.IsActive" />
       </Docs>
     </Member>
     <Member MemberName="DialogResult">
@@ -522,55 +583,55 @@
         <ReturnType>System.Nullable&lt;System.Boolean&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the dialog result value, which is the value that is returned from the <see cref="M:System.Windows.Window.ShowDialog" /> method.</summary>
-        <value>A <see cref="T:System.Nullable`1" /> value of type <see cref="T:System.Boolean" />. The default is <see langword="false" />.</value>
+        <summary>取得または設定から返される値は、ダイアログの結果の値、 <see cref="M:System.Windows.Window.ShowDialog" /> メソッドです。</summary>
+        <value>A <see cref="T:System.Nullable`1" /> 型の値 <see cref="T:System.Boolean" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.DialogResult%2A> can be used from the code that showed a dialog box to determine whether a user accepted (`true`) or canceled (`false`) the dialog box. If a dialog box was accepted, this signifies to the code that opened the dialog box to retrieve the data that was collected by the user and process it. If a dialog box was canceled, however, this signifies that calling code should stop any further processing.  
+## 解説  
+ <xref:System.Windows.Window.DialogResult%2A> ユーザーが受け入れるかどうかを判断する\] ダイアログ ボックスが映っているコードから使用することができます \(`true`\) または取り消し済み \(`false`\)\] ダイアログ ボックス。 ダイアログ ボックスが受け入れられた場合は、コードがユーザーによって収集されたデータを取得し、それを処理するには、ダイアログ ボックスを開くことにこのことを示します。 ダイアログ ボックスが取り消された場合、これは示してコードの呼び出しを停止する追加の処理します。  
   
- By default, a dialog box is canceled when a user does one of the following:  
+ 既定では、ユーザーが、次のいずれかと、ダイアログ ボックスが取り消されます。  
   
--   PressesALT+F4.  
+-   押されたalt キーを押しながら f4 キー。  
   
--   Clicks the **Close** button.  
+-   クリックする、 **閉じる** \] ボタンをクリックします。  
   
--   Selects **Close** from the System menu.  
+-   選択した **閉じる** システム メニューからです。  
   
- In all of these cases, <xref:System.Windows.Window.DialogResult%2A> is `false` by default.  
+ このような場合のすべてのページで <xref:System.Windows.Window.DialogResult%2A> は `false` 既定では。  
   
- A dialog box typically provides a special button to cancel a dialog, which is the button whose <xref:System.Windows.Controls.Button.IsCancel%2A> property is set to `true`. A button configured this way will automatically close a window when either it is pressed, or when the ESC key is pressed. In either of these cases, <xref:System.Windows.Window.DialogResult%2A> remains `false`.  
+ ダイアログ ボックスが、ボタンは、ダイアログ ボックスをキャンセルする特殊なボタンが公開されていますが <xref:System.Windows.Controls.Button.IsCancel%2A> にプロパティが設定されている `true`します。 このように構成されているボタンでは、押すか、または ESC キーが押されたときに、ウィンドウは自動的に閉じます。 このような場合は、のいずれかで <xref:System.Windows.Window.DialogResult%2A> まま `false`します。  
   
- A dialog box also typically provides an accept button, which is the button whose <xref:System.Windows.Controls.Button.IsDefault%2A> property is set to `true`. A button configured this way will raise its <xref:System.Windows.Controls.Primitives.ButtonBase.Click> event when either it or the ENTER key is pressed. However, it won't automatically close the dialog box, nor will it set <xref:System.Windows.Window.DialogResult%2A> to `true`. You need to manually write this code, usually from the <xref:System.Windows.Controls.Primitives.ButtonBase.Click> event handler for the default button.  
+ ダイアログ ボックスでは、ボタン、\[accept\] ボタンも通常は提供が <xref:System.Windows.Controls.Button.IsDefault%2A> にプロパティが設定されている `true`します。 このように構成されているボタンを発生させる、 <xref:System.Windows.Controls.Primitives.ButtonBase.Click> イベントか、ENTER キーが押されるとします。 ただし、ダイアログ ボックスに自動的に閉じないや設定は <xref:System.Windows.Window.DialogResult%2A> に `true`します。 このコードをから通常手動で作成する必要があります、 <xref:System.Windows.Controls.Primitives.ButtonBase.Click> 既定のボタンのイベント ハンドラーです。  
   
- <xref:System.Windows.Window.DialogResult%2A> is `null` when the dialog box is shown but neither accepted nor canceled.  
+ <xref:System.Windows.Window.DialogResult%2A> `null` \] ダイアログ ボックスが表示されている場合、許容されるも取り消されました。  
   
- After a dialog box closes, you can get the dialog result from the value returned by <xref:System.Windows.Window.ShowDialog%2A> method, or by inspecting the <xref:System.Windows.Window.DialogResult%2A> property.  
+ によって返された値からダイアログ結果を得ることができます\] ダイアログ ボックスを閉じた後 <xref:System.Windows.Window.ShowDialog%2A> メソッド、またはを調べることによって、 <xref:System.Windows.Window.DialogResult%2A> プロパティです。  
   
- <xref:System.Windows.Window.DialogResult%2A> can only be set when a <xref:System.Windows.Window> is opened by calling its <xref:System.Windows.Window.ShowDialog%2A> method.  
+ <xref:System.Windows.Window.DialogResult%2A> ときのみ設定可能、 <xref:System.Windows.Window> を呼び出すことによって開くその <xref:System.Windows.Window.ShowDialog%2A> メソッドです。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
    
   
-## Examples  
- The following example shows how to configure an OK button and a Cancel button to return the appropriate <xref:System.Windows.Window.DialogResult%2A>.  
+## 例  
+ 次の例は、\[ok\] ボタンと \[キャンセル\] ボタンを返す、適切なを構成する方法を示しています。 <xref:System.Windows.Window.DialogResult%2A>します。  
   
- [!code-xaml[WindowDialogResultSnippets#WindowDialogResultXAML](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowDialogResultSnippets/CSharp/DialogBox.xaml#windowdialogresultxaml)]  
+ [!code-xml[WindowDialogResultSnippets\#WindowDialogResultXAML](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowDialogResultSnippets/CSharp/DialogBox.xaml#windowdialogresultxaml)]  
   
- [!code-csharp[WindowDialogResultSnippets#WindowDialogResultCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowDialogResultSnippets/CSharp/DialogBox.xaml.cs#windowdialogresultcodebehind)]
- [!code-vb[WindowDialogResultSnippets#WindowDialogResultCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowDialogResultSnippets/visualbasic/dialogbox.xaml.vb#windowdialogresultcodebehind)]  
+ [!code-csharp[WindowDialogResultSnippets\#WindowDialogResultCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowDialogResultSnippets/CSharp/DialogBox.xaml.cs#windowdialogresultcodebehind)]
+ [!code-vb[WindowDialogResultSnippets\#WindowDialogResultCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowDialogResultSnippets/visualbasic/dialogbox.xaml.vb#windowdialogresultcodebehind)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="P:System.Windows.Window.DialogResult" /> is set before a window is opened by calling <see cref="M:System.Windows.Window.ShowDialog" />.  
+          <see cref="P:System.Windows.Window.DialogResult" /> 呼び出して、ウィンドウが開かれる前に設定されている <see cref="M:System.Windows.Window.ShowDialog" />します。  
   
- -or-  
+ または  
   
- <see cref="P:System.Windows.Window.DialogResult" /> is set on a window that is opened by calling <see cref="M:System.Windows.Window.Show" />.</exception>
+ <see cref="P:System.Windows.Window.DialogResult" /> 呼び出しによって開かれたウィンドウで設定されている <see cref="M:System.Windows.Window.Show" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="DpiChanged">
@@ -586,7 +647,7 @@
         <ReturnType>System.Windows.DpiChangedEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs after the DPI of the screen on which the Window is displayed changes.</summary>
+        <summary>Window が表示されている画面の DPI が変更されたあとに発生します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -603,7 +664,7 @@
         <ReturnType>System.Windows.RoutedEvent</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A <see cref="T:System.Windows.RoutedEvent" /> for when the DPI of the screen the Window is on changes.</summary>
+        <summary>画面 Window の DPI が変更中であるときの <see cref="T:System.Windows.RoutedEvent" />。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -626,30 +687,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Allows a window to be dragged by a mouse with its left button down over an exposed area of the window's client area.</summary>
+        <summary>ウィンドウのクライアント領域の表示部分でマウスの左ボタンを押したドラッグされるウィンドウを使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The left mouse button must be down when <xref:System.Windows.Window.DragMove%2A> is called. One way to detect when the left mouse button is pressed is to handle the <xref:System.Windows.UIElement.MouseLeftButtonDown> event.  
+## 解説  
+ マウスの左ボタンがダウンする必要があります <xref:System.Windows.Window.DragMove%2A> が呼び出されます。 マウスの左ボタンが押されたときを検出する方法の 1 つは、処理、 <xref:System.Windows.UIElement.MouseLeftButtonDown> イベントです。  
   
- When <xref:System.Windows.Window.DragMove%2A> is called, the left mouse button must be depressed over an exposed area of the window's client area.  
+ <xref:System.Windows.Window.DragMove%2A> が呼び出されると、左側のウィンドウのクライアント領域の表示部分でマウス ボタンが押される必要があります。  
   
 > [!NOTE]
->  This method cannot be called when a window is hosted in a browser.  
+>  ウィンドウがブラウザーでホストされている場合、このメソッドを呼び出すことはできません。  
   
    
   
-## Examples  
- The following example shows how to override <xref:System.Windows.UIElement.OnMouseLeftButtonDown%2A> to call <xref:System.Windows.Window.DragMove%2A>.  
+## 例  
+ 次の例は、上書きする方法を示しています。 <xref:System.Windows.UIElement.OnMouseLeftButtonDown%2A> を呼び出す <xref:System.Windows.Window.DragMove%2A>します。  
   
- [!code-csharp[WindowDragMoveSnippets#CallWindowDragMoveCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowDragMoveSnippets/CSharp/MainWindow.xaml.cs#callwindowdragmovecodebehind)]
- [!code-vb[WindowDragMoveSnippets#CallWindowDragMoveCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowDragMoveSnippets/visualbasic/mainwindow.xaml.vb#callwindowdragmovecodebehind)]  
+ [!code-csharp[WindowDragMoveSnippets\#CallWindowDragMoveCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowDragMoveSnippets/CSharp/MainWindow.xaml.cs#callwindowdragmovecodebehind)]
+ [!code-vb[WindowDragMoveSnippets\#CallWindowDragMoveCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowDragMoveSnippets/visualbasic/mainwindow.xaml.vb#callwindowdragmovecodebehind)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The left mouse button is not down.</exception>
+        <exception cref="T:System.InvalidOperationException">マウスの左ボタンが押されていません。</exception>
         <permission cref="T:System.Security.Permissions.UIPermission">for permission to drag a window. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></permission>
+        <altmember cref="E:System.Windows.Window.LocationChanged" />
       </Docs>
     </Member>
     <Member MemberName="GetWindow">
@@ -668,12 +730,20 @@
         <Parameter Name="dependencyObject" Type="System.Windows.DependencyObject" />
       </Parameters>
       <Docs>
-        <param name="dependencyObject">The dependency object.</param>
-        <summary>Returns a reference to the <see cref="T:System.Windows.Window" /> object that hosts the content tree within which the dependency object is located.</summary>
-        <returns>A <see cref="T:System.Windows.Window" /> reference to the host window.</returns>
-        <remarks>To be added.</remarks>
+        <param name="dependencyObject">依存オブジェクト。</param>
+        <summary>参照を返す、 <see cref="T:System.Windows.Window" /> コンテンツに依存関係オブジェクトが存在するツリーをホストするオブジェクト。</summary>
+        <returns>A <see cref="T:System.Windows.Window" /> ホスト ウィンドウへの参照。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="dependencyObject" /> is null.</exception>
+          <paramref name="dependencyObject" /> が null です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Hide">
@@ -690,21 +760,27 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Makes a window invisible.</summary>
+        <summary>ウィンドウは、見えなくなります。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A window is not closed when it is hidden, and neither the <xref:System.Windows.Window.Closing> nor <xref:System.Windows.Window.Closed> event is raised. Instead, the window's <xref:System.Windows.UIElement.Visibility%2A> property is set to <xref:System.Windows.Visibility?displayProperty=fullName>.  
+## 解説  
+ 表示されていない場合、ウィンドウが閉じられていないとは、どちらも、 <xref:System.Windows.Window.Closing> も <xref:System.Windows.Window.Closed> イベントが発生します。 代わりに、ウィンドウの <xref:System.Windows.UIElement.Visibility%2A> にプロパティが設定されている <xref:System.Windows.Visibility.Hidden?displayProperty=fullName>します。  
   
- If a window is the application's <xref:System.Windows.Application.MainWindow%2A> and the application's <xref:System.Windows.Application.ShutdownMode%2A> is <xref:System.Windows.ShutdownMode.OnMainWindowClose>, the application does not shut down. Likewise, the application does not shut down if a window is the only window and the application's shutdown mode is <xref:System.Windows.ShutdownMode.OnLastWindowClose>.  
+ ウィンドウが、アプリケーションの場合 <xref:System.Windows.Application.MainWindow%2A> およびアプリケーションの <xref:System.Windows.Application.ShutdownMode%2A> は <xref:System.Windows.ShutdownMode.OnMainWindowClose>, 、アプリケーションがシャット ダウンしません。 同様に、アプリケーションが停止されない場合は、ウィンドウのみのウィンドウでは、アプリケーションのシャット ダウン モードは <xref:System.Windows.ShutdownMode.OnLastWindowClose>です。  
   
- If you want to show and hide a window multiple times during the lifetime of an application, and you don't want to re-instantiate the window each time you show it, you can handle the <xref:System.Windows.Window.Closing> event, cancel it, and call the <xref:System.Windows.Window.Hide%2A> method. Then, you can call <xref:System.Windows.Window.Show%2A> on the same instance to re-open it.  
+ 表示して、アプリケーションの有効期間中に複数回ウィンドウを非表示にして、毎回ウィンドウを再インスタンス化したくない場合は、これを表示する、処理できる、 <xref:System.Windows.Window.Closing> イベント、キャンセルするか、および呼び出し、 <xref:System.Windows.Window.Hide%2A> メソッドです。 次に、呼び出します <xref:System.Windows.Window.Show%2A> を再び開くに同じインスタンスでします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="M:System.Windows.Window.Hide" /> is called on a window that is closing (<see cref="E:System.Windows.Window.Closing" />) or has been closed (<see cref="E:System.Windows.Window.Closed" />).</exception>
+          <see cref="M:System.Windows.Window.Hide" /> ウィンドウを閉じている途中で呼び出されます \(<see cref="E:System.Windows.Window.Closing" />\) または閉じられて \(<see cref="E:System.Windows.Window.Closed" />\)。</exception>
+        <altmember cref="M:System.Windows.Window.Show" />
+        <altmember cref="M:System.Windows.Window.ShowDialog" />
+        <altmember cref="M:System.Windows.Window.Close" />
       </Docs>
     </Member>
     <Member MemberName="Icon">
@@ -725,57 +801,58 @@
         <ReturnType>System.Windows.Media.ImageSource</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a window's icon.</summary>
-        <value>An <see cref="T:System.Windows.Media.ImageSource" /> object that represents the icon.</value>
+        <summary>取得またはウィンドウのアイコンを設定します。</summary>
+        <value>
+          <see cref="T:System.Windows.Media.ImageSource" /> アイコンを表すオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- [!INCLUDE[TLA#tla_wpf](~/includes/tlasharptla-wpf-md.md)] standalone applications have two types of icons:  
+## 解説  
+ [!INCLUDE[TLA#tla_wpf](~/includes/tlasharptla-wpf-md.md)] スタンドアロン アプリケーションでは、2 種類のアイコンを設定します。  
   
--   One assembly icon, which is specified by using the `<ApplicationIcon>` property in the application's project build file. This icon is used as the desktop icon for an assembly.  
+-   1 つのアセンブリのアイコンを使用して指定されている、 `<ApplicationIcon>` アプリケーションのプロジェクト内のプロパティは、ファイルをビルドします。 このアイコンは、アセンブリのデスクトップのアイコンとして使用されます。  
   
     > [!NOTE]
-    >  When debugging in Visual Studio, your icon may not appear due to the hosting process. If you run the executable, the icon will appear. For more information, see [Hosting Process (vshost.exe)](http://msdn.microsoft.com/library/c6b9e2be-f18d-4d75-ac52-56d55784734b).  
+    >  Visual Studio でのデバッグ時のホスティング プロセスによって、アイコンが表示されません。 実行可能ファイルを実行する場合は、アイコンが表示されます。 詳細については、「[Hosting Process \(vshost.exe\)](http://msdn.microsoft.com/ja-jp/c6b9e2be-f18d-4d75-ac52-56d55784734b)」を参照してください。  
   
--   One icon per window that is specified by setting <xref:System.Windows.Window.Icon%2A>. For each window, this icon is used in its title bar, its task bar button, and in its ALT-TAB application selection list entry.  
+-   1 つのアイコンを設定して指定されているウィンドウごと <xref:System.Windows.Window.Icon%2A>します。 各ウィンドウのタイトル バー、タスク バー ボタン、および \[ALT キーと TAB アプリケーションの選択リスト エントリにこのアイコンが使用されます。  
   
- A [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] window always displays an icon. When one is not provided by setting <xref:System.Windows.Window.Icon%2A>, [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] chooses an icon to display based on the following rules:  
+ A [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] ウィンドウには、常にアイコンが表示されます。 設定して指定されていないときに <xref:System.Windows.Window.Icon%2A>, 、[!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] 次の規則に基づいて表示するアイコンを選択します。  
   
-1.  Use the assembly icon, if specified.  
+1.  指定した場合は、アセンブリのアイコンを使用します。  
   
-2.  If the assembly icon is not specified, use the default [!INCLUDE[TLA#tla_win](~/includes/tlasharptla-win-md.md)] icon.  
+2.  アセンブリのアイコンが指定されていない場合は、既定値を使用して [!INCLUDE[TLA#tla_win](~/includes/tlasharptla-win-md.md)] アイコン。  
   
- If you use <xref:System.Windows.Window.Icon%2A> to specify a custom window icon, you can restore the default application icon by setting <xref:System.Windows.Window.Icon%2A> to `null`.  
+ 使用する場合 <xref:System.Windows.Window.Icon%2A> カスタム ウィンドウ アイコンを指定するには、設定して既定のアプリケーション アイコンを戻すことができます <xref:System.Windows.Window.Icon%2A> に `null`します。  
   
- A single icon can be used in a variety of ways in [!INCLUDE[TLA#tla_mswin](~/includes/tlasharptla-mswin-md.md)], including being shown in the title bar of a window, the task bar for a window, the ALT+TAB file selection list. Each of these shows the icon using a different size; a 16x16 pixel icon is displayed in the title bar of a window and in the task bar, while a 32x32 pixel icon is displayed in the ALT+TAB file selection list. Some applications, like [!INCLUDE[TLA#tla_winexpl](~/includes/tlasharptla-winexpl-md.md)], provide a **View** menu that allows you to choose the size of the icon you'd like to view.  
+ 1 つのアイコンは、さまざまな方法で使用できます [!INCLUDE[TLA#tla_mswin](~/includes/tlasharptla-mswin-md.md)], 、alt キーを押しながら TAB ファイルの選択リストを含むウィンドウで、ウィンドウのタスク バーのタイトル バーに表示されています。 別のサイズを使用するアイコンが表示これらの各alt キーを押しながら TAB ファイルの選択リストで、サイズが 32 × 32 ピクセルのアイコンが表示されている間、ウィンドウのタイトル バーおよびタスク バーで、16 x 16 ピクセルのアイコンが表示されます。 などのアプリケーションによっては、 [!INCLUDE[TLA#tla_winexpl](~/includes/tlasharptla-winexpl-md.md)], 、提供、 **ビュー** メニューを表示するアイコンのサイズを選択することができます。  
   
- To cater to the various display sizes, an icon file is composed of one or more actual icons where each one represents a version of the icon that targets a specific size and color depth. For example, one icon may only have a single 16x16 pixel icon with 16 colors, while another may contain 16x16 pixel and 32x32 pixel icons with both 16 colors and 256 colors.  
+ 要求を満たすさまざまな画面サイズ、アイコン ファイルは 1 つまたは複数の実際アイコンを使用して、それぞれが特定のサイズと色深度を対象とするアイコンのバージョンを表すので構成されます。 たとえば、16 x 16 ピクセル、16 色と 256 色の両方でサイズが 32 × 32 ピクセルのアイコンが含まれている可能性があります中に、1 つのアイコンはの 16 色は、1 つの 16 x 16 ピクセル アイコンを必要のみがあります。  
   
- If icons for all possible sizes and color depths exist within an icon file, <xref:System.Windows.Window> will use the appropriate icon. If an icon file contains only a subset of all the possible icons, <xref:System.Windows.Window> uses the next most appropriate icon in order of decreasing sizes and color depth.  
+ アイコン ファイル内のすべての使用可能なサイズと色深度を示すアイコンが存在する場合 <xref:System.Windows.Window> 、適切なアイコンを使用します。 アイコン ファイルには、すべての可能なアイコンのサブセットのみが含まれている場合 <xref:System.Windows.Window> サイズと色の解像度が高い順に次の最も適切なアイコンを使用します。  
   
- The result is that an icon will always be used by <xref:System.Windows.Window>, although the icon used may not target the required size and color depth. For example, a 16x16 pixel icon with 16 colors may be used for display as a 32x32 pixel icon with 256 colors. This can cause undesirable visual effects, such as pixilation, but may be avoided by creating icons for all targeted sizes and color depths.  
+ アイコンは常に使用することになります <xref:System.Windows.Window>, に使用されるアイコンが必要なサイズと色深度対象としないことができます。 たとえば、表示の場合、256 色、サイズが 32 × 32 ピクセルのアイコンとして 16 色の 16 x 16 ピクセルのアイコンを使用ことがあります。 これは保たれますなどの視覚効果が望ましくない可能性がありますが、すべてのサイズと色深度のアイコンを作成することで回避することがあります。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowIcon"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.IconProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.IconProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
    
   
-## Examples  
- The following example shows how to set a window icon.  
+## 例  
+ 次の例では、\[ウィンドウ\] アイコンを設定する方法を示します。  
   
- [!code-xaml[WindowIconSnippets#WindowIconSetXAML](~/samples/snippets/xaml/VS_Snippets_Wpf/WindowIconSnippets/XAML/MainWindow.xaml#windowiconsetxaml)]  
+ [!code-xml[WindowIconSnippets\#WindowIconSetXAML](~/samples/snippets/xaml/VS_Snippets_Wpf/WindowIconSnippets/XAML/MainWindow.xaml#windowiconsetxaml)]  
   
- [!code-csharp[WindowIconSnippets#SetWindowIconInCode](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowIconSnippets/CSharp/MainWindow.xaml.cs#setwindowiconincode)]
- [!code-vb[WindowIconSnippets#SetWindowIconInCode](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowIconSnippets/visualbasic/mainwindow.xaml.vb#setwindowiconincode)]  
+ [!code-csharp[WindowIconSnippets\#SetWindowIconInCode](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowIconSnippets/CSharp/MainWindow.xaml.cs#setwindowiconincode)]
+ [!code-vb[WindowIconSnippets\#SetWindowIconInCode](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowIconSnippets/visualbasic/mainwindow.xaml.vb#setwindowiconincode)]  
   
  ]]></format>
         </remarks>
@@ -795,8 +872,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.Icon" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.Icon" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsActive">
@@ -812,25 +898,31 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the window is active.</summary>
+        <summary>ウィンドウがアクティブかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the window is active; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+          <see langword="true" /> ウィンドウがアクティブである場合それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An active window is the user's current foreground window and has the focus, which is signified by the active appearance of the title bar. An active window will also be the top-most of all top-level windows that don't explicitly set the <xref:System.Windows.Window.Topmost%2A> property.  
+## 解説  
+ アクティブなウィンドウ、ユーザーの現在の前面のウィンドウであり、フォーカスは、タイトル バーのアクティブな外観で順位。 アクティブなウィンドウは明示的に設定されていないすべてのトップレベル ウィンドウの最上部にもなります、 <xref:System.Windows.Window.Topmost%2A> プロパティです。  
   
 <a name="dependencyPropertyInfo_WindowIsActive"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.IsActiveProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.IsActiveProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Window.Activate" />
+        <altmember cref="E:System.Windows.Window.Activated" />
+        <altmember cref="E:System.Windows.Window.Deactivated" />
       </Docs>
     </Member>
     <Member MemberName="IsActiveProperty">
@@ -846,8 +938,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.IsActive" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.IsActive" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Left">
@@ -868,31 +969,35 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the position of the window's left edge, in relation to the desktop.</summary>
-        <value>The position of the window's left edge, in logical units (1/96th of an inch).</value>
+        <summary>取得またはデスクトップに関連して、ウィンドウの左端の位置を設定します。</summary>
+        <value>ウィンドウの位置の左端の論理単位 \(1\/96 インチ\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the <xref:System.Windows.Window> is maximized or minimized, this value represents the left edge of the restore point for the <xref:System.Windows.Window>.  
+## 解説  
+ ときに、 <xref:System.Windows.Window> 最大化または最小化、この値は、復元の左端のポイントを <xref:System.Windows.Window>です。  
   
- This property cannot be set through a style.  
+ このプロパティは、スタイルを設定することはできません。  
   
- If you do not specify a value, <xref:System.Windows.Window.Left%2A> is set to the system default value. You can also specify the system default value by setting <xref:System.Windows.Window.Left%2A> to <xref:System.Double.NaN>. Neither <xref:System.Double.NegativeInfinity> nor <xref:System.Double.PositiveInfinity> is a valid value for <xref:System.Windows.Window.Left%2A>.  
+ 値が指定されていない場合 <xref:System.Windows.Window.Left%2A> システムの既定値に設定されています。 設定して、システムの既定値を指定することも <xref:System.Windows.Window.Left%2A> に <xref:System.Double.NaN>します。 どちらも <xref:System.Double.NegativeInfinity> も <xref:System.Double.PositiveInfinity> の有効な値は、 <xref:System.Windows.Window.Left%2A>です。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowLeft"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.LeftProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.LeftProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Window.Top" />
       </Docs>
     </Member>
     <Member MemberName="LeftProperty">
@@ -908,8 +1013,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.Left" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.Left" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LocationChanged">
@@ -925,25 +1039,31 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the window's location changes.</summary>
+        <summary>ウィンドウの位置が変更されたときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A window's location changes when:  
+## 解説  
+ ウィンドウの場所は、タイミングを変更します。  
   
--   A user moves a window by dragging it with the window's title bar.  
+-   ユーザーは、ウィンドウのタイトル バーをドラッグして、ウィンドウを移動します。  
   
--   A window is moved after <xref:System.Windows.Window.DragMove%2A> is called.  
+-   後に、ウィンドウを移動 <xref:System.Windows.Window.DragMove%2A> が呼び出されます。  
   
--   Either the <xref:System.Windows.Window.Left%2A> or <xref:System.Windows.Window.Top%2A> property is set programmatically.  
+-   いずれか、 <xref:System.Windows.Window.Left%2A> または <xref:System.Windows.Window.Top%2A> プロパティがプログラムで設定します。  
   
--   The **Move** menu item of a window's System menu is chosen.  
+-   **移動** ウィンドウの \[システム\] メニューのメニュー項目を選択します。  
   
--   The <xref:System.Windows.Window.WindowState%2A> property is changed.  
+-   <xref:System.Windows.Window.WindowState%2A> プロパティを変更します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Window.Left" />
+        <altmember cref="P:System.Windows.Window.Top" />
+        <altmember cref="P:System.Windows.Window.RestoreBounds" />
       </Docs>
     </Member>
     <Member MemberName="LogicalChildren">
@@ -959,9 +1079,19 @@
         <ReturnType>System.Collections.IEnumerator</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an enumerator for a window's logical child elements.</summary>
-        <value>An <see cref="T:System.Collections.IEnumerator" /> a window's logical child elements.</value>
-        <remarks>To be added.</remarks>
+        <summary>ウィンドウの論理上の子要素の列挙子を取得します。</summary>
+        <value>
+          <see cref="T:System.Collections.IEnumerator" /> ウィンドウの論理上の子要素です。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.FrameworkElement.LogicalChildren" />
       </Docs>
     </Member>
     <Member MemberName="MeasureOverride">
@@ -980,20 +1110,25 @@
         <Parameter Name="availableSize" Type="System.Windows.Size" />
       </Parameters>
       <Docs>
-        <param name="availableSize">A <see cref="T:System.Windows.Size" /> that reflects the available size that this window can give to the child. Infinity can be given as a value to indicate that the window will size to whatever content is available.</param>
-        <summary>Override this method to measure the size of a window.</summary>
-        <returns>A <see cref="T:System.Windows.Size" /> that reflects the size that this window determines it needs during layout, based on its calculations of children's sizes.</returns>
+        <param name="availableSize">A <see cref="T:System.Windows.Size" /> このウィンドウは、子プロセスに与えることが利用可能なサイズを反映します。 無限大は、ウィンドウのサイズがどのようなコンテンツを使用することを示すために、値として指定できます。</param>
+        <summary>ウィンドウのサイズを測定するには、このメソッドをオーバーライドします。</summary>
+        <returns>A <see cref="T:System.Windows.Size" /> このウィンドウは、子供のサイズの計算に基づくレイアウト中に必要なを決定するサイズを反映します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.MeasureOverride%2A> is not called when the <xref:System.Windows.UIElement.Visibility%2A> property has a value of <xref:System.Windows.Visibility.Collapsed>. If the value of the <xref:System.Windows.UIElement.Visibility%2A> property is either <xref:System.Windows.Visibility.Hidden> or <xref:System.Windows.Visibility.Visible>, <xref:System.Windows.Window.MeasureOverride%2A> is called.  
+## 解説  
+ <xref:System.Windows.Window.MeasureOverride%2A> 場合に呼び出さない、 <xref:System.Windows.UIElement.Visibility%2A> プロパティの値を持つ <xref:System.Windows.Visibility.Collapsed>です。 場合の値、 <xref:System.Windows.UIElement.Visibility%2A> プロパティが、 <xref:System.Windows.Visibility.Hidden> または <xref:System.Windows.Visibility.Visible>, 、<xref:System.Windows.Window.MeasureOverride%2A> が呼び出されます。  
   
 > [!NOTE]
->  When either <xref:System.Windows.Window.Show%2A> or <xref:System.Windows.Window.ShowDialog%2A> are called, the <xref:System.Windows.UIElement.Visibility%2A> property of a <xref:System.Windows.Window> is set to <xref:System.Windows.Visibility.Visible>.  
+>  ときにいずれか <xref:System.Windows.Window.Show%2A> または <xref:System.Windows.Window.ShowDialog%2A> を呼び出すと、 <xref:System.Windows.UIElement.Visibility%2A> のプロパティ、 <xref:System.Windows.Window> に設定されている <xref:System.Windows.Visibility.Visible>します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.FrameworkElement.MeasureOverride(System.Windows.Size)" />
+        <altmember cref="M:System.Windows.Window.ArrangeOverride(System.Windows.Size)" />
       </Docs>
     </Member>
     <Member MemberName="OnActivated">
@@ -1012,18 +1147,23 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.Activated" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.Activated" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnActivated%2A> raises the <xref:System.Windows.Window.Activated> event.  
+## 解説  
+ <xref:System.Windows.Window.OnActivated%2A> は、<xref:System.Windows.Window.Activated> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnActivated%2A>. The overridden method must call <xref:System.Windows.Window.OnActivated%2A> on the base class if <xref:System.Windows.Window.Activated> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnActivated%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnActivated%2A> 基本クラスの場合は <xref:System.Windows.Window.Activated> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Window.OnDeactivated(System.EventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="OnClosed">
@@ -1042,18 +1182,23 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.Closed" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.Closed" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnClosed%2A> raises the <xref:System.Windows.Window.Closed> event.  
+## 解説  
+ <xref:System.Windows.Window.OnClosed%2A> は、<xref:System.Windows.Window.Closed> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnClosed%2A>. The overridden method must call <xref:System.Windows.Window.OnClosed%2A> on the base class if <xref:System.Windows.Window.Closed> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnClosed%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnClosed%2A> 基本クラスの場合は <xref:System.Windows.Window.Closed> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Window.OnClosing(System.ComponentModel.CancelEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="OnClosing">
@@ -1072,18 +1217,23 @@
         <Parameter Name="e" Type="System.ComponentModel.CancelEventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.Closing" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.ComponentModel.CancelEventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.Closing" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnClosing%2A> raises the <xref:System.Windows.Window.Closing> event.  
+## 解説  
+ <xref:System.Windows.Window.OnClosing%2A> は、<xref:System.Windows.Window.Closing> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnClosing%2A>. The overridden method must call <xref:System.Windows.Window.OnClosing%2A> on the base class if <xref:System.Windows.Window.Closing> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnClosing%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnClosing%2A> 基本クラスの場合は <xref:System.Windows.Window.Closing> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Window.OnClosed(System.EventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="OnContentChanged">
@@ -1103,10 +1253,18 @@
         <Parameter Name="newContent" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="oldContent">A reference to the root of the old content tree.</param>
-        <param name="newContent">A reference to the root of the new content tree.</param>
-        <summary>Called when the <see cref="P:System.Windows.Controls.ContentControl.Content" /> property changes.</summary>
-        <remarks>To be added.</remarks>
+        <param name="oldContent">古いコンテンツ ツリーのルートへの参照。</param>
+        <param name="newContent">新しいコンテンツ ツリーのルートへの参照。</param>
+        <summary>ときに呼び出されます、 <see cref="P:System.Windows.Controls.ContentControl.Content" /> プロパティが変更されました。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnContentRendered">
@@ -1125,16 +1283,20 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.ContentRendered" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.ContentRendered" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnContentRendered%2A> raises the <xref:System.Windows.Window.ContentRendered> event.  
+## 解説  
+ <xref:System.Windows.Window.OnContentRendered%2A> は、<xref:System.Windows.Window.ContentRendered> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnContentRendered%2A>. The overridden method must call <xref:System.Windows.Window.OnContentRendered%2A> on the base class if <xref:System.Windows.Window.ContentRendered> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnContentRendered%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnContentRendered%2A> 基本クラスの場合は <xref:System.Windows.Window.ContentRendered> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1153,14 +1315,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates and returns a <see cref="T:System.Windows.Automation.Peers.WindowAutomationPeer" /> object for this <see cref="T:System.Windows.Window" />.</summary>
-        <returns>A <see cref="T:System.Windows.Automation.Peers.WindowAutomationPeer" /> object for this <see cref="T:System.Windows.Window" />.</returns>
+        <summary>作成して返します、 <see cref="T:System.Windows.Automation.Peers.WindowAutomationPeer" /> オブジェクトの <see cref="T:System.Windows.Window" />です。</summary>
+        <returns>A <see cref="T:System.Windows.Automation.Peers.WindowAutomationPeer" /> オブジェクトの <see cref="T:System.Windows.Window" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overrides <xref:System.Windows.ContentElement.OnCreateAutomationPeer%2A>.  
+## 解説  
+ このメソッドは <xref:System.Windows.ContentElement.OnCreateAutomationPeer%2A>です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1181,18 +1346,23 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.Deactivated" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.Deactivated" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnDeactivated%2A> raises the <xref:System.Windows.Window.Deactivated> event.  
+## 解説  
+ <xref:System.Windows.Window.OnDeactivated%2A> は、<xref:System.Windows.Window.Deactivated> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnDeactivated%2A>. The overridden method must call <xref:System.Windows.Window.OnDeactivated%2A> on the base class if <xref:System.Windows.Window.Deactivated> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnDeactivated%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnDeactivated%2A> 基本クラスの場合は <xref:System.Windows.Window.Deactivated> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Window.OnActivated(System.EventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="OnDpiChanged">
@@ -1212,9 +1382,9 @@
         <Parameter Name="newDpi" Type="System.Windows.DpiScale" />
       </Parameters>
       <Docs>
-        <param name="oldDpi">The previous DPI scale setting.</param>
-        <param name="newDpi">The new DPI scale setting.</param>
-        <summary>Called when the DPI at which this window is rendered changes.</summary>
+        <param name="oldDpi">以前の DPI スケール設定。</param>
+        <param name="newDpi">新規の DPI スケール設定。</param>
+        <summary>このウィンドウが表示される DPI が変更するときに呼び出されます。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1234,18 +1404,24 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.LocationChanged" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.LocationChanged" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnLocationChanged%2A> raises the <xref:System.Windows.Window.LocationChanged> event.  
+## 解説  
+ <xref:System.Windows.Window.OnLocationChanged%2A> は、<xref:System.Windows.Window.LocationChanged> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnLocationChanged%2A>. The overridden method must call <xref:System.Windows.Window.OnLocationChanged%2A> on the base class if <xref:System.Windows.Window.LocationChanged> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnLocationChanged%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnLocationChanged%2A> 基本クラスの場合は <xref:System.Windows.Window.LocationChanged> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Window.Left" />
+        <altmember cref="P:System.Windows.Window.Top" />
       </Docs>
     </Member>
     <Member MemberName="OnManipulationBoundaryFeedback">
@@ -1264,14 +1440,17 @@
         <Parameter Name="e" Type="System.Windows.Input.ManipulationBoundaryFeedbackEventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">The data for the event.</param>
-        <summary>Called when the <see cref="E:System.Windows.UIElement.ManipulationBoundaryFeedback" /> event occurs.</summary>
+        <param name="e">イベントのデータ。</param>
+        <summary>ときに呼び出されます、 <see cref="E:System.Windows.UIElement.ManipulationBoundaryFeedback" /> イベントが発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This implementation does not change the handled state (the <xref:System.Windows.RoutedEventArgs.Handled%2A> property) of the <xref:System.Windows.UIElement.ManipulationBoundaryFeedback> event data.  
+## 解説  
+ この実装では、処理済みの状態は変更されません \(、 <xref:System.Windows.RoutedEventArgs.Handled%2A> プロパティ\) の <xref:System.Windows.UIElement.ManipulationBoundaryFeedback> イベント データ。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -1295,16 +1474,20 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.SourceInitialized" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.SourceInitialized" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnSourceInitialized%2A> raises the <xref:System.Windows.Window.SourceInitialized> event.  
+## 解説  
+ <xref:System.Windows.Window.OnSourceInitialized%2A> は、<xref:System.Windows.Window.SourceInitialized> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnSourceInitialized%2A>. The overridden method must call <xref:System.Windows.Window.OnSourceInitialized%2A> on the base class if <xref:System.Windows.Window.SourceInitialized> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnSourceInitialized%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnSourceInitialized%2A> 基本クラスの場合は <xref:System.Windows.Window.SourceInitialized> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1325,16 +1508,20 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Window.StateChanged" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Window.StateChanged" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.OnStateChanged%2A> raises the <xref:System.Windows.Window.StateChanged> event.  
+## 解説  
+ <xref:System.Windows.Window.OnStateChanged%2A> は、<xref:System.Windows.Window.StateChanged> イベントを発生させます。  
   
- A type that derives from <xref:System.Windows.Window> may override <xref:System.Windows.Window.OnStateChanged%2A>. The overridden method must call <xref:System.Windows.Window.OnStateChanged%2A> on the base class if <xref:System.Windows.Window.StateChanged> needs to be raised.  
+ 派生した型 <xref:System.Windows.Window> よりも優先 <xref:System.Windows.Window.OnStateChanged%2A>します。 オーバーライドされたメソッドを呼び出す必要があります <xref:System.Windows.Window.OnStateChanged%2A> 基本クラスの場合は <xref:System.Windows.Window.StateChanged> を発生させる必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1355,9 +1542,18 @@
         <Parameter Name="oldParent" Type="System.Windows.DependencyObject" />
       </Parameters>
       <Docs>
-        <param name="oldParent">The previous parent. Set to null if the <see cref="T:System.Windows.DependencyObject" /> did not have a previous parent.</param>
-        <summary>Called when the parent of the window is changed.</summary>
-        <remarks>To be added.</remarks>
+        <param name="oldParent">以前の親です。 ある場合は null に設定、 <see cref="T:System.Windows.DependencyObject" /> 以前の親はありませんでした。</param>
+        <summary>ウィンドウの親が変更されたときに呼び出されます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.UIElement.OnVisualParentChanged(System.Windows.DependencyObject)" />
       </Docs>
     </Member>
     <Member MemberName="OwnedWindows">
@@ -1373,21 +1569,21 @@
         <ReturnType>System.Windows.WindowCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of windows for which this window is the owner.</summary>
-        <value>A <see cref="T:System.Windows.WindowCollection" /> that contains references to the windows for which this window is the owner.</value>
+        <summary>このウィンドウは、オーナー ウィンドウのコレクションを取得します。</summary>
+        <value>A <see cref="T:System.Windows.WindowCollection" /> このウィンドウは、オーナー ウィンドウへの参照を格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An owned window is one whose <xref:System.Windows.Window.Owner%2A> property is set with a reference to another window, which is known as the owner window. To find all the windows that an owner window owns, you can enumerate <xref:System.Windows.WindowCollection> that is returned by the <xref:System.Windows.Window.OwnedWindows%2A> property.  
+## 解説  
+ 所有されるウィンドウは 1 つ持つ <xref:System.Windows.Window.Owner%2A> プロパティは、オーナー ウィンドウと呼ばれる別のウィンドウへの参照。 列挙できるオーナー ウィンドウを所有しているすべてのウィンドウを検索するには、 <xref:System.Windows.WindowCollection> によって返される、 <xref:System.Windows.Window.OwnedWindows%2A> プロパティです。  
   
    
   
-## Examples  
- The following example shows how to enumerate <xref:System.Windows.Window.OwnedWindows%2A>.  
+## 例  
+ 次の例は、列挙する方法を示しています。 <xref:System.Windows.Window.OwnedWindows%2A>します。  
   
- [!code-csharp[WindowOwnerOwnedWindowsSnippets#GetWindowOwnedWindowsCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/CSharp/MainWindow.xaml.cs#getwindowownedwindowscode)]
- [!code-vb[WindowOwnerOwnedWindowsSnippets#GetWindowOwnedWindowsCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/visualbasic/mainwindow.xaml.vb#getwindowownedwindowscode)]  
+ [!code-csharp[WindowOwnerOwnedWindowsSnippets\#GetWindowOwnedWindowsCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/CSharp/MainWindow.xaml.cs#getwindowownedwindowscode)]
+ [!code-vb[WindowOwnerOwnedWindowsSnippets\#GetWindowOwnedWindowsCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/visualbasic/mainwindow.xaml.vb#getwindowownedwindowscode)]  
   
  ]]></format>
         </remarks>
@@ -1417,67 +1613,69 @@
         <ReturnType>System.Windows.Window</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Windows.Window" /> that owns this <see cref="T:System.Windows.Window" />.</summary>
-        <value>A <see cref="T:System.Windows.Window" /> object that represents the owner of this <see cref="T:System.Windows.Window" />.</value>
+        <summary>取得または設定、 <see cref="T:System.Windows.Window" /> を所有しているこの <see cref="T:System.Windows.Window" />します。</summary>
+        <value>A <see cref="T:System.Windows.Window" /> オブジェクトを所有している <see cref="T:System.Windows.Window" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a child window is opened by a parent window by calling <xref:System.Windows.Window.ShowDialog%2A>, an implicit relationship is established between both parent and child window. This relationship enforces certain behaviors, including with respect to minimizing, maximizing, and restoring.  
+## 解説  
+ 呼び出して親ウィンドウによって子ウィンドウが開かれたときに <xref:System.Windows.Window.ShowDialog%2A>, 、親と子の両方のウィンドウ間の暗黙的なリレーションシップが確立します。 この関係を最小限に抑え、最大化、および復元に関するなどの特定の動作が適用されます。  
   
- When a child window is created by a parent window by calling <xref:System.Windows.Window.Show%2A>, however, the child window does not have a relationship with the parent window. This means that:  
+ 呼び出して、親ウィンドウによって子ウィンドウが作成されたときに <xref:System.Windows.Window.Show%2A>, 、ただし、子ウィンドウには、親ウィンドウとの関係はありません。 これによって、次のことが起こります。  
   
--   The child window does not have a reference to the parent window.  
+-   子ウィンドウには、親ウィンドウへの参照がありません。  
   
--   The behavior of the child window is not dependent on the behavior of the parent window; either window can cover the other, or be minimized, maximized, and restored independently of the other.  
+-   子ウィンドウの動作は、親ウィンドウの動作に依存しません。いずれかのウィンドウ、もう一方を扱うことができる最小化したり、最大化し、他方とは無関係に復元します。  
   
- To allow you to create a relationship between a child window and a parent window, <xref:System.Windows.Window> supports the notion of ownership. Ownership is established when the <xref:System.Windows.Window.Owner%2A> property of a window (the owned window) is set with a reference to another window (the owner window).  
+ 子ウィンドウと、親ウィンドウの間のリレーションシップを作成できるように <xref:System.Windows.Window> 所有権の概念をサポートしています。 所有権が確立されるときに、 <xref:System.Windows.Window.Owner%2A> 別のウィンドウ \(オーナー ウィンドウ\) への参照を含むウィンドウ \(所有されるウィンドウ\) のプロパティを設定します。  
   
- Once this relationship is established, the following behaviors are exhibited:  
+ このリレーションシップが確立されると、次の動作が発生します。  
   
--   If an owner window is minimized, all its owned windows are minimized as well.  
+-   オーナー ウィンドウが最小化されている場合、所有しているすべてのウィンドウも最小化します。  
   
--   If an owned window is minimized, its owner is not minimized.  
+-   所有されているウィンドウを最小化されている場合、所有者が最小化されていません。  
   
--   If an owner window is maximized, both the owner window and its owned windows are restored.  
+-   オーナー ウィンドウが最大化されている場合は、オーナー ウィンドウと所有されるウィンドウの両方が復元されます。  
   
--   An owner window can never cover an owned window.  
+-   オーナー ウィンドウでは、所有されるウィンドウをカバーできることはありません。  
   
--   Owned windows that were not opened using <xref:System.Windows.Window.ShowDialog%2A> are not modal. The user can still interact with the owner window.  
+-   使用していない開いているウィンドウを所有している <xref:System.Windows.Window.ShowDialog%2A> モーダルではありません。 ユーザーは、オーナー ウィンドウとも対話できます。  
   
--   If you close an owner window, its owned windows are also closed.  
+-   オーナー ウィンドウを閉じると、所有されるウィンドウも閉じます。  
   
--   If an owned window was opened by its owner window using <xref:System.Windows.Window.Show%2A>, and the owner window is closed, the owned window's <xref:System.Windows.Window.Closing> event is not raised.  
+-   その所有者を使用してウィンドウによって所有されるウィンドウが開いていたかどうか <xref:System.Windows.Window.Show%2A>, 、および所有者は、ウィンドウが閉じられる、所有されているウィンドウの <xref:System.Windows.Window.Closing> イベントは発生しません。  
   
- When you open a child window by calling <xref:System.Windows.Window.ShowDialog%2A>, you should also set the <xref:System.Windows.Window.Owner%2A> property of the child window. If you don't, then your users won't be able to restore both child window and parent window by pressing the task bar button. Instead, pressing the task bar button will yield a list of windows, including both child and parent window, for them to select; only the selected window is restored.  
+ 呼び出すことによって、子ウィンドウを開いたとき <xref:System.Windows.Window.ShowDialog%2A>, 、設定する必要がありますも、 <xref:System.Windows.Window.Owner%2A> 子ウィンドウのプロパティです。 ない場合は、ユーザーはタスク バー ボタンを押して、ウィンドウの子と親ウィンドウの両方を復元することできません。 代わりに、タスク バー ボタンを押すことになる子と親の両方のウィンドウでそれらを選択するを含む、windows の一覧選択したウィンドウのみが復元されます。  
   
 > [!IMPORTANT]
->  You should also set the <xref:System.Windows.Window.Owner%2A> property on a window that that is opened by calling <xref:System.Windows.Window.ShowDialog%2A> to ensure correct behavior with .  
+>  設定する必要があります、 <xref:System.Windows.Window.Owner%2A> プロパティを呼び出しているが開かれているウィンドウを <xref:System.Windows.Window.ShowDialog%2A> で正しく動作するようにします。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
    
   
-## Examples  
- The following example shows how to establish the owner/owned relationship.  
+## 例  
+ 次の例では、所有者\/所有している関係を確立する方法を示します。  
   
- [!code-csharp[WindowOwnerOwnedWindowsSnippets#SetWindowOwnerCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/CSharp/MainWindow.xaml.cs#setwindowownercode)]
- [!code-vb[WindowOwnerOwnedWindowsSnippets#SetWindowOwnerCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/visualbasic/mainwindow.xaml.vb#setwindowownercode)]  
+ [!code-csharp[WindowOwnerOwnedWindowsSnippets\#SetWindowOwnerCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/CSharp/MainWindow.xaml.cs#setwindowownercode)]
+ [!code-vb[WindowOwnerOwnedWindowsSnippets\#SetWindowOwnerCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowOwnerOwnedWindowsSnippets/visualbasic/mainwindow.xaml.vb#setwindowownercode)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">A window tries to own itself  
+        <exception cref="T:System.ArgumentException">ウィンドウが、それ自体を所有しようとしています。  
   
- -or-  
+ または  
   
- Two windows try to own each other.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Windows.Window.Owner" /> property is set on a visible window shown using <see cref="M:System.Windows.Window.ShowDialog" />  
+ 2 つのウィンドウは、相互に所有しようとします。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Windows.Window.Owner" /> プロパティが設定されて表示可能なウィンドウを使用して表示 <see cref="M:System.Windows.Window.ShowDialog" />  
   
- -or-  
+ または  
   
- The <see cref="P:System.Windows.Window.Owner" /> property is set with a window that has not been previously shown.</exception>
+ <see cref="P:System.Windows.Window.Owner" /> 以前に表示されていないウィンドウのプロパティを設定します。</exception>
         <permission cref="T:System.Security.Permissions.UIPermission">for permission to use all windows and user input events without restriction. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></permission>
+        <altmember cref="P:System.Windows.Window.OwnedWindows" />
       </Docs>
     </Member>
     <Member MemberName="ResizeMode">
@@ -1493,35 +1691,39 @@
         <ReturnType>System.Windows.ResizeMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the resize mode.</summary>
-        <value>A <see cref="T:System.Windows.ResizeMode" /> value specifying the resize mode.</value>
+        <summary>取得またはサイズ変更モードを設定します。</summary>
+        <value>A <see cref="T:System.Windows.ResizeMode" /> サイズ変更モードを指定する値。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- There are four options:  
+## 解説  
+ 次の 4 つのオプションがあります。  
   
--   **NoResize**. The user cannot resize the window. The Maximize and Minimize boxes are not shown.  
+-   **NoResize**します。 ユーザーは、ウィンドウをサイズ変更できません。 最大および最小化ボタンは表示されません。  
   
--   **CanMinimize**. The user can only minimize the window and restore it from the taskbar. The Minimize and Maximize boxes are both shown, but only the Minimize box is enabled.  
+-   **CanMinimize**します。 ユーザーは、のみウィンドウを最小化し、タスク バーから復元できます。 最小化、最大化ボタンは表示されますが最小化ボタンのみが有効にします。  
   
--   **CanResize**. The user has the full ability to resize the window, using the Minimize and Maximize boxes, and a draggable outline around the window. The Minimize and Maximize boxes are shown and enabled. (Default).  
+-   **CanResize**します。 ユーザーには、ウィンドウの周囲、最小と最大化ボタン、およびドラッグ可能なアウトラインを使用して、ウィンドウのサイズを変更する全機能があります。 最小化、最大化ボックスが表示され、有効になっています。 \(既定値\)。  
   
--   **CanResizeWithGrip**. This option has the same functionality as <xref:System.Windows.ResizeMode.CanResize>, but adds a "resize grip" to the lower right corner of the window.  
+-   **CanResizeWithGrip**します。 このオプションは、同じ機能を持ち <xref:System.Windows.ResizeMode.CanResize>, がウィンドウの右下隅に「サイズ変更グリップ」を追加します。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowResizeMode"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.ResizeModeProperty>|  
-|Metadata properties set to `true`|<xref:System.Windows.FrameworkPropertyMetadata.AffectsMeasure%2A>|  
+|識別子のフィールド|<xref:System.Windows.Window.ResizeModeProperty>|  
+|メタデータのプロパティを設定するには `true`|<xref:System.Windows.FrameworkPropertyMetadata.AffectsMeasure%2A>|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Windows.Controls.Primitives.ResizeGrip" />
       </Docs>
     </Member>
     <Member MemberName="ResizeModeProperty">
@@ -1537,8 +1739,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.ResizeMode" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.ResizeMode" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RestoreBounds">
@@ -1559,26 +1770,26 @@
         <ReturnType>System.Windows.Rect</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the size and location of a window before being either minimized or maximized.</summary>
-        <value>A <see cref="T:System.Windows.Rect" /> that specifies the size and location of a window before being either minimized or maximized.</value>
+        <summary>最小化または最大化する前に、ウィンドウの場所とサイズを取得します。</summary>
+        <value>A <see cref="T:System.Windows.Rect" /> を指定するサイズとウィンドウの位置される前に最小化または最大化します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The restore rectangle is the region occupied by the window before it was minimized or maximized. You can use <xref:System.Windows.Window.RestoreBounds%2A> to save the last size and location of a window before an application is closed, and retrieve those values the next time an application starts to restore a window to the way a user left it.  
+## 解説  
+ 復元の四角形が最小化または最大化する前に、このウィンドウによって占有される領域です。 使用する <xref:System.Windows.Window.RestoreBounds%2A> をアプリケーションが閉じられる前に、最後のサイズとウィンドウの位置を保存し、次回ユーザーが離れたときに、ウィンドウを復元するアプリケーションの起動時にそれらの値を取得します。  
   
- If you query <xref:System.Windows.Window.RestoreBounds%2A> before the window has been shown or after it has been closed, <xref:System.Windows.Rect.Empty%2A> is returned.  
+ 照会する場合は、 <xref:System.Windows.Window.RestoreBounds%2A> ウィンドウを表示する前に、または終了した <xref:System.Windows.Rect.Empty%2A> が返されます。  
   
 > [!NOTE]
->  You cannot get this property when a window is hosted in a browser.  
+>  ウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
    
   
-## Examples  
- The following example uses <xref:System.Windows.Window.RestoreBounds%2A> and isolated storage to ensure the size and location of a window are the same as they were the previous time the window was shown.  
+## 例  
+ 次の例では使用 <xref:System.Windows.Window.RestoreBounds%2A> およびストレージを実現し、ウィンドウの場所とサイズが同じで、ウィンドウが表示された前回の時間を分離します。  
   
- [!code-xaml[WindowRestoreBoundsSnippets#WindowRestoreBoundsXAML1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowRestoreBoundsSnippets/CSharp/MainWindow.xaml#windowrestoreboundsxaml1)]  
-[!code-xaml[WindowRestoreBoundsSnippets#WindowRestoreBoundsXAML2](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowRestoreBoundsSnippets/CSharp/MainWindow.xaml#windowrestoreboundsxaml2)]  
+ [!code-xml[WindowRestoreBoundsSnippets#WindowRestoreBoundsXAML1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowRestoreBoundsSnippets/CSharp/MainWindow.xaml#windowrestoreboundsxaml1)]  
+[!code-xml[WindowRestoreBoundsSnippets#WindowRestoreBoundsXAML2](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowRestoreBoundsSnippets/CSharp/MainWindow.xaml#windowrestoreboundsxaml2)]  
   
  [!code-csharp[WindowRestoreBoundsSnippets#WindowRestoreBoundsCODEBEHIND1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowRestoreBoundsSnippets/CSharp/MainWindow.xaml.cs#windowrestoreboundscodebehind1)]
  [!code-vb[WindowRestoreBoundsSnippets#WindowRestoreBoundsCODEBEHIND1](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowRestoreBoundsSnippets/visualbasic/mainwindow.xaml.vb#windowrestoreboundscodebehind1)]  
@@ -1604,41 +1815,44 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Opens a window and returns without waiting for the newly opened window to close.</summary>
+        <summary>ウィンドウを開き、新しく開かれたウィンドウが閉じるを待機せずに返します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the <xref:System.Windows.Window> class is instantiated, it is not visible by default. <xref:System.Windows.Window.Show%2A> shows a window and returns immediately, without waiting for the window to be closed. Consequently, the opened window does not prevent users from interacting with other windows in the application. This type of window is called a *modeless* window. Common examples of modeless windows are properties windows, toolboxes, and palettes. To restrict a user to interacting with a specific window, the window must be opened by calling <xref:System.Windows.Window.ShowDialog%2A>.  
+## 解説  
+ ときに、 <xref:System.Windows.Window> クラスがインスタンス化され、既定で表示されていません。<xref:System.Windows.Window.Show%2A> ウィンドウを表示し、終了するウィンドウを待たずにすぐを返します。 その結果、開かれたウィンドウは、アプリケーションの他のウィンドウとの対話からユーザーを妨げません。 この種のウィンドウと呼ばれる、 *モードレス* ウィンドウです。 モードレス ウィンドウの一般的な例は、\[プロパティ\] ウィンドウ、ツールボックス、およびパレットです。 特定のウィンドウとのやり取りにユーザーを制限するには、呼び出すことによって、このウィンドウを開きます <xref:System.Windows.Window.ShowDialog%2A>します。  
   
- A window that is opened by calling <xref:System.Windows.Window.Show%2A> does not automatically have a relationship with the window that opened it; specifically, the opened window does not know which window opened it. This relationship can be established using the <xref:System.Windows.Window.Owner%2A> property and managed using the <xref:System.Windows.Window.OwnedWindows%2A> property.  
+ 呼び出しによって開かれたウィンドウ <xref:System.Windows.Window.Show%2A> は自動的に開いたウィンドウと関係を持つ、具体的には、開かれたウィンドウが知らないいるウィンドウを開いたときです。 使用してこの関係を確立することができます、 <xref:System.Windows.Window.Owner%2A> プロパティと管理を使用して、 <xref:System.Windows.Window.OwnedWindows%2A> プロパティです。  
   
- Calling <xref:System.Windows.Window.Show%2A> achieves the same end result as setting <xref:System.Windows.UIElement.Visibility%2A> property of the <xref:System.Windows.Window> object to <xref:System.Windows.Visibility.Visible>. However, there is a difference between the two from a timing perspective.  
+ 呼び出す <xref:System.Windows.Window.Show%2A> の設定と同じ結果が得られます <xref:System.Windows.UIElement.Visibility%2A> のプロパティ、 <xref:System.Windows.Window> オブジェクトを <xref:System.Windows.Visibility.Visible>します。 ただし、タイミングの観点から 2 つの差があります。  
   
- Calling <xref:System.Windows.Window.Show%2A> is a synchronous operation that returns only after the <xref:System.Windows.FrameworkElement.Loaded> event on the child window has been raised:  
+ 呼び出す <xref:System.Windows.Window.Show%2A> にした場合のみを返す同期操作には、 <xref:System.Windows.FrameworkElement.Loaded> 子ウィンドウのイベントが発生しました。  
   
- [!code-csharp[WindowShowTimingSnippets#ShowSync](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowTimingSnippets/CSharp/Window1.xaml.cs#showsync)]
- [!code-vb[WindowShowTimingSnippets#ShowSync](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowTimingSnippets/visualbasic/window1.xaml.vb#showsync)]  
+ [!code-csharp[WindowShowTimingSnippets\#ShowSync](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowTimingSnippets/CSharp/Window1.xaml.cs#showsync)]
+ [!code-vb[WindowShowTimingSnippets\#ShowSync](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowTimingSnippets/visualbasic/window1.xaml.vb#showsync)]  
   
- Setting <xref:System.Windows.UIElement.Visibility%2A>, however, is an asynchronous operation that returns immediately:  
+ 設定 <xref:System.Windows.UIElement.Visibility%2A>, 、ただし、非同期操作をすぐに返すには。  
   
- [!code-csharp[WindowShowTimingSnippets#ShowASync](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowTimingSnippets/CSharp/Window1.xaml.cs#showasync)]
- [!code-vb[WindowShowTimingSnippets#ShowASync](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowTimingSnippets/visualbasic/window1.xaml.vb#showasync)]  
+ [!code-csharp[WindowShowTimingSnippets\#ShowASync](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowTimingSnippets/CSharp/Window1.xaml.cs#showasync)]
+ [!code-vb[WindowShowTimingSnippets\#ShowASync](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowTimingSnippets/visualbasic/window1.xaml.vb#showasync)]  
   
- When setting <xref:System.Windows.UIElement.Visibility%2A>, any window events you register before you set <xref:System.Windows.UIElement.Visibility%2A> may not be raised until after the method in which you set <xref:System.Windows.UIElement.Visibility%2A> has completed execution.  
+ 設定するときに <xref:System.Windows.UIElement.Visibility%2A>, を設定する前に登録する、ウィンドウ イベント <xref:System.Windows.UIElement.Visibility%2A> 設定するメソッドの後になるまでが発生しない <xref:System.Windows.UIElement.Visibility%2A> 実行が完了しました。  
   
    
   
-## Examples  
- The following sample demonstrates how to open a modeless window.  
+## 例  
+ 次の例では、モードレス ウィンドウを開く方法を示します。  
   
- [!code-csharp[WindowShowSnippets#WindowShowCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowSnippets/CSharp/MainWindow.xaml.cs#windowshowcode)]
- [!code-vb[WindowShowSnippets#WindowShowCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowSnippets/visualbasic/mainwindow.xaml.vb#windowshowcode)]  
+ [!code-csharp[WindowShowSnippets\#WindowShowCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowSnippets/CSharp/MainWindow.xaml.cs#windowshowcode)]
+ [!code-vb[WindowShowSnippets\#WindowShowCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowSnippets/visualbasic/mainwindow.xaml.vb#windowshowcode)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="M:System.Windows.Window.Show" /> is called on a window that is closing (<see cref="E:System.Windows.Window.Closing" />) or has been closed (<see cref="E:System.Windows.Window.Closed" />).</exception>
+          <see cref="M:System.Windows.Window.Show" /> ウィンドウを閉じている途中で呼び出されます \(<see cref="E:System.Windows.Window.Closing" />\) または閉じられて \(<see cref="E:System.Windows.Window.Closed" />\)。</exception>
+        <altmember cref="M:System.Windows.Window.Close" />
+        <altmember cref="M:System.Windows.Window.Hide" />
+        <altmember cref="P:System.Windows.Window.WindowState" />
       </Docs>
     </Member>
     <Member MemberName="ShowActivated">
@@ -1654,42 +1868,42 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether a window is activated when first shown.</summary>
+        <summary>取得またはを最初に表示されるときに、ウィンドウがアクティブにするかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if a window is activated when first shown; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+          <see langword="true" /> 最初に表示されたときにウィンドウがアクティブにする場合それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a window with its <xref:System.Windows.Window.ShowActivated%2A> property set to `false` is opened, the window is not activated and its <xref:System.Windows.Window.Activated> event is not raised until a user manually activates the window by selecting it. After the window is selected, it activates and deactivates normally.  
+## 解説  
+ ときにウィンドウの <xref:System.Windows.Window.ShowActivated%2A> プロパティに設定 `false` が開くと、ウィンドウがアクティブ化されていないとその <xref:System.Windows.Window.Activated> ユーザーが手動で選択して、ウィンドウを起動するまで、イベントは発生しません。 ウィンドウを選択すると、後にアクティブにし、通常を非アクティブにします。  
   
- To prevent a window from being activated when it opens, the <xref:System.Windows.Window.ShowActivated%2A> property must be set to `false` before the window is shown (by calling <xref:System.Windows.Window.Show%2A>); setting <xref:System.Windows.Window.ShowActivated%2A> to `false` after a window is shown has no effect.  
+ ウィンドウが開くと、アクティブ化されていることを防ぐため、 <xref:System.Windows.Window.ShowActivated%2A> にプロパティを設定する必要があります `false` ウィンドウが表示される前に \(を呼び出して <xref:System.Windows.Window.Show%2A>\) 設定; <xref:System.Windows.Window.ShowActivated%2A> に `false` 後、ウィンドウが表示される場合は、影響を与えません。  
   
- Setting <xref:System.Windows.Window.ShowActivated%2A> to `false` on a window that is opened modally, by calling <xref:System.Windows.Window.ShowDialog%2A>, has no real impact. Although the modal window will not be activated, the modal window will prevent the user from activating any other open application windows.  
+ 設定 <xref:System.Windows.Window.ShowActivated%2A> に `false` が呼び出すことによって、モーダルで開かれているウィンドウの <xref:System.Windows.Window.ShowDialog%2A>, 、実際の影響を与えません。 モーダル ウィンドウは有効になりませんが、モーダル ウィンドウは、その他のアプリケーションを開く windows のライセンス認証をユーザーをできなくなります。  
   
 <a name="dependencyPropertyInfo_WindowShowActivated"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.ShowActivatedProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.ShowActivatedProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
    
   
-## Examples  
- The following example shows how to use markup to configure a window to be opened without being activated.  
+## 例  
+ 次の例では、マークアップを使用して認証されることがなく開かれている期間を構成する方法を示します。  
   
- [!code-xaml[WindowShowActivatedSnippets#ShowUnactivatedMARKUP1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowActivatedSnippets/CSharp/AWindow.xaml#showunactivatedmarkup1)]  
+ [!code-xml[WindowShowActivatedSnippets#ShowUnactivatedMARKUP1](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowActivatedSnippets/CSharp/AWindow.xaml#showunactivatedmarkup1)]  
   
   
- [!code-csharp[WindowShowActivatedSnippets#ShowUnactivatedCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowActivatedSnippets/CSharp/AWindow.xaml.cs#showunactivatedcodebehind)]
- [!code-vb[WindowShowActivatedSnippets#ShowUnactivatedCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowActivatedSnippets/visualbasic/awindow.xaml.vb#showunactivatedcodebehind)]  
+ [!code-csharp[WindowShowActivatedSnippets\#ShowUnactivatedCODEBEHIND](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowActivatedSnippets/CSharp/AWindow.xaml.cs#showunactivatedcodebehind)]
+ [!code-vb[WindowShowActivatedSnippets\#ShowUnactivatedCODEBEHIND](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowActivatedSnippets/visualbasic/awindow.xaml.vb#showunactivatedcodebehind)]  
   
- The following example shows how to use code to configure a window to be opened without it being activated.  
+ 次の例では、コードを使用してアクティブ化が開くようにウィンドウを構成する方法を示します。  
   
- [!code-csharp[WindowShowActivatedSnippets#ShowUnactivatedWindowCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowActivatedSnippets/CSharp/Window1.xaml.cs#showunactivatedwindowcode)]
- [!code-vb[WindowShowActivatedSnippets#ShowUnactivatedWindowCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowActivatedSnippets/visualbasic/window1.xaml.vb#showunactivatedwindowcode)]  
+ [!code-csharp[WindowShowActivatedSnippets\#ShowUnactivatedWindowCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowActivatedSnippets/CSharp/Window1.xaml.cs#showunactivatedwindowcode)]
+ [!code-vb[WindowShowActivatedSnippets\#ShowUnactivatedWindowCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowActivatedSnippets/visualbasic/window1.xaml.vb#showunactivatedwindowcode)]  
   
  ]]></format>
         </remarks>
@@ -1708,8 +1922,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.ShowActivated" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.ShowActivated" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowDialog">
@@ -1731,36 +1954,38 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Opens a window and returns only when the newly opened window is closed.</summary>
-        <returns>A <see cref="T:System.Nullable`1" /> value of type <see cref="T:System.Boolean" /> that specifies whether the activity was accepted (<see langword="true" />) or canceled (<see langword="false" />). The return value is the value of the <see cref="P:System.Windows.Window.DialogResult" /> property before a window closes.</returns>
+        <summary>ウィンドウが開き、新しく開かれたウィンドウが閉じられる場合にのみ返ります。</summary>
+        <returns>A <see cref="T:System.Nullable`1" /> 型の値 <see cref="T:System.Boolean" /> アクティビティが受け入れられましたかどうかを指定する \(<see langword="true" />\) または取り消し済み \(<see langword="false" />\)。 戻り値は、の値、 <see cref="P:System.Windows.Window.DialogResult" /> プロパティ ウィンドウを閉じる前にします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a <xref:System.Windows.Window> class is instantiated, it is not visible by default. <xref:System.Windows.Window.ShowDialog%2A> shows the window, disables all other windows in the application, and returns only when the window is closed. This type of window is known as a *modal* window.  
+## 解説  
+ ときに、 <xref:System.Windows.Window> クラスがインスタンス化され、既定で表示されていません。<xref:System.Windows.Window.ShowDialog%2A> ウィンドウを表示、アプリケーションでは、他のすべてのウィンドウを無効にして、ウィンドウが閉じられる場合にのみ返ります。 この種のウィンドウと呼ばれる、 *モーダル* ウィンドウです。  
   
- Modal windows are primarily used as dialog boxes. A dialog box is a special type of window that applications use to interact with users to complete tasks, such as opening files or printing documents. Dialog boxes commonly allow users to accept or cancel the task for which they were shown before the dialog box is closed. <xref:System.Windows.Window.ShowDialog%2A> returns a <xref:System.Nullable%601><xref:System.Boolean> value that specifies whether the activity was accepted or canceled. The return value is the value of the <xref:System.Windows.Window.DialogResult%2A> property before a window closes. For more information, see <xref:System.Windows.Window.DialogResult%2A>.  
+ モーダル ウィンドウは、主に、ダイアログ ボックスとして使用します。 ダイアログ ボックスは特殊なファイルを開いたり、ドキュメントの印刷などのタスクを実行するユーザーと対話するアプリケーションで使用されるウィンドウです。 ダイアログ ボックスには、ユーザーを受け入れるか、ダイアログ ボックスを閉じる前に、表示されているタスクの取り消しを一般的できるようにします。<xref:System.Windows.Window.ShowDialog%2A> 返します、 <xref:System.Nullable%601><xref:System.Boolean> 、アクティビティが受け入れられるか、取り消されたかどうかを指定する値。 戻り値は、の値、 <xref:System.Windows.Window.DialogResult%2A> プロパティ ウィンドウを閉じる前にします。 詳細については、「<xref:System.Windows.Window.DialogResult%2A>」を参照してください。  
   
- A window that is opened by calling the <xref:System.Windows.Window.ShowDialog%2A> method does not automatically have a relationship with the window that opened it; specifically, the opened window does not know which window opened it. This relationship can be established using the <xref:System.Windows.Window.Owner%2A> property and managed using the <xref:System.Windows.Window.OwnedWindows%2A> property. To support [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] automation (see [UI Automation Overview](~/docs/framework/ui-automation/ui-automation-overview.md)), <xref:System.Windows.Window.Owner%2A> must be set for a window opened by calling <xref:System.Windows.Window.ShowDialog%2A>.  
+ 呼び出しによって開かれたウィンドウ、 <xref:System.Windows.Window.ShowDialog%2A> はメソッドに自動的に開いたウィンドウとの関係がありません。 具体的には、開かれたウィンドウが知らないいるウィンドウを開いたときです。 使用してこの関係を確立することができます、 <xref:System.Windows.Window.Owner%2A> プロパティと管理を使用して、 <xref:System.Windows.Window.OwnedWindows%2A> プロパティです。 サポートするために [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] オートメーション \(を参照してください [UI Automation Overview](http://msdn.microsoft.com/ja-jp/65847654-9994-4a9e-b36d-2dd5d998770b)\)、 <xref:System.Windows.Window.Owner%2A> の呼び出しによって開いたウィンドウを設定する必要があります <xref:System.Windows.Window.ShowDialog%2A>します。  
   
- When a modal [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] window (a window opened by calling <xref:System.Windows.Window.ShowDialog%2A>) is closed, the previously activated window is reactivated. If a modal [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] window has an owner window (see <xref:System.Windows.Window.Owner%2A>), the owner window is not reactivated when the modal [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] window is closed unless it was the previously activated window.  
+ ときに、モーダル [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] ウィンドウ \(を呼び出して、ウィンドウが開かれた <xref:System.Windows.Window.ShowDialog%2A>\) を閉じると、既にアクティブ化されたウィンドウを再アクティブ化します。 場合は、モーダル [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] ウィンドウには、オーナー ウィンドウ \(を参照してください <xref:System.Windows.Window.Owner%2A>\)、オーナー ウィンドウが再アクティブ化したときに、モーダル [!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)] にアクティブだったウィンドウがなければ、ウィンドウが閉じられます。  
   
 > [!NOTE]
->  This method cannot be called when a window is hosted in a browser.  
+>  ウィンドウがブラウザーでホストされている場合、このメソッドを呼び出すことはできません。  
   
    
   
-## Examples  
- The following sample demonstrates how to open a modal window.  
+## 例  
+ 次の例では、モーダル ウィンドウを開く方法を示します。  
   
- [!code-csharp[WindowShowDialogSnippets#WindowShowDialogCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowDialogSnippets/CSharp/MainWindow.xaml.cs#windowshowdialogcode)]
- [!code-vb[WindowShowDialogSnippets#WindowShowDialogCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowDialogSnippets/visualbasic/mainwindow.xaml.vb#windowshowdialogcode)]  
+ [!code-csharp[WindowShowDialogSnippets\#WindowShowDialogCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/WindowShowDialogSnippets/CSharp/MainWindow.xaml.cs#windowshowdialogcode)]
+ [!code-vb[WindowShowDialogSnippets\#WindowShowDialogCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/WindowShowDialogSnippets/visualbasic/mainwindow.xaml.vb#windowshowdialogcode)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="M:System.Windows.Window.ShowDialog" /> is called on a window that is closing (<see cref="E:System.Windows.Window.Closing" />) or has been closed (<see cref="E:System.Windows.Window.Closed" />).</exception>
+          <see cref="M:System.Windows.Window.ShowDialog" /> ウィンドウを閉じている途中で呼び出されます \(<see cref="E:System.Windows.Window.Closing" />\) または閉じられて \(<see cref="E:System.Windows.Window.Closed" />\)。</exception>
         <permission cref="T:System.Security.Permissions.UIPermission">for permission to activate a window. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></permission>
+        <altmember cref="M:System.Windows.Window.Close" />
+        <altmember cref="P:System.Windows.Window.WindowState" />
       </Docs>
     </Member>
     <Member MemberName="ShowInTaskbar">
@@ -1776,28 +2001,31 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the window has a task bar button.</summary>
+        <summary>取得またはウィンドウのタスク バー ボタンにするかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if the window has a task bar button; otherwise, <see langword="false" />. Does not apply when the window is hosted in a browser.</value>
+          <see langword="true" /> ウィンドウに、タスク バー ボタンがある場合それ以外の場合、 <see langword="false" />です。 ウィンドウがブラウザーでホストされている場合に適用されません。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If <xref:System.Windows.Window.ShowInTaskbar%2A> is set to `true`, the window will also appear in the ALT+TAB application selection list.  
+## 解説  
+ 場合 <xref:System.Windows.Window.ShowInTaskbar%2A> に設定されている `true`, 、ウィンドウは、alt キーを押しながら TAB アプリケーションの選択リストにも表示されます。  
   
- The icon that is used for both the task bar button and the ALT+TAB application selection list is the value of the <xref:System.Windows.Window.Icon%2A> property.  
+ タスク バー ボタンと alt キーを押しながら TAB アプリケーションの選択リストの両方に使用されるアイコンは、の値、 <xref:System.Windows.Window.Icon%2A> プロパティです。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowShowInTaskbar"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.ShowInTaskbarProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.ShowInTaskbarProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1815,8 +2043,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.ShowInTaskbar" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.ShowInTaskbar" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SizeToContent">
@@ -1832,47 +2069,51 @@
         <ReturnType>System.Windows.SizeToContent</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether a window will automatically size itself to fit the size of its content.</summary>
-        <value>A <see cref="T:System.Windows.SizeToContent" /> value. The default is <see cref="F:System.Windows.SizeToContent.Manual" />.</value>
+        <summary>ウィンドウのサイズがコンテンツのサイズに合わせて自動的に調整されるかどうかを示す値を取得または設定します。</summary>
+        <value>
+          <see cref="T:System.Windows.SizeToContent" /> 値。 既定値は、<see cref="F:System.Windows.SizeToContent.Manual" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When <xref:System.Windows.Window.SizeToContent%2A> is set to <xref:System.Windows.SizeToContent.WidthAndHeight>, setting either <xref:System.Windows.FrameworkElement.Height%2A> or <xref:System.Windows.FrameworkElement.Width%2A> has no effect; both properties can be set, but the values they are set with are not applied to the window.  
+## 解説  
+ <xref:System.Windows.Window.SizeToContent%2A> に設定されている <xref:System.Windows.SizeToContent.WidthAndHeight>, 、いずれかを設定 <xref:System.Windows.FrameworkElement.Height%2A> または <xref:System.Windows.FrameworkElement.Width%2A> は影響しません。 両方のプロパティを設定することができますが、設定された値は、ウィンドウには適用されません。  
   
- When <xref:System.Windows.Window.SizeToContent%2A> is set to <xref:System.Windows.SizeToContent.Height>, setting <xref:System.Windows.FrameworkElement.Height%2A> does not change the height of the window.  
+ <xref:System.Windows.Window.SizeToContent%2A> に設定されている <xref:System.Windows.SizeToContent.Height>, 設定 <xref:System.Windows.FrameworkElement.Height%2A> ウィンドウの高さを変更することはできません。  
   
- When <xref:System.Windows.Window.SizeToContent%2A> is set to <xref:System.Windows.SizeToContent.Width>, setting <xref:System.Windows.FrameworkElement.Width%2A> does not change the width of the window.  
+ <xref:System.Windows.Window.SizeToContent%2A> に設定されている <xref:System.Windows.SizeToContent.Width>, 設定 <xref:System.Windows.FrameworkElement.Width%2A> ウィンドウの幅を変更することはできません。  
   
- If <xref:System.Windows.Window.SizeToContent%2A> has a value other than <xref:System.Windows.SizeToContent.Manual>:  
+ 場合 <xref:System.Windows.Window.SizeToContent%2A> 以外の値を持つ <xref:System.Windows.SizeToContent.Manual>:  
   
--   <xref:System.Windows.Window.SizeToContent%2A> is automatically set to <xref:System.Windows.SizeToContent.Manual> if a user resizes the window by using the resize grip or dragging the border.  
+-   <xref:System.Windows.Window.SizeToContent%2A> 自動的に設定されている <xref:System.Windows.SizeToContent.Manual> 場合は、ユーザーは、サイズ変更グリップを使用して、境界線をドラッグするかによって、ウィンドウをサイズ変更します。  
   
--   If the size of the content changes in a way that causes the window to resize itself, <xref:System.Windows.FrameworkElement.SizeChanged> is raised.  
+-   によって、ウィンドウ自体のサイズを変更する方法でコンテンツのサイズが変更された場合 <xref:System.Windows.FrameworkElement.SizeChanged> が発生します。  
   
- If a window is transparent (see <xref:System.Windows.Window.AllowsTransparency%2A>), you should consider setting <xref:System.Windows.Window.SizeToContent%2A> to <xref:System.Windows.SizeToContent.WidthAndHeight> to ensure the window is no larger than its visible content.  
+ ウィンドウが透明の場合 \(を参照してください <xref:System.Windows.Window.AllowsTransparency%2A>\)、設定をする必要がある <xref:System.Windows.Window.SizeToContent%2A> に <xref:System.Windows.SizeToContent.WidthAndHeight> ウィンドウが表示されているコンテンツを超えないことを確認します。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowSizeToContent"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.SizeToContentProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.SizeToContentProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
    
   
-## Examples  
- The following example shows how to set the <xref:System.Windows.Window.SizeToContent%2A> property in code to specify how a window resizes to fit its content.  
+## 例  
+ 次の例では、設定する方法、 <xref:System.Windows.Window.SizeToContent%2A> コンテンツに合わせてウィンドウのサイズを変更する方法を指定するコード内のプロパティです。  
   
- [!code-csharp[HOWTOWindowManagementSnippets#SetWindowSizeToContentPropertyCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/HOWTOWindowManagementSnippets/CSharp/MainWindow.xaml.cs#setwindowsizetocontentpropertycode)]
- [!code-vb[HOWTOWindowManagementSnippets#SetWindowSizeToContentPropertyCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HOWTOWindowManagementSnippets/visualbasic/mainwindow.xaml.vb#setwindowsizetocontentpropertycode)]  
+ [!code-csharp[HOWTOWindowManagementSnippets\#SetWindowSizeToContentPropertyCODE](~/samples/snippets/csharp/VS_Snippets_Wpf/HOWTOWindowManagementSnippets/CSharp/MainWindow.xaml.cs#setwindowsizetocontentpropertycode)]
+ [!code-vb[HOWTOWindowManagementSnippets\#SetWindowSizeToContentPropertyCODE](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HOWTOWindowManagementSnippets/visualbasic/mainwindow.xaml.vb#setwindowsizetocontentpropertycode)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Window.MeasureOverride(System.Windows.Size)" />
+        <altmember cref="M:System.Windows.Window.ArrangeOverride(System.Windows.Size)" />
+        <altmember cref="P:System.Windows.Window.ResizeMode" />
       </Docs>
     </Member>
     <Member MemberName="SizeToContentProperty">
@@ -1888,8 +2129,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.SizeToContent" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.SizeToContent" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SourceInitialized">
@@ -1905,8 +2155,16 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This event is raised to support interoperation with [!INCLUDE[TLA#tla_win32](~/includes/tlasharptla-win32-md.md)]. See <see cref="T:System.Windows.Interop.HwndSource" />.</summary>
-        <remarks>To be added.</remarks>
+        <summary>相互運用をサポートするためにこのイベントは Win32です。 「<see cref="T:System.Windows.Interop.HwndSource" />」を参照してください。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StateChanged">
@@ -1922,8 +2180,17 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the window's <see cref="P:System.Windows.Window.WindowState" /> property changes.</summary>
-        <remarks>To be added.</remarks>
+        <summary>発生したときに、ウィンドウの <see cref="P:System.Windows.Window.WindowState" /> プロパティが変更されました。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Window.WindowState" />
       </Docs>
     </Member>
     <Member MemberName="TaskbarItemInfo">
@@ -1939,16 +2206,20 @@
         <ReturnType>System.Windows.Shell.TaskbarItemInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the [!INCLUDE[win7](~/includes/win7-md.md)] taskbar thumbnail for the <see cref="T:System.Windows.Window" />.</summary>
-        <value>The [!INCLUDE[win7](~/includes/win7-md.md)] taskbar thumbnail for the <see cref="T:System.Windows.Window" />.</value>
+        <summary>取得または設定、 Windows 7 タスク バーの縮小表示、 <see cref="T:System.Windows.Window" />です。</summary>
+        <value>Windows 7 タスク バーの縮小表示、 <see cref="T:System.Windows.Window" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For more information about how to use the [!INCLUDE[win7](~/includes/win7-md.md)] taskbar thumbnail, see the <xref:System.Windows.Shell.TaskbarItemInfo> class.  
+## 解説  
+ 使用する方法の詳細についての [!INCLUDE[win7](~/includes/win7-md.md)] タスク バーの縮小表示を参照してください、 <xref:System.Windows.Shell.TaskbarItemInfo> クラスです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="N:System.Windows.Shell" />
       </Docs>
     </Member>
     <Member MemberName="TaskbarItemInfoProperty">
@@ -1964,8 +2235,14 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.TaskbarItemInfo" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.TaskbarItemInfo" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Title">
@@ -1986,22 +2263,25 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a window's title.</summary>
-        <value>A <see cref="T:System.String" /> that contains the window's title.</value>
+        <summary>取得またはウィンドウのタイトルを設定します。</summary>
+        <value>A <see cref="T:System.String" /> ウィンドウのタイトルを格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The title of a <xref:System.Windows.Window>, <xref:System.Windows.Navigation.NavigationWindow>, or [!INCLUDE[TLA#tla_iegeneric](~/includes/tlasharptla-iegeneric-md.md)], can also be set by using <xref:System.Windows.Controls.Page.WindowTitle%2A?displayProperty=fullName>.  
+## 解説  
+ タイトル、 <xref:System.Windows.Window>, 、<xref:System.Windows.Navigation.NavigationWindow>, 、または [!INCLUDE[TLA#tla_iegeneric](~/includes/tlasharptla-iegeneric-md.md)], を使用して設定することも <xref:System.Windows.Controls.Page.WindowTitle%2A?displayProperty=fullName>です。  
   
 <a name="dependencyPropertyInfo_WindowTitle"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.TitleProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.TitleProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -2019,8 +2299,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.Title" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.Title" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Top">
@@ -2041,31 +2330,35 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the position of the window's top edge, in relation to the desktop.</summary>
-        <value>The position of the window's top, in logical units (1/96").</value>
+        <summary>取得またはデスクトップに関連して、ウィンドウの上端の位置を設定します。</summary>
+        <value>ウィンドウの最上位の論理単位 \(1\/96 インチ\) での位置。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the <xref:System.Windows.Window> is maximized or minimized, this value represents the top edge of the restore point for the <xref:System.Windows.Window>.  
+## 解説  
+ ときに、 <xref:System.Windows.Window> 最大化または最小化、この値は、復元の上端のポイントを <xref:System.Windows.Window>です。  
   
- This property cannot be set through a style.  
+ このプロパティは、スタイルを設定することはできません。  
   
- If you do not specify a value, <xref:System.Windows.Window.Top%2A> is set to the system default value. You can also specify the system default value by setting <xref:System.Windows.Window.Top%2A> to <xref:System.Double.NaN>. Neither <xref:System.Double.NegativeInfinity> nor <xref:System.Double.PositiveInfinity> is a valid value for <xref:System.Windows.Window.Top%2A>.  
+ 値が指定されていない場合 <xref:System.Windows.Window.Top%2A> システムの既定値に設定されています。 設定して、システムの既定値を指定することも <xref:System.Windows.Window.Top%2A> に <xref:System.Double.NaN>します。 どちらも <xref:System.Double.NegativeInfinity> も <xref:System.Double.PositiveInfinity> の有効な値は、 <xref:System.Windows.Window.Top%2A>です。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowTop"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.TopProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.TopProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Window.Left" />
       </Docs>
     </Member>
     <Member MemberName="Topmost">
@@ -2081,30 +2374,35 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether a window appears in the topmost z-order.</summary>
+        <summary>取得または最上位の z オーダーでウィンドウが表示されるかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if the window is topmost; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> ウィンドウが、一番上にある場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A window whose <xref:System.Windows.Window.Topmost%2A> property is set to `true` appears above all windows whose <xref:System.Windows.Window.Topmost%2A> properties are set to `false`.  
+## 解説  
+ ウィンドウが <xref:System.Windows.Window.Topmost%2A> にプロパティが設定されている `true` の上側にすべてのウィンドウの <xref:System.Windows.Window.Topmost%2A> プロパティに設定されて `false`します。  
   
- In the group of windows that have <xref:System.Windows.Window.Topmost%2A> property is set to `true`, the window that is currently activated is the topmost window. Likewise for the group of windows that have <xref:System.Windows.Window.Topmost%2A> property is set to `false`.  
+ Windows のグループで <xref:System.Windows.Window.Topmost%2A> にプロパティが設定されている `true`, 、現在アクティブになっているウィンドウが最上位ウィンドウです。 同様にする必要があるのグループの <xref:System.Windows.Window.Topmost%2A> にプロパティが設定されている `false`します。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowTopmost"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.TopmostProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.TopmostProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="E:System.Windows.Window.Activated" />
+        <altmember cref="E:System.Windows.Window.Deactivated" />
       </Docs>
     </Member>
     <Member MemberName="TopmostProperty">
@@ -2120,8 +2418,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.Topmost" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.Topmost" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TopProperty">
@@ -2137,8 +2444,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.Top" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.Top" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowStartupLocation">
@@ -2159,26 +2475,29 @@
         <ReturnType>System.Windows.WindowStartupLocation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the position of the window when first shown.</summary>
-        <value>A <see cref="T:System.Windows.WindowStartupLocation" /> value that specifies the top/left position of a window when first shown. The default is <see cref="F:System.Windows.WindowStartupLocation.Manual" />.</value>
+        <summary>取得または、最初に表示される場合は、ウィンドウの位置を設定します。</summary>
+        <value>A <see cref="T:System.Windows.WindowStartupLocation" /> 最初に表示されるときに、ウィンドウの左上の位置を示す値。 既定値は、<see cref="F:System.Windows.WindowStartupLocation.Manual" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Setting <xref:System.Windows.WindowStartupLocation> to <xref:System.Windows.WindowStartupLocation.Manual> causes a window to be positioned according to its <xref:System.Windows.Window.Left%2A> and <xref:System.Windows.Window.Top%2A> property values. If either the <xref:System.Windows.Window.Left%2A> or <xref:System.Windows.Window.Top%2A> properties aren't specified, their values are determined by [!INCLUDE[TLA2#tla_mswin](~/includes/tla2sharptla-mswin-md.md)].  
+## 解説  
+ 設定 <xref:System.Windows.WindowStartupLocation> に <xref:System.Windows.WindowStartupLocation.Manual> ウィンドウ」の手順に従って配置がその <xref:System.Windows.Window.Left%2A> と <xref:System.Windows.Window.Top%2A> プロパティの値。 どちらの場合、 <xref:System.Windows.Window.Left%2A> または <xref:System.Windows.Window.Top%2A> プロパティが指定されていない場合、その値は、によって決定されます。 [!INCLUDE[TLA2#tla_mswin](~/includes/tla2sharptla-mswin-md.md)]します。  
   
- Setting <xref:System.Windows.WindowStartupLocation.CenterScreen> causes a window to be positioned in the center of the screen that contains the mouse cursor.  
+ 設定 <xref:System.Windows.WindowStartupLocation.CenterScreen> ウィンドウをマウスのカーソルを含む画面の中央に配置することができます。  
   
- Setting <xref:System.Windows.WindowStartupLocation> to <xref:System.Windows.WindowStartupLocation.CenterOwner> causes a window to be positioned in the center of its owner window (see <xref:System.Windows.Window.Owner%2A>), if specified. The owner window can be either another WPF window or a non-WPF window.  
-  
-> [!NOTE]
->  For more information about WPF windows with non-WPF windows, see [WPF and Win32 Interoperation](~/docs/framework/wpf/advanced/wpf-and-win32-interoperation.md) and <xref:System.Windows.Interop.WindowInteropHelper>.  
-  
- If an owner window is not specified, the position of the window is determined in the same way as if <xref:System.Windows.WindowStartupLocation> is set to <xref:System.Windows.WindowStartupLocation.Manual>.  
+ 設定 <xref:System.Windows.WindowStartupLocation> に <xref:System.Windows.WindowStartupLocation.CenterOwner> によって、オーナー ウィンドウの中央に配置されるウィンドウ \(を参照してください <xref:System.Windows.Window.Owner%2A>\)、指定されています。 オーナー ウィンドウには、別の WPF ウィンドウまたは WPF 以外のウィンドウのいずれかを指定できます。  
   
 > [!NOTE]
->  You cannot set or get the value of this property when a window is hosted in a browser.  
+>  WPF 以外の windows での WPF ウィンドウの詳細については、次を参照してください。 [WPF と Win32 の相互運用性](http://msdn.microsoft.com/ja-jp/0ffbde0d-701d-45a3-a6fa-dd71f4d9772e) と <xref:System.Windows.Interop.WindowInteropHelper>です。  
   
+ 同様に、ウィンドウの位置を決定オーナー ウィンドウが指定されていない場合、 <xref:System.Windows.WindowStartupLocation> に設定されている <xref:System.Windows.WindowStartupLocation.Manual>します。  
+  
+> [!NOTE]
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティの値を取得できません。  
+  
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -2196,29 +2515,33 @@
         <ReturnType>System.Windows.WindowState</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether a window is restored, minimized, or maximized.</summary>
-        <value>A <see cref="T:System.Windows.WindowState" /> that determines whether a window is restored, minimized, or maximized. The default is <see cref="F:System.Windows.WindowState.Normal" /> (restored).</value>
+        <summary>取得またはウィンドウが復元になっていること、最小化、または最大化されているかどうかを示す値を設定します。</summary>
+        <value>A <see cref="T:System.Windows.WindowState" /> ウィンドウを復元、最小化、または最大化されているかどうかを決定します。 既定値は <see cref="F:System.Windows.WindowState.Normal" /> \(復元\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Before a window is minimized or maximized, its size and location are stored in <xref:System.Windows.Window.RestoreBounds%2A>. When a window is subsequently restored, its size and location values are restored with the values from <xref:System.Windows.Window.RestoreBounds%2A>.  
+## 解説  
+ サイズと場所が格納されているウィンドウを最小化または最大化する前に <xref:System.Windows.Window.RestoreBounds%2A>します。 値を使用してそのサイズと位置の値が復元されたウィンドウが復元されるときに <xref:System.Windows.Window.RestoreBounds%2A>します。  
   
- When the <xref:System.Windows.Window.WindowState%2A> property is changed, <xref:System.Windows.Window.StateChanged> is raised.  
+ ときに、 <xref:System.Windows.Window.WindowState%2A> プロパティが変更されると、 <xref:System.Windows.Window.StateChanged> が発生します。  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowWindowState"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.WindowStateProperty>|  
-|Metadata properties set to `true`|<xref:System.Windows.FrameworkPropertyMetadata.BindsTwoWayByDefault%2A>|  
+|識別子のフィールド|<xref:System.Windows.Window.WindowStateProperty>|  
+|メタデータのプロパティを設定するには `true`|<xref:System.Windows.FrameworkPropertyMetadata.BindsTwoWayByDefault%2A>|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Window.RestoreBounds" />
       </Docs>
     </Member>
     <Member MemberName="WindowStateProperty">
@@ -2234,8 +2557,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.WindowState" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.WindowState" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowStyle">
@@ -2251,29 +2583,32 @@
         <ReturnType>System.Windows.WindowStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a window's border style.</summary>
-        <value>A <see cref="T:System.Windows.WindowStyle" /> that specifies a window's border style. The default is <see cref="F:System.Windows.WindowStyle.SingleBorderWindow" />.</value>
+        <summary>取得またはウィンドウの境界線スタイルを設定します。</summary>
+        <value>A <see cref="T:System.Windows.WindowStyle" /> ウィンドウの境界線スタイルを指定します。 既定値は、<see cref="F:System.Windows.WindowStyle.SingleBorderWindow" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Window.WindowStyle%2A> can be one of the <xref:System.Windows.WindowStyle> enumeration values, including <xref:System.Windows.WindowStyle.None>, <xref:System.Windows.WindowStyle.ToolWindow>, <xref:System.Windows.WindowStyle.SingleBorderWindow> (default), and <xref:System.Windows.WindowStyle.ThreeDBorderWindow>.  
+## 解説  
+ <xref:System.Windows.Window.WindowStyle%2A> いずれか、 <xref:System.Windows.WindowStyle> 列挙値を含む <xref:System.Windows.WindowStyle.None>, 、<xref:System.Windows.WindowStyle.ToolWindow>, 、<xref:System.Windows.WindowStyle.SingleBorderWindow> \(既定\)、および <xref:System.Windows.WindowStyle.ThreeDBorderWindow>です。  
   
- The following figure shows the window styles on [!INCLUDE[TLA#tla_longhorn](~/includes/tlasharptla-longhorn-md.md)] (Windows Vista Aero theme, with transparent glass enabled):  
+ 次の図は、ウィンドウのスタイルを示します [!INCLUDE[TLA#tla_longhorn](~/includes/tlasharptla-longhorn-md.md)] \(Windows Vista Aero テーマを有効になっている透明なガラス\)。  
   
- ![Window styles](~/add/media/windowoverviewfigure6.PNG "Window styles")  
+ 1a3f5340-3e34-40ea-80b6-352e41bd49d1  
   
 > [!NOTE]
->  You cannot set or get this property when a window is hosted in a browser.  
+>  設定またはウィンドウがブラウザーでホストされている場合は、このプロパティを取得できません。  
   
 <a name="dependencyPropertyInfo_WindowWindowStyle"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Window.WindowStyleProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Window.WindowStyleProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -2291,8 +2626,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Window.WindowStyle" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Window.WindowStyle" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

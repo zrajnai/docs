@@ -27,41 +27,42 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Allows an object to control its own serialization and deserialization.</summary>
+    <summary>独自のシリアル化および逆シリアル化を制御するオブジェクトを許可します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Any class that might be serialized must be marked with the <xref:System.SerializableAttribute>. If a class needs to control its serialization process, it can implement the <xref:System.Runtime.Serialization.ISerializable> interface. The <xref:System.Runtime.Serialization.Formatter> calls the <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> at serialization time and populates the supplied <xref:System.Runtime.Serialization.SerializationInfo> with all the data required to represent the object. The <xref:System.Runtime.Serialization.Formatter> creates a <xref:System.Runtime.Serialization.SerializationInfo> with the type of the object in the graph. Objects that need to send proxies for themselves can use the <xref:System.Runtime.Serialization.SerializationInfo.FullTypeName%2A> and <xref:System.Runtime.Serialization.SerializationInfo.AssemblyName%2A> methods on <xref:System.Runtime.Serialization.SerializationInfo> to change the transmitted information.  
+## 解説  
+ シリアル化が任意のクラスをマークする必要があります、 <xref:System.SerializableAttribute>です。 クラスをシリアル化プロセスを制御する場合を実装できます、 <xref:System.Runtime.Serialization.ISerializable> インターフェイスです。<xref:System.Runtime.Serialization.Formatter> 呼び出し、 <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> シリアル化時に、指定された設定と <xref:System.Runtime.Serialization.SerializationInfo> オブジェクトを表すために必要なすべてのデータをします。<xref:System.Runtime.Serialization.Formatter> を作成、 <xref:System.Runtime.Serialization.SerializationInfo> 、グラフのオブジェクトの型を使用します。 オブジェクト自体を使用できるは、プロキシを送信する必要がある、 <xref:System.Runtime.Serialization.SerializationInfo.FullTypeName%2A> と <xref:System.Runtime.Serialization.SerializationInfo.AssemblyName%2A> メソッドを <xref:System.Runtime.Serialization.SerializationInfo> 転送される情報を変更します。  
   
- In the case of class inheritance, it is possible to serialize a class that derives from a base class that implements <xref:System.Runtime.Serialization.ISerializable>. In this case, the derived class should call the base class implementation of <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> inside its implementation of <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A>. Otherwise, the data from the base class will not be serialized.  
+ クラスの継承の場合を実装する基本クラスから派生したクラスをシリアル化 <xref:System.Runtime.Serialization.ISerializable>します。 この場合、派生クラスがの基本クラス実装を呼び出す必要があります <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> の実装の内部 <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A>します。 それ以外の場合、基本クラスからのデータはシリアル化されません。  
   
- The <xref:System.Runtime.Serialization.ISerializable> interface implies a constructor with the signature constructor (<xref:System.Runtime.Serialization.SerializationInfo> information, <xref:System.Runtime.Serialization.StreamingContext> context). At deserialization time, the current constructor is called only after the data in the <xref:System.Runtime.Serialization.SerializationInfo> has been deserialized by the formatter. In general, this constructor should be protected if the class is not sealed.  
+ <xref:System.Runtime.Serialization.ISerializable> インターフェイスにコンス トラクター シグネチャのコンス トラクターを持つ \(<xref:System.Runtime.Serialization.SerializationInfo> については、 <xref:System.Runtime.Serialization.StreamingContext> コンテキスト\)。 内のデータの後にのみ逆シリアル化時に、現在のコンス トラクターと呼ばれる、 <xref:System.Runtime.Serialization.SerializationInfo> フォーマッタで逆シリアル化されています。 一般に、クラスがシールされていない場合は、このコンス トラクターを保護する必要があります。  
   
- The order in which objects are deserialized cannot be guaranteed. For example, if one type references a type that has not been deserialized yet, an exception will occur. If you are creating types that have such dependencies, you can work around the problem by implementing the `IDeserializationCallback` interface and the `OnDeserialization` method.  
+ オブジェクトが逆シリアル化の順序は保証できません。 たとえば、1 つの型がない逆シリアル化されたまだ型を参照する場合、例外が発生します。 実装することで、問題を回避することができますこのような依存関係のある型を作成する場合、 `IDeserializationCallback` インターフェイスおよび `OnDeserialization` メソッドです。  
   
- The serialization architecture handles object types that extend <xref:System.MarshalByRefObject> the same as types that extend <xref:System.Object>. These types can be marked with the <xref:System.SerializableAttribute> and implement the <xref:System.Runtime.Serialization.ISerializable> interface as any other object type. Their object state will be captured and persisted onto the stream.  
+ シリアル化アーキテクチャを拡張するオブジェクトの種類を処理する <xref:System.MarshalByRefObject> を拡張する型と同じ <xref:System.Object>します。 これらの型をマークすることができます、 <xref:System.SerializableAttribute> を実装し、 <xref:System.Runtime.Serialization.ISerializable> 、他のオブジェクトの種類のインターフェイスです。 そのオブジェクトの状態はキャプチャされ、ストリームに永続化します。  
   
- When these types are being used through <xref:System.Runtime.Remoting>, the remoting infrastructure provides a surrogate that preempts typical serialization and instead serializes a proxy to the <xref:System.MarshalByRefObject>. A surrogate is a helper that knows how to serialize and deserialize objects of a particular type. The proxy, invisible to the user in most cases, will be of type <xref:System.Runtime.Remoting.ObjRef>.  
+ これらの型がを通じてどのように使用されている場合 <xref:System.Runtime.Remoting>, 、リモート処理インフラストラクチャは、一般的なシリアル化をより優先され、代わりにプロキシをシリアル化サロゲート、 <xref:System.MarshalByRefObject>です。 サロゲートとは、特定の種類のオブジェクトを逆シリアル化およびシリアル化する方法を把握できるヘルパーです。 型プロキシは、ほとんどの場合、ユーザーに非表示である <xref:System.Runtime.Remoting.ObjRef>です。  
   
- As a general design pattern, it would be unusual for a class to be both marked with the serializable attribute and extend <xref:System.MarshalByRefObject>. Developers should think carefully about the possible serialization and remoting scenarios when combining these two characteristics. One example where this might be applicable is with a <xref:System.IO.MemoryStream>. While the base class of <xref:System.IO.MemoryStream> (<xref:System.IO.Stream>) extends from <xref:System.MarshalByRefObject>, it is possible to capture the state of a <xref:System.IO.MemoryStream> and restore it at will. It might, therefore, be meaningful to serialize the state of this stream into a database and restore it at some later point in time. However, when used through remoting, an object of this type would be proxied.  
+ 全般的な設計パターンとしてできなくなる通常のシリアル化可能な属性でマークする両方および拡張するクラスの <xref:System.MarshalByRefObject>です。 開発者は、これら 2 つの特性を組み合わせることによっても、可能なシリアル化とリモート処理シナリオについて慎重に検討する必要があります。 1 つの例が、これを適用できますが、 <xref:System.IO.MemoryStream>です。 基本クラスの中に <xref:System.IO.MemoryStream> \(<xref:System.IO.Stream>\) から拡張 <xref:System.MarshalByRefObject>, の状態をキャプチャすることは、 <xref:System.IO.MemoryStream> およびに復元します。 したがって、あるデータベースにこのストリームの状態をシリアル化の後の段階で復元にとって意味のある可能性があります。 ただし、使用すると、リモート処理、この型のオブジェクトはプロキシのようになります。  
   
- For more information about serialization of classes that extend <xref:System.MarshalByRefObject>, see <xref:System.Runtime.Remoting.Messaging.RemotingSurrogateSelector>. For more information about implementing <xref:System.Runtime.Serialization.ISerializable>, see [Custom Serialization](~/docs/framework/serialization/custom-serialization.md).  
+ 拡張するクラスのシリアル化の詳細については <xref:System.MarshalByRefObject>, を参照してください <xref:System.Runtime.Remoting.Messaging.RemotingSurrogateSelector>します。 実装の詳細については <xref:System.Runtime.Serialization.ISerializable>, を参照してください [&#91;\<topic:\/\/cpconCustomSerialization\>&#93;](http://msdn.microsoft.com/ja-jp/12ed422d-5280-49b8-9b71-a2ed129c0384)します。  
   
    
   
-## Examples  
- The following code example demonstrates the use of the <xref:System.Runtime.Serialization.ISerializable> interface to define custom serialization behavior for a class.  
+## 例  
+ 次のコード例では、使用、 <xref:System.Runtime.Serialization.ISerializable> インターフェイス クラスのカスタムのシリアル化動作を定義します。  
   
- [!code-cpp[ISerializable Interface Example#1](~/samples/snippets/cpp/VS_Snippets_Remoting/ISerializable Interface Example/CPP/iobjectreference.cpp#1)]
- [!code-csharp[ISerializable Interface Example#1](~/samples/snippets/csharp/VS_Snippets_Remoting/ISerializable Interface Example/CS/iobjectreference.cs#1)]
- [!code-vb[ISerializable Interface Example#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/ISerializable Interface Example/VB/iobjectreference.vb#1)]  
+ [!code-cpp[ISerializable Interface Example\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/ISerializable Interface Example/CPP/iobjectreference.cpp#1)]
+ [!code-csharp[ISerializable Interface Example\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/ISerializable Interface Example/CS/iobjectreference.cs#1)]
+ [!code-vb[ISerializable Interface Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/ISerializable Interface Example/VB/iobjectreference.vb#1)]  
   
  ]]></format>
     </remarks>
     <block subset="none" type="overrides">
       <para>Implement this interface to allow an object to take part in its own serialization and deserialization.</para>
     </block>
+    <altmember cref="T:System.Runtime.Remoting.Messaging.RemotingSurrogateSelector" />
   </Docs>
   <Members>
     <Member MemberName="GetObjectData">
@@ -100,31 +101,34 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data.</param>
-        <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />) for this serialization.</param>
-        <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.</summary>
+        <param name="info">データの読み込み先となる <see cref="T:System.Runtime.Serialization.SerializationInfo" />。</param>
+        <param name="context">このシリアル化のシリアル化先 \(<see cref="T:System.Runtime.Serialization.StreamingContext" /> を参照\)。</param>
+        <summary>
+          <see cref="T:System.Runtime.Serialization.SerializationInfo" /> に、オブジェクトをシリアル化するために必要なデータを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Any objects that are included in the <xref:System.Runtime.Serialization.SerializationInfo> are automatically tracked and serialized by the formatter.  
+## 解説  
+ 含まれているすべてのオブジェクト、 <xref:System.Runtime.Serialization.SerializationInfo> 自動的に追跡され、フォーマッタによってシリアル化します。  
   
- Code that calls <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> requires the <xref:System.Security.Permissions.SecurityPermission> for providing serialization services. Associated enumeration: <xref:System.Security.Permissions.SecurityPermissionFlag?displayProperty=fullName>.  
+ 呼び出すコード <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> 必要があります、 <xref:System.Security.Permissions.SecurityPermission> シリアル化サービスを提供します。 関連する列挙値: <xref:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter?displayProperty=fullName>です。  
   
 > [!NOTE]
->  It is not guaranteed that this method will be called only once per object instance during serialization. Therefore, the method should be implemented in such a way that its behavior will be the same regardless of the number of times it is called.  
+>  このメソッドが呼び出されます 1 回だけオブジェクトのインスタンスごとのシリアル化中に限りません。 そのため、その動作はするが呼び出された回数に関係なく同じように、メソッドを実装する必要があります。  
   
    
   
-## Examples  
- The following example uses the <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> method to set alternate values for a serialized object. The code uses the <xref:System.Runtime.Serialization.SerializationInfo.AddValue%2A> method of the <xref:System.Runtime.Serialization.SerializationInfo> class to store the alternate values when the object is serialized. Conversely, when the constructor of the `Person` class is called during deserialization, the alternatve values are retrieved using the <xref:System.Runtime.Serialization.SerializationInfo.GetValue%2A> method and reassigned to the object's fields.  
+## 例  
+ 次の例では、 <xref:System.Runtime.Serialization.ISerializable.GetObjectData%2A> シリアル化されたオブジェクトの代替値を設定します。 コードを使用して、 <xref:System.Runtime.Serialization.SerializationInfo.AddValue%2A> のメソッド、 <xref:System.Runtime.Serialization.SerializationInfo> オブジェクトがシリアル化する場合は、別の値を格納するクラス。 逆のコンス トラクター、 `Person` クラスが逆シリアル化中に呼び出されると、使用して alternatve 値を取得、 <xref:System.Runtime.Serialization.SerializationInfo.GetValue%2A> メソッドとオブジェクトのフィールドを再割り当ています。  
   
- [!code-csharp[ISerializable_GetObjectData#0](~/samples/snippets/csharp/VS_Snippets_Remoting/ISerializable_GetObjectData/cs/ISerializable_GetObjectData.cs#0)]
- [!code-vb[ISerializable_GetObjectData#0](~/samples/snippets/visualbasic/VS_Snippets_Remoting/ISerializable_GetObjectData/vb/ISerializable_GetObjectData.vb#0)]  
+ [!code-csharp[ISerializable\_GetObjectData\#0](~/samples/snippets/csharp/VS_Snippets_Remoting/ISerializable_GetObjectData/cs/ISerializable_GetObjectData.cs#0)]
+ [!code-vb[ISerializable\_GetObjectData\#0](~/samples/snippets/visualbasic/VS_Snippets_Remoting/ISerializable_GetObjectData/vb/ISerializable_GetObjectData.vb#0)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元に、必要なアクセス許可がありません。</exception>
+        <altmember cref="T:System.Runtime.Serialization.StreamingContext" />
+        <altmember cref="T:System.Runtime.Serialization.SerializationInfo" />
       </Docs>
     </Member>
   </Members>

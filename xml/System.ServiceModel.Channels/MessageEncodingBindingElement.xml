@@ -12,14 +12,14 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>The binding element that specifies the message version used to encode messages.</summary>
+    <summary>メッセージをエンコードするために使用するメッセージ バージョンを指定するバインド要素。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Encoding is the process of transforming a message into a sequence of bytes. Decoding is the reverse process. [!INCLUDE[indigo1](~/includes/indigo1-md.md)] includes three types of encoding for SOAP messages: Text, Binary and Message Transmission Optimization Mechanism (MTOM).  
+## 解説  
+ エンコーディングは、メッセージをバイト シーケンスに変換するプロセスです。 デコードは、その逆のプロセスです。[!INCLUDE[indigo1](~/includes/indigo1-md.md)] には、SOAP メッセージのエンコードとして、テキスト、バイナリ、および MTOM \(Message Transmission Optimization Mechanism\) の 3 種類があります。  
   
- Use this class if you want to implement a custom message encoder. To implement your own custom message encoder, you must provide custom implementations of the following three abstract base classes:  
+ カスタム メッセージ エンコーダーを実装する場合は、このクラスを使用します。 独自のカスタム メッセージ エンコーダーを実装するには、次の 3 つの抽象基本クラスのカスタム実装を提供する必要があります。  
   
 -   <xref:System.ServiceModel.Channels.MessageEncodingBindingElement>  
   
@@ -27,24 +27,24 @@
   
 -   <xref:System.ServiceModel.Channels.MessageEncoder>  
   
- Override the <xref:System.ServiceModel.Channels.MessageEncoderFactory.Encoder%2A> to return an instance of your custom <xref:System.ServiceModel.Channels.MessageEncoder>. Override the <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.CreateMessageEncoderFactory%2A> method to return an instance of this factory.  
+ <xref:System.ServiceModel.Channels.MessageEncoderFactory.Encoder%2A> をオーバーライドして、独自のカスタム <xref:System.ServiceModel.Channels.MessageEncoder> のインスタンスを返します。<xref:System.ServiceModel.Channels.MessageEncodingBindingElement.CreateMessageEncoderFactory%2A> メソッドをオーバーライドして、このファクトリのインスタンスを返します。  
   
- Any type that derives from <xref:System.ServiceModel.Channels.MessageEncodingBindingElement> is responsible for updating the version of the SOAP binding in the WSDL document generated for the service. This is done by implementing the <xref:System.ServiceModel.Description.IWsdlExportExtension.ExportEndpoint%28System.ServiceModel.Description.WsdlExporter%2CSystem.ServiceModel.Description.WsdlEndpointConversionContext%29> method to modify the generated WSDL.  
+ <xref:System.ServiceModel.Channels.MessageEncodingBindingElement> から派生するすべての型は、サービスに対して生成される WSDL ドキュメント内の SOAP バインドのバージョンを更新します。 そのためには、生成される WSDL を変更する <xref:System.ServiceModel.Description.IWsdlExportExtension.ExportEndpoint%28System.ServiceModel.Description.WsdlExporter%2CSystem.ServiceModel.Description.WsdlEndpointConversionContext%29> メソッドを実装します。  
   
- [!INCLUDE[indigo1](~/includes/indigo1-md.md)] provides three types of binding elements derived from the <xref:System.ServiceModel.Channels.MessageEncodingBindingElement> class that can provide for text, binary and Message Transmission Optimization Mechanism (MTOM) encoding.  
+ [!INCLUDE[indigo1](~/includes/indigo1-md.md)] では、テキスト、バイナリ、および Message Transmission Optimization Mechanism \(MTOM\) のエンコーディングに対応した <xref:System.ServiceModel.Channels.MessageEncodingBindingElement> クラスから派生した 3 種類のバインド要素が提供されます。  
   
--   <xref:System.ServiceModel.Channels.TextMessageEncodingBindingElement>: the most interoperable, but the least efficient encoder for XML messages. A Web service or Web service client can generally understand textual XML. However, transmitting large blocks of binary data as text is not efficient.  
+-   <xref:System.ServiceModel.Channels.TextMessageEncodingBindingElement> : 相互運用性は最も高く、効率は最も低い、XML メッセージ用のエンコーダー。 Web サービスまたは Web サービス クライアントは、一般に、テキスト形式の XML を認識できます。 ただし、大きいブロックのバイナリ データをテキストとして転送するのは効率的ではありません。  
   
--   <xref:System.ServiceModel.Channels.BinaryMessageEncodingBindingElement>: represents the binding element that specifies the character encoding and message versioning used for binary-based XML messages. This is most efficient but least interoperable of the encoding options.  
+-   <xref:System.ServiceModel.Channels.BinaryMessageEncodingBindingElement> : バイナリベースの XML メッセージで使用される、文字エンコーディングおよびメッセージのバージョン管理を指定するバインド要素を表します。 これは、最も効率的ですが、エンコーディング オプションの相互運用性は最も低くなります。  
   
--   <xref:System.ServiceModel.Channels.MtomMessageEncodingBindingElement>: represents the binding element that specifies the character encoding and message versioning used for a message using a Message Transmission Optimization Mechanism (MTOM) encoding. MTOM is an efficient technology for transmitting binary data in [!INCLUDE[indigo2](~/includes/indigo2-md.md)] messages. The MTOM encoder attempts to balance efficiency and interoperability. The MTOM encoding transmits most XML in textual form, but optimizes large blocks of binary data by transmitting them as-is, without conversion to text.  
+-   <xref:System.ServiceModel.Channels.MtomMessageEncodingBindingElement> : Message Transmission Optimization Mechanism \(MTOM\) エンコードを使用するメッセージの文字エンコードおよびメッセージ バージョン管理を指定するバインド要素を表します。 MTOM は、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] メッセージでのバイナリ データの転送に有効なテクノロジです。 MTOM エンコーダーは、効率と相互運用性のバランスをとろうとします。 MTOM エンコーディングは、ほとんどの XML をテキスト形式で転送しますが、大きいサイズのバイナリ データ ブロックはテキストに変換せずにそのまま転送することによって最適化します。  
   
    
   
-## Examples  
- The following code example shows how to implement a class derived from <xref:System.ServiceModel.Channels.MessageEncodingBindingElement>:  
+## 例  
+ <xref:System.ServiceModel.Channels.MessageEncodingBindingElement> から派生したクラスを実装する方法を次のコード例に示します。  
   
- [!code-csharp[S_UE_CustomTextMessageEncoder#11](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#11)]  
+ [!code-csharp[S\_UE\_CustomTextMessageEncoder\#11](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#11)]  
   
  ]]></format>
     </remarks>
@@ -62,7 +62,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" /> class.</summary>
+        <summary>
+          <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -80,15 +81,15 @@
         <Parameter Name="elementToBeCloned" Type="System.ServiceModel.Channels.MessageEncodingBindingElement" />
       </Parameters>
       <Docs>
-        <param name="elementToBeCloned">The <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" /> to be cloned.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" /> class initialized from an existing element.</summary>
+        <param name="elementToBeCloned">複製する <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" />。</param>
+        <summary>既存の要素から初期化された <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code illustrates how to implement this constructor:  
+## 例  
+ このコンストラクターを実装する方法を次のコードに示します。  
   
- [!code-csharp[S_UE_CustomTextMessageEncoder#12](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#12)]  
+ [!code-csharp[S\_UE\_CustomTextMessageEncoder\#12](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#12)]  
   
  ]]></format>
         </remarks>
@@ -109,15 +110,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, creates a factory for producing message encoders.</summary>
-        <returns>The <see cref="T:System.ServiceModel.Channels.MessageEncoderFactory" /> used to produce message encoders.</returns>
+        <summary>派生クラスでオーバーライドされた場合、メッセージ エンコーダーを生成するためのファクトリを作成します。</summary>
+        <returns>メッセージ エンコーダーを生成するために使用する <see cref="T:System.ServiceModel.Channels.MessageEncoderFactory" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code illustrates how to implement the <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.CreateMessageEncoderFactory%2A>:  
+## 例  
+ <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.CreateMessageEncoderFactory%2A> を実装する方法を次のコードに示します。  
   
- [!code-csharp[S_UE_CustomTextMessageEncoder#13](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#13)]  
+ [!code-csharp[S\_UE\_CustomTextMessageEncoder\#13](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#13)]  
   
  ]]></format>
         </remarks>
@@ -147,27 +148,27 @@
         <Parameter Name="context" Type="System.ServiceModel.Channels.BindingContext" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The typed object for which the method is querying.</typeparam>
-        <param name="context">The <see cref="T:System.ServiceModel.Channels.BindingContext" /> for the current binding element.</param>
-        <summary>Returns the typed object requested, if present, from the appropriate layer in the channel stack.</summary>
-        <returns>The typed object <paramref name="T" /> requested if it is present or <see langword="null" /> if it is not.</returns>
+        <typeparam name="T">メソッドが照会している、型指定されたオブジェクト。</typeparam>
+        <param name="context">現在のバインディング要素の <see cref="T:System.ServiceModel.Channels.BindingContext" />。</param>
+        <summary>チャネル スタックの適切な層から、要求のあった型指定されたオブジェクト \(ある場合\) を返します。</summary>
+        <returns>要求される型指定されたオブジェクト <paramref name="T" /> がある場合は、そのオブジェクト。ない場合は <see langword="null" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this to request a typed object such as an interface for retrieving properties or getting status from the appropriate layer in the channel stack. If a layer supports returning the requested object, it returns it. If not, it delegates the call down to the next layer in the stack. If it gets to the bottom of the stack and no channel layer supported the requested object, then the method returns `null`.  
+## 解説  
+ チャネル スタックの適切な層のプロパティの取得やステータスの取得を行うためのインターフェイスなど、型指定されたオブジェクトを要求するには、このメソッドを使用します。 その層が要求されたオブジェクトを返せる場合は、オブジェクトを返します。 それ以外の場合は、スタック内の次の層に呼び出しを代行させます。 スタックの最下位に達しても要求されたオブジェクトをサポートするチャネル層がない場合、メソッドは、`null` を返します。  
   
    
   
-## Examples  
- The following code illustrates how to implement the <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.GetProperty%60%601%28System.ServiceModel.Channels.BindingContext%29> method:  
+## 例  
+ <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.GetProperty%60%601%28System.ServiceModel.Channels.BindingContext%29> メソッドを実装する方法を次のコードに示します。  
   
- [!code-csharp[S_UE_CustomTextMessageEncoder#15](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#15)]  
+ [!code-csharp[S\_UE\_CustomTextMessageEncoder\#15](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#15)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="context" /> is <see langword="null" />.</exception>
+          <paramref name="context" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="MessageVersion">
@@ -184,24 +185,41 @@
         <ReturnType>System.ServiceModel.Channels.MessageVersion</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>When overridden in a derived class, gets or sets the message version that can be handled by the message encoders produced by the message encoder factory.</summary>
-        <value>The <see cref="T:System.ServiceModel.Channels.MessageVersion" /> used by the encoders produced by the message encoder factory.</value>
+        <summary>派生クラスでオーバーライドされた場合、メッセージ エンコーダー ファクトリによって生成されるメッセージ エンコーダーが処理できるメッセージ バージョンを取得または設定します。</summary>
+        <value>メッセージ エンコーダー ファクトリによって生成されるエンコーダーが使用する <see cref="T:System.ServiceModel.Channels.MessageVersion" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When binding elements are asked to process a message that has a <xref:System.ServiceModel.Channels.MessageVersion> not returned by this property, it should throw an exception.  
+## 解説  
+ バインド要素は、このプロパティによって返されない <xref:System.ServiceModel.Channels.MessageVersion> を持つメッセージを処理するよう要求された場合、例外をスローする必要があります。  
   
    
   
-## Examples  
- The following code illustrates how to implement the <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.MessageVersion%2A> property:  
+## 例  
+ <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.MessageVersion%2A> プロパティを実装する方法を次のコードに示します。  
   
- [!code-csharp[S_UE_CustomTextMessageEncoder#14](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#14)]  
+ [!code-csharp[S\_UE\_CustomTextMessageEncoder\#14](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencodingbindingelement.cs#14)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.ServiceModel.Channels.MessageEncodingBindingElement" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

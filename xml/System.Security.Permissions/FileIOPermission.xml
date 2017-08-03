@@ -25,52 +25,54 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Controls the ability to access files and folders. This class cannot be inherited.</summary>
+    <summary>ファイルとフォルダーにアクセスする機能を制御します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This permission distinguishes between the following four types of file IO access provided by <xref:System.Security.Permissions.FileIOPermissionAccess>:  
+## 解説  
+ このアクセス許可は、次の 4 種類のによって提供されるファイル IO アクセスによって区別 <xref:System.Security.Permissions.FileIOPermissionAccess>:  
   
--   `Read`: Read access to the contents of the file or access to information about the file, such as its length or last modification time.  
+-   `Read`: 長さや最終更新時刻など、ファイルに関する情報へのアクセスまたはファイルの内容に対する読み取りアクセス。  
   
--   `Write`: Write access to the contents of the file or access to change information about the file, such as its name. Also allows for deletion and overwriting.  
+-   `Write`: ファイルや名前など、ファイルに関する情報を変更するアクセス権の内容への書き込みアクセス。 削除およびを上書きすることもできます。  
   
--   `Append`: Ability to write to the end of a file only. No ability to read.  
+-   `Append`: ファイルの末尾に記述する権限です。 読み取ることはできません。  
   
--   `PathDiscovery`: Access to the information in the path itself. This helps protect sensitive information in the path, such as user names, as well as information about the directory structure that is revealed in the path. This value does not grant access to files or folders represented by the path.  
-  
-> [!NOTE]
->  Giving <xref:System.Security.Permissions.FileIOPermissionAccess.Write> access to an assembly is similar to granting it full trust. If an application should not write to the file system, it should not have <xref:System.Security.Permissions.FileIOPermissionAccess.Write> access.  
-  
- All these permissions are independent, meaning that rights to one do not imply rights to another. For example, `Write` permission does not imply permission to `Read` or `Append`. If more than one permission is desired, they can be combined using a bitwise OR as shown in the code example that follows. File permission is defined in terms of canonical absolute paths; calls should always be made with canonical file paths.  
-  
- <xref:System.Security.Permissions.FileIOPermission> describes protected operations on files and folders. The <xref:System.IO.File> class helps provide secure access to files and folders. The security access check is performed when the handle to the file is created. By doing the check at creation time, the performance impact of the security check is minimized. Opening a file happens once, while reading and writing can happen multiple times. Once the file is opened, no further checks are done. If the object is passed to an untrusted caller, it can be misused. For example, file handles should not be stored in public global statics where code with less permission can access them.  
-  
- <xref:System.Security.Permissions.FileIOPermissionAccess> specifies actions that can be performed on the file or folder. In addition, these actions can be combined using a bitwise OR to form complex instances.  
-  
- Access to a folder implies access to all the files it contains, as well as access to all the files and folders in its subfolders. For example, `Read` access to C:\folder1\ implies `Read` access to C:\folder1\file1.txt, C:\folder1\folder2\\, C:\folder1\folder2\file2.txt, and so on.  
+-   `PathDiscovery`: パス自体の情報にアクセスします。 これにより、パスにディレクトリ構造についての情報と同様に、ユーザー名など、パス内の機密情報を保護できます。 この値は、ファイルまたはフォルダーのパスによって表されるへのアクセスを付与されません。  
   
 > [!NOTE]
->  In versions of the .NET Framework before the [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], you could use the <xref:System.Security.CodeAccessPermission.Deny%2A?displayProperty=fullName> method to prevent inadvertent access to system resources by trusted code. <xref:System.Security.CodeAccessPermission.Deny%2A> is now obsolete, and access to resources is now determined solely by the granted permission set for an assembly. To limit access to files, you must run partially trusted code in a sandbox and assign it permissions only to resources that the code is allowed to access. For information about running an application in a sandbox, see [How to: Run Partially Trusted Code in a Sandbox](~/docs/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox.md).  
+>  提供 <xref:System.Security.Permissions.FileIOPermissionAccess.Write> アセンブリへのアクセスは完全な信頼を与えることに似ています。 必要ない場合は、アプリケーションは、ファイル システムには記述しないで、 <xref:System.Security.Permissions.FileIOPermissionAccess.Write> アクセスします。  
+  
+ これらのアクセス許可は独立しており、つまり、1 つに権利が別の権限を意味しません。 たとえば、 `Write` 許可するアクセス許可を意味しません `Read` または `Append`です。 複数のアクセス許可を使用する場合は、それらを結合できます次のコード例のように、ビットごとの OR を使用しています。 ファイルのアクセス許可は、標準の絶対パスで定義されます。呼び出しは、標準的なファイル パスを常に行ってください。  
+  
+ <xref:System.Security.Permissions.FileIOPermission> ファイルとフォルダーの保護された操作をについて説明します。<xref:System.IO.File> クラスは、ファイルおよびフォルダーへのセキュリティで保護されたアクセスを提供します。 ファイルへのハンドルが作成された、セキュリティのアクセス チェックが実行されます。 作成時にチェックを行うことで、セキュリティ チェックのパフォーマンスへの影響が最小限にします。 ファイルを開く、中に発生読み取りと書き込み何度も発生することができます。 ファイルを開くと、これ以上のチェックが行われます。 信頼されていない呼び出し元にオブジェクトが渡された場合が誤用されることができます。 たとえば、ファイル ハンドルより限られた権限でコードがアクセスできる場所グローバル パブリックな静的変数に格納する必要がありますされません。  
+  
+ <xref:System.Security.Permissions.FileIOPermissionAccess> ファイルまたはフォルダーに対して実行できるアクションを指定します。 さらに、これらのアクションは、複雑なインスタンスをフォームにビットごとの OR を使用して組み合わせることができます。  
+  
+ フォルダーへのアクセスは、それに含まれるすべてのファイルとそのサブフォルダー内のフォルダーへのアクセスだけでなくすべてのファイルへのアクセスを意味します。 たとえば、 `Read` C:\\folder1\\ へのアクセスが示すよう `Read` C:\\folder1\\file1.txt、C:\\folder1\\folder2\\、C:\\folder1\\folder2\\file2.txt というようにアクセスします。  
+  
+> [!NOTE]
+>  前に .NET Framework のバージョンでは、 [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], を使って、 <xref:System.Security.CodeAccessPermission.Deny%2A?displayProperty=fullName> に信頼されたコードによってシステム リソースに不注意なアクセスを阻止する方法です。<xref:System.Security.CodeAccessPermission.Deny%2A> 使われていませんし、リソースへのアクセスが付与されたアクセス許可がアセンブリのセットだけで決定されるようになりました。 ファイルへのアクセスを制限するためには、サンド ボックスで部分的に信頼されたコードを実行し、コードのアクセスが許可されたリソースのみに対するアクセス許可を割り当てる必要があります。 サンド ボックスでアプリケーションを実行する方法の詳細については、次を参照してください。 [How To: Run Partially Trusted Code in a Sandbox](http://msdn.microsoft.com/ja-jp/d1ad722b-5b49-4040-bff3-431b94bb8095)します。  
   
    
   
-## Examples  
- The following examples illustrate code that uses <xref:System.Security.Permissions.FileIOPermission>. After the following two lines of code, the object `f` represents permission to read all files on the client computer's local disks. The code example then demands the permission to determine whether the application has permission to read the files.  
+## 例  
+ 次の例では、使用するコード <xref:System.Security.Permissions.FileIOPermission>します。 次の 2 行のコードで、オブジェクトの後に `f` をコンピューターのローカル ディスクにクライアント上のすべてのファイルを読み取る権限を表します。 このコード例は、アプリケーションがファイルを読み取る権限を持っているかどうかを判断するアクセス許可を要求します。  
   
- [!code-cpp[Classic FileIOPermission Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#1)]
- [!code-csharp[Classic FileIOPermission Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#1)]
- [!code-vb[Classic FileIOPermission Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#1)]  
+ [!code-cpp[Classic FileIOPermission Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic FileIOPermission Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#1)]
+ [!code-vb[Classic FileIOPermission Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#1)]  
   
- After the following two lines of code, the object `f2` represents permissions to read C:\test_r and read and write to C:\example\out.txt. `Read` and `Write` represent the file/folder permissions as previously described. After creating the permission, the code demands the permission to determine whether the application has the right to read and write to the file.  
+ 次の 2 行のコードで、オブジェクトの後に `f2` C:\\test\_r を読み取り、読み取りし、C:\\example\\out.txt への書き込みアクセス許可を表します。`Read``Write` 前述したようにファイルまたはフォルダーのアクセス許可を表します。 アクセス許可を作成した後は、コードは、アプリケーションがファイルを読み書きする権限を持っているかどうかを判断するアクセス許可を要求します。  
   
- [!code-cpp[Classic FileIOPermission Example#2](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#2)]
- [!code-csharp[Classic FileIOPermission Example#2](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#2)]
- [!code-vb[Classic FileIOPermission Example#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#2)]  
+ [!code-cpp[Classic FileIOPermission Example\#2](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#2)]
+ [!code-csharp[Classic FileIOPermission Example\#2](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#2)]
+ [!code-vb[Classic FileIOPermission Example\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#2)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Security.Permissions.FileIOPermissionAccess" />
+    <altmember cref="T:System.Security.Permissions.FileIOPermissionAttribute" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -91,26 +93,28 @@
         <Parameter Name="state" Type="System.Security.Permissions.PermissionState" />
       </Parameters>
       <Docs>
-        <param name="state">One of the <see cref="T:System.Security.Permissions.PermissionState" /> enumeration values.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.Permissions.FileIOPermission" /> class with fully restricted or unrestricted permission as specified.</summary>
+        <param name="state">
+          <see cref="T:System.Security.Permissions.PermissionState" /> 列挙値のいずれか。</param>
+        <summary>指定に従って完全に制限されているか、または無制限のアクセス許可を持つ、<see cref="T:System.Security.Permissions.FileIOPermission" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Creates either fully restricted (`None`) or `Unrestricted` access to files and directories.  
+## 解説  
+ 完全に制限されているいずれかが作成されます \(`None`\) または `Unrestricted` ファイルおよびディレクトリにアクセスします。  
   
    
   
-## Examples  
- The following code example creates a new instance of the <xref:System.Security.Permissions.FileIOPermission> class with fully restricted read access.  
+## 例  
+ 次のコード例は、の新しいインスタンスを作成、 <xref:System.Security.Permissions.FileIOPermission> 完全に制限付きの読み取りアクセス権を持つクラス。  
   
- [!code-cpp[Classic FileIOPermission Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#1)]
- [!code-csharp[Classic FileIOPermission Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#1)]
- [!code-vb[Classic FileIOPermission Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#1)]  
+ [!code-cpp[Classic FileIOPermission Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic FileIOPermission Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#1)]
+ [!code-vb[Classic FileIOPermission Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="state" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.PermissionState" />.</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="state" /> パラメーターが <see cref="T:System.Security.Permissions.PermissionState" /> の有効な値ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -132,35 +136,37 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> enumeration values.</param>
-        <param name="path">The absolute path of the file or directory.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.Permissions.FileIOPermission" /> class with the specified access to the designated file or directory.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 列挙値のビットごとの組み合わせ。</param>
+        <param name="path">ファイルまたはディレクトリの絶対パス。</param>
+        <summary>指定されたファイルまたはディレクトリに対する指定されたアクセスにより、<see cref="T:System.Security.Permissions.FileIOPermission" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor allows only one of the <xref:System.Security.Permissions.FileIOPermissionAccess> values to be specified for the specified file or directory. Use the <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> method to define complex permissions.  
+## 解説  
+ このコンス トラクターでの 1 つだけ、 <xref:System.Security.Permissions.FileIOPermissionAccess> 値を指定したファイルまたはディレクトリを指定します。 使用して、 <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> 複雑なアクセス許可を定義するメソッドです。  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:System.Security.Permissions.FileIOPermission.%23ctor%28System.Security.Permissions.FileIOPermissionAccess%2CSystem.String%29?displayProperty=fullName> constructor to create a new instance of the <xref:System.Security.Permissions.FileIOPermission> class, which provides complete access to the C:\test_r file.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:System.Security.Permissions.FileIOPermission.%23ctor%28System.Security.Permissions.FileIOPermissionAccess%2CSystem.String%29?displayProperty=fullName> の新しいインスタンスを作成するコンス トラクター、 <xref:System.Security.Permissions.FileIOPermission> C:\\test\_r ファイルへの完全なアクセスを提供するクラス。  
   
- [!code-cpp[Classic FileIOPermission Example#2](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#2)]
- [!code-csharp[Classic FileIOPermission Example#2](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#2)]
- [!code-vb[Classic FileIOPermission Example#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#2)]  
+ [!code-cpp[Classic FileIOPermission Example\#2](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#2)]
+ [!code-csharp[Classic FileIOPermission Example\#2](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#2)]
+ [!code-vb[Classic FileIOPermission Example\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の有効な値ではありません。  
   
- -or-  
+ \-または\-  
   
- The <paramref name="path" /> parameter is not a valid string.  
+ <paramref name="path" /> パラメーターが有効な文字列ではありません。  
   
- -or-  
+ または  
   
- The <paramref name="path" /> parameter does not specify the absolute path to the file or directory.</exception>
+ <paramref name="path" /> パラメーターで、ファイルまたはディレクトリへの絶対パスが指定されませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -182,22 +188,24 @@
         <Parameter Name="pathList" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> enumeration values.</param>
-        <param name="pathList">An array containing the absolute paths of the files and directories.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.Permissions.FileIOPermission" /> class with the specified access to the designated files and directories.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 列挙値のビットごとの組み合わせ。</param>
+        <param name="pathList">ファイルとディレクトリの絶対パスを格納する配列。</param>
+        <summary>指定されたファイルおよびディレクトリに対する指定されたアクセスにより、<see cref="T:System.Security.Permissions.FileIOPermission" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor allows only one <xref:System.Security.Permissions.FileIOPermissionAccess> value to be specified for the specified files and directories. Use the <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> method to define complex permissions.  
+## 解説  
+ このコンス トラクターは、1 つだけ <xref:System.Security.Permissions.FileIOPermissionAccess> 値を指定したファイルとディレクトリを指定します。 使用して、 <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> 複雑なアクセス許可を定義するメソッドです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の正しい値ではありません。  
   
- -or-  
+ \-または\-  
   
- An entry in the <paramref name="pathList" /> array is not a valid string.</exception>
+ <paramref name="pathList" /> 配列内のエントリが、有効な文字列ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -220,32 +228,35 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> enumeration values.</param>
-        <param name="control">A bitwise combination of the <see cref="T:System.Security.AccessControl.AccessControlActions" /> enumeration values.</param>
-        <param name="path">The absolute path of the file or directory.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.Permissions.FileIOPermission" /> class with the specified access to the designated file or directory and the specified access rights to file control information.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 列挙値のビットごとの組み合わせ。</param>
+        <param name="control">
+          <see cref="T:System.Security.AccessControl.AccessControlActions" /> 列挙値のビットごとの組み合わせ。</param>
+        <param name="path">ファイルまたはディレクトリの絶対パス。</param>
+        <summary>指定されたファイルまたはディレクトリへの指定のアクセスと、ファイル制御情報への指定のアクセス権を使用して、<see cref="T:System.Security.Permissions.FileIOPermission" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor allows only one <xref:System.Security.Permissions.FileIOPermissionAccess> value to be specified for the specified file or directories. Use the <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> method to define complex permissions.  
+## 解説  
+ このコンス トラクターは、1 つだけ <xref:System.Security.Permissions.FileIOPermissionAccess> 値を指定したファイルまたはディレクトリを指定します。 使用して、 <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> 複雑なアクセス許可を定義するメソッドです。  
   
- The `control` parameter specifies whether the access control list (ACL) for the file or directory specified by `path` can be changed, viewed, or cannot be accessed.  
+ `control` パラメーターを指定するかどうかのアクセス制御リスト \(ACL\) で指定されたディレクトリとファイルに対して `path` 変更できますが、表示またはアクセスできません。  
   
 > [!IMPORTANT]
->  An access control list (ACL) describes individuals or groups who have, or do not have, rights to specific actions on the given file and its properties.  The ability to change or view an ACL is an important permission and should be granted with caution.  
+>  アクセス制御リスト \(ACL\) は、個人またはグループがある、または権限がない、特定のファイルとそのプロパティに対する特定のアクションをについて説明します。  変更または ACL を表示する機能は、アクセス許可が重要と慎重に付与する必要があります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の有効な値ではありません。  
   
- -or-  
+ \-または\-  
   
- The <paramref name="path" /> parameter is not a valid string.  
+ <paramref name="path" /> パラメーターが有効な文字列ではありません。  
   
- -or-  
+ または  
   
- The <paramref name="path" /> parameter does not specify the absolute path to the file or directory.</exception>
+ <paramref name="path" /> パラメーターで、ファイルまたはディレクトリへの絶対パスが指定されませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -268,28 +279,31 @@
         <Parameter Name="pathList" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> enumeration values.</param>
-        <param name="control">A bitwise combination of the <see cref="T:System.Security.AccessControl.AccessControlActions" /> enumeration values.</param>
-        <param name="pathList">An array containing the absolute paths of the files and directories.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.Permissions.FileIOPermission" /> class with the specified access to the designated files and directories and the specified access rights to file control information.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 列挙値のビットごとの組み合わせ。</param>
+        <param name="control">
+          <see cref="T:System.Security.AccessControl.AccessControlActions" /> 列挙値のビットごとの組み合わせ。</param>
+        <param name="pathList">ファイルとディレクトリの絶対パスを格納する配列。</param>
+        <summary>指定されたファイルとディレクトリへの指定のアクセスと、ファイル制御情報への指定のアクセス権を使用して、<see cref="T:System.Security.Permissions.FileIOPermission" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor allows only one <xref:System.Security.Permissions.FileIOPermissionAccess> value to be specified for the specified files and directories. Use the <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> method to define complex permissions.  
+## 解説  
+ このコンス トラクターは、1 つだけ <xref:System.Security.Permissions.FileIOPermissionAccess> 値を指定したファイルとディレクトリを指定します。 使用して、 <xref:System.Security.Permissions.FileIOPermission.AddPathList%2A> 複雑なアクセス許可を定義するメソッドです。  
   
- The `control` parameter specifies whether the access control list (ACL) for the file or directory specified by `path` can be changed, viewed, or cannot be accessed.  
+ `control` パラメーターを指定するかどうかのアクセス制御リスト \(ACL\) で指定されたディレクトリとファイルに対して `path` 変更できますが、表示またはアクセスできません。  
   
 > [!IMPORTANT]
->  An access control list (ACL) describes individuals or groups who have, or do not have, rights to specific actions on the given file and its properties.  The ability to change or view an ACL is an important permission and should be granted with caution.  
+>  アクセス制御リスト \(ACL\) は、個人またはグループがある、または権限がない、特定のファイルとそのプロパティに対する特定のアクションをについて説明します。  変更または ACL を表示する機能は、アクセス許可が重要と慎重に付与する必要があります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の正しい値ではありません。  
   
- -or-  
+ \-または\-  
   
- An entry in the <paramref name="pathList" /> array is not a valid string.</exception>
+ <paramref name="pathList" /> 配列内のエントリが、有効な文字列ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="AddPathList">
@@ -314,37 +328,41 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> values.</param>
-        <param name="path">The absolute path of a file or directory.</param>
-        <summary>Adds access for the specified file or directory to the existing state of the permission.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 値のビットごとの組み合わせ。</param>
+        <param name="path">ファイルまたはディレクトリの絶対パス。</param>
+        <summary>指定したファイルまたはディレクトリに対するアクセス権を、既存のアクセス許可の状態に追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method to modify file and directory access by adding to the state of the current permission.  
+## 解説  
+ このメソッドを使用すると、現在のアクセス許可の状態を追加することでファイルおよびディレクトリのアクセスを変更できます。  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:System.Security.Permissions.FileIOPermission.AddPathList%28System.Security.Permissions.FileIOPermissionAccess%2CSystem.String%29?displayProperty=fullName> method.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:System.Security.Permissions.FileIOPermission.AddPathList%28System.Security.Permissions.FileIOPermissionAccess%2CSystem.String%29?displayProperty=fullName> メソッドです。  
   
- [!code-cpp[Classic FileIOPermission Example#2](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#2)]
- [!code-csharp[Classic FileIOPermission Example#2](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#2)]
- [!code-vb[Classic FileIOPermission Example#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#2)]  
+ [!code-cpp[Classic FileIOPermission Example\#2](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#2)]
+ [!code-csharp[Classic FileIOPermission Example\#2](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#2)]
+ [!code-vb[Classic FileIOPermission Example\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の有効な値ではありません。  
   
- -or-  
+ \-または\-  
   
- The <paramref name="path" /> parameter is not a valid string.  
+ <paramref name="path" /> パラメーターが有効な文字列ではありません。  
   
- -or-  
+ または  
   
- The <paramref name="path" /> parameter did not specify the absolute path to the file or directory.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="path" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.NotSupportedException">The <paramref name="path" /> parameter has an invalid format.</exception>
+ <paramref name="path" /> パラメーターで、ファイルまたはディレクトリへの絶対パスが指定されませんでした。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="path" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.NotSupportedException">
+          <paramref name="path" /> パラメーターの形式が正しくありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="AddPathList">
@@ -369,24 +387,28 @@
         <Parameter Name="pathList" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> values.</param>
-        <param name="pathList">An array containing the absolute paths of the files and directories.</param>
-        <summary>Adds access for the specified files and directories to the existing state of the permission.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 値のビットごとの組み合わせ。</param>
+        <param name="pathList">ファイルとディレクトリの絶対パスを格納する配列。</param>
+        <summary>指定したファイルおよびディレクトリに対するアクセス権を、既存のアクセス許可の状態に追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Use this method to modify file and directory access by adding to the state of the current permission.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の正しい値ではありません。  
   
- -or-  
+ または  
   
- An entry in the <paramref name="pathList" /> array is not valid.</exception>
-        <exception cref="T:System.NotSupportedException">An entry in the <paramref name="pathList" /> array has an invalid format.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="pathList" /> parameter is <see langword="null" />.</exception>
+ <paramref name="pathList" /> 配列内のエントリが、有効ではありません。</exception>
+        <exception cref="T:System.NotSupportedException">
+          <paramref name="pathList" /> 配列内のエントリが、正しくない形式です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="pathList" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AllFiles">
@@ -407,24 +429,24 @@
         <ReturnType>System.Security.Permissions.FileIOPermissionAccess</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the permitted access to all files.</summary>
-        <value>The set of file I/O flags for all files.</value>
+        <summary>すべてのファイルへの許可されたアクセスを取得または設定します。</summary>
+        <value>すべてのファイルのファイル I\/O フラグのセット。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property gets or sets the permitted access to all files on the local computer and network drives.  
+## 解説  
+ このプロパティを取得またはローカル コンピューターおよびネットワーク ドライブ上のすべてのファイルにアクセス許可を設定します。  
   
- An individual <xref:System.Security.Permissions.FileIOPermissionAccess> value can be checked for using a bitwise AND operation.  
+ 個人 <xref:System.Security.Permissions.FileIOPermissionAccess> をビットごとの AND 演算を使用する値をチェックすることができます。  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:System.Security.Permissions.FileIOPermission.AllFiles%2A> property.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:System.Security.Permissions.FileIOPermission.AllFiles%2A> プロパティです。  
   
- [!code-cpp[Classic FileIOPermission Example#3](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#3)]
- [!code-csharp[Classic FileIOPermission Example#3](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#3)]
- [!code-vb[Classic FileIOPermission Example#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#3)]  
+ [!code-cpp[Classic FileIOPermission Example\#3](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#3)]
+ [!code-csharp[Classic FileIOPermission Example\#3](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#3)]
+ [!code-vb[Classic FileIOPermission Example\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -448,24 +470,24 @@
         <ReturnType>System.Security.Permissions.FileIOPermissionAccess</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the permitted access to all local files.</summary>
-        <value>The set of file I/O flags for all local files.</value>
+        <summary>すべてのローカル ファイルへの許可されたアクセスを取得または設定します。</summary>
+        <value>すべてのローカル ファイルのファイル I\/O フラグのセット。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Local files are files contained on the local computer. Any files not accessed through a network drive are local files.  
+## 解説  
+ ローカル ファイルは、ローカル コンピューターに含まれるファイルです。 ネットワーク ドライブからアクセスされていないすべてのファイルは、ローカル ファイルです。  
   
- An individual <xref:System.Security.Permissions.FileIOPermissionAccess> value can be checked for using a bitwise AND operation.  
+ 個人 <xref:System.Security.Permissions.FileIOPermissionAccess> をビットごとの AND 演算を使用する値をチェックすることができます。  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:System.Security.Permissions.FileIOPermission.AllLocalFiles%2A> property.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:System.Security.Permissions.FileIOPermission.AllLocalFiles%2A> プロパティです。  
   
- [!code-cpp[Classic FileIOPermission Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#1)]
- [!code-csharp[Classic FileIOPermission Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#1)]
- [!code-vb[Classic FileIOPermission Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#1)]  
+ [!code-cpp[Classic FileIOPermission Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic FileIOPermission Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic FileIOPermission Example/CS/source.cs#1)]
+ [!code-vb[Classic FileIOPermission Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic FileIOPermission Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -490,12 +512,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates and returns an identical copy of the current permission.</summary>
-        <returns>A copy of the current permission.</returns>
+        <summary>現在のアクセス許可の同一のコピーを作成して返します。</summary>
+        <returns>現在のアクセス許可のコピー。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  A copy of the permission represents the same access to resources as the original permission.  
   
  ]]></format>
@@ -528,14 +550,13 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The <see cref="T:System.Security.Permissions.FileIOPermission" /> object to compare with the current <see cref="T:System.Security.Permissions.FileIOPermission" />.</param>
-        <summary>Determines whether the specified <see cref="T:System.Security.Permissions.FileIOPermission" /> object is equal to the current <see cref="T:System.Security.Permissions.FileIOPermission" />.</summary>
-        <returns>
-          <see langword="true" /> if the specified <see cref="T:System.Security.Permissions.FileIOPermission" /> is equal to the current <see cref="T:System.Security.Permissions.FileIOPermission" /> object; otherwise, <see langword="false" />.</returns>
+        <param name="obj">現在の <see cref="T:System.Security.Permissions.FileIOPermission" /> と比較する <see cref="T:System.Security.Permissions.FileIOPermission" /> オブジェクト。</param>
+        <summary>指定した <see cref="T:System.Security.Permissions.FileIOPermission" /> オブジェクトが、現在の <see cref="T:System.Security.Permissions.FileIOPermission" /> と等しいかどうかを判断します。</summary>
+        <returns>指定した <see cref="T:System.Security.Permissions.FileIOPermission" /> が現在の <see cref="T:System.Security.Permissions.FileIOPermission" /> オブジェクトと等しい場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  For more information, see <xref:System.Object.Equals%2A>.  
   
  ]]></format>
@@ -563,15 +584,17 @@
         <Parameter Name="esd" Type="System.Security.SecurityElement" />
       </Parameters>
       <Docs>
-        <param name="esd">The XML encoding used to reconstruct the permission.</param>
-        <summary>Reconstructs a permission with a specified state from an XML encoding.</summary>
+        <param name="esd">アクセス許可の再構築に使用する XML エンコード。</param>
+        <summary>XML エンコードから指定された状態で、アクセス許可を再構築します。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="esd" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="esd" /> parameter is not a valid permission element.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="esd" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="esd" /> パラメーターが有効なアクセス許可要素ではありません。  
   
- -or-  
+ \-または\-  
   
- The <paramref name="esd" /> parameter's version number is not compatible.</exception>
+ <paramref name="esd" /> パラメーターのバージョン番号は、互換性のないものです。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetHashCode">
@@ -598,13 +621,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets a hash code for the <see cref="T:System.Security.Permissions.FileIOPermission" /> object that is suitable for use in hashing algorithms and data structures such as a hash table.</summary>
-        <returns>A hash code for the current <see cref="T:System.Security.Permissions.FileIOPermission" /> object.</returns>
+        <summary>ハッシュ アルゴリズムや、ハッシュ テーブルのようなデータ構造での使用に適している、<see cref="T:System.Security.Permissions.FileIOPermission" /> オブジェクトのハッシュ コードを取得します。</summary>
+        <returns>現在の <see cref="T:System.Security.Permissions.FileIOPermission" /> オブジェクトのハッシュ コード。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The hash code for two instances of the same permission might be different, hence a hash code should not be used to compare two <xref:System.Security.Permissions.FileIOPermission> objects.  
+## 解説  
+ 同じアクセス許可の 2 つのインスタンスのハッシュ コードが異なる場合があります、したがってハッシュ コード 2 つの比較に使用されていない <xref:System.Security.Permissions.FileIOPermission> オブジェクトです。  
   
  ]]></format>
         </remarks>
@@ -631,35 +654,36 @@
         <Parameter Name="access" Type="System.Security.Permissions.FileIOPermissionAccess" />
       </Parameters>
       <Docs>
-        <param name="access">One of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> values that represents a single type of file access.</param>
-        <summary>Gets all files and directories with the specified <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.</summary>
-        <returns>An array containing the paths of the files and directories to which access specified by the <paramref name="access" /> parameter is granted.</returns>
+        <param name="access">ファイル アクセスの単一の型を表す <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 値の 1 つです。</param>
+        <summary>指定した <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> を含むすべてのファイルとディレクトリを取得します。</summary>
+        <returns>
+          <paramref name="access" /> パラメーターで指定されたアクセスが付与されているファイルおよびディレクトリのパスを含む配列です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method to get the state of the current permission. To get the state of both `Read` and `Write` access, two calls to this method are required.  
+## 解説  
+ このメソッドを使用すると、現在のアクセス許可の状態を取得します。 両方の状態を取得する `Read` と `Write` アクセス、このメソッドに 2 つの呼び出しが必要です。  
   
 > [!NOTE]
->  The `access` parameter is limited to the values of <xref:System.Security.Permissions.FileIOPermissionAccess>, which represent single types of file access. Those values are <xref:System.Security.Permissions.FileIOPermissionAccess.Read>, <xref:System.Security.Permissions.FileIOPermissionAccess.Write>, <xref:System.Security.Permissions.FileIOPermissionAccess.Append>, and <xref:System.Security.Permissions.FileIOPermissionAccess.PathDiscovery>. The values acceptable to `access` do not include <xref:System.Security.Permissions.FileIOPermissionAccess.NoAccess> and <xref:System.Security.Permissions.FileIOPermissionAccess.AllAccess>, which do not represent single types of file access.  
+>  `access` パラメーターの値に限定 <xref:System.Security.Permissions.FileIOPermissionAccess>, 、ファイルへのアクセスの 1 つの型を表します。 これらの値は <xref:System.Security.Permissions.FileIOPermissionAccess.Read>, 、<xref:System.Security.Permissions.FileIOPermissionAccess.Write>, 、<xref:System.Security.Permissions.FileIOPermissionAccess.Append>, 、および <xref:System.Security.Permissions.FileIOPermissionAccess.PathDiscovery>です。 値を許容できる `access` は含めないでください <xref:System.Security.Permissions.FileIOPermissionAccess.NoAccess> と <xref:System.Security.Permissions.FileIOPermissionAccess.AllAccess>, 、ファイルへのアクセスの 1 つの型を表していません。  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:System.Security.Permissions.FileIOPermission.GetPathList%2A> method. This example is part of a larger example provided for the <xref:System.Security.Permissions.FileIOPermission> class.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:System.Security.Permissions.FileIOPermission.GetPathList%2A> メソッドです。 この例に示されている例の一部である、 <xref:System.Security.Permissions.FileIOPermission> クラスです。  
   
- [!code-cpp[System.Security.Permissions.FileIOPermission#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/fileiopermission.cpp#7)]
- [!code-csharp[System.Security.Permissions.FileIOPermission#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/fileiopermission.cs#7)]
- [!code-vb[System.Security.Permissions.FileIOPermission#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/fileiopermission.vb#7)]  
+ [!code-cpp[System.Security.Permissions.FileIOPermission\#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/fileiopermission.cpp#7)]
+ [!code-csharp[System.Security.Permissions.FileIOPermission\#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/fileiopermission.cs#7)]
+ [!code-vb[System.Security.Permissions.FileIOPermission\#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/fileiopermission.vb#7)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="access" /> is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+          <paramref name="access" /> が <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の正しい値ではありません。  
   
- -or-  
+ または  
   
- <paramref name="access" /> is <see cref="F:System.Security.Permissions.FileIOPermissionAccess.AllAccess" />, which represents more than one type of file access, or <see cref="F:System.Security.Permissions.FileIOPermissionAccess.NoAccess" />, which does not represent any type of file access.</exception>
+ <paramref name="access" /> が <see cref="F:System.Security.Permissions.FileIOPermissionAccess.AllAccess" /> で、ファイル アクセスの 2 つ以上の型を表しているか、<see cref="F:System.Security.Permissions.FileIOPermissionAccess.NoAccess" /> がファイル アクセスのどの型も表していません。</exception>
       </Docs>
     </Member>
     <Member MemberName="Intersect">
@@ -683,18 +707,19 @@
         <Parameter Name="target" Type="System.Security.IPermission" />
       </Parameters>
       <Docs>
-        <param name="target">A permission to intersect with the current permission. It must be the same type as the current permission.</param>
-        <summary>Creates and returns a permission that is the intersection of the current permission and the specified permission.</summary>
-        <returns>A new permission that represents the intersection of the current permission and the specified permission. This new permission is <see langword="null" /> if the intersection is empty.</returns>
+        <param name="target">現在のアクセス許可との共通部分のあるアクセス許可。 現在のアクセス許可と同じ型である必要があります。</param>
+        <summary>現在のアクセス許可と指定したアクセス許可の積集合であるアクセス許可を作成して返します。</summary>
+        <returns>現在のアクセス許可と指定したアクセス許可の積集合を表す新しいアクセス許可。 積集合が空の場合、この新しいアクセス許可は <see langword="null" /> です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The intersection of two permissions is a permission that describes the set of operations they both describe in common. Only a demand that passes both original permissions will pass the intersection.  
+## 解説  
+ 2 つのアクセス許可の積集合は、両方に共通する操作のセットを表すアクセス許可です。 両方の元のアクセス許可に適合する要求だけでは、交差する位置を渡します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="target" /> parameter is not <see langword="null" /> and is not of the same type as the current permission.</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="target" /> パラメーターが <see langword="null" /> でなく、また現在のアクセス許可と同じ型でもありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="IsSubsetOf">
@@ -718,19 +743,19 @@
         <Parameter Name="target" Type="System.Security.IPermission" />
       </Parameters>
       <Docs>
-        <param name="target">A permission that is to be tested for the subset relationship. This permission must be the same type as the current permission.</param>
-        <summary>Determines whether the current permission is a subset of the specified permission.</summary>
-        <returns>
-          <see langword="true" /> if the current permission is a subset of the specified permission; otherwise, <see langword="false" />.</returns>
+        <param name="target">サブセットの関係にあるかどうかをテストするアクセス許可。 このアクセス許可は、現在のアクセス許可と同じ型であることが必要です。</param>
+        <summary>現在のアクセス許可が、指定したアクセス許可のサブセットであるかどうかを判断します。</summary>
+        <returns>現在のアクセス許可が、指定したアクセス許可のサブセットの場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current permission is a subset of the specified permission if the current permission specifies a set of operations that is contained by the specified permission. For example, a permission that represents read access to C:\example.txt is a subset of a permission that represents read access to C:\\. If this method returns `true`, the current permission represents no more access to the protected resource than does the specified permission.  
+## 解説  
+ 現在のアクセス許可は、現在のアクセス許可を指定した権限に格納されている一連の操作を指定する場合、指定した権限のサブセットです。 たとえば、C:\\example.txt への読み取りアクセス権を表すアクセス許可は、C:\\ の読み取りアクセス権を表すアクセス許可のサブセットです。 このメソッドが戻る場合 `true`, 、現在のアクセス許可がない以上へのアクセスが保護されたリソースは、指定した権限を表します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="target" /> parameter is not <see langword="null" /> and is not of the same type as the current permission.</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="target" /> パラメーターが <see langword="null" /> でなく、また現在のアクセス許可と同じ型でもありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="IsUnrestricted">
@@ -752,14 +777,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a value indicating whether the current permission is unrestricted.</summary>
-        <returns>
-          <see langword="true" /> if the current permission is unrestricted; otherwise, <see langword="false" />.</returns>
+        <summary>現在のアクセス許可が無制限かどうかを示す値を返します。</summary>
+        <returns>現在のアクセス許可が無制限の場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An unrestricted permission represents access to all resources protected by the permission.  
+## 解説  
+ 無制限のアクセス許可は、アクセス許可によって保護されているすべてのリソースへのアクセスを表します。  
   
  ]]></format>
         </remarks>
@@ -787,45 +811,47 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> values.</param>
-        <param name="path">The absolute path of the file or directory.</param>
-        <summary>Sets the specified access to the specified file or directory, replacing the existing state of the permission.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 値のビットごとの組み合わせ。</param>
+        <param name="path">ファイルまたはディレクトリの絶対パス。</param>
+        <summary>指定したアクセスを指定したファイルまたはディレクトリに設定し、既存のアクセス許可の状態を置き換えます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The previous state of the current permission for the specified access type is overwritten. The following code sets the access for C:\temp to <xref:System.Security.Permissions.FileIOPermissionAccess.Read>.  
+## 解説  
+ 指定したアクセスの種類の現在のアクセス許可の以前の状態が上書きされます。 次のコードを C:\\temp のアクセス権を設定する <xref:System.Security.Permissions.FileIOPermissionAccess.Read>です。  
   
- [!code-cpp[System.Security.Permissions.FileIOPermission#12](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/remarks.cpp#12)]
- [!code-csharp[System.Security.Permissions.FileIOPermission#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/remarks.cs#12)]
- [!code-vb[System.Security.Permissions.FileIOPermission#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/remarks.vb#12)]  
+ [!code-cpp[System.Security.Permissions.FileIOPermission\#12](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/remarks.cpp#12)]
+ [!code-csharp[System.Security.Permissions.FileIOPermission\#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/remarks.cs#12)]
+ [!code-vb[System.Security.Permissions.FileIOPermission\#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/remarks.vb#12)]  
   
- This access will not be overwritten by the following code because the access types are not the same.  
+ アクセスの種類が同じではありません、このアクセスは、次のコードでは上書きされません。  
   
- [!code-cpp[System.Security.Permissions.FileIOPermission#13](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/remarks.cpp#13)]
- [!code-csharp[System.Security.Permissions.FileIOPermission#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/remarks.cs#13)]
- [!code-vb[System.Security.Permissions.FileIOPermission#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/remarks.vb#13)]  
+ [!code-cpp[System.Security.Permissions.FileIOPermission\#13](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/remarks.cpp#13)]
+ [!code-csharp[System.Security.Permissions.FileIOPermission\#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/remarks.cs#13)]
+ [!code-vb[System.Security.Permissions.FileIOPermission\#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/remarks.vb#13)]  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:System.Security.Permissions.FileIOPermission.SetPathList%28System.Security.Permissions.FileIOPermissionAccess%2CSystem.String%29?displayProperty=fullName> method.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:System.Security.Permissions.FileIOPermission.SetPathList%28System.Security.Permissions.FileIOPermissionAccess%2CSystem.String%29?displayProperty=fullName> メソッドです。  
   
- [!code-cpp[System.Security.Permissions.FileIOPermission#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/fileiopermission.cpp#7)]
- [!code-csharp[System.Security.Permissions.FileIOPermission#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/fileiopermission.cs#7)]
- [!code-vb[System.Security.Permissions.FileIOPermission#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/fileiopermission.vb#7)]  
+ [!code-cpp[System.Security.Permissions.FileIOPermission\#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/fileiopermission.cpp#7)]
+ [!code-csharp[System.Security.Permissions.FileIOPermission\#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/fileiopermission.cs#7)]
+ [!code-vb[System.Security.Permissions.FileIOPermission\#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/fileiopermission.vb#7)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の有効な値ではありません。  
   
- -or-  
+ \-または\-  
   
- The <paramref name="path" /> parameter is not a valid string.  
+ <paramref name="path" /> パラメーターが有効な文字列ではありません。  
   
- -or-  
+ または  
   
- The <paramref name="path" /> parameter did not specify the absolute path to the file or directory.</exception>
+ <paramref name="path" /> パラメーターで、ファイルまたはディレクトリへの絶対パスが指定されませんでした。</exception>
       </Docs>
     </Member>
     <Member MemberName="SetPathList">
@@ -850,28 +876,30 @@
         <Parameter Name="pathList" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="access">A bitwise combination of the <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> values.</param>
-        <param name="pathList">An array containing the absolute paths of the files and directories.</param>
-        <summary>Sets the specified access to the specified files and directories, replacing the current state for the specified access with the new set of paths.</summary>
+        <param name="access">
+          <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> 値のビットごとの組み合わせ。</param>
+        <param name="pathList">ファイルとディレクトリの絶対パスを格納する配列。</param>
+        <summary>指定したアクセスを指定したファイルとディレクトリに設定し、指定したアクセスの現在の状態を新しいパスのセットで置き換えます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The previous state of the current permission for the specified access type is overwritten. The following code sets the access for C:\temp to <xref:System.Security.Permissions.FileIOPermissionAccess.Read>.  
+## 解説  
+ 指定したアクセスの種類の現在のアクセス許可の以前の状態が上書きされます。 次のコードを C:\\temp のアクセス権を設定する <xref:System.Security.Permissions.FileIOPermissionAccess.Read>です。  
   
- This access will not be overwritten by the following code because the access types are not the same.  
+ アクセスの種類が同じではありません、このアクセスは、次のコードでは上書きされません。  
   
- [!code-cpp[System.Security.Permissions.FileIOPermission#15](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/remarks.cpp#15)]
- [!code-csharp[System.Security.Permissions.FileIOPermission#15](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/remarks.cs#15)]
- [!code-vb[System.Security.Permissions.FileIOPermission#15](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/remarks.vb#15)]  
+ [!code-cpp[System.Security.Permissions.FileIOPermission\#15](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CPP/remarks.cpp#15)]
+ [!code-csharp[System.Security.Permissions.FileIOPermission\#15](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/CS/remarks.cs#15)]
+ [!code-vb[System.Security.Permissions.FileIOPermission\#15](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Permissions.FileIOPermission/VB/remarks.vb#15)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="access" /> parameter is not a valid value of <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="access" /> パラメーターが <see cref="T:System.Security.Permissions.FileIOPermissionAccess" /> の正しい値ではありません。  
   
- -or-  
+ または  
   
- An entry in the <paramref name="pathList" /> parameter is not a valid string.</exception>
+ <paramref name="pathList" /> パラメーター内のエントリが正しい文字列ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ToXml">
@@ -893,8 +921,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates an XML encoding of the permission and its current state.</summary>
-        <returns>An XML encoding of the permission, including any state information.</returns>
+        <summary>アクセス許可とその現在の状態の XML エンコードを作成します。</summary>
+        <returns>状態情報を含む、アクセス許可の XML エンコード。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -919,19 +947,51 @@
         <Parameter Name="other" Type="System.Security.IPermission" />
       </Parameters>
       <Docs>
-        <param name="other">A permission to combine with the current permission. It must be the same type as the current permission.</param>
-        <summary>Creates a permission that is the union of the current permission and the specified permission.</summary>
-        <returns>A new permission that represents the union of the current permission and the specified permission.</returns>
+        <param name="other">現在のアクセス許可と結合するアクセス許可。 現在のアクセス許可と同じ型である必要があります。</param>
+        <summary>現在のアクセス許可と指定されたアクセス許可の和集合であるアクセス許可を作成します。</summary>
+        <returns>現在のアクセス許可と指定されたアクセス許可の和集合を表す新しいアクセス許可。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The result of a call to <xref:System.Security.Permissions.FileIOPermission.Union%2A> is a permission that represents all the operations represented by both the current permission and the specified permission. Any demand that passes either permission passes their union.  
+## 解説  
+ 呼び出しの結果 <xref:System.Security.Permissions.FileIOPermission.Union%2A> は現在のアクセス許可と、指定した権限の両方で表されるすべての操作を表す権限。 いずれかのアクセス許可に適合する要求は、その共用体を渡します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="other" /> parameter is not <see langword="null" /> and is not of the same type as the current permission.</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="other" /> パラメーターが <see langword="null" /> でなく、また現在のアクセス許可と同じ型でもありません。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName="AddPathList">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定したファイルおよびディレクトリに対するアクセス権を、既存のアクセス許可の状態に追加します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Security.Permissions.FileIOPermission" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="SetPathList">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定したファイルおよびディレクトリに対する指定したアクセスを設定し、アクセス許可の既存の状態を置き換えます。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

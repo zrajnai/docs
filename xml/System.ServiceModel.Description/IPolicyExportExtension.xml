@@ -9,43 +9,45 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Implement <see cref="T:System.ServiceModel.Description.IPolicyExportExtension" /> to insert custom binding policy assertions in the Web Services Description Language (WSDL) information.</summary>
+    <summary>カスタム バインディング ポリシー アサーションを Web サービス記述言語 \(WSDL\) の情報に挿入する <see cref="T:System.ServiceModel.Description.IPolicyExportExtension" /> を実装します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Description.IPolicyExportExtension> interface on a <xref:System.ServiceModel.Channels.BindingElement?displayProperty=fullName> object to write statements about endpoint capabilities or requirements into the WSDL information exposed by a particular endpoint. Typically the binding element is one that implements some feature, but this is not required. To load your policy exporter from a configuration file, implement a <xref:System.ServiceModel.Configuration.BindingElementExtensionElement?displayProperty=fullName> that returns the policy exporter <xref:System.ServiceModel.Channels.BindingElement> object.  
+## 解説  
+ エンドポイントの機能または要件に関するステートメントを、特定のエンドポイントによって公開される WSDL 情報に書き込むには、<xref:System.ServiceModel.Description.IPolicyExportExtension> オブジェクトで <xref:System.ServiceModel.Channels.BindingElement?displayProperty=fullName> インターフェイスを実装します。 一般に、バインディング要素はなんらかの機能を実装する要素ですが、機能の実装は必須ではありません。 構成ファイルからポリシー エクスポーターを読み込むには、ポリシー エクスポーターの <xref:System.ServiceModel.Configuration.BindingElementExtensionElement?displayProperty=fullName> オブジェクトを返す <xref:System.ServiceModel.Channels.BindingElement> を実装する必要があります。  
   
- The policy exporter is used by [!INCLUDE[indigo1](~/includes/indigo1-md.md)] to use policy assertions to communicate to clients the existence of that custom binding requirement or endpoint capability.  
+ ポリシー エクスポーターは、そのカスタム バインディング要件またはエンドポイント機能が存在することを、ポリシー アサーションを使用してクライアントに通知するために、[!INCLUDE[indigo1](~/includes/indigo1-md.md)] が使用します。  
   
- The <xref:System.ServiceModel.Description.IPolicyExportExtension.ExportPolicy%2A> method takes the <xref:System.ServiceModel.Description.MetadataExporter> and <xref:System.ServiceModel.Description.PolicyConversionContext> objects. Use the <xref:System.ServiceModel.Description.PolicyConversionContext.GetBindingAssertions%2A>, <xref:System.ServiceModel.Description.PolicyConversionContext.GetMessageBindingAssertions%2A>, and <xref:System.ServiceModel.Description.PolicyConversionContext.GetOperationBindingAssertions%2A> methods to obtain collections of policy assertions that have already been exported at various scopes. Then add your custom policy assertion object to the appropriate collection.  
+ <xref:System.ServiceModel.Description.IPolicyExportExtension.ExportPolicy%2A> メソッドは、<xref:System.ServiceModel.Description.MetadataExporter> オブジェクトと <xref:System.ServiceModel.Description.PolicyConversionContext> オブジェクトを受け取ります。<xref:System.ServiceModel.Description.PolicyConversionContext.GetBindingAssertions%2A>、<xref:System.ServiceModel.Description.PolicyConversionContext.GetMessageBindingAssertions%2A>、および <xref:System.ServiceModel.Description.PolicyConversionContext.GetOperationBindingAssertions%2A> の各メソッドを使用して、既にさまざまなスコープでエクスポートされているポリシー アサーションのコレクションを取得します。 次に、カスタム ポリシー アサーション オブジェクトを適切なコレクションに追加します。  
   
- The <xref:System.ServiceModel.Description.PolicyConversionContext.Contract%2A> property exposes the <xref:System.ServiceModel.Description.ContractDescription> for the endpoint that is being exported. This allows the <xref:System.ServiceModel.Description.IPolicyExportExtension> extension to correctly scope their exported policy assertions. For example, security attributes in code may add behaviors to the <xref:System.ServiceModel.Description.ContractDescription> that indicate where security policy assertions should be added.  
+ <xref:System.ServiceModel.Description.PolicyConversionContext.Contract%2A> プロパティは、エクスポートされるエンドポイントの <xref:System.ServiceModel.Description.ContractDescription> を公開します。 これにより、<xref:System.ServiceModel.Description.IPolicyExportExtension> 拡張は、エクスポートされたポリシー アサーションを正しく特定できます。 たとえば、コード内のセキュリティ属性は、セキュリティ ポリシー アサーションを追加する必要がある場所を示す <xref:System.ServiceModel.Description.ContractDescription> に動作を追加できます。  
   
- The <xref:System.ServiceModel.Description.IPolicyExportExtension> mechanism only supports exporting policy assertions in WSDL. To export custom WSDL elements you must use the <xref:System.ServiceModel.Description.IWsdlExportExtension> mechanism to modify the WSDL directly.  
+ <xref:System.ServiceModel.Description.IPolicyExportExtension> のメカニズムは、WSDL のポリシー アサーションのエクスポートだけをサポートします。 カスタム WSDL 要素をエクスポートする場合は、<xref:System.ServiceModel.Description.IWsdlExportExtension> メカニズムを使用して WSDL を直接変更する必要があります。  
   
- Once custom policy assertions have been attached to the WSDL information, clients can detect and import the custom binding assertions by using an <xref:System.ServiceModel.Description.IPolicyImportExtension> object.  
+ カスタム ポリシー アサーションが WSDL 情報に関連付けられると、クライアントは、<xref:System.ServiceModel.Description.IPolicyImportExtension> オブジェクトを使用して、カスタム バインディング アサーションを検出しインポートできます。  
   
    
   
-## Examples  
- The following code example shows the implementation of <xref:System.ServiceModel.Description.IPolicyExportExtension> on a <xref:System.ServiceModel.Channels.BindingElement>. In this example, a custom binding element is attached to the WSDL file at the binding level.  
+## 例  
+ <xref:System.ServiceModel.Description.IPolicyExportExtension> の <xref:System.ServiceModel.Channels.BindingElement> の実装を次のコード例に示します。 この例では、カスタム バインディグ要素が、バインディグ レベルで WSDL ファイルに結び付けられます。  
   
- [!code-csharp[CustomPolicySample#14](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#14)]
- [!code-vb[CustomPolicySample#14](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#14)]  
+ [!code-csharp[CustomPolicySample\#14](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#14)]
+ [!code-vb[CustomPolicySample\#14](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#14)]  
   
- The following code example shows a <xref:System.ServiceModel.Configuration.BindingElementExtensionElement?displayProperty=fullName> implementation that enables the preceding policy exporter to be loaded from an application configuration file.  
+ 前のポリシー エクスポーターをアプリケーション構成ファイルから読み込めるようにする <xref:System.ServiceModel.Configuration.BindingElementExtensionElement?displayProperty=fullName> の実装を次のコード例に示します。  
   
- [!code-csharp[CustomPolicySample#15](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#15)]
- [!code-vb[CustomPolicySample#15](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#15)]  
+ [!code-csharp[CustomPolicySample\#15](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#15)]
+ [!code-vb[CustomPolicySample\#15](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#15)]  
   
- The following example shows the host configuration file that loads the custom policy exporter.  
+ カスタム ポリシー エクスポーターを読み込むホスト構成ファイルを次のコード例に示します。  
   
- [!code-xml[CustomPolicySample#3](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/app.config#3)]   
+ [!code[CustomPolicySample\#3](~/samples/snippets/common/VS_Snippets_CFX/custompolicysample/common/app.config#3)]
+ [!code-csharp[CustomPolicySample\#3](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/app.config#3)]
+ [!code-vb[CustomPolicySample\#3](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/app.config#3)]  
   
- The following example shows the custom assertion in the WSDL file.  
+ WSDL ファイル内のカスタム アサーションを次のコード例に示します。  
   
- [!code-xml[CustomPolicySample#16](~/samples/snippets/common/VS_Snippets_CFX/custompolicysample/common/tempuri.org.wsdl#16)]   
+ [!code[CustomPolicySample\#16](~/samples/snippets/common/VS_Snippets_CFX/custompolicysample/common/tempuri.org.wsdl#16)]  
   
  ]]></format>
     </remarks>
@@ -68,35 +70,37 @@
         <Parameter Name="context" Type="System.ServiceModel.Description.PolicyConversionContext" />
       </Parameters>
       <Docs>
-        <param name="exporter">The <see cref="T:System.ServiceModel.Description.MetadataExporter" /> that you can use to modify the exporting process.</param>
-        <param name="context">The <see cref="T:System.ServiceModel.Description.PolicyConversionContext" /> that you can use to insert your custom policy assertion.</param>
-        <summary>Implement to include for exporting a custom policy assertion about bindings.</summary>
+        <param name="exporter">エクスポート プロセスを変更するために使用できる <see cref="T:System.ServiceModel.Description.MetadataExporter" />。</param>
+        <param name="context">カスタム ポリシー アサーションの挿入に使用できる <see cref="T:System.ServiceModel.Description.PolicyConversionContext" />。</param>
+        <summary>バインディングに関するカスタム ポリシー アサーションをエクスポートするために、実装して組み込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Use the <xref:System.ServiceModel.Description.PolicyConversionContext.GetBindingAssertions%2A>, <xref:System.ServiceModel.Description.PolicyConversionContext.GetMessageBindingAssertions%2A>, and <xref:System.ServiceModel.Description.PolicyConversionContext.GetOperationBindingAssertions%2A> methods to obtain collections of policy assertions that have already been exported at various scopes. Then add your <xref:System.ServiceModel.Description.IPolicyExportExtension> object to the appropriate collection.  
   
    
   
-## Examples  
+## 例  
  The following code example shows the implementation of <xref:System.ServiceModel.Description.IPolicyExportExtension> on a <xref:System.ServiceModel.Channels.BindingElement>. In this example, a custom binding element is attached to the WSDL file at the binding level.  
   
- [!code-csharp[CustomPolicySample#14](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#14)]
- [!code-vb[CustomPolicySample#14](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#14)]  
+ [!code-csharp[CustomPolicySample\#14](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#14)]
+ [!code-vb[CustomPolicySample\#14](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#14)]  
   
  The following code example shows a <xref:System.ServiceModel.Configuration.BindingElementExtensionElement?displayProperty=fullName> implementation that enables the preceding policy exporter to be loaded from an application configuration file.  
   
- [!code-csharp[CustomPolicySample#15](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#15)]
- [!code-vb[CustomPolicySample#15](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#15)]  
+ [!code-csharp[CustomPolicySample\#15](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyexporter.cs#15)]
+ [!code-vb[CustomPolicySample\#15](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyexporter.vb#15)]  
   
  The following example shows the host configuration file that loads the custom policy exporter.  
   
- [!code-xml[CustomPolicySample#3](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/app.config#3)]   
+ [!code[CustomPolicySample\#3](~/samples/snippets/common/VS_Snippets_CFX/custompolicysample/common/app.config#3)]
+ [!code-csharp[CustomPolicySample\#3](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/app.config#3)]
+ [!code-vb[CustomPolicySample\#3](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/app.config#3)]  
   
  The following example shows the custom assertion in the WSDL file.  
   
- [!code-xml[CustomPolicySample#16](~/samples/snippets/common/VS_Snippets_CFX/custompolicysample/common/tempuri.org.wsdl#16)]    
+ [!code[CustomPolicySample\#16](~/samples/snippets/common/VS_Snippets_CFX/custompolicysample/common/tempuri.org.wsdl#16)]  
   
  ]]></format>
         </remarks>

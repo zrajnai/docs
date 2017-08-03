@@ -17,12 +17,12 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Manages trust decisions for manifest-activated applications.</summary>
+    <summary>マニフェストのアクティブ化されるアプリケーションの信頼の決定を管理します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Security.Policy.ApplicationSecurityManager> class provides essential information for the execution of a manifest-based application. The <xref:System.Security.Policy.ApplicationSecurityManager.ApplicationTrustManager%2A> property identifies the trust manager responsible for determining whether an application is trusted. The <xref:System.Security.Policy.ApplicationSecurityManager.DetermineApplicationTrust%2A> method calls the application trust manager to determine whether an application is trusted. The <xref:System.Security.Policy.ApplicationSecurityManager.UserApplicationTrusts%2A> property contains the cached trust decisions for the user.  
+## 解説  
+ <xref:System.Security.Policy.ApplicationSecurityManager> クラスは、マニフェストに基づくアプリケーションを実行するための重要な情報を提供します。<xref:System.Security.Policy.ApplicationSecurityManager.ApplicationTrustManager%2A> プロパティは、アプリケーションが信頼されているかどうかを判断する信頼マネージャーを識別します。<xref:System.Security.Policy.ApplicationSecurityManager.DetermineApplicationTrust%2A> メソッド アプリケーション信頼マネージャーを呼び出し、アプリケーションが信頼されているかどうかを確認します。<xref:System.Security.Policy.ApplicationSecurityManager.UserApplicationTrusts%2A> プロパティには、ユーザーのキャッシュされた信頼の決定が含まれています。  
   
  ]]></format>
     </remarks>
@@ -42,17 +42,18 @@
         <ReturnType>System.Security.Policy.IApplicationTrustManager</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the current application trust manager.</summary>
-        <value>An <see cref="T:System.Security.Policy.IApplicationTrustManager" /> that represents the current trust manager.</value>
+        <summary>現在のアプリケーションの信頼マネージャーを取得します。</summary>
+        <value>
+          <see cref="T:System.Security.Policy.IApplicationTrustManager" /> を表す現在の信頼マネージャー。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In the current release there is only one trust manager, which can be a custom implementation of the <xref:System.Security.Policy.IApplicationTrustManager> interface. The default trust manager implementation prompts the user for permission to install the application and elevate the permissions granted to the application. Other trust manager implementations might have different user experiences. For example, an implementation might check an enterprise list for trusted applications, rather than prompting the user for that information.  
+## 解説  
+ 現在のリリースでは、カスタム実装は、1 つだけの信頼マネージャーの <xref:System.Security.Policy.IApplicationTrustManager> インターフェイスです。 信頼マネージャーの既定の実装では、アプリケーションをインストールして、アプリケーションに付与されるアクセス許可を昇格するユーザーに許可を求めます。 その他の信頼マネージャーの実装では、別のユーザー エクスペリエンスがあります。 など、実装は、ユーザーにその情報を要求する代わりに、信頼されたアプリケーションのエンタープライズ リストを確認する可能性があります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.Policy.PolicyException">The policy on this application does not have a trust manager.</exception>
+        <exception cref="T:System.Security.Policy.PolicyException">このアプリケーションのポリシーには、信頼マネージャーはありません。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for the ability to view and modify policy. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlPolicy" /></permission>
       </Docs>
     </Member>
@@ -74,20 +75,22 @@
         <Parameter Name="context" Type="System.Security.Policy.TrustManagerContext" />
       </Parameters>
       <Docs>
-        <param name="activationContext">An <see cref="T:System.ActivationContext" /> identifying the activation context for the application.</param>
-        <param name="context">A <see cref="T:System.Security.Policy.TrustManagerContext" /> identifying the trust manager context for the application.</param>
-        <summary>Determines whether the user approves the specified application to execute with the requested permission set.</summary>
+        <param name="activationContext">
+          <see cref="T:System.ActivationContext" /> アプリケーションのアクティベーション コンテキストを指定します。</param>
+        <param name="context">A <see cref="T:System.Security.Policy.TrustManagerContext" /> アプリケーションの信頼マネージャーのコンテキストを指定します。</param>
+        <summary>ユーザーが要求されたアクセス許可セットを実行する指定されたアプリケーションを承認するかどうかを決定します。</summary>
         <returns>
-          <see langword="true" /> to execute the specified application; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 指定したアプリケーションを実行するにはそれ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Security.Policy.ApplicationSecurityManager.DetermineApplicationTrust%2A> uses the configured <xref:System.Security.Policy.ApplicationSecurityManager.ApplicationTrustManager%2A> property to determine whether to allow execution of the specified application with the permission set requested in the application manifest. The trust manager's behavior is dependent on the trust manager implementation and the information passed in the `context` parameter. The default behavior of the trust manager is to establish a user interface (UI) dialog box to determine the user's approval. However, a trust manager can also determine an application's trust status based on other criteria, such as decisions provided by a corporate database. The trust decision can be persisted, depending upon the `context` parameters properties and the trust manager implementation. If the trust for the application is persisted for a decision based on a user dialog box, future calls to the <xref:System.Security.Policy.ApplicationSecurityManager> will not present the UI dialog box for every request for that application. <xref:System.Security.Policy.ApplicationSecurityManager.DetermineApplicationTrust%2A> is called after the manifest, but before the application has been downloaded to the local system.  
+## 解説  
+ <xref:System.Security.Policy.ApplicationSecurityManager.DetermineApplicationTrust%2A> 構成されている <xref:System.Security.Policy.ApplicationSecurityManager.ApplicationTrustManager%2A> プロパティを設定、アプリケーション マニフェストに要求されたアクセス許可を持つ、指定したアプリケーションの実行を許可するかどうかを決定します。 信頼マネージャーの動作が信頼マネージャーの実装に依存しており、情報が渡された、 `context` パラメーター。 信頼マネージャーの既定の動作は、ユーザーの承認を確認するには、ユーザー インターフェイス \(UI\)\] ダイアログ ボックスを確立するためにです。 ただし、信頼マネージャーは、企業のデータベースによる決定など、他の条件に基づいて、アプリケーションの信頼の状態も指定できます。 によって、信頼の決定を永続化できる、 `context` パラメーターのプロパティおよび信頼マネージャーの実装です。 将来をするために呼び出す場合は、アプリケーションの信頼は、ユーザー\] ダイアログ ボックスに基づく意思決定の永続化、 <xref:System.Security.Policy.ApplicationSecurityManager> そのアプリケーションのすべての要求の UI ダイアログ ボックスがありません。<xref:System.Security.Policy.ApplicationSecurityManager.DetermineApplicationTrust%2A> このマニフェストでは後、は、アプリケーションがローカル システムにダウンロードされる前に呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="activationContext" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="activationContext" /> パラメーターが <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -105,13 +108,14 @@
         <ReturnType>System.Security.Policy.ApplicationTrustCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an application trust collection that contains the cached trust decisions for the user.</summary>
-        <value>An <see cref="T:System.Security.Policy.ApplicationTrustCollection" /> that contains the cached trust decisions for the user.</value>
+        <summary>アプリケーションの信頼コレクションに含まれる、ユーザーのキャッシュされた信頼の決定を取得します。</summary>
+        <value>
+          <see cref="T:System.Security.Policy.ApplicationTrustCollection" /> 、ユーザーのキャッシュされた信頼の決定を格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The trust decisions in the collection are maintained using the methods of the collection, such as the <xref:System.Security.Policy.ApplicationTrustCollection.Add%2A> method or the <xref:System.Security.Policy.ApplicationTrustCollection.Remove%2A> method.  
+## 解説  
+ などのコレクションのメソッドを使用して、コレクション内の信頼の決定を維持、 <xref:System.Security.Policy.ApplicationTrustCollection.Add%2A> メソッドまたは <xref:System.Security.Policy.ApplicationTrustCollection.Remove%2A> メソッドです。  
   
  ]]></format>
         </remarks>

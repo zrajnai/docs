@@ -8,47 +8,50 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Provides a mechanism to modify or insert custom extensions across an entire service, including the <see cref="T:System.ServiceModel.ServiceHostBase" />.</summary>
+    <summary>
+      <see cref="T:System.ServiceModel.ServiceHostBase" /> などの、サービス全体にわたるカスタム拡張機能を変更または挿入するための機構を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement <xref:System.ServiceModel.Description.IServiceBehavior> to modify, examine, or extend some aspect of service-wide execution at the application level:  
+## 解説  
+ サービス全体にわたる実行の一部の側面を、アプリケーション レベルで変更、確認、または拡張するには、<xref:System.ServiceModel.Description.IServiceBehavior> を実装します。  
   
--   Use the <xref:System.ServiceModel.Description.IServiceBehavior.ApplyDispatchBehavior%2A> method to change run-time property values or insert custom extension objects such as error handlers, message or parameter interceptors, security extensions, and other custom extension objects.  
+-   <xref:System.ServiceModel.Description.IServiceBehavior.ApplyDispatchBehavior%2A> メソッドを使用して、ランタイム プロパティの値を変更し、エラー ハンドラー、メッセージ インターセプター、パラメーター インターセプター、セキュリティ拡張などのカスタム拡張オブジェクトを挿入できるようにします。  
   
--   Use the <xref:System.ServiceModel.Description.IServiceBehavior.Validate%2A> method to examine the description before [!INCLUDE[indigo1](~/includes/indigo1-md.md)] constructs the executing service to confirm that it can execute properly.  
+-   <xref:System.ServiceModel.Description.IServiceBehavior.Validate%2A> メソッドを使用して、[!INCLUDE[indigo1](~/includes/indigo1-md.md)] が実行対象のサービスを構築する前に説明を検査し、サービスを正常に実行できることを確認します。  
   
--   Use the <xref:System.ServiceModel.Description.IServiceBehavior.AddBindingParameters%2A> method to pass to a binding element the custom information for the service so that it can support the service correctly.  
+-   <xref:System.ServiceModel.Description.IServiceBehavior.AddBindingParameters%2A> メソッドを使用して、バインディング要素にサービスのカスタム情報を渡し、バインディング要素がサービスを正しくサポートできるようにします。  
   
- <xref:System.ServiceModel.Description.IServiceBehavior> objects can make use of any of these methods, but often only one is important; in such cases the unused methods can return without a value.  
+ <xref:System.ServiceModel.Description.IServiceBehavior> オブジェクトは、これらのメソッドをどれでも使用できますが、通常は、重要なメソッドは 1 つだけです。この場合、使用されないメソッドは、値なしで戻ることができます。  
   
 > [!NOTE]
->  All of the <xref:System.ServiceModel.Description.IServiceBehavior> methods pass <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> and <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> objects as a parameters. The <xref:System.ServiceModel.Description.ServiceDescription> parameter is for examination only; if you modify these objects the execution behavior is undefined.  
+>  すべての <xref:System.ServiceModel.Description.IServiceBehavior> メソッドは <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> オブジェクトおよび <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> オブジェクトをパラメーターとして渡します。<xref:System.ServiceModel.Description.ServiceDescription> パラメーターは、検査にのみ使用されます。これらのオブジェクトを変更した場合、実行の動作は未定義になります。  
   
- To perform the customization task for which it is intended, the <xref:System.ServiceModel.Description.IServiceBehavior> object must be added to the <xref:System.ServiceModel.Description.ServiceDescription.Behaviors%2A> property prior to the construction of the service runtime. There are three ways to do this:  
+ 想定されているカスタマイズ タスクを実行するには、サービス ランタイムの構築の前に、<xref:System.ServiceModel.Description.IServiceBehavior> オブジェクトを <xref:System.ServiceModel.Description.ServiceDescription.Behaviors%2A> プロパティに追加しておく必要があります。 これには、次の 3 つの方法があります。  
   
--   Programmatically add the custom service behavior to the <xref:System.ServiceModel.Description.ServiceDescription.Behaviors%2A> property prior to the point where the <xref:System.ServiceModel.ICommunicationObject.Open%2A?displayProperty=fullName> method is called on the <xref:System.ServiceModel.ServiceHost?displayProperty=fullName> object.  
+-   <xref:System.ServiceModel.Description.ServiceDescription.Behaviors%2A> メソッドが <xref:System.ServiceModel.ICommunicationObject.Open%2A?displayProperty=fullName> オブジェクトで呼び出される前に、プログラムを使用して、<xref:System.ServiceModel.ServiceHost?displayProperty=fullName> プロパティにサービスのカスタム動作を追加します。  
   
--   Create a custom attribute that implements <xref:System.ServiceModel.Description.IServiceBehavior> and use it to mark service classes that are to be modified. When a <xref:System.ServiceModel.ServiceHost> object is constructed, [!INCLUDE[indigo2](~/includes/indigo2-md.md)] uses reflection to discover the attributes on the service type. If any attributes implement <xref:System.ServiceModel.Description.IServiceBehavior>, they are added to the behaviors collection on <xref:System.ServiceModel.Description.ServiceDescription>.  
+-   <xref:System.ServiceModel.Description.IServiceBehavior> を実装するカスタム属性を作成し、それを使用して、変更するサービス クラスをマークします。<xref:System.ServiceModel.ServiceHost> オブジェクトを構築すると、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] は、リフレクションを使用してそのサービス型の属性を検出します。 これらの属性のいずれかが <xref:System.ServiceModel.Description.IServiceBehavior> を実装している場合、<xref:System.ServiceModel.Description.ServiceDescription> の動作コレクションに追加されます。  
   
--   Extend the <xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName> class to support the specification of the behavior in an application or machine configuration file. See the Example section for more information.  
+-   <xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName> クラスを拡張して、アプリケーションまたはコンピューターの構成ファイルで動作を指定できるようにします。 詳細については、「使用例」を参照してください。  
   
- Examples of service behaviors in [!INCLUDE[indigo2](~/includes/indigo2-md.md)] include the <xref:System.ServiceModel.ServiceBehaviorAttribute> attribute, the <xref:System.ServiceModel.Description.ServiceThrottlingBehavior?displayProperty=fullName>, the <xref:System.ServiceModel.Description.ServiceDebugBehavior?displayProperty=fullName> and the <xref:System.ServiceModel.Description.ServiceMetadataBehavior?displayProperty=fullName> behavior.  
+ [!INCLUDE[indigo2](~/includes/indigo2-md.md)] のサービスの動作の例として、<xref:System.ServiceModel.ServiceBehaviorAttribute> 属性、<xref:System.ServiceModel.Description.ServiceThrottlingBehavior?displayProperty=fullName>、<xref:System.ServiceModel.Description.ServiceDebugBehavior?displayProperty=fullName>、<xref:System.ServiceModel.Description.ServiceMetadataBehavior?displayProperty=fullName> 動作などがあります。  
   
    
   
-## Examples  
- The following code example shows the use of a service behavior specified in a configuration file to insert a custom error handler in a service application. In this example, the error handler catches all exceptions and converts them into a custom `GreetingFault` SOAP fault that is then returned to the client.  
+## 例  
+ 構成ファイルで指定されたサービスの動作を使用してカスタム エラー ハンドラーをサービス アプリケーションに挿入する方法を次のコード例に示します。 この例では、エラー ハンドラーがすべての例外をキャッチし、それらを `GreetingFault` SOAP カスタム エラーに変換してからクライアントに返します。  
   
- The following <xref:System.ServiceModel.Description.IServiceBehavior> implementation adds no binding parameter objects, adds the custom <xref:System.ServiceModel.Dispatcher.IErrorHandler?displayProperty=fullName> object to each <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A?displayProperty=fullName> property, and validates that each operation of the service to which the service behavior is applied and has a <xref:System.ServiceModel.FaultContractAttribute?displayProperty=fullName> of type `GreetingFault`.  
+ 次の <xref:System.ServiceModel.Description.IServiceBehavior> 実装は、バインディング パラメーター オブジェクトは追加せず、カスタムの <xref:System.ServiceModel.Dispatcher.IErrorHandler?displayProperty=fullName> オブジェクトを各 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A?displayProperty=fullName> プロパティに追加します。さらに、サービスの動作が適用され、<xref:System.ServiceModel.FaultContractAttribute?displayProperty=fullName> 型の `GreetingFault` を持つサービスの各操作を検証します。  
   
- [!code-csharp[IErrorHandler#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
- [!code-vb[IErrorHandler#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
+ [!code-csharp[IErrorHandler\#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
+ [!code-vb[IErrorHandler\#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
   
- In this example, the behavior class also implements <xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName>, which enables the service behavior to be inserted by using it in an application configuration file, as the following code example demonstrates.  
+ この例では、動作クラスは、<xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName> も実装します。これで、次のコード例で示すように、サービス動作をアプリケーション構成ファイルで使用するよう挿入できます。  
   
- [!code-xml[IErrorHandler#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]   
+ [!code[IErrorHandler\#4](~/samples/snippets/common/VS_Snippets_CFX/ierrorhandler/common/hostapplication.exe.config#4)]
+ [!code-csharp[IErrorHandler\#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]
+ [!code-vb[IErrorHandler\#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/hostapplication.exe.config#4)]  
   
  ]]></format>
     </remarks>
@@ -73,22 +76,25 @@
         <Parameter Name="bindingParameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
       </Parameters>
       <Docs>
-        <param name="serviceDescription">The service description of the service.</param>
-        <param name="serviceHostBase">The host of the service.</param>
-        <param name="endpoints">The service endpoints.</param>
-        <param name="bindingParameters">Custom objects to which binding elements have access.</param>
-        <summary>Provides the ability to pass custom data to binding elements to support the contract implementation.</summary>
+        <param name="serviceDescription">サービスの説明。</param>
+        <param name="serviceHostBase">サービスのホスト。</param>
+        <param name="endpoints">サービス エンドポイント。</param>
+        <param name="bindingParameters">バインド要素がアクセスできるカスタム オブジェクト。</param>
+        <summary>コントラクトの実装をサポートするカスタム データをバインド要素に渡せるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.ServiceModel.Description.IServiceBehavior.AddBindingParameters%2A> method to add custom data objects to the `parameters` collection that binding elements can use to acquire extra information to enable them to support the contract.  
+## 解説  
+ <xref:System.ServiceModel.Description.IServiceBehavior.AddBindingParameters%2A> メソッドを使用して、`parameters` コレクションにカスタム データ オブジェクトを追加します。バインディング要素は、このオブジェクトを使用して、コントラクトをサポートするための追加情報を取得します。  
   
- This method is called once for each listen URI. For example, if a service has four endpoints, and two of them have the same listen URI, then this method gets called three times. The reason is that the `bindingParameters` target each channel stack and there is one channel stack for each listen URI. Because each call receives those endpoints at that listen URI, two calls each get a single <xref:System.ServiceModel.Description.ServiceEndpoint?displayProperty=fullName>, and one call gets a collection of two <xref:System.ServiceModel.Description.ServiceEndpoint?displayProperty=fullName> objects.  
+ このメソッドは、リッスン URI ごとに 1 回呼び出されます。 たとえば、サービスに 4 つのエンドポイントがあり、そのうちの 2 つのリッスン URI が同じである場合は、このメソッドが 3 回呼び出されます。 これは、`bindingParameters` が各チャネル スタックをターゲットとし、リッスン URI ごとに 1 つのチャネル スタックが存在するからです。 呼び出しごとにそのリッスン URI のエンドポイントが取得されるため、2 回の呼び出しでそれぞれ 1 つの <xref:System.ServiceModel.Description.ServiceEndpoint?displayProperty=fullName> が取得され、1 回の呼び出しで 2 つの <xref:System.ServiceModel.Description.ServiceEndpoint?displayProperty=fullName> オブジェクトのコレクションが取得されます。  
   
 > [!NOTE]
->  All of the <xref:System.ServiceModel.Description.IServiceBehavior> methods pass <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> and <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> objects as a parameters. The <xref:System.ServiceModel.Description.ServiceDescription> parameter is for examination and insertion of customizations only; if you otherwise modify these objects the execution behavior is undefined.  
+>  すべての <xref:System.ServiceModel.Description.IServiceBehavior> メソッドは <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> オブジェクトおよび <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> オブジェクトをパラメーターとして渡します。<xref:System.ServiceModel.Description.ServiceDescription> パラメーターは、カスタマイズの検査および挿入にのみ使用されます。それ以外でこれらのオブジェクトを変更した場合、実行動作は未定義になります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -110,31 +116,33 @@
         <Parameter Name="serviceHostBase" Type="System.ServiceModel.ServiceHostBase" />
       </Parameters>
       <Docs>
-        <param name="serviceDescription">The service description.</param>
-        <param name="serviceHostBase">The host that is currently being built.</param>
-        <summary>Provides the ability to change run-time property values or insert custom extension objects such as error handlers, message or parameter interceptors, security extensions, and other custom extension objects.</summary>
+        <param name="serviceDescription">サービスの説明。</param>
+        <param name="serviceHostBase">現在構築中のホスト。</param>
+        <summary>ランタイム プロパティの値を変更したり、エラー ハンドラー、メッセージ インターセプター、パラメーター インターセプター、セキュリティ拡張などのカスタム拡張オブジェクトを挿入したりできるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Description.IServiceBehavior.ApplyDispatchBehavior%2A> method to inspect or modify the <xref:System.ServiceModel.ServiceHostBase> object that is being constructed in order to support some custom execution scenario.  
+## 解説  
+ 一部のカスタム実行シナリオをサポートするために構築される <xref:System.ServiceModel.Description.IServiceBehavior.ApplyDispatchBehavior%2A> オブジェクトを検査または変更するには、<xref:System.ServiceModel.ServiceHostBase> メソッドを実装します。  
   
 > [!NOTE]
->  All of the <xref:System.ServiceModel.Description.IServiceBehavior> methods pass <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> and <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> objects as a parameters. The <xref:System.ServiceModel.Description.ServiceDescription> parameter is for examination and insertion of customizations only; if you otherwise modify these objects the execution behavior is undefined.  
+>  すべての <xref:System.ServiceModel.Description.IServiceBehavior> メソッドは <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> オブジェクトおよび <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> オブジェクトをパラメーターとして渡します。<xref:System.ServiceModel.Description.ServiceDescription> パラメーターは、カスタマイズの検査および挿入にのみ使用されます。それ以外でこれらのオブジェクトを変更した場合、実行動作は未定義になります。  
   
    
   
-## Examples  
- The following code example shows the use of a service behavior specified in a configuration file to insert a custom error handler in a service application. In this example, the error handler catches all exceptions and converts them into a custom `GreetingFault` SOAP fault that is then returned to the client.  
+## 例  
+ 構成ファイルで指定されたサービスの動作を使用してカスタム エラー ハンドラーをサービス アプリケーションに挿入する方法を次のコード例に示します。 この例では、エラー ハンドラーがすべての例外をキャッチし、それらを `GreetingFault` SOAP カスタム エラーに変換してからクライアントに返します。  
   
- The following <xref:System.ServiceModel.Description.IServiceBehavior> implementation adds no binding parameter objects, adds the custom <xref:System.ServiceModel.Dispatcher.IErrorHandler?displayProperty=fullName> object to each <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A?displayProperty=fullName> property, and validates that each operation of the service to which the service behavior is applied and has a <xref:System.ServiceModel.FaultContractAttribute?displayProperty=fullName> of type `GreetingFault`.  
+ 次の <xref:System.ServiceModel.Description.IServiceBehavior> 実装は、バインディング パラメーター オブジェクトは追加せず、カスタムの <xref:System.ServiceModel.Dispatcher.IErrorHandler?displayProperty=fullName> オブジェクトを各 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A?displayProperty=fullName> プロパティに追加します。さらに、サービスの動作が適用され、<xref:System.ServiceModel.FaultContractAttribute?displayProperty=fullName> 型の `GreetingFault` を持つサービスの各操作を検証します。  
   
- [!code-csharp[IErrorHandler#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
- [!code-vb[IErrorHandler#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
+ [!code-csharp[IErrorHandler\#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
+ [!code-vb[IErrorHandler\#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
   
- In this example, the behavior class also implements <xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName>, which enables the service behavior to be inserted by using it in an application configuration file, as the following code example demonstrates.  
+ この例では、動作クラスは、<xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName> も実装します。これで、次のコード例で示すように、サービス動作をアプリケーション構成ファイルで使用するよう挿入できます。  
   
- [!code-xml[IErrorHandler#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]   
+ [!code[IErrorHandler\#4](~/samples/snippets/common/VS_Snippets_CFX/ierrorhandler/common/hostapplication.exe.config#4)]
+ [!code-csharp[IErrorHandler\#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]
+ [!code-vb[IErrorHandler\#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/hostapplication.exe.config#4)]  
   
  ]]></format>
         </remarks>
@@ -157,31 +165,33 @@
         <Parameter Name="serviceHostBase" Type="System.ServiceModel.ServiceHostBase" />
       </Parameters>
       <Docs>
-        <param name="serviceDescription">The service description.</param>
-        <param name="serviceHostBase">The service host that is currently being constructed.</param>
-        <summary>Provides the ability to inspect the service host and the service description to confirm that the service can run successfully.</summary>
+        <param name="serviceDescription">サービスの説明。</param>
+        <param name="serviceHostBase">現在構築中のサービス ホスト。</param>
+        <summary>サービス ホストおよびサービスの説明を検査して、サービスを正常に実行できることを確認できるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.ServiceModel.Description.IServiceBehavior.Validate%2A> method to confirm whether the current service can execute properly according to your scenario.  
+## 解説  
+ <xref:System.ServiceModel.Description.IServiceBehavior.Validate%2A> メソッドを使用して、現在のサービスをシナリオに従って正しく実行できるかどうかを確認します。  
   
 > [!NOTE]
->  All of the <xref:System.ServiceModel.Description.IServiceBehavior> methods pass <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> and <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> objects as a parameters. The <xref:System.ServiceModel.Description.ServiceDescription> parameter is for examination and insertion of customizations only; if you otherwise modify these objects the execution behavior is undefined.  
+>  すべての <xref:System.ServiceModel.Description.IServiceBehavior> メソッドは <xref:System.ServiceModel.Description.ServiceDescription?displayProperty=fullName> オブジェクトおよび <xref:System.ServiceModel.ServiceHostBase?displayProperty=fullName> オブジェクトをパラメーターとして渡します。<xref:System.ServiceModel.Description.ServiceDescription> パラメーターは、カスタマイズの検査および挿入にのみ使用されます。それ以外でこれらのオブジェクトを変更した場合、実行動作は未定義になります。  
   
    
   
-## Examples  
- The following code example shows the use of a service behavior specified in a configuration file to insert a custom error handler in a service application. In this example, the error handler catches all exceptions and converts them into a custom `GreetingFault` SOAP fault that is then returned to the client.  
+## 例  
+ 構成ファイルで指定されたサービスの動作を使用してカスタム エラー ハンドラーをサービス アプリケーションに挿入する方法を次のコード例に示します。 この例では、エラー ハンドラーがすべての例外をキャッチし、それらを `GreetingFault` SOAP カスタム エラーに変換してからクライアントに返します。  
   
- The following <xref:System.ServiceModel.Description.IServiceBehavior> implementation adds no binding parameter objects, adds the custom <xref:System.ServiceModel.Dispatcher.IErrorHandler?displayProperty=fullName> object to each <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A?displayProperty=fullName> property, and validates that each operation of the service to which the service behavior is applied and has a <xref:System.ServiceModel.FaultContractAttribute?displayProperty=fullName> of type `GreetingFault`.  
+ 次の <xref:System.ServiceModel.Description.IServiceBehavior> 実装は、バインディング パラメーター オブジェクトは追加せず、カスタムの <xref:System.ServiceModel.Dispatcher.IErrorHandler?displayProperty=fullName> オブジェクトを各 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A?displayProperty=fullName> プロパティに追加します。さらに、サービスの動作が適用され、<xref:System.ServiceModel.FaultContractAttribute?displayProperty=fullName> 型の `GreetingFault` を持つサービスの各操作を検証します。  
   
- [!code-csharp[IErrorHandler#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
- [!code-vb[IErrorHandler#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
+ [!code-csharp[IErrorHandler\#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
+ [!code-vb[IErrorHandler\#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
   
- In this example, the behavior class also implements <xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName>, which enables the service behavior to be inserted by using it in an application configuration file, as the following code example demonstrates.  
+ この例では、動作クラスは、<xref:System.ServiceModel.Configuration.BehaviorExtensionElement?displayProperty=fullName> も実装します。これで、次のコード例で示すように、サービス動作をアプリケーション構成ファイルで使用するよう挿入できます。  
   
- [!code-xml[IErrorHandler#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]   
+ [!code[IErrorHandler\#4](~/samples/snippets/common/VS_Snippets_CFX/ierrorhandler/common/hostapplication.exe.config#4)]
+ [!code-csharp[IErrorHandler\#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]
+ [!code-vb[IErrorHandler\#4](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/hostapplication.exe.config#4)]  
   
  ]]></format>
         </remarks>

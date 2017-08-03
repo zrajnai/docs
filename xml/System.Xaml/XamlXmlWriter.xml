@@ -11,28 +11,29 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Uses a <see cref="T:System.IO.TextWriter" /> or <see cref="T:System.Xml.XmlWriter" /> support class to write a XAML node stream to a text or markup serialized form.</summary>
+    <summary>使用して、 <see cref="T:System.IO.TextWriter" /> または <see cref="T:System.Xml.XmlWriter" /> テキストまたはマークアップに XAML ノード ストリームを書き込むためにサポート クラスがフォームをシリアル化します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This class is typically used in serialization scenarios.  
+## 解説  
+ このクラスは通常、シリアル化のシナリオで使用されます。  
   
-## How to Use XamlXmlWriter  
- The <xref:System.Xaml.XamlWriter> API has several methods that write different types of XAML nodes. Collectively, these are referred to in documentation as the `Write` methods of a <xref:System.Xaml.XamlWriter>. <xref:System.Xaml.XamlXmlWriter> uses several internal state classes to determine what to do when one of its `Write` implementations is called. A `Write` call uses the states to determine whether the requested element, attribute, or value can be written, or whether an exception is thrown. For example, if you call <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A> and the state of the <xref:System.Xaml.XamlXmlWriter> current node position is on a value or within a member, an exception is thrown. Typically, callers of the <xref:System.Xaml.XamlXmlWriter> API should be aware of the type of the current XAML node that is coming from the XAML reader and the XAML node stream. Based on this knowledge, callers should avoid calling `Write` APIs that are not relevant to the current node type.  
+## XamlXmlWriter を使用する方法  
+ <xref:System.Xaml.XamlWriter> API にはいくつかの方法で XAML ノードの型を記述します。 集合的に、これらを呼びますドキュメントで、 `Write` のメソッド、 <xref:System.Xaml.XamlWriter>です。<xref:System.Xaml.XamlXmlWriter> いくつかの内部状態のクラスを使用して決定ような場合のいずれかの `Write` 実装が呼び出されます。 A `Write` 呼び出し状態を使用しているかどうか、要求された要素、属性、または値は書き込まれること、または例外をスローするかどうかを判断します。 呼び出す場合など <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A> およびの状態、 <xref:System.Xaml.XamlXmlWriter> 値またはメンバー内に現在のノードの位置は、例外がスローされます。 通常の呼び出し元、 <xref:System.Xaml.XamlXmlWriter> API は、XAML リーダーと XAML ノード ストリームから読み込まれている現在の XAML ノードの種類を認識する必要があります。 この知識に基づいて、呼び出し元は呼び出しを避ける必要があります `Write` Api は現在のノード型の関係がないことです。  
   
-## XAML Namespaces and XamlXmlWriter  
- The XAML namespace writing behavior of <xref:System.Xaml.XamlXmlWriter> is complex and is not limited to explicit calls to <xref:System.Xaml.XamlXmlWriter.WriteNamespace%2A>. Instead, other `Write` calls, such as <xref:System.Xaml.XamlXmlWriter.WriteStartObject%2A>, might require that the namespace declaration be written at particular points in the node structure. The XAML writer either generates a prefix by its own logic, or uses information from the <xref:System.Xaml.INamespacePrefixLookup> service to determine a preferred prefix. Also, explicit <xref:System.Xaml.XamlXmlWriter.WriteNamespace%2A> calls might defer or might return nothing if the XAML namespace declaration is already applicable and declared elsewhere.  
+## XAML 名前空間および XamlXmlWriter  
+ 動作を記述する XAML 名前空間 <xref:System.Xaml.XamlXmlWriter> は複雑であり、明示的な呼び出しに限定されません <xref:System.Xaml.XamlXmlWriter.WriteNamespace%2A>します。 代わりに、その他の `Write` などの呼び出し <xref:System.Xaml.XamlXmlWriter.WriteStartObject%2A>, 、ノードの構造内の特定の時点で、名前空間宣言を記録する必要があります。 XAML ライターは、独自のロジックではプレフィックスを生成またはからの情報を使用して、 <xref:System.Xaml.INamespacePrefixLookup> 優先プレフィックスを判別するサービスです。 また、明示的な <xref:System.Xaml.XamlXmlWriter.WriteNamespace%2A> 呼び出しを延期または何も返すことがある場合は、XAML 名前空間宣言は既に適用可能であり、宣言された他の場所。  
   
-## Write Method Exceptions  
- Exceptions thrown by the <xref:System.Xaml.XamlXmlWriter>`Write` methods are typically either <xref:System.InvalidOperationException> or <xref:System.Xaml.XamlXmlWriterException>.  
+## 書き込みメソッドの例外  
+ によってスローされた例外、 <xref:System.Xaml.XamlXmlWriter>`Write` メソッドは、いずれかでは通常 <xref:System.InvalidOperationException> または <xref:System.Xaml.XamlXmlWriterException>です。  
   
- An <xref:System.InvalidOperationException> often indicates that a XAML reader passed an invalid node structure into the XAML node stream. In this case the node structure is invalid for reasons that are not related to validation of a XAML schema or a XAML schema context. Rather, the node stream is invalid in its basic form. For example, if a faulty XAML reader implementation generated a XAML node stream that contained two consecutive `StartObject` nodes, the attempt to call the second <xref:System.Xaml.XamlXmlWriter.WriteStartObject%2A> would throw an <xref:System.InvalidOperationException>. All XAML writers would consider such an operation to be invalid. Another example of an <xref:System.InvalidOperationException> is when XAML namespace information is unavailable through the XAML schema context that applies to the current node stream position.  
+ <xref:System.InvalidOperationException> 多くの場合、XAML リーダーが XAML ノード ストリームに無効なノード構造を渡されることを示します。 ここではノードの構造が無効の XAML スキーマまたは XAML スキーマ コンテキストの検証に関連していない理由です。 代わりに、ノード ストリームは、基本的な形式では有効ではありません。 たとえば、障害のある XAML リーダーの実装には 2 つの連続するいくつか含まれている XAML ノード ストリームが生成される `StartObject` にもう 1 つを呼び出すと、ノード <xref:System.Xaml.XamlXmlWriter.WriteStartObject%2A> をスローする、 <xref:System.InvalidOperationException>です。 すべての XAML ライターは、無効になるような操作を検討します。 別の例として、 <xref:System.InvalidOperationException> は XAML 名前空間情報が現在のノード ストリームの位置に適用される XAML スキーマ コンテキストを使用できない場合。  
   
- A <xref:System.Xaml.XamlXmlWriterException> indicates an exception where this particular XAML writer implementation chooses to throw an exception based on its intended functionality. A <xref:System.Xaml.XamlXmlWriterException> can indicate specific cases where a <xref:System.Xaml.XamlXmlWriter> violates its own state or settings. For example, a <xref:System.Xaml.XamlXmlWriterException> might result from attempts to write XAML namespace information into a position that the <xref:System.Xaml.XamlXmlWriter> and its serialization format do not support, or writing duplicate members when the instance's <xref:System.Xaml.XamlXmlWriterSettings> forbid it.  
+ A <xref:System.Xaml.XamlXmlWriterException> 、目的の機能に基づいて例外をスローするこの特定の XAML ライターの実装が選択した例外を示します。 A <xref:System.Xaml.XamlXmlWriterException> の特殊なケースを示すことができます、 <xref:System.Xaml.XamlXmlWriter> 状態または設定に違反しています。 たとえば、 <xref:System.Xaml.XamlXmlWriterException> 位置に XAML 名前空間情報の書き込み試行の可能性がありますを <xref:System.Xaml.XamlXmlWriter> とそのシリアル化形式がないサポート、または重複するメンバーを記述ときに、インスタンスの <xref:System.Xaml.XamlXmlWriterSettings> で禁止されています。  
   
  ]]></format>
     </remarks>
+    <altmember cref="M:System.Xaml.XamlServices.Save(System.IO.Stream,System.Object)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -49,16 +50,21 @@
         <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
       </Parameters>
       <Docs>
-        <param name="stream">The stream to write.</param>
-        <param name="schemaContext">The XAML schema context for the XAML writer.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlXmlWriter" /> class from a stream.</summary>
-        <remarks>To be added.</remarks>
+        <param name="stream">書き込むストリーム。</param>
+        <param name="schemaContext">XAML ライターの XAML スキーマ コンテキスト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlXmlWriter" /> ストリームからのクラスです。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> is <see langword="null" />.  
+          <paramref name="stream" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+ <paramref name="schemaContext" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -75,12 +81,18 @@
         <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
       </Parameters>
       <Docs>
-        <param name="textWriter">The <see cref="T:System.IO.TextWriter" /> that writes the output.</param>
-        <param name="schemaContext">The XAML schema context for the XAML writer.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlXmlWriter" /> class from a <see cref="T:System.IO.TextWriter" /> basis.</summary>
-        <remarks>To be added.</remarks>
+        <param name="textWriter">
+          <see cref="T:System.IO.TextWriter" /> 出力を書き込みます。</param>
+        <param name="schemaContext">XAML ライターの XAML スキーマ コンテキスト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlXmlWriter" /> クラスからの <see cref="T:System.IO.TextWriter" /> 単位です。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="textWriter" /> or <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+          <paramref name="textWriter" /> または <paramref name="schemaContext" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -97,12 +109,18 @@
         <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
       </Parameters>
       <Docs>
-        <param name="xmlWriter">The <see cref="T:System.Xml.XmlWriter" /> that writes the output.</param>
-        <param name="schemaContext">The XAML schema context for the XAML writer.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlXmlWriter" /> class from a <see cref="T:System.Xml.XmlWriter" /> basis.</summary>
-        <remarks>To be added.</remarks>
+        <param name="xmlWriter">
+          <see cref="T:System.Xml.XmlWriter" /> 出力を書き込みます。</param>
+        <param name="schemaContext">XAML ライターの XAML スキーマ コンテキスト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlXmlWriter" /> クラスからの <see cref="T:System.Xml.XmlWriter" /> 単位です。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="xmlWriter" /> or <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+          <paramref name="xmlWriter" /> または <paramref name="schemaContext" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -120,20 +138,20 @@
         <Parameter Name="settings" Type="System.Xaml.XamlXmlWriterSettings" />
       </Parameters>
       <Docs>
-        <param name="stream">The stream to write.</param>
-        <param name="schemaContext">The XAML schema context for the XAML writer.</param>
-        <param name="settings">An instance of <see cref="T:System.Xaml.XamlXmlWriterSettings" />, which typically has specific non-default settings.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlXmlWriter" /> class from a stream using a writer settings object.</summary>
+        <param name="stream">書き込むストリーム。</param>
+        <param name="schemaContext">XAML ライターの XAML スキーマ コンテキスト。</param>
+        <param name="settings">インスタンス <see cref="T:System.Xaml.XamlXmlWriterSettings" />, 、通常は既定以外の設定を特定します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlXmlWriter" /> ライター設定オブジェクトを使用してストリームからのクラスです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Do not change any values of the `settings` object after the <xref:System.Xaml.XamlXmlWriter> instance is constructed. <xref:System.Xaml.XamlXmlWriter> cannot update its internal settings based on settings values that are mutable at run time. Settings should be provided for initialization only. You can merge settings from an active XAML writer by using one of the <xref:System.Xaml.XamlXmlWriterSettings> constructor signatures; however, you must then apply these settings to a new XAML writer instance instead of attempting to adjust the existing one.  
+## 解説  
+ 任意の値を変更しないで、 `settings` オブジェクトの後に、 <xref:System.Xaml.XamlXmlWriter> インスタンスを構築します。<xref:System.Xaml.XamlXmlWriter> 実行時に変更可能な設定値に基づく内部の設定を更新できません。 設定は、初期化のみを提供する必要があります。 作業中の XAML ライターの設定をマージするには、いずれかを使用して、 <xref:System.Xaml.XamlXmlWriterSettings> コンス トラクターのシグネチャ。 ただし、必要がありますし、適用するこれらの設定を既存のものを調整するのではなく新しい XAML ライターのインスタンスにします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> or <paramref name="schemaContext" /> is <see langword="null" /></exception>
+          <paramref name="stream" /> または <paramref name="schemaContext" /> は <see langword="null" /></exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -151,20 +169,21 @@
         <Parameter Name="settings" Type="System.Xaml.XamlXmlWriterSettings" />
       </Parameters>
       <Docs>
-        <param name="textWriter">The <see cref="T:System.IO.TextWriter" /> that writes the output.</param>
-        <param name="schemaContext">The XAML schema context for the XAML writer.</param>
-        <param name="settings">An instance of <see cref="T:System.Xaml.XamlXmlWriterSettings" />, which typically has specific non-default settings.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlXmlWriter" /> class from a <see cref="T:System.IO.TextWriter" /> basis using a settings object.</summary>
+        <param name="textWriter">
+          <see cref="T:System.IO.TextWriter" /> 出力を書き込みます。</param>
+        <param name="schemaContext">XAML ライターの XAML スキーマ コンテキスト。</param>
+        <param name="settings">インスタンス <see cref="T:System.Xaml.XamlXmlWriterSettings" />, 、通常は既定以外の設定を特定します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlXmlWriter" /> クラスからの <see cref="T:System.IO.TextWriter" /> 設定オブジェクトを使用するベースです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Do not change any values of the `settings` object after the <xref:System.Xaml.XamlXmlWriter> instance is constructed. <xref:System.Xaml.XamlXmlWriter> cannot update its internal settings based on settings values that are mutable at run time. Settings should be provided for initialization only. You can merge settings from an active XAML writer by using one of the <xref:System.Xaml.XamlXmlWriterSettings> constructor signatures; however, you must then apply these settings to a new XAML writer instance instead of attempting to adjust the existing one.  
+## 解説  
+ 任意の値を変更しないで、 `settings` オブジェクトの後に、 <xref:System.Xaml.XamlXmlWriter> インスタンスを構築します。<xref:System.Xaml.XamlXmlWriter> 実行時に変更可能な設定値に基づく内部の設定を更新できません。 設定は、初期化のみを提供する必要があります。 作業中の XAML ライターの設定をマージするには、いずれかを使用して、 <xref:System.Xaml.XamlXmlWriterSettings> コンス トラクターのシグネチャ。 ただし、必要がありますし、適用するこれらの設定を既存のものを調整するのではなく新しい XAML ライターのインスタンスにします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="textWriter" /> or <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+          <paramref name="textWriter" /> または <paramref name="schemaContext" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -182,20 +201,21 @@
         <Parameter Name="settings" Type="System.Xaml.XamlXmlWriterSettings" />
       </Parameters>
       <Docs>
-        <param name="xmlWriter">The <see cref="T:System.Xml.XmlWriter" /> that writes the output.</param>
-        <param name="schemaContext">The XAML schema context for the XAML writer.</param>
-        <param name="settings">An instance of <see cref="T:System.Xaml.XamlXmlWriterSettings" />, which typically has specific non-default settings.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlXmlWriter" /> class from a <see cref="T:System.Xml.XmlWriter" /> basis using a settings object.</summary>
+        <param name="xmlWriter">
+          <see cref="T:System.Xml.XmlWriter" /> 出力を書き込みます。</param>
+        <param name="schemaContext">XAML ライターの XAML スキーマ コンテキスト。</param>
+        <param name="settings">インスタンス <see cref="T:System.Xaml.XamlXmlWriterSettings" />, 、通常は既定以外の設定を特定します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlXmlWriter" /> クラスからの <see cref="T:System.Xml.XmlWriter" /> 設定オブジェクトを使用するベースです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Do not change any values of the `settings` object after the <xref:System.Xaml.XamlXmlWriter> instance is constructed. <xref:System.Xaml.XamlXmlWriter> cannot update its internal settings based on settings values that are mutable at run time. Settings should be provided for initialization only. You can merge settings from an active XAML writer by using one of the <xref:System.Xaml.XamlXmlWriterSettings> constructor signatures; however, you must then apply these settings to a new XAML writer instance instead of attempting to adjust the existing one.  
+## 解説  
+ 任意の値を変更しないで、 `settings` オブジェクトの後に、 <xref:System.Xaml.XamlXmlWriter> インスタンスを構築します。<xref:System.Xaml.XamlXmlWriter> 実行時に変更可能な設定値に基づく内部の設定を更新できません。 設定は、初期化のみを提供する必要があります。 作業中の XAML ライターの設定をマージするには、いずれかを使用して、 <xref:System.Xaml.XamlXmlWriterSettings> コンス トラクターのシグネチャ。 ただし、必要がありますし、適用するこれらの設定を既存のものを調整するのではなく新しい XAML ライターのインスタンスにします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="xmlWriter" /> or <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+          <paramref name="xmlWriter" /> または <paramref name="schemaContext" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -215,13 +235,13 @@
       </Parameters>
       <Docs>
         <param name="disposing">
-          <see langword="true" /> to release the unmanaged resources; otherwise, <see langword="false" />.</param>
-        <summary>Releases the unmanaged resources used by <see cref="T:System.Xaml.XamlXmlWriter" /> and optionally releases the managed resources.</summary>
+          <see langword="true" /> アンマネージ リソースを解放するにはそれ以外の場合、 <see langword="false" />です。</param>
+        <summary>使用されるアンマネージ リソースを解放 <see cref="T:System.Xaml.XamlXmlWriter" /> マネージ リソースも解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This implementation calls `Close` on the underlying <xref:System.Xml.XmlWriter> or <xref:System.IO.TextWriter> for cases where <xref:System.Xaml.XamlXmlWriterSettings.CloseOutput%2A> is `true` in any supplied <xref:System.Xaml.XamlXmlWriterSettings>. Otherwise, it calls <xref:System.Xaml.XamlXmlWriter.Flush%2A>.  
+## 解説  
+ この実装を呼び出す `Close` 、基になるに <xref:System.Xml.XmlWriter> または <xref:System.IO.TextWriter> の場合、 <xref:System.Xaml.XamlXmlWriterSettings.CloseOutput%2A> は `true` 指定されたいずれかで <xref:System.Xaml.XamlXmlWriterSettings>します。 それ以外の場合、それを呼び出す <xref:System.Xaml.XamlXmlWriter.Flush%2A>します。  
   
  ]]></format>
         </remarks>
@@ -241,12 +261,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Calls the <see langword="Flush" /> method of the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />, which writes anything that is currently in the buffer, and then closes the writer.</summary>
+        <summary>呼び出し、 <see langword="Flush" /> 、基になるメソッド <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />, で現在バッファー内のライターを終了し、何も書き込まれます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `Dispose` behavior for a <xref:System.Xaml.XamlXmlWriter> can be influenced by its writer settings, especially by <xref:System.Xaml.XamlXmlWriterSettings.CloseOutput%2A?displayProperty=fullName>.  
+## 解説  
+ `Dispose` の動作、 <xref:System.Xaml.XamlXmlWriter> によって特にそのライターの設定が反映されることができます <xref:System.Xaml.XamlXmlWriterSettings.CloseOutput%2A?displayProperty=fullName>します。  
   
  ]]></format>
         </remarks>
@@ -265,13 +285,13 @@
         <ReturnType>System.Xaml.XamlSchemaContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the XAML schema context that this <see cref="T:System.Xaml.XamlXmlWriter" /> uses for processing.</summary>
-        <value>The XAML schema context that this <see cref="T:System.Xaml.XamlXmlWriter" /> uses for XAML processing.</value>
+        <summary>XAML スキーマ コンテキストを取得この <see cref="T:System.Xaml.XamlXmlWriter" /> 処理に使用しています。</summary>
+        <value>XAML スキーマ コンテキストがこの <see cref="T:System.Xaml.XamlXmlWriter" /> XAML の処理に使用しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A XAML writer typically gets its XAML schema context from the associated XAML reader that is supplying the XAML node stream.  
+## 解説  
+ 通常、XAML ライターは、XAML ノード ストリームを提供している、関連付けられている XAML リーダーから XAML スキーマ コンテキストを取得します。  
   
  ]]></format>
         </remarks>
@@ -290,13 +310,13 @@
         <ReturnType>System.Xaml.XamlXmlWriterSettings</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the writer settings that this <see cref="T:System.Xaml.XamlXmlWriter" /> uses for XAML processing.</summary>
-        <value>The writer settings that this <see cref="T:System.Xaml.XamlXmlWriter" /> uses for XAML processing.</value>
+        <summary>ライターの設定を取得この <see cref="T:System.Xaml.XamlXmlWriter" /> XAML の処理に使用しています。</summary>
+        <value>ライターの設定がこの <see cref="T:System.Xaml.XamlXmlWriter" /> XAML の処理に使用しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value that you get from this property is a copy and not a reference. Changing property values on the settings does not affect the active <xref:System.Xaml.XamlXmlWriter>.  
+## 解説  
+ このプロパティから取得した値は、コピーと参照ではなくです。 プロパティ値の設定を変更するには影響しません、アクティブな <xref:System.Xaml.XamlXmlWriter>です。  
   
  ]]></format>
         </remarks>
@@ -316,10 +336,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Writes a XAML end member node to the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />. Throws an exception if the current position of the XAML node stream is not within a member, or if the internal writer state does not support writing to an end member.</summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">The current position of the XAML node stream is not within a member.</exception>
-        <exception cref="T:System.Xaml.XamlXmlWriterException">The current writer state does not support writing an end member.</exception>
+        <summary>最後の XAML メンバー ノードが、基になる書き込む <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />です。 XAML ノード ストリームの現在位置が、メンバー内にない場合、または内部のライターの状態は end メンバーへの書き込みをサポートしていない場合は、例外をスローします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">XAML ノード ストリームの現在の位置は、メンバー内ではありません。</exception>
+        <exception cref="T:System.Xaml.XamlXmlWriterException">現在のライターの状態は、end メンバーの書き込みをサポートしていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteEndObject">
@@ -336,19 +361,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Writes a XAML end object node to the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />. Throws an exception if the current position of the XAML node stream that is being processed is incompatible with writing an end object.</summary>
+        <summary>基になる XAML end のオブジェクト ノードを書き出します <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />です。 処理されている XAML ノード ストリームの現在の位置は、終了オブジェクトの書き込みと互換性がない場合は、例外をスローします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In markup and text representations of XAML, an end object is a closing tag.  
+## 解説  
+ XAML のマークアップとテキスト表現では、終了オブジェクトは、終了タグです。  
   
- The most common case where <xref:System.InvalidOperationException> is thrown by <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A> is when the current XAML node stream position is still within a member, and <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A> is called.  
+ 最も一般的なケース <xref:System.InvalidOperationException> によってスローされた <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A> は、XAML ノード ストリームの現在位置が、メンバー内である場合と <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A> が呼び出されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The current position of the XAML node stream is not in a scope where an end member can be written.</exception>
-        <exception cref="T:System.Xaml.XamlXmlWriterException">The current writer state does not support writing an end object.</exception>
+        <exception cref="T:System.InvalidOperationException">XAML ノード ストリームの現在の位置は、end メンバーの書き込み先のスコープではありません。</exception>
+        <exception cref="T:System.Xaml.XamlXmlWriterException">現在のライターの状態は、終了オブジェクトの書き込みをサポートしていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteGetObject">
@@ -365,8 +390,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Writes an object for cases where the specified object is a default or implicit value of the property that is being written, instead of being specified as an object value in the input XAML node set.</summary>
-        <remarks>To be added.</remarks>
+        <summary>指定したオブジェクトが既定値または入力の XAML ノード セット内のオブジェクトの値として指定されているのではなく、書き込まれるプロパティの値を暗黙的な場合、オブジェクトに書き込みます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WriteNamespace">
@@ -385,14 +415,19 @@
         <Parameter Name="namespaceDeclaration" Type="System.Xaml.NamespaceDeclaration" />
       </Parameters>
       <Docs>
-        <param name="namespaceDeclaration">The XAML namespace declaration to write.</param>
-        <summary>Writes namespace information to the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />. May throw an exception for certain states; however, may instead defer writing the namespace information until the writer and the XAML node stream that is being processed reaches a position where a XAML namespace declaration can be inserted.</summary>
-        <remarks>To be added.</remarks>
+        <param name="namespaceDeclaration">記述する XAML 名前空間宣言。</param>
+        <summary>基になる名前空間の情報を書き込みます <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />です。 例外がスローされる特定の状態です。ただし、ライターと処理されている XAML ノード ストリームまで名前空間の情報が XAML 名前空間宣言を挿入できる位置に達すると書き込みを延期代わりに可能性があります。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="namespaceDeclaration" /> is <see langword="null" />.</exception>
+          <paramref name="namespaceDeclaration" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="namespaceDeclaration" /> is not a valid XAML namespace declaration (has a null prefix or null identifier component).</exception>
-        <exception cref="T:System.Xaml.XamlXmlWriterException">The current writer state does not support writing a XAML namespace declaration.</exception>
+          <paramref name="namespaceDeclaration" /> 有効な XAML 名前空間宣言ではない \(null のプレフィックスまたは null の識別子のコンポーネントがあります\)。</exception>
+        <exception cref="T:System.Xaml.XamlXmlWriterException">現在のライターの状態では、XAML 名前空間宣言を記述することはできません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartMember">
@@ -411,28 +446,28 @@
         <Parameter Name="property" Type="System.Xaml.XamlMember" />
       </Parameters>
       <Docs>
-        <param name="property">The XAML member identifier for the member to write.</param>
-        <summary>Writes a XAML start member node to the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />. Throws an exception if the current position of the XAML node stream is within another member, or if it is not in a scope or writer state where a start member can be written.</summary>
+        <param name="property">メンバーを記述するための XAML メンバー識別子。</param>
+        <summary>XAML の開始メンバー ノードが、基になる書き込む <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />です。 XAML ノード ストリームの現在位置が別のメンバー内にある場合、または開始メンバーの書き込み先のスコープまたはライターの状態になっていない場合は、例外をスローします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Internal default logic in the <xref:System.Xaml.XamlXmlWriter> first attempts to write the member in attribute form. If no attribute form is supported because the property or its value does not support text syntax, a property element is written instead. If the property is a XAML content property, a `GetObject` case, or an implicit property, other XAML forms might be written, such as inner text or an object child that has no intervening member.  
+## 解説  
+ 内部の既定のロジックで、 <xref:System.Xaml.XamlXmlWriter> 属性の形式で、メンバーを記述しようとするは最初にします。 プロパティまたはその値がテキストの構文をサポートしていないために、属性の形式はサポートされていません、property 要素が代わりに記述されています。 プロパティが、XAML コンテンツ プロパティの場合、 `GetObject` ケース、または暗黙的なプロパティ、内部テキ ストを介在するメンバーを持たないオブジェクトの子などの他の XAML 形式を書き込むことがあります。  
   
- The duplicate member exception is never thrown if <xref:System.Xaml.XamlXmlWriterSettings.AssumeValidInput%2A> is `true` in the <xref:System.Xaml.XamlXmlWriterSettings> object that was used for settings for this <xref:System.Xaml.XamlXmlWriter>.  
+ 場合に、重複するメンバーの例外がスローされません <xref:System.Xaml.XamlXmlWriterSettings.AssumeValidInput%2A> は `true` で、 <xref:System.Xaml.XamlXmlWriterSettings> これの設定を使用したオブジェクトを <xref:System.Xaml.XamlXmlWriter>します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="property" /> is <see langword="null" />.</exception>
+          <paramref name="property" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="property" /> is not a valid <see cref="T:System.Xaml.XamlMember" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The current position of the XAML node stream is invalid for writing a start member.</exception>
-        <exception cref="T:System.Xaml.XamlXmlWriterException">The writer state is not valid for writing a start member.  
+          <paramref name="property" /> は有効な <see cref="T:System.Xaml.XamlMember" /> ではありません。</exception>
+        <exception cref="T:System.InvalidOperationException">開始メンバーを記述するため、XAML ノード ストリームの現在位置が正しくありません。</exception>
+        <exception cref="T:System.Xaml.XamlXmlWriterException">開始メンバーを記述するため、ライターの状態が正しくありません。  
   
- -or-  
+ または  
   
- The XAML writer attempted to write a duplicate member. This exception may have a more precise inner exception.</exception>
+ XAML ライターは、重複するメンバーを書き込もうとしました。 この例外より正確な内部例外があります。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartObject">
@@ -451,15 +486,21 @@
         <Parameter Name="type" Type="System.Xaml.XamlType" />
       </Parameters>
       <Docs>
-        <param name="type">The <see cref="T:System.Xaml.XamlType" /> (XAML type identifier) for the object to write.</param>
-        <summary>Writes a XAML start object node to the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />. Throws an exception if the current position of the XAML node stream is not in a scope where a start object can be written, or if the writer is not in a state that can write a start object.</summary>
-        <remarks>To be added.</remarks>
+        <param name="type">
+          <see cref="T:System.Xaml.XamlType" /> \(XAML 型の識別子\) を記述するオブジェクト。</param>
+        <summary>基になる XAML の開始オブジェクト ノードを書き込みます <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />です。 XAML ノード ストリームの現在位置が開始オブジェクトを記述するスコープ内にない場合、または、ライターが開始オブジェクトを書き込むことができる状態でない場合は、例外をスローします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="type" /> is <see langword="null" />.</exception>
+          <paramref name="type" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="type" /> is not a valid <see cref="T:System.Xaml.XamlType" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The current position of the XAML node stream is not valid for writing a new start object.</exception>
-        <exception cref="T:System.Xaml.XamlXmlWriterException">The state of the XAML writer is not valid for writing a new start object.</exception>
+          <paramref name="type" /> は有効な <see cref="T:System.Xaml.XamlType" /> ではありません。</exception>
+        <exception cref="T:System.InvalidOperationException">新しい開始オブジェクトを作成するため、XAML ノード ストリームの現在位置が正しくありません。</exception>
+        <exception cref="T:System.Xaml.XamlXmlWriterException">新しい開始オブジェクトを作成するため、XAML ライターの状態が正しくありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteValue">
@@ -478,21 +519,31 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The value information to write.</param>
-        <summary>Writes a XAML value node to the underlying <see cref="T:System.Xml.XmlWriter" /> or <see cref="T:System.IO.TextWriter" />. Throws an exception if the current position of the XAML node stream is invalid for writing a value, or the writer is in a state where a value cannot be written.</summary>
+        <param name="value">値の情報に書き込みます。</param>
+        <summary>XAML 値ノードが、基になる書き込む <see cref="T:System.Xml.XmlWriter" /> または <see cref="T:System.IO.TextWriter" />です。 XAML ノード ストリームの現在位置が、値を書き込むため無効であるか、ライターが値を書き込み不能な状態である場合は、例外をスローします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The input `value` may be `null`, which supports explicitly writing out null as a serialized value. This behavior uses the <xref:System.Xaml.XamlLanguage.Null%2A?displayProperty=fullName> definition as <xref:System.Xaml.XamlXmlWriter.WriteStartObject%2A> input and then immediately calls <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A>.  
+## 解説  
+ 入力 `value` あります `null`, をサポートするシリアル化された値として null を明示的に記述します。 この動作を使用して、 <xref:System.Xaml.XamlLanguage.Null%2A?displayProperty=fullName> として定義 <xref:System.Xaml.XamlXmlWriter.WriteStartObject%2A> を入力してから、すぐに呼び出して <xref:System.Xaml.XamlXmlWriter.WriteEndObject%2A>します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The current position of the XAML node stream is not valid for writing a value.</exception>
-        <exception cref="T:System.Xaml.XamlXmlWriterException">The XAML writer state does not support the writing of a value node.</exception>
+        <exception cref="T:System.InvalidOperationException">値を書き込むため、XAML ノード ストリームの現在位置が正しくありません。</exception>
+        <exception cref="T:System.Xaml.XamlXmlWriterException">XAML ライターの状態は、値ノードの書き込みをサポートしていません。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="value" /> specifies a value that is not null or a string.</exception>
+          <paramref name="value" /> null でない値または文字列を指定します。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Xaml.XamlXmlWriter" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

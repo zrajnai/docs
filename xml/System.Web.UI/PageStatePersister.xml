@@ -11,38 +11,38 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides the base functionality for ASP.NET view state persistence mechanisms.</summary>
+    <summary>ASP.NET ビュー状態の永続化メカニズムの基本機能を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The HTTP requests and responses are inherently stateless. To maintain state information between HTTP requests, ASP.NET server pages can store <xref:System.Web.UI.Page> state. This state, called view state, consists of page and control settings and data that make the page and controls appear as if they are the same ones that the user saw and interacted with on their last round trip to the server. Several mechanisms exist to store view state between successive requests to the same page. The abstract <xref:System.Web.UI.PageStatePersister> class represents the base class for these state information storage mechanisms.  
+## 解説  
+ HTTP 要求と応答は、本質的にステートレスです。 HTTP 要求の間で状態情報を維持するために、ASP.NET サーバー ページを格納できます <xref:System.Web.UI.Page> 状態です。 ビュー ステートと呼ばれる、この状態は、ページとコントロールの設定、およびページとコントロールと場合では、ユーザーがサーバーに最後のラウンド トリップでの相互作用し、ものと同じものを表示できるようにするデータで構成されます。 同じページに後続の要求の間でのビュー ステートを格納するいくつかのメカニズムが存在します。 抽象 <xref:System.Web.UI.PageStatePersister> クラスは、これらの状態情報の記憶域メカニズムの基本クラスを表します。  
   
- The default view state persistence mechanism in ASP.NET is to maintain the state information as a Base64-encoded string in a hidden HTML element (an element with the `type` attribute set to `"hidden"`) on the page. An ASP.NET page uses a <xref:System.Web.UI.HiddenFieldPageStatePersister> object to perform this work, using an <xref:System.Web.UI.IStateFormatter> instance to serialize and deserialize object state information. Alternately, you can store the view state for your pages in the <xref:System.Web.HttpContext.Session%2A> object on the server using the <xref:System.Web.UI.SessionPageStatePersister> class for mobile clients with limited bandwidth and resources. In some cases, you might disable view state persistence altogether. If you do this, the result is that sometimes pages and controls that rely on state persistence do not behave correctly. For more information about page state management and view state, see [ASP.NET State Management Overview](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce).  
+ ASP.NET の既定のビュー状態の永続化メカニズムは非表示の HTML 要素に Base64 でエンコードされた文字列と状態情報を維持するために、\(を持つ要素、 `type` 属性に設定 `"hidden"`\) ページ。 ASP.NET ページを使用して、 <xref:System.Web.UI.HiddenFieldPageStatePersister> これを実行するオブジェクトを使用して、動作、 <xref:System.Web.UI.IStateFormatter> インスタンスおよびオブジェクトの状態情報を逆シリアル化します。 ページのビュー ステートを格納する代わりに、 <xref:System.Web.HttpContext.Session%2A> を使用して、サーバー上のオブジェクト、 <xref:System.Web.UI.SessionPageStatePersister> モバイルでのクライアントの帯域幅の制限とリソースのクラスです。 場合によっては、まったく表示状態の永続性無効に可能性があります。 これを行う場合、いる場合もありますページおよび状態の永続性に依存するコントロールに動作しない正しく対象となります。 ページの状態の管理と表示の状態に関する詳細については、次を参照してください。 [ASP.NET State Management Overview](http://msdn.microsoft.com/ja-jp/0218d965-5d30-445b-b6a6-8870e70e63ce)します。  
   
- If you are writing controls, you can store state information for the controls in the <xref:System.Web.UI.Control.ViewState%2A> dictionary, which is a <xref:System.Web.UI.StateBag> object. A developer would retrieve the control state through the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property. You assign keys and values to the <xref:System.Web.UI.Control.ViewState%2A> property, and the <xref:System.Web.UI.Page> object serializes the state information between requests. To perform custom state handling in your control, override the <xref:System.Web.UI.Control.LoadViewState%2A> and <xref:System.Web.UI.Control.SaveViewState%2A> methods. Any state information that is stored in this dictionary is lost when view state is disabled by a page developer. To mitigate this, in ASP.NET version 2.0 you can store critical state information in a separate object, called control state. The control state object is not affected when view state is disabled by a page developer. Storing state information in the control state object requires that the control override the <xref:System.Web.UI.Control.LoadControlState%2A> and <xref:System.Web.UI.Control.SaveControlState%2A> methods and that the control be registered to store state information in control state every time the control is initialized. You can register a control to use control state by overriding the <xref:System.Web.UI.Control.OnInit%2A> method and calling the <xref:System.Web.UI.Page.RegisterRequiresControlState%2A> method. For more information about using the <xref:System.Web.UI.Control.ViewState%2A> property and control state when developing controls, see [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef).  
+ 内のコントロールの状態情報を格納するコントロールを作成している場合、 <xref:System.Web.UI.Control.ViewState%2A> 辞書、 <xref:System.Web.UI.StateBag> オブジェクトです。 開発者は、コントロールの状態を取得を通じて、 <xref:System.Web.UI.PageStatePersister.ControlState%2A> プロパティです。 キーと値を割り当てる、 <xref:System.Web.UI.Control.ViewState%2A> プロパティ、および <xref:System.Web.UI.Page> オブジェクトが要求間で状態情報をシリアル化します。 カスタムの状態が、コントロールで処理を実行するには、オーバーライド、 <xref:System.Web.UI.Control.LoadViewState%2A> と <xref:System.Web.UI.Control.SaveViewState%2A> メソッドです。 ページの開発者がビュー ステートが無効にすると、このディクショナリに格納されている状態情報は失われます。 これを軽減する、asp.net 2.0 コントロールの状態と呼ばれる別のオブジェクトに重大な状態情報を格納することができます。 ページの開発者がビュー ステートが無効にすると、コントロールの状態オブジェクトは影響はありません。 コントロールの状態のオブジェクトに状態情報を格納するには、コントロールをオーバーライドする必要があります、 <xref:System.Web.UI.Control.LoadControlState%2A> と <xref:System.Web.UI.Control.SaveControlState%2A> メソッドと状態情報を格納するコントロールを登録するたびに、コントロールが初期化状態を制御します。 コントロールの状態をオーバーライドすることで使用するコントロールを登録する、 <xref:System.Web.UI.Control.OnInit%2A> メソッドを呼び出し、 <xref:System.Web.UI.Page.RegisterRequiresControlState%2A> メソッドです。 使用の詳細については、 <xref:System.Web.UI.Control.ViewState%2A> コントロールを開発する場合は、プロパティとコントロールの状態を参照してください [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/ja-jp/fbe26c16-cff4-4089-b3dd-877411f0c0ef)します。  
   
- To maintain view state on clients that cannot support the existing view state persistence mechanisms, you can extend the <xref:System.Web.UI.PageStatePersister> class to introduce your own view state persistence methods, and you can use page adapters to configure your ASP.NET application to use different view state persistence mechanisms based on the type of client to which a page is served. Classes that derive from the <xref:System.Web.UI.PageStatePersister> class must override the abstract <xref:System.Web.UI.PageStatePersister.Save%2A> method to store view state and control state in the persistence medium, and override the <xref:System.Web.UI.PageStatePersister.Load%2A> method to extract it. If you need to serialize view state and control state to a string, you can use the <xref:System.Web.UI.IStateFormatter> object that is accessed using the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property. It efficiently serializes and deserializes object state information to a Base64-encoded string. You can also override the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property to supply your own object state serialization mechanism.  
+ ビュー ステートを維持するために既存のサポートできないクライアントに状態の永続化メカニズムのビューで、拡張することができます、 <xref:System.Web.UI.PageStatePersister> クラスの独自のビュー状態の永続化方法を紹介し、ページが処理されるクライアントの種類に基づく別のビュー状態の永続化メカニズムを使用する ASP.NET アプリケーションを構成するページのアダプターを使用することができます。 派生するクラス、 <xref:System.Web.UI.PageStatePersister> クラスは、抽象をオーバーライドする必要があります <xref:System.Web.UI.PageStatePersister.Save%2A> ビュー ステートとコントロールの状態を永続化中に格納し、オーバーライドするメソッド、 <xref:System.Web.UI.PageStatePersister.Load%2A> を展開する方法です。 使用することをビュー ステートとコントロールの状態を文字列にシリアル化する必要がある場合、 <xref:System.Web.UI.IStateFormatter> を使用してアクセスされるオブジェクト、 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> プロパティです。 効率的に、シリアル化し、Base64 でエンコードされた文字列オブジェクトの状態情報を逆シリアル化します。 オーバーライドすることも、 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> プロパティを独自のオブジェクトの状態のシリアル化メカニズムを提供します。  
   
    
   
-## Examples  
- The following code example demonstrates how to create a <xref:System.Web.UI.PageStatePersister> object that saves view and control state on the Web server. The `StreamPageStatePersister` demonstrates how to override the <xref:System.Web.UI.PageStatePersister.Load%2A> and <xref:System.Web.UI.PageStatePersister.Save%2A> methods to extract and save view state information. Because the state persistence mechanisms are related to adaptive rendering and client capabilities, the `MyPageAdapter` class is provided to activate the `StreamPageStatePersister` for an ASP.NET application. Finally, a browser capabilities (.browser) file is provided to enable the `MyPageAdapter` adapter for a specific class of clients (in this case, the default Web browser).  
+## 例  
+ 次のコード例では、作成、 <xref:System.Web.UI.PageStatePersister> Web サーバー上のビューとコントロールの状態を保存するオブジェクト。`StreamPageStatePersister` を上書きする方法を示しています、 <xref:System.Web.UI.PageStatePersister.Load%2A> と <xref:System.Web.UI.PageStatePersister.Save%2A> 状態情報を抽出し、ビューを保存する方法です。 状態の永続化メカニズムは、アダプティブ レンダリングおよびクライアント機能に関連するので、 `MyPageAdapter` をアクティブ化するクラスが提供される、 `StreamPageStatePersister` 、ASP.NET アプリケーションのです。 最後に、ブラウザーの機能 \(.browser\) ファイルがために用意された、 `MyPageAdapter` \(この場合、既定の Web ブラウザー\) 内のクライアントの特定のクラスのアダプターです。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#1)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#1)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#1)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#1)]  
   
- The following code example demonstrates how to create a <xref:System.Web.UI.Adapters.PageAdapter> class that returns an instance of `StreamPageStatePersister`, which is used to persist view and control state for an ASP.NET Web page.  
+ 次のコード例では、作成、 <xref:System.Web.UI.Adapters.PageAdapter> クラスのインスタンスを返す `StreamPageStatePersister`, 、これは、ASP.NET Web ページの表示と制御の状態を永続化に使用します。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#5)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#5)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#5](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#5)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#5)]  
   
- Compile these two classes into an assembly that you can use to run a sample, using the following compiler command line. Ensure that the compiled assembly is in the \Bin directory underneath the ASP.NET application root.  
+ これら 2 つのクラスを次のコンパイラのコマンドラインを使用して、サンプルの実行に使用できるアセンブリにコンパイルします。 ASP.NET アプリケーションのルートの下の \\Bin ディレクトリに、コンパイルされたアセンブリがあることを確認します。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#6](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#6)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#6)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#6](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#6)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#6)]  
   
- Finally, to enable the `MyPageAdapter` adapter, you must create a directory named Browsers underneath the ASP.NET application root, and include a .browser file with configuration information. The `<refid>` element in the configuration file indicates that the configuration overrides the values specified for the default browser in the Default.browser configuration file. In this example, `MyPageAdapter` is used for ASP.NET Web pages (where normally no adapter is used).  
+ 最後に、有効にする、 `MyPageAdapter` アダプター、ASP.NET アプリケーションのルートの下にあるブラウザーをという名前のディレクトリを作成し、構成情報を .browser ファイルを追加する必要があります。`<refid>` 構成ファイル内の要素は、構成が Default.browser 構成ファイル内の default ブラウザーの指定した値をオーバーライドすることを示します。 この例では `MyPageAdapter` \(通常アダプターが使用されているなし\) ASP.NET Web ページに使用します。  
   
 ```  
 <browsers>  
@@ -58,6 +58,9 @@
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Web.UI.ObjectStateFormatter" />
+    <altmember cref="T:System.Web.UI.LosFormatter" />
+    <altmember cref="T:System.Web.UI.Pair" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -73,10 +76,13 @@
         <Parameter Name="page" Type="System.Web.UI.Page" />
       </Parameters>
       <Docs>
-        <param name="page">The <see cref="T:System.Web.UI.Page" /> that the view state persistence mechanism is created for.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.PageStatePersister" /> class.</summary>
+        <param name="page">
+          <see cref="T:System.Web.UI.Page" /> のビュー状態の永続化メカニズムを作成します。</param>
+        <summary>
+          <see cref="T:System.Web.UI.PageStatePersister" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="page" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="page" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="ControlState">
@@ -92,21 +98,21 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets an object that represents the data that controls contained by the current <see cref="T:System.Web.UI.Page" /> object use to persist across HTTP requests to the Web server.</summary>
-        <value>An object that contains view state data.</value>
+        <summary>現在に含まれる制御データを表すオブジェクトを取得または <see cref="T:System.Web.UI.Page" /> Web サーバーへの HTTP 要求の間で保持するオブジェクトを使用します。</summary>
+        <value>ビュー ステート データを格納するオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Control state is an object comprised of critical view state data that Web server controls need to function, and is contained in a separate object from normal view state information. Control state data is not affected when view state is disabled at the <xref:System.Web.UI.Page> level, but requires extra implementation steps to use. For more information on using the <xref:System.Web.UI.Control.ViewState%2A> property and control state when developing controls, see [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef).  
+## 解説  
+ コントロールの状態は、Web サーバー コントロールしなくても、関数、および通常のビュー状態情報とは別のオブジェクトに含まれている重要なビュー ステート データから成るオブジェクトです。 ビュー ステートが無効にすると、コントロールの状態データは影響ありませんが、 <xref:System.Web.UI.Page> レベルを使用する追加の実装手順が必要です。 使用する方法について、 <xref:System.Web.UI.Control.ViewState%2A> コントロールを開発する場合は、プロパティとコントロールの状態を参照してください [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/ja-jp/fbe26c16-cff4-4089-b3dd-877411f0c0ef)します。  
   
    
   
-## Examples  
- The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class initializes the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property. In this example, the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property has been assigned to the <xref:System.Web.UI.Pair.Second> field of a <xref:System.Web.UI.Pair> object, and serialized using the <xref:System.Web.UI.ObjectStateFormatter> class. When the <xref:System.Web.UI.PageStatePersister.Load%2A> method is called, the <xref:System.Web.UI.ObjectStateFormatter> class is used to deserialize view state and control state information, and the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property is initialized from the resulting <xref:System.Web.UI.Pair> object's <xref:System.Web.UI.Pair.Second> field. This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.  
+## 例  
+ 次のコード例は、方法から派生するクラスについて説明します。、 <xref:System.Web.UI.PageStatePersister> クラスの初期化、 <xref:System.Web.UI.PageStatePersister.ControlState%2A> プロパティです。 この例では、 <xref:System.Web.UI.PageStatePersister.ControlState%2A> にプロパティが割り当てられて、 <xref:System.Web.UI.Pair.Second> のフィールド、 <xref:System.Web.UI.Pair> オブジェクト、および使用してシリアル化、 <xref:System.Web.UI.ObjectStateFormatter> クラスです。 ときに、 <xref:System.Web.UI.PageStatePersister.Load%2A> メソッドが呼び出される、 <xref:System.Web.UI.ObjectStateFormatter> ビュー状態とコントロールの状態情報を逆シリアル化するクラスを使用し、 <xref:System.Web.UI.PageStatePersister.ControlState%2A> プロパティは、その結果から初期化 <xref:System.Web.UI.Pair> オブジェクトの <xref:System.Web.UI.Pair.Second> フィールドです。 このコード例が示されている例の一部は、 <xref:System.Web.UI.PageStatePersister> クラスです。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -126,20 +132,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Overridden by derived classes to deserialize and load persisted state information when a <see cref="T:System.Web.UI.Page" /> object initializes its control hierarchy.</summary>
+        <summary>逆シリアル化して永続化された状態情報をロードする派生クラスによってオーバーライドされるときに、 <see cref="T:System.Web.UI.Page" /> オブジェクトがそのコントロールの階層構造を初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Web.UI.PageStatePersister> class implement the <xref:System.Web.UI.PageStatePersister.Load%2A> method to initialize the <xref:System.Web.UI.PageStatePersister.ViewState%2A> and <xref:System.Web.UI.PageStatePersister.ControlState%2A> properties from some persisted format.  
+## 解説  
+ 派生するクラス、 <xref:System.Web.UI.PageStatePersister> クラスの実装、 <xref:System.Web.UI.PageStatePersister.Load%2A> 初期化するメソッドを <xref:System.Web.UI.PageStatePersister.ViewState%2A> と <xref:System.Web.UI.PageStatePersister.ControlState%2A> によって永続化された形式からのプロパティです。  
   
    
   
-## Examples  
- The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class implements the <xref:System.Web.UI.PageStatePersister.Load%2A> method to load view state from a persistence medium. The `StreamPageStatePersister` attempts to read data from a stream. It uses an <xref:System.Web.UI.IStateFormatter> object to deserialize view state data and initialize the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property and the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property, which a page uses to initialize controls. This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.  
+## 例  
+ 次のコード例は、方法から派生するクラスについて説明します。、 <xref:System.Web.UI.PageStatePersister> クラスが実装する、 <xref:System.Web.UI.PageStatePersister.Load%2A> 永続化の中からビュー ステートを読み込みます。`StreamPageStatePersister` ストリームからデータを読み取ろうとします。 使用して、 <xref:System.Web.UI.IStateFormatter> ビュー ステート データを逆シリアル化および初期化するオブジェクト、 <xref:System.Web.UI.PageStatePersister.ViewState%2A> プロパティおよび <xref:System.Web.UI.PageStatePersister.ControlState%2A> プロパティで、コントロールを初期化するために、ページを使用します。 このコード例が示されている例の一部は、 <xref:System.Web.UI.PageStatePersister> クラスです。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -158,14 +164,18 @@
         <ReturnType>System.Web.UI.Page</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Web.UI.Page" /> object that the view state persistence mechanism is created for.</summary>
-        <value>The <see cref="T:System.Web.UI.Page" /> that the <see cref="T:System.Web.UI.PageStatePersister" /> is associated with.</value>
+        <summary>取得または設定、 <see cref="T:System.Web.UI.Page" /> のビュー状態の永続化メカニズムが作成されるオブジェクトです。</summary>
+        <value>
+          <see cref="T:System.Web.UI.Page" /> が関連付けられる <see cref="T:System.Web.UI.PageStatePersister" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use the <xref:System.Web.UI.PageStatePersister.Page%2A> property to access the current <xref:System.Web.HttpContext> object.  
+## 解説  
+ 使用することができます、 <xref:System.Web.UI.PageStatePersister.Page%2A> 現在にアクセスするプロパティ <xref:System.Web.HttpContext> オブジェクトです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -184,20 +194,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Overridden by derived classes to serialize persisted state information when a <see cref="T:System.Web.UI.Page" /> object is unloaded from memory.</summary>
+        <summary>永続化された状態情報をシリアル化する派生クラスによってオーバーライドされるときに、 <see cref="T:System.Web.UI.Page" /> オブジェクトがメモリからアンロードします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Web.UI.PageStatePersister> class implement the <xref:System.Web.UI.PageStatePersister.Save%2A> method to persist the contents of the <xref:System.Web.UI.PageStatePersister.ViewState%2A> and <xref:System.Web.UI.PageStatePersister.ControlState%2A> properties to a persistence medium.  
+## 解説  
+ 派生するクラス、 <xref:System.Web.UI.PageStatePersister> クラスの実装、 <xref:System.Web.UI.PageStatePersister.Save%2A> の内容を保持する、 <xref:System.Web.UI.PageStatePersister.ViewState%2A> と <xref:System.Web.UI.PageStatePersister.ControlState%2A> プロパティを永続化中です。  
   
    
   
-## Examples  
- The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class implements the <xref:System.Web.UI.PageStatePersister.Save%2A> method to persist view state to a persistence medium. The `StreamPageStatePersister` uses an <xref:System.Web.UI.IStateFormatter> object to serialize the contents of the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property and <xref:System.Web.UI.PageStatePersister.ControlState%2A> property. This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.  
+## 例  
+ 次のコード例は、方法から派生するクラスについて説明します。、 <xref:System.Web.UI.PageStatePersister> クラスが実装する、 <xref:System.Web.UI.PageStatePersister.Save%2A> 永続メディアへのビュー ステートを保持します。`StreamPageStatePersister` を使用して、 <xref:System.Web.UI.IStateFormatter> の内容をシリアル化するオブジェクト、 <xref:System.Web.UI.PageStatePersister.ViewState%2A> プロパティと <xref:System.Web.UI.PageStatePersister.ControlState%2A> プロパティです。 このコード例が示されている例の一部は、 <xref:System.Web.UI.PageStatePersister> クラスです。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -216,21 +226,21 @@
         <ReturnType>System.Web.UI.IStateFormatter</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an <see cref="T:System.Web.UI.IStateFormatter" /> object that is used to serialize and deserialize the state information contained in the <see cref="P:System.Web.UI.PageStatePersister.ViewState" /> and <see cref="P:System.Web.UI.PageStatePersister.ControlState" /> properties during calls to the <see cref="M:System.Web.UI.PageStatePersister.Save" /> and <see cref="M:System.Web.UI.PageStatePersister.Load" /> methods.</summary>
-        <value>An instance of <see cref="T:System.Web.UI.IStateFormatter" /> that is used to serialize and deserialize object state.</value>
+        <summary>取得、 <see cref="T:System.Web.UI.IStateFormatter" /> およびに含まれる状態情報を逆シリアル化に使用されるオブジェクト、 <see cref="P:System.Web.UI.PageStatePersister.ViewState" /> と <see cref="P:System.Web.UI.PageStatePersister.ControlState" /> プロパティの呼び出し中に、 <see cref="M:System.Web.UI.PageStatePersister.Save" /> と <see cref="M:System.Web.UI.PageStatePersister.Load" /> メソッドです。</summary>
+        <value>インスタンス <see cref="T:System.Web.UI.IStateFormatter" /> およびオブジェクトの状態を逆シリアル化に使用されます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can override the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property to provide your own view state formatter.  
+## 解説  
+ オーバーライドすることができます、 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> ビュー状態フォーマッタを提供するプロパティです。  
   
    
   
-## Examples  
- The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class accesses the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property to retrieve an <xref:System.Web.UI.ObjectStateFormatter> object, which is the default implementation of the <xref:System.Web.UI.IStateFormatter> interface, to serialize view state and control state to a stream. This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.  
+## 例  
+ 次のコード例は、方法から派生するクラスについて説明します。、 <xref:System.Web.UI.PageStatePersister> クラスへのアクセス、 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> 取得するプロパティを、 <xref:System.Web.UI.ObjectStateFormatter> オブジェクトで、既定の実装の、 <xref:System.Web.UI.IStateFormatter> をビュー ステートとコントロールの状態をストリームにシリアル化のインターフェイスです。 このコード例が示されている例の一部は、 <xref:System.Web.UI.PageStatePersister> クラスです。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -249,21 +259,21 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets an object that represents the data that controls contained by the current <see cref="T:System.Web.UI.Page" /> object use to persist across HTTP requests to the Web server.</summary>
-        <value>An object that contains view state data.</value>
+        <summary>現在に含まれる制御データを表すオブジェクトを取得または <see cref="T:System.Web.UI.Page" /> Web サーバーへの HTTP 要求の間で保持するオブジェクトを使用します。</summary>
+        <value>ビュー ステート データを格納するオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- View state is a dictionary of state data that Web server controls need to function and render themselves. Control developers typically access the view state object using the <xref:System.Web.UI.Control.ViewState%2A> property. View state is affected when view state is disabled at the <xref:System.Web.UI.Page> level, and as a result controls might not behave correctly in these scenarios. For more information on using <xref:System.Web.UI.Control.ViewState%2A> and control state when developing controls, see [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef).  
+## 解説  
+ ビュー ステートは、Web サーバー コントロールが機能し、自体を表示する必要がある状態データのディクショナリです。 ビュー状態オブジェクトを使用して、コントロールの開発者が通常アクセス、 <xref:System.Web.UI.Control.ViewState%2A> プロパティです。 ビュー ステートが無効にすると、ビュー ステートが影響を受ける、 <xref:System.Web.UI.Page> これらのシナリオでされ、その結果、コントロールが正しく動作しない可能性があります。 使用する方法について <xref:System.Web.UI.Control.ViewState%2A> でコントロールを開発するときに、状態を制御して表示 [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/ja-jp/fbe26c16-cff4-4089-b3dd-877411f0c0ef)します。  
   
    
   
-## Examples  
- The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class initializes the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property. In this example, the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property has been assigned to the <xref:System.Web.UI.Pair.First> field of a <xref:System.Web.UI.Pair> object, and serialized using the <xref:System.Web.UI.ObjectStateFormatter> object, which is an instance of the <xref:System.Web.UI.IStateFormatter> interface. When the <xref:System.Web.UI.PageStatePersister.Load%2A> method is called, the <xref:System.Web.UI.ObjectStateFormatter> interface is used to deserialize view state information, and the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property is initialized from the resulting <xref:System.Web.UI.Pair> object's <xref:System.Web.UI.Pair.First> field. This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.  
+## 例  
+ 次のコード例は、方法から派生するクラスについて説明します。、 <xref:System.Web.UI.PageStatePersister> クラスの初期化、 <xref:System.Web.UI.PageStatePersister.ViewState%2A> プロパティです。 この例では、 <xref:System.Web.UI.PageStatePersister.ViewState%2A> にプロパティが割り当てられて、 <xref:System.Web.UI.Pair.First> のフィールド、 <xref:System.Web.UI.Pair> オブジェクト、および使用してシリアル化、 <xref:System.Web.UI.ObjectStateFormatter> インスタンスであるオブジェクトの <xref:System.Web.UI.IStateFormatter> インターフェイスです。 ときに、 <xref:System.Web.UI.PageStatePersister.Load%2A> メソッドが呼び出される、 <xref:System.Web.UI.ObjectStateFormatter> インターフェイスは、ビュー状態情報を逆シリアル化に使用され、 <xref:System.Web.UI.PageStatePersister.ViewState%2A> プロパティは、その結果から初期化 <xref:System.Web.UI.Pair> オブジェクトの <xref:System.Web.UI.Pair.First> フィールドです。 このコード例が示されている例の一部は、 <xref:System.Web.UI.PageStatePersister> クラスです。  
   
- [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
- [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister\_1\#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
   
  ]]></format>
         </remarks>

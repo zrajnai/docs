@@ -8,20 +8,24 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Implement to participate in the creation or choosing of a <see cref="T:System.ServiceModel.InstanceContext" /> object, especially to enable shared sessions.</summary>
+    <summary>
+      <see cref="T:System.ServiceModel.InstanceContext" /> オブジェクトの作成または選択に参加するために実装します。特に、共有セッションを有効にします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider> interface to provide the appropriate <xref:System.ServiceModel.InstanceContext?displayProperty=fullName> object to the system. Typically, this interface is implemented to support shared sessions, enable service instance pooling, control lifetimes of service instances, or to group contexts among clients.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider> インターフェイスを実装して、システムに適切な <xref:System.ServiceModel.InstanceContext?displayProperty=fullName> オブジェクトを提供します。 通常、このインターフェイスの実装では、共有セッションのサポート、サービス インスタンス プールの有効化、サービス インスタンスの有効期間の制御、またはクライアント間でのコンテキストのグループ化を実現します。  
   
- For example, to implement sharing, insert a custom <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider> to decide which session or call from a client is associated with which <xref:System.ServiceModel.InstanceContext> object. For an example that demonstrates the sharing of instance contexts, see [InstanceContextSharing](http://msdn.microsoft.com/en-us/4a6a46d7-b7d7-4bb5-a0dd-03ffa3cbc230).  
+ たとえば、共有を実装するには、カスタム <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider> を挿入して、クライアントからのどのセッションまたは呼び出しをどの <xref:System.ServiceModel.InstanceContext> オブジェクトと関連付けるかを決定します。 インスタンス コンテキストの共有の例については、「[InstanceContextSharing](http://msdn.microsoft.com/ja-jp/4a6a46d7-b7d7-4bb5-a0dd-03ffa3cbc230)」を参照してください。  
   
 > [!NOTE]
->  When an <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider> is inserted into [!INCLUDE[indigo1](~/includes/indigo1-md.md)], the normal property that controls the creation of <xref:System.ServiceModel.InstanceContext> objects (the <xref:System.ServiceModel.ServiceBehaviorAttribute.InstanceContextMode%2A?displayProperty=fullName> property) is no longer checked and has no effect.  
+>  <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider> を [!INCLUDE[indigo1](~/includes/indigo1-md.md)] に挿入すると、<xref:System.ServiceModel.InstanceContext> オブジェクトの作成を制御する通常のプロパティ \(<xref:System.ServiceModel.ServiceBehaviorAttribute.InstanceContextMode%2A?displayProperty=fullName> プロパティ\) は検査されなくなり、効果を持たなくなります。  
   
- A more generic mechanism by which you can initialize <xref:System.ServiceModel.InstanceContext> objects when created (for example, to attach custom extensions to each <xref:System.ServiceModel.InstanceContext>) is the <xref:System.ServiceModel.Dispatcher.IInstanceContextInitializer?displayProperty=fullName>.  
+ <xref:System.ServiceModel.InstanceContext> オブジェクトを作成時に初期化できるさらに一般的なメカニズムは \(たとえば、各 <xref:System.ServiceModel.InstanceContext> にカスタム拡張機能を関連付けるなど\)、<xref:System.ServiceModel.Dispatcher.IInstanceContextInitializer?displayProperty=fullName> です。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -43,18 +47,21 @@
         <Parameter Name="channel" Type="System.ServiceModel.IContextChannel" />
       </Parameters>
       <Docs>
-        <param name="message">The incoming message.</param>
-        <param name="channel">The channel that received the message.</param>
-        <summary>Called when a new message is received.</summary>
-        <returns>The <see cref="T:System.ServiceModel.InstanceContext" /> object that is used to process the message; return <see langword="null" /> to instruct [!INCLUDE[indigo2](~/includes/indigo2-md.md)] to create a new <see cref="T:System.ServiceModel.InstanceContext" /> object.</returns>
+        <param name="message">受信メッセージ。</param>
+        <param name="channel">メッセージを受信したチャネル。</param>
+        <summary>新しいメッセージを受信すると呼び出されます。</summary>
+        <returns>メッセージの処理に使用する <see cref="T:System.ServiceModel.InstanceContext" /> オブジェクト。新しい <see langword="null" /> オブジェクトを作成するよう WCF に指示するには、<see cref="T:System.ServiceModel.InstanceContext" /> を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.GetExistingInstanceContext%2A> method is called when a message is received. Return the <xref:System.ServiceModel.InstanceContext> object that you want to process the message, or `null`. In the case of `null`, [!INCLUDE[indigo2](~/includes/indigo2-md.md)] creates a new <xref:System.ServiceModel.InstanceContext> object for the message and then calls the <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.InitializeInstanceContext%2A> method.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.GetExistingInstanceContext%2A> メソッドは、メッセージを受信すると呼び出されます。 メッセージの処理に使用する <xref:System.ServiceModel.InstanceContext> オブジェクト、または `null` を返します。`null` が返されると、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] はメッセージ用に新しい <xref:System.ServiceModel.InstanceContext> オブジェクトを作成してから、<xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.InitializeInstanceContext%2A> メソッドを呼び出します。  
   
- If you return `null`, the new <xref:System.ServiceModel.InstanceContext> object goes through the throttling system and increments the count of <xref:System.ServiceModel.Dispatcher.ServiceThrottle.MaxConcurrentInstances%2A?displayProperty=fullName>.  
+ `null` を返すと、新しい <xref:System.ServiceModel.InstanceContext> オブジェクトがスロットル システムに渡って、<xref:System.ServiceModel.Dispatcher.ServiceThrottle.MaxConcurrentInstances%2A?displayProperty=fullName> のカウントをインクリメントします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -77,16 +84,20 @@
         <Parameter Name="channel" Type="System.ServiceModel.IContextChannel" />
       </Parameters>
       <Docs>
-        <param name="instanceContext">The new <see cref="T:System.ServiceModel.InstanceContext" /> object.</param>
-        <param name="message">The incoming message.</param>
-        <param name="channel">The channel that received the message.</param>
-        <summary>Called when <see langword="null" /> is returned from the <see cref="M:System.ServiceModel.Dispatcher.IInstanceContextProvider.GetExistingInstanceContext(System.ServiceModel.Channels.Message,System.ServiceModel.IContextChannel)" /> method.</summary>
+        <param name="instanceContext">新しい <see cref="T:System.ServiceModel.InstanceContext" /> オブジェクト。</param>
+        <param name="message">受信メッセージ。</param>
+        <param name="channel">メッセージを受信したチャネル。</param>
+        <summary>
+          <see langword="null" /> メソッドから <see cref="M:System.ServiceModel.Dispatcher.IInstanceContextProvider.GetExistingInstanceContext(System.ServiceModel.Channels.Message,System.ServiceModel.IContextChannel)" /> が返されると呼び出されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.InitializeInstanceContext%2A> is called when <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.GetExistingInstanceContext%2A> returns `null` and a new <xref:System.ServiceModel.InstanceContext> object is created. This method is called to notify you that a new <xref:System.ServiceModel.InstanceContext> has been created.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.InitializeInstanceContext%2A> が <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.GetExistingInstanceContext%2A> を返し、新しい `null` オブジェクトが作成されると、<xref:System.ServiceModel.InstanceContext> が呼び出されます。 このメソッドは、新しい <xref:System.ServiceModel.InstanceContext> が作成されたことを通知するために呼び出されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -107,18 +118,21 @@
         <Parameter Name="instanceContext" Type="System.ServiceModel.InstanceContext" />
       </Parameters>
       <Docs>
-        <param name="instanceContext">The <see cref="T:System.ServiceModel.InstanceContext" /> object that is considered idle.</param>
-        <summary>Called when all <see cref="T:System.ServiceModel.InstanceContext" /> activities have completed to enable implementers to prevent the <see cref="T:System.ServiceModel.InstanceContext" /> from being recycled.</summary>
+        <param name="instanceContext">アイドル状態と見なされる <see cref="T:System.ServiceModel.InstanceContext" /> オブジェクト。</param>
+        <summary>すべての <see cref="T:System.ServiceModel.InstanceContext" /> アクティビティが完了すると呼び出され、実装者は <see cref="T:System.ServiceModel.InstanceContext" /> がリサイクルされないようにすることができます。</summary>
         <returns>
-          <see langword="true" /> if [!INCLUDE[indigo1](~/includes/indigo1-md.md)] is to close and recycle the <see cref="T:System.ServiceModel.InstanceContext" /> object and adjust the value of <see cref="P:System.ServiceModel.Dispatcher.ServiceThrottle.MaxConcurrentInstances" />; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> が Windows Communication Foundation (WCF) オブジェクトを閉じてリサイクルし、<see cref="T:System.ServiceModel.InstanceContext" /> の値を調節する場合は <see cref="P:System.ServiceModel.Dispatcher.ServiceThrottle.MaxConcurrentInstances" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> is called when [!INCLUDE[indigo2](~/includes/indigo2-md.md)] is about to close and recycle an idle <xref:System.ServiceModel.InstanceContext> object so that you can inform the runtime whether to continue doing so.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> は、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] がアイドル状態の <xref:System.ServiceModel.InstanceContext> オブジェクトを閉じてリサイクルしようとすると呼び出され、それにより、その処理を継続するかどうかをランタイムに通知できます。  
   
- For an example that demonstrates the sharing of instance contexts, see [InstanceContextSharing](http://msdn.microsoft.com/en-us/4a6a46d7-b7d7-4bb5-a0dd-03ffa3cbc230).  
+ インスタンス コンテキストの共有の例については、「[InstanceContextSharing](http://msdn.microsoft.com/ja-jp/4a6a46d7-b7d7-4bb5-a0dd-03ffa3cbc230)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -140,15 +154,20 @@
         <Parameter Name="instanceContext" Type="System.ServiceModel.InstanceContext" />
       </Parameters>
       <Docs>
-        <param name="callback">The <see cref="T:System.ServiceModel.Dispatcher.InstanceContextIdleCallback" /> object that notifies [!INCLUDE[indigo2](~/includes/indigo2-md.md)] when the <see cref="T:System.ServiceModel.InstanceContext" /> object is to be closed and recycled.</param>
-        <param name="instanceContext">The current <see cref="T:System.ServiceModel.InstanceContext" />.</param>
-        <summary>Called when the <see cref="M:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle(System.ServiceModel.InstanceContext)" /> method returns <see langword="false" /> to enable implementers to provide a callback to notify [!INCLUDE[indigo2](~/includes/indigo2-md.md)] when the <see cref="T:System.ServiceModel.InstanceContext" /> object is finished.</summary>
+        <param name="callback">
+          <see cref="T:System.ServiceModel.Dispatcher.InstanceContextIdleCallback" /> オブジェクトを閉じてリサイクルする時期を WCF に通知する <see cref="T:System.ServiceModel.InstanceContext" /> オブジェクト。</param>
+        <param name="instanceContext">現在の <see cref="T:System.ServiceModel.InstanceContext" /> です。</param>
+        <summary>
+          <see cref="M:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle(System.ServiceModel.InstanceContext)" /> メソッドが <see langword="false" /> を返すと呼び出されます。これにより、実装者は WCF オブジェクトの終了を <see cref="T:System.ServiceModel.InstanceContext" /> に通知するコールバックを提供できます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.NotifyIdle%2A> method is called when the <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> method returns `false` to enable you to provide [!INCLUDE[indigo2](~/includes/indigo2-md.md)] with a <xref:System.ServiceModel.Dispatcher.InstanceContextIdleCallback?displayProperty=fullName> object that you use to inform the runtime that the <xref:System.ServiceModel.InstanceContext> has finished its work. When the <xref:System.ServiceModel.Dispatcher.InstanceContextIdleCallback?displayProperty=fullName> object notifies the runtime that the <xref:System.ServiceModel.InstanceContext> has finished its work, [!INCLUDE[indigo2](~/includes/indigo2-md.md)] calls <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> once again. This cycle continues until <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> returns `true` and the context is closed and recycled.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.NotifyIdle%2A> メソッドは <xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> メソッドが `false` を返すと呼び出されます。これにより、実装者が、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] が処理を終了したことをランタイムに通知するために使用する <xref:System.ServiceModel.Dispatcher.InstanceContextIdleCallback?displayProperty=fullName> オブジェクトを <xref:System.ServiceModel.InstanceContext> に提供できます。<xref:System.ServiceModel.Dispatcher.InstanceContextIdleCallback?displayProperty=fullName> が作業を完了したことを、<xref:System.ServiceModel.InstanceContext> オブジェクトがランタイムに通知すると、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] は再度、<xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> を呼び出します。 このサイクルは、<xref:System.ServiceModel.Dispatcher.IInstanceContextProvider.IsIdle%2A> が `true` を返すまで継続されます。コンテキストはサイクルごとに閉じられ、再利用されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>

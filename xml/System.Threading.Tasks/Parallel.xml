@@ -21,24 +21,24 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides support for parallel loops and regions.</summary>
+    <summary>並列ループおよび並列領域のサポートを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Threading.Tasks.Parallel> class provides library-based data parallel replacements for common operations such as for loops, for each loops, and execution of a set of statements.  
+## 解説  
+ <xref:System.Threading.Tasks.Parallel> クラスには、各ループ、および一連のステートメントの実行に関する一般的な操作、ループなどのライブラリに基づくデータ並列の置換が用意されています。  
   
    
   
-## Examples  
- This example demonstrates several approaches to implementing a parallel loop using multiple language constructs.  
+## 例  
+ この例では、複数の言語構成要素を使用して並列ループを実装するためのいくつかの方法を示します。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#07](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelintro.cs#07)]
- [!code-vb[System.Threading.Tasks.Parallel#07](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelintro.vb#07)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#07](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelintro.cs#07)]
+ [!code-vb[System.Threading.Tasks.Parallel\#07](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelintro.vb#07)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>All public and protected members of <see cref="T:System.Threading.Tasks.Parallel" /> are thread-safe and may be used concurrently from multiple threads.</threadsafe>
+    <threadsafe>すべてのパブリック、プロテクト メンバー <see cref="T:System.Threading.Tasks.Parallel" /> スレッド セーフでは、複数のスレッドから同時に使用される場合があります。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName="For">
@@ -69,45 +69,48 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int32,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop in which iterations may run in parallel and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A  structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with two arguments:  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 2 つの引数と共に提供されます。  
   
--   An <xref:System.Int32> value that represents the iteration count.  
+-   <xref:System.Int32> 反復回数を表す値。  
   
--   A <xref:System.Threading.Tasks.ParallelLoopState> instance that can be used to break out of the loop prematurely. The <xref:System.Threading.Tasks.ParallelLoopState> object is created by the compiler; it cannot be instantiated in user code.  
+-   A <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中でループから抜け出すことができます。<xref:System.Threading.Tasks.ParallelLoopState> オブジェクトが、コンパイラによって作成されます。 ユーザー コードでインスタンス化することはできません。  
   
- Calling the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A> method informs the `for` operation that iterations after the current one don't have to execute. However, all iterations before the current one will still have to be executed if they haven't already.  
+ 呼び出す、 <xref:System.Threading.Tasks.ParallelLoopState.Break%2A> メソッド通知、 `for` 操作を現在の 1 つ後のイテレーションを実行する必要はありません。 ただし、現在より前に、のすべてのイテレーション 1 つがありますがまだ実行していない場合に実行されます。  
   
- Therefore, calling <xref:System.Threading.Tasks.ParallelLoopState.Break%2A> is similar to using a break operation within a conventional `for` loop in a language like C#, but it is not a perfect substitute: For example, there is no guarantee that iterations after the current one will definitely not execute.  
+ そのため、 <xref:System.Threading.Tasks.ParallelLoopState.Break%2A> 従来の中断操作を使用するような `for` の言語でのループと同様に、C\# の場合は、完璧な代替: などの保証はありません、イテレーション後、現在の 1 つは間違いなく実行されません。  
   
- If executing all iterations before the current one is not necessary, use the <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> method instead of using <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>. Calling <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> informs the `for` loop that it may abandon all remaining iterations, regardless of whether they're before or after the current iteration, because all required work will have already been completed. However, as with <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>, there are no guarantees regarding which other iterations will not execute.  
+ 現在のものが必要なされる前に、すべての反復処理を実行する場合は使用して、 <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> メソッドを使用せずに <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>します。 呼び出す <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> 通知、 `for` ループ作業は既に完了しているかどうか、現在のイテレーションの前後にあるためすべてに関係なく、残りのすべてのイテレーションを破棄できることが必要です。 ただしで <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>, 、に関する他の反復処理は実行されません保証はありません。  
   
- If a loop is ended prematurely, the <xref:System.Threading.Tasks.ParallelLoopResult> structure that is returned will contain relevant information about the loop's completion.  
+ ループが途中で終了した場合、 <xref:System.Threading.Tasks.ParallelLoopResult> 返される構造には、ループの完了に関連する情報にが含まれます。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` 以上の値には、 `toExclusive`, 、このメソッドは、イテレーションを実行することがなくすぐを返します。  
   
    
   
-## Examples  
- The following example executes up to 100 iterations of a loop in parallel. Each iteration pauses for a random interval from 1 to 1,000 milliseconds. A randomly generated value determines on which iteration of the loop the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> method is called. As the output from the example shows, no iterations whose index is greater than the <xref:System.Threading.Tasks.ParallelLoopState.LowestBreakIteration%2A?displayProperty=fullName> property value start after the call to the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> method.  
+## 例  
+ 次の例では、並列ループの最大 100 個のイテレーションを実行します。 各イテレーションは、1 から 1,000 ミリ秒単位までのランダムな間隔の一時停止します。 ランダムに生成された値がループのイテレーションの決定、 <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> メソッドが呼び出されます。 例に示す、インデックスがあるより大きいなしのイテレーションからの出力として、 <xref:System.Threading.Tasks.ParallelLoopState.LowestBreakIteration%2A?displayProperty=fullName> 呼び出しの後にプロパティ値の開始、 <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> メソッドです。  
   
- [!code-csharp[System.Threading.Tasks.ParallelLoopState#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallelloopstate/cs/break1.cs#2)]
- [!code-vb[System.Threading.Tasks.ParallelLoopState#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallelloopstate/vb/break1.vb#2)]  
+ [!code-csharp[System.Threading.Tasks.ParallelLoopState\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallelloopstate/cs/break1.cs#2)]
+ [!code-vb[System.Threading.Tasks.ParallelLoopState\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallelloopstate/vb/break1.vb#2)]  
   
- Because iterations of the loop are still likely to be executing when the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> method is called, each iteration calls the <xref:System.Threading.Tasks.ParallelLoopState.ShouldExitCurrentIteration%2A?displayProperty=fullName> property to check whether another iteration has called the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> method. If  the property value is `true`, the iteration checks the value of the <xref:System.Threading.Tasks.ParallelLoopState.LowestBreakIteration%2A?displayProperty=fullName> property and, if it is greater than the current iteration's index value, returns immediately.  
+ Because iterations of the loop are still likely to be executing when the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> method is called, each iteration calls the <xref:System.Threading.Tasks.ParallelLoopState.ShouldExitCurrentIteration%2A?displayProperty=fullName> property to check whether another iteration has called the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A?displayProperty=fullName> method. If  the property value is **languageKeyword tag is not supported!!!!**  
+, the iteration checks the value of the <xref:System.Threading.Tasks.ParallelLoopState.LowestBreakIteration%2A?displayProperty=fullName> property and, if it is greater than the current iteration's index value, returns immediately.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <altmember cref="T:System.Threading.Tasks.ParallelLoopState" />
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -138,31 +141,32 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int32&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop in which iterations may run in parallel.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性のある <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the iteration count (<xref:System.Int32>) as a parameter.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 イテレーションのカウントと共に提供されます \(<xref:System.Int32>\) をパラメーターとして。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` 以上の値には、 `toExclusive`, 、このメソッドは、イテレーションを実行することがなくすぐを返します。  
   
    
   
-## Examples  
- The following example uses the <xref:System.Threading.Tasks.Parallel.For%2A> method for 100 invocations of a delegate that generates random byte values and computes their sum.  
+## 例  
+ 次の例では、 <xref:System.Threading.Tasks.Parallel.For%2A> のランダム バイトを生成するデリゲートの呼び出しで 100 メソッド値であり、合計を計算します。  
   
- [!code-csharp[System.Threading.Tasks.Parallel.For#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel.for/cs/for1.cs#1)]
- [!code-vb[System.Threading.Tasks.Parallel.For#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel.for/vb/for1.vb#1)]  
+ [!code-csharp[System.Threading.Tasks.Parallel.For\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel.for/cs/for1.cs#1)]
+ [!code-vb[System.Threading.Tasks.Parallel.For\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel.for/vb/for1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -193,31 +197,35 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int64,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop with 64-bit indexes in which iterations may run in parallel and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A <see cref="T:System.Threading.Tasks.ParallelLoopResult" /> structure that contains information on what portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、64 ビットのインデックスを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している <see cref="T:System.Threading.Tasks.ParallelLoopResult" /> 構造体。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int64>), and a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int64>\)、および <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中でループから抜け出すことがあります。  
   
- Calling the <xref:System.Threading.Tasks.ParallelLoopState.Break%2A> method informs the `for` operation that iterations after the current one don’t have to be executed, but all iterations before the current one do.  
+ 呼び出す、 <xref:System.Threading.Tasks.ParallelLoopState.Break%2A> メソッド通知、 `for` 操作を現在の 1 つ後のイテレーションを実行する必要はありませんが、現在の前にすべてのイテレーションの操作を行います。  
   
- Therefore, calling Break is similar to using a break operation within a conventional `for` loop in a language like C#, but it is not a perfect substitute: For example, there is no guarantee that iterations after the current one will definitely not execute.  
+ そのため、中断の呼び出しに似ていますが、従来の中断操作を使用 `for` の言語でのループと同様に、C\# の場合は、完璧な代替: たとえば、保証はありません、イテレーション後、現在の 1 つは間違いなく実行されません。  
   
- If executing all iterations before the current one is not necessary, use the <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> method instead of using <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>. Calling <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> informs the `for` loop that it may abandon all remaining iterations, regardless of whether they're before or after the current iteration, because all required work will have already been completed. However, as with <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>, there are no guarantees regarding which other iterations will not execute.  
+ 現在のものが必要なされる前に、すべての反復処理を実行する場合は使用して、 <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> メソッドを使用せずに <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>します。 呼び出す <xref:System.Threading.Tasks.ParallelLoopState.Stop%2A> 通知、 `for` ループ作業は既に完了しているかどうか、現在のイテレーションの前後にあるためすべてに関係なく、残りのすべてのイテレーションを破棄できることが必要です。 ただしで <xref:System.Threading.Tasks.ParallelLoopState.Break%2A>, 、に関する他の反復処理は実行されません保証はありません。  
   
- If a loop is ended prematurely, the <xref:System.Threading.Tasks.ParallelLoopResult> structure that is returned will contain relevant information about the loop's completion.  
+ ループが途中で終了した場合、 <xref:System.Threading.Tasks.ParallelLoopResult> 返される構造には、ループの完了に関連する情報にが含まれます。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -248,23 +256,27 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop with 64-bit indexes in which iterations may run in parallel.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性のある、64 ビットのインデックスを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the iteration count (<xref:System.Int64>) as a parameter.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 イテレーションのカウントと共に提供されます \(<xref:System.Int64>\) をパラメーターとして。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` 以上の値には、 `toExclusive`, 、このメソッドは、イテレーションを実行することがなくすぐを返します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -296,30 +308,36 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int32,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int32>), and a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int32>\)、および <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中でループから抜け出すことがあります。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` 以上の値には、 `toExclusive`, 、このメソッドは、イテレーションを実行することがなくすぐを返します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -351,38 +369,41 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int32&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop in which iterations may run in parallel and loop options can be configured.</summary>
-        <returns>A  structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループ オプションを構成できる <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the iteration count (<xref:System.Int32>) as a parameter.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 イテレーションのカウントと共に提供されます \(<xref:System.Int32>\) をパラメーターとして。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
    
   
-## Examples  
- The following example shows how to cancel a parallel loop:  
+## 例  
+ 次の例では、並列ループを取り消す方法を示します。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#05](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelforcancel.cs#05)]
- [!code-vb[System.Threading.Tasks.Parallel#05](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelforcancel.vb#05)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#05](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelforcancel.cs#05)]
+ [!code-vb[System.Threading.Tasks.Parallel\#05](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelforcancel.vb#05)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -414,38 +435,41 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int64,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic)  loop with 64-bit indexes in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、64 ビットのインデックスを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int64>), and a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int64>\)、および <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中でループから抜け出すことがあります。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` 以上の値には、 `toExclusive`, 、このメソッドは、イテレーションを実行することがなくすぐを返します。  
   
    
   
-## Examples  
- The following example shows how to use the <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> method with a <xref:System.Threading.Tasks.ParallelOptions> object:  
+## 例  
+ 次の例では、使用する方法、 <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> メソッドを <xref:System.Threading.Tasks.ParallelOptions> オブジェクト。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#03](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelfor.cs#03)]
- [!code-vb[System.Threading.Tasks.Parallel#03](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelfor.vb#03)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#03](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelfor.cs#03)]
+ [!code-vb[System.Threading.Tasks.Parallel\#03](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelfor.vb#03)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For">
@@ -477,38 +501,41 @@
         <Parameter Name="body" Type="System.Action&lt;System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop with 64-bit indexes in which iterations may run in parallel and loop options can be configured.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループ オプションを構成できる、64 ビットのインデックスを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Supports 64-bit indexes. The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the iteration count (<xref:System.Int64>) as a parameter.  
+## 解説  
+ 64 ビットのインデックスをサポートしています。`body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 イテレーションのカウントと共に提供されます \(<xref:System.Int64>\) をパラメーターとして。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
    
   
-## Examples  
- The following example shows how to use <xref:System.Threading.Tasks.ParallelOptions> to specify a custom task scheduler:  
+## 例  
+ 次の例は、使用する方法を示しています。 <xref:System.Threading.Tasks.ParallelOptions> をカスタムのタスク スケジューラを指定します。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#06](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelforwithscheduler.cs#06)]
- [!code-vb[System.Threading.Tasks.Parallel#06](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelforwithscheduler.vb#06)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#06](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelforwithscheduler.cs#06)]
+ [!code-vb[System.Threading.Tasks.Parallel\#06](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelforwithscheduler.vb#06)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For&lt;TLocal&gt;">
@@ -544,40 +571,44 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop with thread-local data in which iterations may run in parallel, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A  structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int32>), a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and some local state that may be shared amongst iterations that execute on the same thread.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int32>\)、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で、使用できるインスタンスと同じスレッドで実行されるイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task's local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
- For an example that uses this method, see [How to: Write a Parallel.For Loop with Thread-Local Variables](~/docs/standard/parallel-programming/how-to-write-a-parallel-for-loop-with-thread-local-variables.md).  
+ このメソッドを使用して、例では、次を参照してください。 [方法: スレッド ローカル変数を使用する Parallel.For ループを記述](http://msdn.microsoft.com/ja-jp/68384064-7ee7-41e2-90e3-71f00bde01bb)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For&lt;TLocal&gt;">
@@ -613,40 +644,44 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic)  loop with 64-bit indexes and thread-local data in which iterations may run in parallel, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、64 ビットのインデックスとスレッド ローカル データを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int64>), a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and some local state that may be shared amongst iterations that execute on the same task.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int64>\)、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で、使用できるインスタンスと同じタスクを実行するイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task's local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
- For an example that uses this method, see [How to: Write a Parallel.For Loop with Thread-Local Variables](~/docs/standard/parallel-programming/how-to-write-a-parallel-for-loop-with-thread-local-variables.md).  
+ このメソッドを使用して、例では、次を参照してください。 [方法: スレッド ローカル変数を使用する Parallel.For ループを記述](http://msdn.microsoft.com/ja-jp/68384064-7ee7-41e2-90e3-71f00bde01bb)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For&lt;TLocal&gt;">
@@ -683,53 +718,56 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic)  loop with thread-local data in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int32>), a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and some local state that may be shared amongst iterations that execute on the same task.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int32>\)、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で、使用できるインスタンスと同じタスクを実行するイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task's local state. This delegate might be invoked concurrently on multiple threads; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のスレッドで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
    
   
-## Examples  
- The following example uses thread-local variables to compute the sum of the results of many lengthy operations. This example limits the degree of parallelism to four.  
+## 例  
+ 次の例では、スレッド ローカル変数を使用して、多くの時間のかかる操作の結果の合計を計算します。 この例では、4 の並列処理の次数が制限されます。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#04](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/threadlocalforwithoptions.cs#04)]
- [!code-vb[System.Threading.Tasks.Parallel#04](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/threadlocalforwithoptions.vb#04)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#04](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/threadlocalforwithoptions.cs#04)]
+ [!code-vb[System.Threading.Tasks.Parallel\#04](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/threadlocalforwithoptions.vb#04)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.  
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="For&lt;TLocal&gt;">
@@ -766,45 +804,51 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="fromInclusive">The start index, inclusive.</param>
-        <param name="toExclusive">The end index, exclusive.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each thread.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each thread.</param>
-        <summary>Executes a <see langword="for" /> (<see langword="For" /> in Visual Basic) loop with 64-bit indexes and thread-local data in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="fromInclusive">開始インデックス。ここで指定したインデックスから処理が開始されます。</param>
+        <param name="toExclusive">終了インデックス。ここで指定したインデックスの前のインデックスまで処理が行われます。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="localInit">各スレッドのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各スレッドのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、64 ビットのインデックスとスレッド ローカル データを持つ <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each value in the iteration range (`fromInclusive`, `toExclusive`). It is provided with the following parameters: the iteration count (<xref:System.Int64>), a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and some local state that may be shared amongst iterations that execute on the same thread.  
+## 解説  
+ `body` デリゲートがイテレーションの範囲の値ごとに一度だけ呼び出されます \(`fromInclusive`, 、`toExclusive`\)。 次のパラメーターと共に提供されます。 反復回数 \(<xref:System.Int64>\)、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で、使用できるインスタンスと同じスレッドで実行されるイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each thread that participates in the loop's execution and returns the initial local state for each of those threads. These initial states are passed to the first `body` invocations on each thread. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each thread returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per thread to perform a final action on each thread's local state. This delegate might be invoked concurrently on multiple threads; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートがループの実行に関与し、これらの各スレッドの初期のローカル状態を取得するスレッドごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 上の各スレッドの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各スレッドで本文の最後の呼び出しに渡される状態の値を返します、 `localFinally` を委任します。`localFinally` デリゲートは、各スレッドのローカル状態に対して最後の操作を実行するスレッドごとに 1 回呼び出されます。 このデリゲートは複数のスレッドで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.For%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
- If `fromInclusive` is greater than or equal to `toExclusive`, then the method returns immediately without performing any iterations.  
+ 場合 `fromInclusive` に以上 `toExclusive`, 、メソッドは、すべてのイテレーションを実行することがなく直ちにから返されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="body" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.  
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -837,33 +881,40 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <param name="source">The orderable partitioner that contains the original data source.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on a <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> in which iterations may run in parallel and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <param name="source">元のデータ ソースを格納している順序付け可能なパーティショナー。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /> orderable partitioner returns <see langword="false" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> プロパティに、 <paramref name="source" /> 並べ替え可能なパーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- The <see cref="P:System.Collections.Concurrent.OrderablePartitioner`1.KeysNormalized" /> property in the source orderable partitioner returns <see langword="false" />.  
+ <see cref="P:System.Collections.Concurrent.OrderablePartitioner`1.KeysNormalized" /> ソースの順序付け可能なパーティショナーでプロパティを返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- Any methods in the source orderable partitioner return <see langword="null" />.</exception>
+ ソースの順序付け可能なパーティショナー内の任意のメソッドが返す <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -896,33 +947,40 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <param name="source">The partitioner that contains the original data source.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on a <see cref="T:System.Collections.Concurrent.Partitioner" /> in which iterations may run in parallel, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <param name="source">元のデータ ソースを格納しているパーティショナー。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.Partitioner" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /> partitioner returns <see langword="false" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> プロパティに、 <paramref name="source" /> パーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- A method in the <paramref name="source" /> partitioner returns <see langword="null" />.  
+ メソッドに、 <paramref name="source" /> パーティショナー返します <see langword="null" />します。  
   
- -or-  
+ または  
   
- The <see cref="M:System.Collections.Concurrent.Partitioner`1.GetPartitions(System.Int32)" /> method in the <paramref name="source" /> partitioner does not return the correct number of partitions.</exception>
+ <see cref="M:System.Collections.Concurrent.Partitioner`1.GetPartitions(System.Int32)" /> メソッドで、 <paramref name="source" /> パーティショナーで正しいパーティション数が返されません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -955,41 +1013,45 @@
         <Parameter Name="body" Type="System.Action&lt;TSource&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <param name="source">The partitioner that contains the original data source.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on a <see cref="T:System.Collections.Concurrent.Partitioner" /> in which iterations may run in parallel.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <param name="source">元のデータ ソースを格納しているパーティショナー。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.Partitioner" /> に対して、イテレーションが並列で実行される可能性のある <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
    
   
-## Examples  
- The following example shows how to implement a range partitioner for use with <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName>:  
+## 例  
+ 次の例で使用する範囲パーティショナーを実装する方法を示します <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName>:  
   
- [!code-csharp[System.Threading.Tasks.Parallel_RangePartitioners#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel_rangepartitioners/cs/rangepartitioner.cs#01)]
- [!code-vb[System.Threading.Tasks.Parallel_RangePartitioners#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel_rangepartitioners/vb/rangepart.vb#01)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\_RangePartitioners\#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel_rangepartitioners/cs/rangepartitioner.cs#01)]
+ [!code-vb[System.Threading.Tasks.Parallel\_RangePartitioners\#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel_rangepartitioners/vb/rangepart.vb#01)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is  <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数は  <see langword="null" />です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /> partitioner returns <see langword="false" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> プロパティに、 <paramref name="source" /> パーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- The exception that is thrown when any methods in the <paramref name="source" /> partitioner return <see langword="null" />.  
+ ときにスローされる例外で、メソッド、 <paramref name="source" /> パーティショナー戻り <see langword="null" />します。  
   
- -or-  
+ または  
   
- The <see cref="M:System.Collections.Concurrent.Partitioner`1.GetPartitions(System.Int32)" /> method in the <paramref name="source" /> partitioner does not return the correct number of partitions.</exception>
+ <see cref="M:System.Collections.Concurrent.Partitioner`1.GetPartitions(System.Int32)" /> メソッドで、 <paramref name="source" /> パーティショナーで正しいパーティション数が返されません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1022,25 +1084,30 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with 64-bit indexes on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、64 ビットのインデックスを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and the current element's index (<xref:System.Int64>).  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます。 現在の要素、 <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中で、ループから抜け出すことがありますし、現在の要素のインデックス \(<xref:System.Int64>\)。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1073,25 +1140,30 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, and a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます。 現在の要素と <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中でループから抜け出すことがあります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1124,33 +1196,35 @@
         <Parameter Name="body" Type="System.Action&lt;TSource&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性のある <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the current element as a parameter.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 現在の要素と共にパラメーターとして提供されます。  
   
    
   
-## Examples  
- The following example uses the <xref:System.Threading.Tasks.Parallel.ForEach%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Action%7B%60%600%7D%29> method to count the number of vowels and non-whitespace characters in a text file. In this case, the <xref:System.Threading.Tasks.ParallelLoopResult> value returned by the method is ignored. Note that, because operations can run in parallel, you must ensure that incrementing the counter variables is an atomic operation, and that multiple threads do not attempt to access the counter variables simultaneously. For this purpose, the example uses the `lock` statement (in C#) and the `SyncLock` statement (in Visual Basic).  
+## 例  
+ 次の例では、 <xref:System.Threading.Tasks.Parallel.ForEach%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Action%7B%60%600%7D%29> 母音とテキスト ファイルに空白以外の文字の数をカウントするメソッドです。 ここで、 <xref:System.Threading.Tasks.ParallelLoopResult> メソッドによって返される値は無視されます。 ただし、操作は、並列で実行できる、ためする必要があります、分割不可能な操作は、カウンター変数をインクリメントして、複数のスレッドが同時にカウンター変数にアクセスするにしないでください。 例を使用して、そのため、 `lock` ステートメント \(c\#\) および `SyncLock` ステートメント \(Visual Basic の場合\)。  
   
- [!code-csharp[System.Threading.Tasks.Parallel.ForEach#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel.foreach/cs/foreach1.cs#1)]
- [!code-vb[System.Threading.Tasks.Parallel.ForEach#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel.foreach/vb/foreach1.vb#1)]  
+ [!code-csharp[System.Threading.Tasks.Parallel.ForEach\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel.foreach/cs/foreach1.cs#1)]
+ [!code-vb[System.Threading.Tasks.Parallel.ForEach\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel.foreach/vb/foreach1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1184,40 +1258,49 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <param name="source">The orderable partitioner that contains the original data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on a <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <param name="source">元のデータ ソースを格納している順序付け可能なパーティショナー。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName>method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName>メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is  <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数は  <see langword="null" />です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /> orderable partitioner returns <see langword="false" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> プロパティに、 <paramref name="source" /> 並べ替え可能なパーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- The <see cref="P:System.Collections.Concurrent.OrderablePartitioner`1.KeysNormalized" /> property in the <paramref name="source" /> orderable partitioner returns <see langword="false" />.  
+ <see cref="P:System.Collections.Concurrent.OrderablePartitioner`1.KeysNormalized" /> プロパティに、 <paramref name="source" /> 並べ替え可能なパーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- The exception that is thrown when any methods in the <paramref name="source" /> orderable partitioner return <see langword="null" />.</exception>
+ 場合にスローされる例外で、メソッド、 <paramref name="source" /> 戻り値の並べ替え可能なパーティショナー <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1251,36 +1334,45 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <param name="source">The partitioner that contains the original data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on a <see cref="T:System.Collections.Concurrent.Partitioner" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A  structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <param name="source">元のデータ ソースを格納しているパーティショナー。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.Partitioner" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /> partitioner returns <see langword="false" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> プロパティに、 <paramref name="source" /> パーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- The exception that is thrown when any methods in the <paramref name="source" /> partitioner return <see langword="null" />.</exception>
+ ときにスローされる例外で、メソッド、 <paramref name="source" /> パーティショナー戻り <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1314,36 +1406,45 @@
         <Parameter Name="body" Type="System.Action&lt;TSource&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <param name="source">The partitioner that contains the original data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on a <see cref="T:System.Collections.Concurrent.Partitioner" /> in which iterations may run in parallel and loop options can be configured.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <param name="source">元のデータ ソースを格納しているパーティショナー。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.Partitioner" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /> partitioner returns <see langword="false" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> プロパティに、 <paramref name="source" /> パーティショナー返します <see langword="false" />します。  
   
- -or-  
+ または  
   
- The exception that is thrown when any methods in the <paramref name="source" /> partitioner return <see langword="null" />.</exception>
+ ときにスローされる例外で、メソッド、 <paramref name="source" /> パーティショナー戻り <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1377,32 +1478,39 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with 64-bit indexes on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、64 ビットのインデックスを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and the current element's index (<xref:System.Int64>).  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます。 現在の要素、 <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中で、ループから抜け出すことがありますし、現在の要素のインデックス \(<xref:System.Int64>\)。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1436,32 +1544,39 @@
         <Parameter Name="body" Type="System.Action&lt;TSource,System.Threading.Tasks.ParallelLoopState&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, and a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます。 現在の要素と <xref:System.Threading.Tasks.ParallelLoopState> インスタンスを使用して処理の途中でループから抜け出すことがあります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource&gt;">
@@ -1495,32 +1610,39 @@
         <Parameter Name="body" Type="System.Action&lt;TSource&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel and loop options can be configured.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成できる <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the current element as a parameter.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 現在の要素と共にパラメーターとして提供されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="body" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1556,41 +1678,48 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">The orderable partitioner that contains the original data source.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with thread-local data on a <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">元のデータ ソースを格納している順序付け可能なパーティショナー。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task's local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> returns <see langword="false" /> or the partitioner returns <see langword="null" /> partitions.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> 内のプロパティ、 <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> 返します <see langword="false" /> またはパーティショナーを返す <see langword="null" /> パーティションです。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1626,41 +1755,48 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">The partitioner that contains the original data source.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with thread-local data on a <see cref="T:System.Collections.Concurrent.Partitioner" /> in which iterations may run in parallel and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">元のデータ ソースを格納しているパーティショナー。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.Partitioner" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
- The `localInit` delegate is invoked once for each thread that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task's local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートがループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するスレッドごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> returns <see langword="false" /> or the partitioner returns <see langword="null" /> partitions.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> 内のプロパティ、 <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> 返します <see langword="false" /> またはパーティショナーを返す <see langword="null" /> パーティションです。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1696,40 +1832,45 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with thread-local data on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, the current element's index (<xref:System.Int64>), and some local state that may be shared amongst iterations that execute on the same thread.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます: 現在の要素、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で使用できるインスタンスの現在の要素のインデックス \(<xref:System.Int64>\) と同じスレッドで実行されるイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task’s local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1765,48 +1906,50 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with thread-local data on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and some local state that may be shared amongst iterations that execute on the same thread.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます。 現在の要素、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で、使用できるインスタンスと同じスレッドで実行されるイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per thread to perform a final action on each task’s local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するスレッドごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
    
   
-## Examples  
- The following example shows how to use a <xref:System.Threading.Tasks.Parallel.ForEach%2A> method with local state:  
+## 例  
+ 次の例では、使用する方法、 <xref:System.Threading.Tasks.Parallel.ForEach%2A> ローカル状態を持つメソッド。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#02](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelforeach.cs#02)]
- [!code-vb[System.Threading.Tasks.Parallel#02](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelforeach.vb#02)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#02](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelforeach.cs#02)]
+ [!code-vb[System.Threading.Tasks.Parallel\#02](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelforeach.vb#02)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1843,44 +1986,53 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">The orderable partitioner that contains the original data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with 64-bit indexes and  with thread-local data on a <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> in which iterations may run in parallel , loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">元のデータ ソースを格納している順序付け可能なパーティショナー。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、64 ビットのインデックスとスレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A> method expects custom partitioners to support dynamic partitioning. For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each thread returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task’s local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各スレッドで本文の最後の呼び出しに渡される状態の値を返します、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> or <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> returns <see langword="false" /> or the partitioner returns <see langword="null" /> partitions.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="localInit" /> または <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> 内のプロパティ、 <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> 返します <see langword="false" /> またはパーティショナーを返す <see langword="null" /> パーティションです。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1917,48 +2069,57 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the elements in <c>source</c>.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">The partitioner that contains the original data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation  with thread-local data on a <see cref="T:System.Collections.Concurrent.Partitioner" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">
+          <c>source</c> の要素の型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">元のデータ ソースを格納しているパーティショナー。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.Concurrent.Partitioner" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload is provided for scenarios where you want to override the default partitioning scheme. For example, small loop bodies might benefit from partitioning the range. The <xref:System.Threading.Tasks.Parallel.ForEach%2A> method expects custom partitioners to support dynamic partitioning. This overload is provided for scenarios with small loop bodies that might benefit from static range partitioning. Partitioners must support dynamic partitions.  For more information, see [Custom Partitioners for PLINQ and TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md) and [How to: Implement Dynamic Partitions](~/docs/standard/parallel-programming/how-to-implement-dynamic-partitions.md).  
+## 解説  
+ このオーバー ロードは、パーティション スキームの既定値を上書きし場合に提供されます。 たとえば、小さいループ本体は、範囲パーティション分割によるメリットがあります。<xref:System.Threading.Tasks.Parallel.ForEach%2A> メソッドが動的なパーティション分割をサポートするカスタム パーティショナーを想定します。 静的範囲パーティション分割の余地がある小さいループ本体を持つシナリオでは、このオーバー ロードは提供されます。 パーティショナーは、動的なパーティションをサポートする必要があります。  詳細については、次を参照してください。 [用 PLINQ および TPL のカスタム パーティショナー](http://msdn.microsoft.com/ja-jp/96153688-9a01-47c4-8430-909cee9a2887) と [方法: 動的パーティションを実装する](http://msdn.microsoft.com/ja-jp/c875ad12-a161-43e6-ad1c-3d6927c536a7)します。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per task to perform a final action on each task's local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するタスクごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> property in the <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> returns <see langword="false" /> or the partitioner returns <see langword="null" /> partitions.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Collections.Concurrent.Partitioner`1.SupportsDynamicPartitions" /> 内のプロパティ、 <paramref name="source" /><see cref="T:System.Collections.Concurrent.Partitioner" /> 返します <see langword="false" /> またはパーティショナーを返す <see langword="null" /> パーティションです。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -1995,47 +2156,54 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with thread-local data and 64-bit indexes on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated.</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、スレッド ローカル データと 64 ビットのインデックスを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, the current element's index (<xref:System.Int64>), and some local state that may be shared amongst iterations that execute on the same thread.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます: 現在の要素、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で使用できるインスタンスの現在の要素のインデックス \(<xref:System.Int64>\) と同じスレッドで実行されるイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per thread to perform a final action on each task’s local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するスレッドごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="ForEach&lt;TSource,TLocal&gt;">
@@ -2072,47 +2240,54 @@
         <Parameter Name="localFinally" Type="System.Action&lt;TLocal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">The type of the data in the source.</typeparam>
-        <typeparam name="TLocal">The type of the thread-local data.</typeparam>
-        <param name="source">An enumerable data source.</param>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="localInit">The function delegate that returns the initial state of the local data for each task.</param>
-        <param name="body">The delegate that is invoked once per iteration.</param>
-        <param name="localFinally">The delegate that performs a final action on the local state of each task.</param>
-        <summary>Executes a <see langword="foreach" /> (<see langword="For Each" /> in Visual Basic) operation with thread-local data on an <see cref="T:System.Collections.IEnumerable" /> in which iterations may run in parallel, loop options can be configured, and the state of the loop can be monitored and manipulated..</summary>
-        <returns>A structure that contains information about which portion of the loop completed.</returns>
+        <typeparam name="TSource">ソース内のデータの型。</typeparam>
+        <typeparam name="TLocal">スレッド ローカル データの型。</typeparam>
+        <param name="source">列挙可能なデータ ソース。</param>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="localInit">各タスクのローカル データの初期状態を返す関数デリゲート。</param>
+        <param name="body">1 回のイテレーションにつき 1 回呼び出されるデリゲート。</param>
+        <param name="localFinally">各タスクのローカル状態に対して最後の操作を行うデリゲート。</param>
+        <summary>
+          <see cref="T:System.Collections.IEnumerable" /> に対して、イテレーションが並列で実行される可能性があり、ループ オプションを構成でき、ループの状態を監視および操作できる、スレッド ローカル データを持つ <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each" />\) 操作を実行します。</summary>
+        <returns>完了したループの部分に関する情報を格納している構造。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `body` delegate is invoked once for each element in the `source` enumerable. It is provided with the following parameters: the current element, a <xref:System.Threading.Tasks.ParallelLoopState> instance that may be used to break out of the loop prematurely, and some local state that may be shared amongst iterations that execute on the same thread.  
+## 解説  
+ `body` デリゲートは、の各要素に対して 1 回呼び出される、 `source` 列挙可能なです。 次のパラメーターと共に提供されます。 現在の要素、 <xref:System.Threading.Tasks.ParallelLoopState> ループを抜けるため、処理の途中で、使用できるインスタンスと同じスレッドで実行されるイテレーションの間で共有できるいくつかのローカル状態です。  
   
- The `localInit` delegate is invoked once for each task that participates in the loop's execution and returns the initial local state for each of those tasks. These initial states are passed to the first `body` invocations on each task. Then, every subsequent body invocation returns a possibly modified state value that is passed to the next body invocation. Finally, the last body invocation on each task returns a state value that is passed to the `localFinally` delegate. The `localFinally` delegate is invoked once per thread to perform a final action on each task’s local state. This delegate might be invoked concurrently on multiple tasks; therefore, you must synchronize access to any shared variables.  
+ `localInit` デリゲートは、ループの実行に関与し、これらのタスクそれぞれの初期のローカル状態を取得するタスクごとに一度だけ呼び出されます。 これらの初期状態は、最初に渡される `body` 各タスクの呼び出しです。 次に、以降の本文のすべての呼び出しは、次の本文の呼び出しに渡される可能性がある変更済みの状態値を返します。 最後に、各タスクの本体の最後の呼び出しに渡される状態の値を返す、 `localFinally` を委任します。`localFinally` デリゲートは、各タスクのローカル状態に対して最後の操作を実行するスレッドごとに 1 回呼び出されます。 このデリゲートは複数のタスクで同時に呼び出すことがあります。そのため、共有変数へのアクセスを同期する必要があります。  
   
- The <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> method may use more tasks than threads over the lifetime of its execution, as existing tasks complete and are replaced by new tasks. This gives the underlying <xref:System.Threading.Tasks.TaskScheduler> object the chance to add, change, or remove threads that service the loop.  
+ <xref:System.Threading.Tasks.Parallel.ForEach%2A?displayProperty=fullName> メソッドは、既存のタスクを完了すると、その実行のライフタイム全体にわたってスレッドよりもより多くのタスクを使用することがあり、新しいタスクは置き換えられます。 これにより、基になる <xref:System.Threading.Tasks.TaskScheduler> を追加するオブジェクト、変更、またはループのサービスを提供するスレッドを削除します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="source" /> argument is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="source" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.  
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="body" /> argument is <see langword="null" />.  
+ <paramref name="body" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localInit" /> argument is <see langword="null" />.  
+ <paramref name="localInit" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="localFinally" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> argument is canceled.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
-        <exception cref="T:System.AggregateException">The exception that contains all the individual exceptions thrown on all threads.</exception>
+ <paramref name="localFinally" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 引数が取り消されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
+        <exception cref="T:System.AggregateException">この例外は、すべてのスレッド上でスローされたすべての個別の例外が含まれています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Invoke">
@@ -2147,31 +2322,33 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="actions">An array of <see cref="T:System.Action" /> to execute.</param>
-        <summary>Executes each of the provided actions, possibly in parallel.</summary>
+        <param name="actions">実行対象の <see cref="T:System.Action" /> の配列。</param>
+        <summary>指定された一連のアクションの各アクションを実行します \(場合によっては並列で\)。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method can be used to execute a set of operations, potentially in parallel.  
+## 解説  
+ このメソッドは、並列可能性のある一連の操作を実行するために使用します。  
   
- No guarantees are made about the order in which the operations execute or whether they execute in parallel. This method does not return until each of the provided operations has completed, regardless of whether completion occurs due to normal or exceptional termination.  
+ または並列で実行するかどうか、操作を実行する順序に関する保証は行われません。 指定された操作が完了するまで、normal、例外的な終了のため完了が発生したかどうかに関係なく、このメソッドは返されません。  
   
- For more information, see [How to: Use Parallel.Invoke to Execute Parallel Operations](~/docs/standard/parallel-programming/how-to-use-parallel-invoke-to-execute-parallel-operations.md).  
+ 詳細については、次を参照してください。 [方法: Parallel.Invoke を使用して並列操作を実行する](http://msdn.microsoft.com/ja-jp/6b3ecd79-dec9-4ce1-abf4-62e5392a59c6)します。  
   
    
   
-## Examples  
- This example demonstrates how to use the <xref:System.Threading.Tasks.Parallel.Invoke%2A>method with other methods, anonymous delegates, and lambda expressions.  
+## 例  
+ この例では、使用して、 <xref:System.Threading.Tasks.Parallel.Invoke%2A>他のメソッド、匿名のデリゲートとラムダ式を持つメソッドです。  
   
- [!code-csharp[System.Threading.Tasks.Parallel#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelinvoke.cs#01)]
- [!code-vb[System.Threading.Tasks.Parallel#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelinvoke.vb#01)]  
+ [!code-csharp[System.Threading.Tasks.Parallel\#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.tasks.parallel/cs/parallelinvoke.cs#01)]
+ [!code-vb[System.Threading.Tasks.Parallel\#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.tasks.parallel/vb/parallelinvoke.vb#01)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="actions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that is thrown when any action in the <paramref name="actions" /> array throws an exception.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="actions" /> array contains a <see langword="null" /> element.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="actions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">場合にスローされる例外のどのアクション、 <paramref name="actions" /> 配列は例外をスローします。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="actions" /> 配列が含まれる、 <see langword="null" /> 要素。</exception>
       </Docs>
     </Member>
     <Member MemberName="Invoke">
@@ -2207,31 +2384,86 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="parallelOptions">An object that configures the behavior of this operation.</param>
-        <param name="actions">An array of actions to execute.</param>
-        <summary>Executes each of the provided actions, possibly in parallel, unless the operation is cancelled by the user.</summary>
+        <param name="parallelOptions">この操作の動作を構成するオブジェクト。</param>
+        <param name="actions">実行対象のアクションの配列。</param>
+        <summary>操作がユーザーによって取り消されていない限り、指定された各アクションを実行します。アクションは並列で実行される可能性があります。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method can be used to execute a set of operations, potentially in parallel. The cancellation token passed in with the <xref:System.Threading.Tasks.ParallelOptions> structure enables the caller to cancel the entire operation. For more information, see [Cancellation in Managed Threads](~/docs/standard/threading/cancellation-in-managed-threads.md).  
+## 解説  
+ このメソッドは、並列可能性のある一連の操作を実行するために使用します。 渡されるキャンセル トークン、 <xref:System.Threading.Tasks.ParallelOptions> 構造により、呼び出し元が、すべての操作をキャンセルします。 詳細については、次を参照してください。 [マネージ スレッドのキャンセル](http://msdn.microsoft.com/ja-jp/eea11fe5-d8b0-4314-bb5d-8a58166fb1c3)します。  
   
- No guarantees are made about the order in which the operations execute or whether they execute in parallel. This method does not return until each of the provided operations has completed, regardless of whether completion occurs due to normal or exceptional termination.  
+ または並列で実行するかどうか、操作を実行する順序に関する保証は行われません。 指定された操作が完了するまで、normal、例外的な終了のため完了が発生したかどうかに関係なく、このメソッドは返されません。  
   
- For more information, see [How to: Use Parallel.Invoke to Execute Parallel Operations](~/docs/standard/parallel-programming/how-to-use-parallel-invoke-to-execute-parallel-operations.md).  
+ 詳細については、次を参照してください。 [方法: Parallel.Invoke を使用して並列操作を実行する](http://msdn.microsoft.com/ja-jp/6b3ecd79-dec9-4ce1-abf4-62e5392a59c6)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> is set.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="actions" /> argument is <see langword="null" />.  
+        <exception cref="T:System.OperationCanceledException">
+          <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> が設定されます。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="actions" /> 引数が <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="parallelOptions" /> argument is <see langword="null" />.</exception>
-        <exception cref="T:System.AggregateException">The exception that is thrown when any action in the <paramref name="actions" /> array throws an exception.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="actions" /> array contains a <see langword="null" /> element.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.CancellationTokenSource" /> associated with the <see cref="T:System.Threading.CancellationToken" /> in the <paramref name="parallelOptions" /> has been disposed.</exception>
+ <paramref name="parallelOptions" /> 引数が <see langword="null" /> です。</exception>
+        <exception cref="T:System.AggregateException">場合にスローされる例外のどのアクション、 <paramref name="actions" /> 配列は例外をスローします。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="actions" /> 配列が含まれる、 <see langword="null" /> 要素。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.CancellationTokenSource" /> に関連付けられている、 <see cref="T:System.Threading.CancellationToken" /> で、 <paramref name="parallelOptions" /> 破棄されています。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName="ForEach&lt;TSource&gt;">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.Tasks.Parallel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>イテレーションが並列で実行される可能性のある <see langword="foreach" /> \(Visual Basic の場合は <see langword="For Each " />\) 操作を実行します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="For">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.Tasks.Parallel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>イテレーションが並列で実行される可能性のある <see langword="for" /> \(Visual Basic の場合は <see langword="For" />\) ループを実行します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Invoke">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.Tasks.Parallel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定された一連のアクションの各アクションを実行します \(場合によっては並列で\)。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

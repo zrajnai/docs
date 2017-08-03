@@ -33,51 +33,52 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>A platform-specific type that is used to represent a pointer or a handle.</summary>
+    <summary>ポインターまたはハンドルを表すときに使用されるプラットフォーム固有の型。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IntPtr> type is designed to be an integer whose size is platform-specific. That is, an instance of this type is expected to be 32-bits on 32-bit hardware and operating systems, and 64-bits on 64-bit hardware and operating systems.  
+## 解説  
+ <xref:System.IntPtr>にサイズがプラットフォーム固有の整数型が設計されています。 つまり、この型のインスタンスが 32 ビットのハードウェアやオペレーティング システムで 32 ビットと 64 ビット オペレーティング システムと 64 ビット ハードウェア上にあると想定されます。  
   
- The <xref:System.IntPtr> type can be used by languages that support pointers, and as a common means of referring to data between languages that do and do not support pointers.  
+ <xref:System.IntPtr>ポインターをサポートする言語でとをサポートしない言語間のデータを参照するための一般的な手段として、型を使用することができます。  
   
- <xref:System.IntPtr> objects can also be used to hold handles. For example, instances of <xref:System.IntPtr> are used extensively in the <xref:System.IO.FileStream?displayProperty=fullName> class to hold file handles.  
+ <xref:System.IntPtr>オブジェクトは、ハンドルを保持するためにも使用できます。 インスタンスなど、<xref:System.IntPtr>で広く使用されます、<xref:System.IO.FileStream?displayProperty=fullName>ファイル ハンドルを保持するクラス。  
   
- The <xref:System.IntPtr> type is CLS-compliant, while the <xref:System.UIntPtr> type is not. Only the <xref:System.IntPtr> type is used in the common language runtime. The <xref:System.UIntPtr> type is provided mostly to maintain architectural symmetry with the <xref:System.IntPtr> type.  
+ <xref:System.IntPtr>型は CLS 準拠では中に、<xref:System.UIntPtr>型がありません。 のみ、<xref:System.IntPtr>型が共通言語ランタイムで使用します。<xref:System.UIntPtr>とアーキテクチャの対称性を維持するためにほとんどの種類が提供される、<xref:System.IntPtr>型です。  
   
- This type implements the <xref:System.Runtime.Serialization.ISerializable> interface.  
+ この型は、<xref:System.Runtime.Serialization.ISerializable>インターフェイスです。  
   
    
   
-## Examples  
- The following example uses managed pointers to reverse the characters in an array. After it initializes a <xref:System.String> object and gets its length, it does the following:  
+## 例  
+ 次の例では、マネージ ポインターを使用して、配列内の文字を反転します。 これが初期化された後、<xref:System.String>オブジェクトし、その長さを取得は次のこと。  
   
-1.  Calls the <xref:System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi%2A?displayProperty=fullName> method to copy the Unicode string to unmanaged memory as an ANSI (one-byte) character. The method returns an <xref:System.IntPtr> object that points to the beginning of the unmanaged string. The Visual Basic example uses this pointer directly; in the C++ and C# examples, it is cast to a pointer to a byte.  
+1.  呼び出し、<xref:System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi%2A?displayProperty=fullName>に Unicode 文字列を ANSI \(1 バイト\) 文字としてアンマネージ メモリにコピーする方法です。 このメソッドを返します、<xref:System.IntPtr>アンマネージ文字列の先頭を指すオブジェクトです。 Visual Basic の例ではこのポインターを直接; で使用します。C\+\+ および c\# の例では、バイトへのポインターにキャストします。  
   
-2.  Calls the <xref:System.Runtime.InteropServices.Marshal.AllocHGlobal%2A?displayProperty=fullName> method to allocate the same number of bytes as the unmanaged string occupies. The method returns an <xref:System.IntPtr> object that points to the beginning of the unmanaged block of memory. The Visual Basic example uses this pointer directly; in the C++ and C# examples, it is cast to a pointer to a byte.  
+2.  呼び出し、<xref:System.Runtime.InteropServices.Marshal.AllocHGlobal%2A?displayProperty=fullName>アンマネージ文字列が占めるように同じバイト数を割り当てます。 このメソッドを返します、<xref:System.IntPtr>をアンマネージ メモリ ブロックの先頭を指すオブジェクトです。 Visual Basic の例ではこのポインターを直接; で使用します。C\+\+ および c\# の例では、バイトへのポインターにキャストします。  
   
-3.  The Visual Basic example defines a variable named `offset` that is equal to the length of the ANSI string. It is used to determine the offset into unmanaged memory to which the next charter in the ANSI string is copied. Because its starting value is the length of the string, the copy operation will copy a character from the start of the string to the end of the memory block.  
+3.  Visual Basic の例は、という名前の変数を定義`offset`ANSI 文字列の長さと同じです。 \[次へ\] チャーター ANSI 文字列内のコピー先となるアンマネージ メモリにオフセットを決定に使用されます。 その開始値は、文字列の長さであるため、コピー操作は、文字をメモリ ブロックの末尾に文字列の先頭からコピーします。  
   
-     The C# and C++ examples call the <xref:System.IntPtr.ToPointer%2A> method to get an unmanaged pointer to the starting address of the string and the unmanaged block of memory, and they add one less than the length of the string to the starting address of the ANSI string. Because the unmanaged string pointer now points to the end of the string, the copy operation will copy a character from the end of the string to the start of the memory block.  
+     C\# および C\+\+ の例の呼び出し、<xref:System.IntPtr.ToPointer%2A>文字列と、メモリのアンマネージ ブロックの開始アドレスへのアンマネージ ポインターを取得するメソッドを 1 つを追加して ANSI 文字列の開始アドレスへの文字列の長さよりも小さいです。 アンマネージ文字列ポインターは、文字列の末尾を指す、ため、コピー操作は、文字をメモリ ブロックの先頭に、文字列の末尾からコピーします。  
   
-4.  Uses a loop to copy each character from the string to the unmanaged block of memory.  
+4.  ループを使用して、各文字を文字列からアンマネージ メモリ ブロックにコピーします。  
   
-     The Visual Basic example calls the <xref:System.Runtime.InteropServices.Marshal.ReadByte%28System.IntPtr%2CSystem.Int32%29?displayProperty=fullName> method to read the byte (or one-byte character) at a specified offset from the managed pointer to the ANSI string. The offset is incremented with each iteration of the loop. It then calls the <xref:System.Runtime.InteropServices.Marshal.WriteByte%28System.IntPtr%2CSystem.Int32%2CSystem.Byte%29?displayProperty=fullName> method to write the byte to the memory address defined by the starting address of the unmanaged block of memory plus `offset`. It then decrements `offset`.  
+     Visual Basic の例では、 <xref:System.Runtime.InteropServices.Marshal.ReadByte%28System.IntPtr%2CSystem.Int32%29?displayProperty=fullName> ANSI 文字列に、マネージ ポインターから、指定したオフセットでバイト \(または 1 バイト文字\) を読み取ります。 オフセットは、ループの反復するたびにインクリメントされます。 呼び出して、<xref:System.Runtime.InteropServices.Marshal.WriteByte%28System.IntPtr%2CSystem.Int32%2CSystem.Byte%29?displayProperty=fullName>プラスのメモリのアンマネージ ブロックの開始アドレスによって定義されたメモリ アドレスへのバイトを書き込みます`offset`です。 これは、後デクリメント`offset`です。  
   
-     The C# and C++ examples perform the copy operation, then decrement the pointer to the address of the next location in the unmanaged ANSI string and increment the pointer to the next address in the unmanaged block.  
+     C\# および C\+\+ の例、コピー操作を実行アンマネージ ANSI 文字列の次の場所のアドレスへのポインターをデクリメントし、アンマネージ ブロック内の次のアドレスへのポインターをインクリメントします。  
   
-5.  All examples call the <xref:System.Runtime.InteropServices.Marshal.PtrToStringAnsi%2A?displayProperty=fullName> to convert the unmanaged memory block containing the copied ANSI string to a managed Unicode <xref:System.String> object.  
+5.  すべての例を呼び出す、<xref:System.Runtime.InteropServices.Marshal.PtrToStringAnsi%2A?displayProperty=fullName>マネージ Unicode にコピーされた ANSI 文字列を含む、アンマネージ メモリ ブロックを変換する<xref:System.String>オブジェクト。  
   
-6.  After displaying the original and reversed strings, all examples call the <xref:System.Runtime.InteropServices.Marshal.FreeHGlobal%2A> method to free the memory allocated for the unmanaged ANSI string and the unmanaged block of memory.  
+6.  すべての例の呼び出し元と取り消された文字列を表示するには、後に、<xref:System.Runtime.InteropServices.Marshal.FreeHGlobal%2A>アンマネージ ANSI 文字列とメモリのアンマネージ ブロックに割り当てられたメモリを解放します。  
   
- [!code-cpp[System.IntPtr#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.intptr/cpp/topointer.cpp#1)]
- [!code-csharp[System.IntPtr#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr/cs/topointer.cs#1)]
- [!code-vb[System.IntPtr#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr/vb/topointer.vb#1)]  
+ [!code-cpp[System.IntPtr\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.intptr/cpp/topointer.cpp#1)]
+ [!code-csharp[System.IntPtr\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr/cs/topointer.cs#1)]
+ [!code-vb[System.IntPtr\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr/vb/topointer.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>This type is thread safe.</threadsafe>
+    <threadsafe>この型はスレッド セーフです。</threadsafe>
+    <altmember cref="T:System.UIntPtr" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -111,8 +112,8 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">A pointer or handle contained in a 32-bit signed integer.</param>
-        <summary>Initializes a new instance of <see cref="T:System.IntPtr" /> using the specified 32-bit pointer or handle.</summary>
+        <param name="value">32 ビット符号付き整数に含まれているポインターまたはハンドル。</param>
+        <summary>指定した 32 ビットのポインターまたはハンドルを使用して、<see cref="T:System.IntPtr" /> の新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -147,17 +148,17 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="value">A pointer or handle contained in a 64-bit signed integer.</param>
-        <summary>Initializes a new instance of <see cref="T:System.IntPtr" /> using the specified 64-bit pointer.</summary>
+        <param name="value">64 ビット符号付き整数に含まれているポインターまたはハンドル。</param>
+        <summary>指定した 64 ビット ポインターを使用して、<see cref="T:System.IntPtr" /> の新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception is only thrown if the value of `value` requires more bits than the current platform supports.  
+## 解説  
+ 例外がスローされる場合だけの価値`value`現在のプラットフォームでより多くのビットが必要です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OverflowException">On a 32-bit platform, <paramref name="value" /> is too large or too small to represent as an <see cref="T:System.IntPtr" />.</exception>
+        <exception cref="T:System.OverflowException">32 ビット プラットフォームで<paramref name="value" />が大きすぎるか小さすぎてとして表現、<see cref="T:System.IntPtr" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -194,10 +195,11 @@
         <Parameter Name="value" Type="System.Void*" />
       </Parameters>
       <Docs>
-        <param name="value">A pointer to an unspecified type.</param>
-        <summary>Initializes a new instance of <see cref="T:System.IntPtr" /> using the specified pointer to an unspecified type.</summary>
+        <param name="value">指定されていない型を指すポインター。</param>
+        <summary>指定されていない型へのポインターを使用して、<see cref="T:System.IntPtr" /> の新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="T:System.Void" />
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -235,28 +237,30 @@
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="pointer">The pointer to add the offset to.</param>
-        <param name="offset">The offset to add.</param>
-        <summary>Adds an offset to the value of a pointer.</summary>
-        <returns>A new pointer that reflects the addition of <paramref name="offset" /> to <paramref name="pointer" />.</returns>
+        <param name="pointer">オフセットを加算するポインター。</param>
+        <param name="offset">加算するオフセット。</param>
+        <summary>ポインターの値にオフセットを加算します。</summary>
+        <returns>
+          <paramref name="offset" /> への <paramref name="pointer" /> の加算が反映された新しいポインター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IntPtr.Add%2A> method does not throw an exception if the result is too large to represent as a pointer on the specified platform. Instead, the addition operation is performed in an unchecked context.  
+## 解説  
+ <xref:System.IntPtr.Add%2A>メソッドは、指定したプラットフォーム上のポインターとして表現するには、結果が大きすぎる場合に例外をスローしません。 代わりに、加算演算は unchecked コンテキストで実行します。  
   
- Languages that do not support operator overloading or custom operators can use this method to add an offset to the value of a pointer.  
+ 演算子のオーバー ロードまたはカスタム演算子をサポートしない言語では、ポインターの値にオフセットを追加するのに、このメソッドを使用できます。  
   
    
   
-## Examples  
- The following example instantiates an <xref:System.IntPtr> object that points to the beginning of a ten-element array, and then calls the <xref:System.IntPtr.Add%2A> method to iterate the elements in the array.  
+## 例  
+ 次の例のインスタンスを作成、 <xref:System.IntPtr> 10 要素を配列の先頭を指し、しを呼び出しているオブジェクト、<xref:System.IntPtr.Add%2A>配列内の要素を反復処理するメソッド。  
   
- [!code-csharp[System.IntPtr.Add#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.add/cs/add1.cs#1)]
- [!code-vb[System.IntPtr.Add#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.add/vb/add1.vb#1)]  
+ [!code-csharp[System.IntPtr.Add\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.add/cs/add1.cs#1)]
+ [!code-vb[System.IntPtr.Add\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.add/vb/add1.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.IntPtr.op_Addition(System.IntPtr,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="Equals">
@@ -288,10 +292,10 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">An object to compare with this instance or <see langword="null" />.</param>
-        <summary>Returns a value indicating whether this instance is equal to a specified object.</summary>
+        <param name="obj">このインスタンスと比較するオブジェクト、または <see langword="null" />。</param>
+        <summary>このインスタンスが指定されたオブジェクトに等しいかどうかを示す値を返します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="obj" /> is an instance of <see cref="T:System.IntPtr" /> and equals the value of this instance; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> が <paramref name="obj" /> のインスタンスで、このインスタンスの値に等しい場合は <see cref="T:System.IntPtr" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -322,13 +326,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the hash code for this instance.</summary>
-        <returns>A 32-bit signed integer hash code.</returns>
+        <summary>このインスタンスのハッシュ コードを返します。</summary>
+        <returns>32 ビット符号付き整数ハッシュ コード。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="op_Addition">
-      <MemberSignature Language="C#" Value="public static IntPtr operator + (IntPtr pointer, int offset);" />
+      <MemberSignature Language="C#" Value="public static IntPtr op_Addition (IntPtr pointer, int offset);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname native int op_Addition(native int pointer, int32 offset) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Addition(System.IntPtr,System.Int32)" />
       <MemberType>Method</MemberType>
@@ -362,29 +366,34 @@
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="pointer">The pointer to add the offset to.</param>
-        <param name="offset">The offset to add.</param>
-        <summary>Adds an offset to the value of a pointer.</summary>
-        <returns>A new pointer that reflects the addition of <paramref name="offset" /> to <paramref name="pointer" />.</returns>
+        <param name="pointer">オフセットを加算するポインター。</param>
+        <param name="offset">加算するオフセット。</param>
+        <summary>ポインターの値にオフセットを加算します。</summary>
+        <returns>
+          <paramref name="offset" /> への <paramref name="pointer" /> の加算が反映された新しいポインター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IntPtr.op_Addition%2A> method defines the addition operation for <xref:System.IntPtr> objects. It enables code such as the following.  
+## 解説  
+ <xref:System.IntPtr.op_Addition%2A>メソッド定義の加算演算<xref:System.IntPtr>オブジェクト。 次のようなコードができるようにします。  
   
- [!code-csharp[System.IntPtr.op_Addition#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.op_addition/cs/addition1.cs#1)]
- [!code-vb[System.IntPtr.op_Addition#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.op_addition/vb/addition1.vb#1)]  
+ [!code-csharp[System.IntPtr.op\_Addition\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.op_addition/cs/addition1.cs#1)]
+ [!code-vb[System.IntPtr.op\_Addition\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.op_addition/vb/addition1.vb#1)]  
   
- Languages that do not support custom operators can call the <xref:System.IntPtr.Add%2A> method instead.  
+ カスタム演算子をサポートしない言語を呼び出すことができます、<xref:System.IntPtr.Add%2A>メソッド代わりにします。  
   
- The addition operation does not throw an exception if the result is too large to represent as a pointer on the specified platform. Instead, it is performed in an unchecked context.  
+ 加算演算では、指定したプラットフォーム上のポインターとして表現するには、結果が大きすぎる場合、例外はスローされません。 代わりに、unchecked コンテキストで実行されます。  
   
- The equivalent method for this operator is <xref:System.IntPtr.Add%28System.IntPtr%2CSystem.Int32%29?displayProperty=fullName>]]></format>
+ The equivalent method for this operator is <xref:System.IntPtr.Add%28System.IntPtr%2CSystem.Int32%29?displayProperty=fullName>  
+  
+## 例  
+ ]]></format>
         </remarks>
+        <altmember cref="M:System.IntPtr.Add(System.IntPtr,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="op_Equality">
-      <MemberSignature Language="C#" Value="public static bool operator == (IntPtr value1, IntPtr value2);" />
+      <MemberSignature Language="C#" Value="public static bool op_Equality (IntPtr value1, IntPtr value2);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Equality(native int value1, native int value2) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Equality(System.IntPtr,System.IntPtr)" />
       <MemberType>Method</MemberType>
@@ -418,18 +427,19 @@
         <Parameter Name="value2" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="value1">The first pointer or handle to compare.</param>
-        <param name="value2">The second pointer or handle to compare.</param>
-        <summary>Determines whether two specified instances of <see cref="T:System.IntPtr" /> are equal.</summary>
+        <param name="value1">比較する最初のポインターまたはハンドル。</param>
+        <param name="value2">比較する 2 番目のポインターまたはハンドル。</param>
+        <summary>
+          <see cref="T:System.IntPtr" /> の 2 つの指定したインスタンスが等しいかどうかを判断します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="value1" /> equals <paramref name="value2" />; otherwise, <see langword="false" />.</returns>
+          <paramref name="value1" /> が <paramref name="value2" /> に等しい場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[The equivalent method for this operator is <xref:System.IntPtr.Equals%28System.Object%29?displayProperty=fullName>]]></format>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static explicit operator IntPtr (int value);" />
+      <MemberSignature Language="C#" Value="public static IntPtr op_Explicit (int value);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname native int op_Explicit(int32 value) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Explicit(System.Int32)~System.IntPtr" />
       <MemberType>Method</MemberType>
@@ -462,14 +472,16 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="value">A 32-bit signed integer.</param>
-        <summary>Converts the value of a 32-bit signed integer to an <see cref="T:System.IntPtr" />.</summary>
-        <returns>A new instance of <see cref="T:System.IntPtr" /> initialized to <paramref name="value" />.</returns>
-        <remarks></remarks>
+        <param name="value">32 ビット符号付き整数。</param>
+        <summary>32 ビット符号付き整数の値を <see cref="T:System.IntPtr" /> に変換します。</summary>
+        <returns>
+          <see cref="T:System.IntPtr" /> に初期化される <paramref name="value" /> の新しいインスタンス。</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="Overload:System.IntPtr.#ctor" />
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static explicit operator IntPtr (long value);" />
+      <MemberSignature Language="C#" Value="public static IntPtr op_Explicit (long value);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname native int op_Explicit(int64 value) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Explicit(System.Int64)~System.IntPtr" />
       <MemberType>Method</MemberType>
@@ -502,15 +514,17 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="value">A 64-bit signed integer.</param>
-        <summary>Converts the value of a 64-bit signed integer to an <see cref="T:System.IntPtr" />.</summary>
-        <returns>A new instance of <see cref="T:System.IntPtr" /> initialized to <paramref name="value" />.</returns>
-        <exception cref="T:System.OverflowException">On a 32-bit platform, <paramref name="value" /> is too large to represent as an <see cref="T:System.IntPtr" />.</exception>
-        <remarks></remarks>
+        <param name="value">64 ビット符号付き整数。</param>
+        <summary>64 ビット符号付き整数の値を <see cref="T:System.IntPtr" /> に変換します。</summary>
+        <returns>
+          <see cref="T:System.IntPtr" /> に初期化される <paramref name="value" /> の新しいインスタンス。</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.OverflowException">32 ビット プラットフォームで <paramref name="value" /> として表すのに大きすぎる、 <see cref="T:System.IntPtr" />です。</exception>
+        <altmember cref="Overload:System.IntPtr.#ctor" />
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static explicit operator int (IntPtr value);" />
+      <MemberSignature Language="C#" Value="public static int op_Explicit (IntPtr value);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname int32 op_Explicit(native int value) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Explicit(System.IntPtr)~System.Int32" />
       <MemberType>Method</MemberType>
@@ -538,21 +552,24 @@
         <Parameter Name="value" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="value">The pointer or handle to convert.</param>
-        <summary>Converts the value of the specified <see cref="T:System.IntPtr" /> to a 32-bit signed integer.</summary>
-        <returns>The contents of <paramref name="value" />.</returns>
-        <exception cref="T:System.OverflowException">On a 64-bit platform, the value of <paramref name="value" /> is too large to represent as a 32-bit signed integer.</exception>
+        <param name="value">変換するポインターまたはハンドル。</param>
+        <summary>指定した <see cref="T:System.IntPtr" /> の値を 32 ビット符号付き整数に変換します。</summary>
+        <returns>
+          <paramref name="value" /> の内容。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception is only thrown if the value of `value` requires more bits than the current platform supports.
+## 解説  
+ 例外がスローされる場合だけの値 `value` 現在のプラットフォームでより多くのビットが必要です。  
+  
  ]]></format>
         </remarks>
+        <exception cref="T:System.OverflowException">値、64 ビット プラットフォームで <paramref name="value" /> が 32 ビット符号付き整数として表現するには大きすぎます。</exception>
+        <altmember cref="M:System.IntPtr.ToInt32" />
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static explicit operator long (IntPtr value);" />
+      <MemberSignature Language="C#" Value="public static long op_Explicit (IntPtr value);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname int64 op_Explicit(native int value) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Explicit(System.IntPtr)~System.Int64" />
       <MemberType>Method</MemberType>
@@ -580,14 +597,16 @@
         <Parameter Name="value" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="value">The pointer or handle to convert.</param>
-        <summary>Converts the value of the specified <see cref="T:System.IntPtr" /> to a 64-bit signed integer.</summary>
-        <returns>The contents of <paramref name="value" />.</returns>
-        <remarks></remarks>
+        <param name="value">変換するポインターまたはハンドル。</param>
+        <summary>指定した <see cref="T:System.IntPtr" /> の値を 64 ビット符号付き整数に変換します。</summary>
+        <returns>
+          <paramref name="value" /> の内容。</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.IntPtr.ToInt64" />
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static explicit operator void* (IntPtr value);" />
+      <MemberSignature Language="C#" Value="public static void* op_Explicit (IntPtr value);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname void* op_Explicit(native int value) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Explicit(System.IntPtr)~System.Void*" />
       <MemberType>Method</MemberType>
@@ -620,16 +639,16 @@
         <Parameter Name="value" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="value">The pointer or handle to convert.</param>
-        <summary>Converts the value of the specified <see cref="T:System.IntPtr" /> to a pointer to an unspecified type.  
-  
- This API is not CLS-compliant.</summary>
-        <returns>The contents of <paramref name="value" />.</returns>
-        <remarks></remarks>
+        <param name="value">変換するポインターまたはハンドル。</param>
+        <summary>指定した <see cref="T:System.IntPtr" /> の値を指定されていない型のポインターに変換します。</summary>
+        <returns>
+          <paramref name="value" /> の内容。</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.IntPtr.ToPointer" />
       </Docs>
     </Member>
     <Member MemberName="op_Explicit">
-      <MemberSignature Language="C#" Value="public static explicit operator IntPtr (void* value);" />
+      <MemberSignature Language="C#" Value="public static IntPtr op_Explicit (void* value);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname native int op_Explicit(void* value) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Explicit(System.Void*)~System.IntPtr" />
       <MemberType>Method</MemberType>
@@ -665,17 +684,17 @@
         <Parameter Name="value" Type="System.Void*" />
       </Parameters>
       <Docs>
-        <param name="value">A pointer to an unspecified type.</param>
-        <summary>Converts the specified pointer to an unspecified type to an <see cref="T:System.IntPtr" />.  
-  
- This API is not CLS-compliant.</summary>
-        <returns>A new instance of <see cref="T:System.IntPtr" /> initialized to <paramref name="value" />.</returns>
-        <remarks></remarks>
+        <param name="value">指定されていない型を指すポインター。</param>
+        <summary>指定されていない型の指定のポインターを <see cref="T:System.IntPtr" /> に変換します。</summary>
+        <returns>
+          <see cref="T:System.IntPtr" /> に初期化される <paramref name="value" /> の新しいインスタンス。</returns>
+        <remarks>To be added.</remarks>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="Overload:System.IntPtr.#ctor" />
       </Docs>
     </Member>
     <Member MemberName="op_Inequality">
-      <MemberSignature Language="C#" Value="public static bool operator != (IntPtr value1, IntPtr value2);" />
+      <MemberSignature Language="C#" Value="public static bool op_Inequality (IntPtr value1, IntPtr value2);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Inequality(native int value1, native int value2) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Inequality(System.IntPtr,System.IntPtr)" />
       <MemberType>Method</MemberType>
@@ -709,18 +728,19 @@
         <Parameter Name="value2" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="value1">The first pointer or handle to compare.</param>
-        <param name="value2">The second pointer or handle to compare.</param>
-        <summary>Determines whether two specified instances of <see cref="T:System.IntPtr" /> are not equal.</summary>
+        <param name="value1">比較する最初のポインターまたはハンドル。</param>
+        <param name="value2">比較する 2 番目のポインターまたはハンドル。</param>
+        <summary>
+          <see cref="T:System.IntPtr" /> の 2 つの指定したインスタンスが等しいかどうかを判断します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="value1" /> does not equal <paramref name="value2" />; otherwise, <see langword="false" />.</returns>
+          <paramref name="value1" /> が <paramref name="value2" /> と等しくない場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[The equivalent method for this operator is <xref:System.IntPtr.Equals%28System.Object%29?displayProperty=fullName>]]></format>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="op_Subtraction">
-      <MemberSignature Language="C#" Value="public static IntPtr operator - (IntPtr pointer, int offset);" />
+      <MemberSignature Language="C#" Value="public static IntPtr op_Subtraction (IntPtr pointer, int offset);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname native int op_Subtraction(native int pointer, int32 offset) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.IntPtr.op_Subtraction(System.IntPtr,System.Int32)" />
       <MemberType>Method</MemberType>
@@ -754,25 +774,30 @@
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="pointer">The pointer to subtract the offset from.</param>
-        <param name="offset">The offset to subtract.</param>
-        <summary>Subtracts an offset from the value of a pointer.</summary>
-        <returns>A new pointer that reflects the subtraction of <paramref name="offset" /> from <paramref name="pointer" />.</returns>
+        <param name="pointer">オフセットを減算するポインター。</param>
+        <param name="offset">減算するオフセット。</param>
+        <summary>ポインターの値からオフセットを減算します。</summary>
+        <returns>
+          <paramref name="offset" /> からの <paramref name="pointer" /> の減算が反映された新しいポインター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IntPtr.op_Subtraction%2A> method defines the subtraction operation for <xref:System.IntPtr> objects. It enables code such as the following.  
+## 解説  
+ <xref:System.IntPtr.op_Subtraction%2A> メソッド定義の減算演算 <xref:System.IntPtr> オブジェクトです。 次のようなコードを使用します。  
   
- [!code-csharp[System.IntPtr.op_Addition#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.op_addition/cs/op_subtraction1.cs#2)]
- [!code-vb[System.IntPtr.op_Addition#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.op_addition/vb/op_subtraction1.vb#2)]  
+ [!code-csharp[System.IntPtr.op\_Addition\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.op_addition/cs/op_subtraction1.cs#2)]
+ [!code-vb[System.IntPtr.op\_Addition\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.op_addition/vb/op_subtraction1.vb#2)]  
   
- Languages that do not support custom operators can call the <xref:System.IntPtr.Subtract%2A> method instead.  
+ カスタム演算子をサポートしない言語を呼び出すことができます、 <xref:System.IntPtr.Subtract%2A> メソッド代わりにします。  
   
- The subtraction operation does not throw an exception if the result is too small to represent as a pointer on the specified platform. Instead, it is performed in an unchecked context.  
+ 減算操作は、指定したプラットフォームでのポインターとして表現するには、結果が小さすぎる場合、例外をスローしません。 代わりに、unchecked コンテキストで実行します。  
   
- The equivalent method for this operator is <xref:System.IntPtr.Subtract%28System.IntPtr%2CSystem.Int32%29?displayProperty=fullName>]]></format>
+ The equivalent method for this operator is <xref:System.IntPtr.Subtract%28System.IntPtr%2CSystem.Int32%29?displayProperty=fullName>  
+  
+## 例  
+ ]]></format>
         </remarks>
+        <altmember cref="M:System.IntPtr.Subtract(System.IntPtr,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="Size">
@@ -806,8 +831,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the size of this instance.</summary>
-        <value>The size of a pointer or handle in this process, measured in bytes. The value of this property is 4 in a 32-bit process, and 8 in a 64-bit process. You can define the process type by setting the <see langword="/platform" /> switch when you compile your code with the C# and Visual Basic compilers.</value>
+        <summary>このインスタンスのサイズを取得します。</summary>
+        <value>このプロセスでのポインターまたはハンドルのサイズ \(バイト\)。 このプロパティの値は 32 ビット プロセスでは 4、64 ビット プロセスでは 8 です。 C\# および Visual Basic コンパイラを使用してコードをコンパイルするときに <see langword="/platform" /> スイッチを設定することで、プロセス型を定義できます。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -846,28 +871,30 @@
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="pointer">The pointer to subtract the offset from.</param>
-        <param name="offset">The offset to subtract.</param>
-        <summary>Subtracts an offset from the value of a pointer.</summary>
-        <returns>A new pointer that reflects the subtraction of <paramref name="offset" /> from <paramref name="pointer" />.</returns>
+        <param name="pointer">オフセットを減算するポインター。</param>
+        <param name="offset">減算するオフセット。</param>
+        <summary>ポインターの値からオフセットを減算します。</summary>
+        <returns>
+          <paramref name="offset" /> からの <paramref name="pointer" /> の減算が反映された新しいポインター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IntPtr.Subtract%2A> method does not throw an exception if the result is too small to represent as a pointer on the specified platform. Instead, the subtraction operation is performed in an unchecked context.  
+## 解説  
+ <xref:System.IntPtr.Subtract%2A> メソッドは、指定したプラットフォーム上のポインターとして表現するには、結果が小さすぎる場合に例外をスローしません。 代わりに、減算演算は unchecked コンテキストで実行されます。  
   
- Languages that do not support operator overloading or custom operators can use this method to subtract an offset from the value of a pointer.  
+ 演算子のオーバー ロードまたはカスタム演算子をサポートしない言語では、ポインターの値からのオフセットを減算するのにこのメソッドを使用できます。  
   
    
   
-## Examples  
- The following example instantiates an <xref:System.IntPtr> object that points to the end of a ten-element array, and then calls the <xref:System.IntPtr.Subtract%2A> method to iterate the elements in the array in reverse order.  
+## 例  
+ 次の例のインスタンスを作成、 <xref:System.IntPtr> 10 要素を配列の最後を参照しを呼び出しているオブジェクト、 <xref:System.IntPtr.Subtract%2A> 、配列内の要素を逆の順序で反復処理するメソッドです。  
   
- [!code-csharp[System.IntPtr.Subtract#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.subtract/cs/subtract1.cs#1)]
- [!code-vb[System.IntPtr.Subtract#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.subtract/vb/subtract1.vb#1)]  
+ [!code-csharp[System.IntPtr.Subtract\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.subtract/cs/subtract1.cs#1)]
+ [!code-vb[System.IntPtr.Subtract\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.subtract/vb/subtract1.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.IntPtr.op_Subtraction(System.IntPtr,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="System.IEquatable&lt;System.IntPtr&gt;.Equals">
@@ -918,19 +945,23 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object to populate with data.</param>
-        <param name="context">The destination for this serialization. (This parameter is not used; specify <see langword="null" />.)</param>
-        <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object with the data needed to serialize the current <see cref="T:System.IntPtr" /> object.</summary>
+        <param name="info">データを読み込む先の <see cref="T:System.Runtime.Serialization.SerializationInfo" /> オブジェクト。</param>
+        <param name="context">このシリアル化のシリアル化先。 \(このパラメーターは使用されません。<see langword="null" /> を指定してください。\)</param>
+        <summary>
+          <see cref="T:System.Runtime.Serialization.SerializationInfo" /> オブジェクトに、現在の <see cref="T:System.IntPtr" /> オブジェクトをシリアル化するために必要なすべてのデータを格納します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method populates the `info` parameter with the value of the current <xref:System.IntPtr> object.  
+## 解説  
+ このメソッドは設定、 `info` 、現在の値を持つパラメーター <xref:System.IntPtr> オブジェクトです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="info" /> is <see langword="null" />.</exception>
+          <paramref name="info" /> は <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -966,10 +997,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Converts the value of this instance to a 32-bit signed integer.</summary>
-        <returns>A 32-bit signed integer equal to the value of this instance.</returns>
+        <summary>このインスタンスの値を 32 ビット符号付き整数に変換します。</summary>
+        <returns>このインスタンスの値と等価な 32 ビット符号付き整数。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.OverflowException">On a 64-bit platform, the value of this instance is too large or too small to represent as a 32-bit signed integer.</exception>
+        <exception cref="T:System.OverflowException">64 ビット プラットフォームでは、このインスタンスの値が大きすぎるか小さすぎてを 32 ビット符号付き整数として表現を使用します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ToInt64">
@@ -1004,8 +1035,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Converts the value of this instance to a 64-bit signed integer.</summary>
-        <returns>A 64-bit signed integer equal to the value of this instance.</returns>
+        <summary>このインスタンスの値を 64 ビット符号付き整数に変換します。</summary>
+        <returns>このインスタンスの値と等価な 64 ビット符号付き整数。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1044,28 +1075,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Converts the value of this instance to a pointer to an unspecified type.</summary>
-        <returns>A pointer to <see cref="T:System.Void" />; that is, a pointer to memory containing data of an unspecified type.</returns>
+        <summary>このインスタンスの値を指定されていない型のポインターに変換します。</summary>
+        <returns>
+          <see cref="T:System.Void" /> のポインター。つまり指定されていない型のデータが格納されているメモリのポインター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example uses managed pointers to reverse the characters in an array. After it initializes a <xref:System.String> object and gets its length, it does the following:  
+## 例  
+ 次の例では、マネージ ポインターを使用して、配列内の文字を反転します。 これが初期化された後、<xref:System.String>オブジェクトし、その長さを取得は次のこと。  
   
--   Calls the <xref:System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi%2A?displayProperty=fullName> method to copy the Unicode string to unmanaged memory as ANSI (one-byte) characters. The method returns an <xref:System.IntPtr> object that points to the beginning of the unmanaged string.  
+-   呼び出し、<xref:System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi%2A?displayProperty=fullName>に ANSI \(1 バイト\) 文字として Unicode 文字列をアンマネージ メモリにコピーする方法です。 このメソッドを返します、<xref:System.IntPtr>アンマネージ文字列の先頭を指すオブジェクトです。  
   
--   Calls the <xref:System.Runtime.InteropServices.Marshal.AllocHGlobal%2A?displayProperty=fullName> method to allocate the same number of bytes as the unmanaged string occupies. The method returns an <xref:System.IntPtr> object that points to the beginning of the unmanaged block of memory.  
+-   呼び出し、<xref:System.Runtime.InteropServices.Marshal.AllocHGlobal%2A?displayProperty=fullName>アンマネージ文字列が占めるように同じバイト数を割り当てます。 このメソッドを返します、<xref:System.IntPtr>アンマネージ メモリ ブロックの先頭を指すオブジェクトです。  
   
--   Calls the <xref:System.IntPtr.ToPointer%2A> method to get an unmanaged pointer to the starting address of the string and the unmanaged block of memory, and adds one less than the length of the string to the starting address of the ANSI string. Because the unmanaged string pointer now points to the end of the string, the copy operation will copy a character from the end of the string to the start of the memory block.  
+-   呼び出し、<xref:System.IntPtr.ToPointer%2A>文字列と、メモリのアンマネージ ブロックの開始アドレスへのアンマネージ ポインターを取得するメソッドを追加および ANSI 文字列の開始アドレスへの文字列の長さよりも小さいです。 アンマネージ文字列のポインターが現在、文字列の末尾を指すため、コピー操作は、文字をメモリ ブロックの先頭に、文字列の末尾からコピーします。  
   
--   Uses a loop to copy each character from the string to the unmanaged block of memory. After each copy operation, it decrements the pointer to the address of the next location in the unmanaged ANSI string and increments the pointer to the next address in the unmanaged block.  
+-   ループを使用して、各文字を文字列からメモリのアンマネージ ブロックにコピーします。 各コピー操作の後に、デクリメント アンマネージ ANSI 文字列の次の場所のアドレスへのポインターしアンマネージ ブロック内の次のアドレスへのポインターをインクリメントします。  
   
--   Calls the <xref:System.Runtime.InteropServices.Marshal.PtrToStringAnsi%2A?displayProperty=fullName> to convert the unmanaged memory block containing the copied ANSI string to a managed Unicode <xref:System.String> object.  
+-   呼び出し、<xref:System.Runtime.InteropServices.Marshal.PtrToStringAnsi%2A?displayProperty=fullName>マネージ Unicode にコピーされた ANSI 文字列を含むアンマネージ メモリ ブロックを変換する<xref:System.String>オブジェクト。  
   
--   After displaying the original and reversed strings, calls the <xref:System.Runtime.InteropServices.Marshal.FreeHGlobal%2A?displayProperty=fullName> method to free the memory allocated for the unmanaged ANSI string and the unmanaged block of memory.  
+-   呼び出し元と取り消された文字列を表示した後、<xref:System.Runtime.InteropServices.Marshal.FreeHGlobal%2A?displayProperty=fullName>アンマネージ ANSI 文字列とメモリのアンマネージ ブロックに割り当てられたメモリを解放します。  
   
- [!code-cpp[System.IntPtr.ToPointer#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/System.IntPtr.ToPointer/cpp/topointer.cpp#1)]
- [!code-csharp[System.IntPtr.ToPointer#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.IntPtr.ToPointer/cs/topointer.cs#1)]  
+ [!code-cpp[System.IntPtr.ToPointer\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/System.IntPtr.ToPointer/cpp/topointer.cpp#1)]
+ [!code-csharp[System.IntPtr.ToPointer\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.IntPtr.ToPointer/cs/topointer.cs#1)]  
   
  ]]></format>
         </remarks>
@@ -1098,13 +1130,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Converts the numeric value of the current <see cref="T:System.IntPtr" /> object to its equivalent string representation.</summary>
-        <returns>The string representation of the value of this instance.</returns>
+        <summary>現在の <see cref="T:System.IntPtr" /> オブジェクトの数値を等価の文字列形式に変換します。</summary>
+        <returns>このインスタンスの値の文字列形式。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the value of the <xref:System.IntPtr.Size%2A> property for this instance is 4, then this method is equivalent to <xref:System.Int32.ToString%2A?displayProperty=fullName>; otherwise, this method is equivalent to <xref:System.Int64.ToString%2A?displayProperty=fullName>.  
+## 解説  
+ 場合の値、 <xref:System.IntPtr.Size%2A> このインスタンスのプロパティが 4 で、このメソッドは <xref:System.Int32.ToString%2A?displayProperty=fullName>。 そうしないと、このメソッドは <xref:System.Int64.ToString%2A?displayProperty=fullName>です。  
   
  ]]></format>
         </remarks>
@@ -1139,19 +1171,20 @@
         <Parameter Name="format" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="format">A format specification that governs how the current <see cref="T:System.IntPtr" /> object is converted.</param>
-        <summary>Converts the numeric value of the current <see cref="T:System.IntPtr" /> object to its equivalent string representation.</summary>
-        <returns>The string representation of the value of the current <see cref="T:System.IntPtr" /> object.</returns>
+        <param name="format">現在の <see cref="T:System.IntPtr" /> オブジェクトをどのように変換するかを制御する書式指定。</param>
+        <summary>現在の <see cref="T:System.IntPtr" /> オブジェクトの数値を等価の文字列形式に変換します。</summary>
+        <returns>現在の <see cref="T:System.IntPtr" /> オブジェクトの値の文字列形式。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the `format` parameter is `null` or an empty string (""), the return value is formatted with the general format specifier ("G"). For more information about numeric format specifiers, see the [Standard Numeric Format Strings](~/docs/standard/base-types/standard-numeric-format-strings.md) topic.  
+## 解説  
+ 場合、`format`パラメーターは`null`または空の文字列 \(""\)、戻り値が、一般書式指定子 \("G"\) でフォーマットされています。 数値書式指定子の詳細については、次を参照してください。、[Standard Numeric Format Strings](http://msdn.microsoft.com/ja-jp/580e57eb-ac47-4ffd-bccd-3a1637c2f467)トピックです。  
   
- The return value is formatted using the invariant culture.  
+ インバリアント カルチャを使用して、戻り値が書式設定されます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Globalization.CultureInfo.InvariantCulture" />
       </Docs>
     </Member>
     <Member MemberName="Zero">
@@ -1180,31 +1213,83 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A read-only field that represents a pointer or handle that has been initialized to zero.</summary>
+        <summary>0 に初期化されたポインターまたはハンドルを表す読み取り専用フィールド。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of this field is not equivalent to `null`. Use this field to efficiently determine whether an instance of <xref:System.IntPtr> has been set to a value other than zero.  
+## 解説  
+ このフィールドの値は`null`します。 このフィールドを使用してのインスタンスかどうかを効率的に判断<xref:System.IntPtr>ゼロ以外の値に設定されています。  
   
- For example, assume the variable, ip, is an instance of <xref:System.IntPtr>. You can determine if it has been set by comparing it to the value returned by a constructor, for example: " `if ip != new IntPtr(0)...` ". However, invoking a constructor to get an unintialized pointer is inefficient. It is better to code either " `if ip != IntPtr.Zero...` ", or " `if !IntPtr.Zero.Equals(ip)...` ".  
+ たとえば、変数、ip がのインスタンスと<xref:System.IntPtr>です。 たとえば、コンス トラクターによって返される値と比較することによって設定されているかどうかを指定できます:" `if ip != new IntPtr(0)...` "です。 ただし、初期化前の状態のポインターを取得するコンス トラクターを呼び出すは効率的ではありません。 いずれかをコーディングすることをお勧め" `if ip != IntPtr.Zero...` "、または" `if !IntPtr.Zero.Equals(ip)...` "です。  
   
- When calling the Windows API from managed code, you can pass <xref:System.IntPtr.Zero?displayProperty=fullName> instead of `null` if an argument is expected to be either a pointer or a `null`. For example, the following call to the Windows `CreateFile` function supplies <xref:System.IntPtr.Zero?displayProperty=fullName> for the `pSecurityAttributes` and `hTemplateFile` argument values.  
+ マネージ コードから Windows API を呼び出すときに渡す<xref:System.IntPtr.Zero?displayProperty=fullName>の代わりに`null`引数がポインターであると予想される場合、または`null`です。 Windows の次の呼び出しなど、`CreateFile`装置を関数<xref:System.IntPtr.Zero?displayProperty=fullName>の`pSecurityAttributes`と`hTemplateFile`引数の値。  
   
- [!code-csharp[System.IntPtr.Zero#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.zero/cs/zero4.cs#2)]
- [!code-vb[System.IntPtr.Zero#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.zero/vb/zero4.vb#2)]  
+ [!code-csharp[System.IntPtr.Zero\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.zero/cs/zero4.cs#2)]
+ [!code-vb[System.IntPtr.Zero\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.zero/vb/zero4.vb#2)]  
   
 > [!NOTE]
->  Although <xref:System.IntPtr.Zero> is equivalent to `null` for Windows API functions with parameters or return values that can be either pointers or `null`, <xref:System.IntPtr.Zero> is not equivalent to `null`. Passing `null` to the `IntPtr.Zero.Equals` method always returns `false`.  
+>  <xref:System.IntPtr.Zero>と等価`null`パラメーターまたは戻り値、ポインターにすることができる Windows API 関数または`null`、<xref:System.IntPtr.Zero>と等価ではありません`null`です。 渡す`null`を`IntPtr.Zero.Equals`メソッドは常に返します`false`です。  
   
- You can also test for a `null` return value from Windows API function calls that return either a pointer or a `null` by comparing the returned value with <xref:System.IntPtr.Zero?displayProperty=fullName>. For example, the call to the `GetWindow` function in the following example tries to retrieve the handle of a non-existent window. If it were called from unmanaged code, the function would return `null`, but when it is called from managed code, it returns <xref:System.IntPtr.Zero?displayProperty=fullName>.  
+ テストすることも、`null`へのポインターで返された Windows API 関数呼び出しからの戻り値または`null`で返される値を比較することによって<xref:System.IntPtr.Zero?displayProperty=fullName>です。 呼び出しなど、`GetWindow`関数を次の例では、存在しないウィンドウのハンドルを取得しようとしています。 かどうかは、アンマネージ コードから呼び出された、関数が返すよう`null`、マネージ コードから呼び出されるとしてが返ります<xref:System.IntPtr.Zero?displayProperty=fullName>です。  
   
- [!code-csharp[System.IntPtr.Zero#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.zero/cs/zero2.cs#1)]
- [!code-vb[System.IntPtr.Zero#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.zero/vb/zero2.vb#1)]  
+ [!code-csharp[System.IntPtr.Zero\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.intptr.zero/cs/zero2.cs#1)]
+ [!code-vb[System.IntPtr.Zero\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.intptr.zero/vb/zero2.vb#1)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="op_Explicit">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定したデータ型を <see cref="T:System.IntPtr" /> 値に変換します。または、<see cref="T:System.IntPtr" /> 値を指定したデータ型に変換します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="ToString">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>現在の <see cref="T:System.IntPtr" /> オブジェクトの数値を等価の文字列形式に変換します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.IntPtr" /> の新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

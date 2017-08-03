@@ -11,35 +11,36 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>An <see cref="T:System.Windows.Media.ImageSource" /> that displays a user-created Direct3D surface.</summary>
+    <summary>
+      <see cref="T:System.Windows.Media.ImageSource" /> Direct3D、ユーザーが作成した画面を表示します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Windows.Interop.D3DImage> class to host Direct3D content in a Windows Presentation Foundation (WPF) application.  
+## 解説  
+ 使用して、 <xref:System.Windows.Interop.D3DImage> Windows Presentation Foundation \(WPF\) アプリケーションで Direct3D コンテンツをホストするクラス。  
   
- Call the <xref:System.Windows.Interop.D3DImage.Lock%2A> method to change the Direct3D content displayed by the <xref:System.Windows.Interop.D3DImage>. Call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method to assign a Direct3D surface to a <xref:System.Windows.Interop.D3DImage>. Call the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> method to track updates to the Direct3D surface. Call the <xref:System.Windows.Interop.D3DImage.Unlock%2A> method to display the changed areas.  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.Lock%2A> によって表示される Direct3D の内容を変更するメソッドを <xref:System.Windows.Interop.D3DImage>です。 呼び出す、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> と Direct3D サーフェスを割り当てるメソッドを <xref:System.Windows.Interop.D3DImage>です。 呼び出す、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> Direct3D 画面に更新プログラムを管理する方法です。 呼び出す、 <xref:System.Windows.Interop.D3DImage.Unlock%2A> 変更された領域を表示するメソッドです。  
   
- The <xref:System.Windows.Interop.D3DImage> class manages two display buffers, which are called the *back buffer* and the *front buffer*. The back buffer is your Direct3D surface.  Changes to the back buffer are copied forward to the front buffer when you call the <xref:System.Windows.Interop.D3DImage.Unlock%2A> method, where it is displayed on the hardware. Occasionally, the front buffer becomes unavailable. This lack of availability can be caused by screen locking, full-screen exclusive Direct3D applications, user-switching, or other system activities. When this occurs, your WPF application is notified by handling the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event.  How your application responds to the front buffer becoming unavailable depends on whether WPF is enabled to fall back to software rendering. The <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method has an overload that takes a parameter that specifies whether WPF falls back to software rendering.  
+ <xref:System.Windows.Interop.D3DImage> クラスは、2 つ表示バッファーと呼ばれる、管理、 *バック バッファー* と *フロント バッファー*します。 バック バッファーは、Direct3D サーフェイスです。  バック バッファーへの変更が転送バッファーにコピー フロントを呼び出したときに、 <xref:System.Windows.Interop.D3DImage.Unlock%2A> メソッド、ハードウェアで表示されます。 場合によっては、前面のバッファーが使用できなくなります。 この可用性の欠如は、画面のロック、排他 Direct3D アプリケーションを全画面表示、ユーザーの切り替え、または他のシステム アクティビティによって可能性があります。 WPF アプリケーションに通知処理されるこのような場合、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> イベントです。  アプリケーションの応答が使用できなくなるフロント バッファーには、ソフトウェア レンダリングにフォールバックする WPF が有効になっているかどうかによって異なります。<xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドは、WPF ソフトウェア レンダリングにフォールバックするかどうかを指定するパラメーターを受け取るオーバー ロードを持ちます。  
   
-## Responding to an Unavailable Front Buffer when WPF Does not Fall Back to Software Rendering  
- When you call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> overload or call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> overload with the `enableSoftwareFallback` parameter set to `false`, the rendering system releases its reference to the back buffer when the front buffer becomes unavailable and nothing is displayed. When the front buffer is available again, the rendering system raises the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event to notify your WPF application.  You can create an event handler for the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event to restart rendering again with a valid Direct3D surface. To restart rendering, you must call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A>.  
+## WPF が含まれていないバックアップ ソフトウェアをレンダリング時に使用できないフロント バッファーへの応答  
+ 呼び出すと、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> オーバー ロードを呼び出したり、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> でオーバー ロード、 `enableSoftwareFallback` パラメーターを設定する `false`, 、レンダリング システムは、前面のバッファーが使用できなくなり、何も表示したときにバック バッファーへの参照を解放します。 フロント バッファーが再び使用可能、レンダリング システムを発生させます、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> WPF アプリケーションに通知するイベントです。  イベント ハンドラーを作成する、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> イベントを有効な Direct3D 画面を使用してレンダリングを再起動します。 表示するには、再開するを呼び出す必要があります <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A>します。  
   
-## Responding to an Unavailable Front Buffer when WPF Falls Back to Software Rendering  
- When you call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> overload with the `enableSoftwareFallback` parameter set to `true`, the rendering system retains its reference to the back buffer when the front buffer becomes unavailable, so there is no need to call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> when the front buffer is available again.  There may be situations where the user’s device becomes unavailable.  When that occurs, call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> to release WPF’s reference to the back buffer.  If you need to reset your device, call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> with the `backBuffer` parameter set to `null`, and then call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> again with `backBuffer` set to a valid Direct3D surface.  
-  
-> [!NOTE]
->  Performance depends greatly on the settings of the Direct3D surface. For more information, see [Performance Considerations for Direct3D9 and WPF Interoperability](~/docs/framework/wpf/advanced/performance-considerations-for-direct3d9-and-wpf-interoperability.md).  
+## ソフトウェア レンダリングを WPF が利用できないフロント バッファーに応答しなくなった  
+ 呼び出すと、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> でオーバー ロード、 `enableSoftwareFallback` パラメーターを設定する `true`, 、レンダリング時に維持バック バッファーへの参照を呼び出す必要はありませんので、フロント バッファーが利用できなくなります <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> ときフロント バッファーが再びで使用可能です。  ユーザーのデバイスが使用できなくなった状況である可能性があります。  発生すると、呼び出す <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> バック バッファーへの WPF の参照を解放します。  デバイスをリセットする場合は、呼び出す <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> で、 `backBuffer` パラメーターを設定する `null`, 、し、呼び出す <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> を使用して `backBuffer` Direct3D 画面を有効に設定します。  
   
 > [!NOTE]
->  The <xref:System.Windows.Interop.D3DImage> class does not display Direct3D content when WPF renders in software, such as over a Remote Desktop connection, unless you call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> and specify `true` for the `enableSoftwareFallback` parameter.  
+>  パフォーマンスは、Direct3D 画面の設定に大きく依存します。 詳細については、次を参照してください。 [パフォーマンス Direct3D9 および WPF 相互運用性に関する考慮事項](http://msdn.microsoft.com/ja-jp/ea8baf91-12fe-4b44-ac4d-477110ab14dd)します。  
+  
+> [!NOTE]
+>  <xref:System.Windows.Interop.D3DImage> クラスはコンテンツが表示されない Direct3D WPF は、リモート デスクトップ接続を介してソフトウェアなどが表示されるを呼び出さない限り、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> 指定 `true` の `enableSoftwareFallback` パラメーター。  
   
    
   
-## Examples  
- The following code example shows how to declare a <xref:System.Windows.Interop.D3DImage> in XAML. You must map the <xref:System.Windows.Interop> namespace, because it is not included in the default XAML namespaces. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例は、宣言する方法を示しています、 <xref:System.Windows.Interop.D3DImage> XAML でします。 マップする必要があります、 <xref:System.Windows.Interop> 名前空間、既定の XAML 名前空間に含まれていないためです。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-xaml[System.Windows.Interop.D3DImage#10](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml#10)]  
+ [!code-xml[System.Windows.Interop.D3DImage\#10](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml#10)]  
   
  ]]></format>
     </remarks>
@@ -57,13 +58,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Interop.D3DImage" /> class.</summary>
+        <summary>
+          <see cref="T:System.Windows.Interop.D3DImage" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default display resolution is 1/96th inch.  
+## 解説  
+ The default display resolution is 1\/96th inch.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for access to unmanaged resources. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
@@ -88,20 +93,25 @@
         <Parameter Name="dpiY" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="dpiX">The display resolution on the x-axis.</param>
-        <param name="dpiY">The display resolution on the y-axis.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Interop.D3DImage" /> class with the specified display resolution.</summary>
+        <param name="dpiX">X 軸にディスプレイの解像度です。</param>
+        <param name="dpiY">Y 軸にディスプレイの解像度です。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Windows.Interop.D3DImage" /> 指定したディスプレイの解像度でクラスです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default display resolution is 1/96th inch.  
+## 解説  
+ 既定のディスプレイの解像度は、1\/96 インチです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="dpiX" /> or <paramref name="dpiY" /> is less than zero.</exception>
+          <paramref name="dpiX" /> または <paramref name="dpiY" /> が 0 未満です。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for access to unmanaged resources. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <altmember cref="P:System.Windows.Interop.D3DImage.Height" />
+        <altmember cref="P:System.Windows.Interop.D3DImage.Width" />
       </Docs>
     </Member>
     <Member MemberName="AddDirtyRect">
@@ -125,43 +135,48 @@
         <Parameter Name="dirtyRect" Type="System.Windows.Int32Rect" />
       </Parameters>
       <Docs>
-        <param name="dirtyRect">An <see cref="T:System.Windows.Int32Rect" /> that represents the area that changed.</param>
-        <summary>Specifies the area of the back buffer that changed.</summary>
+        <param name="dirtyRect">
+          <see cref="T:System.Windows.Int32Rect" /> 変更領域を表します。</param>
+        <summary>変更のバック バッファーの領域を指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> method to indicate changes your code has made to the back buffer. To be rendered, the changed area on the back buffer must have a corresponding changed area on the <xref:System.Windows.Interop.D3DImage>.  
+## 解説  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> メソッドをコードがバック バッファーに加えられた変更を示します。 レンダリングするバック バッファー上の変更された領域対応する変更された領域が必要、 <xref:System.Windows.Interop.D3DImage>です。  
   
- Call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> and <xref:System.Windows.Interop.D3DImage.Lock%2A> methods before calling the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> method.  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> と <xref:System.Windows.Interop.D3DImage.Lock%2A> メソッドを呼び出す前に、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> メソッドです。  
   
- Call the <xref:System.Windows.Interop.D3DImage.Unlock%2A> method to copy the changed areas to the front buffer.  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.Unlock%2A> に変更された領域を前面のバッファーにコピーする方法です。  
   
 > [!NOTE]
->  After a few calls to the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> method, the changed areas are merged into a single area. This means you must have valid data outside of the changed areas.  
+>  いくつかの呼び出し後、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> メソッドでは、変更された領域は、1 つの領域にマージされます。 つまり、変更された領域の外部で有効なデータを持つ必要があります。  
   
    
   
-## Examples  
- The following code example shows how to call the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> method to specify the changed region in the back buffer. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を呼び出す方法を示します、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> バック バッファーに変更された領域を指定します。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The bitmap has not been locked by a call to the <see cref="M:System.Windows.Interop.D3DImage.Lock" /> or <see cref="M:System.Windows.Interop.D3DImage.TryLock(System.Windows.Duration)" /> methods.  
+        <exception cref="T:System.InvalidOperationException">呼び出しによって、ビットマップがロックされていない、 <see cref="M:System.Windows.Interop.D3DImage.Lock" /> または <see cref="M:System.Windows.Interop.D3DImage.TryLock(System.Windows.Duration)" /> メソッドです。  
   
- -or-  
+ または  
   
- The back buffer has not been assigned by a call to the <see cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" /> method.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">One or more of the following conditions is true.  
+ 呼び出しによってバック バッファーが割り当てられていない、 <see cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" /> メソッドです。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">1 つ以上の次の条件は true です。  
   
  <paramref name="dirtyRect.X" /> &lt; 0  
   
  <paramref name="dirtyRect.Y" /> &lt; 0  
   
- <paramref name="dirtyRect.Width" /> &lt; 0 or <paramref name="dirtyRect.Width" /> &gt; <see cref="P:System.Windows.Interop.D3DImage.PixelWidth" /><paramref name="dirtyRect.Height" /> &lt; 0 or <paramref name="dirtyRect.Height" /> &gt; <see cref="P:System.Windows.Interop.D3DImage.PixelHeight" /></exception>
+ <paramref name="dirtyRect.Width" /> &lt; 0 または <paramref name="dirtyRect.Width" /> &gt; <see cref="P:System.Windows.Interop.D3DImage.PixelWidth" />  
+  
+ <paramref name="dirtyRect.Height" /> &lt; 0 または <paramref name="dirtyRect.Height" /> &gt; <see cref="P:System.Windows.Interop.D3DImage.PixelHeight" /></exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for access to unmanaged resources. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <altmember cref="M:System.Windows.Interop.D3DImage.Unlock" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -178,16 +193,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a modifiable clone of this <see cref="T:System.Windows.Interop.D3DImage" /> object, making deep copies of this object's values. When copying dependency properties, this method copies resource references and data bindings (which may no longer resolve), but not animations or their current values.</summary>
-        <returns>A modifiable clone of the current object. The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true." /></returns>
+        <summary>この <see cref="T:System.Windows.Interop.D3DImage" /> オブジェクトの変更可能な複製を作成し、このオブジェクトの値の詳細コピーを作成します。 依存関係プロパティをコピーする場合、このメソッドは、アニメーションやその現在の値ではありませんが、リソース参照とデータ バインディングを解決できなくなる可能性があります\) をコピーします。</summary>
+        <returns>現在のオブジェクトの変更可能な複製。 複製されたオブジェクトの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティは、ソースの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティが <see langword="true." /> であった場合でも、<see langword="false" /> になります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object). For convenience, this method shadows the inherited version with a strongly typed implementation.  
+## 解説  
+ このメソッドの使用の変更可能なコピーの作成をフリーズした <xref:System.Windows.Freezable> オブジェクト \(または任意 <xref:System.Windows.Freezable> オブジェクト\)。 便利な場合は、このメソッドは、厳密に型指定の実装と継承したバージョンをシャドウします。  
   
- For more information, see <xref:System.Windows.Freezable.Clone%2A?displayProperty=fullName>.  
+ 詳細については、「<xref:System.Windows.Freezable.Clone%2A?displayProperty=fullName>」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -208,9 +226,18 @@
         <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
       </Parameters>
       <Docs>
-        <param name="sourceFreezable">The object to clone.</param>
-        <summary>Makes the instance a clone (deep copy) of the specified <see cref="T:System.Windows.Freezable" /> using base (non-animated) property values.</summary>
-        <remarks>To be added.</remarks>
+        <param name="sourceFreezable">複製する対象のオブジェクト。</param>
+        <summary>基本 \(アニメーション化されていない\) プロパティ値を使用して、インスタンスを、指定した <see cref="T:System.Windows.Freezable" /> の複製 \(詳細コピー\) にします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Freezable.CloneCore(System.Windows.Freezable)" />
       </Docs>
     </Member>
     <Member MemberName="CloneCurrentValue">
@@ -227,16 +254,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a modifiable clone of this <see cref="T:System.Windows.Interop.D3DImage" /> object, making deep copies of this object's current values. Resource references, data bindings, and animations are not copied, but their current values are copied.</summary>
-        <returns>A modifiable clone of the current object. The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true" />.</returns>
+        <summary>この <see cref="T:System.Windows.Interop.D3DImage" /> オブジェクトの変更可能な複製を作成し、このオブジェクトの現在値の詳細コピーを作成します。 リソース参照、データ バインディング、アニメーションはコピーされませんが、それらの現在値はコピーされます。</summary>
+        <returns>現在のオブジェクトの変更可能な複製。 複製されたオブジェクトの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティは、ソースの <see langword="false" /> プロパティが <see cref="P:System.Windows.Freezable.IsFrozen" /> であった場合でも、<see langword="true" /> になります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object). For convenience, this method shadows the inherited version with a strongly typed implementation.  
+## 解説  
+ このメソッドの使用の変更可能なコピーの作成をフリーズした <xref:System.Windows.Freezable> オブジェクト \(または任意 <xref:System.Windows.Freezable> オブジェクト\)。 便利な場合は、このメソッドは、厳密に型指定の実装と継承したバージョンをシャドウします。  
   
- For more information, see <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=fullName>.  
+ 詳細については、「<xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=fullName>」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -257,9 +287,18 @@
         <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
       </Parameters>
       <Docs>
-        <param name="sourceFreezable">The <see cref="T:System.Windows.Freezable" /> to be cloned.</param>
-        <summary>Makes the instance a modifiable clone (deep copy) of the specified <see cref="T:System.Windows.Freezable" /> using current property values.</summary>
-        <remarks>To be added.</remarks>
+        <param name="sourceFreezable">複製する <see cref="T:System.Windows.Freezable" />。</param>
+        <summary>現在のプロパティ値を使用して、インスタンスを、指定した <see cref="T:System.Windows.Freezable" /> の変更可能な複製 \(詳細コピー\) にします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Freezable.CloneCurrentValueCore(System.Windows.Freezable)" />
       </Docs>
     </Member>
     <Member MemberName="CopyBackBuffer">
@@ -284,19 +323,23 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a software copy of the <see cref="T:System.Windows.Interop.D3DImage" />.</summary>
-        <returns>A <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> that is a software copy of the current state of the back buffer; otherwise, <see langword="null" /> if the back buffer cannot be read.</returns>
+        <summary>ソフトウェアのコピーを作成、 <see cref="T:System.Windows.Interop.D3DImage" />です。</summary>
+        <returns>A <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> 、現在のソフトウェア コピーであるバック バッファーの状態以外の場合、 <see langword="null" /> 場合は、バック バッファーを読み取ることができません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Interop.D3DImage.CopyBackBuffer%2A> method is called by clients such as the printing system and the <xref:System.Windows.Media.Imaging.RenderTargetBitmap> class.  
+## 解説  
+ <xref:System.Windows.Interop.D3DImage.CopyBackBuffer%2A> メソッドは、印刷システムなどのクライアントから呼び出されると、 <xref:System.Windows.Media.Imaging.RenderTargetBitmap> クラスです。  
   
- Optionally override the <xref:System.Windows.Interop.D3DImage.CopyBackBuffer%2A> method to implement custom logic and return a different <xref:System.Windows.Media.Imaging.BitmapSource>. For example, you can return a placeholder <xref:System.Windows.Media.Imaging.BitmapSource> if the default <xref:System.Windows.Interop.D3DImage.CopyBackBuffer%2A> implementation returns `null`.  
+ 必要に応じてオーバーライドして、 <xref:System.Windows.Interop.D3DImage.CopyBackBuffer%2A> メソッドをカスタム ロジックを実装し、異なる返す <xref:System.Windows.Media.Imaging.BitmapSource>します。 たとえば、プレース ホルダーを返すことができます <xref:System.Windows.Media.Imaging.BitmapSource> 場合、既定 <xref:System.Windows.Interop.D3DImage.CopyBackBuffer%2A> の実装を返します `null`します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for access to unmanaged resources. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <altmember cref="T:System.Windows.Media.Imaging.BitmapSource" />
       </Docs>
     </Member>
     <Member MemberName="CreateInstanceCore">
@@ -313,14 +356,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When implemented in a derived class, creates a new instance of the <see cref="T:System.Windows.Interop.D3DImage" /> derived class.</summary>
-        <returns>The new instance.</returns>
+        <summary>派生クラスとして実装された場合は、新しいインスタンスを作成、 <see cref="T:System.Windows.Interop.D3DImage" /> クラスを派生します。</summary>
+        <returns>新しいインスタンス。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If you derive from the <xref:System.Windows.Interop.D3DImage> class, you must override the <xref:System.Windows.Interop.D3DImage.CreateInstanceCore%2A> method to enable correct cloning. The default implementation performs a `return new D3DImage()`, which will not be correct if the instance is a different class.  
+## 解説  
+ 派生する場合、 <xref:System.Windows.Interop.D3DImage> クラスがオーバーライドする必要があります、 <xref:System.Windows.Interop.D3DImage.CreateInstanceCore%2A> 正しい複製を有効にします。 既定の実装の実行、 `return new D3DImage()`, 、インスタンスが別のクラスである場合は、正しいこれはできません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -347,15 +393,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Frees resources and performs other cleanup operations before the <see cref="T:System.Windows.Interop.D3DImage" /> is reclaimed by garbage collection.</summary>
+        <summary>
+          <see cref="T:System.Windows.Interop.D3DImage" /> がガベージ コレクションによって回収される前にリソースを解放し、その他のクリーンアップ操作を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overrides <xref:System.Object.Finalize%2A>. Application code should not call this method; an object's `Finalize` method is automatically invoked during garbage collection, unless finalization by the garbage collector has been disabled by a call to the <xref:System.GC.SuppressFinalize%2A> method.  
+## 解説  
+ このメソッドは<xref:System.Object.Finalize%2A>します。 アプリケーション コードではこのメソッドを呼び出す必要がありますいません。オブジェクトの`Finalize`への呼び出しによって、ガベージ コレクターによって終了処理が無効になっていない限り、ガベージ コレクション中にメソッドが自動的に起動、<xref:System.GC.SuppressFinalize%2A>メソッドです。  
   
- For more information, see [Finalize Methods and Destructors](http://msdn.microsoft.com/en-us/fd376774-1643-499b-869e-9546a3aeea70), [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md), and [Overriding the Finalize Method](http://msdn.microsoft.com/en-us/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).  
+ 詳細については、次を参照してください。 [Finalize メソッドおよびデストラクター](http://msdn.microsoft.com/ja-jp/fd376774-1643-499b-869e-9546a3aeea70)、 [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213)、および[Finalize メソッドをオーバーライドする](http://msdn.microsoft.com/ja-jp/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for access to unmanaged resources. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
@@ -377,18 +427,21 @@
         <Parameter Name="isChecking" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="isChecking">Has no effect.</param>
-        <summary>Makes the <see cref="T:System.Windows.Interop.D3DImage" /> unmodifiable or determines whether it can be made unmodifiable.</summary>
-        <returns>
-          <see langword="false" /> in all cases.</returns>
+        <param name="isChecking">効果はありません。</param>
+        <summary>により、 <see cref="T:System.Windows.Interop.D3DImage" /> 不可能な状態をできるかどうか、不可能な状態を決定したりします。</summary>
+        <returns>常に <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Interop.D3DImage> class does not allow freezing because changes are always possible due to front buffer availability.  
+## 解説  
+ <xref:System.Windows.Interop.D3DImage> クラスに変更が実行されるフロント バッファーの可用性のため常にあるために固定することができません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Interop.D3DImage.IsFrontBufferAvailable" />
       </Docs>
     </Member>
     <Member MemberName="GetAsFrozenCore">
@@ -407,9 +460,18 @@
         <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
       </Parameters>
       <Docs>
-        <param name="sourceFreezable">The instance to copy.</param>
-        <summary>Makes the instance a frozen clone of the specified <see cref="T:System.Windows.Freezable" /> using base (non-animated) property values.</summary>
-        <remarks>To be added.</remarks>
+        <param name="sourceFreezable">コピーするインスタンス。</param>
+        <summary>基本プロパティ値 \(アニメーション化されていない値\) を使用して、インスタンスを、指定した <see cref="T:System.Windows.Freezable" /> の固定された複製にします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Freezable.GetAsFrozenCore(System.Windows.Freezable)" />
       </Docs>
     </Member>
     <Member MemberName="GetCurrentValueAsFrozenCore">
@@ -428,9 +490,18 @@
         <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
       </Parameters>
       <Docs>
-        <param name="sourceFreezable">The <see cref="T:System.Windows.Freezable" /> to copy and freeze.</param>
-        <summary>Makes the current instance a frozen clone of the specified <see cref="T:System.Windows.Freezable" />. If the object has animated dependency properties, their current animated values are copied.</summary>
-        <remarks>To be added.</remarks>
+        <param name="sourceFreezable">コピーし、固定する <see cref="T:System.Windows.Freezable" />。</param>
+        <summary>現在のインスタンスを、指定した <see cref="T:System.Windows.Freezable" /> の固定された複製にします。 オブジェクトに、アニメーション化された依存関係プロパティが存在する場合、現在アニメーション化されている値がコピーされます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Freezable.GetCurrentValueAsFrozenCore(System.Windows.Freezable)" />
       </Docs>
     </Member>
     <Member MemberName="Height">
@@ -446,16 +517,21 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the height of the <see cref="T:System.Windows.Interop.D3DImage" />.</summary>
-        <value>The height of the <see cref="T:System.Windows.Interop.D3DImage" />, in measure units. A measure unit is 1/96th inch.</value>
+        <summary>高さを取得、 <see cref="T:System.Windows.Interop.D3DImage" />です。</summary>
+        <value>高さ、 <see cref="T:System.Windows.Interop.D3DImage" />, の単位を測定します。 測定単位とは、1\/96 インチです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of <xref:System.Windows.Interop.D3DImage.Height%2A> can change when a new back buffer is assigned by a call to the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method.  
+## 解説  
+ 値 <xref:System.Windows.Interop.D3DImage.Height%2A> への呼び出しによって、新しいバック バッファーが割り当てられたときに変更することができます、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Interop.D3DImage.Width" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
       </Docs>
     </Member>
     <Member MemberName="IsFrontBufferAvailable">
@@ -471,32 +547,34 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether a front buffer exists.</summary>
+        <summary>フロント バッファーが存在するかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if a front buffer exists; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> フロント バッファーが存在する場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Occasionally, the front buffer becomes unavailable. This lack of availability can be caused by screen locking, full-screen exclusive Direct3D applications, user-switching, or other system activities. When this occurs, your WPF application is notified by handling the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event.  How your application responds to the front buffer becoming unavailable depends on whether WPF is enabled to fall back to software rendering. The <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method has an overload that takes a parameter that specifies whether WPF falls back to software rendering. For more information, see the remarks in the <xref:System.Windows.Interop.D3DImage> class.  
+## 解説  
+ 場合によっては、前面のバッファーが使用できなくなります。 この可用性の欠如は、画面のロック、排他 Direct3D アプリケーションを全画面表示、ユーザーの切り替え、または他のシステム アクティビティによって可能性があります。 WPF アプリケーションに通知処理されるこのような場合、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> イベントです。  アプリケーションの応答が使用できなくなるフロント バッファーには、ソフトウェア レンダリングにフォールバックする WPF が有効になっているかどうかによって異なります。<xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドは、WPF ソフトウェア レンダリングにフォールバックするかどうかを指定するパラメーターを受け取るオーバー ロードを持ちます。 詳細については、「解説」を参照してください、 <xref:System.Windows.Interop.D3DImage> クラスです。  
   
 <a name="dependencyPropertyInfo_IsFrontBufferAvailable"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
    
   
-## Examples  
- The following code example shows how to check the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailable%2A> property when rendering the composition target. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を確認する方法を示しています、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailable%2A> プロパティ合成ターゲットを表示するとき。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#2](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#2)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#2](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
+        <altmember cref="E:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged" />
       </Docs>
     </Member>
     <Member MemberName="IsFrontBufferAvailableChanged">
@@ -512,15 +590,21 @@
         <ReturnType>System.Windows.DependencyPropertyChangedEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the <see cref="P:System.Windows.Interop.D3DImage.IsFrontBufferAvailable" /> property changes.</summary>
+        <summary>
+          <see cref="P:System.Windows.Interop.D3DImage.IsFrontBufferAvailable" /> プロパティが変更されたときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Handle the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> to be notified when the status of the front buffer changes. How your application responds to the front buffer becoming unavailable depends on whether WPF is enabled to fall back to software rendering. The <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method has an overload that takes a parameter that specifies whether WPF falls back to software rendering. For more information, see the remarks in the <xref:System.Windows.Interop.D3DImage> class.  
+## 解説  
+ 処理、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> フロント バッファーの状態が変更されたときに通知します。 アプリケーションの応答が使用できなくなるフロント バッファーには、ソフトウェア レンダリングにフォールバックする WPF が有効になっているかどうかによって異なります。<xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドは、WPF ソフトウェア レンダリングにフォールバックするかどうかを指定するパラメーターを受け取るオーバー ロードを持ちます。 詳細については、「解説」を参照してください、 <xref:System.Windows.Interop.D3DImage> クラスです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Interop.D3DImage.IsFrontBufferAvailable" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
       </Docs>
     </Member>
     <Member MemberName="IsFrontBufferAvailableProperty">
@@ -536,8 +620,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Interop.D3DImage.IsFrontBufferAvailable" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Interop.D3DImage.IsFrontBufferAvailable" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Lock">
@@ -554,26 +647,28 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Locks the <see cref="T:System.Windows.Interop.D3DImage" /> and enables operations on the back buffer.</summary>
+        <summary>ロック、 <see cref="T:System.Windows.Interop.D3DImage" /> しバック バッファーに対して操作ができるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call the <xref:System.Windows.Interop.D3DImage.Lock%2A> method to change the back buffer by calling the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> and <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> methods. While the <xref:System.Windows.Interop.D3DImage> is locked, your application can also render to the Direct3D surface assigned to the back buffer.  
+## 解説  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.Lock%2A> バック バッファーを呼び出すことで変更する方法、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> と <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドです。 中に、 <xref:System.Windows.Interop.D3DImage> はロックされているアプリケーションもレンダリングできるバック バッファーに割り当てられている Direct3D 画面にします。  
   
 > [!NOTE]
->  The <xref:System.Windows.Interop.D3DImage.Lock%2A> method blocks when the rendering system is reading the back buffer to update the front buffer. Use the <xref:System.Windows.Interop.D3DImage.TryLock%2A> method to avoid blocking indefinitely.  
+>  <xref:System.Windows.Interop.D3DImage.Lock%2A> メソッドはレンダリング システムは、前面のバッファーを更新するバック バッファーを読み取るときに、ブロックします。 使用して、 <xref:System.Windows.Interop.D3DImage.TryLock%2A> を無期限にブロックを回避するためです。  
   
    
   
-## Examples  
- The following code example shows how to call the <xref:System.Windows.Interop.D3DImage.Lock%2A> method to enable updates to the back buffer. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を呼び出す方法を示します、 <xref:System.Windows.Interop.D3DImage.Lock%2A> バック バッファーへの更新を有効にします。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The lock count equals <see cref="F:System.UInt32.MaxValue" />.</exception>
+        <exception cref="T:System.InvalidOperationException">ロック カウント equals <see cref="F:System.UInt32.MaxValue" />します。</exception>
+        <altmember cref="M:System.Windows.Interop.D3DImage.TryLock(System.Windows.Duration)" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.Unlock" />
       </Docs>
     </Member>
     <Member MemberName="Metadata">
@@ -589,10 +684,17 @@
         <ReturnType>System.Windows.Media.ImageMetadata</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the metadata associated with the image source.</summary>
-        <value>
-          <see langword="null" /> in all cases.</value>
-        <remarks>To be added.</remarks>
+        <summary>イメージ ソースに関連付けられているメタデータを取得します。</summary>
+        <value>常に <see langword="null" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PixelHeight">
@@ -608,23 +710,25 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the height of the <see cref="T:System.Windows.Interop.D3DImage" />, in pixels.</summary>
-        <value>The height of the <see cref="T:System.Windows.Interop.D3DImage" />, in pixels.</value>
+        <summary>高さを取得、 <see cref="T:System.Windows.Interop.D3DImage" />, 、\(ピクセル単位\)。</summary>
+        <value>高さ、 <see cref="T:System.Windows.Interop.D3DImage" />, 、\(ピクセル単位\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of <xref:System.Windows.Interop.D3DImage.PixelHeight%2A> can change when a new back buffer is assigned by a call to the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method.  
+## 解説  
+ 値 <xref:System.Windows.Interop.D3DImage.PixelHeight%2A> への呼び出しによって、新しいバック バッファーが割り当てられたときに変更することができます、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example shows how to use the <xref:System.Windows.Interop.D3DImage.PixelHeight%2A> property to specify the changed region in the back buffer. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を使用する方法を示しています、 <xref:System.Windows.Interop.D3DImage.PixelHeight%2A> プロパティ バック バッファーに変更された領域を指定します。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Interop.D3DImage.PixelWidth" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
       </Docs>
     </Member>
     <Member MemberName="PixelWidth">
@@ -640,23 +744,25 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the width of the <see cref="T:System.Windows.Interop.D3DImage" />, in pixels.</summary>
-        <value>The width of the <see cref="T:System.Windows.Interop.D3DImage" />, in pixels.</value>
+        <summary>幅を取得、 <see cref="T:System.Windows.Interop.D3DImage" />, 、\(ピクセル単位\)。</summary>
+        <value>幅、 <see cref="T:System.Windows.Interop.D3DImage" />, 、\(ピクセル単位\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of <xref:System.Windows.Interop.D3DImage.PixelWidth%2A> can change when a new back buffer is assigned by a call to the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method.  
+## 解説  
+ 値 <xref:System.Windows.Interop.D3DImage.PixelWidth%2A> への呼び出しによって、新しいバック バッファーが割り当てられたときに変更することができます、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example shows how to use the <xref:System.Windows.Interop.D3DImage.PixelWidth%2A> property to specify the changed region in the back buffer. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を使用する方法を示しています、 <xref:System.Windows.Interop.D3DImage.PixelWidth%2A> プロパティ バック バッファーに変更された領域を指定します。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Interop.D3DImage.PixelHeight" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
       </Docs>
     </Member>
     <Member MemberName="SetBackBuffer">
@@ -676,44 +782,47 @@
         <Parameter Name="backBuffer" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="backBufferType">The type of Direct3D surface. Must be a valid <see cref="T:System.Windows.Interop.D3DResourceType" />.</param>
-        <param name="backBuffer">The Direct3D surface to assign as the back buffer.</param>
-        <summary>Assigns a Direct3D surface as the source of the back buffer.</summary>
+        <param name="backBufferType">Direct3D サーフェイスの型。 有効な <see cref="T:System.Windows.Interop.D3DResourceType" />です。</param>
+        <param name="backBuffer">バック バッファーとして割り当てる Direct3D サーフェイスです。</param>
+        <summary>バック バッファーのソースとして Direct3D サーフェスを割り当てます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method to assign a Direct3D surface to the back buffer.  
+## 解説  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> バック バッファーに Direct3D サーフェスを割り当てます。  
   
 > [!NOTE]
->  Performance depends greatly on the settings of the Direct3D surface. For more information, see [Performance Considerations for Direct3D9 and WPF Interoperability](~/docs/framework/wpf/advanced/performance-considerations-for-direct3d9-and-wpf-interoperability.md).  
+>  パフォーマンスは、Direct3D 画面の設定に大きく依存します。 詳細については、次を参照してください。 [パフォーマンス Direct3D9 および WPF 相互運用性に関する考慮事項](http://msdn.microsoft.com/ja-jp/ea8baf91-12fe-4b44-ac4d-477110ab14dd)します。  
   
- Calling the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> overload is identical to calling the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> overload with the `enableSoftwareFallback` parameter set to `false`. When you call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> or call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> with the `enableSoftwareFallback` parameter set to `false`, the rendering system releases its reference to the back buffer when front buffer becomes unavailable and nothing is displayed. When the front buffer is available again, the rendering system raises the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event to notify your WPF application.  You can create an event handler for the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event to restart rendering again with a valid Direct3D surface. To restart rendering, you must call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A>.  
+ 呼び出す、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> はのオーバー ロードを呼び出すことと同じ、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> でオーバー ロード、 `enableSoftwareFallback` パラメーターを設定する `false`です。 呼び出すと <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> 呼び出したり <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> で、 `enableSoftwareFallback` パラメーターを設定する `false`, 、レンダリング システムは、フロント バッファーが使用できなくなり、何も表示したときにバック バッファーへの参照を解放します。 フロント バッファーが再び使用可能、レンダリング システムを発生させます、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> WPF アプリケーションに通知するイベントです。  イベント ハンドラーを作成する、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> イベントを有効な Direct3D 画面を使用してレンダリングを再起動します。 表示するには、再開するを呼び出す必要があります <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A>します。  
   
- The following list shows the required back buffer settings for the `IDirect3DSurface9` type.  
+ 次の一覧のバック バッファーが必要な設定を表示する、 `IDirect3DSurface9` 型です。  
   
--   `D3DFMT_A8R8G8B8` or `D3DFMT_X8R8G8B8`  
+-   `D3DFMT_A8R8G8B8` または `D3DFMT_X8R8G8B8`  
   
 -   `D3DUSAGE_RENDERTARGET`  
   
 -   `D3DPOOL_DEFAULT`  
   
- Multisampling is allowed on `IDirect3DSurface9Ex` surfaces only.  
+ マルチ サンプリングが許可されて `IDirect3DSurface9Ex` のみを表示します。  
   
    
   
-## Examples  
- The following code example shows how to call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method to assign a Direct3D surface. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を呼び出す方法を示します、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> Direct3D サーフェスを割り当てます。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Windows.Interop.D3DImage" /> has not been locked by a call to the <see cref="M:System.Windows.Interop.D3DImage.Lock" /> or <see cref="M:System.Windows.Interop.D3DImage.TryLock(System.Windows.Duration)" /> methods.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="T:System.Windows.Interop.D3DImage" /> への呼び出しがロックされていない、 <see cref="M:System.Windows.Interop.D3DImage.Lock" /> または <see cref="M:System.Windows.Interop.D3DImage.TryLock(System.Windows.Duration)" /> メソッドです。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="backBufferType" /> is not a valid <see cref="T:System.Windows.Interop.D3DResourceType" />.</exception>
-        <exception cref="T:System.ArgumentException">The creation parameters for <paramref name="backBuffer" /> do not meet the requirements for the <paramref name="backBufferType" />-or-The <paramref name="backBuffer" /> device is not valid.</exception>
+          <paramref name="backBufferType" /> は有効な <see cref="T:System.Windows.Interop.D3DResourceType" /> ではありません。</exception>
+        <exception cref="T:System.ArgumentException">作成パラメーター <paramref name="backBuffer" /> の要件を満たしていない、 <paramref name="backBufferType" />\- または \-、 <paramref name="backBuffer" /> デバイスが無効です。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for access to unmanaged resources. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <altmember cref="M:System.Windows.Interop.D3DImage.Lock" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.Unlock" />
       </Docs>
     </Member>
     <Member MemberName="SetBackBuffer">
@@ -739,28 +848,28 @@
         <Parameter Name="enableSoftwareFallback" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="backBufferType">The type of Direct3D surface. Must be a valid <see cref="T:System.Windows.Interop.D3DResourceType" />.</param>
-        <param name="backBuffer">The Direct3D surface to assign as the back buffer.</param>
+        <param name="backBufferType">Direct3D サーフェイスの型。 有効な <see cref="T:System.Windows.Interop.D3DResourceType" />です。</param>
+        <param name="backBuffer">バック バッファーとして割り当てる Direct3D サーフェイスです。</param>
         <param name="enableSoftwareFallback">
-          <see langword="true" /> to fall back on software rendering; otherwise, <see langword="false" />.</param>
-        <summary>Assigns a Direct3D surface as the source of the back buffer.</summary>
+          <see langword="true" /> ソフトウェアの表示の切り替えそれ以外の場合、 <see langword="false" />です。</param>
+        <summary>バック バッファーのソースとして Direct3D サーフェスを割り当てます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> overload or call the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> overload with the `enableSoftwareFallback` parameter set to `false`, the rendering system releases its reference to the back buffer when the front buffer becomes unavailable and nothing is displayed. When the front buffer is available again, the rendering system raises the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event to notify your WPF application.  You can create an event handler for the <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> event to restart rendering again with a valid Direct3D surface. To restart rendering, you must call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A>.  
+## 解説  
+ 呼び出すと、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%29> オーバー ロードを呼び出したり、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> でオーバー ロード、 `enableSoftwareFallback` パラメーターを設定する `false`, 、レンダリング システムは、前面のバッファーが使用できなくなり、何も表示したときにバック バッファーへの参照を解放します。 フロント バッファーが再び使用可能、レンダリング システムを発生させます、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> WPF アプリケーションに通知するイベントです。  イベント ハンドラーを作成する、 <xref:System.Windows.Interop.D3DImage.IsFrontBufferAvailableChanged> イベントを有効な Direct3D 画面を使用してレンダリングを再起動します。 表示するには、再開するを呼び出す必要があります <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A>します。  
   
- When you call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> with the `enableSoftwareFallback` parameter set to `true`, the rendering system retains its reference to the back buffer when the front buffer becomes unavailable, so there is no need to call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> when the front buffer is available again.  There may be situations where the user’s device becomes unavailable.  When that occurs, call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> to release WPF’s reference to the back buffer.  If you need to reset your device, call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> with `backBuffer` set to `null`, and then call <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> again with `backBuffer` set to a valid Direct3D surface.  
+ 呼び出すと <xref:System.Windows.Interop.D3DImage.SetBackBuffer%28System.Windows.Interop.D3DResourceType%2CSystem.IntPtr%2CSystem.Boolean%29> で、 `enableSoftwareFallback` パラメーターを設定する `true`, 、レンダリング時に維持バック バッファーへの参照を呼び出す必要はありませんので、フロント バッファーが利用できなくなります <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> ときフロント バッファーが再びで使用可能です。  ユーザーのデバイスが使用できなくなった状況である可能性があります。  発生すると、呼び出す <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> バック バッファーへの WPF の参照を解放します。  デバイスをリセットする場合は、呼び出す <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> と `backBuffer` に設定 `null`, 、し、呼び出す <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> を使用して `backBuffer` Direct3D 画面を有効に設定します。  
   
- The following list shows the required back buffer settings for the `IDirect3DSurface9` type.  
+ 次の一覧のバック バッファーが必要な設定を表示する、 `IDirect3DSurface9` 型です。  
   
--   `D3DFMT_A8R8G8B8` or `D3DFMT_X8R8G8B8`  
+-   `D3DFMT_A8R8G8B8` または `D3DFMT_X8R8G8B8`  
   
 -   `D3DUSAGE_RENDERTARGET`  
   
 -   `D3DPOOL_DEFAULT`  
   
- Multisampling is allowed on `IDirect3DSurface9Ex` surfaces only.  
+ マルチ サンプリングが許可されて `IDirect3DSurface9Ex` のみを表示します。  
   
  ]]></format>
         </remarks>
@@ -782,14 +891,24 @@
         <Parameter Name="timeout" Type="System.Windows.Duration" />
       </Parameters>
       <Docs>
-        <param name="timeout">The duration to wait for the lock to be acquired.</param>
-        <summary>Attempts to lock the <see cref="T:System.Windows.Interop.D3DImage" /> and waits for the specified duration.</summary>
+        <param name="timeout">取得するロックを待機する期間です。</param>
+        <summary>ロックしようとしています、 <see cref="T:System.Windows.Interop.D3DImage" /> し、指定された時間待機します。</summary>
         <returns>
-          <see langword="true" /> if the lock was acquired; otherwise, <see langword="false" />.</returns>
-        <remarks>To be added.</remarks>
+          <see langword="true" /> ロックが取得された場合それ以外の場合、 <see langword="false" />です。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="timeout" /> is set to <see cref="P:System.Windows.Duration.Automatic" />.</exception>
-        <exception cref="T:System.InvalidOperationException">The lock count equals <see cref="F:System.UInt32.MaxValue" />.</exception>
+          <paramref name="timeout" /> が <see cref="P:System.Windows.Duration.Automatic" /> に設定されます。</exception>
+        <exception cref="T:System.InvalidOperationException">ロック カウント equals <see cref="F:System.UInt32.MaxValue" />します。</exception>
+        <altmember cref="M:System.Windows.Interop.D3DImage.Lock" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.Unlock" />
       </Docs>
     </Member>
     <Member MemberName="Unlock">
@@ -806,27 +925,29 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Decrements the lock count for the <see cref="T:System.Windows.Interop.D3DImage" />.</summary>
+        <summary>ロックのカウントをデクリメント、 <see cref="T:System.Windows.Interop.D3DImage" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the lock count for the <xref:System.Windows.Interop.D3DImage> reaches zero, the <xref:System.Windows.Interop.D3DImage> is fully unlocked. The <xref:System.Windows.Interop.D3DImage> is marked for rendering if the image has changed areas that were specified by previous calls to the <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> method.  
+## 解説  
+ ロックの数と、 <xref:System.Windows.Interop.D3DImage> がゼロに達すると、 <xref:System.Windows.Interop.D3DImage> が完全にロック解除します。<xref:System.Windows.Interop.D3DImage> イメージには、前の呼び出しで指定された領域が変更された場合は、レンダリングとマークされている、 <xref:System.Windows.Interop.D3DImage.AddDirtyRect%2A> メソッドです。  
   
- When the changes are committed and rendering occurs, additional calls to the <xref:System.Windows.Interop.D3DImage.Lock%2A> method block until the render thread has copied the contents of the back buffer to the front buffer. This synchronization avoids display artifacts, such as tearing.  
+ ときに、変更がコミットされ、レンダリングが実行すると、それ以上の呼び出し、 <xref:System.Windows.Interop.D3DImage.Lock%2A> メソッド ブロックまでレンダリング スレッドは、前面のバッファーにバック バッファーの内容をコピーします。 この同期は、設定解除を行うなどのディスプレイの成果物を回避できます。  
   
 > [!NOTE]
->  Do not update the Direct3D surface while the <xref:System.Windows.Interop.D3DImage> is unlocked.  
+>  中に、Direct3D 画面を更新していない、 <xref:System.Windows.Interop.D3DImage> のロックが解除されます。  
   
    
   
-## Examples  
- The following code example shows how to call the <xref:System.Windows.Interop.D3DImage.Unlock%2A> method to copy the updated back buffer to the front buffer. For more information, see [Walkthrough: Hosting Direct3D9 Content in WPF](~/docs/framework/wpf/advanced/walkthrough-hosting-direct3d9-content-in-wpf.md).  
+## 例  
+ 次のコード例を呼び出す方法を示します、 <xref:System.Windows.Interop.D3DImage.Unlock%2A> フロント バッファーに更新されたバック バッファーをコピーします。 詳細については、次を参照してください。 [チュートリアル: WPF で Direct3D9 のコンテンツをホストしている](http://msdn.microsoft.com/ja-jp/60983736-0ab5-42cc-8b16-e9fbde261a43)します。  
   
- [!code-csharp[System.Windows.Interop.D3DImage#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
+ [!code-csharp[System.Windows.Interop.D3DImage\#3](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Interop.D3DImage/CS/window1.xaml.cs#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Interop.D3DImage.Lock" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.TryLock(System.Windows.Duration)" />
       </Docs>
     </Member>
     <Member MemberName="Width">
@@ -842,17 +963,53 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the width of the <see cref="T:System.Windows.Interop.D3DImage" />.</summary>
-        <value>The width of the <see cref="T:System.Windows.Interop.D3DImage" />, in measure units. A measure unit is 1/96th inch.</value>
+        <summary>幅を取得、 <see cref="T:System.Windows.Interop.D3DImage" />です。</summary>
+        <value>幅、 <see cref="T:System.Windows.Interop.D3DImage" />, の単位を測定します。 測定単位とは、1\/96 インチです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of <xref:System.Windows.Interop.D3DImage.Width%2A> can change when a new back buffer is assigned by a call to the <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> method.  
+## 解説  
+ 値 <xref:System.Windows.Interop.D3DImage.Width%2A> への呼び出しによって、新しいバック バッファーが割り当てられたときに変更することができます、 <xref:System.Windows.Interop.D3DImage.SetBackBuffer%2A> メソッドです。  
   
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Interop.D3DImage.Height" />
+        <altmember cref="M:System.Windows.Interop.D3DImage.SetBackBuffer(System.Windows.Interop.D3DResourceType,System.IntPtr)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Windows.Interop.D3DImage" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
  ]]></format>
         </remarks>
       </Docs>
-    </Member>
+    </MemberGroup>
+    <MemberGroup MemberName="SetBackBuffer">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>バック バッファーのソースとして Direct3D サーフェスを割り当てます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

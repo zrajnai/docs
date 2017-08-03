@@ -17,43 +17,43 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides a managed equivalent of an unmanaged host.</summary>
+    <summary>アンマネージ ホストに対応するマネージ ホストを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  Do not use <xref:System.AppDomainManager> to configure an application domain in ASP.NET. In ASP.NET, configuration must be handled by the host.  
+>  使用しないでください<xref:System.AppDomainManager>を ASP.NET では、アプリケーション ドメインを構成します。 ASP.NET では、構成は、ホストで処理する必要があります。  
   
- Implementing the <xref:System.AppDomainManager> class enables a hosting application to participate in the creation of new application domains. To replace the default <xref:System.AppDomainManager>, identify the assembly and type of the replacement <xref:System.AppDomainManager> in the APPDOMAIN_MANAGER_ASM and APPDOMAIN_MANAGER_TYPE environment variables, or use the [\<appDomainManagerAssembly>](~/docs/framework/configure-apps/file-schema/runtime/appdomainmanagerassembly-element.md) and [\<appDomainManagerType>](~/docs/framework/configure-apps/file-schema/runtime/appdomainmanagertype-element.md) elements in your configuration file. The assembly must be fully trusted and be contained in the global assembly cache or the directory of the starting application. The type and assembly names must be fully qualified in the environment variables. For example:  
+ 実装する、<xref:System.AppDomainManager>クラスには、新しいアプリケーション ドメインの作成に参加するホスト アプリケーションができるようにします。 既定値を置換する<xref:System.AppDomainManager>、アセンブリと種類、置換の特定<xref:System.AppDomainManager>APPDOMAIN\_MANAGER\_ASM および APPDOMAIN\_MANAGER\_TYPE の環境変数、またはを使用して、 [\<appDomainManagerAssembly\>](http://msdn.microsoft.com/ja-jp/c7c56e39-a700-44f5-b94e-411bfce339d9)と[\<appDomainManagerType\>](http://msdn.microsoft.com/ja-jp/ae8d5a7e-e7f7-47f7-98d9-455cc243a322)構成ファイル内の要素\<\/appDomainManagerType\>\<\/appDomainManagerAssembly\>。 アセンブリは完全に信頼される必要があり、グローバル アセンブリ キャッシュまたは開始のアプリケーションのディレクトリに含まれています。 型とアセンブリ名は、環境変数で完全修飾する必要があります。 例:  
   
  `set APPDOMAIN_MANAGER_TYPE=MyNamespace.TestAppDomainManager`  
   
  `set APPDOMAIN_MANAGER_ASM=customappDomainmanager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f1368f7b12a08d72`  
   
 > [!IMPORTANT]
->  If the assembly that contains your subclass of <xref:System.AppDomainManager> depends on assemblies that are marked with the conditional <xref:System.Security.AllowPartiallyTrustedCallersAttribute> (APTCA) attribute, you must include those assemblies in the list that you pass to the <xref:System.AppDomainSetup.PartialTrustVisibleAssemblies%2A> property of the <xref:System.AppDomainSetup> you use to create application domains. Otherwise, the assemblies that are marked with the conditional APTCA attribute will be disabled.  
+>  アセンブリを含む、サブクラスの<xref:System.AppDomainManager>、条件付きでマークされたアセンブリに依存して<xref:System.Security.AllowPartiallyTrustedCallersAttribute>\(APTCA\) 属性が、渡されたリストでそれらのアセンブリを含める必要があります、<xref:System.AppDomainSetup.PartialTrustVisibleAssemblies%2A>プロパティの<xref:System.AppDomainSetup>を使用するアプリケーション ドメインを作成します。 それ以外の場合、条件付きの APTCA 属性でマークされたアセンブリが無効になります。  
   
- The <xref:System.AppDomainManager> is the managed equivalent of the unmanaged host. An <xref:System.AppDomainManager> object participates in the creation of new application domains in a process and can customize the new <xref:System.AppDomain> before other managed code runs. The <xref:System.AppDomainManager> can also supply host managers that participate in other aspects of common language runtime execution. For example, an <xref:System.AppDomainManager> can identify a <xref:System.Security.HostSecurityManager> object that participates in the security decisions of the application domain.  
-  
-> [!NOTE]
->  Only assemblies granted `FullTrust`, such as assemblies in the global assembly cache or identified as `fullTrustAssemblies` in the <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=fullName> method can be loaded in the  <xref:System.AppDomainManager.%23ctor%2A> constructor and the <xref:System.AppDomainManager.InitializeNewDomain%2A> method.  
+ <xref:System.AppDomainManager>アンマネージ ホストの管理されていることと同じです。<xref:System.AppDomainManager>オブジェクトがプロセスの新しいアプリケーション ドメインの作成に参加して、新しいをカスタマイズできます<xref:System.AppDomain>他のマネージ コードが実行される前にします。<xref:System.AppDomainManager>共通言語ランタイムの実行の他の側面に参加しているホストの管理者を指定することもできます。 たとえば、<xref:System.AppDomainManager>識別できる、<xref:System.Security.HostSecurityManager>アプリケーション ドメインのセキュリティ上の決定に参加しているオブジェクト。  
   
 > [!NOTE]
->  This class contains a link demand and an inheritance demand at the class level. A <xref:System.Security.SecurityException> is thrown when either the immediate caller or the derived class does not have infrastructure permission. For details about security demands, see [Link Demands](~/docs/framework/misc/link-demands.md) and [Inheritance Demands](http://msdn.microsoft.com/en-us/28b9adbb-8f08-4f10-b856-dbf59eb932d9).  
+>  付与するアセンブリだけ`FullTrust`、グローバル アセンブリ キャッシュにアセンブリなどかとして識別されて`fullTrustAssemblies`で、<xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=fullName>でメソッドを読み込むことができます、<xref:System.AppDomainManager.%23ctor%2A>コンス トラクターと<xref:System.AppDomainManager.InitializeNewDomain%2A>メソッドです。  
+  
+> [!NOTE]
+>  このクラスには、リンク確認要求し、クラス レベルの継承確認要求が含まれています。 A<xref:System.Security.SecurityException>直前の呼び出し元または派生クラスのいずれかに、インフラストラクチャのアクセス許可があるない場合にスローされます。 セキュリティ要求の詳細については、「[Link Demands](http://msdn.microsoft.com/ja-jp/a33fd5f9-2de9-4653-a4f0-d9df25082c4d)と[継承確認要求](http://msdn.microsoft.com/ja-jp/28b9adbb-8f08-4f10-b856-dbf59eb932d9)です。  
   
    
   
-## Examples  
- The following example shows a very simple implementation of <xref:System.AppDomainManager>.  
+## 例  
+ 次の例は、の非常に単純な実装を示しています。<xref:System.AppDomainManager>です。  
   
- [!code-csharp[System.AppDomainManager#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#1)]
- [!code-vb[System.AppDomainManager#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#1)]  
+ [!code-csharp[System.AppDomainManager\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#1)]
+ [!code-vb[System.AppDomainManager\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#1)]  
   
  ]]></format>
     </remarks>
-    <exception cref="T:System.Security.SecurityException">The caller does not have the correct permissions. See the Requirements section.</exception>
+    <exception cref="T:System.Security.SecurityException">呼び出し元に、正しいアクセス許可がありません。 「必要条件」のセクションを参照してください。</exception>
     <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
     <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">for derived classes to plug executable code into the common language runtime hosting infrastructure. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" />.</permission>
   </Docs>
@@ -70,14 +70,15 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.AppDomainManager" /> class.</summary>
+        <summary>
+          <see cref="T:System.AppDomainManager" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  Only assemblies granted `FullTrust`, such as assemblies in the global assembly cache or identified as `fullTrustAssemblies` in the <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=fullName> method can be loaded in the  <xref:System.AppDomainManager.%23ctor%2A> constructor and the <xref:System.AppDomainManager.InitializeNewDomain%2A> method.  
+>  付与するアセンブリだけ`FullTrust`、グローバル アセンブリ キャッシュにアセンブリなどかとして識別されて`fullTrustAssemblies`で、<xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=fullName>でメソッドを読み込むことができます、<xref:System.AppDomainManager.%23ctor%2A>コンス トラクターと<xref:System.AppDomainManager.InitializeNewDomain%2A>メソッドです。  
   
  ]]></format>
         </remarks>
@@ -98,13 +99,13 @@
         <ReturnType>System.Runtime.Hosting.ApplicationActivator</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the application activator that handles the activation of add-ins and manifest-based applications for the domain.</summary>
-        <value>The application activator.</value>
+        <summary>アドインと、ドメインのマニフェストに基づくアプリケーションのアクティブ化を処理するアプリケーション アクティベーターを取得します。</summary>
+        <value>アプリケーション アクティベーター。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- There is a single designated instance of the <xref:System.Runtime.Hosting.ApplicationActivator> class in each <xref:System.AppDomain> to which all add-in and manifest-based application activation calls are routed. The <xref:System.AppDomainManager> for the current <xref:System.AppDomain> can provide its own custom <xref:System.Runtime.Hosting.ApplicationActivator>, or an instance of the default <xref:System.Runtime.Hosting.ApplicationActivator> is created.  
+## 解説  
+ 1 つの指定されたインスタンスがある、<xref:System.Runtime.Hosting.ApplicationActivator>クラスにそれぞれ<xref:System.AppDomain>するすべてのアドインと、マニフェストに基づくアプリケーションをアクティブ化の呼び出しがルーティングされます。<xref:System.AppDomainManager>現在の<xref:System.AppDomain>独自のカスタムを提供できます<xref:System.Runtime.Hosting.ApplicationActivator>、または既定のインスタンス<xref:System.Runtime.Hosting.ApplicationActivator>を作成します。  
   
  ]]></format>
         </remarks>
@@ -127,18 +128,21 @@
         <Parameter Name="state" Type="System.Security.SecurityState" />
       </Parameters>
       <Docs>
-        <param name="state">A subclass of <see cref="T:System.Security.SecurityState" /> that identifies the operation whose security status is requested.</param>
-        <summary>Indicates whether the specified operation is allowed in the application domain.</summary>
+        <param name="state">サブクラス<see cref="T:System.Security.SecurityState" />セキュリティ状態が要求された操作を識別します。</param>
+        <summary>アプリケーション ドメインで、指定された操作が許可されているかどうかを示します。</summary>
         <returns>
-          <see langword="true" /> if the host allows the operation specified by <paramref name="state" /> to be performed in the application domain; otherwise, <see langword="false" />.</returns>
+          <see langword="true" />ホストがで指定された操作を許可する場合<paramref name="state" />、それ以外のアプリケーション ドメインで実行する<see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this method returns `false`.  
+## 解説  
+ このメソッドの既定の実装を返します`false`です。  
   
- This method is called when the <xref:System.IO.IsolatedStorage.IsolatedStorageFile.IncreaseQuotaTo%2A?displayProperty=fullName> method has been called to increase the isolated storage quota. An application that hosts the common language runtime (CLR) can override the <xref:System.AppDomainManager.CheckSecuritySettings%2A> method to perform policy decisions based on an <xref:System.IO.IsolatedStorage.IsolatedStorageSecurityState> object (which inherits <xref:System.Security.SecurityState>), and can then allow or prevent the increase. For example, a host could prompt the end user to approve or deny the request to increase the quota. The host's implementation of <xref:System.AppDomainManager.CheckSecuritySettings%2A> should take into account the possibility of denial-of-service attacks. For example, it should prompt the user only if the method is called from a user-initiated event such as a button click.  
+ このメソッドが呼び出されます、<xref:System.IO.IsolatedStorage.IsolatedStorageFile.IncreaseQuotaTo%2A?displayProperty=fullName>分離ストレージ クォータを増やすメソッドが呼び出されました。 共通言語ランタイム \(CLR\) をホストするアプリケーションを上書きできます、<xref:System.AppDomainManager.CheckSecuritySettings%2A>に基づいてポリシーを決定を実行する方法、<xref:System.IO.IsolatedStorage.IsolatedStorageSecurityState>オブジェクト \(継承される<xref:System.Security.SecurityState>\)、およびできますし、許可または禁止、増加します。 たとえば、ホスト促すことが終了承認するか、クォータを増やすに要求を拒否します。 ホストの実装<xref:System.AppDomainManager.CheckSecuritySettings%2A>サービス拒否攻撃の可能性を考慮する必要があります。 たとえば、ユーザーに求めますがボタンのクリックしてなど、ユーザーが開始したイベントからメソッドを呼び出した場合にのみ必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -162,18 +166,18 @@
         <Parameter Name="appDomainInfo" Type="System.AppDomainSetup" />
       </Parameters>
       <Docs>
-        <param name="friendlyName">The friendly name of the domain.</param>
-        <param name="securityInfo">An object that contains evidence mapped through the security policy to establish a top-of-stack permission set.</param>
-        <param name="appDomainInfo">An object that contains application domain initialization information.</param>
-        <summary>Returns a new or existing application domain.</summary>
-        <returns>A new or existing application domain.</returns>
+        <param name="friendlyName">ドメインの表示名。</param>
+        <param name="securityInfo">スタックの最上位の権限を確立するためにセキュリティ ポリシーによってマップされている証拠を含むオブジェクトを設定します。</param>
+        <param name="appDomainInfo">アプリケーション ドメインの初期化情報を格納しているオブジェクト。</param>
+        <summary>新規または既存のアプリケーション ドメインを返します。</summary>
+        <returns>新規または既存のアプリケーション ドメイン。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The friendly name, specified by the `friendlyName` parameter, can be displayed in user interfaces to identify the domain. For more information, see the <xref:System.AppDomain.FriendlyName%2A> property.  
+## 解説  
+ 指定された名前、`friendlyName`パラメーターは、ドメインを識別するユーザー インターフェイスに表示できます。 詳細については、<xref:System.AppDomain.FriendlyName%2A> プロパティを参照してください。  
   
- The default <xref:System.AppDomainManager.CreateDomain%2A> method calls the protected <xref:System.AppDomainManager.CreateDomainHelper%2A> method to create the <xref:System.AppDomain>. Overrides of this method do not need to call the <xref:System.AppDomainManager.CreateDomainHelper%2A> method but can return an existing domain.  
+ 既定の<xref:System.AppDomainManager.CreateDomain%2A>メソッドは、保護された<xref:System.AppDomainManager.CreateDomainHelper%2A>メソッドを作成、<xref:System.AppDomain>です。 このメソッドのオーバーライドを呼び出す必要はありません、<xref:System.AppDomainManager.CreateDomainHelper%2A>メソッドが、既存のドメインを返すことができます。  
   
  ]]></format>
         </remarks>
@@ -201,23 +205,23 @@
         <Parameter Name="appDomainInfo" Type="System.AppDomainSetup" />
       </Parameters>
       <Docs>
-        <param name="friendlyName">The friendly name of the domain.</param>
-        <param name="securityInfo">An object that contains evidence mapped through the security policy to establish a top-of-stack permission set.</param>
-        <param name="appDomainInfo">An object that contains application domain initialization information.</param>
-        <summary>Provides a helper method to create an application domain.</summary>
-        <returns>A newly created application domain.</returns>
+        <param name="friendlyName">ドメインの表示名。</param>
+        <param name="securityInfo">スタックの最上位の権限を確立するためにセキュリティ ポリシーによってマップされている証拠を含むオブジェクトを設定します。</param>
+        <param name="appDomainInfo">アプリケーション ドメインの初期化情報を格納しているオブジェクト。</param>
+        <summary>アプリケーション ドメインを作成するヘルパー メソッドを提供します。</summary>
+        <returns>新しく作成されたアプリケーション ドメイン。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This protected helper method handles the creation of a new application domain.  
+## 解説  
+ この保護されたヘルパー メソッドは、新しいアプリケーション ドメインの作成を処理します。  
   
- This friendly name, specified by the `friendlyName` parameter, can be displayed in user interfaces to identify the domain. For more information, see the <xref:System.AppDomain.FriendlyName%2A> property.  
+ 指定されたこのフレンドリ名、`friendlyName`パラメーターは、ドメインを識別するユーザー インターフェイスに表示できます。 詳細については、<xref:System.AppDomain.FriendlyName%2A> プロパティを参照してください。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="friendlyName" /> is <see langword="null" />.</exception>
+          <paramref name="friendlyName" /> は <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for controlling evidence. Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence" /></permission>
       </Docs>
     </Member>
@@ -235,13 +239,13 @@
         <ReturnType>System.Reflection.Assembly</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the entry assembly for an application.</summary>
-        <value>The entry assembly for the application.</value>
+        <summary>アプリケーションのエントリのアセンブリを取得します。</summary>
+        <value>アプリケーションのエントリのアセンブリ。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the application is a manifest-activated application, the entry assembly is determined from the application manifest. If the application is not manifest activated, the entry assembly is the process executable in the default application domain. In other application domains, the entry assembly is the first executable that was executed by the <xref:System.AppDomain.ExecuteAssembly%2A?displayProperty=fullName> method.  
+## 解説  
+ アプリケーションがマニフェストでアクティブ化されるアプリケーションの場合は、入力アセンブリがアプリケーション マニフェストから決定されます。 アプリケーションがマニフェスト アクティブでない場合、入力アセンブリは既定のアプリケーション ドメインで実行可能プロセスです。 他のアプリケーション ドメインで、入力アセンブリは、実行された最初の実行可能ファイル、 <xref:System.AppDomain.ExecuteAssembly%2A?displayProperty=fullName> メソッドです。  
   
  ]]></format>
         </remarks>
@@ -261,13 +265,13 @@
         <ReturnType>System.Threading.HostExecutionContextManager</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the host execution context manager that manages the flow of the execution context.</summary>
-        <value>The host execution context manager.</value>
+        <summary>実行コンテキストのマネージャーの実行コンテキストのフローを管理するホストを取得します。</summary>
+        <value>ホストの実行コンテキスト マネージャー。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property allows a host to provide a <xref:System.Threading.HostExecutionContextManager> that can participate in the flow of the execution context across asynchronous calls.  
+## 解説  
+ このプロパティにより、ホスト、<xref:System.Threading.HostExecutionContextManager>非同期呼び出し間での実行コンテキストのフローに参加することができます。  
   
  ]]></format>
         </remarks>
@@ -287,21 +291,21 @@
         <ReturnType>System.Security.HostSecurityManager</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the host security manager that participates in security decisions for the application domain.</summary>
-        <value>The host security manager.</value>
+        <summary>セキュリティに参加しているホスト セキュリティ マネージャーがアプリケーション ドメインの決定を取得します。</summary>
+        <value>ホストのセキュリティ マネージャー。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property allows a host to provide a <xref:System.Security.HostSecurityManager> to participate in the security decisions for the application domain.  
+## 解説  
+ このプロパティにより、ホスト、<xref:System.Security.HostSecurityManager>のアプリケーション ドメインに対するセキュリティ上の決定に参加します。  
   
    
   
-## Examples  
- The following example shows an override of the <xref:System.AppDomainManager.HostSecurityManager%2A> property for a custom application domain manager. This code example is part of a larger example provided for the <xref:System.AppDomainManager> class.  
+## 例  
+ 次の例のオーバーライドを示しています、<xref:System.AppDomainManager.HostSecurityManager%2A>カスタム アプリケーション ドメイン マネージャーのプロパティです。 このコード例に示されている例の一部である、<xref:System.AppDomainManager>クラスです。  
   
- [!code-csharp[System.AppDomainManager#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#3)]
- [!code-vb[System.AppDomainManager#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#3)]  
+ [!code-csharp[System.AppDomainManager\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#3)]
+ [!code-vb[System.AppDomainManager\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -321,9 +325,14 @@
         <ReturnType>System.AppDomainManagerInitializationOptions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the initialization flags for custom application domain managers.</summary>
-        <value>A bitwise combination of the enumeration values that describe the initialization action to perform. The default is <see cref="F:System.AppDomainManagerInitializationOptions.None" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>カスタムのアプリケーション ドメイン マネージャーの初期化フラグを取得します。</summary>
+        <value>実行する初期化操作を記述する列挙値のビットごとの組み合わせ。 既定値は、<see cref="F:System.AppDomainManagerInitializationOptions.None" /> です。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InitializeNewDomain">
@@ -343,32 +352,32 @@
         <Parameter Name="appDomainInfo" Type="System.AppDomainSetup" />
       </Parameters>
       <Docs>
-        <param name="appDomainInfo">An object that contains application domain initialization information.</param>
-        <summary>Initializes the new application domain.</summary>
+        <param name="appDomainInfo">アプリケーション ドメインの初期化情報を格納しているオブジェクト。</param>
+        <summary>新しいアプリケーション ドメインを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  Do not use this method to initialize an application domain in ASP.NET. In ASP.NET, configuration must be handled by the host. If you use this method to initialize the application domain, the host throws <xref:System.InvalidOperationException> when it attempts to initialize the application domain. The exception message indicates that initialization has already occurred.  
+>  ASP.NET では、アプリケーション ドメインを初期化するためにこのメソッドを使用しないでください。 ASP.NET では、構成は、ホストで処理する必要があります。 アプリケーション ドメインを初期化するためにこのメソッドを使用する場合、ホストをスロー <xref:System.InvalidOperationException> しようとするアプリケーション ドメインを初期化します。 例外メッセージは、初期化が既に行われたことを示します。  
   
- This method is called immediately after the constructor. The default <xref:System.AppDomainManager.InitializeNewDomain%2A> implementation does nothing.  A custom implementation can set up internal classes and delegates, set up an interface with the unmanaged host interface, or set up event handlers for the new <xref:System.AppDomain>.  
+ このメソッドは、コンス トラクターの直後に呼び出されます。 既定値 <xref:System.AppDomainManager.InitializeNewDomain%2A> 実装では、何も行われません。  カスタム実装は、内部クラスとデリゲートを設定する、アンマネージ ホスト インターフェイスを持つインターフェイスの設定、または、新しいイベント ハンドラーを設定 <xref:System.AppDomain>します。  
   
- Also, for add-in activations, a custom implementation could identify the current <xref:System.AppDomain> as the target application domain.  
+ また、アドインをアクティブ化のカスタム実装識別でした現在 <xref:System.AppDomain> 対象のアプリケーション ドメインとします。  
   
- Beginning with the [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], you can use this method to sandbox the default application domain at application startup, or to modify the sandbox of a new application domain. To do this, adjust the <xref:System.Security.Policy.ApplicationTrust.DefaultGrantSet%2A> and <xref:System.Security.Policy.ApplicationTrust.FullTrustAssemblies%2A> properties on the <xref:System.Security.Policy.ApplicationTrust> object that is assigned to the <xref:System.AppDomainSetup.ApplicationTrust%2A?displayProperty=fullName> property of `appDomainInfo`, before you initialize the application domain.  
+ 以降で、 [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], 、アプリケーションの起動時に、または新しいアプリケーション ドメインのサンド ボックスを変更するため、既定のアプリケーション ドメインのサンド ボックス化するには、このメソッドを使用することができます。 これを行うには、次のように調整します。、 <xref:System.Security.Policy.ApplicationTrust.DefaultGrantSet%2A> と <xref:System.Security.Policy.ApplicationTrust.FullTrustAssemblies%2A> プロパティを、 <xref:System.Security.Policy.ApplicationTrust> オブジェクトに割り当てられている、 <xref:System.AppDomainSetup.ApplicationTrust%2A?displayProperty=fullName> プロパティの `appDomainInfo`, は、アプリケーション ドメインを初期化する前にします。  
   
 > [!NOTE]
->  Only assemblies granted `FullTrust`, such as assemblies in the global assembly cache or identified as `fullTrustAssemblies` in the <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=fullName> method can be loaded in the  <xref:System.AppDomainManager.%23ctor%2A> constructor and the <xref:System.AppDomainManager.InitializeNewDomain%2A> method.  
+>  付与アセンブリだけ `FullTrust`, 、グローバル アセンブリ キャッシュにアセンブリなどとして識別されたまたは `fullTrustAssemblies` で、 <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=fullName> でメソッドを読み込むことが、  <xref:System.AppDomainManager.%23ctor%2A> コンス トラクターと <xref:System.AppDomainManager.InitializeNewDomain%2A> メソッドです。  
   
    
   
-## Examples  
- The following example shows an override of the <xref:System.AppDomainManager.InitializeNewDomain%2A> method for a custom application domain manager. This code example is part of a larger example provided for the <xref:System.AppDomainManager> class.  
+## 例  
+ オーバーライドを次の例に示します、 <xref:System.AppDomainManager.InitializeNewDomain%2A> カスタムのアプリケーション ドメイン マネージャーのメソッドです。 このコード例が示されている例の一部は、 <xref:System.AppDomainManager> クラスです。  
   
- [!code-csharp[System.AppDomainManager#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#2)]
- [!code-vb[System.AppDomainManager#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#2)]  
+ [!code-csharp[System.AppDomainManager\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#2)]
+ [!code-vb[System.AppDomainManager\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#2)]  
   
  ]]></format>
         </remarks>

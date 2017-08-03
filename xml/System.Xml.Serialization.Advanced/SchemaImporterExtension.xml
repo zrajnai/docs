@@ -11,39 +11,39 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Allows you to customize the code generated from a Web Services Description Language (WSDL) document when using automated query tools.</summary>
+    <summary>自動クエリ ツールを使用する場合に、Web サービス記述言語 \(WSDL\) ドキュメントから生成されるコードをカスタマイズできます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Schema importation occurs whenever a Web service proxy is produced through a tool such as the Add Web Reference dialog box found in Visual Studio, or by using the [Web Services Description Language Tool (Wsdl.exe)](http://msdn.microsoft.com/en-us/b9210348-8bc2-4367-8c91-d1a04b403e88). Schema importation also occurs when using the [XML Schema Definition Tool (Xsd.exe)](~/docs/framework/serialization/xml-schema-definition-tool-xsd-exe.md) to generate code from a specific XSD document.  
+## 解説  
+ スキーマのインポートは、Web 参照の追加\] ダイアログ ボックスなどのツールで Web サービス プロキシが生成されるたびに発生するボックスを使用して、Visual Studio で、 [Web サービス記述言語ツール \(Wsdl.exe\)](http://msdn.microsoft.com/ja-jp/b9210348-8bc2-4367-8c91-d1a04b403e88)します。 スキーマのインポートを使用する場合にも発生する、 [XML Schema Definition Tool \(Xsd.exe\)](http://msdn.microsoft.com/ja-jp/a6e6e65c-347f-4494-9457-653bf29baac2) 特定の XSD ドキュメントからコードを生成します。  
   
- The <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> class allows you to modify the code generated when using any of these tools. For example, you may have an existing class that processes book orders on a system and you have an existing XSD document that supplies your orders. Using the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> class, you can enable one of the tools to generate code that uses your class.  
+ <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> クラスでは、これらのツールを使用する場合に生成されたコードを変更することができます。 たとえば、システムでプロセスの書籍を注文し、注文を提供する既存の XSD ドキュメントである既存のクラスがあります。 使用して、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> クラスを有効にできます、クラスを使用するコードを生成するツールの 1 つです。  
   
- In order to control the generation of the code, you must use the classes found in the <xref:System.CodeDom> namespace. For more information, see [Using the CodeDOM](~/docs/framework/reflection-and-codedom/using-the-codedom.md) and [CodeDOM Quick Reference](http://msdn.microsoft.com/en-us/c77b8bfd-0a32-4e36-b59a-4f687f32c524).  
+ 内で見つかったクラスを使用する必要があります、コードの生成を制御するために、 <xref:System.CodeDom> 名前空間。 詳細については、次を参照してください。 [Using the CodeDOM](http://msdn.microsoft.com/ja-jp/0444ddf3-c3f6-44ed-a999-f710d9c3e0cf) と [CodeDOM クイック リファレンス](http://msdn.microsoft.com/ja-jp/c77b8bfd-0a32-4e36-b59a-4f687f32c524)します。  
   
- The steps to enabling the WSDL.exe tool (which in turn is used by other tools such as the Add Web Reference dialog box) to use your extension are:  
+ 拡張機能を使用する \(これには Web 参照の追加\] ダイアログ ボックスなどの他のツールによって使用されます\)、WSDL.exe ツールを有効にする手順は次のとおりです。  
   
-1.  Create an implementation of the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> class.  
+1.  実装を作成、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> クラスです。  
   
-2.  Use the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%2A> method to write code for the code generator. The method contains parameters that allow you to examine the intercepted XSD type and create CodeDOM objects that are used to generate the new CLR code.  
+2.  使用して、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%2A> コード ジェネレーターのコードを記述する方法です。 メソッドには、傍受した XSD 型を確認し、新しい CLR コードの生成に使用される CodeDOM オブジェクトを作成するためのパラメーターが含まれています。  
   
-3.  If required, use the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportAnyElement%2A> method to handle \<xsd:any> elements found in the XSD document.  
+3.  必要に応じて、使用、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportAnyElement%2A> 処理するメソッドを \< xsd: 任意 \> 要素が XSD ドキュメントに存在します。  
   
-4.  If required, use the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportDefaultValue%2A> method to examine default values found in the XSD document and return a different default value.  
+4.  必要に応じて、使用、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportDefaultValue%2A> 既定値を確認するメソッドは、XSD ドキュメントで見つかったし、別の既定値を返します。  
   
-5.  Compile your extension into a library.  
+5.  拡張機能をライブラリにコンパイルします。  
   
-6.  Sign the assembly.  
+6.  アセンブリに署名します。  
   
-7.  Install the assembly in the Global Assembly Cache (GAC).  
+7.  アセンブリをグローバル アセンブリ キャッシュ \(GAC\) にインストールします。  
   
-8.  Modify the machine.config file to include the extension.  
+8.  拡張子を含めるために machine.config ファイルを変更します。  
   
    
   
-## Examples  
- See the [SchemaImporterExtension Technology Sample](~/docs/framework/serialization/schemaimporterextension-technology-sample.md). Note that this example does not include a signed assembly. Instead, it demonstrates how to use the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> with a command window.  
+## 例  
+ 「[SchemaImporterExtension Technology Sample](http://msdn.microsoft.com/ja-jp/3f5eb78f-0ef6-433a-b095-3a63b1ce0bc9)」を参照してください。 この例には署名付きアセンブリが含まれていないことに注意してください。 代わりに、使用する方法を示します、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension> コマンド ウィンドウにします。  
   
  ]]></format>
     </remarks>
@@ -60,8 +60,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.Serialization.Advanced.SchemaImporterExtension" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Xml.Serialization.Advanced.SchemaImporterExtension" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ImportAnyElement">
@@ -87,22 +96,28 @@
         <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
       </Parameters>
       <Docs>
-        <param name="any">An <see cref="T:System.Xml.Schema.XmlSchemaAny" /> that represents the <see langword="xsd:any" /> element found in the XML Schema Document (XSD).</param>
-        <param name="mixed">A <see cref="T:System.Boolean" /> that indicates whether the XSD <see langword="complex" /> attribute has been set to "mixed". <see langword="true" />, if the attribute has been set to mixed, otherwise <see langword="false" />.</param>
-        <param name="schemas">An <see cref="T:System.Xml.Serialization.XmlSchemas" /> that contains the collection of schemas found in the XSD.</param>
-        <param name="importer">The <see cref="T:System.Xml.Serialization.XmlSchemaImporter" /> that is the importer being used.</param>
-        <param name="compileUnit">A <see cref="T:System.CodeDom.CodeCompileUnit" /> to which you can add CodeDOM structures to generate alternative code for the XSD.</param>
-        <param name="mainNamespace">A <see cref="T:System.CodeDom.CodeNamespace" /> that represents the current namespace for the element.</param>
-        <param name="options">A <see cref="T:System.Xml.Serialization.CodeGenerationOptions" /> for the setting options on the code compiler.</param>
-        <param name="codeProvider">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> that is the CodeDOM provider used to generate the new code.</param>
-        <summary>Handles the importation of the &lt;xsd:any&gt; elements in the schema.</summary>
-        <returns>The name of the CLR type that the element maps to.</returns>
+        <param name="any">
+          <see cref="T:System.Xml.Schema.XmlSchemaAny" /> を表す、 <see langword="xsd:any" /> XML スキーマ ドキュメント \(XSD\) で見つかった要素。</param>
+        <param name="mixed">A <see cref="T:System.Boolean" /> を示すかどうか、XSD <see langword="complex" /> 属性が「混合」に設定されています。<see langword="true" />, 、属性が設定されている場合に混合、それ以外の場合 <see langword="false" />します。</param>
+        <param name="schemas">
+          <see cref="T:System.Xml.Serialization.XmlSchemas" /> については、XSD スキーマのコレクションを格納しています。</param>
+        <param name="importer">
+          <see cref="T:System.Xml.Serialization.XmlSchemaImporter" /> 使用されている、インポーターができます。</param>
+        <param name="compileUnit">A <see cref="T:System.CodeDom.CodeCompileUnit" /> 、XSD の代替のコードを生成する CodeDOM 構造体を追加することができます。</param>
+        <param name="mainNamespace">A <see cref="T:System.CodeDom.CodeNamespace" /> を表す要素の現在の名前空間。</param>
+        <param name="options">A <see cref="T:System.Xml.Serialization.CodeGenerationOptions" /> 用コード コンパイラのオプションを設定します。</param>
+        <param name="codeProvider">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> CodeDOM プロバイダーが新しいコードを生成するために使用します。</param>
+        <summary>インポートを処理、&lt; xsd: 任意 &gt; スキーマ内の要素。</summary>
+        <returns>要素にマップされる CLR 型の名前。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In order to control the generation of the code, you must use the classes found in the <xref:System.CodeDom> namespace. For more information, see [Using the CodeDOM](~/docs/framework/reflection-and-codedom/using-the-codedom.md) and [CodeDOM Quick Reference](http://msdn.microsoft.com/en-us/c77b8bfd-0a32-4e36-b59a-4f687f32c524).  
+## 解説  
+ 内で見つかったクラスを使用する必要があります、コードの生成を制御するために、 <xref:System.CodeDom> 名前空間。 詳細については、次を参照してください。 [Using the CodeDOM](http://msdn.microsoft.com/ja-jp/0444ddf3-c3f6-44ed-a999-f710d9c3e0cf) と [CodeDOM クイック リファレンス](http://msdn.microsoft.com/ja-jp/c77b8bfd-0a32-4e36-b59a-4f687f32c524)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -124,16 +139,19 @@
         <Parameter Name="type" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="value">The value found in the original XSD.</param>
-        <param name="type">The XSD type name.</param>
-        <summary>Allows you to specify the default value for the XSD type being imported.</summary>
-        <returns>A <see cref="T:System.CodeDom.CodeExpression" /> setting the new default value.</returns>
+        <param name="value">元の XSD で見つかった値。</param>
+        <param name="type">XSD 型名。</param>
+        <summary>インポートされる XSD 型の既定値を指定できます。</summary>
+        <returns>A <see cref="T:System.CodeDom.CodeExpression" /> 新たな既定値を設定します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In order to control the generation of the code, you must use the classes found in the <xref:System.CodeDom> namespace. For more information, see [Using the CodeDOM](~/docs/framework/reflection-and-codedom/using-the-codedom.md) and [CodeDOM Quick Reference](http://msdn.microsoft.com/en-us/c77b8bfd-0a32-4e36-b59a-4f687f32c524).  
+## 解説  
+ 内で見つかったクラスを使用する必要があります、コードの生成を制御するために、 <xref:System.CodeDom> 名前空間。 詳細については、次を参照してください。 [Using the CodeDOM](http://msdn.microsoft.com/ja-jp/0444ddf3-c3f6-44ed-a999-f710d9c3e0cf) と [CodeDOM クイック リファレンス](http://msdn.microsoft.com/ja-jp/c77b8bfd-0a32-4e36-b59a-4f687f32c524)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -144,15 +162,18 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Allows you to manipulate the code generated by examining the imported schema and specifying the CLR type that it maps to.</summary>
+        <summary>インポートされたスキーマの検証およびにマップされる CLR 型を指定することによって生成されたコードを操作できます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The example below shows a simple implementation of the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%28System.String%2CSystem.String%2CSystem.Xml.Schema.XmlSchemaObject%2CSystem.Xml.Serialization.XmlSchemas%2CSystem.Xml.Serialization.XmlSchemaImporter%2CSystem.CodeDom.CodeCompileUnit%2CSystem.CodeDom.CodeNamespace%2CSystem.Xml.Serialization.CodeGenerationOptions%2CSystem.CodeDom.Compiler.CodeDomProvider%29> method. The code checks the namespace and name. When the right values are found, it adds the name of a custom assembly ("Order.dll") that must be referenced in the generated code. It then adds a new namespace ("Microsoft.Samples") that is generated in the code.  
+## 解説  
+   
   
- [!code-csharp[SchemaImporterExtensionExample#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SchemaImporterExtensionExample/CS/SchemaImporterExtensionExample.cs#1)]
- [!code-vb[SchemaImporterExtensionExample#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/SchemaImporterExtensionExample/VB/SchemaImporterExtensionExample.vb#1)]  
+## 例  
+ 次の例の簡単な実装を示しています、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%28System.String%2CSystem.String%2CSystem.Xml.Schema.XmlSchemaObject%2CSystem.Xml.Serialization.XmlSchemas%2CSystem.Xml.Serialization.XmlSchemaImporter%2CSystem.CodeDom.CodeCompileUnit%2CSystem.CodeDom.CodeNamespace%2CSystem.Xml.Serialization.CodeGenerationOptions%2CSystem.CodeDom.Compiler.CodeDomProvider%29> メソッドです。 コードは、名前空間と名前を確認します。 適切な値が見つかったときに、生成されたコードで参照する必要があるカスタム アセンブリ \("Order.dll"\) の名前を追加します。 新しい名前空間 \("Microsoft.Samples"\)、コードで生成されるを追加します。  
+  
+ [!code-csharp[SchemaImporterExtensionExample\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SchemaImporterExtensionExample/CS/SchemaImporterExtensionExample.cs#1)]
+ [!code-vb[SchemaImporterExtensionExample\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/SchemaImporterExtensionExample/VB/SchemaImporterExtensionExample.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -181,24 +202,31 @@
         <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
       </Parameters>
       <Docs>
-        <param name="type">An <see cref="T:System.Xml.Schema.XmlSchemaType" /> that represents the XSD type.</param>
-        <param name="context">An <see cref="T:System.Xml.Schema.XmlSchemaObject" /> that represents schema information, such as the line number of the XML element.</param>
-        <param name="schemas">An <see cref="T:System.Xml.Serialization.XmlSchemas" /> that contains the collection of schemas in the document.</param>
-        <param name="importer">The <see cref="T:System.Xml.Serialization.XmlSchemaImporter" /> that is the importer being used.</param>
-        <param name="compileUnit">A <see cref="T:System.CodeDom.CodeCompileUnit" /> to which you can add CodeDOM structures to generate alternative code for the XSD.</param>
-        <param name="mainNamespace">A <see cref="T:System.CodeDom.CodeNamespace" /> that represents the current namespace for the element.</param>
-        <param name="options">A <see cref="T:System.Xml.Serialization.CodeGenerationOptions" /> for the setting options on the code compiler.</param>
-        <param name="codeProvider">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> that is used to generate the new code.</param>
-        <summary>Allows you to manipulate the code generated by examining the imported schema and specifying the CLR type that it maps to.</summary>
-        <returns>The name of the CLR type that this maps to.</returns>
+        <param name="type">
+          <see cref="T:System.Xml.Schema.XmlSchemaType" /> XSD 型を表します。</param>
+        <param name="context">
+          <see cref="T:System.Xml.Schema.XmlSchemaObject" /> XML 要素の行番号などのスキーマ情報を表します。</param>
+        <param name="schemas">
+          <see cref="T:System.Xml.Serialization.XmlSchemas" /> ドキュメント内のスキーマのコレクションを格納しています。</param>
+        <param name="importer">
+          <see cref="T:System.Xml.Serialization.XmlSchemaImporter" /> 使用されている、インポーターができます。</param>
+        <param name="compileUnit">A <see cref="T:System.CodeDom.CodeCompileUnit" /> 、XSD の代替のコードを生成する CodeDOM 構造体を追加することができます。</param>
+        <param name="mainNamespace">A <see cref="T:System.CodeDom.CodeNamespace" /> を表す要素の現在の名前空間。</param>
+        <param name="options">A <see cref="T:System.Xml.Serialization.CodeGenerationOptions" /> 用コード コンパイラのオプションを設定します。</param>
+        <param name="codeProvider">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> 新しいコードの生成に使用します。</param>
+        <summary>インポートされたスキーマの検証およびにマップされる CLR 型を指定することによって生成されたコードを操作できます。</summary>
+        <returns>これにマップされる CLR 型の名前。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The example below shows a simple implementation of the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%28System.String%2CSystem.String%2CSystem.Xml.Schema.XmlSchemaObject%2CSystem.Xml.Serialization.XmlSchemas%2CSystem.Xml.Serialization.XmlSchemaImporter%2CSystem.CodeDom.CodeCompileUnit%2CSystem.CodeDom.CodeNamespace%2CSystem.Xml.Serialization.CodeGenerationOptions%2CSystem.CodeDom.Compiler.CodeDomProvider%29> method. The code checks the namespace and name. When the right values are found, it adds the name of a custom assembly ("Order.dll") that must be referenced in the generated code. It then adds a new namespace ("Microsoft.Samples") that is generated in the code.  
+## 解説  
+   
   
- [!code-csharp[SchemaImporterExtensionExample#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SchemaImporterExtensionExample/CS/SchemaImporterExtensionExample.cs#1)]
- [!code-vb[SchemaImporterExtensionExample#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/SchemaImporterExtensionExample/VB/SchemaImporterExtensionExample.vb#1)]  
+## 例  
+ 次の例の簡単な実装を示しています、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%28System.String%2CSystem.String%2CSystem.Xml.Schema.XmlSchemaObject%2CSystem.Xml.Serialization.XmlSchemas%2CSystem.Xml.Serialization.XmlSchemaImporter%2CSystem.CodeDom.CodeCompileUnit%2CSystem.CodeDom.CodeNamespace%2CSystem.Xml.Serialization.CodeGenerationOptions%2CSystem.CodeDom.Compiler.CodeDomProvider%29> メソッドです。 コードは、名前空間と名前を確認します。 適切な値が見つかったときに、生成されたコードで参照する必要があるカスタム アセンブリ \("Order.dll"\) の名前を追加します。 新しい名前空間 \("Microsoft.Samples"\)、コードで生成されるを追加します。  
+  
+ [!code-csharp[SchemaImporterExtensionExample\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SchemaImporterExtensionExample/CS/SchemaImporterExtensionExample.cs#1)]
+ [!code-vb[SchemaImporterExtensionExample\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/SchemaImporterExtensionExample/VB/SchemaImporterExtensionExample.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -228,30 +256,33 @@
         <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the element.</param>
-        <param name="ns">The namespace of the element.</param>
-        <param name="context">An <see cref="T:System.Xml.Schema.XmlSchemaObject" /> that represents schema information, such as the line number of the XML element.</param>
-        <param name="schemas">An <see cref="T:System.Xml.Serialization.XmlSchemas" /> that contains the collection of schemas in the document.</param>
-        <param name="importer">The <see cref="T:System.Xml.Serialization.XmlSchemaImporter" /> that is the importer being used.</param>
-        <param name="compileUnit">A <see cref="T:System.CodeDom.CodeCompileUnit" /> to which you can add CodeDOM structures to generate alternative code for the XSD.</param>
-        <param name="mainNamespace">A <see cref="T:System.CodeDom.CodeNamespace" /> that represents the current namespace for the element.</param>
-        <param name="options">A <see cref="T:System.Xml.Serialization.CodeGenerationOptions" /> for the setting options on the code compiler.</param>
-        <param name="codeProvider">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> that is used to generate the new code.</param>
-        <summary>Allows you to manipulate the code generated by examining the imported schema and specifying the CLR type that it maps to.</summary>
-        <returns>The name of the CLR type that this maps to.</returns>
+        <param name="name">要素の名前。</param>
+        <param name="ns">要素の名前空間。</param>
+        <param name="context">
+          <see cref="T:System.Xml.Schema.XmlSchemaObject" /> XML 要素の行番号などのスキーマ情報を表します。</param>
+        <param name="schemas">
+          <see cref="T:System.Xml.Serialization.XmlSchemas" /> ドキュメント内のスキーマのコレクションを格納しています。</param>
+        <param name="importer">
+          <see cref="T:System.Xml.Serialization.XmlSchemaImporter" /> 使用されている、インポーターができます。</param>
+        <param name="compileUnit">A <see cref="T:System.CodeDom.CodeCompileUnit" /> 、XSD の代替のコードを生成する CodeDOM 構造体を追加することができます。</param>
+        <param name="mainNamespace">A <see cref="T:System.CodeDom.CodeNamespace" /> を表す要素の現在の名前空間。</param>
+        <param name="options">A <see cref="T:System.Xml.Serialization.CodeGenerationOptions" /> 用コード コンパイラのオプションを設定します。</param>
+        <param name="codeProvider">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> 新しいコードの生成に使用します。</param>
+        <summary>インポートされたスキーマの検証およびにマップされる CLR 型を指定することによって生成されたコードを操作できます。</summary>
+        <returns>これにマップされる CLR 型の名前。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In order to control the generation of the code, you must use the classes found in the <xref:System.CodeDom> namespace. For more information, see [Using the CodeDOM](~/docs/framework/reflection-and-codedom/using-the-codedom.md) and [CodeDOM Quick Reference](http://msdn.microsoft.com/en-us/c77b8bfd-0a32-4e36-b59a-4f687f32c524).  
+## 解説  
+ 内で見つかったクラスを使用する必要があります、コードの生成を制御するために、 <xref:System.CodeDom> 名前空間。 詳細については、次を参照してください。 [Using the CodeDOM](http://msdn.microsoft.com/ja-jp/0444ddf3-c3f6-44ed-a999-f710d9c3e0cf) と [CodeDOM クイック リファレンス](http://msdn.microsoft.com/ja-jp/c77b8bfd-0a32-4e36-b59a-4f687f32c524)します。  
   
    
   
-## Examples  
- The example below shows a simple implementation of the <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%28System.String%2CSystem.String%2CSystem.Xml.Schema.XmlSchemaObject%2CSystem.Xml.Serialization.XmlSchemas%2CSystem.Xml.Serialization.XmlSchemaImporter%2CSystem.CodeDom.CodeCompileUnit%2CSystem.CodeDom.CodeNamespace%2CSystem.Xml.Serialization.CodeGenerationOptions%2CSystem.CodeDom.Compiler.CodeDomProvider%29> method. The code checks the namespace and name. When the right values are found, it adds the name of a custom assembly ("Order.dll") that must be referenced in the generated code. It then adds a new namespace ("Microsoft.Samples") that is generated in the code.  
+## 例  
+ 次の例の簡単な実装を示しています、 <xref:System.Xml.Serialization.Advanced.SchemaImporterExtension.ImportSchemaType%28System.String%2CSystem.String%2CSystem.Xml.Schema.XmlSchemaObject%2CSystem.Xml.Serialization.XmlSchemas%2CSystem.Xml.Serialization.XmlSchemaImporter%2CSystem.CodeDom.CodeCompileUnit%2CSystem.CodeDom.CodeNamespace%2CSystem.Xml.Serialization.CodeGenerationOptions%2CSystem.CodeDom.Compiler.CodeDomProvider%29> メソッドです。 コードは、名前空間と名前を確認します。 適切な値が見つかったときに、生成されたコードで参照する必要があるカスタム アセンブリ \("Order.dll"\) の名前を追加します。 新しい名前空間 \("Microsoft.Samples"\)、コードで生成されるを追加します。  
   
- [!code-csharp[SchemaImporterExtensionExample#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SchemaImporterExtensionExample/CS/SchemaImporterExtensionExample.cs#1)]
- [!code-vb[SchemaImporterExtensionExample#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/SchemaImporterExtensionExample/VB/SchemaImporterExtensionExample.vb#1)]  
+ [!code-csharp[SchemaImporterExtensionExample\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SchemaImporterExtensionExample/CS/SchemaImporterExtensionExample.cs#1)]
+ [!code-vb[SchemaImporterExtensionExample\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/SchemaImporterExtensionExample/VB/SchemaImporterExtensionExample.vb#1)]  
   
  ]]></format>
         </remarks>

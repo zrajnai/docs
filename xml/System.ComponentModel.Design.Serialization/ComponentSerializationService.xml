@@ -20,22 +20,27 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides the base class for serializing a set of components or serializable objects into a serialization store.</summary>
+    <summary>シリアル化ストアに、一連のコンポーネントまたはシリアル化できるオブジェクトをシリアル化するためには、基本クラスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService> serializes a set of components or serializable objects into a serialization store. The store can then be deserialized later. The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService> class differs from other serialization schemes in that the serialization format is opaque, and it allows for partial serialization of objects. For example, you can choose to serialize only selected properties for an object.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService> 一連のコンポーネントまたはシリアル化できるオブジェクトをシリアル化ストアにシリアル化します。 ストアは、後で、逆シリアル化が。<xref:System.ComponentModel.Design.Serialization.ComponentSerializationService> クラスは、シリアル化形式は、不透明なされ、オブジェクトの部分的なシリアル化できるので、他のシリアル化スキームとは異なります。 します。 たとえば、オブジェクトの選択したプロパティのみをシリアル化することができます。  
   
- This class is `abstract`. Typically, a <xref:System.ComponentModel.Design.Serialization.DesignerLoader> will provide a concrete implementation of this class and add it as a service to its <xref:System.ComponentModel.Design.DesignSurface>. This allows objects to be serialized in the format best suited for them.  
+ このクラスは、 `abstract`です。 通常、 <xref:System.ComponentModel.Design.Serialization.DesignerLoader> はこのクラスの具象実装を提供し、サービスとして追加の <xref:System.ComponentModel.Design.DesignSurface>です。 これにより、それらに最適な形式でシリアル化するオブジェクト。  
   
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService> class replaces the <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationService> interface from the .NET Framework version 1.0, although the latter is retained for backward compatibility.  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService> 置き換えます、 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationService> 旧バージョンとの互換性のため、後者が保持されますが、.NET Framework version 1.0 からインターフェイスです。  
   
  ]]></format>
     </remarks>
     <block subset="none" type="overrides">
       <para>When you inherit from the <see cref="T:System.ComponentModel.Design.Serialization.ComponentSerializationService" /> class, you must override all the methods in this class. Some of these methods were designed to throw exceptions, as documented in their corresponding topics; it is strongly recommended that derived classes follow these guidelines to maintain consistency of operation. For more information, see the <see cref="T:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService" /> class.</para>
     </block>
+    <altmember cref="T:System.ComponentModel.Design.Serialization.DesignerLoader" />
+    <altmember cref="T:System.ComponentModel.Design.DesignSurface" />
+    <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+    <altmember cref="T:System.ComponentModel.Design.Serialization.IDesignerSerializationManager" />
+    <altmember cref="T:System.ComponentModel.Design.Serialization.IDesignerLoaderService" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -58,8 +63,10 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.Design.Serialization.ComponentSerializationService" /> class.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Design.Serialization.ComponentSerializationService" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
       </Docs>
     </Member>
     <Member MemberName="CreateStore">
@@ -85,18 +92,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />.</summary>
-        <returns>A new created serialization store.</returns>
+        <summary>新しい <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> を作成します。</summary>
+        <returns>新規に作成されたシリアル化ストアです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Multiple objects can be serialized into the same serialization store. When you are finished with the store, you can call its <xref:System.ComponentModel.Design.Serialization.SerializationStore.System%23IDisposable%23Dispose%2A> or <xref:System.ComponentModel.Design.Serialization.SerializationStore.Close%2A> method. Once closed, a serialization store can be used for deserialization, or it can be saved into a stream.  
+## 解説  
+ 複数のオブジェクトは、同じシリアル化ストアにシリアル化できます。 呼び出すことができますが、ストアが終了したら、その <xref:System.ComponentModel.Design.Serialization.SerializationStore.System%23IDisposable%23Dispose%2A> または <xref:System.ComponentModel.Design.Serialization.SerializationStore.Close%2A> メソッドです。 逆シリアル化のシリアル化ストアを使用できますを閉じた後またはストリームに保存できます。  
   
- The serialization store can be passed to any of the various serializing methods to build up serialization state for a group of objects.  
+ シリアル化ストアは、一連のオブジェクトのシリアル化状態を構築するさまざまなシリアル化する方法のいずれかに渡すことができます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
       </Docs>
     </Member>
     <Member MemberName="Deserialize">
@@ -124,21 +132,24 @@
         <Parameter Name="store" Type="System.ComponentModel.Design.Serialization.SerializationStore" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to deserialize.</param>
-        <summary>Deserializes the given store to produce a collection of objects.</summary>
-        <returns>A collection of objects created according to the stored state.</returns>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> を逆シリアル化します。</param>
+        <summary>オブジェクトのコレクションを生成する特定の店舗を逆シリアル化します。</summary>
+        <returns>格納されている状態に従って作成されたオブジェクトのコレクション。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method deserializes `store` to produce a collection of objects contained within it. Objects are deserialized in the same order in which they were serialized.  
+## 解説  
+ このメソッドを逆シリアル化 `store` そこに含まれるオブジェクトのコレクションを生成します。 オブジェクトは、シリアル化された同じ順序で逆シリアル化します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> does not contain data in a format the serialization container can process.</exception>
+          <paramref name="store" /> シリアル化のコンテナーが処理できる形式のデータは含まれません。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="Deserialize">
@@ -167,24 +178,29 @@
         <Parameter Name="container" Type="System.ComponentModel.IContainer" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to deserialize.</param>
-        <param name="container">The <see cref="T:System.ComponentModel.IContainer" /> to which <see cref="T:System.ComponentModel.IComponent" /> objects will be added.</param>
-        <summary>Deserializes the given store and populates the given <see cref="T:System.ComponentModel.IContainer" /> with deserialized <see cref="T:System.ComponentModel.IComponent" /> objects.</summary>
-        <returns>A collection of objects created according to the stored state.</returns>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> を逆シリアル化します。</param>
+        <param name="container">
+          <see cref="T:System.ComponentModel.IContainer" /> する <see cref="T:System.ComponentModel.IComponent" /> オブジェクトが追加されます。</param>
+        <summary>特定の店舗を逆シリアル化を設定し、指定された <see cref="T:System.ComponentModel.IContainer" /> と逆シリアル化 <see cref="T:System.ComponentModel.IComponent" /> オブジェクトです。</summary>
+        <returns>格納されている状態に従って作成されたオブジェクトのコレクション。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method deserializes `store` to produce a collection of objects contained within it. Objects are deserialized in the same order in which they were serialized.  
+## 解説  
+ このメソッドを逆シリアル化 `store` そこに含まれるオブジェクトのコレクションを生成します。 オブジェクトは、シリアル化された同じ順序で逆シリアル化します。  
   
- Created objects that implement <xref:System.ComponentModel.IComponent> are added to `container`.  
+ 実装するオブジェクトを作成した <xref:System.ComponentModel.IComponent> に追加 `container`します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="container" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="container" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> does not contain data in a format the serialization container can process.</exception>
+          <paramref name="store" /> シリアル化のコンテナーが処理できる形式のデータは含まれません。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo(System.ComponentModel.Design.Serialization.SerializationStore,System.ComponentModel.IContainer)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="DeserializeTo">
@@ -213,21 +229,25 @@
         <Parameter Name="container" Type="System.ComponentModel.IContainer" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to deserialize.</param>
-        <param name="container">The container to which <see cref="T:System.ComponentModel.IComponent" /> objects will be added.</param>
-        <summary>Deserializes the given <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to the given container.</summary>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> を逆シリアル化します。</param>
+        <param name="container">
+          <see cref="T:System.ComponentModel.IComponent" /> オブジェクトが追加されます。</param>
+        <summary>逆シリアル化し、指定された <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 指定したコンテナーにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo%2A> method deserializes `store`, but instead of producing new objects, it applies the data in the store to an existing set of objects that are taken from the provided container. As a result, the caller can create in advance an object however it sees fit. If an object has a deserialization state and the object is not named in the set of existing objects, a new object will be created. If that object also implements <xref:System.ComponentModel.IComponent>, it will be added to `container`. Objects in the container must have names and types that match objects in the serialization store in order for an existing object to be used.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo%2A> メソッドを逆シリアル化 `store`, が新しいオブジェクトを作成する代わりに適用されますストア内のデータは、指定されたコンテナーから取得するオブジェクトの既存のセットにします。 その結果、呼び出し元オブジェクトを作成できます前もってが、最適と思われます。 オブジェクトに逆シリアル化状態があり、オブジェクトが既存のオブジェクトのセットに指定されていない場合は、新しいオブジェクトが作成されます。 そのオブジェクトも実装している場合 <xref:System.ComponentModel.IComponent>, に追加されます `container`します。 コンテナー内のオブジェクトは、名前と既存のオブジェクトを使用するためにシリアル化ストア内のオブジェクトに一致する型が必要です。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="container" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="container" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> does not contain data in a format the serialization container can process.</exception>
+          <paramref name="store" /> シリアル化のコンテナーが処理できる形式のデータは含まれません。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="DeserializeTo">
@@ -257,23 +277,27 @@
         <Parameter Name="validateRecycledTypes" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to deserialize.</param>
-        <param name="container">The container to which <see cref="T:System.ComponentModel.IComponent" /> objects will be added.</param>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> を逆シリアル化します。</param>
+        <param name="container">
+          <see cref="T:System.ComponentModel.IComponent" /> オブジェクトが追加されます。</param>
         <param name="validateRecycledTypes">
-          <see langword="true" /> to guarantee that the deserialization will only work if applied to an object of the same type.</param>
-        <summary>Deserializes the given <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to the given container, optionally validating recycled types.</summary>
+          <see langword="true" /> 逆シリアル化を確実には、同じ型のオブジェクトに適用した場合機能のみです。</param>
+        <summary>逆シリアル化し、指定された <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 指定したコンテナーにオプションでの検証の種類をリサイクルします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo%2A> method deserializes `store`, but instead of producing new objects, it applies the data in the store to an existing set of objects that are taken from the provided container. As a result, the caller can create in advance an object however it sees fit. If an object has a deserialization state and the object is not named in the set of existing objects, a new object will be created. If that object also implements <xref:System.ComponentModel.IComponent>, it will be added to `container`. Objects in the container must have names and types that match objects in the serialization store in order for an existing object to be used.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo%2A> メソッドを逆シリアル化 `store`, が新しいオブジェクトを作成する代わりに適用されますストア内のデータは、指定されたコンテナーから取得するオブジェクトの既存のセットにします。 その結果、呼び出し元オブジェクトを作成できます前もってが、最適と思われます。 オブジェクトに逆シリアル化状態があり、オブジェクトが既存のオブジェクトのセットに指定されていない場合は、新しいオブジェクトが作成されます。 そのオブジェクトも実装している場合 <xref:System.ComponentModel.IComponent>, に追加されます `container`します。 コンテナー内のオブジェクトは、名前と既存のオブジェクトを使用するためにシリアル化ストア内のオブジェクトに一致する型が必要です。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="container" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="container" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> does not contain data in a format the serialization container can process.</exception>
+          <paramref name="store" /> シリアル化のコンテナーが処理できる形式のデータは含まれません。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="DeserializeTo">
@@ -304,25 +328,29 @@
         <Parameter Name="applyDefaults" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to deserialize.</param>
-        <param name="container">The container to which <see cref="T:System.ComponentModel.IComponent" /> objects will be added.</param>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> を逆シリアル化します。</param>
+        <param name="container">
+          <see cref="T:System.ComponentModel.IComponent" /> オブジェクトが追加されます。</param>
         <param name="validateRecycledTypes">
-          <see langword="true" /> to guarantee that the deserialization will only work if applied to an object of the same type.</param>
+          <see langword="true" /> 逆シリアル化を確実には、同じ型のオブジェクトに適用した場合機能のみです。</param>
         <param name="applyDefaults">
-          <see langword="true" /> to indicate that the default property values should be applied.</param>
-        <summary>Deserializes the given <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to the given container, optionally applying default property values.</summary>
+          <see langword="true" /> 既定のプロパティ値が適用されることを示しています。</param>
+        <summary>逆シリアル化し、指定された <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 既定のプロパティ値をオプションで指定したコンテナーに適用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo%2A> method deserializes `store`, but instead of producing new objects, it applies the data in the store to an existing set of objects that are taken from the provided container. As a result, the caller can create in advance an object however it sees fit. If an object has a deserialization state and the object is not named in the set of existing objects, a new object will be created. If that object also implements <xref:System.ComponentModel.IComponent>, it will be added to `container`. Objects in the container must have names and types that match objects in the serialization store in order for an existing object to be used.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.DeserializeTo%2A> メソッドを逆シリアル化 `store`, が新しいオブジェクトを作成する代わりに適用されますストア内のデータは、指定されたコンテナーから取得するオブジェクトの既存のセットにします。 その結果、呼び出し元オブジェクトを作成できます前もってが、最適と思われます。 オブジェクトに逆シリアル化状態があり、オブジェクトが既存のオブジェクトのセットに指定されていない場合は、新しいオブジェクトが作成されます。 そのオブジェクトも実装している場合 <xref:System.ComponentModel.IComponent>, に追加されます `container`します。 コンテナー内のオブジェクトは、名前と既存のオブジェクトを使用するためにシリアル化ストア内のオブジェクトに一致する型が必要です。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="container" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="container" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> does not contain data in a format the serialization container can process.</exception>
+          <paramref name="store" /> シリアル化のコンテナーが処理できる形式のデータは含まれません。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="LoadStore">
@@ -350,21 +378,24 @@
         <Parameter Name="stream" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="stream">The <see cref="T:System.IO.Stream" /> from which the store will be loaded.</param>
-        <summary>Loads a <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> from a stream.</summary>
-        <returns>A new <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> instance.</returns>
+        <param name="stream">
+          <see cref="T:System.IO.Stream" /> ストアを読み込まれるからです。</param>
+        <summary>読み込み、 <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> ストリームからです。</summary>
+        <returns>新しい <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> インスタンス。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use the returned store to deserialize objects by passing it to one of the <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.Deserialize%2A> methods.  
+## 解説  
+ 返されたストアを使用するのいずれかに渡すことによってオブジェクトを逆シリアル化できる、 <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.Deserialize%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="stream" /> is <see langword="null" />.</exception>
+          <paramref name="stream" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="stream" /> does not contain data saved by a previous call to <see cref="M:System.ComponentModel.Design.Serialization.SerializationStore.Save(System.IO.Stream)" />.</exception>
+          <paramref name="stream" /> 前の呼び出しによって保存されたデータを含まない <see cref="M:System.ComponentModel.Design.Serialization.SerializationStore.Save(System.IO.Stream)" />します。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.CreateStore" />
       </Docs>
     </Member>
     <Member MemberName="Serialize">
@@ -393,21 +424,26 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to which the state of <c>value</c> will be written.</param>
-        <param name="value">The object to serialize.</param>
-        <summary>Serializes the given object to the given <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />.</summary>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 先の状態 <c>value</c> が書き込まれます。</param>
+        <param name="value">シリアル化するオブジェクト。</param>
+        <summary>指定したオブジェクトをシリアル化、指定された <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The store can be used to serialize more than one object by calling this method more than once.  
+## 解説  
+ ストアは、このメソッドを複数回呼び出すことによって 1 つ以上のオブジェクトをシリアル化に使用できます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="value" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> is closed, or <paramref name="store" /> is not a supported type of serialization store. Use a store returned by <see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" />.</exception>
+          <paramref name="store" /> が閉じられているか、<paramref name="store" /> がサポートされている型のシリアル化ストアではありません。<see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" /> によって返されたストアを使用してください。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMember(System.ComponentModel.Design.Serialization.SerializationStore,System.Object,System.ComponentModel.MemberDescriptor)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeAbsolute(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
+        <altmember cref="Overload:System.ComponentModel.Design.Serialization.ComponentSerializationService.Deserialize" />
       </Docs>
     </Member>
     <Member MemberName="SerializeAbsolute">
@@ -436,25 +472,31 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to which the state of <c>value</c> will be serialized.</param>
-        <param name="value">The object to serialize.</param>
-        <summary>Serializes the given object, accounting for default property values.</summary>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 先の状態 <c>value</c> シリアル化されます。</param>
+        <param name="value">シリアル化するオブジェクト。</param>
+        <summary>既定のプロパティの値を特定のオブジェクトをシリアル化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Standard serialization, as implemented through the <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize%2A> method, only serializes values that differ from the component's default state. This provides the most compact serialization mechanism but assumes that a newly created object will be used during deserialization. If an existing object is used, the resulting deserialized object is not guaranteed to duplicate the original state of the serialized object; the properties that contained default values during serialization will not be reset back to their defaults during deserialization.  
+## 解説  
+ 標準的なシリアル化のを介して実装として、 <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize%2A> のみ、メソッドは、コンポーネントの既定の状態とは異なる値をシリアル化します。 これは最も簡潔なシリアル化メカニズムを提供できますが、新しく作成されたオブジェクトが逆シリアル化中に使用されることを前提としています。 既存のオブジェクトを使用する場合、結果の逆シリアル化されたオブジェクトは、オブジェクトのシリアル化の元の状態を複製するは保証されません。シリアル化中に既定値を格納しているプロパティは、逆シリアル化中に、既定値にリセットされません。  
   
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeAbsolute%2A> method does not use this shortcut. It serializes all properties of the source object so that deserialization can restore all the object's properties, regardless of default state.  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeAbsolute%2A> メソッドは、このショートカットを使用しません。 逆シリアル化は、既定の状態に関係なく、すべてのオブジェクトのプロパティを復元できるように、ソース オブジェクトのすべてのプロパティがシリアル化します。  
   
- This method is particularly useful for serializing collections, because the order of the constituent items within the collection can change. In this circumstance, the safest process to restore the original state of the entire collection is to overwrite all the items with all their original property values.  
+ このメソッドは、コレクション内の構成項目の順序を変更できるため、コレクションをシリアル化するために特に便利です。 この状況では、コレクション全体の元の状態を復元する最も安全なプロセスは、その元のすべてのプロパティの値を持つすべてのアイテムを上書きします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="value" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> is closed, or <paramref name="store" /> is not a supported type of serialization store. Use a store returned by <see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" />.</exception>
+          <paramref name="store" /> が閉じられているか、<paramref name="store" /> がサポートされている型のシリアル化ストアではありません。<see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" /> によって返されたストアを使用してください。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMember(System.ComponentModel.Design.Serialization.SerializationStore,System.Object,System.ComponentModel.MemberDescriptor)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMemberAbsolute(System.ComponentModel.Design.Serialization.SerializationStore,System.Object,System.ComponentModel.MemberDescriptor)" />
       </Docs>
     </Member>
     <Member MemberName="SerializeMember">
@@ -484,22 +526,27 @@
         <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to which the state of <c>member</c> will be serialized.</param>
-        <param name="owningObject">The object to which <c>member</c> is attached.</param>
-        <param name="member">A <see cref="T:System.ComponentModel.MemberDescriptor" /> specifying the member to serialize.</param>
-        <summary>Serializes the given member on the given object.</summary>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 先の状態 <c>member</c> シリアル化されます。</param>
+        <param name="owningObject">オブジェクトを <c>member</c> がアタッチされています。</param>
+        <param name="member">A <see cref="T:System.ComponentModel.MemberDescriptor" /> をシリアル化するメンバーを指定します。</param>
+        <summary>指定されたオブジェクトの指定されたメンバーをシリアル化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMember%2A> method can be invoked multiple times for the same object to build up a list of serialized members within the serialization store. In general, the member should be a property or an event.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMember%2A> メソッドは、シリアル化ストア内のシリアル化されたメンバーの一覧を作成する同じオブジェクトに対して複数回呼び出すことができます。 一般に、メンバーでは、イベントまたはプロパティを指定する必要があります。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="value" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> is closed, or <paramref name="store" /> is not a supported type of serialization store. Use a store returned by <see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" />.</exception>
+          <paramref name="store" /> が閉じられているか、<paramref name="store" /> がサポートされている型のシリアル化ストアではありません。<see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" /> によって返されたストアを使用してください。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMemberAbsolute(System.ComponentModel.Design.Serialization.SerializationStore,System.Object,System.ComponentModel.MemberDescriptor)" />
       </Docs>
     </Member>
     <Member MemberName="SerializeMemberAbsolute">
@@ -529,25 +576,52 @@
         <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
       </Parameters>
       <Docs>
-        <param name="store">The <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> to which the state of <c>member</c> will be serialized.</param>
-        <param name="owningObject">The object to which <c>member</c> is attached.</param>
-        <param name="member">The member to serialize.</param>
-        <summary>Serializes the given member on the given object, accounting for the default property value.</summary>
+        <param name="store">
+          <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 先の状態 <c>member</c> シリアル化されます。</param>
+        <param name="owningObject">オブジェクトを <c>member</c> がアタッチされています。</param>
+        <param name="member">シリアル化するメンバー。</param>
+        <summary>プロパティの既定値の指定したオブジェクトでは指定されたメンバーをシリアル化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMemberAbsolute%2A> method serializes the `member` on `owningObject`, even if `member` contains the default property value.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMemberAbsolute%2A> メソッドはシリアル化、 `member` に `owningObject`, 場合でも、 `member` プロパティの既定値が含まれています。  
   
- Note that for some members, containing the default value and restoring the setting of the same value to the member are different concepts. For example, if a property inherits its value from a parent object when no local value is set, setting the value back to the property may not be what is desired. The <xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMemberAbsolute%2A> method takes this into account and would clear the state of the property in this case.  
+ 一部のメンバーの既定値を含むとメンバーに同じ値の設定の復元はさまざまな概念に注意してください。 たとえば、プロパティでは、ローカル値が設定されていないときに、その値が親オブジェクトから継承している場合値をプロパティに設定できませんが希望どおりの結果。<xref:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMemberAbsolute%2A> メソッドは、これを考慮して、ここでは、プロパティの状態をオフします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="store" /> or <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="store" /> または <paramref name="value" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="store" /> is closed, or <paramref name="store" /> is not a supported type of serialization store. Use a store returned by <see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" />.</exception>
+          <paramref name="store" /> が閉じられているか、<paramref name="store" /> がサポートされている型のシリアル化ストアではありません。<see cref="M:System.ComponentModel.Design.Serialization.CodeDomComponentSerializationService.CreateStore" /> によって返されたストアを使用してください。</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.SerializationStore" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.Serialize(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeMember(System.ComponentModel.Design.Serialization.SerializationStore,System.Object,System.ComponentModel.MemberDescriptor)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.ComponentSerializationService.SerializeAbsolute(System.ComponentModel.Design.Serialization.SerializationStore,System.Object)" />
+        <altmember cref="Overload:System.ComponentModel.Design.Serialization.ComponentSerializationService.Deserialize" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="Deserialize">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>オブジェクトのコレクションを生成する特定の店舗を逆シリアル化します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="DeserializeTo">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>逆シリアル化し、指定された <see cref="T:System.ComponentModel.Design.Serialization.SerializationStore" /> 指定したコンテナーにします。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

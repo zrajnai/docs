@@ -8,31 +8,32 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Represents a service that can return information items about ambient properties or ambient types to type converters and markup extensions.</summary>
+    <summary>アンビエント プロパティまたは型コンバーターおよびマークアップ拡張機能のアンビエント型についての情報項目を返すことができるサービスを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This interface represents the service that can help type converters and markup extensions to get the ambient property identifiers for the XAML type system (<xref:System.Xaml.XamlMember> objects). The service can also get the ambient property values from classes. Types can also be ambient; any member that uses that type as its value should be considered ambient.  
+## 解説  
+ このインターフェイスは、型コンバーターと XAML 型システムのアンビエント プロパティの識別子を取得するマークアップ拡張機能に役立つサービスを表します \(<xref:System.Xaml.XamlMember> オブジェクト\)。 サービスでは、クラスのアンビエント プロパティの値も取得できます。 型はアンビエントこともできます。値としてその型を使用するすべてのメンバーは、アンビエント考慮してください。  
   
- This service is typically returned through a call to <xref:System.IServiceProvider.GetService%2A>, which is made against a context-specific service provider. The service provider is generally available to contexts that need it, such as the execution code of a value converter. For more information, see [Type Converters and Markup Extensions for XAML](~/docs/framework/xaml-services/type-converters-and-markup-extensions-for-xaml.md) and [Service Contexts Available to Type Converters and Markup Extensions](~/docs/framework/xaml-services/service-contexts-available-to-type-converters-and-markup-extensions.md).  
+ このサービスが呼び出しによって返される通常 <xref:System.IServiceProvider.GetService%2A>, 、コンテキスト固有のサービス プロバイダーに対して行われたはこれです。 サービス プロバイダーは、値コンバーターの実行コードなど、必要なコンテキストを一般的に使用します。 詳細については、[Type Converters or Markup Extensions for XAML](http://msdn.microsoft.com/ja-jp/db07a952-05ce-4aa4-b6f9-aac7397d0326) および [Service Contexts Available to Type Converters and Markup Extensions](http://msdn.microsoft.com/ja-jp/b4dad00f-03da-4579-a4e9-d8d72d2ccbce) を参照してください。  
   
-## About Ambient Properties  
- An ambient property is a property whose property value should be available to type converter and markup extension usages that exist in the XAML node structure and in the object graph created from it. This is relevant for a XAML processor during the object-writing phase of the load path or the serialization phase of a save path.  
+## アンビエント プロパティについて  
+ アンビエント プロパティは、プロパティの値は、XAML ノードの構造とから作成されたオブジェクト グラフ内に、コンバーターおよびマークアップ拡張機能に存在するを入力できるようにプロパティです。 これは、保存、読み込みパスのオブジェクトの記述フェーズまたは、シリアル化中に、XAML プロセッサに関連するパス。  
   
- In the load path case, the ambient property value might influence the value in the object graph of other properties that exist underneath it in a XAML node structure. When processed as a XAML node stream, the ambient concept means the ambient property value must be available to type converters and markup extensions from `StartObject` to `EndObject`. Similarly, a type converter that is used for the save path can use knowledge of the ambient property and its value. Therefore, the XAML that is produced is a better round-trip representation.  
+ 読み込みパスの場合、アンビエント プロパティの値に影響を与えるオブジェクト グラフの下にある XAML ノードの構造内に存在するその他のプロパティの値。 XAML ノード ストリームとして処理されるときにアンビエントの概念は、アンビエント プロパティの値が必要型コンバーターおよびマークアップ拡張機能を利用可能な `StartObject` に `EndObject`します。 同様に、使用される型コンバーターの保存パスがアンビエント プロパティとその値に関する知識を使用できます。 そのため、生成される XAML より優れたラウンドト リップ表現です。  
   
- For members in general, XAML does not specify the order in which members of an object must be processed. However, any ambient property value must be processed first by the XAML reader so that the type converter and markup extension usages that are contained in other properties can access it through the <xref:System.Xaml.IAmbientProvider> service.  
+ メンバーの一般に、XAML いない順序を指定してオブジェクトのメンバーを処理する必要があります。 ただしのアンビエント プロパティの値が処理しなければならない最初に、XAML リーダー、型コンバーターおよびマークアップ拡張機能の使用法に含まれるその他のプロパティには、を通じてアクセスできるように、 <xref:System.Xaml.IAmbientProvider> サービスです。  
   
- <xref:System.Xaml.XamlMember.DependsOn%2A> is a similar concept that also influences XAML node-processing order. However, <xref:System.Xaml.XamlMember.DependsOn%2A> can only be used for peer member and node relationships; it cannot influence all descendants. Also, <xref:System.Xaml.XamlMember.DependsOn%2A> directly influences object graph property setting; whereas the ambient technique relies on type converters or markup extensions. In the ambient technique, there must also be a specific type converter or markup extension definition that specifies how the ambient property value should be interpreted and applied to the object.  
+ <xref:System.Xaml.XamlMember.DependsOn%2A> XAML ノード処理順序にも影響を与えるような概念です。 ただし、 <xref:System.Xaml.XamlMember.DependsOn%2A> は、ピア メンバーとノード リレーションシップに対してのみ使用するすべての子孫の影響を与えることはできません。 また、 <xref:System.Xaml.XamlMember.DependsOn%2A> 直接影響オブジェクト グラフ プロパティを設定します。 対しアンビエント手法は、型コンバーターまたはマークアップ拡張機能に依存します。 アンビエント手法でがもある特定の型コンバーターまたはアンビエント プロパティの値を解釈され、オブジェクトに適用する方法を指定するマークアップ拡張機能の定義。  
   
-## WPF Usage Notes  
- An ambient property scenario that is illustrated in the [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] feature set is <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName>, which can qualify the necessary property name lookups for other values. In this case, the <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> value qualifies the <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> values that are located in the XAML nodes underneath it. <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> uses the type converter behavior for a <xref:System.Windows.DependencyProperty>. This behavior accesses the ambient <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> value by querying <xref:System.Xaml.IAmbientProvider.GetFirstAmbientValue%2A> from a service context that is available to type converters and markup extensions.  
+## WPF の使用上の注意  
+ 説明しているアンビエント プロパティ シナリオ、 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 機能セットは <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName>, 、以外の値を必要なプロパティ名の参照を修飾することができます。 ここで、 <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> 値は修飾、 <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> その下にある XAML ノードに格納されている値。<xref:System.Windows.Setter.Property%2A?displayProperty=fullName> 型コンバーターの動作を使用して、 <xref:System.Windows.DependencyProperty>です。 この動作は、アンビエントにアクセスする <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> クエリを実行して値 <xref:System.Xaml.IAmbientProvider.GetFirstAmbientValue%2A> 型コンバーターおよびマークアップ拡張機能に利用できるサービス コンテキストからです。  
   
- An ambient type scenario that is illustrated in the WPF feature set is <xref:System.Windows.ResourceDictionary>. <xref:System.Windows.ResourceDictionary> has a <xref:System.Windows.ResourceDictionary.MergedDictionaries%2A> property that can contain other <xref:System.Windows.ResourceDictionary> objects to merge, and the intended order of resource resolution for the merged scenario clashes with the order that types are loaded. <xref:System.Windows.ResourceDictionary> applies <xref:System.Windows.Markup.AmbientAttribute> so that a XAML processor can correctly process the references in a merged dictionary with `StaticResource` usages. Specifically, `StaticResource` is a markup extension, which calls <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%2A>.  
+ WPF の機能セットで説明しているアンビエント型シナリオでは <xref:System.Windows.ResourceDictionary>です。<xref:System.Windows.ResourceDictionary><xref:System.Windows.ResourceDictionary.MergedDictionaries%2A> を含むその他のプロパティを <xref:System.Windows.ResourceDictionary> 差し込むには、オブジェクトと、目的のリソース解決順序マージ シナリオの衝突の型が読み込まれている順序で。<xref:System.Windows.ResourceDictionary> 適用対象 <xref:System.Windows.Markup.AmbientAttribute> XAML プロセッサが使用してマージされたディクショナリ内の参照を正しく処理できるように `StaticResource` 使用法です。 具体的には、 `StaticResource` マークアップ拡張機能は、呼び出しは、 <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%2A>です。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Xaml.AmbientPropertyValue" />
   </Docs>
   <Members>
     <Member MemberName="GetAllAmbientValues">
@@ -57,9 +58,9 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="types">The set of types from which to retrieve ambient type information.</param>
-        <summary>Returns an enumerable set of object instances of possible ambient types for the requested types.</summary>
-        <returns>An enumerable set of objects that represent the values for the requested set of <see cref="T:System.Xaml.XamlType" /> identifiers.</returns>
+        <param name="types">アンビエント型情報を取得する対象の型のセット。</param>
+        <summary>要求された型で使用できるアンビエント型のオブジェクトのインスタンスの列挙可能なセットを返します。</summary>
+        <returns>要求された一連の値を表すオブジェクトの列挙可能なセット <see cref="T:System.Xaml.XamlType" /> 識別子。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -86,15 +87,15 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="ceilingTypes">Specifies one or more types that should stop the evaluation when they are encountered traversing upward in the object graph. This type holds the desired ambient property. May be <see langword="null" />.</param>
-        <param name="properties">Specifies one or more property identifier objects that identify the properties to be considered ambient.</param>
-        <summary>Returns an enumerable set of ambient property information items for the requested set of properties.</summary>
-        <returns>An enumerable set of ambient property information items for the requested set of properties. The property information for each <see cref="T:System.Xaml.AmbientPropertyValue" /> that is returned will match one of the input <paramref name="properties" />.</returns>
+        <param name="ceilingTypes">オブジェクト グラフの上方向の走査で検出された場合に、評価を停止する 1 つまたは複数の種類を指定します。 この型は、目的のアンビエント プロパティを保持します。<see langword="null" /> でもかまいません。</param>
+        <param name="properties">アンビエントと見なされるプロパティを識別する 1 つ以上のプロパティの識別子オブジェクトを指定します。</param>
+        <summary>要求されたプロパティのセットの情報項目のアンビエント プロパティの列挙可能なセットを返します。</summary>
+        <returns>要求されたプロパティのセットの情報項目のアンビエント プロパティの列挙可能なセットです。 それぞれのプロパティ情報 <see cref="T:System.Xaml.AmbientPropertyValue" /> 入力のいずれかに一致が返される <paramref name="properties" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Each <xref:System.Xaml.AmbientPropertyValue> that is returned contains the <xref:System.Xaml.XamlMember> identifier and a property value.  
+## 解説  
+ 各 <xref:System.Xaml.AmbientPropertyValue> を含む返される、 <xref:System.Xaml.XamlMember> 識別子とプロパティの値。  
   
  ]]></format>
         </remarks>
@@ -125,22 +126,22 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="ceilingTypes">Specifies one or more types that should stop the evaluation when they are encountered traversing upward in the object graph. This type holds the desired ambient property. May be <see langword="null" />.</param>
+        <param name="ceilingTypes">オブジェクト グラフの上方向の走査で検出された場合に、評価を停止する 1 つまたは複数の種類を指定します。 この型は、目的のアンビエント プロパティを保持します。<see langword="null" /> でもかまいません。</param>
         <param name="searchLiveStackOnly">
-          <see langword="true" /> to not use a saved context; <see langword="false" /> to use a saved context. The default is <see langword="false" />.</param>
-        <param name="types">To be added.</param>
-        <param name="properties">Specifies one or more property identifier objects that identify the properties to be considered ambient.</param>
-        <summary>Returns an enumerable set of ambient property information items for the requested set of types and properties.</summary>
-        <returns>An enumerable set of ambient property information items for the requested set of types and properties. The property information for each <see cref="T:System.Xaml.AmbientPropertyValue" /> that is returned will match one of the input <paramref name="types" /> or <paramref name="properties" />.</returns>
+          <see langword="true" /> 保存されているコンテキストを使用しないように <see langword="false" /> 保存されているコンテキストを使用します。 既定値は、<see langword="false" /> です。 「解説」を参照してください。</param>
+        <param name="types">アンビエントと見なされる型を識別する 1 つまたは複数の型識別子オブジェクトを指定します。</param>
+        <param name="properties">アンビエントと見なされるプロパティを識別する 1 つ以上のプロパティの識別子オブジェクトを指定します。</param>
+        <summary>要求されたセットの型およびプロパティのアンビエント プロパティの情報を項目の列挙可能なセットを返します。</summary>
+        <returns>要求されたセットの型およびプロパティのアンビエント プロパティの情報を項目の列挙可能なセットです。 それぞれのプロパティ情報 <see cref="T:System.Xaml.AmbientPropertyValue" /> 入力のいずれかに一致が返される <paramref name="types" /> または <paramref name="properties" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Each <xref:System.Xaml.AmbientPropertyValue> that is returned contains the <xref:System.Xaml.XamlMember> identifier and a property value.  
+## 解説  
+ 各 <xref:System.Xaml.AmbientPropertyValue> を含む返される、 <xref:System.Xaml.XamlMember> 識別子とプロパティの値。  
   
- This particular <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%2A> overload can search for ambient types and ambient properties in the same pass through a tree. Using this overload results in an ordering of items in the return value that is different from <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Collections.Generic.IEnumerable%7BSystem.Xaml.XamlType%7D%2CSystem.Xaml.XamlMember%5B%5D%29> or <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Xaml.XamlType%5B%5D%29>.  
+ この特定の <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%2A> アンビエント型のオーバー ロードの検索し、アンビエント プロパティと同じでは、ツリーを通過します。 異なる戻り値の項目の順序付け、このオーバー ロードを使用した高 <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Collections.Generic.IEnumerable%7BSystem.Xaml.XamlType%7D%2CSystem.Xaml.XamlMember%5B%5D%29> または <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Xaml.XamlType%5B%5D%29>です。  
   
- This overload also permits the search to not use any saved context. The <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Collections.Generic.IEnumerable%7BSystem.Xaml.XamlType%7D%2CSystem.Xaml.XamlMember%5B%5D%29> or <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Xaml.XamlType%5B%5D%29> overloads implicitly use a saved context if it is available (they always act as if an implicit `searchLiveStackOnly` parameter is `false`). The concept of a saved context is potentially handled differently by particular XAML schema contexts, or by frameworks that incorporate XAML. In the WPF XAML implementation, saved contexts are used for template expansion, as well as other feature areas.  
+ このオーバー ロードでは、保存されている任意のコンテキストを使用しないように検索も可能です。<xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Collections.Generic.IEnumerable%7BSystem.Xaml.XamlType%7D%2CSystem.Xaml.XamlMember%5B%5D%29> または <xref:System.Xaml.IAmbientProvider.GetAllAmbientValues%28System.Xaml.XamlType%5B%5D%29> オーバー ロードは、表示されている場合に暗黙的に保存されているコンテキストを使用 \(これらの場合と同様、暗黙に常に動作 `searchLiveStackOnly` パラメーターは `false`\)。 保存されているコンテキストの概念は特定の XAML スキーマ コンテキスト、または XAML を組み込むためのフレームワークによってに可能性のある、異なる方法で処理されます。 WPF XAML 実装では、保存されているコンテキストをテンプレートの展開など、他の機能領域に対応するために使用します。  
   
  ]]></format>
         </remarks>
@@ -168,9 +169,9 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="types">The set of types from which to retrieve ambient type information.</param>
-        <summary>Returns the first matching object that is a possible ambient type for the requested types.</summary>
-        <returns>The first result object for the requested set.</returns>
+        <param name="types">アンビエント型情報を取得する対象の型のセット。</param>
+        <summary>要求された型の場合は、可能なアンビエント型は、最初の一致するオブジェクトを返します。</summary>
+        <returns>要求されたセットの最初の結果オブジェクト。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -197,19 +198,37 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="ceilingTypes">Specifies one or more types that should stop the evaluation when they are encountered traversing upward in the object graph. This type holds the desired ambient property.</param>
-        <param name="properties">Specifies one or more objects that identify the properties to be considered ambient.</param>
-        <summary>Returns a single ambient property information item from the requested set of properties, based on which property is first encountered.</summary>
-        <returns>A single ambient property information item for the first ambient property value from the <paramref name="properties" /> list that is found.</returns>
+        <param name="ceilingTypes">オブジェクト グラフの上方向の走査で検出された場合に、評価を停止する 1 つまたは複数の種類を指定します。 この型は、目的のアンビエント プロパティを保持します。</param>
+        <param name="properties">アンビエントと見なされるプロパティを識別する 1 つ以上のオブジェクトを指定します。</param>
+        <summary>要求されたに最初に検出されたプロパティに基づいて、プロパティのセットから単一のアンビエント プロパティの情報項目を返します。</summary>
+        <returns>最初のアンビエント プロパティの値からの単一のアンビエント プロパティの情報項目、 <paramref name="properties" /> あるリストです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Each <xref:System.Xaml.AmbientPropertyValue> that is returned contains the <xref:System.Xaml.XamlMember> identifier and a property value.  
+## 解説  
+ 各 <xref:System.Xaml.AmbientPropertyValue> を含む返される、 <xref:System.Xaml.XamlMember> 識別子とプロパティの値。  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="GetFirstAmbientValue">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>最初に検出されたプロパティに基づいて、要求されたセットから単一アンビエント型またはプロパティの情報項目を返します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetAllAmbientValues">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>要求のスコープのアンビエントの種類またはプロパティ情報の項目の列挙可能なセットを返します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

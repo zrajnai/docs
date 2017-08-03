@@ -11,48 +11,53 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents the security context of a remote party. On the client, represents the service identity and, on the service, represents the client identity.</summary>
+    <summary>リモート パーティのセキュリティ コンテキストを表します。 クライアントではサービス ID を、サービスではクライアント ID を表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The data is part of the <xref:System.ServiceModel.Security.SecurityMessageProperty> for a message.  
+## 解説  
+ このデータは、メッセージの <xref:System.ServiceModel.Security.SecurityMessageProperty> の一部です。  
   
- Use this class to obtain information about a remote *security context* at runtime. A security context is created when a client is successfully authenticated and authorized to access a method. When a message is successfully authenticated and authorized, the security information from the client and for the current service instance can be obtained from an instance of this class.  
+ このクラスを使用して、実行時にリモート *セキュリティ コンテキスト*に関する情報を取得します。 クライアントが認証され、メソッドへのアクセスを承認されると、セキュリティ コンテキストが作成されます。 メッセージの認証および承認に成功すると、クライアントの現在のサービス インスタンスのセキュリティ情報を、このクラスのインスタンスから取得できます。  
   
- You can retrieve an instance of the <xref:System.ServiceModel.ServiceSecurityContext> from the <xref:System.ServiceModel.OperationContext.Current%2A> property of the <xref:System.ServiceModel.OperationContext> class, or use it from within a service operation method, as shown in the following example.  
+ <xref:System.ServiceModel.ServiceSecurityContext> のインスタンスは、<xref:System.ServiceModel.OperationContext.Current%2A> クラスの <xref:System.ServiceModel.OperationContext> プロパティから取得できます。または、次の例に示すように、サービス操作メソッドの中から使用できます。  
   
-## Parsing a ClaimSet  
- A common use of the class is to retrieve the current set of claims for the purpose of identifying or authorizing a client when accessing a method. The <xref:System.IdentityModel.Claims.ClaimSet> class contains a collection of <xref:System.IdentityModel.Claims.Claim> objects, and each can be parsed to determine whether a specific claim is present. If the specified claim is provided, authorization can be granted. This functionality is provided by overriding the <xref:System.ServiceModel.ServiceAuthorizationManager.CheckAccessCore%2A> method of the <xref:System.ServiceModel.ServiceAuthorizationManager> class.  For a complete example, see the [Authorization Policy](~/docs/framework/wcf/samples/authorization-policy.md).  
+## ClaimSet の解析  
+ このクラスは一般的に、メソッドにアクセスする際に、クライアントを識別するか承認することを目的として、現在のクレーム セットを取得するために使用します。<xref:System.IdentityModel.Claims.ClaimSet> クラスは、<xref:System.IdentityModel.Claims.Claim> オブジェクトのコレクションを格納し、それぞれを解析して、特定のクレームが存在するかどうかを確認できます。 指定されたクレームが提供される場合は、承認を与えることができます。 この機能は、<xref:System.ServiceModel.ServiceAuthorizationManager.CheckAccessCore%2A> クラスの <xref:System.ServiceModel.ServiceAuthorizationManager> メソッドを上書きすることで提供されます。  サンプル全体については、「[Authorization Policy Sample](http://msdn.microsoft.com/ja-jp/1db325ec-85be-47d0-8b6e-3ba2fdf3dda0)」を参照してください。  
   
-## Cookie Mode and IsAuthenticated  
- Note that under some circumstances, the <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A> property of the <xref:System.Security.Principal.IIdentity> interface returns `true` even if the remote client is authenticated as an anonymous user. (The <xref:System.ServiceModel.ServiceSecurityContext.PrimaryIdentity%2A> property returns an implementation of the <xref:System.Security.Principal.IIdentity> interface.) The following circumstances must be true for this to occur:  
+## クッキー モードと IsAuthenticated  
+ 状況によっては、リモート クライアントが匿名ユーザーとして認証される場合でも、<xref:System.Security.Principal.IIdentity.IsAuthenticated%2A> インターフェイスの <xref:System.Security.Principal.IIdentity> プロパティが `true` を返すことに注意してください。 \(<xref:System.ServiceModel.ServiceSecurityContext.PrimaryIdentity%2A> プロパティは、<xref:System.Security.Principal.IIdentity> インターフェイスの実装を返します\)。 これは、次の状況に該当する場合に発生します。  
   
--   The service uses Windows authentication.  
+-   サービスが Windows 認証を使用する。  
   
--   The service allows anonymous logons.  
+-   サービスが、匿名ログオンを許可する。  
   
--   The binding is a [\&lt;customBinding\&gt;](~/docs/framework/configure-apps/file-schema/wcf/custombinding.md).  
+-   バインディングが [customBinding Element](http://msdn.microsoft.com/ja-jp/9da4f960-f64e-4d8a-894d-2b09eba5ce4b) である。  
   
--   The custom binding includes a `<security>` element.  
+-   カスタム バインディングに `<security>` 要素が含まれている。  
   
--   The `<security>` element includes a [\&lt;secureConversationBootstrap\&gt;](~/docs/framework/configure-apps/file-schema/wcf/secureconversationbootstrap.md) with the `requireSecurityContextCancellation` attribute set to `false`.  
+-   `<security>` 要素に、[secureConversationBootstrap element](http://msdn.microsoft.com/ja-jp/66b46f95-fa2d-4b5b-b6ce-0572ab0cdd50) 属性が `requireSecurityContextCancellation` に設定された `false` が含まれている。  
   
    
   
-## Examples  
- The following example uses the <xref:System.ServiceModel.ServiceSecurityContext> class to provide information about the current security context. The code creates an instance of the <xref:System.IO.StreamWriter> class to write the information to a file.  
+## 例  
+ 次の例では、<xref:System.ServiceModel.ServiceSecurityContext> クラスを使用して、現在のセキュリティ コンテキストに関する情報を提供しています。 このコードは、<xref:System.IO.StreamWriter> クラスのインスタンスを作成して、情報をファイルに書き込みます。  
   
- [!code-csharp[ServiceSecurityContext#1](~/samples/snippets/csharp/VS_Snippets_CFX/servicesecuritycontext/cs/source.cs#1)]
- [!code-vb[ServiceSecurityContext#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/servicesecuritycontext/vb/source.vb#1)]  
+ [!code-csharp[ServiceSecurityContext\#1](~/samples/snippets/csharp/VS_Snippets_CFX/servicesecuritycontext/cs/source.cs#1)]
+ [!code-vb[ServiceSecurityContext\#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/servicesecuritycontext/vb/source.vb#1)]  
   
- The following example shows an implementation of the <xref:System.ServiceModel.ServiceAuthorizationManager.CheckAccessCore%2A> method that uses the <xref:System.ServiceModel.ServiceSecurityContext> to parse a set of claims.  
+ 次の例は、<xref:System.ServiceModel.ServiceAuthorizationManager.CheckAccessCore%2A> を使用してクレーム セットを解析する <xref:System.ServiceModel.ServiceSecurityContext> メソッドの実装を示しています。  
   
- [!code-csharp[ServiceSecurityContext#2](~/samples/snippets/csharp/VS_Snippets_CFX/servicesecuritycontext/cs/source.cs#2)]
- [!code-vb[ServiceSecurityContext#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/servicesecuritycontext/vb/source.vb#2)]  
+ [!code-csharp[ServiceSecurityContext\#2](~/samples/snippets/csharp/VS_Snippets_CFX/servicesecuritycontext/cs/source.cs#2)]
+ [!code-vb[ServiceSecurityContext\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/servicesecuritycontext/vb/source.vb#2)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="P:System.ServiceModel.OperationContext.Current" />
+    <altmember cref="T:System.ServiceModel.OperationContext" />
+    <altmember cref="T:System.IdentityModel.Claims.Claim" />
+    <altmember cref="T:System.IdentityModel.Claims.ClaimSet" />
+    <altmember cref="T:System.ServiceModel.ServiceAuthorizationManager" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -68,14 +73,17 @@
         <Parameter Name="authorizationPolicies" Type="System.Collections.ObjectModel.ReadOnlyCollection&lt;System.IdentityModel.Policy.IAuthorizationPolicy&gt;" />
       </Parameters>
       <Docs>
-        <param name="authorizationPolicies">A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of type <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" /> that contains the authorization policies.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.ServiceSecurityContext" /> class with the collection of policies object.</summary>
+        <param name="authorizationPolicies">承認ポリシーを格納する <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> 型の <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" />。</param>
+        <summary>ポリシー オブジェクトのコレクションを使用して、<see cref="T:System.ServiceModel.ServiceSecurityContext" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor uses the default policy-chaining engine.  
+## 解説  
+ このコンストラクターは、既定のポリシー チェーン エンジンを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -93,14 +101,17 @@
         <Parameter Name="authorizationContext" Type="System.IdentityModel.Policy.AuthorizationContext" />
       </Parameters>
       <Docs>
-        <param name="authorizationContext">An <see cref="T:System.IdentityModel.Policy.AuthorizationContext" /> that contains authorization information.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.ServiceSecurityContext" /> class with the specified authorization parameters.</summary>
+        <param name="authorizationContext">承認情報を含む <see cref="T:System.IdentityModel.Policy.AuthorizationContext" />。</param>
+        <summary>指定した承認パラメーターを使用して、<see cref="T:System.ServiceModel.ServiceSecurityContext" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor is typically used in scenarios where an application runs its own policy-chaining engine, which results in an <xref:System.IdentityModel.Policy.AuthorizationContext>. For the default policy engine, use the constructors that take a collection of <xref:System.IdentityModel.Policy.IAuthorizationPolicy> as parameter.  
+## 解説  
+ 通常、このコンストラクターは、アプリケーションが独自のポリシー チェーン エンジンを実行するシナリオで使用し、結果は <xref:System.IdentityModel.Policy.AuthorizationContext> になります。 既定のポリシー エンジンでは、<xref:System.IdentityModel.Policy.IAuthorizationPolicy> のコレクションをパラメーターとして使用するコンストラクターを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -119,10 +130,18 @@
         <Parameter Name="authorizationPolicies" Type="System.Collections.ObjectModel.ReadOnlyCollection&lt;System.IdentityModel.Policy.IAuthorizationPolicy&gt;" />
       </Parameters>
       <Docs>
-        <param name="authorizationContext">An <see cref="T:System.IdentityModel.Policy.AuthorizationContext" /> that contains authorization settings.</param>
-        <param name="authorizationPolicies">A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of type <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" /> that contains the authorization policies.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.ServiceSecurityContext" /> class with the specified authorization parameters and collection of policies.</summary>
-        <remarks>To be added.</remarks>
+        <param name="authorizationContext">承認の設定値を格納する <see cref="T:System.IdentityModel.Policy.AuthorizationContext" />。</param>
+        <param name="authorizationPolicies">承認ポリシーを格納する <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> 型の <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" />。</param>
+        <summary>指定した承認パラメーターとポリシーのコレクションを使用して、<see cref="T:System.ServiceModel.ServiceSecurityContext" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Anonymous">
@@ -138,9 +157,18 @@
         <ReturnType>System.ServiceModel.ServiceSecurityContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns an instance of the <see cref="T:System.ServiceModel.ServiceSecurityContext" /> class that contains an empty collection of claims, identities, and other context data that is usually used to represent an anonymous party.</summary>
-        <value>An empty instance of the <see cref="T:System.ServiceModel.ServiceSecurityContext" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>匿名パーティを表すために通常使用されるクレーム、ID、およびその他のコンテキスト データの空のコレクションを格納する <see cref="T:System.ServiceModel.ServiceSecurityContext" /> クラスのインスタンスを返します。</summary>
+        <value>
+          <see cref="T:System.ServiceModel.ServiceSecurityContext" /> の空のインスタンス。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AuthorizationContext">
@@ -156,9 +184,17 @@
         <ReturnType>System.IdentityModel.Policy.AuthorizationContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the authorization information for an instance of this class.  The <see cref="T:System.IdentityModel.Policy.AuthorizationContext" /> contains a collection of <see cref="T:System.IdentityModel.Claims.ClaimSet" /> that the application can interrogate and retrieve the information of the party.</summary>
-        <value>An <see cref="T:System.IdentityModel.Policy.AuthorizationContext" /> that contains the authorization settings.</value>
-        <remarks>To be added.</remarks>
+        <summary>このクラスのインスタンスの承認情報を取得します。<see cref="T:System.IdentityModel.Policy.AuthorizationContext" /> は、アプリケーションがパーティの情報を問い合わせて取得できる <see cref="T:System.IdentityModel.Claims.ClaimSet" /> のコレクションを格納します。</summary>
+        <value>承認の設定値を格納する <see cref="T:System.IdentityModel.Policy.AuthorizationContext" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AuthorizationPolicies">
@@ -174,13 +210,16 @@
         <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.IdentityModel.Policy.IAuthorizationPolicy&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the collection of policies associated with an instance of this class.</summary>
-        <value>A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> of type <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" /> that contains the policies.</value>
+        <summary>このクラスのインスタンスに関連付けられたポリシーのコレクションを取得します。</summary>
+        <value>ポリシーを格納する <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> 型の <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- [Managing Claims and Authorization with the Identity Model](~/docs/framework/wcf/feature-details/managing-claims-and-authorization-with-the-identity-model.md)  
+## 解説  
+   
+  
+## 例  
+ [Claims and Authorization](http://msdn.microsoft.com/ja-jp/099defbb-5d35-434e-9336-1a49b9ec7663)  
   
  ]]></format>
         </remarks>
@@ -199,9 +238,17 @@
         <ReturnType>System.ServiceModel.ServiceSecurityContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the current <see cref="T:System.ServiceModel.ServiceSecurityContext" />.</summary>
-        <value>The current <see cref="T:System.ServiceModel.ServiceSecurityContext" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在の <see cref="T:System.ServiceModel.ServiceSecurityContext" /> を取得します。</summary>
+        <value>現在の <see cref="T:System.ServiceModel.ServiceSecurityContext" /> です。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsAnonymous">
@@ -217,10 +264,17 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current client has provided credentials to the service.</summary>
-        <value>
-          <see langword="true" /> if the client has provided credentials; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のクライアントが、サービスに対する資格情報を提供しているかどうかを示す値を取得します。</summary>
+        <value>クライアントが資格情報を提供している場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PrimaryIdentity">
@@ -236,25 +290,27 @@
         <ReturnType>System.Security.Principal.IIdentity</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the primary identity associated with the current setting.</summary>
-        <value>An <see cref="T:System.Security.Principal.IIdentity" /> associated with the current setting.</value>
+        <summary>現在の設定に関連付けられたプライマリ ID を取得します。</summary>
+        <value>現在の設定に関連付けられた <see cref="T:System.Security.Principal.IIdentity" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The primary identity is obtained from the credentials used to authenticate the current user. If the credential is an X.509 certificate, the identity is a concatenation of the subject name and the thumbprint (in that order). The subject name is separated from the thumbprint with a semicolon and a space. If the subject field of the certificate is `null`, the primary identity includes just a semicolon, a space, and the thumbprint.  
+## 解説  
+ プライマリ ID は、現在のユーザーを認証するために使用される資格情報から取得されます。 資格情報が X.509 証明書の場合、ID は、サブジェクト名と拇印をこの順序で連結したものになります。 サブジェクト名とサムプリントは、セミコロンと空白で区切られます。 証明書のサブジェクト フィールドが `null` の場合、プライマリ ID には、セミコロン、スペース、およびサムプリントだけが含まれます。  
   
- When a duplex message exchange pattern is used with Kerberos direct authentication, this property becomes empty on the callback and the claimset is also empty. This does not happen when *SspiNegotiated* is used instead of Kerberos.  
+ 双方向メッセージ交換パターンが Kerberos 直接認証で使用される場合、このプロパティはコールバック上で空になり、Claimset も空です。 Kerberos の代わりに *SspiNegotiated* を使用した場合は、このような動作にはなりません。  
   
- The Kerberos Requester Token is used only on the client to represent the service. The authorization policy that it generates contains one claim, an SPN; hence, no identity in the claim. In most cases there is no problem, because <xref:System.ServiceModel.ServiceSecurityContext> is not used on the client. In a duplex scenario during callback, if the callback inspects this property, it gets an anonymous identity.  
+ Kerberos リクエスター トークンはクライアントでのみ使用し、サービスを表します。 生成される承認ポリシーには、1 つのクレームと SPN が含まれ、したがって、クレームには ID が含まれません。 ほとんどの場合、<xref:System.ServiceModel.ServiceSecurityContext> はクライアントでは使用されないので問題ありません。 コールバック時の双方向シナリオでは、コールバックによってこのプロパティが検査されると、匿名 ID が得られます。  
   
    
   
-## Examples  
- For an example of using the `PrimaryIdentity` property to authorize a client using a certificate, see [How to: Examine the Security Context](~/docs/framework/wcf/how-to-examine-the-security-context.md).  
+## 例  
+ 証明書を使用してクライアントを承認するときの `PrimaryIdentity` プロパティの使用例については、「[How To: Examine the Security Context](http://msdn.microsoft.com/ja-jp/389b5a57-4175-4bc0-ada0-fc750d51149f)」を参照してください。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Security.Permissions.PrincipalPermissionAttribute" />
+        <altmember cref="T:System.Security.Principal.IPrincipal" />
       </Docs>
     </Member>
     <Member MemberName="WindowsIdentity">
@@ -270,17 +326,17 @@
         <ReturnType>System.Security.Principal.WindowsIdentity</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the Windows identity of the current setting.</summary>
-        <value>A <see cref="T:System.Security.Principal.WindowsIdentity" /> that represents the Windows domain user.</value>
+        <summary>現在の設定の Windows ID を取得します。</summary>
+        <value>Windows ドメイン ユーザーを表す <see cref="T:System.Security.Principal.WindowsIdentity" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the remote party cannot be associated with a Windows account, the <xref:System.Security.Principal.WindowsIdentity.IsAnonymous%2A> property is set to `true`.  
+## 解説  
+ リモート パーティを Windows アカウントに関連付けることができない場合は、<xref:System.Security.Principal.WindowsIdentity.IsAnonymous%2A> プロパティに `true` が設定されます。  
   
    
   
-## Examples  
+## 例  
  <xref:System.Security.Permissions.PrincipalPermissionAttribute>  
   
  <xref:System.Security.Principal.IPrincipal>  
@@ -289,5 +345,21 @@
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.ServiceModel.ServiceSecurityContext" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

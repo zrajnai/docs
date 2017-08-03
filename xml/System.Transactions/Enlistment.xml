@@ -20,28 +20,30 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Facilitates communication between an enlisted transaction participant and the transaction manager during the final phase of the transaction.</summary>
+    <summary>トランザクションの最終フェーズで登録されているトランザクションの参加要素と、トランザクション マネージャー間の通信を容易になります。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the <xref:System.Transactions.Transaction.EnlistVolatile%2A> and <xref:System.Transactions.Transaction.EnlistDurable%2A> methods of the <xref:System.Transactions.Transaction> object are invoked to enlist a participant in a transaction, they return this object describing the enlistment.  
+## 解説  
+ ときに、 <xref:System.Transactions.Transaction.EnlistVolatile%2A> と <xref:System.Transactions.Transaction.EnlistDurable%2A> のメソッド、 <xref:System.Transactions.Transaction> オブジェクトが起動され、トランザクションの参加者の参加、参加リストを示すこのオブジェクトを返します。  
   
- During the final phase of the transaction commit, the transaction manager passes this object to a resource manager implementing the <xref:System.Transactions.IEnlistmentNotification> interface that has enlisted in a transaction. Specifically, the transaction manager calls either the <xref:System.Transactions.IEnlistmentNotification.Commit%2A> or the <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> method of the participant, depending on whether the latter has decided to commit or roll back the transaction. The participant should call the <xref:System.Transactions.Enlistment.Done%2A> method of this object to let the transaction manager know that it has completed its work.  
+ トランザクションのコミットの最終フェーズでは、トランザクション マネージャーを実装するリソース マネージャーにこのオブジェクトを渡す、 <xref:System.Transactions.IEnlistmentNotification> トランザクションに参加しているインターフェイス。 具体的には、トランザクション マネージャーを呼び出すか、 <xref:System.Transactions.IEnlistmentNotification.Commit%2A> または <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> かどうか、後者を決定したがコミットまたはトランザクションをロールバックすることによって、参加要素のメソッドです。 参加要素を呼び出す必要があります、 <xref:System.Transactions.Enlistment.Done%2A> 、トランザクション マネージャーがその作業が完了したことを確認できるようにするには、このオブジェクトのメソッドです。  
   
- An enlistment can call the <xref:System.Transactions.Enlistment.Done%2A> method at anytime before it has called <xref:System.Transactions.PreparingEnlistment.Prepared%2A> in the prepare phase.  By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome. Note that, after the <xref:System.Transactions.Enlistment.Done%2A> method is called, the enlisted participant receives no further notifications from the transaction manager.  
+ 参加リストが呼び出すことができます、 <xref:System.Transactions.Enlistment.Done%2A> 呼び出したメソッドの前にいつでもで <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 準備フェーズにします。  これにより、参加リストはトランザクションのコミットの投票は、最終結果を受信する必要はありません、つまり読み取り専用の決定にキャストします。 その後に注意してください、 <xref:System.Transactions.Enlistment.Done%2A> メソッドが呼び出されると、参加要素を受け取る、トランザクション マネージャーからさらに通知されません。  
   
    
   
-## Examples  
- The following example shows an implementation of the <xref:System.Transactions.IEnlistmentNotification> interface, and when the <xref:System.Transactions.Enlistment.Done%2A> method should be called.  
+## 例  
+ 次の例の実装を示しています、 <xref:System.Transactions.IEnlistmentNotification> インターフェイスと、 <xref:System.Transactions.Enlistment.Done%2A> メソッドを呼び出す必要があります。  
   
- [!code-csharp[Tx_Enlist#2](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#2)]
- [!code-vb[Tx_Enlist#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#2)]  
+ [!code-csharp[Tx\_Enlist\#2](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#2)]
+ [!code-vb[Tx\_Enlist\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#2)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>This type is thread safe.</threadsafe>
+    <threadsafe>この型はスレッド セーフです。</threadsafe>
+    <altmember cref="T:System.Transactions.PreparingEnlistment" />
+    <altmember cref="T:System.Transactions.IEnlistmentNotification" />
   </Docs>
   <Members>
     <Member MemberName="Done">
@@ -67,19 +69,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Indicates that the transaction participant has completed its work.</summary>
+        <summary>トランザクションの参加要素がその作業を完了したことを示します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- During the final phase of the transaction commit, the transaction manager calls either the <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> or <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> method of the participant, depending on whether the transaction is to be committed or rolled back. The resource manager should perform any work necessary to finish the transaction and then inform the transaction manager that it has finished by calling the <xref:System.Transactions.Enlistment.Done%2A> method on the `enlistment` parameter.  
+## 解説  
+ トランザクションのコミットの最終フェーズでは、トランザクション マネージャーを呼び出すか、 <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, 、<xref:System.Transactions.IEnlistmentNotification.Rollback%2A> または <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> トランザクションがコミットまたはロールバックするかどうかに応じて、参加要素のメソッドです。 リソース マネージャーでのトランザクションを終了し、呼び出すことによってこれが完了したこと、トランザクション マネージャーに通知し、必要な作業を実行する必要があります、 <xref:System.Transactions.Enlistment.Done%2A> メソッドを `enlistment` パラメーター。  
   
- If the resource manager has enlisted durably, but does not respond by calling <xref:System.Transactions.Enlistment.Done%2A> method, the transaction manager is unsure that the resource manager has received the respective notification call. As such, the transaction manager keeps waiting for a response, and maintains information relevant to this transaction.  If <xref:System.Transactions.Enlistment.Done%2A> is never called, this piece of information is kept around indefinitely in memory or in a system-wide resource. This results in resources not being able to be reclaimed. In the case of a distributed transaction, this could eventually fill the MSDTC log which halts the MSDTC process. In the case of a transaction managed by <xref:System.Transactions>, this results in a gradual and continual increase in the memory consumption of the resource manager's process. Therefore, it is crucial that you call the <xref:System.Transactions.Enlistment.Done%2A> method once your resource manager is done with your prepare work.  
+ リソース マネージャーが永続的に、参加しているを呼び出して応答しないかどうかは <xref:System.Transactions.Enlistment.Done%2A> メソッドでは、トランザクション マネージャーは、リソース マネージャーが、それぞれの通知呼び出しを受信したことを確認ができます。 そのため、トランザクション マネージャーは、応答を待つを保持し、このトランザクションに関連する情報を保持します。  場合 <xref:System.Transactions.Enlistment.Done%2A> は呼び出されず、情報を無限に保持されるメモリやシステム全体のリソースにします。 これにより、リソースが解放されることができません。 分散トランザクションの場合は、最終的に MSDTC プロセスが中断される MSDTC のログを入力この可能性があります。 によって管理されるトランザクションの場合 <xref:System.Transactions>, 、この結果、リソース マネージャーのプロセスのメモリの消費量が段階的なと継続的な増加します。 したがってを呼び出すことが重要です、 <xref:System.Transactions.Enlistment.Done%2A> メソッドで、リソース マネージャーが完了したら、作業を準備します。  
   
- An enlistment can call the <xref:System.Transactions.Enlistment.Done%2A> method at anytime before it has called <xref:System.Transactions.PreparingEnlistment.Prepared%2A> in the prepare phase. By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome. Note that, after this method is called, the enlisted participant receives no further notifications from the transaction manager.  
+ 参加リストが呼び出すことができます、 <xref:System.Transactions.Enlistment.Done%2A> 呼び出したメソッドの前にいつでもで <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 準備フェーズにします。 これにより、参加リストはトランザクションのコミットの投票は、最終結果を受信する必要はありません、つまり読み取り専用の決定にキャストします。 このメソッドが呼び出された後に参加要素通知を受信しないさらに、トランザクション マネージャーからに注意してください。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Transactions.PreparingEnlistment" />
+        <altmember cref="T:System.Transactions.IEnlistmentNotification" />
       </Docs>
     </Member>
   </Members>

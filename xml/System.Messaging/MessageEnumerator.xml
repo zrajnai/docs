@@ -18,37 +18,39 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Provides a forward-only cursor to enumerate through messages in a message queue.</summary>
+    <summary>メッセージ キュー内のメッセージを列挙するための順方向専用カーソルを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use <xref:System.Messaging.MessageEnumerator> for dynamic interaction with messages in a queue. Methods available through the <xref:System.Messaging.MessageQueue> class can return either a <xref:System.Messaging.MessageEnumerator> pointing to a dynamic list of messages in the queue, or an array that contains a copy at a given instant - a snapshot - of the queue at the time the specified method was called.  
+## 解説  
+ 使用する <xref:System.Messaging.MessageEnumerator> キュー内のメッセージの動的な対話のためです。 メソッドで使用できる、 <xref:System.Messaging.MessageQueue> クラスは、いずれかを返すことができます、 <xref:System.Messaging.MessageEnumerator> と呼ばれますが、キューまたはキューの指定された時点のスナップショット \- で時のコピーを格納する配列内のメッセージの動的リストを指定したメソッドを指定します。  
   
- Unlike a static snapshot, an enumerator allows you to modify the collection. Using a <xref:System.Messaging.MessageEnumerator>, you can remove messages from the queue, and the change is immediately reflected in the queue.  
+ 静的なスナップショットとは異なり、列挙子は、コレクションを変更することができます。 使用して、 <xref:System.Messaging.MessageEnumerator>, 、キューからメッセージを削除すること、および変更がすぐにキューに反映されます。  
   
- An enumerator does not remove the messages from the queue when it queries the queue. It returns information about the message at the current cursor position, but it leaves the message in the queue.  
+ キューを照会したときに、列挙子は、キューからメッセージを削除できません。 現在のカーソル位置にあるメッセージに関する情報が返されますが、キュー メッセージになります。  
   
- A <xref:System.Messaging.MessageEnumerator> is a cursor, initialized to the head of a dynamic list. The list order is the same as the order of the messages in the queue, according to message priority. You can move the cursor to the first message in the queue by calling <xref:System.Messaging.MessageEnumerator.MoveNext%2A>. After the enumerator has been initialized, you can use <xref:System.Messaging.MessageEnumerator.MoveNext%2A> to step forward through the remaining messages. You can specify whether to wait for a message to become available by passing a timeout into the <xref:System.Messaging.MessageEnumerator.MoveNext%2A> method.  
+ A <xref:System.Messaging.MessageEnumerator> カーソル、動的なリストの先頭に初期化します。 一覧の順序は、メッセージの優先順位に従って、キュー内のメッセージの順序と同じです。 キューの最初のメッセージにカーソルを移動するにを呼び出して <xref:System.Messaging.MessageEnumerator.MoveNext%2A>します。 使用することができます、列挙子が初期化された後 <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 残りのメッセージにします。 使用可能になるにタイムアウトを渡すことによって、メッセージに対して待機するかどうかを指定することができます、 <xref:System.Messaging.MessageEnumerator.MoveNext%2A> メソッドです。  
   
- Because the enumerator is dynamic, a message that is appended beyond the cursor's current position (for example, due to low priority), can be accessed by the enumerator. A message that is inserted before the cursor's current position cannot be accessed. It is not possible to step backward with a <xref:System.Messaging.MessageEnumerator>. A cursor allows forward-only movement. The <xref:System.Messaging.MessageEnumerator.Reset%2A> method enables you to place the cursor back at the beginning of the queue.  
+ 列挙子は動的であるために、カーソルの現在位置を \(たとえば、低優先順位\)、ためより後に追加するメッセージは、列挙子からアクセスできます。 カーソルの現在位置にアクセスできない前に挿入されるメッセージです。 ステップ後退することはできません、 <xref:System.Messaging.MessageEnumerator>です。 カーソルでは、順方向専用の移動が可能です。<xref:System.Messaging.MessageEnumerator.Reset%2A> メソッドを使用すると、キューの先頭にカーソルを置きます。  
   
- Instances of <xref:System.Messaging.MessageEnumerator> for a given queue work independently. You can create two <xref:System.Messaging.MessageEnumerator> instances that apply to the same queue. The changes that one <xref:System.Messaging.MessageEnumerator> makes to the messages in the queue will be reflected immediately in a second enumerator if the second enumerator is positioned before the first. However, if two enumerators have the same position and one of them removes the message at that position, an exception is thrown if the other enumerator attempts to get the value of the <xref:System.Messaging.MessageEnumerator.Current%2A> property on the now-deleted message.  
+ インスタンスを <xref:System.Messaging.MessageEnumerator> を特定のキューは独立して動作します。 2 つを作成する <xref:System.Messaging.MessageEnumerator> インスタンスが同じキューに適用されます。 変更を 1 つ <xref:System.Messaging.MessageEnumerator> キュー内のメッセージもはすぐに反映されません 2 番目の列挙子に 2 つ目の列挙子が 1 つ目の前に配置されている場合。 ただし、2 つの列挙子が同じ位置にあるし、その位置にあるメッセージを削除うちの 1 つ、例外がスローされます他の列挙子の値を取得しようとすると、 <xref:System.Messaging.MessageEnumerator.Current%2A> 削除メッセージのプロパティです。  
   
 > [!NOTE]
->  If you create an instance of <xref:System.Messaging.MessageQueue> with <xref:System.Messaging.MessageQueue.DenySharedReceive%2A?displayProperty=fullName> set to `true`, no other application can modify the messages in your enumerator while you have the connection to the queue.  
+>  インスタンスを作成する場合は、 <xref:System.Messaging.MessageQueue> と <xref:System.Messaging.MessageQueue.DenySharedReceive%2A?displayProperty=fullName> に設定 `true`, 、他のアプリケーションを変更できません、列挙子内のメッセージをキューに接続している間にします。  
   
    
   
-## Examples  
- The following example gets a dynamic list of messages in a queue and counts all messages with the <xref:System.Messaging.Message.Priority%2A> property set to <xref:System.Messaging.MessagePriority?displayProperty=fullName>.  
+## 例  
+ 次の例は、キューにメッセージの動的リストを取得しですべてのメッセージのカウント、 <xref:System.Messaging.Message.Priority%2A> プロパティに設定 <xref:System.Messaging.MessagePriority.Lowest?displayProperty=fullName>します。  
   
- [!code-cpp[MessageQueue.GetMessageEnumerator#1](~/samples/snippets/cpp/VS_Snippets_Remoting/MessageQueue.GetMessageEnumerator/CPP/mqgetmessageenumerator.cpp#1)]
- [!code-csharp[MessageQueue.GetMessageEnumerator#1](~/samples/snippets/csharp/VS_Snippets_Remoting/MessageQueue.GetMessageEnumerator/CS/mqgetmessageenumerator.cs#1)]
- [!code-vb[MessageQueue.GetMessageEnumerator#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/MessageQueue.GetMessageEnumerator/VB/mqgetmessageenumerator.vb#1)]  
+ [!code-cpp[MessageQueue.GetMessageEnumerator\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/MessageQueue.GetMessageEnumerator/CPP/mqgetmessageenumerator.cpp#1)]
+ [!code-csharp[MessageQueue.GetMessageEnumerator\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/MessageQueue.GetMessageEnumerator/CS/mqgetmessageenumerator.cs#1)]
+ [!code-vb[MessageQueue.GetMessageEnumerator\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/MessageQueue.GetMessageEnumerator/VB/mqgetmessageenumerator.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Messaging.Message" />
+    <altmember cref="M:System.Messaging.MessageQueue.GetMessageEnumerator2" />
   </Docs>
   <Members>
     <Member MemberName="Close">
@@ -65,15 +67,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Frees the resources associated with the enumerator.</summary>
+        <summary>列挙子に関連付けられているリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The operating system retains an open handle to the queue during the lifetime of the cursor. When you have finished working with the enumerator, call <xref:System.Messaging.MessageEnumerator.Close%2A> to release the resources associated with the handle.  
+## 解説  
+ オペレーティング システムでは、カーソルの有効期間中にキューへの開いているハンドルを保持します。 列挙子の操作が完了したときに呼び出す <xref:System.Messaging.MessageEnumerator.Close%2A> ハンドルに関連付けられているリソースを解放します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
       </Docs>
     </Member>
     <Member MemberName="Current">
@@ -89,22 +92,25 @@
         <ReturnType>System.Messaging.Message</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the current <see cref="T:System.Messaging.Message" /> that this enumerator points to.</summary>
-        <value>The current message.</value>
+        <summary>その列挙子が指している現在の <see cref="T:System.Messaging.Message" /> を取得します。</summary>
+        <value>現在のメッセージ。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the enumerator is created, it points to the head of the queue, at a location before the first message. In this case, <xref:System.Messaging.MessageEnumerator.Current%2A> is not valid and will throw an exception if it is accessed. You must call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> to position the cursor at the first message in the queue.  
+## 解説  
+ 列挙子が作成されると、これは、最初のメッセージより前に、の位置のキューの先頭を指します。 この場合、 <xref:System.Messaging.MessageEnumerator.Current%2A> が無効である場合は、アクセス、例外がスローされます。 呼び出す必要があります <xref:System.Messaging.MessageEnumerator.MoveNext%2A> にキュー内の最初のメッセージをカーソルを移動します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">You called <see cref="P:System.Messaging.MessageEnumerator.Current" /> before the first call to <see cref="M:System.Messaging.MessageEnumerator.MoveNext" />. The cursor is located before the first element of the message enumeration.  
+        <exception cref="T:System.InvalidOperationException">呼び出す <see cref="P:System.Messaging.MessageEnumerator.Current" /> 最初の呼び出しの前に <see cref="M:System.Messaging.MessageEnumerator.MoveNext" />します。 カーソルは、メッセージの列挙体の最初の要素の前に位置します。  
   
- -or-  
+ または  
   
- You called <see cref="P:System.Messaging.MessageEnumerator.Current" /> after a call to <see cref="M:System.Messaging.MessageEnumerator.MoveNext" /> had returned <see langword="false" /> (indicating the cursor is located after the last element of the message enumeration.)</exception>
-        <exception cref="T:System.Messaging.MessageQueueException">The message the enumerator is currently pointing to no longer exists. It might have been deleted.</exception>
+ 呼び出す <see cref="P:System.Messaging.MessageEnumerator.Current" /> への呼び出し後 <see cref="M:System.Messaging.MessageEnumerator.MoveNext" /> 返しました <see langword="false" /> \(カーソルを示す、あるメッセージ列挙体の最後の要素の後\)。</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">列挙子が現在指して不要になったメッセージが存在します。 削除された可能性があります。</exception>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="M:System.Messaging.MessageEnumerator.Reset" />
+        <altmember cref="M:System.Messaging.MessageQueue.GetMessageEnumerator" />
       </Docs>
     </Member>
     <Member MemberName="CursorHandle">
@@ -120,17 +126,18 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the native Message Queuing cursor handle used to browse messages in the queue.</summary>
-        <value>The native cursor handle.</value>
+        <summary>キューにメッセージを参照するために使用ネイティブ メッセージ キュー カーソル ハンドルを取得します。</summary>
+        <value>ネイティブなカーソルのハンドルです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property contains the native handle to the enumeration. When you have finished working with the enumerator, call <xref:System.Messaging.MessageEnumerator.Close%2A> to release this resource.  
+## 解説  
+ このプロパティは、列挙型へのネイティブ ハンドルを表します。 列挙子の操作が完了したときに呼び出す <xref:System.Messaging.MessageEnumerator.Close%2A> このリソースを解放します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Messaging.MessageQueueException">The handle does not exist.</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">ハンドルが存在しません。</exception>
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -147,12 +154,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.Messaging.MessageEnumerator" />.</summary>
+        <summary>
+          <see cref="T:System.Messaging.MessageEnumerator" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling <xref:System.Messaging.MessageEnumerator.Dispose%2A> allows the resources used by the <xref:System.Messaging.MessageEnumerator> to be reallocated for other purposes. For more information about <xref:System.Messaging.MessageEnumerator.Dispose%2A>, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md).  
+## 解説  
+ Calling <xref:System.Messaging.MessageEnumerator.Dispose%2A> allows the resources used by the <xref:System.Messaging.MessageEnumerator> to be reallocated for other purposes. For more information about <xref:System.Messaging.MessageEnumerator.Dispose%2A>, see [&#91;\<topic:\/\/cpconCleaningUpUnmanagedResources\>&#93;](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213).  
   
  ]]></format>
         </remarks>
@@ -174,16 +182,26 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Messaging.MessageEnumerator" /> and optionally releases the managed resources.</summary>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Messaging.MessageEnumerator" /> によって使用されているアンマネージ リソースを解放し、オプションでマネージ リソースも解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the public <xref:System.Messaging.MessageEnumerator.Dispose%2A> method and the <xref:System.Object.Finalize%2A> method. `Dispose()` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`. <xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.  
+## 解説  
+ This method is called by the public <xref:System.Messaging.MessageEnumerator.Dispose%2A> method and the <xref:System.Object.Finalize%2A> method. **languageKeyword tag is not supported!!!!**  
+ invokes the protected **languageKeyword tag is not supported!!!!**  
+ method with the **parameterReference tag is not supported!!!!**  
+ parameter set to **languageKeyword tag is not supported!!!!**  
+. <xref:System.Object.Finalize%2A> invokes **languageKeyword tag is not supported!!!!**  
+ with **parameterReference tag is not supported!!!!**  
+ set to **languageKeyword tag is not supported!!!!**  
+.  
   
- When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.Messaging.MessageEnumerator> references. This method invokes the `Dispose()` method of each referenced object.  
+ When the **parameterReference tag is not supported!!!!**  
+ parameter is **languageKeyword tag is not supported!!!!**  
+, this method releases all resources held by any managed objects that this <xref:System.Messaging.MessageEnumerator> references. This method invokes the **languageKeyword tag is not supported!!!!**  
+ method of each referenced object.  
   
  ]]></format>
         </remarks>
@@ -227,22 +245,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Advances the enumerator to the next message in the queue, if one is currently available.</summary>
+        <summary>1 つは現在利用可能な場合は、キューでは、次のメッセージに、列挙子を進めます。</summary>
         <returns>
-          <see langword="true" /> if the enumerator was succesfully advanced to the next message; <see langword="false" /> if the enumerator has reached the end of the queue.</returns>
+          <see langword="true" /> 列挙子が正常に次のメッセージに進んだ場合 <see langword="false" /> 、列挙子は、キューの末尾に達した場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload returns immediately if there is no message in the queue. There is another overload that waits a specified <xref:System.TimeSpan> for a message to arrive.  
+## 解説  
+ このオーバー ロードは、キューにメッセージが存在しないかどうかに直ちに返されます。 指定した待機する別のオーバー ロードがある <xref:System.TimeSpan> メッセージが到着するのです。  
   
- If a message is not currently available because the queue is empty or because you have moved beyond the last element in the collection, <xref:System.Messaging.MessageEnumerator.MoveNext%2A> returns `false` to the calling method.  
+ キューが空であるため、または、コレクション内の最後の要素より後に移動したため、メッセージを現在使用可能なことができない場合 <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 返します `false` 呼び出し元のメソッドです。  
   
- Upon creation, an enumerator is conceptually positioned before the first message of the queue, and the first call to <xref:System.Messaging.MessageEnumerator.MoveNext%2A> brings the first message of the queue into view.  
+ 作成時に、列挙子は概念的には、最初のメッセージ キュー、および最初の呼び出しの前に配置 <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 、キューの最初のメッセージを表示します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Messaging.MessageQueueException">An exception specific to Message Queuing was thrown.</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">メッセージ キューに固有の例外がスローされました。</exception>
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
+        <altmember cref="M:System.Messaging.MessageEnumerator.Reset" />
+        <altmember cref="T:System.Messaging.Message" />
       </Docs>
     </Member>
     <Member MemberName="MoveNext">
@@ -261,28 +282,32 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">The <see cref="T:System.TimeSpan" /> to wait for a message to be available if the enumerator is positioned at the end of the queue.</param>
-        <summary>Advances the enumerator to the next message in the queue. If the enumerator is positioned at the end of the queue, <see cref="M:System.Messaging.MessageEnumerator.MoveNext" /> waits until a message is available or the given timeout expires.</summary>
+        <param name="timeout">
+          <see cref="T:System.TimeSpan" /> を使用できる列挙子がキューの末尾に配置されている場合にメッセージを待機します。</param>
+        <summary>次のメッセージ キュー内に列挙子を進めます。 列挙子が、キューの末尾に配置されている場合 <see cref="M:System.Messaging.MessageEnumerator.MoveNext" /> にメッセージが使用するか、指定されたタイムアウトになるまで待機します。</summary>
         <returns>
-          <see langword="true" /> if the enumerator successfully advanced to the next message; <see langword="false" /> if the enumerator has reached the end of the queue and a message does not become available within the time specified by the <paramref name="timeout" /> parameter.</returns>
+          <see langword="true" /> 列挙子は、次のメッセージに正常に進んだ場合 <see langword="false" /> 、列挙子は、キューの末尾に達していて、メッセージがで指定された時間内では使用可能なならない、 <paramref name="timeout" /> パラメーター。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload waits if there is no message in the queue or if the cursor has reached the end of the queue. If a message is not currently available because the queue is empty or because you have moved beyond the last element in the collection, <xref:System.Messaging.MessageEnumerator.MoveNext%2A> waits the specified timeout.  
+## 解説  
+ このオーバー ロードは、キューにメッセージがない場合、またはカーソルが、キューの末尾に達した場合に待機します。 キューが空であるため、または、コレクション内の最後の要素より後に移動したため、メッセージを現在使用可能なことができない場合 <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 指定されたタイムアウトを待機します。  
   
- If the cursor is already at the end of the queue, <xref:System.Messaging.MessageEnumerator.MoveNext%2A> only returns `true` if the new message arrives within the specified time interval, has lower priority than all messages currently in the queue and is placed at the end of the queue. An overload with no parameter returns immediately if no further messages are in the queue.  
+ 場合は、キューの末尾にカーソルは既に <xref:System.Messaging.MessageEnumerator.MoveNext%2A> のみを返す `true` 指定した時間間隔内で新しいメッセージを受信する場合、キューに現在のすべてのメッセージより低い優先順位を持つし、は、キューの末尾に置かれます。 使用すると、オーバー ロードは、キュー内にさらにメッセージがないかどうかに直ちに返されます。  
   
- Upon creation, an enumerator is conceptually positioned before the first message of the enumeration, and the first call to <xref:System.Messaging.MessageEnumerator.MoveNext%2A> brings the first message of the enumeration into view.  
+ 作成時に、列挙子は概念的には、列挙し、最初の呼び出しの最初のメッセージの前に配置 <xref:System.Messaging.MessageEnumerator.MoveNext%2A> には、列挙体の最初のメッセージを表示します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The value specified for the timeout parameter is invalid. It might represent a negative number.</exception>
-        <exception cref="T:System.Messaging.MessageQueueException">An exception specific to Message Queuing was thrown.  
+        <exception cref="T:System.ArgumentException">タイムアウト パラメーターに指定された値が正しくありません。 負の数値を表している可能性があります。</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">メッセージ キューに固有の例外がスローされました。  
   
- -or-  
+ または  
   
- The timeout has expired.</exception>
+ タイムアウトの有効期限が切れました。</exception>
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
+        <altmember cref="M:System.Messaging.MessageEnumerator.Reset" />
+        <altmember cref="T:System.Messaging.Message" />
       </Docs>
     </Member>
     <MemberGroup MemberName="RemoveCurrent">
@@ -291,12 +316,12 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Removes the current message from the queue and returns the message to the calling application. Removing the message deletes it from the queue.</summary>
+        <summary>現在のメッセージをキューから削除して、呼び出し元のアプリケーションにメッセージを返します。 メッセージの削除は、キューから削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The behavior described for these overloads is applicable only if the <xref:System.Messaging.MessageEnumerator> instance is retrieved by using the <xref:System.Messaging.MessageQueue.GetMessageEnumerator2%2A>. Do not use <xref:System.Messaging.MessageQueue.GetMessageEnumerator%2A> to retrieve an instance of <xref:System.Messaging.MessageEnumerator> as this method has been deprecated.  
+## 解説  
+ これらのオーバー ロードの動作が適用可能な場合にのみ、 <xref:System.Messaging.MessageEnumerator> を使用してインスタンスを取得、 <xref:System.Messaging.MessageQueue.GetMessageEnumerator2%2A>です。 使用しないで <xref:System.Messaging.MessageQueue.GetMessageEnumerator%2A> のインスタンスを取得する <xref:System.Messaging.MessageEnumerator> ようにこのメソッドは推奨されていません。  
   
  ]]></format>
         </remarks>
@@ -316,22 +341,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Removes the current message from a transactional or non-transactional queue and returns the message to the calling application. There is no timeout specified for a message to arrive in the queue.</summary>
-        <returns>A <see cref="T:System.Messaging.Message" /> that references the first message available in the queue.</returns>
+        <summary>トランザクションまたは非トランザクション キューから現在のメッセージを削除し、呼び出し元のアプリケーションにメッセージを返します。 メッセージがキューに到達する指定されたタイムアウト値はありません。</summary>
+        <returns>A <see cref="T:System.Messaging.Message" /> キュー内の最初のメッセージを参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> removes and returns the message at the cursor's current location.  
+## 解説  
+ <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> 削除し、カーソルの現在の場所でメッセージを返します。  
   
- If you are using queue journaling, removing the message causes a copy to be kept in the journal queue, just as the <xref:System.Messaging.MessageQueue> class's <xref:System.Messaging.MessageQueue.Receive%2A> method does.  
+ メッセージを削除すると同様、ジャーナル キューで保持するコピーであるキューのジャーナルを使用している場合、 <xref:System.Messaging.MessageQueue> クラスの <xref:System.Messaging.MessageQueue.Receive%2A> メソッドです。  
   
- When you remove the current message, the cursor is moved to the next message. You do not have to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>.  
+ 現在のメッセージを削除すると、カーソルを次のメッセージに移動します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>します。  
   
- If you call this overload on a transactional queue, Message Queuing creates a single internal transaction.  
+ トランザクション キューでこのオーバー ロードを呼び出すと、メッセージ キューは 1 つの内部トランザクションを作成します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
       </Docs>
     </Member>
     <Member MemberName="RemoveCurrent">
@@ -350,24 +377,29 @@
         <Parameter Name="transaction" Type="System.Messaging.MessageQueueTransaction" />
       </Parameters>
       <Docs>
-        <param name="transaction">The <see cref="T:System.Messaging.MessageQueueTransaction" /> object that specifies the transaction in which the message will be removed.</param>
-        <summary>Removes the current message from a transactional queue and returns the message to the calling application. There is no timeout specified for a message to arrive in the queue.</summary>
-        <returns>A <see cref="T:System.Messaging.Message" /> that references the first message available in the queue.</returns>
+        <param name="transaction">
+          <see cref="T:System.Messaging.MessageQueueTransaction" /> でメッセージを削除するトランザクションを指定するオブジェクト。</param>
+        <summary>トランザクション キューから現在のメッセージを削除し、呼び出し元のアプリケーションにメッセージを返します。 メッセージがキューに到達する指定されたタイムアウト値はありません。</summary>
+        <returns>A <see cref="T:System.Messaging.Message" /> キュー内の最初のメッセージを参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> removes and returns the message at the cursor's current location, using the internal transaction context defined by the `transaction` parameter.  
+## 解説  
+ <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> 削除してで定義された内部トランザクション コンテキストを使用して、カーソルの現在位置にあるメッセージを返す、 `transaction` パラメーター。  
   
- If you are using queue journaling, removing the message causes a copy to be kept in the journal queue, just as the <xref:System.Messaging.MessageQueue> class's <xref:System.Messaging.MessageQueue.Receive%2A> method does.  
+ メッセージを削除すると同様、ジャーナル キューで保持するコピーであるキューのジャーナルを使用している場合、 <xref:System.Messaging.MessageQueue> クラスの <xref:System.Messaging.MessageQueue.Receive%2A> メソッドです。  
   
- When working with transactional queues, a rollback of a transaction causes any messages removed by a call to <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> to be returned to the queue. The removal is not irreversible until the transaction is committed.  
+ 呼び出しによって削除されるすべてのメッセージの原因はトランザクション キューを使用する場合、トランザクションのロールバック <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> がキューに返されます。 トランザクションがコミットされるまで削除は取り消すことができません。  
   
- When you remove the current message, the cursor is moved to the next message. You do not have to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>.  
+ 現在のメッセージを削除すると、カーソルを次のメッセージに移動します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="transaction" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="transaction" /> パラメーターが <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
+        <altmember cref="T:System.Messaging.MessageQueueTransaction" />
       </Docs>
     </Member>
     <Member MemberName="RemoveCurrent">
@@ -386,26 +418,30 @@
         <Parameter Name="transactionType" Type="System.Messaging.MessageQueueTransactionType" />
       </Parameters>
       <Docs>
-        <param name="transactionType">One of the <see cref="T:System.Messaging.MessageQueueTransactionType" /> values, describing the type of transaction context to associate with the message.</param>
-        <summary>Removes the current message from a queue and returns the message to the calling application. There is no timeout specified for a message to arrive in the queue.</summary>
-        <returns>A <see cref="T:System.Messaging.Message" /> that references the first message available in the queue.</returns>
+        <param name="transactionType">いずれか、 <see cref="T:System.Messaging.MessageQueueTransactionType" /> メッセージと関連付けるトランザクション コンテキストの型を記述する値。</param>
+        <summary>現在のメッセージをキューから削除し、呼び出し元のアプリケーションにメッセージを返します。 メッセージがキューに到達する指定されたタイムアウト値はありません。</summary>
+        <returns>A <see cref="T:System.Messaging.Message" /> キュー内の最初のメッセージを参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> removes and returns the message at the cursor's current location, using a transaction context defined by the `transactionType` parameter.  
+## 解説  
+ <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> 削除してで定義されたトランザクション コンテキストを使用して、カーソルの現在位置にあるメッセージを返す、 `transactionType` パラメーター。  
   
- Specify `Automatic` for the `transactionType` parameter if there is already an external transaction context attached to the thread that you want to use to receive the message. Specify `Single` if you want to receive the message as a single internal transaction. You can specify `None` if you want to receive a message from a transactional queue outside of a transaction context.  
+ 指定 `Automatic` の `transactionType` パラメーター外部トランザクション コンテキストが既にある場合は、メッセージの受信に使用するスレッドにアタッチします。 指定 `Single` 単一の内部トランザクションとメッセージを受信する場合。 指定できます `None` トランザクションのコンテキスト外でトランザクション キューからメッセージを受信する場合。  
   
- If you are using queue journaling, removing the message causes a copy to be kept in the journal queue, just as the <xref:System.Messaging.MessageQueue> class's <xref:System.Messaging.MessageQueue.Receive%2A> method does.  
+ メッセージを削除すると同様、ジャーナル キューで保持するコピーであるキューのジャーナルを使用している場合、 <xref:System.Messaging.MessageQueue> クラスの <xref:System.Messaging.MessageQueue.Receive%2A> メソッドです。  
   
- When working with transactional queues, a rollback of a transaction causes any messages removed by a call to <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> to be returned to the queue. The removal is not irreversible until the transaction is committed.  
+ 呼び出しによって削除されるすべてのメッセージの原因はトランザクション キューを使用する場合、トランザクションのロールバック <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> がキューに返されます。 トランザクションがコミットされるまで削除は取り消すことができません。  
   
- When you remove the current message, the cursor is moved to the next message. You do not have to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>.  
+ 現在のメッセージを削除すると、カーソルを次のメッセージに移動します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">The <paramref name="transactionType" /> parameter is not one of the <see cref="T:System.Messaging.MessageQueueTransactionType" /> members.</exception>
+        <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">
+          <paramref name="transactionType" /> パラメーターは、のいずれかではない、 <see cref="T:System.Messaging.MessageQueueTransactionType" /> メンバーです。</exception>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
+        <altmember cref="T:System.Messaging.MessageQueueTransactionType" />
       </Docs>
     </Member>
     <Member MemberName="RemoveCurrent">
@@ -424,25 +460,27 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">The interval of time to wait for a message to arrive in the queue.</param>
-        <summary>Removes the current message from the queue and returns the message to the calling application. If there is a message to remove, the method returns it immediately. Otherwise, the method waits the specified timeout for a new message to arrive.</summary>
-        <returns>A <see cref="T:System.Messaging.Message" /> that references the first message available in the queue.</returns>
+        <param name="timeout">メッセージがキューに到達するまで待機する時間間隔。</param>
+        <summary>現在のメッセージをキューから削除して、呼び出し元のアプリケーションにメッセージを返します。 削除するメッセージがある場合、メソッドを返しますがすぐに。 それ以外の場合、メソッドは、新しいメッセージが到着する指定のタイムアウトを待機します。</summary>
+        <returns>A <see cref="T:System.Messaging.Message" /> キュー内の最初のメッセージを参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> removes and returns the message at the cursor's current location. If the cursor is at the end of the queue, this overload of the method waits until a message is available or the interval specified by the `timeout` parameter has expired.  
+## 解説  
+ <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> 削除し、カーソルの現在の場所でメッセージを返します。 カーソルが、キューの末尾にある場合は、このメソッドのオーバー ロードを待つできるメッセージがあるかによって指定される間隔ことが、 `timeout` パラメーターの有効期限が切れました。  
   
- If you are using queue journaling, removing the message causes a copy to be kept in the journal queue, just as the <xref:System.Messaging.MessageQueue> class's <xref:System.Messaging.MessageQueue.Receive%2A> method does.  
+ メッセージを削除すると同様、ジャーナル キューで保持するコピーであるキューのジャーナルを使用している場合、 <xref:System.Messaging.MessageQueue> クラスの <xref:System.Messaging.MessageQueue.Receive%2A> メソッドです。  
   
- When you remove the current message, the cursor is moved to the next message. You do not have to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>.  
+ 現在のメッセージを削除すると、カーソルを次のメッセージに移動します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>します。  
   
- If you call this overload on a transactional queue, Message Queuing creates a single internal transaction.  
+ トランザクション キューでこのオーバー ロードを呼び出すと、メッセージ キューは 1 つの内部トランザクションを作成します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The value specified for the <paramref name="timeout" /> parameter is invalid.</exception>
-        <exception cref="T:System.Messaging.MessageQueueException">The timeout has expired.</exception>
+        <exception cref="T:System.ArgumentException">指定された値、 <paramref name="timeout" /> パラメーターが無効です。</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">タイムアウトの有効期限が切れました。</exception>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
       </Docs>
     </Member>
     <Member MemberName="RemoveCurrent">
@@ -462,27 +500,32 @@
         <Parameter Name="transaction" Type="System.Messaging.MessageQueueTransaction" />
       </Parameters>
       <Docs>
-        <param name="timeout">The interval of time to wait for the message to be removed.</param>
-        <param name="transaction">The <see cref="T:System.Messaging.MessageQueueTransaction" /> object that specifies the transaction context for the message.</param>
-        <summary>Removes the current message from a transactional queue and returns the message to the calling application. If there is a message to remove, the method returns it immediately. Otherwise, the method waits the specified timeout for a new message to arrive.</summary>
-        <returns>A <see cref="T:System.Messaging.Message" /> that references the first message available in the queue.</returns>
+        <param name="timeout">削除するメッセージに対して待機する時間間隔。</param>
+        <param name="transaction">
+          <see cref="T:System.Messaging.MessageQueueTransaction" /> メッセージのトランザクション コンテキストを指定するオブジェクト。</param>
+        <summary>トランザクション キューから現在のメッセージを削除し、呼び出し元のアプリケーションにメッセージを返します。 削除するメッセージがある場合、メソッドを返しますがすぐに。 それ以外の場合、メソッドは、新しいメッセージが到着する指定のタイムアウトを待機します。</summary>
+        <returns>A <see cref="T:System.Messaging.Message" /> キュー内の最初のメッセージを参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> removes and returns the message at the cursor's current location. If the cursor is at the end of the queue, this overload of the method waits until a message is available or the interval specified by the `timeout` parameter has expired.  
+## 解説  
+ <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> 削除し、カーソルの現在の場所でメッセージを返します。 カーソルが、キューの末尾にある場合は、このメソッドのオーバー ロードを待つできるメッセージがあるかによって指定される間隔ことが、 `timeout` パラメーターの有効期限が切れました。  
   
- When working with transactional queues, a rollback of a transaction causes any messages removed by a call to <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> to be returned to the queue. The removal is not irreversible until the transaction is committed.  
+ 呼び出しによって削除されるすべてのメッセージの原因はトランザクション キューを使用する場合、トランザクションのロールバック <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> がキューに返されます。 トランザクションがコミットされるまで削除は取り消すことができません。  
   
- If you are using queue journaling, removing the message causes a copy to be kept in the journal queue, just as the <xref:System.Messaging.MessageQueue> class's <xref:System.Messaging.MessageQueue.Receive%2A> method does.  
+ メッセージを削除すると同様、ジャーナル キューで保持するコピーであるキューのジャーナルを使用している場合、 <xref:System.Messaging.MessageQueue> クラスの <xref:System.Messaging.MessageQueue.Receive%2A> メソッドです。  
   
- When you remove the current message, the cursor is moved to the next message. You do not have to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>.  
+ 現在のメッセージを削除すると、カーソルを次のメッセージに移動します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The value specified for the <paramref name="timeout" /> parameter is invalid.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="transaction" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.Messaging.MessageQueueException">The timeout has expired.</exception>
+        <exception cref="T:System.ArgumentException">指定された値、 <paramref name="timeout" /> パラメーターが無効です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="transaction" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">タイムアウトの有効期限が切れました。</exception>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
+        <altmember cref="T:System.Messaging.MessageQueueTransaction" />
       </Docs>
     </Member>
     <Member MemberName="RemoveCurrent">
@@ -502,29 +545,33 @@
         <Parameter Name="transactionType" Type="System.Messaging.MessageQueueTransactionType" />
       </Parameters>
       <Docs>
-        <param name="timeout">The interval of time to wait for the message to be removed.</param>
-        <param name="transactionType">One of the <see cref="T:System.Messaging.MessageQueueTransactionType" /> values, describing the type of transaction context to associate with the message.</param>
-        <summary>Removes the current message from a queue and returns the message to the calling application. If there is a message to remove, the method returns it immediately. Otherwise, the method waits the specified timeout for a new message to arrive.</summary>
-        <returns>A <see cref="T:System.Messaging.Message" /> that references the first message available in the queue.</returns>
+        <param name="timeout">削除するメッセージに対して待機する時間間隔。</param>
+        <param name="transactionType">いずれか、 <see cref="T:System.Messaging.MessageQueueTransactionType" /> メッセージと関連付けるトランザクション コンテキストの型を記述する値。</param>
+        <summary>現在のメッセージをキューから削除し、呼び出し元のアプリケーションにメッセージを返します。 削除するメッセージがある場合、メソッドを返しますがすぐに。 それ以外の場合、メソッドは、新しいメッセージが到着する指定のタイムアウトを待機します。</summary>
+        <returns>A <see cref="T:System.Messaging.Message" /> キュー内の最初のメッセージを参照します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> removes and returns the message at the cursor's current location, using a transaction context defined by the `transactionType` parameter. If the cursor is at the end of the queue, this overload of the method waits until a message is available or the interval specified by the `timeout` parameter has expired.  
+## 解説  
+ <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> 削除してで定義されたトランザクション コンテキストを使用して、カーソルの現在位置にあるメッセージを返す、 `transactionType` パラメーター。 カーソルが、キューの末尾にある場合は、このメソッドのオーバー ロードを待つできるメッセージがあるかによって指定される間隔ことが、 `timeout` パラメーターの有効期限が切れました。  
   
- Specify `Automatic` for the `transactionType` parameter if there is already an external transaction context attached to the thread that you want to use to receive the message. Specify `Single` if you want to receive the message as a single internal transaction. You can specify `None` if you want to receive a message from a transactional queue outside of a transaction context.  
+ 指定 `Automatic` の `transactionType` パラメーター外部トランザクション コンテキストが既にある場合は、メッセージの受信に使用するスレッドにアタッチします。 指定 `Single` 単一の内部トランザクションとメッセージを受信する場合。 指定できます `None` トランザクションのコンテキスト外でトランザクション キューからメッセージを受信する場合。  
   
- If you are using queue journaling, removing the message causes a copy to be kept in the journal queue, just as the <xref:System.Messaging.MessageQueue> class's <xref:System.Messaging.MessageQueue.Receive%2A> method does.  
+ メッセージを削除すると同様、ジャーナル キューで保持するコピーであるキューのジャーナルを使用している場合、 <xref:System.Messaging.MessageQueue> クラスの <xref:System.Messaging.MessageQueue.Receive%2A> メソッドです。  
   
- When working with transactional queues, a rollback of a transaction causes any messages removed by a call to <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> to be returned to the queue. The removal is not irreversible until the transaction is committed.  
+ 呼び出しによって削除されるすべてのメッセージの原因はトランザクション キューを使用する場合、トランザクションのロールバック <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A> がキューに返されます。 トランザクションがコミットされるまで削除は取り消すことができません。  
   
- When you remove the current message, the cursor is moved to the next message. You do not have to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>.  
+ 現在のメッセージを削除すると、カーソルを次のメッセージに移動します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.RemoveCurrent%2A>します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The value specified for the <paramref name="timeout" /> parameter is invalid.</exception>
-        <exception cref="T:System.Messaging.MessageQueueException">The timeout has expired.</exception>
-        <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">The <paramref name="transactionType" /> parameter is not one of the <see cref="T:System.Messaging.MessageQueueTransactionType" /> members.</exception>
+        <exception cref="T:System.ArgumentException">指定された値、 <paramref name="timeout" /> パラメーターが無効です。</exception>
+        <exception cref="T:System.Messaging.MessageQueueException">タイムアウトの有効期限が切れました。</exception>
+        <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">
+          <paramref name="transactionType" /> パラメーターは、のいずれかではない、 <see cref="T:System.Messaging.MessageQueueTransactionType" /> メンバーです。</exception>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
+        <altmember cref="T:System.Messaging.MessageQueueTransactionType" />
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -541,17 +588,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Resets the current enumerator so it points to the head of the queue.</summary>
+        <summary>キューの先頭を指すように、現在の列挙子をリセットします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An enumerator can only move in a forward direction. Use this method to start over at the beginning of the queue.  
+## 解説  
+ 列挙子は、順方向にのみ移動できます。 キューの先頭に最初からやり直すには、このメソッドを使用します。  
   
- After calling <xref:System.Messaging.MessageEnumerator.Reset%2A>, the cursor points to the first message. You do not need to call <xref:System.Messaging.MessageEnumerator.MoveNext%2A> after calling <xref:System.Messaging.MessageEnumerator.Reset%2A> to move the cursor forward to the first message in the queue.  
+ 呼び出した後 <xref:System.Messaging.MessageEnumerator.Reset%2A>, 、カーソルが最初のメッセージを指します。 呼び出す必要はありません <xref:System.Messaging.MessageEnumerator.MoveNext%2A> 呼び出した後 <xref:System.Messaging.MessageEnumerator.Reset%2A> キューの最初のメッセージにカーソルを移動します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageEnumerator.MoveNext" />
+        <altmember cref="P:System.Messaging.MessageEnumerator.Current" />
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IEnumerator.Current">
@@ -567,10 +616,29 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns a <see cref="T:System.Messaging.Message" /> that references the message at the current cursor position.</summary>
-        <value>A <see cref="T:System.Messaging.Message" /> that references the message at the current cursor position.</value>
+        <summary>返します。、 <see cref="T:System.Messaging.Message" /> 現在のカーソル位置にあるメッセージを参照します。</summary>
+        <value>A <see cref="T:System.Messaging.Message" /> 現在のカーソル位置にあるメッセージを参照します。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="MoveNext">
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>次のメッセージ キュー内に列挙子を進めます。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Messaging.MessageEnumerator" /> で使用したリソースを解放します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

@@ -11,17 +11,17 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides a way to customize ASP.NET behavior at run time that overrides the ASP.NET code access security policy.</summary>
+    <summary>ASP.NET コード アクセス セキュリティ ポリシーをオーバーライドする実行時に ASP.NET の動作をカスタマイズする方法を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In complex Web hosting environments such as SharePoint and Web farms, you might have to extend the ASP.NET code access security policy. By extending the <xref:System.Web.Hosting.HostSecurityPolicyResolver> type, you can implement custom security policy behavior that overrides the ASP.NET code access security policy.  
+## 解説  
+ 複雑な Web ホスティング環境を SharePoint と Web ファームなど、ASP.NET コード アクセス セキュリティ ポリシーを拡張する必要があります。 拡張することによって、 <xref:System.Web.Hosting.HostSecurityPolicyResolver> 型 ASP.NET コード アクセス セキュリティ ポリシーをオーバーライドするカスタム セキュリティ ポリシーの動作を実装することができます。  
   
-## Configuring a HostSecurityPolicyResolver Class  
- In the configuration files, you can configure a custom <xref:System.Web.Hosting.HostSecurityPolicyResolver> instance by adding the <xref:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType%2A> attribute to the  element. The <xref:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType%2A> attribute can be set to the name of the custom <xref:System.Web.Hosting.HostSecurityPolicyResolver> type that will be loaded by ASP.NET. The attribute value contains the fully qualified name of the derived type. By default, [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)] does not set this attribute.  
+## HostSecurityPolicyResolver クラスを構成します。  
+ 構成ファイルでは、カスタムを構成することができます <xref:System.Web.Hosting.HostSecurityPolicyResolver> インスタンスを追加することで、 <xref:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType%2A> 属性を要素。<xref:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType%2A> 属性は、カスタムの名前に設定することができます <xref:System.Web.Hosting.HostSecurityPolicyResolver> ASP.NET によって読み込まれる種類です。 属性の値には、派生型の完全修飾名が含まれています。 既定では、 [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)] この属性を設定しません。  
   
- The following syntax shows how to configure the attribute:  
+ 次の構文は、属性を構成する方法を示します。  
   
 ```  
 <trust   
@@ -31,19 +31,24 @@
 />  
 ```  
   
- The <xref:System.Web.Configuration.TrustSection.PermissionSetName%2A> attribute in the `trust` element can be set to a string value that indicates which named permission set in a partial trust configuration file should be used. By default, ASP.NET 4 sets this attribute to "ASP.Net".  
+ <xref:System.Web.Configuration.TrustSection.PermissionSetName%2A> 属性、 `trust` 要素は、部分信頼の構成ファイルで設定する名前付きのアクセス許可を使用するかを示す文字列値に設定することができます。 既定では、ASP.NET 4 は、「ASP.Net」には、この属性をを設定します。  
   
- The <xref:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType%2A> attribute in the `trust` element indicates the custom <xref:System.Web.Hosting.HostSecurityPolicyResolver> object that will be loaded by ASP.NET. If the attribute is set to an empty string, the application uses the ASP.NET default logic for determining the permissions for the assembly. The <xref:System.Web.Hosting.HostSecurityPolicyResolver> type attribute cannot be set to a null value.  
+ <xref:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType%2A> 属性、 `trust` 要素は、ユーザー設定を示す <xref:System.Web.Hosting.HostSecurityPolicyResolver> ASP.NET によって読み込まれるオブジェクト。 属性が空の文字列に設定されている場合、アプリケーションは、アセンブリのアクセス許可を決定するため、ASP.NET の既定のロジックを使用します。<xref:System.Web.Hosting.HostSecurityPolicyResolver> 型属性は、null 値に設定することはできません。  
   
 > [!IMPORTANT]
->  The assembly that contains a derived <xref:System.Web.Hosting.HostSecurityPolicyResolver> type must run with full trust, because the custom type provides information that ASP.NET can use to elevate assemblies to full trust. In general, you should deploy a custom policy resolver type in the global assembly cache, where it will run with full trust.  
+>  アセンブリを含む派生 <xref:System.Web.Hosting.HostSecurityPolicyResolver> 型が完全な信頼で実行しなければならないため、カスタムの型は、ASP.NET を使用してアセンブリを完全信頼に昇格する情報を提供します。 一般に、完全な信頼で実行される場所、グローバル アセンブリ キャッシュにカスタム ポリシーの競合回避モジュール型を展開する必要があります。  
   
- When you implement this class, you must override the <xref:System.Web.Hosting.HostSecurityPolicyResolver.ResolvePolicy%2A> method. Depending on the <xref:System.Security.Policy.Evidence> instance that is passed as a parameter, the method returns an enumeration value that indicates the security policy to apply to the assembly. The set of available security policies is determined by the <xref:System.Web.Hosting.HostSecurityPolicyResults> enumeration.  
+ このクラスを実装する場合はオーバーライドする必要があります、 <xref:System.Web.Hosting.HostSecurityPolicyResolver.ResolvePolicy%2A> メソッドです。 によって、 <xref:System.Security.Policy.Evidence> あるインスタンス メソッドをパラメーターとして渡されたアセンブリに適用するセキュリティ ポリシーを示す列挙値を返します。 利用可能なセキュリティ ポリシーのセットによって決定されます、 <xref:System.Web.Hosting.HostSecurityPolicyResults> 列挙します。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
-    <exception cref="T:System.Configuration.ConfigurationErrorsException">The <see cref="P:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType" /> attribute has an invalid value or cannot be found.</exception>
+    <exception cref="T:System.Configuration.ConfigurationErrorsException">
+      <see cref="P:System.Web.Configuration.TrustSection.HostSecurityPolicyResolverType" /> 属性に無効な値を持つか、見つかりません。</exception>
     <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">for full trust for the inheriting type. This class cannot be inherited by partially trusted code.</permission>
+    <altmember cref="T:System.Security.HostSecurityManager" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -57,7 +62,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.Hosting.HostSecurityPolicyResolver" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.Hosting.HostSecurityPolicyResolver" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -77,14 +83,14 @@
         <Parameter Name="evidence" Type="System.Security.Policy.Evidence" />
       </Parameters>
       <Docs>
-        <param name="evidence">A collection of evidence about an assembly and a host, which is used as an input to security policy.</param>
-        <summary>Gets a value that indicates the security policy that should be applied to an assembly.</summary>
-        <returns>A value that indicates the type of security permissions should be applied to an assembly.</returns>
+        <param name="evidence">アセンブリとセキュリティ ポリシーへの入力として使用されるホストについての証拠のコレクション。</param>
+        <summary>アセンブリに適用されるセキュリティ ポリシーを示す値を取得します。</summary>
+        <returns>セキュリティのアクセス許可の種類を示す値をアセンブリに適用する必要があります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If you inherit from the <xref:System.Web.Hosting.HostSecurityPolicyResolver> class, you must implement the <xref:System.Web.Hosting.HostSecurityPolicyResolver.ResolvePolicy%2A> method. Based on the information that is provided in the `evidence` parameter, the method should return one of the security policies that are defined in the <xref:System.Web.Hosting.HostSecurityPolicyResults> enumeration.  
+## 解説  
+ 継承する場合、 <xref:System.Web.Hosting.HostSecurityPolicyResolver> クラスが実装する必要があります、 <xref:System.Web.Hosting.HostSecurityPolicyResolver.ResolvePolicy%2A> メソッドです。 提供されている情報に基づいて、 `evidence` 、パラメーター、メソッドが返す 1 つのセキュリティ ポリシーで定義されている、 <xref:System.Web.Hosting.HostSecurityPolicyResults> 列挙します。  
   
  ]]></format>
         </remarks>

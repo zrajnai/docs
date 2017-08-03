@@ -18,58 +18,62 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Serializes and deserializes objects to or from the body of a message, using the XML format based on the XSD schema definition.</summary>
+    <summary>および XSD スキーマ定義に基づく XML 形式を使用して、メッセージの本文との間のオブジェクトを逆シリアル化します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Messaging.XmlMessageFormatter> is the default formatter that an instance of <xref:System.Messaging.MessageQueue> uses to serialize messages written to the queue. When you create an instance of <xref:System.Messaging.MessageQueue>, an instance of <xref:System.Messaging.XmlMessageFormatter> is created for you and associated with the <xref:System.Messaging.MessageQueue>. You can specify a different formatter by creating it in your code and assigning it to the <xref:System.Messaging.MessageQueue.Formatter%2A> property of your <xref:System.Messaging.MessageQueue>.  
+## 解説  
+ <xref:System.Messaging.XmlMessageFormatter> は既定のフォーマッタのインスタンス <xref:System.Messaging.MessageQueue> をキューに書き込まれたメッセージをシリアル化を使用します。 インスタンスを作成する場合 <xref:System.Messaging.MessageQueue>, のインスタンス <xref:System.Messaging.XmlMessageFormatter> は自動的に作成され、関連付け、 <xref:System.Messaging.MessageQueue>です。 異なるフォーマッタを指定するには、コードで作成しに割り当てることによって、 <xref:System.Messaging.MessageQueue.Formatter%2A> のプロパティ、 <xref:System.Messaging.MessageQueue>です。  
   
- A queue's default <xref:System.Messaging.XmlMessageFormatter> instance can be used to write to the queue, but it cannot be used to read from the queue until you set either the <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> property on the formatter. You can either set one or both of these values on the default formatter instance, or you can create a new instance of the formatter and set the values automatically by passing them as arguments into the appropriate <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> constructor.  
+ キューの既定 <xref:System.Messaging.XmlMessageFormatter> インスタンスは、キューへの書き込みに使用できますが、いずれかに設定するまで、キューから読み取るために使用できない、 <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> または <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> フォーマッタのプロパティです。 既定のフォーマッタのインスタンスに、これらの値の一方または両方を設定することができますか、または、フォーマッタの新しいインスタンスを作成して、適切なに引数として渡すことによって、値が自動設定 <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> コンス トラクターです。  
   
- When specifying <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> rather than <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, type existence is checked at compile time rather than read time, reducing possibility for error. <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> requires every entry to be fully qualified, specifying its assembly name. Further, when working with multiple concurrent versions, the version number must also be appended to the target type name as well.  
+ 指定するときに <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> なく <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, 、読み取り時間、エラー発生の可能性を減らすことではなくコンパイル時に種類の存在をチェックします。<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> すべてのエントリの完全修飾アセンブリ名を指定する必要があります。 さらに、複数の同時実行バージョンを使用する場合、バージョン番号必要がありますもに追加されます対象の型名。  
   
- The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message. This allows the formatter to interpret the message body.  
+ <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティがメッセージを逆シリアル化時に照合するようにするには、どのようなスキーマをフォーマッタに指示します。 これにより、フォーマッタがメッセージ本文を解釈できます。  
   
- The instance serialized in the message body must comply with one of the schemas represented in the type array. When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.  
+ メッセージの本文にシリアル化されたインスタンスは、配列型で表されているスキーマのいずれかに準拠する必要があります。 使用してメッセージを読み込んだとき、 <xref:System.Messaging.MessageQueue.Receive%2A> メソッドは、このメソッドが識別されるスキーマに対応するメッセージの本文を読み込みます型のオブジェクトを作成します。  
   
- Only one of the two properties needs to be set when reading from the queue, but you can set both. The set of types is the combined set from the two properties. The decision of which property to use is specific to your application. If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown when the message is read.  
+ 2 つのプロパティの 1 つのみが、キューから読み取るときに設定する必要がありますが、両方を設定することができます。 型のセットは、2 つのプロパティから結合されたセットです。 使用するプロパティの意思決定は、アプリケーションに固有です。 メッセージの本文にスキーマが一致しないプロパティのいずれかの配列の型のいずれかの型が含まれている場合は、メッセージが読み取られるときに、例外がスローされます。  
   
- The <xref:System.Messaging.XmlMessageFormatter> is a crucial component of loosely coupled XML-based messaging. The XSD.exe utility uses the XML format is used to generate XML schema, such as when you use the utility to serialize a class used by your application. The class must have a default constructor.  
+ <xref:System.Messaging.XmlMessageFormatter> は疎結合 XML ベースのメッセージングの不可欠な要素です。 XSD.exe ユーティリティは、アプリケーションによって使用されるクラスをシリアル化する、ユーティリティを使用する場合などの XML スキーマを生成する XML 形式を使用を使用します。 クラスには、既定のコンス トラクターが必要です。  
   
- The format is used again in the reverse process when the utility generates a class based on the schema you distribute to describe your class data. The use of the utility and the XML schema it generates enables you to avoid redistributing.dll files every time you recompile a class after the implementation of your class has changed. As long as the schema does not change on the client or the server, other changes on either side do not affect the other.  
+ 形式が使用されるもう一度逆のプロセスで、ユーティリティは、スキーマに基づいたクラスを生成するときに配布する、クラスのデータを説明します。 ユーティリティおよび生成する XML スキーマの使用では、クラスの実装が変更された後、クラスを再コンパイルするたびに、.dll ファイルを回避することができます。 クライアントまたはサーバー上にスキーマが変更されない限り、いずれかの側には、その他の変更は影響しません、その他。  
   
    
   
-## Examples  
- The following code example includes three pieces of code: a server component, an order class, and client code. The order class can be used by the XSD.exe utility to generate schema that the server recognizes within incoming messages. The schema is an XML formatted file that describes the "shape" of the class. This schema can then be used on the client side to generate a client-specific order class that shares the same schema as the server class.  
+## 例  
+ 次のコード例には、3 つコードにはが含まれています。 サーバー コンポーネント、order クラス、およびクライアント コード。 Order クラスは、サーバーが受信メッセージ内で認識するスキーマを生成する XSD.exe ユーティリティで使用できます。 スキーマは、クラスの「形状」を記述した XML 書式設定されたファイルです。 このスキーマは、サーバー クラスと同じスキーマを共有するクライアント固有の order クラスを生成するクライアント側で使用できます。  
   
- The following code example represents a server component that receives orders through a message queue. The body of the message should be an order object whose schema matches the Order.cs class below. The server process or application deserializes the order.  
+ 次のコード例では、メッセージ キューからの注文を受信するサーバー コンポーネントを表します。 メッセージの本文には、スキーマを持つには、次に示す Order.cs クラスと一致する order オブジェクトをする必要があります。 サーバー プロセスまたはアプリケーションは、順序を逆シリアル化します。  
   
- [!code-cpp[Classic XmlMessageFormatter Example#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source.cpp#1)]
- [!code-csharp[Classic XmlMessageFormatter Example#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source.cs#1)]
- [!code-vb[Classic XmlMessageFormatter Example#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source.vb#1)]  
+ [!code-cpp[Classic XmlMessageFormatter Example\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic XmlMessageFormatter Example\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source.cs#1)]
+ [!code-vb[Classic XmlMessageFormatter Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source.vb#1)]  
   
- The following code example represents the order class that provides a schema for the order objects that the application on the server receives and deserializes.  
+ 次のコード例では、サーバー上のアプリケーションを受信し、逆シリアル化 order オブジェクトのスキーマを提供する order クラスを表します。  
   
- [!code-cpp[Classic XmlMessageFormatter Example#2](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source2.cpp#2)]
- [!code-csharp[Classic XmlMessageFormatter Example#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source2.cs#2)]
- [!code-vb[Classic XmlMessageFormatter Example#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source2.vb#2)]  
+ [!code-cpp[Classic XmlMessageFormatter Example\#2](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source2.cpp#2)]
+ [!code-csharp[Classic XmlMessageFormatter Example\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source2.cs#2)]
+ [!code-vb[Classic XmlMessageFormatter Example\#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source2.vb#2)]  
   
- Any client application that interacts with the application on the server must send messages to the server by serializing information in a locally defined order class into the message body. The locally defined order class must have the same schema as the server-defined order class into which the application on the server will attempt to deserialize the message body. The XSD.exe utility lets the manager of the application on the server create and distribute the schema the client must use to serialize messages going to the server.  
+ サーバー上のアプリケーションとやり取りするクライアント アプリケーションは、メッセージ本文に、ローカルに定義された order クラスのシリアル化する情報によって、サーバーにメッセージを送信する必要があります。 ローカルに定義された order クラスをサーバー上のアプリケーションは、メッセージ本文を逆シリアル化を試みますサーバー定義の order クラスと同じスキーマが必要です。 XSD.exe ユーティリティでは、サーバー上のアプリケーションのマネージャーを作成し、クライアントがサーバーに送信するメッセージをシリアル化に使用する必要があります、スキーマを配布することができます。  
   
- When the manager of the client application receives the schema for the order class, the XSD.exe utility is used again to generate a client-specific order class from the schema. It is this class that is used in the client code example below, not the server's order class (the XSD.exe utility causes the schema-generated class to have the same name as the original class). This new order class is used to serialize the order into the message body.  
+ クライアント アプリケーションの管理者は、order クラスのスキーマを受信した場合、スキーマからクライアント固有の order クラスを生成する、XSD.exe ユーティリティがもう一度使用されます。 これは、次に、サーバーの順序クラスではなく、クライアントのコード例で使用されているこのクラス \(XSD.exe ユーティリティは、元のクラスと同じ名前を持つスキーマから生成されるクラスを発生\) します。 この新しい order クラスを使用して、順序をメッセージ本文にシリアル化します。  
   
- The following code example is the client-side processing, used to serialize an order and send the information associated with the order to a queue. The code associates Item, Quantity, and Address information with elements of the schema that were generated for the Order.cs class by the XSD.exe utility. An order is sent to the Orders queue on the local computer.  
+ 次のコード例は、クライアント側の処理、注文をシリアル化し、キューに注文に関連付けられている情報を送信するために使用します。 コードでは、XSD.exe ユーティリティで Order.cs クラスに対して生成されたスキーマの要素を持つ項目、数量、およびアドレス情報を関連付けます。 注文は、ローカル コンピューター上の順序キューに送信されます。  
   
- [!code-cpp[Classic XmlMessageFormatter Example#3](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source3.cpp#3)]
- [!code-csharp[Classic XmlMessageFormatter Example#3](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source3.cs#3)]
- [!code-vb[Classic XmlMessageFormatter Example#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source3.vb#3)]  
+ [!code-cpp[Classic XmlMessageFormatter Example\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source3.cpp#3)]
+ [!code-csharp[Classic XmlMessageFormatter Example\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source3.cs#3)]
+ [!code-vb[Classic XmlMessageFormatter Example\#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source3.vb#3)]  
   
- After the schema is generated from the order class on the server, you can modify the class. Unless the schema changes, you do not need to redistribute the schema. After you have distributed the schema and generated a client-side order class, that client class can also be modified independently of the server's order class, as long as the schema itself is not modified. The two classes have become loosely coupled.  
+ サーバーで、order クラスから、スキーマを生成すると後、は、クラスを変更できます。 スキーマが変更された場合を除き、スキーマを再配布する必要はありません。 スキーマを配布して、生成されたクライアント側の order クラスと、そのクライアント クラスことができます変更することも、サーバーの順序のクラスとは無関係にスキーマ自体が変更されていない限り、します。 2 つのクラスは、疎結合になります。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Messaging.MessageQueue" />
+    <altmember cref="T:System.Messaging.ActiveXMessageFormatter" />
+    <altmember cref="T:System.Messaging.BinaryMessageFormatter" />
+    <altmember cref="T:System.Messaging.IMessageFormatter" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -83,16 +87,16 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class, without target types set.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Messaging.XmlMessageFormatter" /> クラス、ターゲットがない場合は、セットを入力します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This overload of the constructor is used most frequently when writing to the queue, as target types are not required when writing.  
+## 解説  
+ このコンス トラクターのオーバー ロードは最もよく使用、キューに書き込むときにようにターゲットの種類の書き込み時に必要ありません。  
   
- To read a message from a queue using an instance of <xref:System.Messaging.XmlMessageFormatter> created using this constructor, you must set the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties so the formatter knows what types to attempt to deserialize.  
+ インスタンスを使用してキューからメッセージを読み取るため <xref:System.Messaging.XmlMessageFormatter> をこのコンス トラクターを使用して作成する必要があります設定、 <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> または <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> フォーマッタに指示を逆シリアル化しようとするどのような種類のプロパティです。  
   
- When you create a new <xref:System.Messaging.MessageQueue>, a default <xref:System.Messaging.XmlMessageFormatter> instance is created, without the target types set. As with a formatter created using this constructor, you must set target types for that formatter instance if you want to read from the queue.  
+ 新規に作成するときに <xref:System.Messaging.MessageQueue>, 、既定の <xref:System.Messaging.XmlMessageFormatter> ターゲットの種類が設定されていないインスタンスを作成します。 このコンス トラクターを使用して作成されたフォーマッタは、キューから読み取る場合、対象の型は、フォーマッタ インスタンスを設定する必要があります。  
   
  ]]></format>
         </remarks>
@@ -111,32 +115,33 @@
         <Parameter Name="targetTypeNames" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="targetTypeNames">An array of type <see cref="T:System.String" /> that specifies the set of possible types that will be deserialized by the formatter from the message provided. These values must be fully qualified, for example, "MyNamespace.MyOrders, MyOrdersAssemblyName".</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class, setting target types passed in as an array of (fully qualified) string values.</summary>
+        <param name="targetTypeNames">型の配列 <see cref="T:System.String" /> 提供されるメッセージからフォーマッタで逆シリアル化が使用可能な型のセットを指定します。 これらの値は、例では、「MyNamespace.MyOrders, MyOrdersAssemblyName」の完全修飾する必要があります。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Messaging.XmlMessageFormatter" /> クラス、\(完全修飾\) の文字列値の配列として渡されるターゲット型を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The constructors with target type parameters are most frequently used when reading from the queue. When writing, it is not necessary to specify target types.  
+## 解説  
+ 対象の型パラメーターを持つコンス トラクターは、キューから読み取るときに最も頻繁に使用します。 を記述する場合、ターゲットの種類を指定する必要はありません。  
   
- This overload of the <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> constructor sets the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> property to the array values passed in through the `targetTypeNames` parameter. Setting this property enables a <xref:System.Messaging.MessageQueue> using this <xref:System.Messaging.XmlMessageFormatter> instance to read messages containing objects of given types.  
+ このオーバー ロード、 <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> コンス トラクターのセット、 <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> プロパティ経由で渡された配列の値を `targetTypeNames` パラメーター。 により、このプロパティの設定、 <xref:System.Messaging.MessageQueue> これを使用して <xref:System.Messaging.XmlMessageFormatter> のオブジェクトを含むメッセージを読み取るインスタンスの種類を指定します。  
   
- Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message. This allows the formatter to interpret the message body.  
+ 両方の <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティがメッセージを逆シリアル化時に照合するようにするには、どのようなスキーマをフォーマッタに指示します。 これにより、フォーマッタがメッセージ本文を解釈できます。  
   
- The instance serialized in the message body must comply with one of the schemas represented in the type array. When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.  
+ メッセージの本文にシリアル化されたインスタンスは、配列型で表されているスキーマのいずれかに準拠する必要があります。 使用してメッセージを読み込んだとき、 <xref:System.Messaging.MessageQueue.Receive%2A> メソッドは、このメソッドが識別されるスキーマに対応するメッセージの本文を読み込みます型のオブジェクトを作成します。  
   
- Only one of the two properties needs to be set when reading from the queue, but you can set both. The set of types is the combined set from the two properties. The decision of which one to use is specific to your application. If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown at read time.  
+ 2 つのプロパティの 1 つのみが、キューから読み取るときに設定する必要がありますが、両方を設定することができます。 型のセットは、2 つのプロパティから結合されたセットです。 どちらを使用する 1 つは、アプリケーションに固有です。 メッセージの本文にスキーマが一致しないプロパティのいずれかの配列の型のいずれかの型が含まれている場合は、読み取り時に例外がスローされます。  
   
    
   
-## Examples  
- [!code-cpp[Message.Body#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Message.Body/CPP/message_sendreceive.cpp#1)]
- [!code-csharp[Message.Body#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Message.Body/CS/message_sendreceive.cs#1)]
- [!code-vb[Message.Body#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Message.Body/VB/message_sendreceive.vb#1)]  
+## 例  
+ [!code-cpp[Message.Body\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Message.Body/CPP/message_sendreceive.cpp#1)]
+ [!code-csharp[Message.Body\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Message.Body/CS/message_sendreceive.cs#1)]
+ [!code-vb[Message.Body\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Message.Body/VB/message_sendreceive.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="targetTypeNames" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="targetTypeNames" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -152,25 +157,25 @@
         <Parameter Name="targetTypes" Type="System.Type[]" />
       </Parameters>
       <Docs>
-        <param name="targetTypes">An array of type <see cref="T:System.Type" /> that specifies the set of possible types that will be deserialized by the formatter from the message provided.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class, setting target types passed in as an array of object types.</summary>
+        <param name="targetTypes">型の配列 <see cref="T:System.Type" /> 提供されるメッセージからフォーマッタで逆シリアル化が使用可能な型のセットを指定します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Messaging.XmlMessageFormatter" /> クラス、オブジェクトの種類の配列として渡されるターゲット型を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The constructors with target type parameters are most frequently used when reading from the queue. When writing, it is not necessary to specify target types.  
+## 解説  
+ 対象の型パラメーターを持つコンス トラクターは、キューから読み取るときに最も頻繁に使用します。 を記述する場合、ターゲットの種類を指定する必要はありません。  
   
- This overload of the <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> constructor sets the <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> property to the array values passed in through the `targetTypes` parameter. Setting this property enables a <xref:System.Messaging.MessageQueue> using this <xref:System.Messaging.XmlMessageFormatter> instance to read messages containing objects of the given types.  
+ このオーバー ロード、 <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> コンス トラクターのセット、 <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティ経由で渡された配列の値を `targetTypes` パラメーター。 このプロパティを使用して設定、 <xref:System.Messaging.MessageQueue> これを使用して <xref:System.Messaging.XmlMessageFormatter> インスタンスを指定した型のオブジェクトを含むメッセージを読み取る。  
   
- Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message. This allows the formatter to interpret the message body.  
+ 両方の <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティがメッセージを逆シリアル化時に照合するようにするには、どのようなスキーマをフォーマッタに指示します。 これにより、フォーマッタがメッセージ本文を解釈できます。  
   
- The instance serialized in the message body must comply with one of the schemas represented in the type array. When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.  
+ メッセージの本文にシリアル化されたインスタンスは、配列型で表されているスキーマのいずれかに準拠する必要があります。 使用してメッセージを読み込んだとき、 <xref:System.Messaging.MessageQueue.Receive%2A> メソッドは、このメソッドが識別されるスキーマに対応するメッセージの本文を読み込みます型のオブジェクトを作成します。  
   
- Only one of the two properties needs to be set when reading from the queue, but you can set both. The set of types is the combined set from the two properties. The decision of which one to use is specific to your application. If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown at read time.  
+ 2 つのプロパティの 1 つのみが、キューから読み取るときに設定する必要がありますが、両方を設定することができます。 型のセットは、2 つのプロパティから結合されたセットです。 どちらを使用する 1 つは、アプリケーションに固有です。 メッセージの本文にスキーマが一致しないプロパティのいずれかの配列の型のいずれかの型が含まれている場合は、読み取り時に例外がスローされます。  
   
- When specifying <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> rather than <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, type existence is checked at compile time rather than read time, reducing possibility for error. <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> requires every entry to be fully qualified, specifying its assembly name. Further, when working with multiple concurrent versions, the version number must also be appended to the target type name as well.  
+ 指定するときに <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> なく <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, 、読み取り時間、エラー発生の可能性を減らすことではなくコンパイル時に種類の存在をチェックします。<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> すべてのエントリの完全修飾アセンブリ名を指定する必要があります。 さらに、複数の同時実行バージョンを使用する場合、バージョン番号必要がありますもに追加されます対象の型名。  
   
- When using <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>, you can add each object (for example, `MyClass`) to the list in a way demonstrated by the following C# code.  
+ 使用する場合 <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>, 、各オブジェクトを追加することができます \(たとえば、 `MyClass`\) を次の c\# コードに示すようにリストします。  
   
 ```  
 TargetTypes = new Type[]{typeof(MyClass)}  
@@ -178,7 +183,8 @@ TargetTypes = new Type[]{typeof(MyClass)}
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="targetTypes" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="targetTypes" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -197,26 +203,32 @@ TargetTypes = new Type[]{typeof(MyClass)}
         <Parameter Name="message" Type="System.Messaging.Message" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.Messaging.Message" /> to inspect.</param>
-        <summary>Determines whether the formatter can deserialize the message.</summary>
+        <param name="message">
+          <see cref="T:System.Messaging.Message" /> を検査します。</param>
+        <summary>フォーマッタがメッセージを逆シリアル化できるかどうかを決定します。</summary>
         <returns>
-          <see langword="true" /> if the XML formatter can deserialize the message; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> XML フォーマッタがメッセージを逆シリアル化できる場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> is called, the formatter attempts to determine if the contents of the message are something it can deserialize. The formatter can only deserialize the message if the type in the message body has the same schema as one of the types in the array represented by the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties. <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> returns `false` under the following two circumstances:  
+## 解説  
+ <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> が呼び出されると、フォーマッタの試行をメッセージの内容が、逆シリアル化できる何かが判断されます。 フォーマッタだけを逆シリアル化、メッセージ、メッセージ本文内の型に、型のいずれかと同じスキーマがある場合で表される配列に、 <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティです。<xref:System.Messaging.XmlMessageFormatter.CanRead%2A> 返します `false` 次の 2 つの状況で。  
   
--   The message was not formatted using the <xref:System.Messaging.XmlMessageFormatter>.  
+-   メッセージの形式を使用していない、 <xref:System.Messaging.XmlMessageFormatter>です。  
   
--   The schema of the message body is not among those listed in either the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> property.  
+-   メッセージ本文のスキーマがいずれかに示されている間、 <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> または <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティです。  
   
- The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what types of objects it must be able to deserialize. If any type is missing from the list, yet is found within the message, <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> returns `false`.  
+ <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティ指示フォーマッタ オブジェクトの種類にする必要があります逆シリアル化できません。 任意の型が、一覧にありませんが、メッセージ内で見つかった場合 <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> 返します `false`します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">Neither the <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> nor <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> property has been set.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="message" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.InvalidOperationException">どちらも、 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> も <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> プロパティが設定されています。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="message" /> パラメーターが <see langword="null" /> です。</exception>
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+        <altmember cref="T:System.Messaging.BinaryMessageFormatter" />
+        <altmember cref="T:System.Messaging.ActiveXMessageFormatter" />
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -233,16 +245,17 @@ TargetTypes = new Type[]{typeof(MyClass)}
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates an instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class whose read/write properties (the sets of target types) are the same as the current <see cref="T:System.Messaging.XmlMessageFormatter" /> instance.</summary>
-        <returns>An object whose properties are identical to those of this <see cref="T:System.Messaging.XmlMessageFormatter" /> instance, but whose metadata does not specify it to be a formatter class instance.</returns>
+        <summary>インスタンスを作成、 <see cref="T:System.Messaging.XmlMessageFormatter" /> クラスが読み取り\/書き込みプロパティ \(ターゲット タイプのセット\) は、現在と同じ <see cref="T:System.Messaging.XmlMessageFormatter" /> インスタンス。</summary>
+        <returns>プロパティを持つ、これと同じオブジェクトに <see cref="T:System.Messaging.XmlMessageFormatter" /> 、インスタンスがメタデータを持つフォーマッタ クラスのインスタンスに指定されていません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method creates a copy of the formatter and initializes all its properties to the values of this <xref:System.Messaging.XmlMessageFormatter> object.  
+## 解説  
+ このメソッドは、フォーマッタのコピーを作成し、この値に、すべてのプロパティを初期化します <xref:System.Messaging.XmlMessageFormatter> オブジェクトです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Messaging.IMessageFormatter" />
       </Docs>
     </Member>
     <Member MemberName="Read">
@@ -261,27 +274,34 @@ TargetTypes = new Type[]{typeof(MyClass)}
         <Parameter Name="message" Type="System.Messaging.Message" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.Messaging.Message" />, in XML format, to deserialize.</param>
-        <summary>Reads the contents from the given message and creates an object that contains the deserialized message.</summary>
-        <returns>The deserialized message.</returns>
+        <param name="message">
+          <see cref="T:System.Messaging.Message" />, 、逆シリアル化する、XML 形式にします。</param>
+        <summary>指定されたメッセージの内容を読み取り、逆シリアル化されたメッセージを含むオブジェクトを作成します。</summary>
+        <returns>逆シリアル化されたメッセージ。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message. One of these properties must be set before the message can be deserialized.  
+## 解説  
+ 両方の <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティがメッセージを逆シリアル化時に照合するようにするには、どのようなスキーマをフォーマッタに指示します。 メッセージを逆シリアル化する前に、これらのプロパティのいずれかを設定してください。  
   
- The instance serialized in the message body must comply with one of the schemas represented in the type array. When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.  
+ メッセージの本文にシリアル化されたインスタンスは、配列型で表されているスキーマのいずれかに準拠する必要があります。 使用してメッセージを読み込んだとき、 <xref:System.Messaging.MessageQueue.Receive%2A> メソッドは、このメソッドが識別されるスキーマに対応するメッセージの本文を読み込みます型のオブジェクトを作成します。  
   
- The target types do not have to be specified in order to write to the queue.  
+ 対象の種類をキューに書き込むために指定する必要はありません。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">Neither the <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> nor <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> property has been set.  
+        <exception cref="T:System.InvalidOperationException">どちらも、 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> も <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> プロパティが設定されています。  
   
- -or-  
+ または  
   
- The instance serialized in the message body does not comply with any of the schemas represented by the types in the <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> and <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> properties.</exception>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="message" /> parameter is <see langword="null" />.</exception>
+ メッセージの本文にシリアル化されたインスタンスが任意の型によって表されているスキーマに準拠していない、 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> と <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> プロパティです。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="message" /> パラメーターが <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.Write(System.Messaging.Message,System.Object)" />
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+        <altmember cref="T:System.Messaging.Message" />
       </Docs>
     </Member>
     <Member MemberName="TargetTypeNames">
@@ -302,25 +322,29 @@ TargetTypes = new Type[]{typeof(MyClass)}
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Specifies the set of possible types that will be deserialized by the formatter from the message provided.</summary>
-        <value>An array of type <see cref="T:System.String" /> that specifies the types of objects to deserialize from the message body when reading the message.</value>
+        <summary>用意したメッセージからフォーマッタで逆シリアル化可能な型のセットを指定します。</summary>
+        <value>型の配列 <see cref="T:System.String" /> メッセージを読み取るときに、メッセージ本文から逆シリアル化するオブジェクトの種類を指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message. This allows the formatter to interpret the message body.  
+## 解説  
+ 両方の <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティがメッセージを逆シリアル化時に照合するようにするには、どのようなスキーマをフォーマッタに指示します。 これにより、フォーマッタがメッセージ本文を解釈できます。  
   
- The instance serialized in the message body must comply with one of the schemas represented in the type array. When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.  
+ メッセージの本文にシリアル化されたインスタンスは、配列型で表されているスキーマのいずれかに準拠する必要があります。 使用してメッセージを読み込んだとき、 <xref:System.Messaging.MessageQueue.Receive%2A> メソッドは、このメソッドが識別されるスキーマに対応するメッセージの本文を読み込みます型のオブジェクトを作成します。  
   
- Only one of the two properties needs to be set when reading from the queue, but you can set both. The set of types is the combined set from the two properties. The decision of which property to use is specific to your application. If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown when the message is read.  
+ 2 つのプロパティの 1 つのみが、キューから読み取るときに設定する必要がありますが、両方を設定することができます。 型のセットは、2 つのプロパティから結合されたセットです。 使用するプロパティの意思決定は、アプリケーションに固有です。 メッセージの本文にスキーマが一致しないプロパティのいずれかの配列の型のいずれかの型が含まれている場合は、メッセージが読み取られるときに、例外がスローされます。  
   
- <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> requires every entry to be fully qualified, specifying its assembly name. Further, when working with multiple concurrent versions, the version number must also be appended to the target type name as well.  
+ <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> すべてのエントリの完全修飾アセンブリ名を指定する必要があります。 さらに、複数の同時実行バージョンを使用する場合、バージョン番号必要がありますもに追加されます対象の型名。  
   
- The target types are only required when reading from the queue. The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties do not need to be set to write to the queue.  
+ 対象の種類は、キューから読み取るときに必要です。<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティは、キューへの書き込みに設定する必要はありません。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> property is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> プロパティが <see langword="null" /> です。</exception>
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.#ctor" />
       </Docs>
     </Member>
     <Member MemberName="TargetTypes">
@@ -347,36 +371,40 @@ TargetTypes = new Type[]{typeof(MyClass)}
         <ReturnType>System.Type[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Specifies the set of possible types that will be deserialized by the formatter from the message provided.</summary>
-        <value>An array of type <see cref="T:System.Type" /> that specifies the types of objects to deserialize from the message body when reading the message.</value>
+        <summary>用意したメッセージからフォーマッタで逆シリアル化可能な型のセットを指定します。</summary>
+        <value>型の配列 <see cref="T:System.Type" /> メッセージを読み取るときに、メッセージ本文から逆シリアル化するオブジェクトの種類を指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message. This allows the formatter to interpret the message body.  
+## 解説  
+ 両方の <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティがメッセージを逆シリアル化時に照合するようにするには、どのようなスキーマをフォーマッタに指示します。 これにより、フォーマッタがメッセージ本文を解釈できます。  
   
- The instance serialized in the message body must comply with one of the schemas represented in the type array. When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.  
+ メッセージの本文にシリアル化されたインスタンスは、配列型で表されているスキーマのいずれかに準拠する必要があります。 使用してメッセージを読み込んだとき、 <xref:System.Messaging.MessageQueue.Receive%2A> メソッドは、このメソッドが識別されるスキーマに対応するメッセージの本文を読み込みます型のオブジェクトを作成します。  
   
- Only one of the two properties needs to be set when reading from the queue, but you can set both. The set of types is the combined set from the two properties. The decision of which property to use is specific to your application. If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown when the message is read.  
+ 2 つのプロパティの 1 つのみが、キューから読み取るときに設定する必要がありますが、両方を設定することができます。 型のセットは、2 つのプロパティから結合されたセットです。 使用するプロパティの意思決定は、アプリケーションに固有です。 メッセージの本文にスキーマが一致しないプロパティのいずれかの配列の型のいずれかの型が含まれている場合は、メッセージが読み取られるときに、例外がスローされます。  
   
- The target types are only required when reading from the queue. The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties do not need to be set to write to the queue.  
+ 対象の種類は、キューから読み取るときに必要です。<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> と <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティは、キューへの書き込みに設定する必要はありません。  
   
- When specifying <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> rather than <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, type existence is checked at compile time rather than read time, reducing possibility for error.  
+ 指定するときに <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> なく <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, 、読み取り時間、エラー発生の可能性を減らすことではなくコンパイル時に種類の存在をチェックします。  
   
- When using <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>, you can add each object (for example, `MyClass`) to the list in a way demonstrated by the C# code `TargetTypes = new Type[]{typeof(MyClass), typeof (MyOtherClass)};`.  
+ 使用する場合 <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>, 、各オブジェクトを追加することができます \(たとえば、 `MyClass`\) を c\# コードに示す方法の一覧に `TargetTypes = new Type[]{typeof(MyClass), typeof (MyOtherClass)};`します。  
   
    
   
-## Examples  
- The following code example sends and receives a message that contains an order to and from a queue.  
+## 例  
+ 次のコード例は、キューからオーダーを含むメッセージを送受信します。  
   
- [!code-cpp[Message.Body#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Message.Body/CPP/message_sendreceive.cpp#1)]
- [!code-csharp[Message.Body#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Message.Body/CS/message_sendreceive.cs#1)]
- [!code-vb[Message.Body#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Message.Body/VB/message_sendreceive.vb#1)]  
+ [!code-cpp[Message.Body\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Message.Body/CPP/message_sendreceive.cpp#1)]
+ [!code-csharp[Message.Body\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Message.Body/CS/message_sendreceive.cs#1)]
+ [!code-vb[Message.Body\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Message.Body/VB/message_sendreceive.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> property is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> プロパティが <see langword="null" /> です。</exception>
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.#ctor" />
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -396,25 +424,39 @@ TargetTypes = new Type[]{typeof(MyClass)}
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.Messaging.Message" /> whose <see cref="P:System.Messaging.Message.Body" /> property will contain the serialized object.</param>
-        <param name="obj">The <see cref="T:System.Object" /> to be serialized into the message body.</param>
-        <summary>Serializes an object into the body of the message.</summary>
+        <param name="message">
+          <see cref="T:System.Messaging.Message" /> が <see cref="P:System.Messaging.Message.Body" /> プロパティはシリアル化されたオブジェクトが格納されます。</param>
+        <param name="obj">
+          <see cref="T:System.Object" /> メッセージの本文にシリアル化します。</param>
+        <summary>オブジェクトをメッセージの本文にシリアル化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The target types need not be specified to write to the queue as they must be when reading. The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> property is used by the formatter only when deserializing a message.  
+## 解説  
+ 対象の種類にキューに書き込むを読み取るときに指定する必要はありません。<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> または <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> プロパティは、メッセージを逆シリアル化時にのみ、フォーマッタで使用します。  
   
- The <xref:System.Messaging.XmlMessageFormatter> makes use of the <xref:System.Xml.Serialization.XmlSerializer> class, which defines what can be serialized. Only public fields and public properties can be serialized. Structures, structures with arrays, and arrays of structures are all serializable, as long as they do not use the encoded style with the SOAP protocol.  
+ <xref:System.Messaging.XmlMessageFormatter> では、使用、 <xref:System.Xml.Serialization.XmlSerializer> クラスは、シリアル化可能なを定義します。 のみのパブリック フィールドとパブリック プロパティをシリアル化できます。 構造体、配列、および構造体の配列を含む構造体は、SOAP プロトコルでエンコードされたスタイルを使用しない限り、すべてシリアル化可能ながあります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="message" /> parameter is <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="message" /> パラメーターが <see langword="null" /> です。  
   
- -or-  
+ または  
   
- The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
+ <paramref name="obj" /> パラメーターが <see langword="null" /> です。</exception>
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.Read(System.Messaging.Message)" />
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Messaging.XmlMessageFormatter" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

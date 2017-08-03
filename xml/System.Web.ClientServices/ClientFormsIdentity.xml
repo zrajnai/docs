@@ -18,30 +18,40 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Represents a user identity authenticated for client application services by using forms authentication.</summary>
+    <summary>フォーム認証を使用してクライアント アプリケーション サービスに対して認証されたユーザー id を表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The client application services feature uses this class to represent an authenticated user. When you configure your application to use client application services and forms authentication, you can authenticate a user by calling the `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method. After authentication, you can retrieve a reference to the current <xref:System.Web.ClientServices.ClientFormsIdentity> instance through the <xref:System.Security.Principal.IPrincipal.Identity%2A> property of the <xref:System.Security.Principal.IPrincipal> retrieved through the `static` <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName> property. For more information, see [Client Application Services](~/docs/framework/common-client-technologies/client-application-services.md).  
+## 解説  
+ クライアント アプリケーション サービス機能では、このクラスを使用して、認証されたユーザーを表します。 クライアント アプリケーション サービスとフォーム認証を使用するアプリケーションを構成するときに呼び出すことによって、ユーザーを認証できる、 `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドです。  認証の後に、現在への参照を取得できます <xref:System.Web.ClientServices.ClientFormsIdentity> を通じてインスタンス、 <xref:System.Security.Principal.IPrincipal.Identity%2A> のプロパティ、 <xref:System.Security.Principal.IPrincipal> を使用して取得、 `static` <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName> プロパティです。  詳細については、「[Client Application Services](http://msdn.microsoft.com/ja-jp/1487d8df-089e-4f21-abfb-a791a652b58e)」を参照してください。  
   
- You will typically access a <xref:System.Web.ClientServices.ClientFormsIdentity> object as an <xref:System.Security.Principal.IIdentity> reference to avoid a direct dependency on this class. You can determine whether a user is authenticated by checking the <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A?displayProperty=fullName> property of the identity. However, the user may be authenticated for Windows, but not for client application services. To determine whether the user is authenticated for client application services, you should also confirm that the <xref:System.Security.Principal.IIdentity.AuthenticationType%2A?displayProperty=fullName> property value is "ClientForms".  
+ 通常、アクセス、 <xref:System.Web.ClientServices.ClientFormsIdentity> オブジェクトとして、 <xref:System.Security.Principal.IIdentity> このクラスに直接依存関係を避けるために参照します。 チェックしてユーザーを認証するかどうかを指定できます、 <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A?displayProperty=fullName> id のプロパティです。 ただし、windows では、クライアント アプリケーション サービスではなく、ユーザーは認証可能性があります。 クライアント アプリケーション サービスのユーザーを認証するかどうかを判断する必要がありますもいることを確認、 <xref:System.Security.Principal.IIdentity.AuthenticationType%2A?displayProperty=fullName> プロパティの値は"ClientForms"です。  
   
- You must use an explicit <xref:System.Web.ClientServices.ClientFormsIdentity> reference to call the <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> method, which is not defined by the <xref:System.Security.Principal.IIdentity> interface.  
+ 明示的なを使用する必要があります <xref:System.Web.ClientServices.ClientFormsIdentity> 呼び出しへの参照、 <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> によって定義されていないメソッド、 <xref:System.Security.Principal.IIdentity> インターフェイスです。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this class to silently revalidate a user when the application leaves the offline state. In this example, a <xref:System.Windows.Forms.CheckBox.CheckedChanged> event handler updates the offline status to match the check box value. If the user sets the application to the online state, the event handler attempts to revalidate the user by calling the <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> method. However, if the authentication server is unavailable, the event handler returns the application to the offline state.  
+## 例  
+ 次のコード例では、このクラスを使用して、アプリケーションがオフライン状態になったときに、ユーザーを自動的に再検証する方法を示します。 この例では、 <xref:System.Windows.Forms.CheckBox.CheckedChanged> イベント ハンドラーは、チェック ボックスの値に一致するように、オフラインの状態を更新します。 イベント ハンドラーが呼び出すことによってユーザーの再検証しようとした場合は、ユーザーがオンライン状態にアプリケーションを設定、 <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> メソッドです。 ただし、認証サーバーが利用できない場合、イベント ハンドラーは、アプリケーションをオフラインの状態を返します。  
   
 > [!NOTE]
->  The <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> method is for convenience only. Because it does not have a return value, it cannot indicate whether revalidation has failed. Revalidation can fail, for example, if the user credentials have changed on the server. In this case, you might want to include code that explicitly validates users after a service call fails. For more information, see the Accessing Web Settings section in [Walkthrough: Using Client Application Services](~/docs/framework/common-client-technologies/walkthrough-using-client-application-services.md).  
+>  <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> メソッドは便宜的なものに過ぎません。 このメソッドには戻り値がないため、再検証が失敗したかどうかを示すことはできません。 再検証は失敗することがあります。たとえば、サーバーでユーザーの資格情報が変更された場合などです。 この場合、サービスの呼び出しが失敗した後に、明示的にユーザーを検証するコードを含めることができます。 詳細については、Web 設定へのアクセス」セクションを参照してください。 [Walkthrough: Using Client Application Services](http://msdn.microsoft.com/ja-jp/bb7c8950-4517-4dae-b705-b74a14059b26)します。  
   
- [!code-csharp[ClientApplicationServices#315](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#315)]
- [!code-vb[ClientApplicationServices#315](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#315)]  
+ [!code-csharp[ClientApplicationServices\#315](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#315)]
+ [!code-vb[ClientApplicationServices\#315](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#315)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
+    <altmember cref="M:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser" />
+    <altmember cref="P:System.Threading.Thread.CurrentPrincipal" />
+    <altmember cref="T:System.Security.Principal.IPrincipal" />
+    <altmember cref="P:System.Security.Principal.IPrincipal.Identity" />
+    <altmember cref="T:System.Security.Principal.IIdentity" />
+    <altmember cref="P:System.Security.Principal.IIdentity.IsAuthenticated" />
+    <altmember cref="P:System.Web.ClientServices.ClientFormsIdentity.IsAuthenticated" />
+    <altmember cref="P:System.Web.ClientServices.ClientFormsIdentity.AuthenticationType" />
+    <altmember cref="M:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Logout" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -62,14 +72,15 @@
         <Parameter Name="authenticationCookies" Type="System.Net.CookieContainer" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the authenticated user.</param>
-        <param name="password">The password of the authenticated user.</param>
-        <param name="provider">The membership provider used to authenticate the user.</param>
-        <param name="authenticationType">The type of authentication that is used.</param>
+        <param name="name">認証されたユーザーの名前。</param>
+        <param name="password">認証されたユーザーのパスワードです。</param>
+        <param name="provider">メンバーシップ プロバイダーは、ユーザーを認証するために使用します。</param>
+        <param name="authenticationType">使用される認証の種類。</param>
         <param name="isAuthenticated">
-          <see langword="true" /> if the user has been authenticated; otherwise, <see langword="false" />.</param>
-        <param name="authenticationCookies">The cookies retrieved from the authentication service.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.ClientServices.ClientFormsIdentity" /> class.</summary>
+          <see langword="true" /> ユーザーが認証されている場合それ以外の場合、 <see langword="false" />です。</param>
+        <param name="authenticationCookies">Cookie は、認証サービスから取得されます。</param>
+        <summary>
+          <see cref="T:System.Web.ClientServices.ClientFormsIdentity" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -86,13 +97,13 @@
         <ReturnType>System.Net.CookieContainer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of the cookies retrieved from the authentication service.</summary>
-        <value>The cookies retrieved from the authentication service.</value>
+        <summary>認証サービスから取得したクッキーのコレクションを取得します。</summary>
+        <value>Cookie は、認証サービスから取得されます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property is not meant for use in your application code. You cannot meaningfully modify the cookies retrieved through this property, and they contain no useful information.  
+## 解説  
+ このプロパティは、アプリケーション コードで使用するためのものではありません。 このプロパティを介して取得した cookie を変更しても意味と、役に立つ情報がないです。  
   
  ]]></format>
         </remarks>
@@ -111,24 +122,28 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type of authentication that is used to authenticate the user.</summary>
-        <value>The type of authentication that is used to authenticate the user.</value>
+        <summary>ユーザーを認証するために使用する認証の種類を取得します。</summary>
+        <value>ユーザーの認証に使用される認証の種類。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You will typically access a <xref:System.Web.ClientServices.ClientFormsIdentity> object as an <xref:System.Security.Principal.IIdentity> reference to avoid a direct dependency on this class. You can determine whether a user is authenticated by checking the <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A?displayProperty=fullName> property of the identity. However, the user may be authenticated for Windows, but not for client application services. To determine whether the user is authenticated for client application services, you should also confirm that the <xref:System.Security.Principal.IIdentity.AuthenticationType%2A?displayProperty=fullName> property value is "ClientForms". For more information, see the <xref:System.Web.ClientServices.ClientFormsIdentity> class overview.  
+## 解説  
+ 通常、アクセス、 <xref:System.Web.ClientServices.ClientFormsIdentity> オブジェクトとして、 <xref:System.Security.Principal.IIdentity> このクラスに直接依存関係を避けるために参照します。 チェックしてユーザーを認証するかどうかを指定できます、 <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A?displayProperty=fullName> id のプロパティです。 ただし、windows では、クライアント アプリケーション サービスではなく、ユーザーは認証可能性があります。 クライアント アプリケーション サービスのユーザーを認証するかどうかを判断する必要がありますもいることを確認、 <xref:System.Security.Principal.IIdentity.AuthenticationType%2A?displayProperty=fullName> プロパティの値は"ClientForms"です。 詳細については、次を参照してください。、 <xref:System.Web.ClientServices.ClientFormsIdentity> クラスの概要です。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this property through an <xref:System.Security.Principal.IIdentity> reference to determine whether a user is currently authenticated for client application services. This example assumes that the application is in the default configuration where users are not required to log in again when the authentication cookie expires. Otherwise, the <xref:System.Net.WebException> might indicate that the user login has expired. For more information, see [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md).  
+## 例  
+ 次のコード例は、によってこのプロパティを使用する方法を示します、 <xref:System.Security.Principal.IIdentity> クライアント アプリケーション サービスのユーザーが現在認証されているかどうかを決定する参照。 この例では、アプリケーションの既定の構成、ユーザーは、もう一度認証 cookie 期限が切れたときにログインする必要はありませんが、想定しています。 それ以外の場合、 <xref:System.Net.WebException> ユーザー ログインの有効期限が切れている可能性があります。 詳細については、「[How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)」を参照してください。  
   
- [!code-csharp[ClientApplicationServices#312](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#312)]
- [!code-vb[ClientApplicationServices#312](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#312)]  
+ [!code-csharp[ClientApplicationServices\#312](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#312)]
+ [!code-vb[ClientApplicationServices\#312](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#312)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Security.Principal.IIdentity" />
+        <altmember cref="P:System.Security.Principal.IIdentity.IsAuthenticated" />
+        <altmember cref="P:System.Security.Principal.IIdentity.AuthenticationType" />
+        <altmember cref="P:System.Web.ClientServices.ClientFormsIdentity.IsAuthenticated" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -145,15 +160,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.Web.ClientServices.ClientFormsIdentity" />.</summary>
+        <summary>
+          <see cref="T:System.Web.ClientServices.ClientFormsIdentity" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A> when you are finished using the <xref:System.Web.ClientServices.ClientFormsIdentity>. The <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A> method leaves the <xref:System.Web.ClientServices.ClientFormsIdentity> in an unusable state. After calling <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A>, you must release all references to the <xref:System.Web.ClientServices.ClientFormsIdentity> so the garbage collector can reclaim the memory that the <xref:System.Web.ClientServices.ClientFormsIdentity> was occupying. For more information, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+## 解説  
+ Call <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A> when you are finished using the <xref:System.Web.ClientServices.ClientFormsIdentity>. The <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A> method leaves the <xref:System.Web.ClientServices.ClientFormsIdentity> in an unusable state. After calling <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A>, you must release all references to the <xref:System.Web.ClientServices.ClientFormsIdentity> so the garbage collector can reclaim the memory that the <xref:System.Web.ClientServices.ClientFormsIdentity> was occupying. For more information, see [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213) and [Implementing a Dispose Method](http://msdn.microsoft.com/ja-jp/eb4e1af0-3b48-4fbc-ad4e-fc2f64138bf9).  
   
 > [!NOTE]
->  Always call <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A> before you release your last reference to the <xref:System.Web.ClientServices.ClientFormsIdentity>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.Web.ClientServices.ClientFormsIdentity> object's `Finalize` method.  
+>  Always call <xref:System.Web.ClientServices.ClientFormsIdentity.Dispose%2A> before you release your last reference to the <xref:System.Web.ClientServices.ClientFormsIdentity>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.Web.ClientServices.ClientFormsIdentity> object's **languageKeyword tag is not supported!!!!**  
+>  method.  
   
  ]]></format>
         </remarks>
@@ -175,16 +192,26 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Web.ClientServices.ClientFormsIdentity" /> and optionally releases the managed resources.</summary>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Web.ClientServices.ClientFormsIdentity" /> によって使用されているアンマネージ リソースを解放し、オプションでマネージ リソースも解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the public `Dispose()` method and the <xref:System.Object.Finalize%2A> method. `Dispose()` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`. <xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.  
+## 解説  
+ This method is called by the public **languageKeyword tag is not supported!!!!**  
+ method and the <xref:System.Object.Finalize%2A> method. **languageKeyword tag is not supported!!!!**  
+ invokes the protected **languageKeyword tag is not supported!!!!**  
+ method with the **parameterReference tag is not supported!!!!**  
+ parameter set to **languageKeyword tag is not supported!!!!**  
+. <xref:System.Object.Finalize%2A> invokes **languageKeyword tag is not supported!!!!**  
+ with **parameterReference tag is not supported!!!!**  
+ set to **languageKeyword tag is not supported!!!!**  
+.  
   
- When the `disposing` parameter is true, this method releases all resources held by any managed objects that this <xref:System.Web.ClientServices.ClientFormsIdentity> references. This method invokes the `Dispose()` method of each referenced object.  
+ When the **parameterReference tag is not supported!!!!**  
+ parameter is true, this method releases all resources held by any managed objects that this <xref:System.Web.ClientServices.ClientFormsIdentity> references. This method invokes the **languageKeyword tag is not supported!!!!**  
+ method of each referenced object.  
   
  ]]></format>
         </remarks>
@@ -209,25 +236,32 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the user has been authenticated.</summary>
+        <summary>ユーザーが認証されているかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the user has been authenticated; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> ユーザーが認証されている場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You will typically access a <xref:System.Web.ClientServices.ClientFormsIdentity> object as an <xref:System.Security.Principal.IIdentity> reference to avoid a direct dependency on this class. You can determine whether a user is authenticated by checking the <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A?displayProperty=fullName> property of the identity. However, the user may be authenticated for Windows, but not for client application services. To determine whether the user is authenticated for client application services, you should also confirm that the <xref:System.Security.Principal.IIdentity.AuthenticationType%2A?displayProperty=fullName> property value is "ClientForms". For more information, see the <xref:System.Web.ClientServices.ClientFormsIdentity> class overview.  
+## 解説  
+ 通常、アクセス、 <xref:System.Web.ClientServices.ClientFormsIdentity> オブジェクトとして、 <xref:System.Security.Principal.IIdentity> このクラスに直接依存関係を避けるために参照します。 チェックしてユーザーを認証するかどうかを指定できます、 <xref:System.Security.Principal.IIdentity.IsAuthenticated%2A?displayProperty=fullName> id のプロパティです。 ただし、windows では、クライアント アプリケーション サービスではなく、ユーザーは認証可能性があります。 クライアント アプリケーション サービスのユーザーを認証するかどうかを判断する必要がありますもいることを確認、 <xref:System.Security.Principal.IIdentity.AuthenticationType%2A?displayProperty=fullName> プロパティの値は"ClientForms"です。 詳細については、次を参照してください。、 <xref:System.Web.ClientServices.ClientFormsIdentity> クラスの概要です。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this property through an <xref:System.Security.Principal.IIdentity> reference to determine whether a user is currently authenticated for client application services. This example assumes that the application is in the default configuration where users are not required to log in again when the authentication cookie expires. Otherwise, the <xref:System.Net.WebException> might indicate that the user login has expired. For more information, see [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md).  
+## 例  
+ 次のコード例は、によってこのプロパティを使用する方法を示します、 <xref:System.Security.Principal.IIdentity> クライアント アプリケーション サービスのユーザーが現在認証されているかどうかを決定する参照。 この例では、アプリケーションの既定の構成、ユーザーは、もう一度認証 cookie 期限が切れたときにログインする必要はありませんが、想定しています。 それ以外の場合、 <xref:System.Net.WebException> ユーザー ログインの有効期限が切れている可能性があります。 詳細については、「[How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)」を参照してください。  
   
- [!code-csharp[ClientApplicationServices#312](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#312)]
- [!code-vb[ClientApplicationServices#312](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#312)]  
+ [!code-csharp[ClientApplicationServices\#312](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#312)]
+ [!code-vb[ClientApplicationServices\#312](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#312)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Threading.Thread.CurrentPrincipal" />
+        <altmember cref="T:System.Security.Principal.IPrincipal" />
+        <altmember cref="P:System.Security.Principal.IPrincipal.Identity" />
+        <altmember cref="T:System.Security.Principal.IIdentity" />
+        <altmember cref="P:System.Security.Principal.IIdentity.IsAuthenticated" />
+        <altmember cref="P:System.Security.Principal.IIdentity.AuthenticationType" />
+        <altmember cref="P:System.Web.ClientServices.ClientFormsIdentity.AuthenticationType" />
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -243,8 +277,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the name of the user.</summary>
-        <value>The name of the user.</value>
+        <summary>ユーザーの名前を取得します。</summary>
+        <value>ユーザーの名前。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -261,8 +295,8 @@
         <ReturnType>System.Web.Security.MembershipProvider</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the membership provider that is used to authenticate the user.</summary>
-        <value>The membership provider that is used to authenticate the user.</value>
+        <summary>ユーザーの認証に使用するメンバーシップ プロバイダーを取得します。</summary>
+        <value>メンバーシップ プロバイダー ユーザーを認証するために使用します。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -280,27 +314,39 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Silently authenticates the user by using cached credentials.</summary>
+        <summary>サイレント モードでキャッシュされた資格情報を使用して、ユーザーを認証します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you use forms authentication to validate the current user, the <xref:System.Web.ClientServices.ClientFormsIdentity> class stores the user credentials as long as the application is running. However, the user is only authenticated until the authentication cookie expires. After the cookie expires, the user must be revalidated to access the remote roles or Web settings services. You can use the **Advanced Settings for Services** dialog box to configure your application to automatically revalidate the user, as described in [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md). However, if you configure your application to honor the cookie expiration, you can programmatically revalidate the user by calling the <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> method. This method is also useful when switching from offline mode to online mode, because the application may have been shut down while offline.  
+## 解説  
+ フォーム認証を使用して、現在のユーザーを検証するときに、 <xref:System.Web.ClientServices.ClientFormsIdentity> クラスは、アプリケーションが実行されている限り、ユーザーの資格情報を格納します。 ただし、認証 cookie の期限が切れるまで、ユーザーは認証のみです。 Cookie が経過すると、リモート ロールまたは Web 設定サービスにアクセスするには、ユーザーを再検証する必要があります。 使用することができます、 **サービスの詳細設定** 」の説明に従って、ユーザーを自動的に再検証を行うアプリケーションを構成する\] ダイアログ ボックス [How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)します。 ただし、クッキーの有効期限を優先するアプリケーションを構成する場合できるプログラムを使用して再検証するユーザーを呼び出して、 <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> メソッドです。 このメソッドもオフライン モードからオンライン モードに切り替えるとき、アプリケーションがシャット ダウンされたため間、オフラインです。  
   
 > [!NOTE]
->  The <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> method is for convenience only. Because it does not have a return value, it cannot indicate whether revalidation has failed. Revalidation can fail, for example, if the user credentials have changed on the server. In this case, you might want to include code that explicitly validates users after a service call fails. For more information, see the Accessing Web Settings section in [Walkthrough: Using Client Application Services](~/docs/framework/common-client-technologies/walkthrough-using-client-application-services.md).  
+>  <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A> メソッドは便宜的なものに過ぎません。 このメソッドには戻り値がないため、再検証が失敗したかどうかを示すことはできません。 再検証は失敗することがあります。たとえば、サーバーでユーザーの資格情報が変更された場合などです。 この場合、サービスの呼び出しが失敗した後に、明示的にユーザーを検証するコードを含めることができます。 詳細については、Web 設定へのアクセス」セクションを参照してください。 [Walkthrough: Using Client Application Services](http://msdn.microsoft.com/ja-jp/bb7c8950-4517-4dae-b705-b74a14059b26)します。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this method to silently revalidate a user when the application leaves the offline state. In this example, a <xref:System.Windows.Forms.CheckBox.CheckedChanged> event handler updates the offline status to match the check box value. If the user sets the application to the online state, the event handler attempts to revalidate the user. However, if the authentication server is unavailable, the event handler returns the application to the offline state.  
+## 例  
+ 次のコード例では、このメソッドを使用して、アプリケーションがオフライン状態になったときに、ユーザーを自動的に再検証する方法を示します。 この例では、 <xref:System.Windows.Forms.CheckBox.CheckedChanged> イベント ハンドラーは、チェック ボックスの値に一致するように、オフラインの状態を更新します。 アプリケーションをオンライン状態を設定すると、イベント ハンドラーはユーザーの再検証しようとします。 ただし、認証サーバーが利用できない場合、イベント ハンドラーは、アプリケーションをオフラインの状態を返します。  
   
- [!code-csharp[ClientApplicationServices#315](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#315)]
- [!code-vb[ClientApplicationServices#315](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#315)]  
+ [!code-csharp[ClientApplicationServices\#315](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#315)]
+ [!code-vb[ClientApplicationServices\#315](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#315)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.ClientServices.ConnectivityStatus" />
+        <altmember cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Web.ClientServices.ClientFormsIdentity" /> で使用したリソースを解放します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

@@ -38,19 +38,23 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides the base implementation for the <see cref="T:System.ComponentModel.IComponent" /> interface and enables object sharing between applications.</summary>
+    <summary>基本実装を提供、 <see cref="T:System.ComponentModel.IComponent" /> アプリケーション間で共有オブジェクトのインターフェイスと有効にします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.ComponentModel.Component> is the base class for all components in the common language runtime that marshal by reference. <xref:System.ComponentModel.Component> is remotable and derives from the <xref:System.MarshalByRefObject> class. <xref:System.ComponentModel.Component> provides an implementation of the <xref:System.ComponentModel.IComponent> interface. The <xref:System.ComponentModel.MarshalByValueComponent> provides an implementation of <xref:System.ComponentModel.IComponent> that marshals by value.  
+## 解説  
+ <xref:System.ComponentModel.Component> 共通言語ランタイムのすべてのコンポーネントの基本クラスを参照によってそのマーシャ リングです。<xref:System.ComponentModel.Component> リモート処理可能なから派生して、 <xref:System.MarshalByRefObject> クラスです。<xref:System.ComponentModel.Component> 実装を提供、 <xref:System.ComponentModel.IComponent> インターフェイスです。<xref:System.ComponentModel.MarshalByValueComponent> の実装を提供 <xref:System.ComponentModel.IComponent> 値によってマーシャ リングします。  
   
- You can host a <xref:System.ComponentModel.Component> in any object that implements the <xref:System.ComponentModel.IContainer> interface, and you can query and get services from its container. The container creates an <xref:System.ComponentModel.ISite> for each <xref:System.ComponentModel.Component> it contains. The container uses the site to manage the <xref:System.ComponentModel.Component> and is used by the <xref:System.ComponentModel.Component> to communicate with its container.  
+ ホストする、 <xref:System.ComponentModel.Component> を実装する任意のオブジェクトで、 <xref:System.ComponentModel.IContainer> インターフェイスとするがクエリを実行し、コンテナーからサービスを取得します。 コンテナーを作成、 <xref:System.ComponentModel.ISite> 各 <xref:System.ComponentModel.Component> が含まれています。 コンテナーを管理する、サイトを使用して、 <xref:System.ComponentModel.Component> によって使用されると、 <xref:System.ComponentModel.Component> コンテナーとの通信にします。  
   
- A <xref:System.ComponentModel.Component> should release resources explicitly by calls to its <xref:System.ComponentModel.Component.Dispose%2A> method, without waiting for automatic memory management through an implicit call to the <xref:System.Object.Finalize%2A> method. When a <xref:System.ComponentModel.Container> is disposed, all components within the <xref:System.ComponentModel.Container> are also disposed.  
+ A <xref:System.ComponentModel.Component> への呼び出しによって明示的にリソースを解放する必要があります、 <xref:System.ComponentModel.Component.Dispose%2A> に暗黙的に呼び出すことによって、自動メモリ管理を待たずに、メソッド、 <xref:System.Object.Finalize%2A> メソッドです。 ときに、 <xref:System.ComponentModel.Container> 破棄されると、内のすべてのコンポーネント、 <xref:System.ComponentModel.Container> も破棄します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.ComponentModel.IComponent" />
+    <altmember cref="T:System.ComponentModel.IContainer" />
+    <altmember cref="T:System.ComponentModel.Container" />
+    <altmember cref="T:System.ComponentModel.ISite" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -73,7 +77,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.Component" /> class.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Component" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -99,20 +104,24 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the component can raise an event.</summary>
+        <summary>コンポーネントがイベントを発生させることができるかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the component can raise events; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+          <see langword="true" /> 場合は、コンポーネントがイベントを発生させることができます。それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default implementation of this property always returns `true`. Classes that inherit from the <xref:System.ComponentModel.Component> class should override this property to provide the ability to disable the raising of events. For example, in the <xref:System.Windows.Forms.Control> class, if the control is being hosted as an ActiveX control, the <xref:System.Windows.Forms.Control.CanRaiseEvents%2A> property returns `false` if the ActiveX control has its events frozen.  
+## 解説  
+ このプロパティの既定の実装は、常に `true`します。 継承するクラス、 <xref:System.ComponentModel.Component> クラスは、イベントの生成を無効にする機能を提供するには、このプロパティをオーバーライドする必要があります。 たとえば、 <xref:System.Windows.Forms.Control> クラス、コントロールは、ActiveX コントロールとしてホストされている場合、 <xref:System.Windows.Forms.Control.CanRaiseEvents%2A> プロパティを返します。 `false` ActiveX コントロールがそのイベントが固定されている場合。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>If you override this method in a deriving class and change it to return <see langword="false" />, the <see cref="T:System.ComponentModel.EventHandlerList" /> collection returned by the <see cref="P:System.ComponentModel.Component.Events" /> property returns <see langword="null" /> for an event. Events can still be added and removed from the collection, but the collection's <see cref="P:System.ComponentModel.EventHandlerList.Item(System.Object)" /> property will always return <see langword="null" />.</para>
         </block>
+        <altmember cref="T:System.ComponentModel.IComponent" />
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
+        <altmember cref="T:System.ComponentModel.ISite" />
       </Docs>
     </Member>
     <Member MemberName="Container">
@@ -145,16 +154,19 @@
         <ReturnType>System.ComponentModel.IContainer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the <see cref="T:System.ComponentModel.IContainer" /> that contains the <see cref="T:System.ComponentModel.Component" />.</summary>
-        <value>The <see cref="T:System.ComponentModel.IContainer" /> that contains the <see cref="T:System.ComponentModel.Component" />, if any, or <see langword="null" /> if the <see cref="T:System.ComponentModel.Component" /> is not encapsulated in an <see cref="T:System.ComponentModel.IContainer" />.</value>
+        <summary>取得、 <see cref="T:System.ComponentModel.IContainer" /> を含む、 <see cref="T:System.ComponentModel.Component" />です。</summary>
+        <value>
+          <see cref="T:System.ComponentModel.IContainer" /> を含む、 <see cref="T:System.ComponentModel.Component" />, 存在する場合、または <see langword="null" /> 場合、 <see cref="T:System.ComponentModel.Component" /> にカプセル化されていない、 <see cref="T:System.ComponentModel.IContainer" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The components in a container are tracked in a first-in, first-out list, which also defines the order of the components within the container. The last component added is the last component in the list.  
+## 解説  
+ コンテナー内のコンポーネントは、リストの中では、先入れ先出しも、コンテナー内のコンポーネントの順序を定義する追跡されます。 追加された最後のコンポーネントは、一覧の最後のコンポーネントです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
       </Docs>
     </Member>
     <Member MemberName="DesignMode">
@@ -187,17 +199,20 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the <see cref="T:System.ComponentModel.Component" /> is currently in design mode.</summary>
+        <summary>示す値を取得するかどうか、 <see cref="T:System.ComponentModel.Component" /> デザイン モードになっています。</summary>
         <value>
-          <see langword="true" /> if the <see cref="T:System.ComponentModel.Component" /> is in design mode; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 場合、 <see cref="T:System.ComponentModel.Component" /> デザイン モードの場合は、それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The design mode indicator is stored in the <xref:System.ComponentModel.ISite>; therefore, if the <xref:System.ComponentModel.Component> does not have an <xref:System.ComponentModel.ISite> associated with it, the value of this property is `false`.  
+## 解説  
+ デザイン モードのインジケーターが格納されている、 <xref:System.ComponentModel.ISite>。 したがって、場合、 <xref:System.ComponentModel.Component> が、 <xref:System.ComponentModel.ISite> このプロパティの値は、関連付けられている `false`します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
+        <altmember cref="T:System.ComponentModel.ISite" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -223,18 +238,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.ComponentModel.Component" />.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Component" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call <xref:System.ComponentModel.Component.Dispose%2A> when you are finished using the <xref:System.ComponentModel.Component>. The <xref:System.ComponentModel.Component.Dispose%2A> method leaves the <xref:System.ComponentModel.Component> in an unusable state. After calling <xref:System.ComponentModel.Component.Dispose%2A>, you must release all references to the <xref:System.ComponentModel.Component> so the garbage collector can reclaim the memory that the <xref:System.ComponentModel.Component> was occupying. For more information, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+## 解説  
+ Call <xref:System.ComponentModel.Component.Dispose%2A> when you are finished using the <xref:System.ComponentModel.Component>. The <xref:System.ComponentModel.Component.Dispose%2A> method leaves the <xref:System.ComponentModel.Component> in an unusable state. After calling <xref:System.ComponentModel.Component.Dispose%2A>, you must release all references to the <xref:System.ComponentModel.Component> so the garbage collector can reclaim the memory that the <xref:System.ComponentModel.Component> was occupying. For more information, see [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213) and [Implementing a Dispose Method](http://msdn.microsoft.com/ja-jp/eb4e1af0-3b48-4fbc-ad4e-fc2f64138bf9).  
   
 > [!NOTE]
->  Always call <xref:System.ComponentModel.Component.Dispose%2A> before you release your last reference to the <xref:System.ComponentModel.Component>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.ComponentModel.Component> object's `Finalize` method.  
+>  Always call <xref:System.ComponentModel.Component.Dispose%2A> before you release your last reference to the <xref:System.ComponentModel.Component>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.ComponentModel.Component> object's **languageKeyword tag is not supported!!!!**  
+>  method.  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -262,16 +281,26 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Component" /> and optionally releases the managed resources.</summary>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.ComponentModel.Component" /> によって使用されているアンマネージ リソースを解放し、オプションでマネージ リソースも解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the public <xref:System.ComponentModel.Component.Dispose%2A> method and the <xref:System.Object.Finalize%2A> method. `Dispose()` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`. <xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.  
+## 解説  
+ This method is called by the public <xref:System.ComponentModel.Component.Dispose%2A> method and the <xref:System.Object.Finalize%2A> method. **languageKeyword tag is not supported!!!!**  
+ invokes the protected **languageKeyword tag is not supported!!!!**  
+ method with the **parameterReference tag is not supported!!!!**  
+ parameter set to **languageKeyword tag is not supported!!!!**  
+. <xref:System.Object.Finalize%2A> invokes **languageKeyword tag is not supported!!!!**  
+ with **parameterReference tag is not supported!!!!**  
+ set to **languageKeyword tag is not supported!!!!**  
+.  
   
- When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.ComponentModel.Component> references. This method invokes the `Dispose()` method of each referenced object.  
+ When the **parameterReference tag is not supported!!!!**  
+ parameter is **languageKeyword tag is not supported!!!!**  
+, this method releases all resources held by any managed objects that this <xref:System.ComponentModel.Component> references. This method invokes the **languageKeyword tag is not supported!!!!**  
+ method of each referenced object.  
   
  ]]></format>
         </remarks>
@@ -313,15 +342,17 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the component is disposed by a call to the <see cref="M:System.ComponentModel.Component.Dispose" /> method.</summary>
+        <summary>呼び出しによってコンポーネントが破棄されるときに発生、 <see cref="M:System.ComponentModel.Component.Dispose" /> メソッドです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you create a <xref:System.ComponentModel.Component.Disposed> delegate, you identify the method that handles the event. To associate the event with your event handler, add an instance of the delegate to the event. The event handler is called whenever the event occurs, unless you remove the delegate. For more information about the event handler delegates, see [NIB: Events and Delegates](http://msdn.microsoft.com/en-us/d98fd58b-fa4f-4598-8378-addf4355a115).  
+## 解説  
+ <xref:System.ComponentModel.Component.Disposed> デリゲートを作成する場合は、イベントを処理するメソッドを指定します。 イベントをイベント ハンドラーに関連付けるには、デリゲートのインスタンスをイベントに追加します。 デリゲートを削除しない限り、そのイベントが発生すると常にイベント ハンドラーが呼び出されます。 イベント ハンドラー デリゲートの詳細については、次を参照してください。 [NIB: イベントとデリゲート](http://msdn.microsoft.com/ja-jp/d98fd58b-fa4f-4598-8378-addf4355a115)します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.ComponentModel.Component.Dispose" />
+        <altmember cref="T:System.EventHandler" />
       </Docs>
     </Member>
     <Member MemberName="Events">
@@ -346,16 +377,18 @@
         <ReturnType>System.ComponentModel.EventHandlerList</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the list of event handlers that are attached to this <see cref="T:System.ComponentModel.Component" />.</summary>
-        <value>An <see cref="T:System.ComponentModel.EventHandlerList" /> that provides the delegates for this component.</value>
+        <summary>これに関連付けられているイベント ハンドラーの一覧を取得 <see cref="T:System.ComponentModel.Component" />します。</summary>
+        <value>
+          <see cref="T:System.ComponentModel.EventHandlerList" /> このコンポーネントのデリゲートを提供します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For more information about handling events, see [NIB: Consuming Events](http://msdn.microsoft.com/en-us/01e4f1bc-e55e-413f-98c7-6588493e5f67).  
+## 解説  
+ イベント処理の詳細については、次を参照してください。 [NIB: イベントの利用](http://msdn.microsoft.com/ja-jp/01e4f1bc-e55e-413f-98c7-6588493e5f67)します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.EventHandlerList" />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -381,14 +414,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases unmanaged resources and performs other cleanup operations before the <see cref="T:System.ComponentModel.Component" /> is reclaimed by garbage collection.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Component" /> がガベージ コレクションによって回収される前に、アンマネージ リソースを解放し、その他のクリーンアップ操作を実行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overrides <xref:System.Object.Finalize%2A>. Application code should not call this method; an object's `Finalize` method is automatically invoked during garbage collection, unless finalization by the garbage collector has been disabled by a call to the <xref:System.GC.SuppressFinalize%2A> method.  
+## 解説  
+ このメソッドは <xref:System.Object.Finalize%2A>です。 アプリケーション コードは、このメソッドを呼び出さないようにオブジェクトの `Finalize` への呼び出しによって、ガベージ コレクターによって終了処理が無効になっていない限りガベージ コレクション中にメソッドが自動的に起動、 <xref:System.GC.SuppressFinalize%2A> メソッドです。  
   
- For more information, see [Finalize Methods and Destructors](http://msdn.microsoft.com/en-us/fd376774-1643-499b-869e-9546a3aeea70), [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md), and [Overriding the Finalize Method](http://msdn.microsoft.com/en-us/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).  
+ 詳細については、次を参照してください。 [Finalize メソッドおよびデストラクター](http://msdn.microsoft.com/ja-jp/fd376774-1643-499b-869e-9546a3aeea70), 、[Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213), 、および [Finalize メソッドをオーバーライドする](http://msdn.microsoft.com/ja-jp/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)します。  
   
  ]]></format>
         </remarks>
@@ -419,17 +453,23 @@
         <Parameter Name="service" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="service">A service provided by the <see cref="T:System.ComponentModel.Component" />.</param>
-        <summary>Returns an object that represents a service provided by the <see cref="T:System.ComponentModel.Component" /> or by its <see cref="T:System.ComponentModel.Container" />.</summary>
-        <returns>An <see cref="T:System.Object" /> that represents a service provided by the <see cref="T:System.ComponentModel.Component" />, or <see langword="null" /> if the <see cref="T:System.ComponentModel.Component" /> does not provide the specified service.</returns>
+        <param name="service">提供されるサービス、 <see cref="T:System.ComponentModel.Component" />です。</param>
+        <summary>
+          <see cref="T:System.ComponentModel.Component" /> またはその <see cref="T:System.ComponentModel.Container" /> で提供されるサービスを表すオブジェクトを返します。</summary>
+        <returns>
+          <see cref="T:System.Object" /> によって提供されるサービスを表す、 <see cref="T:System.ComponentModel.Component" />, 、または <see langword="null" /> 場合、 <see cref="T:System.ComponentModel.Component" /> は指定されたサービスが提供されません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method can be overridden by a derived class.  
+## 解説  
+ このメソッドは、派生クラスでオーバーライドできます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
+        <altmember cref="T:System.ComponentModel.ISite" />
+        <altmember cref="T:System.IServiceProvider" />
       </Docs>
     </Member>
     <Member MemberName="Site">
@@ -462,20 +502,24 @@
         <ReturnType>System.ComponentModel.ISite</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.ComponentModel.ISite" /> of the <see cref="T:System.ComponentModel.Component" />.</summary>
-        <value>The <see cref="T:System.ComponentModel.ISite" /> associated with the <see cref="T:System.ComponentModel.Component" />, or <see langword="null" /> if the <see cref="T:System.ComponentModel.Component" /> is not encapsulated in an <see cref="T:System.ComponentModel.IContainer" />, the <see cref="T:System.ComponentModel.Component" /> does not have an <see cref="T:System.ComponentModel.ISite" /> associated with it, or the <see cref="T:System.ComponentModel.Component" /> is removed from its <see cref="T:System.ComponentModel.IContainer" />.</value>
+        <summary>取得または設定、 <see cref="T:System.ComponentModel.ISite" /> の <see cref="T:System.ComponentModel.Component" />です。</summary>
+        <value>
+          <see cref="T:System.ComponentModel.ISite" /> に関連付けられている、 <see cref="T:System.ComponentModel.Component" />, 、または <see langword="null" /> 場合、 <see cref="T:System.ComponentModel.Component" /> にカプセル化されていない、 <see cref="T:System.ComponentModel.IContainer" />, 、 <see cref="T:System.ComponentModel.Component" /> が、 <see cref="T:System.ComponentModel.ISite" /> が関連付けられて、または <see cref="T:System.ComponentModel.Component" /> から削除、 <see cref="T:System.ComponentModel.IContainer" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.ComponentModel.Component> will have an <xref:System.ComponentModel.ISite> if it has been added to an <xref:System.ComponentModel.IContainer> and the <xref:System.ComponentModel.IContainer> assigns an <xref:System.ComponentModel.ISite> to it. The <xref:System.ComponentModel.IContainer> is responsible for assigning the <xref:System.ComponentModel.ISite> to the <xref:System.ComponentModel.Component>. Changing the value of the component's <xref:System.ComponentModel.ISite> does not necessarily change the name of the site the <xref:System.ComponentModel.Component> is assigned to. The <xref:System.ComponentModel.Component.Site%2A> property should be set only by an <xref:System.ComponentModel.IContainer>.  
+## 解説  
+ A <xref:System.ComponentModel.Component> が、 <xref:System.ComponentModel.ISite> に追加された場合、 <xref:System.ComponentModel.IContainer> と <xref:System.ComponentModel.IContainer> 割り当てます、 <xref:System.ComponentModel.ISite> にします。<xref:System.ComponentModel.IContainer> を割り当てますが、 <xref:System.ComponentModel.ISite> に、 <xref:System.ComponentModel.Component>です。 コンポーネントの値を変更する <xref:System.ComponentModel.ISite> が必ずしも変更サイトの名前、 <xref:System.ComponentModel.Component> に割り当てられます。<xref:System.ComponentModel.Component.Site%2A> でのみプロパティを設定する必要があります、 <xref:System.ComponentModel.IContainer>です。  
   
- The property value is `null` if the <xref:System.ComponentModel.Component> is removed from its <xref:System.ComponentModel.IContainer>. Assigning `null` to this property does not necessarily remove the <xref:System.ComponentModel.Component> from the <xref:System.ComponentModel.IContainer>.  
+ プロパティの値が `null` 場合、 <xref:System.ComponentModel.Component> から削除、 <xref:System.ComponentModel.IContainer>です。 割り当てる `null` このプロパティにもが必ずしも削除、 <xref:System.ComponentModel.Component> から、 <xref:System.ComponentModel.IContainer>です。  
   
- A <xref:System.ComponentModel.Component> might or might not have a name. If a <xref:System.ComponentModel.Component> is given a name, the name must be unique among other <xref:System.ComponentModel.Component> objects within its <xref:System.ComponentModel.IContainer>. The <xref:System.ComponentModel.ISite> stores the name of the <xref:System.ComponentModel.Component>; therefore, you can only name a <xref:System.ComponentModel.Component> if it has an <xref:System.ComponentModel.ISite> associated with it.  
+ A <xref:System.ComponentModel.Component> したり名前を持たない可能性があります。 場合、 <xref:System.ComponentModel.Component> は名前を指定するには、名前一意でなければならないその他の <xref:System.ComponentModel.Component> 内のオブジェクトはその <xref:System.ComponentModel.IContainer>します。<xref:System.ComponentModel.ISite> の名前を格納、 <xref:System.ComponentModel.Component>。 したがって、などの名前のみ、 <xref:System.ComponentModel.Component> がある場合、 <xref:System.ComponentModel.ISite> 関連付けられています。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
+        <altmember cref="T:System.ComponentModel.ISite" />
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -501,19 +545,33 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a <see cref="T:System.String" /> containing the name of the <see cref="T:System.ComponentModel.Component" />, if any. This method should not be overridden.</summary>
-        <returns>A <see cref="T:System.String" /> containing the name of the <see cref="T:System.ComponentModel.Component" />, if any, or <see langword="null" /> if the <see cref="T:System.ComponentModel.Component" /> is unnamed.</returns>
+        <summary>返します。、 <see cref="T:System.String" /> の名前を含む、 <see cref="T:System.ComponentModel.Component" />, 、存在する場合。 このメソッドはオーバーライドできません。</summary>
+        <returns>A <see cref="T:System.String" /> の名前を含む、 <see cref="T:System.ComponentModel.Component" />, 存在する場合、または <see langword="null" /> 場合、 <see cref="T:System.ComponentModel.Component" /> 名前が付いていません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.ComponentModel.Component> may or may not have a name. If a <xref:System.ComponentModel.Component> is given a name, the name is unique among other <xref:System.ComponentModel.Component> objects within its <xref:System.ComponentModel.IContainer>.  
+## 解説  
+ A <xref:System.ComponentModel.Component> 、名前がない可能性があります。 場合、 <xref:System.ComponentModel.Component> は名前を指定するには、名前が一意でその他 <xref:System.ComponentModel.Component> 内のオブジェクトはその <xref:System.ComponentModel.IContainer>します。  
   
- The <xref:System.ComponentModel.ISite> stores the name of the <xref:System.ComponentModel.Component>. A <xref:System.ComponentModel.Component> can only have an <xref:System.ComponentModel.ISite> if it has been added to an <xref:System.ComponentModel.IContainer> and the <xref:System.ComponentModel.IContainer> assigns an <xref:System.ComponentModel.ISite> to it.  
+ <xref:System.ComponentModel.ISite> の名前を格納、 <xref:System.ComponentModel.Component>です。 A <xref:System.ComponentModel.Component> しか、 <xref:System.ComponentModel.ISite> に追加された場合、 <xref:System.ComponentModel.IContainer> と <xref:System.ComponentModel.IContainer> 割り当てます、 <xref:System.ComponentModel.ISite> にします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.IContainer" />
+        <altmember cref="T:System.ComponentModel.Container" />
+        <altmember cref="T:System.ComponentModel.ISite" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.ComponentModel.Component" /> で使用したリソースを解放します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

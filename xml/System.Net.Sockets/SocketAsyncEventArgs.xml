@@ -25,42 +25,53 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Represents an asynchronous socket operation.</summary>
+    <summary>非同期ソケット操作を表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.SocketAsyncEventArgs> class is part of a set of enhancements to the <xref:System.Net.Sockets.Socket?displayProperty=fullName> class that provide an alternative asynchronous pattern that can be used by specialized high-performance socket applications. This class was specifically designed for network server applications that require high performance. An application can use the enhanced asynchronous pattern exclusively or only in targeted hot areas (for example, when receiving large amounts of data).  
+## 解説  
+ <xref:System.Net.Sockets.SocketAsyncEventArgs> クラスは、一連の機能強化の一部、 <xref:System.Net.Sockets.Socket?displayProperty=fullName> によって特殊な高パフォーマンスのソケット アプリケーションで使用できる代替非同期パターンを提供するクラス。 このクラスは、高パフォーマンスを必要とするネットワーク サーバー アプリケーションを特別に設計されました。 強化された非同期パターンのみを使用できます。 またはでのみ、ホット領域 \(大量のデータを受信する場合など\) を対象とするアプリケーション。  
   
- The main feature of these enhancements is the avoidance of the repeated allocation and synchronization of objects during high-volume asynchronous socket I/O. The Begin/End design pattern currently implemented by the <xref:System.Net.Sockets.Socket?displayProperty=fullName> class requires a <xref:System.IAsyncResult?displayProperty=fullName> object be allocated for each asynchronous socket operation.  
+ これらの拡張機能の主な機能は、大量の非同期ソケット I\/O 操作時にオブジェクトの同期と繰り返しの割り当てを回避します。 現在実装 Begin\/end デザイン パターン、 <xref:System.Net.Sockets.Socket?displayProperty=fullName> クラスが必要、 <xref:System.IAsyncResult?displayProperty=fullName> 非同期ソケット操作ごとのオブジェクトが割り当てられます。  
   
- In the new <xref:System.Net.Sockets.Socket?displayProperty=fullName> class enhancements, asynchronous socket operations are described by reusable <xref:System.Net.Sockets.SocketAsyncEventArgs> objects allocated and maintained by the application. High-performance socket applications know best the amount of overlapped socket operations that must be sustained. The application can create as many of the <xref:System.Net.Sockets.SocketAsyncEventArgs> objects that it needs. For example, if a server application needs to have 15 socket accept operations outstanding at all times to support incoming client connection rates, it can allocate 15 reusable <xref:System.Net.Sockets.SocketAsyncEventArgs> objects for that purpose.  
+ 新しい <xref:System.Net.Sockets.Socket?displayProperty=fullName> クラスの拡張機能、によって再利用可能な操作が記載されている非同期ソケット <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクトが割り当てられ、アプリケーションで維持します。 高パフォーマンスのソケット アプリケーションが最適な維持する必要がある重複したソケット操作の量。 アプリケーションでの数だけ作成できます、 <xref:System.Net.Sockets.SocketAsyncEventArgs> 必要のあるオブジェクト。 たとえば、サーバー アプリケーションは、15 のソケットが着信クライアント接続の速度をサポートするために、未処理の操作を常にそのまま使用しておく必要がある場合に、割り当てることができます 15 の再利用可能な <xref:System.Net.Sockets.SocketAsyncEventArgs> を目的とするオブジェクト。  
   
- The pattern for performing an asynchronous socket operation with this class consists of the following steps:  
+ このクラスを使用して非同期ソケット操作を実行するためのパターンは、次の手順で構成されます。  
   
-1.  Allocate a new <xref:System.Net.Sockets.SocketAsyncEventArgs> context object, or get a free one from an application pool.  
+1.  新しい割り当て <xref:System.Net.Sockets.SocketAsyncEventArgs> コンテキスト オブジェクト、またはアプリケーション プールから無料版を取得します。  
   
-2.  Set properties on the context object to the operation about to be performed (the completion callback method, the data buffer, the offset into the buffer, and the maximum amount of data to transfer, for example).  
+2.  プロパティの設定のコンテキストにオブジェクトを操作について \(完了コールバック メソッド、データ バッファー、バッファーと、転送するデータの最大量にオフセット\) を実行します。  
   
-3.  Call the appropriate socket method (xxxAsync) to initiate the asynchronous operation.  
+3.  非同期操作を開始するには、適切なソケット メソッド \(xxxAsync\) を呼び出します。  
   
-4.  If the asynchronous socket method (xxxAsync) returns true, in the callback, query the context properties for completion status.  
+4.  非同期ソケット メソッド \(xxxAsync\) が true の場合、コールバックに返される場合は、完了状態のコンテキスト プロパティを照会します。  
   
-5.  If the asynchronous socket method (xxxAsync) returns false, the operation completed synchronously. The context properties may be queried for the operation result.  
+5.  非同期ソケット メソッド \(xxxAsync\) が false を返した場合、操作を同期的に完了します。 コンテキスト プロパティは、操作の結果を照会することがあります。  
   
-6.  Reuse the context for another operation, put it back in the pool, or discard it.  
+6.  別の操作のコンテキストを再利用、プールに戻さないまたは破棄します。  
   
- The lifetime of the new asynchronous socket operation context object is determined by references by the application code and asynchronous I/O references. It is not necessary for the application to retain a reference to an asynchronous socket operation context object after it is submitted as a parameter to one of the asynchronous socket operation methods. It will remain referenced until the completion callback returns. However it is advantageous for the application to retain the reference to the context so that it can be reused for a future asynchronous socket operation.  
+ 新しい非同期ソケット操作コンテキスト オブジェクトの有効期間は、アプリケーション コードと非同期の I\/O 参照によって参照によって決まります。 アプリケーションで非同期ソケット操作メソッドのいずれかのパラメーターとして送信された後に非同期ソケット操作コンテキスト オブジェクトへの参照を保持する必要はありません。 完了時のコールバックが返されるまでは参照先に残ります。 ただし、今後の非同期ソケット操作を再利用できるように、コンテキストへの参照を保持するアプリケーションのことをお勧めします。  
   
    
   
-## Examples  
- The following code example implements the connection logic for the socket server that uses the <xref:System.Net.Sockets.SocketAsyncEventArgs> class. After accepting a connection, all data read from the client is sent back to the client. The read and echo back to the client pattern is continued until the client disconnects. The BufferManager class that is used by this example is displayed in the code example for the <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%28System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%29> method. The SocketAsyncEventArgsPool class that is used in this example is displayed in the code example for the <xref:System.Net.Sockets.SocketAsyncEventArgs.%23ctor%2A> constructor.  
+## 例  
+ 次のコード例を使用するソケット サーバーの接続ロジックを実装して、 <xref:System.Net.Sockets.SocketAsyncEventArgs> クラスです。 接続を受け入れた後は、クライアントから読み取られるすべてのデータは、クライアントに返されます。 読み取りと、クライアントが切断されるまで、クライアント パターンにエコーが続きます。 コード例では、この例で使用される BufferManager クラスが表示される、 <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%28System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%29> メソッドです。 コード例ではこの例で使用される SocketAsyncEventArgsPool クラスが表示される、 <xref:System.Net.Sockets.SocketAsyncEventArgs.%23ctor%2A> コンス トラクターです。  
   
- [!code-csharp[NCLAsyncSocketServer#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLAsyncSocketServer/CS/AsyncSocketServer.cs#3)]  
+ [!code-csharp[NCLAsyncSocketServer\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLAsyncSocketServer/CS/AsyncSocketServer.cs#3)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.IAsyncResult" />
+    <altmember cref="T:System.Net.Sockets.Socket" />
+    <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.DisconnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+    <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -84,35 +95,35 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Creates an empty <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> instance.</summary>
+        <summary>空の <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> インスタンスを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- After calling this constructor all properties will have their default values:  
+## 解説  
+ このコンス トラクターの呼び出し後にすべてのプロパティには、既定値があります。  
   
--   Object references will be null  
+-   オブジェクト参照は null になります。  
   
--   Properties that return an integer will return zero.  
+-   整数を返すプロパティでは、0 を返します。  
   
--   The <xref:System.Net.Sockets.SocketAsyncEventArgs.LastOperation%2A> property will be equal to <xref:System.Net.Sockets.SocketAsyncOperation.None>.  
+-   <xref:System.Net.Sockets.SocketAsyncEventArgs.LastOperation%2A> プロパティと等しくなる <xref:System.Net.Sockets.SocketAsyncOperation.None>します。  
   
--   The <xref:System.Net.Sockets.SocketAsyncEventArgs.SendPacketsFlags%2A> property will be equal to <xref:System.Net.Sockets.TransmitFileOptions.UseDefaultWorkerThread?displayProperty=fullName>, which specifies no flags will be used.  
+-   <xref:System.Net.Sockets.SocketAsyncEventArgs.SendPacketsFlags%2A> プロパティと同じになります <xref:System.Net.Sockets.TransmitFileOptions.UseDefaultWorkerThread?displayProperty=fullName>, 、使用するフラグを指定するしません。  
   
--   The <xref:System.Net.Sockets.SocketAsyncEventArgs.SocketFlags%2A> property will be equal to <xref:System.Net.Sockets.SocketAsyncOperation.None>.  
+-   <xref:System.Net.Sockets.SocketAsyncEventArgs.SocketFlags%2A> プロパティと等しくなる <xref:System.Net.Sockets.SocketAsyncOperation.None>します。  
   
- The caller must set the appropriate properties prior to passing the object to the appropriate asynchronous socket (xxxAsync) method.  
+ 呼び出し元は、オブジェクトを適切な非同期ソケット \(xxxAsync\) メソッドに渡す前に適切なプロパティを設定する必要があります。  
   
    
   
-## Examples  
- The following code example represents a collection of reusable <xref:System.Net.Sockets.SocketAsyncEventArgs> objects.  
+## 例  
+ 次のコード例は、再利用可能なのコレクションを表します <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクトです。  
   
- [!code-csharp[NCLAsyncSocketServer#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLAsyncSocketServer/CS/AsyncSocketServer.cs#2)]  
+ [!code-csharp[NCLAsyncSocketServer\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLAsyncSocketServer/CS/AsyncSocketServer.cs#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The platform is not supported.</exception>
+        <exception cref="T:System.NotSupportedException">プラットフォームがサポートされていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="AcceptSocket">
@@ -138,14 +149,18 @@
         <ReturnType>System.Net.Sockets.Socket</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the socket to use or the socket created for accepting a connection with an asynchronous socket method.</summary>
-        <value>The <see cref="T:System.Net.Sockets.Socket" /> to use or the socket created for accepting a connection with an asynchronous socket method.</value>
+        <summary>取得または使用するソケットまたは非同期ソケット メソッドを使用して接続を受け入れるために作成されたソケットを設定します。</summary>
+        <value>
+          <see cref="T:System.Net.Sockets.Socket" /> や非同期ソケット メソッドを使用して接続を受け入れるために作成されたソケットを使用します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property can be used to provide an already created <xref:System.Net.Sockets.Socket> that will be used for an asynchronous socket accept operation. Upon completion of the accept operation, it is the socket representing the accepted connection. If not supplied (set to null) before calling the <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName> method, a new socket will be created automatically and be accessible in the completion callback with this property.  
+## 解説  
+ このプロパティは、既に作成して使用することができます <xref:System.Net.Sockets.Socket> 非同期ソケットを使用する操作をそのまま使用します。 受信操作の完了は、受け入れられた接続を表すソケットを勧めします。 \(Null に設定\) を呼び出す前に指定されていない場合、 <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName> メソッド、新しいソケットが自動的に作成し、このプロパティを使用して、完了コールバックでアクセスできることです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
@@ -174,18 +189,29 @@
         <ReturnType>System.Byte[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the data buffer to use with an asynchronous socket method.</summary>
-        <value>A <see cref="T:System.Byte" /> array that represents the data buffer to use with an asynchronous socket method.</value>
+        <summary>非同期ソケット メソッドで使用するデータ バッファーを取得します。</summary>
+        <value>A <see cref="T:System.Byte" /> 非同期ソケット メソッドで使用するデータ バッファーを表す配列。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property gets the data buffer currently associated with the <xref:System.Net.Sockets.SocketAsyncEventArgs> instance. To set the buffer, the <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%2A> method must be used.  
+## 解説  
+ このプロパティは、現在関連付けられているデータ バッファーを取得、 <xref:System.Net.Sockets.SocketAsyncEventArgs> インスタンス。 バッファーを設定する、 <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%2A> メソッドを使用する必要があります。  
   
- This property is used with the <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, and <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> methods.  
+ このプロパティで使用、 <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, 、および <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="Overload:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer" />
       </Docs>
     </Member>
     <Member MemberName="BufferList">
@@ -211,27 +237,34 @@
         <ReturnType>System.Collections.Generic.IList&lt;System.ArraySegment&lt;System.Byte&gt;&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets an array of data buffers to use with an asynchronous socket method.</summary>
-        <value>An <see cref="T:System.Collections.IList" /> that represents an array of data buffers to use with an asynchronous socket method.</value>
+        <summary>取得または非同期ソケット メソッドで使用するデータ バッファーの配列を設定します。</summary>
+        <value>
+          <see cref="T:System.Collections.IList" /> を表す非同期ソケット メソッドで使用するデータ バッファーの配列。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property is used with the <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName> and <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName> methods.  
+## 解説  
+ このプロパティは、使用、 <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName> と <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName> メソッドです。  
   
- This property is used to provide multiple buffers of data to be sent or to provide multiple buffers in which to store received data for an asynchronous socket operation that can send or receive data. Multiple buffers using the <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> property are supported by the <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName> and <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName> methods.  
+ このプロパティは、送信する、または送信したり、データを受信する非同期ソケット操作の受信データを格納するための複数のバッファーを提供するデータの複数のバッファーを提供する使用されます。 複数のバッファーを使用して、 <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> でプロパティがサポートされて、 <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName> と <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName> メソッドです。  
   
- If the <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> property is set to a non-null value, the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property must be null and is ignored by the <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName> and <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName> methods.  
+ 場合、 <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> プロパティが null 以外の値に設定されている、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティが null である必要がありでは無視されます、 <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName> と <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName> メソッドです。  
   
- If the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> was set to a non-null value and an attempt is made to set the <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> property to a non-null value, an exception is thrown.  
+ 場合、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> null 以外の値に設定された設定が試行され、 <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> プロパティを null 以外の値は、例外がスローされます。  
   
- If the <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> property is set to a non-null value, the <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName> and <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName> methods will throw an <xref:System.ArgumentException>.  
+ 場合、 <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> プロパティが null 以外の値に設定されている、 <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName> と <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName> メソッドがスローされます、 <xref:System.ArgumentException>です。  
   
- The <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> parameter is ignored by the <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> and <xref:System.Net.Sockets.Socket.SendPacketsAsync%2A?displayProperty=fullName> methods.  
+ <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> パラメーターは、 <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> と <xref:System.Net.Sockets.Socket.SendPacketsAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">There are ambiguous buffers specified on a set operation. This exception occurs if the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property has been set to a non-null value and an attempt was made to set the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.BufferList" /> property to a non-null value.</exception>
+        <exception cref="T:System.ArgumentException">セット操作で指定されたあいまいなバッファーがあります。 場合にこの例外が発生した、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティが null 以外の値に設定されているし、設定しようとした、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.BufferList" /> プロパティを null 値にします。</exception>
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" />
       </Docs>
     </Member>
     <Member MemberName="BytesTransferred">
@@ -257,18 +290,30 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of bytes transferred in the socket operation.</summary>
-        <value>An <see cref="T:System.Int32" /> that contains the number of bytes transferred in the socket operation.</value>
+        <summary>ソケット操作で転送されたバイト数を取得します。</summary>
+        <value>
+          <see cref="T:System.Int32" /> ソケット操作で転送されたバイト数を格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property provides the number of bytes transferred in an asynchronous socket operation that can receive or send data. If zero is returned from a read operation, the remote end has closed the connection.  
+## 解説  
+ このプロパティは、受信したり、データを送信できる非同期ソケット操作で転送されたバイト数を提供します。 0 は、読み取り操作から返された場合、リモート end の接続が終了します。  
   
- This property is set by all asynchronous socket operations except the <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> method.  
+ このプロパティを除くすべての非同期ソケット操作によって、 <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="Completed">
@@ -294,17 +339,20 @@
         <ReturnType>System.EventHandler&lt;System.Net.Sockets.SocketAsyncEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The event used to complete an asynchronous operation.</summary>
+        <summary>非同期操作を完了するために使用するイベントです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.SocketAsyncEventArgs.Completed> event provides a way for client applications to complete an asynchronous socket operation. An event handler should be attached to the event within a <xref:System.Net.Sockets.SocketAsyncEventArgs> instance when an asynchronous socket operation is initiated, otherwise the application will not be able to determine when the operation completes.  
+## 解説  
+ <xref:System.Net.Sockets.SocketAsyncEventArgs.Completed> イベントは、クライアント アプリケーションの非同期ソケット操作を完了するための手段を提供します。 内のイベントにイベント ハンドラーを関連付ける、 <xref:System.Net.Sockets.SocketAsyncEventArgs> インスタンス非同期ソケット操作を開始すると、それ以外の場合、アプリケーションはできません、操作が完了したときを判断します。  
   
- The completion callback delegates referenced by the <xref:System.Net.Sockets.SocketAsyncEventArgs.Completed> event contains program logic to finish processing the asynchronous socket operation for the client.  
+ によって参照される完了コールバック デリゲート、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Completed> イベントには、クライアントの非同期ソケット操作の処理が完了するプログラム ロジックが含まれています。  
   
- When the event is signaled, the application uses the <xref:System.Net.Sockets.SocketAsyncEventArgs> object parameter to obtain the status of the completed asynchronous socket operation.  
+ イベントがシグナル状態になるアプリケーションを使用して、 <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクト パラメーター、完了した非同期ソケット操作の状態を取得します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -332,20 +380,25 @@
         <ReturnType>System.Exception</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the exception in the case of a connection failure when a <see cref="T:System.Net.DnsEndPoint" /> was used.</summary>
-        <value>An <see cref="T:System.Exception" /> that indicates the cause of the connection error when a <see cref="T:System.Net.DnsEndPoint" /> was specified for the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> property.</value>
+        <summary>接続エラーの場合、例外を取得ときに、 <see cref="T:System.Net.DnsEndPoint" /> が使用されました。</summary>
+        <value>
+          <see cref="T:System.Exception" /> の接続エラーの原因が示されているときに、 <see cref="T:System.Net.DnsEndPoint" /> が指定されました、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> プロパティです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In the case of a connection failure when a <xref:System.Net.DnsEndPoint> was specified for the <xref:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint%2A> property, the <xref:System.Net.Sockets.SocketAsyncEventArgs.ConnectByNameError%2A> property will contain the exception that indicates the detailed cause of the socket error.  
+## 解説  
+ 接続エラーの場合と、 <xref:System.Net.DnsEndPoint> が指定されました、 <xref:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint%2A> プロパティには、 <xref:System.Net.Sockets.SocketAsyncEventArgs.ConnectByNameError%2A> プロパティは、ソケット エラーの原因の詳細を示す例外が格納されます。  
   
- When an <xref:System.Net.IPEndPoint> was specified for the <xref:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint%2A> property and a connection failure occurs, the <xref:System.Net.Sockets.SocketAsyncEventArgs.ConnectByNameError%2A> property will be a `null` reference.  
+ ときに、 <xref:System.Net.IPEndPoint> が指定されました、 <xref:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint%2A> プロパティと接続エラーが発生すると、 <xref:System.Net.Sockets.SocketAsyncEventArgs.ConnectByNameError%2A> プロパティ、 `null` 参照します。  
   
- The <xref:System.Net.Sockets.SocketAsyncEventArgs.SocketError%2A> property is always set in the case of a connection failure. The <xref:System.Net.Sockets.SocketAsyncEventArgs.ConnectByNameError%2A> property contains more information about the failure if it was a failure connecting to a <xref:System.Net.DnsEndPoint>. If an application is only interested in whether the connect operation succeeded or failed, then the application only needs to check the <xref:System.Net.Sockets.SocketAsyncEventArgs.SocketError%2A> property.  
+ <xref:System.Net.Sockets.SocketAsyncEventArgs.SocketError%2A> プロパティは、接続エラーの場合は常に設定します。<xref:System.Net.Sockets.SocketAsyncEventArgs.ConnectByNameError%2A> プロパティが接続に失敗した場合、エラーに関する詳細を格納、 <xref:System.Net.DnsEndPoint>です。 確認するアプリケーションにのみ必要なアプリケーションがのみに関心がある場合、接続の操作が成功したか失敗するかどうか、 <xref:System.Net.Sockets.SocketAsyncEventArgs.SocketError%2A> プロパティです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="Overload:System.Net.Sockets.Socket.ConnectAsync" />
       </Docs>
     </Member>
     <Member MemberName="ConnectSocket">
@@ -371,16 +424,20 @@
         <ReturnType>System.Net.Sockets.Socket</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The created and connected <see cref="T:System.Net.Sockets.Socket" /> object after successful completion of the <see cref="Overload:System.Net.Sockets.Socket.ConnectAsync" /> method.</summary>
-        <value>The connected <see cref="T:System.Net.Sockets.Socket" /> object.</value>
+        <summary>作成と接続されている <see cref="T:System.Net.Sockets.Socket" /> オブジェクトが正常に完了した後、 <see cref="Overload:System.Net.Sockets.Socket.ConnectAsync" /> メソッドです。</summary>
+        <value>接続されている <see cref="T:System.Net.Sockets.Socket" /> オブジェクトです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- After successful completion of the <xref:System.Net.Sockets.Socket.ConnectAsync%2A> method, this property contains the newly created and connected <xref:System.Net.Sockets.Socket> object.  
+## 解説  
+ 正常に完了した後、 <xref:System.Net.Sockets.Socket.ConnectAsync%2A> メソッド、このプロパティには、新しく作成して接続が含まれている <xref:System.Net.Sockets.Socket> オブジェクトです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="Overload:System.Net.Sockets.Socket.ConnectAsync" />
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -406,18 +463,31 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the maximum amount of data, in bytes, to send or receive in an asynchronous operation.</summary>
-        <value>An <see cref="T:System.Int32" /> that contains the maximum amount of data, in bytes, to send or receive.</value>
+        <summary>非同期操作で送信または受信するバイト数で、データの最大量を取得します。</summary>
+        <value>
+          <see cref="T:System.Int32" /> 最大量 \(バイト単位\) を送信または受信のデータを格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property is set by calling the <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%2A> method.  
+## 解説  
+ このプロパティを呼び出して、 <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%2A> メソッドです。  
   
- This property is used with the <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, and <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> methods.  
+ このプロパティで使用、 <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, 、および <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="Overload:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer" />
       </Docs>
     </Member>
     <Member MemberName="DisconnectReuseSocket">
@@ -442,16 +512,20 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that specifies if socket can be reused after a disconnect operation.</summary>
-        <value>A <see cref="T:System.Boolean" /> that specifies if socket can be reused after a disconnect operation.</value>
+        <summary>取得または切断操作の後にソケットを再利用できるかどうかを指定する値を設定します。</summary>
+        <value>A <see cref="T:System.Boolean" /> ソケットが切断操作の後に再利用できるかどうかを指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property is used to alter the behavior of <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> method. If true, a socket disconnected by the <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> method can be reused after disconnect completion in subsequent socket accept or connect operations.  
+## 解説  
+ このプロパティを使用して、動作の変更を <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> メソッドです。 かどうかは true、ソケットによって切断、 <xref:System.Net.Sockets.Socket.DisconnectAsync%2A?displayProperty=fullName> メソッドを再利用できる以降のソケットで補完を切断した後を受け入れるか、操作を接続します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.DisconnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -478,26 +552,30 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> instance and optionally disposes of the managed resources.</summary>
+        <summary>使用されるアンマネージ リソースを解放、 <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> インスタンス化し、必要に応じてマネージ リソースを破棄します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the public `Dispose()` method and the <xref:System.Object.Finalize%2A> method. `Dispose()` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`. <xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.  
+## 解説  
+ このメソッドは、パブリック `Dispose()` メソッドおよび <xref:System.Object.Finalize%2A> メソッドです。`Dispose()` 保護対象の起動 `Dispose(Boolean)` メソッドを `disposing` パラメーターを設定する `true`です。<xref:System.Object.Finalize%2A> 呼び出す `Dispose` と `disposing` 設定 `false`します。  
   
- When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.Net.Sockets.SocketAsyncEventArgs> references. This method invokes the `Dispose()` method of each referenced object.  
+ `disposing` パラメーターが `true` の場合、このメソッドは、この <xref:System.Net.Sockets.SocketAsyncEventArgs> が参照しているすべてのマネージ オブジェクトによって保持されているリソースをすべて解放します。 このメソッドは、参照される各オブジェクトの `Dispose()` メソッドを呼び出します。  
   
 > [!NOTE]
->  This member outputs trace information when you enable network tracing in your application. For more information, see [Network Tracing in the .NET Framework](~/docs/framework/network-programming/network-tracing.md).  
+>  このメンバーは、アプリケーションでネットワーク トレースが有効にされている場合にトレース情報を出力します。 詳細については、「[&#91;\<topic:\/\/conUsingNetworkTracing\>&#93;](http://msdn.microsoft.com/ja-jp/e993b7c3-087f-45d8-9c02-9dded936d804)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>
-            <see langword="Dispose" /> can be called multiple times by other objects. When overriding <see langword="Dispose(Boolean)" />, be careful not to reference objects that have been previously disposed of in an earlier call to <see langword="Dispose" />. For more information about how to implement <see langword="Dispose(Boolean)" />, see [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+            <see langword="Dispose" /> は、他のオブジェクトから複数回呼び出すことができます。<see langword="Dispose(Boolean)" /> をオーバーライドする場合は、以前に <see langword="Dispose" /> を呼び出したときに破棄されたオブジェクトを参照しないように注意する必要があります。<see langword="Dispose(Boolean)" /> の実装方法の詳細については、「[[&lt;topic:\/\/cpconImplementingDisposeMethod&gt;]](http://msdn.microsoft.com/ja-jp/eb4e1af0-3b48-4fbc-ad4e-fc2f64138bf9)」を参照してください。  
   
- For more information about <see langword="Dispose" /> and <see cref="M:System.Object.Finalize" />, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Overriding the Finalize Method](http://msdn.microsoft.com/en-us/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).</para>
+ 詳細については <see langword="Dispose" /> と <see cref="M:System.Object.Finalize" />, を参照してください [[&lt;topic:\/\/cpconCleaningUpUnmanagedResources&gt;]](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213) と [Finalize メソッドをオーバーライドする](http://msdn.microsoft.com/ja-jp/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)します。</para>
         </block>
+        <altmember cref="M:System.Object.Finalize" />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -524,13 +602,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Frees resources used by the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> class.</summary>
+        <summary>
+          <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> クラスによって使用されていたリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.SocketAsyncEventArgs> class finalizer closes the <xref:System.Net.Sockets.SocketAsyncEventArgs> and free resources associated with the <xref:System.Net.Sockets.SocketAsyncEventArgs>.  
+## 解説  
+ <xref:System.Net.Sockets.SocketAsyncEventArgs> クラスのファイナライザーが閉じ、 <xref:System.Net.Sockets.SocketAsyncEventArgs> に関連付けられているリソースを解放し、 <xref:System.Net.Sockets.SocketAsyncEventArgs>です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -558,22 +640,35 @@
         <ReturnType>System.Net.Sockets.SocketAsyncOperation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type of socket operation most recently performed with this context object.</summary>
-        <value>A <see cref="T:System.Net.Sockets.SocketAsyncOperation" /> instance that indicates the type of socket operation most recently performed with this context object.</value>
+        <summary>このコンテキスト オブジェクトで最近実行されたソケット操作の種類を取得します。</summary>
+        <value>A <see cref="T:System.Net.Sockets.SocketAsyncOperation" /> ソケット操作の種類を示すインスタンスをこのコンテキスト オブジェクトで最も最近実行します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property describes the asynchronous socket operation that was most recently completed using this <xref:System.Net.Sockets.SocketAsyncEventArgs> object. The value of this property will be <xref:System.Net.Sockets.SocketAsyncOperation.None?displayProperty=fullName> until the <xref:System.Net.Sockets.SocketAsyncEventArgs> instance is used to begin an asynchronous socket operation. The property will then be set to the type of operation being performed in the methods that take the <xref:System.Net.Sockets.SocketAsyncEventArgs> as a parameter. This property more easily facilitates using a single completion callback delegate for multiple kinds of asynchronous socket operations.  
+## 解説  
+ このプロパティは、これを使用して最も最近完了した非同期ソケット操作を示します。 <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクトです。 このプロパティの値になります <xref:System.Net.Sockets.SocketAsyncOperation.None?displayProperty=fullName> まで、 <xref:System.Net.Sockets.SocketAsyncEventArgs> 非同期ソケット操作を開始するインスタンスを使用します。 プロパティを受け取るメソッドで実行される操作の種類に設定し、 <xref:System.Net.Sockets.SocketAsyncEventArgs> をパラメーターとして。 このプロパティには、複数の種類の非同期ソケット操作に対する 1 つの完了コールバック デリゲートを使用してより簡単に容易になります。  
   
- This property remains valid in a <xref:System.Net.Sockets.SocketAsyncEventArgs> instance until the <xref:System.Net.Sockets.SocketAsyncEventArgs> instance is used for another asynchronous socket (xxxAsync) operation.  
+ このプロパティの値で有効な <xref:System.Net.Sockets.SocketAsyncEventArgs> をインスタンス化されるまで、 <xref:System.Net.Sockets.SocketAsyncEventArgs> インスタンスは、別の非同期ソケット \(xxxAsync\) 操作に使用します。  
   
- This property is set by all asynchronous socket (xxxAsync) methods.  
+ すべての非同期ソケット \(xxxAsync\) メソッドによって設定されます。  
   
- Calling an asynchronous socket method (xxxAsync) on the <xref:System.Net.Sockets.Socket?displayProperty=fullName> class sets this property value. This property is intended for use with the SocketAsyncCallback completion routine implemented by the application.  
+ 非同期ソケット メソッド \(xxxAsync\) を呼び出して、 <xref:System.Net.Sockets.Socket?displayProperty=fullName> クラスは、このプロパティの値を設定します。 このプロパティは、アプリケーションによって実装される SocketAsyncCallback 完了ルーチンで使用されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.DisconnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="T:System.Net.Sockets.SocketAsyncOperation" />
       </Docs>
     </Member>
     <Member MemberName="Offset">
@@ -599,20 +694,32 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the offset, in bytes, into the data buffer referenced by the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property.</summary>
-        <value>An <see cref="T:System.Int32" /> that contains the offset, in bytes, into the data buffer referenced by the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property.</value>
+        <summary>によって参照されるデータのバッファーにオフセットをバイト単位で取得、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティです。</summary>
+        <value>
+          <see cref="T:System.Int32" /> によって参照されるデータ バッファーのオフセット \(バイト単位\) を含む、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property describes the starting byte offset of data in the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property. This value is set by calling the <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%2A> method.  
+## 解説  
+ このプロパティの説明内のデータのバイト オフセット、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティです。 この設定は呼び出すことによって、 <xref:System.Net.Sockets.SocketAsyncEventArgs.SetBuffer%2A> メソッドです。  
   
- This property does not apply to the <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> property.  
+ このプロパティには適用されません、 <xref:System.Net.Sockets.SocketAsyncEventArgs.BufferList%2A> プロパティです。  
   
- This property is used with the <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, and <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> methods.  
+ このプロパティで使用、 <xref:System.Net.Sockets.Socket.AcceptAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, 、および <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" />
       </Docs>
     </Member>
     <Member MemberName="OnCompleted">
@@ -641,22 +748,25 @@
         <Parameter Name="e" Type="System.Net.Sockets.SocketAsyncEventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">The event that is signaled.</param>
-        <summary>Represents a method that is called when an asynchronous operation completes.</summary>
+        <param name="e">通知されるイベントです。</param>
+        <summary>非同期操作が完了したときに呼び出されるメソッドを表します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is not callable by user code. This method gets called by the internals of the <xref:System.Net.Sockets.SocketAsyncEventArgs> object when the current operation is complete. This method is used with all asynchronous socket (xxxAsync) methods.  
+## 解説  
+ このメソッドは、ユーザー コードで呼び出すことはできません。 このメソッドは、の内部から呼び出される、 <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクトの現在の操作が完了するとします。 このメソッドは、すべての非同期ソケット \(xxxAsync\) メソッドを使用します。  
   
- An application that creates a class inheriting from <xref:System.Net.Sockets.SocketAsyncEventArgs> can override this method to hook into this completion notification and clean up any resources that it allocated for the operation. The default implementation just raises the <xref:System.Net.Sockets.SocketAsyncEventArgs.Completed> event.  
+ 継承するクラスを作成するアプリケーション <xref:System.Net.Sockets.SocketAsyncEventArgs> この完了通知をフックし、操作に割り当てられているすべてのリソースをクリーンアップするには、このメソッドをオーバーライドします。 既定の実装だけを生成、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Completed> イベントです。  
   
- This method is used to hook up an event handler to be used as the completion callback for a subsequent asynchronous socket operation. The caller must implement at least one callback delegate inherited from this method prior to starting an asynchronous socket operation using one of the asynchronous (xxxAsync) methods on the <xref:System.Net.Sockets.Socket?displayProperty=fullName> class.  
+ このメソッドは、以降の非同期ソケット操作の完了時のコールバックとして使用するイベント ハンドラーをフックするのには使用されます。 呼び出し元でを使用して非同期 \(xxxAsync\) のいずれかの非同期ソケット操作を開始する前にこのメソッドから継承された少なくとも 1 つのコールバック デリゲートを実装する必要があります、 <xref:System.Net.Sockets.Socket?displayProperty=fullName> クラスです。  
   
- The caller's <xref:System.Net.Sockets.SocketAsyncEventArgs.OnCompleted%2A> method provides a way for client applications to complete an asynchronous socket operation. A callback delegate must be implemented when an asynchronous socket operation is initiated. The completion callback delegate(s) inherited from the <xref:System.Net.Sockets.SocketAsyncEventArgs.OnCompleted%2A> method must contain program logic to finish processing the asynchronous socket operation for the client.  
+ 呼び出し元の <xref:System.Net.Sockets.SocketAsyncEventArgs.OnCompleted%2A> メソッドは、クライアント アプリケーションの非同期ソケット操作を完了するための手段を提供します。 非同期ソケット操作を開始すると、コールバック デリゲートを実装する必要があります。 継承された完了コールバックの代理人、 <xref:System.Net.Sockets.SocketAsyncEventArgs.OnCompleted%2A> メソッドは、クライアントの非同期ソケット操作の処理が完了するプログラム ロジックを含める必要があります。  
   
- When an asynchronous operation is signaled, the application uses the <xref:System.Net.Sockets.SocketAsyncEventArgs> object parameter to obtain status of the completed asynchronous socket operation.  
+ 非同期操作がシグナル状態になるアプリケーションを使用して、 <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクト パラメーター、完了した非同期ソケット操作の状態を取得します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
@@ -693,18 +803,27 @@
         <ReturnType>System.Net.Sockets.IPPacketInformation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the IP address and interface of a received packet.</summary>
-        <value>An <see cref="T:System.Net.Sockets.IPPacketInformation" /> instance that contains the destination IP address and interface of a received packet.</value>
+        <summary>受信したパケットのインターフェイスの IP アドレスを取得します。</summary>
+        <value>
+          <see cref="T:System.Net.Sockets.IPPacketInformation" /> 宛先 IP アドレスと受信パケットのインターフェイスを格納しているインスタンス。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property provides information about a packet received using the <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName> method.  
+## 解説  
+ このプロパティを使用して受信したパケットに関する情報を提供する、 <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName> メソッドです。  
   
- This property is used with the <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName> method.  
+ このプロパティは、使用、 <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Net.IPAddress" />
+        <altmember cref="T:System.Net.Sockets.IPPacketInformation" />
+        <altmember cref="P:System.Net.Sockets.IPPacketInformation.Address" />
+        <altmember cref="P:System.Net.Sockets.IPPacketInformation.Interface" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="RemoteEndPoint">
@@ -730,20 +849,29 @@
         <ReturnType>System.Net.EndPoint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the remote IP endpoint for an asynchronous operation.</summary>
-        <value>An <see cref="T:System.Net.EndPoint" /> that represents the remote IP endpoint for an asynchronous operation.</value>
+        <summary>取得または非同期操作の場合、リモートの IP エンドポイントを設定します。</summary>
+        <value>
+          <see cref="T:System.Net.EndPoint" /> を表す非同期操作の場合、リモートの IP エンドポイント。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property specifies the remote endpoint. This property can specify the remote endpoint to which to connect using the <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName> method. This property can specify the remote endpoint to which to send data using <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> method. This property can specify the remote endpoint from which data was received using the <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName> or <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName> methods.  
+## 解説  
+ このプロパティは、リモートのエンドポイントを指定します。 このプロパティで指定し、リモート エンドポイントを使用して接続するために、 <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName> メソッドです。 このプロパティで指定し、リモート エンドポイントを使用してデータを送信するために <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> メソッドです。 このプロパティを使用してデータの受信元となるリモート エンドポイントを指定できます、 <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName> または <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName> メソッドです。  
   
- This remote endpoint specified by this property can include an IPv4 or IPv6 address.  
+ このプロパティで指定するリモート エンドポイントには、IPv4 または IPv6 アドレスを含めることができます。  
   
- This property is used with the <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, or <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> methods.  
+ このプロパティは、使用、 <xref:System.Net.Sockets.Socket.ConnectAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveMessageFromAsync%2A?displayProperty=fullName>, 、または <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Net.EndPoint" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="SendPacketsElements">
@@ -769,16 +897,21 @@
         <ReturnType>System.Net.Sockets.SendPacketsElement[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets an array of buffers to be sent for an asynchronous operation used by the <see cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> method.</summary>
-        <value>An array of <see cref="T:System.Net.Sockets.SendPacketsElement" /> objects that represent an array of buffers to be sent.</value>
+        <summary>取得または設定で使用される非同期操作の場合に送信するバッファーの配列、 <see cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> メソッドです。</summary>
+        <value>配列 <see cref="T:System.Net.Sockets.SendPacketsElement" /> に送信するバッファーの配列を表すオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The array of buffers can represent a file or files in memory or a set of memory data buffers. This property is used with the <xref:System.Net.Sockets.Socket.SendPacketsAsync%2A?displayProperty=fullName> method.  
+## 解説  
+ バッファーの配列には、ファイルまたはメモリまたは一連のデータ バッファーのメモリ内のファイルを表すことができます。 このプロパティは、使用、 <xref:System.Net.Sockets.Socket.SendPacketsAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Net.Sockets.SendPacketsElement" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="SendPacketsFlags">
@@ -803,16 +936,21 @@
         <ReturnType>System.Net.Sockets.TransmitFileOptions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a bitwise combination of <see cref="T:System.Net.Sockets.TransmitFileOptions" /> values for an asynchronous operation used by the <see cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> method.</summary>
-        <value>A <see cref="T:System.Net.Sockets.TransmitFileOptions" /> that contains a bitwise combination of values that are used with an asynchronous operation.</value>
+        <summary>ビットごとの組み合わせを取得または <see cref="T:System.Net.Sockets.TransmitFileOptions" /> によって使用される非同期操作の値、 <see cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> メソッドです。</summary>
+        <value>A <see cref="T:System.Net.Sockets.TransmitFileOptions" /> 、非同期操作に使用される値のビットごとの組み合わせを格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property specifies the <xref:System.Net.Sockets.TransmitFileOptions> that are used by the <xref:System.Net.Sockets.Socket.SendPacketsAsync%2A?displayProperty=fullName> method.  
+## 解説  
+ このプロパティを指定、 <xref:System.Net.Sockets.TransmitFileOptions> で使用される、 <xref:System.Net.Sockets.Socket.SendPacketsAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="T:System.Net.Sockets.TransmitFileOptions" />
       </Docs>
     </Member>
     <Member MemberName="SendPacketsSendSize">
@@ -843,16 +981,22 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the size, in bytes, of the data block used in the send operation.</summary>
-        <value>An <see cref="T:System.Int32" /> that contains the size, in bytes, of the data block used in the send operation.</value>
+        <summary>取得または送信操作で使用されるデータ ブロックのバイト単位のサイズを設定します。</summary>
+        <value>
+          <see cref="T:System.Int32" /> 送信操作で使用されるデータ ブロックのバイト単位のサイズを格納します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Set this property to zero to let the sockets layer select a default send size. Setting this property to 0xFFFFFFFF enables the caller to control the size and content of each send request, achieved by using the <xref:System.Net.Sockets.SendPacketsElement.EndOfPacket%2A?displayProperty=fullName> property. This capability is useful for message protocols that place limitations on the size of individual send requests.  
+## 解説  
+ 0、ソケット レイヤーの既定の送信サイズを選択できるようにするには、このプロパティを設定します。 このプロパティを 0 xffffffff を有効に設定すると、呼び出し元のサイズと各送信要求の内容を制御するを使用して実現、 <xref:System.Net.Sockets.SendPacketsElement.EndOfPacket%2A?displayProperty=fullName> プロパティです。 この機能は、個々 の送信要求のサイズに制限を加えるメッセージ プロトコルに便利です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Net.Sockets.SendPacketsElement.EndOfPacket" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
     <MemberGroup MemberName="SetBuffer">
@@ -861,15 +1005,18 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Initializes the data buffer to use with an asynchronous socket method.</summary>
+        <summary>非同期ソケット メソッドで使用するデータ バッファーを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method sets the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property to null and the <xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> and <xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> properties to zero.  
+## 解説  
+ このメソッドは、設定、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティを null に、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> と <xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> プロパティを 0 にします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Count" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Offset" />
       </Docs>
     </MemberGroup>
     <Member MemberName="SetBuffer">
@@ -899,22 +1046,28 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="offset">The offset, in bytes, in the data buffer where the operation starts.</param>
-        <param name="count">The maximum amount of data, in bytes, to send or receive in the buffer.</param>
-        <summary>Sets the data buffer to use with an asynchronous socket method.</summary>
+        <param name="offset">操作を開始するデータ バッファー内のバイト オフセット。</param>
+        <param name="count">送信または受信バッファー内のバイト単位のデータの最大量。</param>
+        <summary>非同期ソケット メソッドで使用するデータ バッファーを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `offset` and `count` parameters can't be negative numbers. The combination of the `offset` and `count` parameters must be in bounds of the buffer array in the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property.  
+## 解説  
+ `offset` と `count` パラメーターが負の数値にすることはできません。 組み合わせ、 `offset` と `count` パラメーターを指定のバッファー配列の境界、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティです。  
   
- This method sets the <xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> property to the `count` parameter and the <xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> property to the `offset` parameter. If the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property is null, this method ignores the `offset` and `count` parameters and sets the <xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> and <xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> properties to 0.  
+ このメソッドは、設定、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> プロパティを `count` パラメーターおよび <xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> プロパティを `offset` パラメーター。 場合、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティが null で、このメソッドは、無視、 `offset` と `count` パラメーターと設定、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> と <xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> プロパティを 0 にします。  
   
- This method does not change the <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property.  
+ このメソッドは変わらないので、 <xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">An argument was out of range. This exception occurs if the <paramref name="offset" /> parameter is less than zero or greater than the length of the array in the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property. This exception also occurs if the <paramref name="count" /> parameter is less than zero or greater than the length of the array in the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property minus the <paramref name="offset" /> parameter.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">引数が範囲外でした。 場合にこの例外が発生した、 <paramref name="offset" /> パラメーターが 0 の配列の長さより大きいか小さい、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティです。 場合にもこの例外が発生した、 <paramref name="count" /> パラメーターが 0 の配列の長さより大きいか小さい、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティより小さい、 <paramref name="offset" /> パラメーター。</exception>
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Count" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Offset" />
       </Docs>
     </Member>
     <Member MemberName="SetBuffer">
@@ -945,29 +1098,32 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">The data buffer to use with an asynchronous socket method.</param>
-        <param name="offset">The offset, in bytes, in the data buffer where the operation starts.</param>
-        <param name="count">The maximum amount of data, in bytes, to send or receive in the buffer.</param>
-        <summary>Sets the data buffer to use with an asynchronous socket method.</summary>
+        <param name="buffer">非同期ソケット メソッドで使用するデータのバッファー。</param>
+        <param name="offset">操作を開始するデータ バッファー内のバイト オフセット。</param>
+        <param name="count">送信または受信バッファー内のバイト単位のデータの最大量。</param>
+        <summary>非同期ソケット メソッドで使用するデータ バッファーを設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `offset` and `count` parameters can't be negative numbers. The combination of the `offset` and `count` parameters must be in bounds of the data array in the `buffer` parameter.  
+## 解説  
+ `offset` と `count` パラメーターが負の数値にすることはできません。 組み合わせ、 `offset` と `count` パラメーターは、データの配列の境界で記述する必要があります、 `buffer` パラメーター。  
   
- This method sets the [SetBuffer Method (Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> property to the `buffer` parameter, the [SetBuffer Method (Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> property to the `count` parameter, and the [SetBuffer Method (Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> property to the `offset` parameter.  
+ このメソッドは、設定、 [SetBuffer メソッド \(Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs.Buffer%2A> プロパティを `buffer` 、パラメーター、 [SetBuffer メソッド \(Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs.Count%2A> プロパティを `count` パラメーター、および [SetBuffer メソッド \(Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs.Offset%2A> プロパティを `offset` パラメーター。  
   
    
   
-## Examples  
- The following code example creates a single large buffer which can be divided up and assigned to [SetBuffer Method (Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs> objects for use with each socket I/O operation. This enables buffers to be easily reused and guards against fragmenting heap memory.  
+## 例  
+ 次のコード例を作成および分割することができるに割り当てられている 1 つの大きなバッファー [SetBuffer メソッド \(Byte\<xref:System.Net.Sockets.SocketAsyncEventArgs> ソケット I\/O 操作のそれぞれで使用するためのオブジェクト。 これにより、バッファーを簡単に再利用して、ヒープ メモリの断片化を防ぐ。  
   
- [!code-csharp[NCLAsyncSocketServer#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLAsyncSocketServer/CS/AsyncSocketServer.cs#1)]  
+ [!code-csharp[NCLAsyncSocketServer\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLAsyncSocketServer/CS/AsyncSocketServer.cs#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">There are ambiguous buffers specified. This exception occurs if the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property is also not null and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.BufferList" /> property is also not null.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">An argument was out of range. This exception occurs if the <paramref name="offset" /> parameter is less than zero or greater than the length of the array in the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property. This exception also occurs if the <paramref name="count" /> parameter is less than zero or greater than the length of the array in the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> property minus the <paramref name="offset" /> parameter.</exception>
+        <exception cref="T:System.ArgumentException">あいまいなバッファーの指定があります。 場合にこの例外が発生した、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティも null でないと、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.BufferList" /> またプロパティは null です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">引数が範囲外でした。 場合にこの例外が発生した、 <paramref name="offset" /> パラメーターが 0 の配列の長さより大きいか小さい、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティです。 場合にもこの例外が発生した、 <paramref name="count" /> パラメーターが 0 の配列の長さより大きいか小さい、 <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> プロパティより小さい、 <paramref name="offset" /> パラメーター。</exception>
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Count" />
+        <altmember cref="P:System.Net.Sockets.SocketAsyncEventArgs.Offset" />
       </Docs>
     </Member>
     <Member MemberName="SocketClientAccessPolicyProtocol">
@@ -991,15 +1147,16 @@
         <ReturnType>System.Net.Sockets.SocketClientAccessPolicyProtocol</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the protocol to use to download the socket client access policy file.</summary>
-        <value>Returns <see cref="T:System.Net.Sockets.SocketClientAccessPolicyProtocol" />.  
+        <summary>ソケット クライアント アクセス ポリシー ファイルのダウンロードに使用するプロトコルを取得または設定します。</summary>
+        <value>
+          <see cref="T:System.Net.Sockets.SocketClientAccessPolicyProtocol" /> を返します。  
   
- The protocol to use to download the socket client access policy file.</value>
+ ソケット クライアント アクセス ポリシー ファイルのダウンロードに使用するプロトコル。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.SocketClientAccessPolicyProtocol> specifies the method to download a client access policy file.  
+## 解説  
+ <xref:System.Net.Sockets.SocketClientAccessPolicyProtocol> クライアント アクセス ポリシー ファイルをダウンロードする方法を指定します。  
   
  ]]></format>
         </remarks>
@@ -1028,16 +1185,19 @@
         <ReturnType>System.Net.Sockets.SocketError</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the result of the asynchronous socket operation.</summary>
-        <value>A <see cref="T:System.Net.Sockets.SocketError" /> that represents the result of the asynchronous socket operation.</value>
+        <summary>取得または非同期ソケット操作の結果を設定します。</summary>
+        <value>A <see cref="T:System.Net.Sockets.SocketError" /> 非同期ソケット操作の結果を表します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property provides the completion status of an asynchronous socket operation. A value of <xref:System.Net.Sockets.SocketError.Success?displayProperty=fullName> indicates successful completion of an operation. This property is primarily used in an application’s event handler routine.  
+## 解説  
+ このプロパティは、非同期ソケット操作の完了状態を提供します。 値 <xref:System.Net.Sockets.SocketError.Success?displayProperty=fullName> 操作が正常に完了を示します。 このプロパティは、主に、アプリケーションのイベント ハンドラー ルーチンで使用します。  
   
- This property is used with all of the asynchronous socket (xxxAsync) methods.  
+ このプロパティは、すべての非同期ソケット \(xxxAsync\) メソッドで使用されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
@@ -1075,18 +1235,26 @@
         <ReturnType>System.Net.Sockets.SocketFlags</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the results of an asynchronous socket operation or sets the behavior of an asynchronous operation.</summary>
-        <value>A <see cref="T:System.Net.Sockets.SocketFlags" /> that represents the results of an asynchronous socket operation.</value>
+        <summary>非同期ソケット操作の結果を取得または非同期操作の動作を設定します。</summary>
+        <value>A <see cref="T:System.Net.Sockets.SocketFlags" /> 非同期ソケット操作の結果を表します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The property specifies the bitwise combination of the <xref:System.Net.Sockets.SocketFlags?displayProperty=fullName> to be used for an asynchronous socket operation.  
+## 解説  
+ このプロパティは、ビットごとの組み合わせを指定、 <xref:System.Net.Sockets.SocketFlags?displayProperty=fullName> 非同期ソケット操作に使用します。  
   
- This property is used with the <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, <xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, and <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> methods.  
+ このプロパティは、使用、 <xref:System.Net.Sockets.Socket.ReceiveAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.ReceiveFromAsync%2A?displayProperty=fullName>, 、<xref:System.Net.Sockets.Socket.SendAsync%2A?displayProperty=fullName>, と <xref:System.Net.Sockets.Socket.SendToAsync%2A?displayProperty=fullName> メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="T:System.Net.Sockets.SocketFlags" />
       </Docs>
     </Member>
     <Member MemberName="UserToken">
@@ -1112,18 +1280,30 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a user or application object associated with this asynchronous socket operation.</summary>
-        <value>An object that represents the user or application object associated with this asynchronous socket operation.</value>
+        <summary>取得またはこの非同期ソケット操作に関連付けられているユーザーまたはアプリケーションのオブジェクトを設定します。</summary>
+        <value>ユーザーを表すオブジェクトまたはこの非同期ソケット操作に関連付けられているアプリケーションのオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property can be used by an application to associate an application state object with the <xref:System.Net.Sockets.SocketAsyncEventArgs> object. Primarily, this property is a way for an application to pass state to the application’s event handler (for example, the asynchronous operation completion method).  
+## 解説  
+ このプロパティに持つアプリケーションの状態オブジェクトを関連付けるには、アプリケーションが使用する、 <xref:System.Net.Sockets.SocketAsyncEventArgs> オブジェクトです。 主に、このプロパティは、アプリケーション状態をアプリケーションのイベント ハンドラー \(たとえば、非同期操作完了メソッド\) に渡すための方法です。  
   
- This property is used with all of the asynchronous socket (xxxAsync) methods.  
+ このプロパティは、すべての非同期ソケット \(xxxAsync\) メソッドで使用されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.DisconnectAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendPacketsAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
+        <altmember cref="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)" />
       </Docs>
     </Member>
   </Members>

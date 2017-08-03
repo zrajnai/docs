@@ -26,37 +26,37 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Defines a method that supports custom formatting of the value of an object.</summary>
+    <summary>オブジェクトの値のカスタム書式設定をサポートするメソッドを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ICustomFormatter> interface includes a single method, <xref:System.ICustomFormatter.Format%2A?displayProperty=fullName>. When this interface is implemented by a reference or value type, the <xref:System.ICustomFormatter.Format%2A> method returns a custom-formatted string representation of an object's value.  
+## 解説  
+ <xref:System.ICustomFormatter>インターフェイスには、1 つのメソッドが含まれています。<xref:System.ICustomFormatter.Format%2A?displayProperty=fullName>です。 このインターフェイスが参照または値の型によって実装された場合、<xref:System.ICustomFormatter.Format%2A>メソッドがオブジェクトの値のカスタム形式の文字列形式を返します。  
   
- Typically, the <xref:System.ICustomFormatter> interface is implemented with the <xref:System.IFormatProvider> interface to customize the behavior of two .NET Framework composite string formatting methods that include an <xref:System.IFormatProvider> parameter. Specifically, the <xref:System.ICustomFormatter> interface can provide custom formatting of the value of an object passed to the <xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName> and <xref:System.Text.StringBuilder.AppendFormat%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName> methods.  
+ 通常、<xref:System.ICustomFormatter>でインターフェイスが実装されて、<xref:System.IFormatProvider>インターフェイスが含まれている .NET Framework の複合文字列書式指定メソッドが 2 つの動作をカスタマイズする、<xref:System.IFormatProvider>パラメーター。 具体的には、<xref:System.ICustomFormatter>インターフェイスに渡されるオブジェクトの値のカスタム書式を提供することができます、<xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName>と<xref:System.Text.StringBuilder.AppendFormat%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName>メソッドです。  
   
- Providing a custom representation of an object's value requires that you do the following:  
+ オブジェクトの値のカスタム形式を提供するには、ことを次の操作が必要です。  
   
-1.  Define a class that implements the <xref:System.ICustomFormatter> interface and its single member, the <xref:System.ICustomFormatter.Format%2A> method.  
+1.  実装するクラスを定義、<xref:System.ICustomFormatter>インターフェイスとその 1 つのメンバー、<xref:System.ICustomFormatter.Format%2A>メソッドです。  
   
-2.  Define a class that implements the <xref:System.IFormatProvider> interface and its single member, the <xref:System.IFormatProvider.GetFormat%2A> method. The <xref:System.IFormatProvider.GetFormat%2A> method returns an instance of your <xref:System.ICustomFormatter> implementation. Often, a single class implements both <xref:System.ICustomFormatter> and <xref:System.IFormatProvider>. In that case, the class's `GetFormat` implementation just returns an instance of itself.  
+2.  実装するクラスを定義、<xref:System.IFormatProvider>インターフェイスとその 1 つのメンバー、<xref:System.IFormatProvider.GetFormat%2A>メソッドです。<xref:System.IFormatProvider.GetFormat%2A>メソッドのインスタンスを返します、<xref:System.ICustomFormatter>実装します。 多くの場合、1 つのクラスを実装しています<xref:System.ICustomFormatter>と<xref:System.IFormatProvider>です。 その場合、クラスの`GetFormat`実装では、それ自体のインスタンスだけを返します。  
   
-3.  Pass the <xref:System.IFormatProvider> implementation as the `provider` argument of the <xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName> method or a comparable method.  
+3.  渡す、<xref:System.IFormatProvider>実装として、`provider`の引数、<xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName>メソッドまたは同等のメソッドです。  
   
- The .NET Framework method will then use your custom formatting instead of its own.  
+ .NET Framework のメソッドではなく、独自のカスタム書式設定が使用されます。  
   
    
   
-## Examples  
- The following example implements <xref:System.ICustomFormatter> to allow binary, octal, and hexadecimal formatting of integral values. In this example, a single class, `IBinaryFormatter`, implements both <xref:System.ICustomFormatter> and <xref:System.IFormatProvider>. Its <xref:System.IFormatProvider.GetFormat%2A?displayProperty=fullName> method determines whether the `formatType` parameter represents an <xref:System.ICustomFormatter> type. If it does, `BinaryFormatter` returns an instance of itself; otherwise, it returns `null`. Its <xref:System.ICustomFormatter.Format%2A?displayProperty=fullName> implementation determines whether the format parameter is one of the three supported format strings ("B" for binary, "O" for octal, and "H" for hexadecimal) and formats the `arg` parameter appropriately. Otherwise, if `arg` is not `null`, it calls the `arg` parameter's <xref:System.IFormattable.ToString%2A?displayProperty=fullName> implementation, if one exists, or its parameterless `ToString` method, if one does not. If `arg` is `null`, the method returns <xref:System.String.Empty?displayProperty=fullName>.  
+## 例  
+ 次の例では実装<xref:System.ICustomFormatter>バイナリ、8 進数、および 16 進数の整数値の書式設定が可能にします。 この例では、1 つのクラスで`IBinaryFormatter`、両方を実装する<xref:System.ICustomFormatter>と<xref:System.IFormatProvider>です。 その<xref:System.IFormatProvider.GetFormat%2A?displayProperty=fullName>メソッドを判断するかどうか、`formatType`パラメーターを表します、<xref:System.ICustomFormatter>型です。 その場合、`BinaryFormatter`のインスタンスを返します。 それ以外を返します`null`です。 その<xref:System.ICustomFormatter.Format%2A?displayProperty=fullName>実装では、format パラメーターは、次の 3 つのサポートされている書式指定文字列の 1 つかどうかを決定 \("B"の"O"のバイナリに 8 進数、および 16 進数の"H"\) および書式設定、`arg`パラメーター適切にします。 それ以外の場合`arg`は`null`、呼び出し、`arg`パラメーターの<xref:System.IFormattable.ToString%2A?displayProperty=fullName>実装では、1 つ存在する場合、またはそのパラメーターのない`ToString`メソッドを 1 つでない場合。`arg` が `null` の場合、メソッドは <xref:System.String.Empty?displayProperty=fullName> を返します。  
   
- [!code-csharp[System.ICustomFormatter.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#1)]
- [!code-vb[System.ICustomFormatter.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#1)]  
+ [!code-csharp[System.ICustomFormatter.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#1)]
+ [!code-vb[System.ICustomFormatter.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#1)]  
   
- `BinaryFormatter` can then be used to provide custom formatting by passing a `BinaryFormatter` object as the `provider` parameter of the <xref:System.String.Format%2A> method, as the following example shows.  
+ `BinaryFormatter`渡すことによってカスタム書式を提供するために使用する、`BinaryFormatter`オブジェクトとして、`provider`パラメーターの<xref:System.String.Format%2A>メソッドを次の例を示します。  
   
- [!code-csharp[System.ICustomFormatter.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#2)]
- [!code-vb[System.ICustomFormatter.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#2)]  
+ [!code-csharp[System.ICustomFormatter.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#2)]
+ [!code-vb[System.ICustomFormatter.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#2)]  
   
  ]]></format>
     </remarks>
@@ -87,6 +87,7 @@
   
 -   Code to handle any format strings that your extension does not support. These should be passed on to the type's <see cref="T:System.IFormattable" /> implementation. You should be prepared to handle any exceptions these method calls might throw.</para>
     </block>
+    <altmember cref="T:System.IFormatProvider" />
   </Docs>
   <Members>
     <Member MemberName="Format">
@@ -120,46 +121,48 @@
         <Parameter Name="formatProvider" Type="System.IFormatProvider" />
       </Parameters>
       <Docs>
-        <param name="format">A format string containing formatting specifications.</param>
-        <param name="arg">An object to format.</param>
-        <param name="formatProvider">An object that supplies format information about the current instance.</param>
-        <summary>Converts the value of a specified object to an equivalent string representation using specified format and culture-specific formatting information.</summary>
-        <returns>The string representation of the value of <paramref name="arg" />, formatted as specified by <paramref name="format" /> and <paramref name="formatProvider" />.</returns>
+        <param name="format">書式設定の仕様を含む書式文字列。</param>
+        <param name="arg">書式指定するオブジェクト。</param>
+        <param name="formatProvider">現在のインスタンスに関する書式情報を提供するオブジェクト。</param>
+        <summary>指定した形式およびカルチャ固有の書式設定情報を使用して、指定したオブジェクトの値をそれと等価の文字列形式に変換します。</summary>
+        <returns>
+          <paramref name="format" /> と <paramref name="formatProvider" /> の指定のとおりに書式設定された、<paramref name="arg" /> の値の文字列形式。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.ICustomFormatter.Format%2A?displayProperty=fullName> is a callback method. It is called by a method that supports custom formatting, such as <xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName> or <xref:System.Text.StringBuilder.AppendFormat%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName>. The implementation is called once for each format item in a [composite format string](~/docs/standard/base-types/composite-formatting.md). For example, in the following statement, the <xref:System.ICustomFormatter.Format%2A?displayProperty=fullName> method is called three times.  
+## 解説  
+ <xref:System.ICustomFormatter.Format%2A?displayProperty=fullName> はコールバック メソッドです。 など、カスタム書式指定をサポートするメソッドによって呼び出されます<xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName>または<xref:System.Text.StringBuilder.AppendFormat%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=fullName>です。 各書式項目の実装を 1 回呼び出されます、[複合書式指定文字列](http://msdn.microsoft.com/ja-jp/87b7d528-73f6-43c6-b71a-f23043039a49)です。 たとえば、次のステートメントで、<xref:System.ICustomFormatter.Format%2A?displayProperty=fullName>メソッドには 3 回は呼び出されます。  
   
- [!code-csharp[System.ICustomFormatter.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#4)]
- [!code-vb[System.ICustomFormatter.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#4)]  
+ [!code-csharp[System.ICustomFormatter.Class\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#4)]
+ [!code-vb[System.ICustomFormatter.Class\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#4)]  
   
- The `arg` parameter is the object in the object list whose zero-based position corresponds to the index of a particular format item.  
+ `arg`パラメーターが 0 で始まる位置が、特定の書式指定項目のインデックスに対応するオブジェクトの一覧内のオブジェクト。  
   
- The `format` parameter contains a format string, which is the `formatString` component of a format item. If the format item has no `formatString` component, the value of `format` is `null`. If `format` is `null`, depending on the type of `arg`, you may be able to use the default format specification of your choice.  
+ `format`パラメーターは書式指定文字列に含まれる、`formatString`書式指定項目のコンポーネントです。 書式項目を持たない場合`formatString`コンポーネント、値の`format`は`null`します。 場合`format`は`null`の種類に応じて、`arg`任意の既定の書式指定を使用することができます。  
   
- The `formatProvider` parameter is the <xref:System.IFormatProvider> implementation that provides formatting for `arg`. Typically, it is an instance of your <xref:System.ICustomFormatter> implementation. If `formatProvider` is `null`, ignore that parameter.  
+ `formatProvider`パラメーターは、<xref:System.IFormatProvider>書式を提供する実装`arg`です。 インスタンスでは、通常、<xref:System.ICustomFormatter>実装します。 場合`formatProvider`は`null`、そのパラメーターを無視します。  
   
- Your implementation of the <xref:System.ICustomFormatter.Format%2A> method must include the following functionality so the .NET Framework can provide formatting you do not support. If your format method does not support a format, determine whether the object being formatted implements the <xref:System.IFormattable> interface. If it does, invoke the <xref:System.IFormattable.ToString%2A?displayProperty=fullName> method of that interface. Otherwise, invoke the default <xref:System.Object.ToString%2A?displayProperty=fullName> method of the underlying object. The following code illustrates this pattern.  
+ 実装、<xref:System.ICustomFormatter.Format%2A>メソッドは、次の機能を含める必要がありますので、.NET Framework がサポートしていない書式設定を指定することができます。 形式の方法が、形式をサポートしていない場合は、対象のオブジェクトの形式を実装するかどうかを判断、<xref:System.IFormattable>インターフェイスです。 呼び出しは、その場合、<xref:System.IFormattable.ToString%2A?displayProperty=fullName>そのインターフェイスのメソッドです。 それ以外の場合、既定値を呼び出す<xref:System.Object.ToString%2A?displayProperty=fullName>基になるオブジェクトのメソッドです。 次のコードでは、このパターンを示します。  
   
- [!code-csharp[System.ICustomFormatter.Class#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#3)]
- [!code-vb[System.ICustomFormatter.Class#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#3)]  
+ [!code-csharp[System.ICustomFormatter.Class\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#3)]
+ [!code-vb[System.ICustomFormatter.Class\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#3)]  
   
    
   
-## Examples  
- The following example implements <xref:System.ICustomFormatter> to allow binary, octal, and hexadecimal formatting of integral values. Its <xref:System.ICustomFormatter.Format%2A?displayProperty=fullName> implementation determines whether the format parameter is one of the three supported format strings ("B" for binary, "O" for octal, and "H" for hexadecimal) and formats the `arg` parameter appropriately. Otherwise, if `arg` is not `null`, it calls the `arg` parameter's <xref:System.IFormattable.ToString%2A?displayProperty=fullName> implementation, if one exists, or its parameterless `ToString` method, if one does not. If `arg` is `null`, the method returns <xref:System.String.Empty?displayProperty=fullName>.  
+## 例  
+ 次の例では実装<xref:System.ICustomFormatter>バイナリ、8 進数、および 16 進数の整数値の書式設定が可能にします。 その<xref:System.ICustomFormatter.Format%2A?displayProperty=fullName>実装では、format パラメーターは、次の 3 つのサポートされている書式指定文字列の 1 つかどうかを決定 \("B"の"O"のバイナリに 8 進数、および 16 進数の"H"\) および書式設定、`arg`パラメーター適切にします。 それ以外の場合`arg`は`null`、呼び出し、`arg`パラメーターの<xref:System.IFormattable.ToString%2A?displayProperty=fullName>実装では、1 つ存在する場合、またはそのパラメーターのない`ToString`メソッドを 1 つでない場合。`arg` が `null` の場合、メソッドは <xref:System.String.Empty?displayProperty=fullName> を返します。  
   
- [!code-csharp[System.ICustomFormatter.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#1)]
- [!code-vb[System.ICustomFormatter.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#1)]  
+ [!code-csharp[System.ICustomFormatter.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#1)]
+ [!code-vb[System.ICustomFormatter.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#1)]  
   
- `BinaryFormatter` can then be used to provide custom formatting by passing a `BinaryFormatter` object as the `provider` parameter of the <xref:System.String.Format%2A> method, as the following example shows.  
+ `BinaryFormatter`渡すことによってカスタム書式を提供するために使用する、`BinaryFormatter`オブジェクトとして、`provider`のパラメーター、<xref:System.String.Format%2A>メソッドを次の例のようにします。  
   
- [!code-csharp[System.ICustomFormatter.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#2)]
- [!code-vb[System.ICustomFormatter.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#2)]  
+ [!code-csharp[System.ICustomFormatter.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.icustomformatter.class/cs/binaryformatter.cs#2)]
+ [!code-vb[System.ICustomFormatter.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.icustomformatter.class/vb/binaryformatter.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.IFormattable" />
       </Docs>
     </Member>
   </Members>

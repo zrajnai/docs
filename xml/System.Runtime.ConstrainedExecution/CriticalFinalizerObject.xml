@@ -25,29 +25,32 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Ensures that all finalization code in derived classes is marked as critical.</summary>
+    <summary>派生クラス内のすべての終了コードをクリティカルとしてマークされることを確認します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes deriving from the <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> class are implicitly treated as a constrained execution region (CER).  This requires code in the finalizer to only call code with a strong reliability contract. For more information about CERs, see the <xref:System.Runtime.ConstrainedExecution> namespace.  
+## 解説  
+ 派生するクラス、 <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> クラスは暗黙的に制約された実行領域 \(CER\) として扱われます。  これには、ファイナライザーを厳密な信頼性コントラクトを持つコードを呼び出すだけでコードが必要です。 Cer の詳細については、次を参照してください。、 <xref:System.Runtime.ConstrainedExecution> 名前空間。  
   
- In classes derived from the <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> class, the common language runtime (CLR) guarantees that all critical finalization code will be given the opportunity to execute, provided the finalizer follows the rules for a CER, even in situations where the CLR forcibly unloads an application domain or aborts a thread. If a finalizer violates the rules for a CER, it might not successfully execute. In addition, the CLR establishes a weak ordering among normal and critical finalizers: for objects reclaimed by garbage collection at the same time, all the noncritical finalizers are called before any of the critical finalizers. For example, a class such as <xref:System.IO.FileStream>, which holds data in the <xref:System.Runtime.InteropServices.SafeHandle> class that is derived from <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject>, can run a standard finalizer to flush out existing buffered data.  
+ 派生したクラスで、 <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> クラス、共通言語ランタイム \(CLR\) の保証がクリティカル ファイナライズのすべてのコードが許可できることを実行する機会を提供、ファイナライザー、できなかったり、CLR に強制的にアプリケーション ドメインをアンロード スレッドの中止であっても、CER の規則に従います。 ファイナライザー CER の規則に違反することが正常に実行されなくなります。 さらに、CLR は通常および重要なファイナライザー間弱い順序付けを確立します。 クリティカル ファイナライザーのいずれかの前に、同時にガベージ コレクションによって回収されるオブジェクトの重要でないすべてのファイナライザーが呼び出されます。 などのクラスなど <xref:System.IO.FileStream>, 、内のデータを保持する、 <xref:System.Runtime.InteropServices.SafeHandle> から派生したクラスを <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject>, 、バッファー内の既存のデータをフラッシュする標準的なファイナライザーを実行できます。  
   
- In most cases, you do not need to write classes that derive from the <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> class. The .NET Framework class library provides two classes, <xref:System.Runtime.InteropServices.SafeHandle> and <xref:System.Runtime.InteropServices.CriticalHandle>, that provide critical finalization functionality for handle resources. Furthermore, the .NET Framework provides a set of prewritten classes derived from the <xref:System.Runtime.InteropServices.SafeHandle> class, and this set is located in the <xref:Microsoft.Win32.SafeHandles> namespace. These classes are designed to provide common functionality for supporting file and operating system handles.  
+ ほとんどの場合はから派生するクラスを作成する必要はありません、 <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> クラスです。 .NET Framework クラス ライブラリには、2 つのクラスが用意されています <xref:System.Runtime.InteropServices.SafeHandle> と <xref:System.Runtime.InteropServices.CriticalHandle>, 、ハンドル リソース クリティカル ファイナライズ機能を提供します。 さらに、.NET Framework には一連の定義済みのクラスから派生した、 <xref:System.Runtime.InteropServices.SafeHandle> にクラス、およびこのセットがある、 <xref:Microsoft.Win32.SafeHandles> 名前空間。 これらのクラスは、ファイルおよびオペレーティング システム ハンドルをサポートするための一般的な機能を提供する設計されています。  
   
    
   
-## Examples  
- The following code example shows the use of the <xref:Microsoft.Win32.SafeHandles.SafeFileHandle> class to provide critical finalization for the standard input and output streams. The <xref:Microsoft.Win32.SafeHandles.SafeFileHandle>, derived from the <xref:System.Runtime.InteropServices.SafeHandle> class, is passed to the file stream in the <xref:System.IO.FileStream> constructor.  
+## 例  
+ 次のコード例の使用を示しています、 <xref:Microsoft.Win32.SafeHandles.SafeFileHandle> 標準入力と出力ストリームに重大な終了処理を提供するクラス。<xref:Microsoft.Win32.SafeHandles.SafeFileHandle>, から派生した、 <xref:System.Runtime.InteropServices.SafeHandle> クラス、ファイル ストリームに渡される、 <xref:System.IO.FileStream> コンス トラクターです。  
   
- [!code-csharp[SafeHandle.SafeFileHandle#1](~/samples/snippets/csharp/VS_Snippets_CLR/SafeHandle.SafeFileHandle/CS/program.cs#1)]
- [!code-vb[SafeHandle.SafeFileHandle#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SafeHandle.SafeFileHandle/vb/program.vb#1)]  
+ [!code-csharp[SafeHandle.SafeFileHandle\#1](~/samples/snippets/csharp/VS_Snippets_CLR/SafeHandle.SafeFileHandle/CS/program.cs#1)]
+ [!code-vb[SafeHandle.SafeFileHandle\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SafeHandle.SafeFileHandle/vb/program.vb#1)]  
   
  ]]></format>
     </remarks>
     <permission cref="T:System.Security.Permissions.SecurityPermission">for permission to call unmanaged code. Security action: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
     <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">for full trust for inheritors. This class cannot be used by partially trusted code.</permission>
+    <altmember cref="T:System.Runtime.InteropServices.SafeHandle" />
+    <altmember cref="T:System.Runtime.InteropServices.CriticalHandle" />
+    <altmember cref="N:Microsoft.Win32.SafeHandles" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -75,7 +78,8 @@
       </Attributes>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.ConstrainedExecution.CriticalFinalizerObject" /> class.</summary>
+        <summary>
+          <see cref="T:System.Runtime.ConstrainedExecution.CriticalFinalizerObject" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
         <permission cref="T:System.Security.Permissions.SecurityPermission">for permission to call unmanaged code. Security action: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">for full trust for inheritors. This class cannot be used by partially trusted code.</permission>
@@ -109,12 +113,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all the resources used by the <see cref="T:System.Runtime.ConstrainedExecution.CriticalFinalizerObject" /> class.</summary>
+        <summary>
+          <see cref="T:System.Runtime.ConstrainedExecution.CriticalFinalizerObject" /> クラスによって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The finalizer for any types deriving from <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> is given the opportunity to execute and will not be aborted, assuming the finalizer correctly follows the rules for a constrained execution region (CER).  
+## 解説  
+ 派生する任意の型のファイナライザー <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject> する機会が与えられますを実行し、中断できない、ファイナライザーが正常に制約された実行領域 \(CER\) の規則に従いますと仮定した場合します。  
   
  ]]></format>
         </remarks>

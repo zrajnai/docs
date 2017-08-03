@@ -19,25 +19,27 @@
     <BaseTypeName>System.Enum</BaseTypeName>
   </Base>
   <Docs>
-    <summary>Specifies a method's behavior when called within a constrained execution region.</summary>
+    <summary>制約された実行領域内で呼び出されたときに、メソッドの動作を指定します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.ConstrainedExecution.Cer> enumeration specifies the behavior of a method, type, or assembly within a constrained execution region (CER). Use one of the three available values to indicate that the entity will succeed, has no knowledge of a CER, or might (deterministically) be able to report success or failure.  
+## 解説  
+ <xref:System.Runtime.ConstrainedExecution.Cer> 列挙体は、メソッド、型、または制約された実行領域 \(CER\) 内にあるアセンブリの動作を指定します。 エンティティが成功になっていることを示すために使用可能な 3 つの値のいずれかは、CER の情報を持たないと、成功または失敗を報告する可能性があります \(確定的に\) できません。  
   
- A CER provides guarantees that the region of code will execute uninterrupted even if an asynchronous exception such as an aborted thread out-of-memory exception, or stack overflow is raised.  
+ CER コードの領域に実行される保証は、中断のない、中止されたスレッドのメモリ不足の例外、またはスタック オーバーフローなど、非同期例外が発生した場合でもです。  
   
    
   
-## Examples  
- The following code example demonstrates the use of the <xref:System.Runtime.ConstrainedExecution.Cer> enumeration when specifying a constrained execution region for a method. This code example is part of a larger example provided for the <xref:System.Runtime.ConstrainedExecution.ReliabilityContractAttribute.%23ctor%2A> constructor.  
+## 例  
+ 次のコード例では、使用、 <xref:System.Runtime.ConstrainedExecution.Cer> 列挙メソッドの制約された実行領域を指定する場合。 このコード例が示されている例の一部は、 <xref:System.Runtime.ConstrainedExecution.ReliabilityContractAttribute.%23ctor%2A> コンス トラクターです。  
   
- [!code-csharp[System.Runtime.ConstrainedExecution#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Runtime.ConstrainedExecution/cs/program.cs#3)]
- [!code-vb[System.Runtime.ConstrainedExecution#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Runtime.ConstrainedExecution/vb/program.vb#3)]  
+ [!code-csharp[System.Runtime.ConstrainedExecution\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Runtime.ConstrainedExecution/cs/program.cs#3)]
+ [!code-vb[System.Runtime.ConstrainedExecution\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Runtime.ConstrainedExecution/vb/program.vb#3)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="M:System.Runtime.CompilerServices.RuntimeHelpers.PrepareConstrainedRegions" />
+    <altmember cref="M:System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(System.RuntimeMethodHandle)" />
   </Docs>
   <Members>
     <Member MemberName="MayFail">
@@ -62,7 +64,7 @@
         <ReturnType>System.Runtime.ConstrainedExecution.Cer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>In the face of exceptional conditions, the method might fail. In this case, the method will report back to the calling method whether it succeeded or failed. The method must have a CER around the method body to ensure that it can report the return value.</summary>
+        <summary>例外的な状況が発生した場合、メソッドは失敗します。 この場合、メソッドが報告される呼び出し元のメソッドが成功したか失敗したかどうか。 メソッドは、戻り値を報告できることを確認するには、メソッド本体を CER が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="None">
@@ -87,19 +89,19 @@
         <ReturnType>System.Runtime.ConstrainedExecution.Cer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The method, type, or assembly has no concept of a CER. It does not take advantage of CER guarantees. This implies the following:</summary>
+        <summary>メソッド、型、またはアセンブリには、CER の概念がありません。 CER の保証の利点は考慮しません。 これは、次を意味します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
--   In the face of exceptional conditions the method might fail.  
+-   例外的な状況が発生した場合、メソッドは失敗します。  
   
--   The method might or might not report that it failed (it is non-deterministic).  
+-   メソッドは、可能性がありますか、失敗したレポートしない可能性があります \(これは、非決定的です\)。  
   
--   The method is not written with CERs in mind (which is the most likely scenario).  
+-   Cer では、メソッドを念頭に置いては最も可能性の高いシナリオ\) 書き込まれません。  
   
- If a method, type, or assembly is not explicitly marked to succeed, it is implicitly marked as `Cer.None`.  
+ 暗黙的にマークされているメソッド、型、またはアセンブリが明示的にマークされていない場合は成功、 `Cer.None`です。  
   
  ]]></format>
         </remarks>
@@ -127,7 +129,7 @@
         <ReturnType>System.Runtime.ConstrainedExecution.Cer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>In the face of exceptional conditions, the method is guaranteed to succeed. You should always construct a CER around the method that is called, even when it is called from within a non-CER region. A method is successful if it accomplishes what is intended. For example, marking <see cref="P:System.Collections.ArrayList.Count" /> with <c>ReliabilityContractAttribute(Cer.Success)</c> implies that when it is run under a CER, it always returns a count of the number of elements in the <see cref="T:System.Collections.ArrayList" /> and it can never leave the internal fields in an undetermined state.</summary>
+        <summary>例外的な状況が発生した場合、メソッドは成功することが保証します。 常に、CER 以外の領域内から呼び出されたときも、呼び出されるメソッドの周囲 CER を構築する必要があります。 メソッドは、実行するには適切では正常に完了しました。 マーキングなど <see cref="P:System.Collections.ArrayList.Count" /> と <c>ReliabilityContractAttribute(Cer.Success)</c> 、cer の元で実行されるときに常が返されることで要素の数のカウントが示すよう、 <see cref="T:System.Collections.ArrayList" /> し、不定状態で内部フィールドまま残ることはありません。</summary>
       </Docs>
     </Member>
   </Members>

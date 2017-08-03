@@ -16,28 +16,28 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>An activity which scopes the lifetime of a transaction which is initiated by a received message. The transaction may be flowed into the workflow on the initiating message, or be created by the dispatcher when the message is received.</summary>
+    <summary>受信したメッセージによって開始されるトランザクションの有効期間を制御するアクティビティです。 トランザクションは、開始メッセージでワークフローにフローすることも、メッセージの受信時にディスパッチャーが作成することも可能です。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.Activities.TransactedReceiveScope> activity enables you to control the lifetime of the flowed transaction.  
+## 解説  
+ <xref:System.ServiceModel.Activities.TransactedReceiveScope> アクティビティを使用すると、フローされたトランザクションの有効期間を制御できます。  
   
 > [!WARNING]
->  For an initiating <xref:System.ServiceModel.Activities.TransactedReceiveScope> activity (a <xref:System.ServiceModel.Activities.TransactedReceiveScope> that contains a <xref:System.ServiceModel.Activities.Receive> activity with <xref:System.ServiceModel.Activities.Receive.CanCreateInstance%2A> set to `true`), the transaction is created before the runtime starts to execute the <xref:System.ServiceModel.Activities.TransactedReceiveScope> activity. This transaction is not ambient at the workflow activity layer, but it is ambient in the underlying persistence layers. If execution of the workflow encounters a <xref:System.Activities.Statements.Persist> activity before the <xref:System.ServiceModel.Activities.TransactedReceiveScope> activity, the runtime tries to persist under the ambient transaction. This behavior causes a block until the transaction is completed. Because the workflow execution has not reached the <xref:System.ServiceModel.Activities.TransactedReceiveScope.Body%2A> section, the transaction cannot finish. This deadlock causes the workflow to stop responding until the transaction times out. When the transaction times out, the newly created instance is aborted.  
+>  開始するため <xref:System.ServiceModel.Activities.TransactedReceiveScope> アクティビティ \(、 <xref:System.ServiceModel.Activities.TransactedReceiveScope> を含む、 <xref:System.ServiceModel.Activities.Receive> アクティビティと <xref:System.ServiceModel.Activities.Receive.CanCreateInstance%2A> に設定 `true`\)、ランタイムが実行を開始する前に、トランザクションが作成された、 <xref:System.ServiceModel.Activities.TransactedReceiveScope> アクティビティ。 このトランザクションはワークフロー アクティビティ レイヤーではアンビエントではありませんが、基になる永続性レイヤーではアンビエントです。 ワークフローの実行で、<xref:System.Activities.Statements.Persist> アクティビティより前に <xref:System.ServiceModel.Activities.TransactedReceiveScope> アクティビティが検出されると、ランタイムはアンビエント トランザクションで永続化を試行します。 この動作により、トランザクションが完了するまでブロックが生じます。 ワークフローの実行が <xref:System.ServiceModel.Activities.TransactedReceiveScope.Body%2A> セクションに到達していないため、トランザクションは終了できません。 このデッドロックにより、トランザクションがタイムアウトするまで、ワークフローが応答を停止します。 トランザクションがタイムアウトすると、新しく作成されたインスタンスが中止されます。  
   
 > [!IMPORTANT]
->  Whenever you use a <xref:System.ServiceModel.Activities.TransactedReceiveScope> it is recommended to place all Receives in the workflow within <xref:System.ServiceModel.Activities.TransactedReceiveScope> activities.  
+>  <xref:System.ServiceModel.Activities.TransactedReceiveScope> を使用する場合は、ワークフロー内のすべての受信を <xref:System.ServiceModel.Activities.TransactedReceiveScope> アクティビティに配置することをお勧めします。  
   
 > [!IMPORTANT]
->  When using <xref:System.ServiceModel.Activities.TransactedReceiveScope> and messages arrive in the incorrect order, the workflow will be aborted when trying to deliver the first out of order message. You must make sure your workflow is always at a consistent stopping point when the workflow idles. This will allow you to restart the workflow from a previous persistence point should the workflow be aborted.  
+>  <xref:System.ServiceModel.Activities.TransactedReceiveScope> を使用して、メッセージが不適切な順序で到着する場合、最初の順序を無視したメッセージを配信しようとするとワークフローは中止されます。 ワークフローがアイドル状態である場合、ワークフローは常に一致する停止ポイントにあるようにする必要があります。 これによって、ワークフローが中止された場合、前の永続性ポイントからワークフローを再開することができます。  
   
    
   
-## Examples  
- The following example shows how to use the <xref:System.ServiceModel.Activities.TransactedReceiveScope> class in a <xref:System.Activities.Statements.Sequence> activity.  
+## 例  
+ 次の例では、<xref:System.ServiceModel.Activities.TransactedReceiveScope> クラスを <xref:System.Activities.Statements.Sequence> アクティビティで使用する方法を示します。  
   
- [!code-csharp[TransactedReceiveScope#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
+ [!code-csharp[TransactedReceiveScope\#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
   
  ]]></format>
     </remarks>
@@ -54,8 +54,14 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Body">
@@ -76,20 +82,21 @@
         <ReturnType>System.Activities.Activity</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Activities.Activity" /> that makes up the body of the <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> activity.</summary>
-        <value>The body of the transacted receive scope.</value>
+        <summary>
+          <see cref="T:System.Activities.Activity" /> アクティビティの本体を構成する <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> を取得または設定します。</summary>
+        <value>トランザクション処理された受信スコープの本体。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The transaction is ambient for the entire duration of the body.  
+## 解説  
+ トランザクションは、本体が存続している間、アンビエントです。  
   
    
   
-## Examples  
- The following example shows how to set the <xref:System.ServiceModel.Activities.TransactedReceiveScope.Body%2A> property.  
+## 例  
+ <xref:System.ServiceModel.Activities.TransactedReceiveScope.Body%2A> プロパティを設定する方法を次の例に示します。  
   
- [!code-csharp[TransactedReceiveScope#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
+ [!code-csharp[TransactedReceiveScope\#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
   
  ]]></format>
         </remarks>
@@ -155,15 +162,18 @@
         <ReturnType>System.ServiceModel.Activities.Receive</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.ServiceModel.Activities.Receive" /> activity associated with this <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> activity.</summary>
-        <value>The receive activity associated with the transacted receive scope.</value>
+        <summary>この <see cref="T:System.ServiceModel.Activities.Receive" /> アクティビティに関連付けられている <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> アクティビティを取得または設定します。</summary>
+        <value>トランザクション処理された受信スコープに関連付けられている Receive アクティビティ。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example shows how to set the <xref:System.ServiceModel.Activities.TransactedReceiveScope.Request%2A> property.  
+## 解説  
+   
   
- [!code-csharp[TransactedReceiveScope#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
+## 例  
+ <xref:System.ServiceModel.Activities.TransactedReceiveScope.Request%2A> プロパティを設定する方法を次の例に示します。  
+  
+ [!code-csharp[TransactedReceiveScope\#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
   
  ]]></format>
         </remarks>
@@ -182,15 +192,18 @@
         <ReturnType>System.Collections.ObjectModel.Collection&lt;System.Activities.Variable&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the collection of <see cref="T:System.Activities.Variable" /> associated with this <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" />.</summary>
-        <value>The variables associated with the transacted receive scope.</value>
+        <summary>この <see cref="T:System.Activities.Variable" /> に関連付けられている <see cref="T:System.ServiceModel.Activities.TransactedReceiveScope" /> のコレクションを取得します。</summary>
+        <value>トランザクション処理された受信スコープに関連付けられている変数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example shows how to set the <xref:System.ServiceModel.Activities.TransactedReceiveScope.Variables%2A> property.  
+## 解説  
+   
   
- [!code-csharp[TransactedReceiveScope#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
+## 例  
+ <xref:System.ServiceModel.Activities.TransactedReceiveScope.Variables%2A> プロパティを設定する方法を次の例に示します。  
+  
+ [!code-csharp[TransactedReceiveScope\#0](~/samples/snippets/csharp/VS_Snippets_CFX/transactedreceivescope/cs/common/codeserviceworkflow.cs#0)]  
   
  ]]></format>
         </remarks>

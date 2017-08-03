@@ -21,35 +21,35 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Grants Web permission to the site from which the assembly was downloaded. This class cannot be inherited.</summary>
+    <summary>アセンブリのダウンロード元のサイトに Web アクセス許可を付与します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Code groups are the building blocks of code access security policy. Each policy level consists of a root code group that can have one or more child code groups. Each child code group can have its own child code groups; this behavior extends to any number of levels, forming a tree. Each code group has a membership condition that determines if a given assembly belongs to the group, based on the evidence for that assembly. Only code groups whose membership conditions match a given assembly, along with their child code groups, apply code access security policy.  
+## 解説  
+ コード グループとは、コード アクセス セキュリティ ポリシーの構成要素です。 それぞれのポリシー レベルから成るルート コード グループを 1 つまたは複数の子コード グループを持つことができます。 各子コード グループは、独自の子コード グループがあることができます。この動作は、任意のツリーを形成するレベル数を拡張します。 各コード グループは、指定したアセンブリ、そのアセンブリの証拠に基づくグループに属しているかどうかをメンバーシップ条件を持ちます。 コードのグループ メンバーシップ条件を持つとその子コード グループの指定したアセンブリと一致するだけでは、コード アクセス セキュリティ ポリシーを適用します。  
   
- <xref:System.Security.Policy.NetCodeGroup> has the same merge semantics as that of <xref:System.Security.Policy.UnionCodeGroup>; it forms the union of the <xref:System.Security.Policy.PolicyStatement> objects of all matching child code groups and the <xref:System.Security.Policy.PolicyStatement> it generates from the input <xref:System.Security.Policy.Url> evidence. However, <xref:System.Security.Policy.NetCodeGroup> returns a permission containing a dynamically calculated <xref:System.Net.WebPermission> that grants connect access to the site from which the code is run; <xref:System.Security.Policy.UnionCodeGroup> simply returns a static permission set.  
+ <xref:System.Security.Policy.NetCodeGroup> いるのと同じ結合セマンティクスを持つ <xref:System.Security.Policy.UnionCodeGroup>; の和集合を形成、 <xref:System.Security.Policy.PolicyStatement> オブジェクトのすべての一致する子コード グループと <xref:System.Security.Policy.PolicyStatement> 入力から生成 <xref:System.Security.Policy.Url> 証拠。 ただし、 <xref:System.Security.Policy.NetCodeGroup> 動的に計算されたを含むアクセス許可を返します <xref:System.Net.WebPermission> ; コードが実行されるサイトへの接続アクセスを付与する <xref:System.Security.Policy.UnionCodeGroup> 単に、静的なアクセス許可セットを返します。  
   
- When a <xref:System.Security.Policy.NetCodeGroup> is created, it contains the default connection access rules shown in the following table.  
+ ときに、 <xref:System.Security.Policy.NetCodeGroup> が作成されると、次の表に示すように既定の接続アクセス規則を格納します。  
   
-|URI Scheme|Rule|  
-|----------------|----------|  
-|file|No connection access to the origin server is permitted.|  
-|http|HTTP and HTTPS access is permitted using the origin port.|  
-|https|HTTPS access is permitted using the origin port.|  
+|URI スキーム|ルール|  
+|--------------|---------|  
+|ファイル|元のサーバーへの接続アクセスが許可されていません。|  
+|http|HTTP および HTTPS アクセスを許可するには、送信元ポートを使用します。|  
+|https|HTTPS アクセスを許可するには、送信元ポートを使用します。|  
   
- You can control the scheme and port that code is permitted to use when connecting back to its site of origin by passing a <xref:System.Security.Policy.CodeConnectAccess> object with the appropriate <xref:System.Security.Policy.CodeConnectAccess.Scheme%2A> and <xref:System.Security.Policy.CodeConnectAccess.Port%2A> property values to the <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> method. You can create a connection access rule that applies when the origin scheme is not present in the evidence or is not recognized by specifying <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> ("") as the scheme. You can also create a connection access rule that applies when there is no connection access rule with a matching scheme by specifying <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> ("*") as the scheme.  
+ スキームとを渡すことによって、その元のサイトに接続するときに使用するコードが許可されているポートを制御する、 <xref:System.Security.Policy.CodeConnectAccess> と適切なオブジェクト <xref:System.Security.Policy.CodeConnectAccess.Scheme%2A> と <xref:System.Security.Policy.CodeConnectAccess.Port%2A> プロパティ値を <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> メソッドです。 元のスキームの証拠がないかを指定することで認識されないときに適用される接続アクセス規則を作成する <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> \(""\)、スキームとして。 指定して、一致するスキームとの接続アクセス規則がない場合に適用される接続アクセス規則を作成することもできます。 <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> \("\*"\)、スキームとして。  
   
 > [!NOTE]
->  If code does not submit the URI scheme as evidence, access is permitted using any scheme back to the origin site.  
+>  コードが証拠として URI スキームを送信しない場合、任意のスキームを使用して、送信元のサイトにアクセスが許可されます。  
   
    
   
-## Examples  
- The following code example demonstrates creating a <xref:System.Security.Policy.NetCodeGroup> and adding <xref:System.Security.Policy.CodeConnectAccess> objects for code downloaded using the HTTP scheme.  
+## 例  
+ 次のコード例で、 <xref:System.Security.Policy.NetCodeGroup> を追加して <xref:System.Security.Policy.CodeConnectAccess> HTTP スキームを使用してダウンロードされたコードのオブジェクト。  
   
- [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
- [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
+ [!code-cpp[NclCodeGroup\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
+ [!code-csharp[NclCodeGroup\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
   
  ]]></format>
     </remarks>
@@ -73,32 +73,34 @@
         <Parameter Name="membershipCondition" Type="System.Security.Policy.IMembershipCondition" />
       </Parameters>
       <Docs>
-        <param name="membershipCondition">A membership condition that tests evidence to determine whether this code group applies code access security policy.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.Policy.NetCodeGroup" /> class.</summary>
+        <param name="membershipCondition">このコード グループがコード アクセス セキュリティ ポリシーを適用するかどうかを決定する証拠をテストするメンバーシップ条件。</param>
+        <summary>
+          <see cref="T:System.Security.Policy.NetCodeGroup" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a <xref:System.Security.Policy.NetCodeGroup> is created, it contains the default connection access rules shown in the following table.  
+## 解説  
+ ときに、 <xref:System.Security.Policy.NetCodeGroup> が作成されると、次の表に示すように既定の接続アクセス規則を格納します。  
   
-|Scheme|Rule|  
-|------------|----------|  
-|file|No connection access to the origin server is permitted.|  
-|http|HTTP and HTTPS access is permitted using the origin port.|  
-|https|HTTPS access is permitted using the origin port.|  
+|Scheme|ルール|  
+|------------|---------|  
+|ファイル|元のサーバーへの接続アクセスが許可されていません。|  
+|http|HTTP および HTTPS アクセスを許可するには、送信元ポートを使用します。|  
+|https|HTTPS アクセスを許可するには、送信元ポートを使用します。|  
   
    
   
-## Examples  
- The following code example demonstrates creating a <xref:System.Security.Policy.NetCodeGroup> and adding <xref:System.Security.Policy.CodeConnectAccess> objects for code downloaded using the HTTP scheme.  
+## 例  
+ 次のコード例で、 <xref:System.Security.Policy.NetCodeGroup> を追加して <xref:System.Security.Policy.CodeConnectAccess> HTTP スキームを使用してダウンロードされたコードのオブジェクト。  
   
- [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
- [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
+ [!code-cpp[NclCodeGroup\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
+ [!code-csharp[NclCodeGroup\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="membershipCondition" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The type of the <paramref name="membershipCondition" /> parameter is not valid.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="membershipCondition" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">種類、 <paramref name="membershipCondition" /> パラメーターが無効です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AbsentOriginScheme">
@@ -119,17 +121,20 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Contains a value used to specify connection access for code with an unknown or unrecognized origin scheme.</summary>
+        <summary>使用して、不明なまたは認識されない元のスキームを持つコードの接続アクセスを指定する値が含まれています。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When calling the <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> method, you specify a scheme and an associated <xref:System.Security.Policy.CodeConnectAccess> object. Any <xref:System.Security.Policy.CodeConnectAccess> objects that you add to the <xref:System.Security.Policy.NetCodeGroup> using <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> as the origin scheme are applied when the code's origin scheme is not present in its evidence, or is not a scheme recognized by the <xref:System.Security.Policy.NetCodeGroup> object.  
+## 解説  
+ 呼び出すときに、 <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> メソッドで、スキームと関連付けられている指定した <xref:System.Security.Policy.CodeConnectAccess> オブジェクトです。 どの <xref:System.Security.Policy.CodeConnectAccess> に追加するオブジェクト、 <xref:System.Security.Policy.NetCodeGroup> を使用して <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> コードの元のスキームがその証拠に存在しないか、またはで認識されるスキームではないときに、配信元としてスキームが適用される、 <xref:System.Security.Policy.NetCodeGroup> オブジェクトです。  
   
- To specify the <xref:System.Security.Policy.CodeConnectAccess> objects to use when the code's origin scheme does not match any of the schemes contained in the set of origin schemes added to the current <xref:System.Security.Policy.NetCodeGroup> object, use the <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> value.  
+ 指定する、 <xref:System.Security.Policy.CodeConnectAccess> オブジェクト コードの元のスキームに一致しない場合に現在追加オリジン スキームのセットに含まれるパターンのいずれかを使用する <xref:System.Security.Policy.NetCodeGroup> オブジェクトを使用して、 <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> 値。  
   
- The value of the <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> field is an empty string ("").  
+ 値、 <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> フィールドは空の文字列 \(""\) です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -156,33 +161,33 @@
         <Parameter Name="connectAccess" Type="System.Security.Policy.CodeConnectAccess" />
       </Parameters>
       <Docs>
-        <param name="originScheme">A <see cref="T:System.String" /> containing the scheme to match against the code's scheme.</param>
-        <param name="connectAccess">A <see cref="T:System.Security.Policy.CodeConnectAccess" /> that specifies the scheme and port code can use to connect back to its origin server.</param>
-        <summary>Adds the specified connection access to the current code group.</summary>
+        <param name="originScheme">A <see cref="T:System.String" /> コードのパターンと照合するスキームを格納しています。</param>
+        <param name="connectAccess">A <see cref="T:System.Security.Policy.CodeConnectAccess" /> の配信元サーバーに接続を使用して、スキームとポートのコードを指定します。</param>
+        <summary>指定した接続アクセスを現在のコード グループに追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can add multiple <xref:System.Security.Policy.CodeConnectAccess> objects for the same `origin scheme`. If an `origin scheme` already has one or more associated <xref:System.Security.Policy.CodeConnectAccess> objects, specifying `null` for `connectAccess` has no effect. If the origin scheme does not have associated <xref:System.Security.Policy.CodeConnectAccess> objects, specifying `null` for `connectAccess` prevents code with an origin scheme that matches `originScheme` from accessing its origin server.  
+## 解説  
+ 複数を追加する <xref:System.Security.Policy.CodeConnectAccess> 同じオブジェクト `origin scheme`します。 場合、 `origin scheme` 1 つ以上の関連するには既に <xref:System.Security.Policy.CodeConnectAccess> を指定するオブジェクト `null` の `connectAccess` も何も起こりません。 元のスキームが関連付けられていない場合 <xref:System.Security.Policy.CodeConnectAccess> を指定するオブジェクト `null` の `connectAccess` により、元のスキームと一致するとコード `originScheme` の配信元サーバーにアクセスします。  
   
    
   
-## Examples  
- The following code example demonstrates creating and adding <xref:System.Security.Policy.CodeConnectAccess> objects to a <xref:System.Security.Policy.NetCodeGroup>.  
+## 例  
+ 次のコード例は、作成と追加を示しています。 <xref:System.Security.Policy.CodeConnectAccess> オブジェクトを、 <xref:System.Security.Policy.NetCodeGroup>です。  
   
- [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
- [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
+ [!code-cpp[NclCodeGroup\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
+ [!code-csharp[NclCodeGroup\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="originScheme" /> is <see langword="null" />.</exception>
+          <paramref name="originScheme" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="originScheme" /> contains characters that are not permitted in schemes.  
+          <paramref name="originScheme" /> スキームでは許可されない文字が含まれています。  
   
- -or-  
+ または  
   
- <paramref name="originScheme" /> = <see cref="F:System.Security.Policy.NetCodeGroup.AbsentOriginScheme" /> and <paramref name="connectAccess" /> specifies <see cref="F:System.Security.Policy.CodeConnectAccess.OriginScheme" /> as its scheme.</exception>
+ <paramref name="originScheme" /> \= <see cref="F:System.Security.Policy.NetCodeGroup.AbsentOriginScheme" /> と <paramref name="connectAccess" /> 指定 <see cref="F:System.Security.Policy.CodeConnectAccess.OriginScheme" /> スキームとして。</exception>
       </Docs>
     </Member>
     <Member MemberName="AnyOtherOriginScheme">
@@ -203,19 +208,22 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Contains a value used to specify any other unspecified origin scheme.</summary>
+        <summary>その他の指定されていない元のスキームを指定するために使用する値が含まれています。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When calling the <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> method, you specify a scheme and an associated <xref:System.Security.Policy.CodeConnectAccess> object. You can use the value of the <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> field to specify the <xref:System.Security.Policy.CodeConnectAccess> objects that should be used for any scheme that is not explicitly contained in the set of origin schemes added to the current <xref:System.Security.Policy.NetCodeGroup> object.  
+## 解説  
+ 呼び出すときに、 <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> メソッドで、スキームと関連付けられている指定した <xref:System.Security.Policy.CodeConnectAccess> オブジェクトです。 値を使用して、 <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> を指定するフィールド、 <xref:System.Security.Policy.CodeConnectAccess> に現在追加オリジン スキームのセットに明示的に含まれていない任意のスキームに使用するオブジェクト <xref:System.Security.Policy.NetCodeGroup> オブジェクトです。  
   
- The <xref:System.Security.Policy.CodeConnectAccess> objects specified with the <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> field are only used if the code's origin scheme does not match any of the schemes contained in the set of origin schemes added to the current <xref:System.Security.Policy.NetCodeGroup> object.  
+ <xref:System.Security.Policy.CodeConnectAccess> で指定したオブジェクト、 <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> フィールドは現在の追加元スキームのセットに含まれるパターンのいずれか、コードの元のスキームに一致しない場合のみ使用 <xref:System.Security.Policy.NetCodeGroup> オブジェクトです。  
   
- To specify the <xref:System.Security.Policy.CodeConnectAccess> objects to apply when the code's origin scheme is not available in its evidence or is not recognized, use the <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> value.  
+ 指定する、 <xref:System.Security.Policy.CodeConnectAccess> コードの元のスキームがその証拠に利用できないかが認識されないときに適用するオブジェクトを使用して、 <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> 値。  
   
- The value of the <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> field is "*".  
+ 値、 <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> フィールドは"\*"です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -238,8 +246,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a string representation of the attributes of the policy statement for the code group.</summary>
-        <value>Always <see langword="null" />.</value>
+        <summary>コード グループのポリシー ステートメントの属性の文字列形式を取得します。</summary>
+        <value>常に <see langword="null" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -262,13 +270,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Makes a deep copy of the current code group.</summary>
-        <returns>An equivalent copy of the current code group, including its membership conditions and child code groups.</returns>
+        <summary>現在のコード グループの詳細コピーを作成します。</summary>
+        <returns>同等のメンバーシップの条件と子コード グループを含む、現在のコード グループのコピー。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method makes a deep copy of the code group, meaning that copies of all objects the code group contains are also made.  
+## 解説  
+ このメソッドは、コード グループに含まれるすべてのオブジェクトのコピーも行われることを意味するコード グループの詳細コピーを作成します。  
   
  ]]></format>
         </remarks>
@@ -323,22 +331,26 @@
         <Parameter Name="o" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="o">The <see cref="T:System.Security.Policy.NetCodeGroup" /> object to compare with the current code group.</param>
-        <summary>Determines whether the specified code group is equivalent to the current code group.</summary>
+        <param name="o">
+          <see cref="T:System.Security.Policy.NetCodeGroup" /> 現在のコード グループと比較するオブジェクト。</param>
+        <summary>指定したコード グループが現在のコード グループと等しいかどうかを決定します。</summary>
         <returns>
-          <see langword="true" /> if the specified code group is equivalent to the current code group; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 指定したコード グループが現在のコード グループと等しい場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The following data are used to determine the equality of two <xref:System.Security.Policy.NetCodeGroup> objects:  
+## 解説  
+ 次のデータを使用して 2 つの等しいかどうかを決定 <xref:System.Security.Policy.NetCodeGroup> オブジェクト。  
   
--   The <xref:System.Security.Policy.CodeGroup.Name%2A> and <xref:System.Security.Policy.CodeGroup.Description%2A> properties.  
+-   <xref:System.Security.Policy.CodeGroup.Name%2A> と <xref:System.Security.Policy.CodeGroup.Description%2A> プロパティです。  
   
--   The <xref:System.Security.Policy.CodeGroup.MembershipCondition%2A> property.  
+-   <xref:System.Security.Policy.CodeGroup.MembershipCondition%2A> プロパティ。  
   
--   The set of origin schemes and the associated <xref:System.Security.Policy.CodeConnectAccess> objects.  
+-   一連の原点のスキームと関連付けられた <xref:System.Security.Policy.CodeConnectAccess> オブジェクトです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -362,21 +374,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets the connection access information for the current code group.</summary>
-        <returns>A <see cref="T:System.Collections.DictionaryEntry" /> array containing connection access information.</returns>
+        <summary>現在のコード グループの接続アクセス情報を取得します。</summary>
+        <returns>A <see cref="T:System.Collections.DictionaryEntry" /> 接続アクセス情報を含む配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In each dictionary entry, the <xref:System.Collections.DictionaryEntry.Key%2A> property value is the origin scheme, and the <xref:System.Collections.DictionaryEntry.Value%2A> property value is the array of associated <xref:System.Security.Policy.CodeConnectAccess> objects. If there are no associated <xref:System.Security.Policy.CodeConnectAccess> objects, <xref:System.Collections.DictionaryEntry.Value%2A?displayProperty=fullName> returns an empty array.  
+## 解説  
+ 各ディクショナリ エントリで、 <xref:System.Collections.DictionaryEntry.Key%2A> プロパティの値が元のスキームと <xref:System.Collections.DictionaryEntry.Value%2A> プロパティの値は、配列の関連付けられている <xref:System.Security.Policy.CodeConnectAccess> オブジェクトです。 いいえ関連がある場合 <xref:System.Security.Policy.CodeConnectAccess> オブジェクト、 <xref:System.Collections.DictionaryEntry.Value%2A?displayProperty=fullName> 空の配列を返します。  
   
    
   
-## Examples  
- The following code example demonstrates displaying the connection access rules for a <xref:System.Security.Policy.NetCodeGroup> object.  
+## 例  
+ 接続アクセス規則を表示するコード例を次に示します、 <xref:System.Security.Policy.NetCodeGroup> オブジェクトです。  
   
- [!code-cpp[NclCodeGroup#8](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#8)]
- [!code-csharp[NclCodeGroup#8](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#8)]  
+ [!code-cpp[NclCodeGroup\#8](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#8)]
+ [!code-csharp[NclCodeGroup\#8](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#8)]  
   
  ]]></format>
         </remarks>
@@ -401,9 +413,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets the hash code of the current code group.</summary>
-        <returns>The hash code of the current code group.</returns>
+        <summary>現在のコード グループのハッシュ コードを取得します。</summary>
+        <returns>現在のコード グループのハッシュ コード。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Security.Policy.CodeGroup.GetHashCode" />
       </Docs>
     </Member>
     <Member MemberName="MergeLogic">
@@ -424,8 +437,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the logic to use for merging groups.</summary>
-        <value>The string "Union".</value>
+        <summary>グループを結合するために使用するロジックを取得します。</summary>
+        <value>文字列"Union"です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -475,8 +488,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the name of the <see cref="T:System.Security.NamedPermissionSet" /> for the code group.</summary>
-        <value>Always the string "Same site Web."</value>
+        <summary>名前を取得、 <see cref="T:System.Security.NamedPermissionSet" /> コード グループのです。</summary>
+        <value>常に文字列"同じ site Web"</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -499,28 +512,28 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Removes all connection access information for the current code group.</summary>
+        <summary>現在のコード グループのすべての接続アクセス情報を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method to remove the system-supplied default connection access rules.  
+## 解説  
+ このメソッドを使用すると、システム提供の既定の接続アクセス規則を削除できます。  
   
- The default rules are shown in the following table.  
+ 既定の規則は、次の表に示します。  
   
-|Scheme|Rule|  
-|------------|----------|  
-|file|No connection access to the origin server is permitted.|  
-|http|HTTP and HTTPS access is permitted using the origin port.|  
-|https|HTTPS access is permitted using the origin port.|  
+|Scheme|ルール|  
+|------------|---------|  
+|ファイル|元のサーバーへの接続アクセスが許可されていません。|  
+|http|HTTP および HTTPS アクセスを許可するには、送信元ポートを使用します。|  
+|https|HTTPS アクセスを許可するには、送信元ポートを使用します。|  
   
    
   
-## Examples  
- The following code example demonstrates calling this method to remove the default code access connection rules.  
+## 例  
+ 次のコード例では、既定のコード アクセス接続の規則を削除するには、このメソッドを呼び出す方法を示します。  
   
- [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
- [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
+ [!code-cpp[NclCodeGroup\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
+ [!code-csharp[NclCodeGroup\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
   
  ]]></format>
         </remarks>
@@ -547,23 +560,25 @@
         <Parameter Name="evidence" Type="System.Security.Policy.Evidence" />
       </Parameters>
       <Docs>
-        <param name="evidence">The <see cref="T:System.Security.Policy.Evidence" /> for the assembly.</param>
-        <summary>Resolves policy for the code group and its descendants for a set of evidence.</summary>
-        <returns>A <see cref="T:System.Security.Policy.PolicyStatement" /> that consists of the permissions granted by the code group with optional attributes, or <see langword="null" /> if the code group does not apply (the membership condition does not match the specified evidence).</returns>
+        <param name="evidence">
+          <see cref="T:System.Security.Policy.Evidence" /> アセンブリ。</param>
+        <summary>コード グループのポリシーと証拠のセットには、その子孫を解決します。</summary>
+        <returns>A <see cref="T:System.Security.Policy.PolicyStatement" /> 、省略可能な属性を持つコード グループによって付与されたアクセス許可で構成されるまたは <see langword="null" /> コード グループが満たされていない場合 \(メンバーシップ条件は、指定した証拠を一致していません\)。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Given evidence for an assembly to be loaded, this method evaluates the code group by first checking the membership condition against the specified evidence. If there is a match, this method returns a policy statement for the code group, including evaluation of child code groups.  
+## 解説  
+ 読み込まれるアセンブリの証拠を指定するには、このメソッドは、まず、指定した証拠に対してメンバーシップ条件を調べることによって、コード グループを評価します。 一致がある場合、このメソッドは、子コード グループの評価を含む、コード グループのポリシー ステートメントを返します。  
   
- The operation of this method is as follows:  
+ このメソッドの動作は次のとおりです。  
   
- If the membership condition does not match the specified evidence, return `null`; otherwise, set the permission set to be returned (P) equal to the code group's policy statement and continue. For each child code group, resolve the code group with the same evidence; if the result is not `null`, return that policy statement. If no child code group matched, return P (the parent's policy statement).  
+ メンバーシップ条件に、指定した証拠と一致しない場合は、返す `null`。 そうしないと、設定、アクセス許可 \(P\) を取得する設定に一致するコード グループのポリシー ステートメントと続行します。 子コード グループごとに、同じ証拠; を使用して、コード グループを解決します。結果がない場合 `null`, 、そのポリシー ステートメントを返します。 子コード グループが一致しない場合は、P \(親のポリシー ステートメント\) を返します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="evidence" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.Security.Policy.PolicyException">More than one code group (including the parent code group and any child code groups) is marked <see cref="F:System.Security.Policy.PolicyStatementAttribute.Exclusive" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="evidence" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.Security.Policy.PolicyException">1 つ以上のコード グループ \(親コード グループとすべての子コード グループを含む\) がマークされている <see cref="F:System.Security.Policy.PolicyStatementAttribute.Exclusive" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="ResolveMatchingCodeGroups">
@@ -587,18 +602,19 @@
         <Parameter Name="evidence" Type="System.Security.Policy.Evidence" />
       </Parameters>
       <Docs>
-        <param name="evidence">The evidence for the assembly.</param>
-        <summary>Resolves matching code groups.</summary>
-        <returns>The complete set of code groups that were matched by the evidence.</returns>
+        <param name="evidence">アセンブリの証拠。</param>
+        <summary>一致するコード グループを解決します。</summary>
+        <returns>証拠と一致したコード グループの完全なセットです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Given evidence for an assembly to be loaded, this method evaluates the code group by first checking the membership condition against the specified evidence. If there is a match, this method returns a root code group. The code group that is returned may contain child code groups, which, in turn, may also have child code groups, so the return value reflects the complete set of code groups that were matched by the evidence provided.  
+## 解説  
+ 読み込まれるアセンブリの証拠を指定するには、このメソッドは、まず、指定した証拠に対してメンバーシップ条件を調べることによって、コード グループを評価します。 一致がある場合、このメソッドは、ルート コード グループを返します。 返されるコード グループは、さらに、ことがあるも子コード グループの場合、戻り値の指定された証拠と一致したコード グループの完全なセットを反映するように子コード グループを含めることができます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="evidence" /> parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="evidence" /> パラメーターが <see langword="null" /> です。</exception>
       </Docs>
     </Member>
   </Members>

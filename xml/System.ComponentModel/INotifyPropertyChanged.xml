@@ -19,31 +19,31 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Notifies clients that a property value has changed.</summary>
+    <summary>プロパティ値が変更されたことをクライアントに通知します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.INotifyPropertyChanged> interface is used to notify clients, typically binding clients, that a property value has changed.  
+## 解説  
+ <xref:System.ComponentModel.INotifyPropertyChanged> インターフェイスを使用して、プロパティ値が変更されたことをクライアントでは、通常、クライアントのバインドに通知します。  
   
- For example, consider a `Person` object with a property called `FirstName`. To provide generic property-change notification, the `Person` type implements the <xref:System.ComponentModel.INotifyPropertyChanged> interface and raises a <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> event when `FirstName` is changed.  
+ たとえば、 `Person` と呼ばれるプロパティを持つオブジェクト `FirstName`します。 汎用のプロパティ変更通知を提供する、 `Person` 実装を入力、 <xref:System.ComponentModel.INotifyPropertyChanged> インターフェイスとを発生させます、 <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> イベントと `FirstName` が変更されました。  
   
- For change notification to occur in a binding between a bound client and a data source, your bound type should either:  
+ バインドされたクライアントとデータ ソース間のバインドで発生する変更通知、バインド型する必要がありますか。  
   
--   Implement the <xref:System.ComponentModel.INotifyPropertyChanged> interface (preferred).  
+-   実装、 <xref:System.ComponentModel.INotifyPropertyChanged> インターフェイス \(推奨\)。  
   
--   Provide a change event for each property of the bound type.  
+-   バインドの型の各プロパティの変更イベントを提供します。  
   
- Do not do both.  
+ どちらも行わない。  
   
    
   
-## Examples  
- The following code example demonstrates the how to implement the <xref:System.ComponentModel.INotifyPropertyChanged> interface. When you run this example, you will notice the bound <xref:System.Windows.Forms.DataGridView> control reflects the change in the data source without requiring the binding to be reset.  
+## 例  
+ 次のコード例を実装する、 <xref:System.ComponentModel.INotifyPropertyChanged> インターフェイスです。 この例を実行する際に、バインドに気付きます <xref:System.Windows.Forms.DataGridView> コントロールをリセットするバインディングを必要とせず、データ ソースの変更が反映されます。  
   
- If you use the `CallerMemberName` attribute, calls to the `NotifyPropertyChanged` method don't have to specify the property name as a string argument. For more information, see [Caller Information](http://msdn.microsoft.com/library/9cb2b8c0-c4f6-44b8-9c90-38948455b373).  
+ `CallerMemberName` 属性を使用する場合、`NotifyPropertyChanged` メソッドの呼び出しが、文字列引数としてプロパティ名を指定する必要はありません。 詳細については、「[Member Caller Information \(C\# and Visual Basic\)](http://msdn.microsoft.com/ja-jp/9cb2b8c0-c4f6-44b8-9c90-38948455b373)」を参照してください。  
   
- Replace the code in your Form1 with the following code and then change the namespace to the name of your project. As an alternative, you can name your project with the namespace name below when you create it.  
+ Form1 のコードを次のコードに置き換え、名前空間をプロジェクトの名前に変更します。 作成するときに、別の方法として、プロジェクト、名前空間の名前の下に名前ができます。  
   
 ```csharp  
 using System;  
@@ -140,7 +140,10 @@ namespace TestNotifyPropertyChangedCS
         // parameter causes the property name of the caller to be substituted as an argument.  
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")  
         {  
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null)  
+            {  
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));  
+            }  
         }  
   
         // The constructor is private to enforce the factory pattern.  
@@ -371,23 +374,24 @@ End Class
         <ReturnType>System.ComponentModel.PropertyChangedEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when a property value changes.</summary>
+        <summary>プロパティ値が変更するときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> event can indicate all properties on the object have changed by using either `null` or <xref:System.String.Empty?displayProperty=fullName> as the property name in the <xref:System.ComponentModel.PropertyChangedEventArgs>.  
+## 解説  
+ <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> ことを示すいずれかを使用して、オブジェクトのすべてのプロパティが変更された `null` または <xref:System.String.Empty?displayProperty=fullName> でプロパティ名として、 <xref:System.ComponentModel.PropertyChangedEventArgs>です。  
   
    
   
-## Examples  
- The following code example demonstrates how to implement the <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> event of the <xref:System.ComponentModel.INotifyPropertyChanged> interface.  
+## 例  
+ 次のコード例を実装する方法を示しています、 <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> のイベント、 <xref:System.ComponentModel.INotifyPropertyChanged> インターフェイスです。  
   
- [!code-csharp[System.ComponentModel.IPropertyChangeExample#9](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.IPropertyChangeExample/CS/Form1.cs#9)]
- [!code-vb[System.ComponentModel.IPropertyChangeExample#9](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.IPropertyChangeExample/VB/Form1.vb#9)]
-    
+ [!code-csharp[System.ComponentModel.IPropertyChangeExample\#9](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.IPropertyChangeExample/CS/Form1.cs#9)]
+ [!code-vb[System.ComponentModel.IPropertyChangeExample\#9](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.IPropertyChangeExample/VB/Form1.vb#9)]  
+  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.PropertyChangedEventArgs" />
       </Docs>
     </Member>
   </Members>

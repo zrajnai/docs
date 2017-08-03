@@ -9,43 +9,46 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Defines the methods that enable a client application to display a user interface to collect identity information prior to creating the channel.</summary>
+    <summary>クライアント アプリケーションがチャネルを作成する前に ID 情報を収集するためのユーザー インターフェイスを表示できるようにするメソッドを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> interface to enable a client application to display a user interface that enables the user of the application to create or select the credentials prior to opening a channel.  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> インターフェイスを実装し、チャネルを開く前にアプリケーションのユーザーが資格情報を作成または選択できるユーザー インターフェイスを、クライアント アプリケーションが表示できるようにします。  
   
- To implement <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer>, perform the following steps in <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer.BeginDisplayInitializationUI%2A?displayProperty=fullName>:  
+ <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> を実装するには、<xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer.BeginDisplayInitializationUI%2A?displayProperty=fullName> 内で次の手順を実行します。  
   
-1.  Prompt the user and obtain an appropriate <xref:System.Net.NetworkCredential?displayProperty=fullName>.  
+1.  ユーザーに入力を求めて、適切な <xref:System.Net.NetworkCredential?displayProperty=fullName> を取得します。  
   
-2.  Add a custom channel parameter object to the collection returned by the <xref:System.ServiceModel.Channels.IChannel.GetProperty%2A?displayProperty=fullName> method on the <xref:System.ServiceModel.IClientChannel> object with a type parameter of <xref:System.ServiceModel.Channels.ChannelParameterCollection?displayProperty=fullName>. This channel parameter object is used by the custom <xref:System.ServiceModel.ClientCredentialsSecurityTokenManager?displayProperty=fullName> to establish the security tokens for the channel.  
+2.  <xref:System.ServiceModel.Channels.IChannel.GetProperty%2A?displayProperty=fullName> オブジェクトに対して、<xref:System.ServiceModel.IClientChannel> 型のパラメーターを引数として <xref:System.ServiceModel.Channels.ChannelParameterCollection?displayProperty=fullName> メソッドを呼び出したときに返されるコレクションに、カスタムのチャネル パラメーター オブジェクトを追加します。 このチャネル パラメーター オブジェクトをカスタムの <xref:System.ServiceModel.ClientCredentialsSecurityTokenManager?displayProperty=fullName> で使用して、チャネル用のセキュリティ トークンを確立します。  
   
-3.  Return.  
+3.  返します。  
   
- To insert <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer>:  
+ <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> を挿入するには :  
   
-1.  Override the <xref:System.ServiceModel.Description.IEndpointBehavior.ApplyClientBehavior%2A?displayProperty=fullName> method on the <xref:System.ServiceModel.Description.ClientCredentials?displayProperty=fullName> class.  
+1.  <xref:System.ServiceModel.Description.IEndpointBehavior.ApplyClientBehavior%2A?displayProperty=fullName> クラスの <xref:System.ServiceModel.Description.ClientCredentials?displayProperty=fullName> メソッドをオーバーライドします。  
   
-2.  In that method, determine whether the endpoint requires an <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> and if so, add the <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> to the <xref:System.ServiceModel.Dispatcher.ClientRuntime.InteractiveChannelInitializers%2A?displayProperty=fullName> collection.  
+2.  そのメソッドで、エンドポイントに <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> が必要かどうかを判定し、必要な場合は、<xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> を <xref:System.ServiceModel.Dispatcher.ClientRuntime.InteractiveChannelInitializers%2A?displayProperty=fullName> コレクションに追加します。  
   
- There are two ways application developers can make use of an inserted <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer>. The client application can call either <xref:System.ServiceModel.ClientBase%601.DisplayInitializationUI%2A?displayProperty=fullName> or <xref:System.ServiceModel.IClientChannel.DisplayInitializationUI%2A?displayProperty=fullName> (or an asynchronous version) prior to opening the channel (the *explicit* approach) or simply call the first operation (the *implicit* approach).  
+ アプリケーション開発者は、挿入された <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> を 2 つの方法で利用できます。 クライアント アプリケーションは、いずれかを呼び出すことができます <xref:System.ServiceModel.ClientBase%601.DisplayInitializationUI%2A?displayProperty=fullName> または <xref:System.ServiceModel.IClientChannel.DisplayInitializationUI%2A?displayProperty=fullName> \(または非同期バージョン\)、チャネルを開く前 \(、 *明示的な* アプローチ\) か、最初の操作を呼び出すだけ \(、 *暗黙的な* アプローチ\) です。  
   
- If using the implicit approach, the application must call the first operation on an <xref:System.ServiceModel.ClientBase%601> or <xref:System.ServiceModel.IClientChannel> extension. If it calls anything other than the first operation, an exception is thrown.  
+ 暗黙的方法を使用する場合、アプリケーションは最初の操作を <xref:System.ServiceModel.ClientBase%601> または <xref:System.ServiceModel.IClientChannel> 拡張に対して呼び出す必要があります。 アプリケーションが最初の操作以外の何かを呼び出した場合、例外がスローされます。  
   
- If using the explicit approach, the application must perform the following steps in order:  
+ 明示的方法を使用する場合、アプリケーションで次の手順を順番に実行する必要があります。  
   
-1.  Call either <xref:System.ServiceModel.ClientBase%601.DisplayInitializationUI%2A?displayProperty=fullName> or <xref:System.ServiceModel.IClientChannel.DisplayInitializationUI%2A?displayProperty=fullName> (or an asynchronous version).  
+1.  <xref:System.ServiceModel.ClientBase%601.DisplayInitializationUI%2A?displayProperty=fullName> または <xref:System.ServiceModel.IClientChannel.DisplayInitializationUI%2A?displayProperty=fullName> \(または非同期バージョン\) を呼び出します。  
   
-2.  When the initializers have returned, call either the <xref:System.ServiceModel.ICommunicationObject.Open%2A> method on the <xref:System.ServiceModel.IClientChannel> object or on the <xref:System.ServiceModel.IClientChannel> object returned from the <xref:System.ServiceModel.ClientBase%601.InnerChannel%2A?displayProperty=fullName> property.  
+2.  初期化子が返された場合は、<xref:System.ServiceModel.ICommunicationObject.Open%2A> オブジェクトまたは <xref:System.ServiceModel.IClientChannel> プロパティで返された <xref:System.ServiceModel.IClientChannel> オブジェクトの <xref:System.ServiceModel.ClientBase%601.InnerChannel%2A?displayProperty=fullName> メソッドを呼び出します。  
   
-3.  Call operations.  
+3.  操作を呼び出します。  
   
- It is recommended that production-quality applications control of the user-interface process by adopting the explicit approach.  
+ 製品品質のアプリケーションで、明示的方法を採用し、ユーザー インターフェイス処理を制御することをお勧めします。  
   
- Applications that use the implicit approach invoke the user-interface initializers, but if the user of the application fails to respond within the send timeout period of the binding, an exception is thrown when the user interface returns.  
+ 暗黙的な方法を使用するアプリケーションでは、ユーザー インターフェイス初期化子が呼び出されますが、このアプリケーションのユーザーがバインディングの送信タイムアウト期間内に応答できない場合、ユーザー インターフェイスが復帰すると例外がスローされます。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -69,23 +72,26 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="channel">The client channel.</param>
-        <param name="callback">The callback object.</param>
-        <param name="state">Any state data.</param>
-        <summary>An asynchronous call to begin using a user interface to obtain credential information.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> to use to call back when processing has completed.</returns>
+        <param name="channel">クライアント チャネル。</param>
+        <param name="callback">コールバック オブジェクト。</param>
+        <param name="state">任意の状態データ。</param>
+        <summary>資格情報を取得するユーザー インターフェイスの使用を開始するための非同期呼び出しです。</summary>
+        <returns>処理が完了したときにコールバックするために使用される <see cref="T:System.IAsyncResult" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To implement <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer>, perform the following steps in <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer.BeginDisplayInitializationUI%2A?displayProperty=fullName>:  
+## 解説  
+ <xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer> を実装するには、<xref:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer.BeginDisplayInitializationUI%2A?displayProperty=fullName> 内で次の手順を実行します。  
   
-1.  Prompt the user in what way you see fit and obtain an appropriate <xref:System.Net.NetworkCredential?displayProperty=fullName>.  
+1.  適当な方法でユーザーに入力を求め、適切な <xref:System.Net.NetworkCredential?displayProperty=fullName> を取得します。  
   
-2.  Add a custom channel parameter object to the collection returned by the <xref:System.ServiceModel.Channels.IChannel.GetProperty%2A?displayProperty=fullName> method on the <xref:System.ServiceModel.IClientChannel> object with a type parameter of <xref:System.ServiceModel.Channels.ChannelParameterCollection?displayProperty=fullName>. This channel parameter object is used by the custom <xref:System.ServiceModel.ClientCredentialsSecurityTokenManager?displayProperty=fullName> to establish the security tokens for the channel.  
+2.  <xref:System.ServiceModel.Channels.IChannel.GetProperty%2A?displayProperty=fullName> オブジェクトに対して、<xref:System.ServiceModel.IClientChannel> 型のパラメーターを引数として <xref:System.ServiceModel.Channels.ChannelParameterCollection?displayProperty=fullName> メソッドを呼び出したときに返されるコレクションに、カスタムのチャネル パラメーター オブジェクトを追加します。 このチャネル パラメーター オブジェクトをカスタムの <xref:System.ServiceModel.ClientCredentialsSecurityTokenManager?displayProperty=fullName> で使用して、チャネル用のセキュリティ トークンを確立します。  
   
-3.  Return.  
+3.  返します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -107,9 +113,19 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" />.</param>
-        <summary>Called when the <see cref="M:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer.BeginDisplayInitializationUI(System.ServiceModel.IClientChannel,System.AsyncCallback,System.Object)" /> has finished.</summary>
-        <remarks>To be added.</remarks>
+        <param name="result">
+          <see cref="T:System.IAsyncResult" />。</param>
+        <summary>
+          <see cref="M:System.ServiceModel.Dispatcher.IInteractiveChannelInitializer.BeginDisplayInitializationUI(System.ServiceModel.IClientChannel,System.AsyncCallback,System.Object)" /> が終了すると、呼び出されます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

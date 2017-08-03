@@ -15,27 +15,27 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Ensures that an authentication object is present in the context. This class cannot be inherited.</summary>
+    <summary>認証オブジェクトがコンテキストに存在するようにします。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.DefaultAuthenticationModule> ensures that the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance is set to an <xref:System.Security.Principal.IPrincipal> object for each request. The <xref:System.Web.Security.DefaultAuthenticationModule> examines the <xref:System.Web.HttpContext.User%2A> property after the <xref:System.Web.HttpApplication.AuthenticateRequest> event and before the <xref:System.Web.HttpApplication.AuthorizeRequest> event. If the <xref:System.Web.HttpContext.User%2A> property is `null`, the <xref:System.Web.Security.DefaultAuthenticationModule> sets the <xref:System.Web.HttpContext.User%2A> property to a <xref:System.Security.Principal.GenericPrincipal> object that contains no user information.  
+## 解説  
+ <xref:System.Web.Security.DefaultAuthenticationModule> 確実に、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスに設定されて、 <xref:System.Security.Principal.IPrincipal> 要求ごとのオブジェクト。<xref:System.Web.Security.DefaultAuthenticationModule> を調べ、 <xref:System.Web.HttpContext.User%2A> 後プロパティ、 <xref:System.Web.HttpApplication.AuthenticateRequest> イベントとする前に、 <xref:System.Web.HttpApplication.AuthorizeRequest> イベントです。 場合、 <xref:System.Web.HttpContext.User%2A> プロパティは、 `null`, 、 <xref:System.Web.Security.DefaultAuthenticationModule> 設定、 <xref:System.Web.HttpContext.User%2A> プロパティを <xref:System.Security.Principal.GenericPrincipal> ユーザー情報を含まないオブジェクトです。  
   
- If the authentication module sets the <xref:System.Web.HttpResponse.StatusCode%2A> property to 401, the <xref:System.Web.Security.DefaultAuthenticationModule> will render an access-denied error page. If the value of the <xref:System.Web.HttpResponse.StatusCode%2A> property is set to a value greater than 200, the <xref:System.Web.Security.DefaultAuthenticationModule> object will end the request. In that case, only HTTP modules that subscribe to the <xref:System.Web.HttpApplication.EndRequest> event are called prior to the completion of the current request.  
+ 認証モジュールを設定する場合、 <xref:System.Web.HttpResponse.StatusCode%2A> 401 が発生するプロパティ、 <xref:System.Web.Security.DefaultAuthenticationModule> アクセス拒否のエラー ページがレンダリングされます。 場合の値、 <xref:System.Web.HttpResponse.StatusCode%2A> プロパティが 200 より大きい値に設定、 <xref:System.Web.Security.DefaultAuthenticationModule> オブジェクトは、要求を終了します。 その場合は、HTTP モジュールのみを定期受信する、 <xref:System.Web.HttpApplication.EndRequest> イベントが現在の要求を完了する前に呼び出されます。  
   
- The <xref:System.Web.Security.DefaultAuthenticationModule> exposes an <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> event. You can use this event to provide a custom <xref:System.Security.Principal.IPrincipal> object for the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance. The <xref:System.Web.Security.WindowsAuthenticationModule.Authenticate> event is accessed by specifying an event named **DefaultAuthentication_OnAuthenticate** in the application's Global.asax file.  
+ <xref:System.Web.Security.DefaultAuthenticationModule> を公開、 <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> イベントです。 このイベントを使用するには、ユーザー設定を提供する <xref:System.Security.Principal.IPrincipal> のオブジェクト、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンス。<xref:System.Web.Security.WindowsAuthenticationModule.Authenticate> という名前のイベントを指定することによってアクセス イベント **DefaultAuthentication\_OnAuthenticate** アプリケーションの Global.asax ファイルにします。  
   
    
   
-## Examples  
- The following example uses the **DefaultAuthentication_OnAuthenticate** event to test whether the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance is `null`. If the <xref:System.Web.HttpContext.User%2A> property is `null`, then the sample sets the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance to a <xref:System.Security.Principal.GenericPrincipal> object where the <xref:System.Security.Principal.GenericPrincipal.Identity%2A> of the <xref:System.Security.Principal.GenericPrincipal> object is a <xref:System.Security.Principal.GenericIdentity> with a <xref:System.Security.Principal.GenericIdentity.Name%2A> value of "default."  
+## 例  
+ 次の例では、 **DefaultAuthentication\_OnAuthenticate** イベントをテストするかどうか、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスが `null`です。 場合、 <xref:System.Web.HttpContext.User%2A> プロパティは、 `null`, 、し、サンプル セット、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスを <xref:System.Security.Principal.GenericPrincipal> オブジェクト場所、 <xref:System.Security.Principal.GenericPrincipal.Identity%2A> の <xref:System.Security.Principal.GenericPrincipal> オブジェクトが、 <xref:System.Security.Principal.GenericIdentity> で、 <xref:System.Security.Principal.GenericIdentity.Name%2A> "default"の値  
   
 > [!NOTE]
->  The **DefaultAuthentication_OnAuthenticate** event is raised before the <xref:System.Web.HttpApplication.AuthorizeRequest> event. As a result, if you set the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance to a custom identity, it can affect the behavior of your application. For example, if you are using the <xref:System.Web.Security.FormsAuthentication> class and you specify `<deny users="?" />` in the  configuration section to ensure that only authenticated users have access to your site, this sample will cause the  element to be ignored, as the user will have a name, which is "default." Instead, you would specify `<deny users="default" />` to ensure that only authenticated users can access your site.  
+>  **DefaultAuthentication\_OnAuthenticate** イベントが発生する前に、 <xref:System.Web.HttpApplication.AuthorizeRequest> イベントです。 その結果、設定した場合、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスにカスタムのユーザーに、アプリケーションの動作は影響ことができます。 たとえばを使用している場合、 <xref:System.Web.Security.FormsAuthentication> を指定してクラス `<deny users="?" />` だけで認証されたユーザーがアクセス権をサイトがあるこのサンプルの原因になりますが無視される要素、ユーザーは、名前を必要として \[構成\] セクションでは"default" 代わりに、指定すると `<deny users="default" />` に認証されたユーザーのみがサイトにアクセスできることを確認します。  
   
- [!code-csharp[System.Web.Security.DefaultAuthenticationModule#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/CS/global.asax#1)]
- [!code-vb[System.Web.Security.DefaultAuthenticationModule#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/VB/global.asax#1)]  
+ [!code-csharp[System.Web.Security.DefaultAuthenticationModule\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/CS/global.asax#1)]
+ [!code-vb[System.Web.Security.DefaultAuthenticationModule\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/VB/global.asax#1)]  
   
  ]]></format>
     </remarks>
@@ -52,11 +52,12 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.Security.DefaultAuthenticationModule" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.Security.DefaultAuthenticationModule" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This constructor is not intended to be called from application code.  
   
  ASP.NET calls this constructor to create an instance of the <xref:System.Web.Security.DefaultAuthenticationModule> class. After calling the constructor, it calls the <xref:System.Web.Security.DefaultAuthenticationModule.Init%2A> method to initialize the new <xref:System.Web.Security.DefaultAuthenticationModule> object.  
@@ -78,32 +79,32 @@
         <ReturnType>System.Web.Security.DefaultAuthenticationEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs after the request has been authenticated.</summary>
+        <summary>要求が認証された後に発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> event is raised after the <xref:System.Web.HttpApplication.AuthenticateRequest> event. It is used to ensure that the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance is populated with an <xref:System.Security.Principal.IPrincipal> object.  
+## 解説  
+ <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> イベントが発生した後、 <xref:System.Web.HttpApplication.AuthenticateRequest> イベントです。 いることを確認するために使用されて、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスには、 <xref:System.Security.Principal.IPrincipal> オブジェクトです。  
   
- You can access the <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> event of the <xref:System.Web.Security.DefaultAuthenticationModule> class by specifying a subroutine named **DefaultAuthentication_OnAuthenticate** in the application's Global.asax file.  
+ アクセスできる、 <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> のイベント、 <xref:System.Web.Security.DefaultAuthenticationModule> という名前のサブルーチンを指定することでクラス **DefaultAuthentication\_OnAuthenticate** アプリケーションの Global.asax ファイルにします。  
   
- You can use the <xref:System.Web.Security.DefaultAuthenticationEventArgs.Context%2A> property of the <xref:System.Web.Security.DefaultAuthenticationEventArgs> object in the **DefaultAuthentication_OnAuthenticate** event to set the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance to a custom <xref:System.Security.Principal.IPrincipal> object. If you do not specify a value for the <xref:System.Web.HttpContext.User%2A> property, the <xref:System.Web.Security.DefaultAuthenticationModule> sets the <xref:System.Web.HttpContext.User%2A> property of the <xref:System.Web.HttpContext> instance to a <xref:System.Security.Principal.GenericPrincipal> object that contains no user information.  
+ 使用することができます、 <xref:System.Web.Security.DefaultAuthenticationEventArgs.Context%2A> のプロパティ、 <xref:System.Web.Security.DefaultAuthenticationEventArgs> 内のオブジェクト、 **DefaultAuthentication\_OnAuthenticate** 設定イベントが、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> カスタム インスタンス <xref:System.Security.Principal.IPrincipal> オブジェクトです。 値が指定されていない場合、 <xref:System.Web.HttpContext.User%2A> プロパティには、 <xref:System.Web.Security.DefaultAuthenticationModule> 設定、 <xref:System.Web.HttpContext.User%2A> のプロパティ、 <xref:System.Web.HttpContext> インスタンスを <xref:System.Security.Principal.GenericPrincipal> ユーザー情報を含まないオブジェクトです。  
   
- The **DefaultAuthentication_OnAuthenticate** event is raised after the <xref:System.Web.HttpApplication.AuthenticateRequest> event and before the <xref:System.Web.HttpApplication.AuthorizeRequest> event. If you have an  section that depends on the user name to deny or allow access to your application, modifying the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance can affect the behavior of your application. Be sure that the user name you set during the **DefaultAuthentication_OnAuthenticate** event is considered when you specify the  section in your configuration.  
+ **DefaultAuthentication\_OnAuthenticate** イベントが発生した後、 <xref:System.Web.HttpApplication.AuthenticateRequest> イベントとする前に、 <xref:System.Web.HttpApplication.AuthorizeRequest> イベントです。 変更を拒否またはアプリケーションへのアクセスを許可するユーザー名に依存しているセクションがある場合、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンス、アプリケーションの動作に影響することができます。 あることを確認中に設定するユーザー名、 **DefaultAuthentication\_OnAuthenticate** イベントは、構成で、セクションを指定すると見なされます。  
   
 > [!NOTE]
->  If the Web application is running in IIS 7.0 in Integrated mode, the <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> event of the <xref:System.Web.Security.DefaultAuthenticationModule> is not raised. If the `mode` attribute of the  configuration element is set to "None" and the application subscribes to the <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> event, a <xref:System.PlatformNotSupportedException> error is raised. In this scenario, to receive authentication notification, subscribe to the <xref:System.Web.HttpApplication.AuthenticateRequest> event of the <xref:System.Web.HttpApplication> instance. For more information about compatibility issues in Integrated mode, see [Moving an ASP.NET Application from IIS 6.0 to IIS 7.0](http://msdn.microsoft.com/library/76f9cc78-f978-4837-b1c8-51d642ec4847).  
+>  Web アプリケーションは、統合モードで IIS 7.0 で実行されている場合、 <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> のイベント、 <xref:System.Web.Security.DefaultAuthenticationModule> は発生しません。 場合、 `mode` 構成要素の属性が"None"に設定し、アプリケーションがサブスクライブする、 <xref:System.Web.Security.DefaultAuthenticationModule.Authenticate> 、イベント、 <xref:System.PlatformNotSupportedException> エラーが発生します。 このシナリオでに認証の通知を受信するサービスに登録、 <xref:System.Web.HttpApplication.AuthenticateRequest> のイベント、 <xref:System.Web.HttpApplication> インスタンス。 統合モードでの互換性の問題に関する詳細については、次を参照してください。 [Moving an ASP.NET Application from IIS 6.0 to IIS 7.0](http://msdn.microsoft.com/ja-jp/76f9cc78-f978-4837-b1c8-51d642ec4847)します。  
   
    
   
-## Examples  
- The following code example uses the **DefaultAuthentication_OnAuthenticate** event to test whether the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance is `null`. If the <xref:System.Web.HttpContext.User%2A> property is `null`, then the sample sets the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance to a <xref:System.Security.Principal.GenericPrincipal> object where the <xref:System.Security.Principal.GenericPrincipal.Identity%2A> of the <xref:System.Security.Principal.GenericPrincipal> object is a <xref:System.Security.Principal.GenericIdentity> with a <xref:System.Security.Principal.GenericIdentity.Name%2A> value of "default."  
+## 例  
+ 次のコード例では、 **DefaultAuthentication\_OnAuthenticate** イベントをテストするかどうか、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスが `null`です。 場合、 <xref:System.Web.HttpContext.User%2A> プロパティは、 `null`, 、し、サンプル セット、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスを <xref:System.Security.Principal.GenericPrincipal> オブジェクト場所、 <xref:System.Security.Principal.GenericPrincipal.Identity%2A> の <xref:System.Security.Principal.GenericPrincipal> オブジェクトが、 <xref:System.Security.Principal.GenericIdentity> で、 <xref:System.Security.Principal.GenericIdentity.Name%2A> "default"の値  
   
 > [!NOTE]
->  The **DefaultAuthentication_OnAuthenticate** event is raised before the <xref:System.Web.HttpApplication.AuthorizeRequest> event. As a result, if you set the <xref:System.Web.HttpContext.User%2A> property of the current <xref:System.Web.HttpContext> instance to a custom identity, it can affect the behavior of your application. For example, if you are using the <xref:System.Web.Security.FormsAuthentication> class and you specify `<deny users="?" />` in the  configuration section to ensure that only authenticated users have access to your site, this sample will cause the  element to be ignored, as the user will have a name, which is "default." Instead, you would specify `<deny users="default" />` to ensure that only authenticated users can access your site.  
+>  **DefaultAuthentication\_OnAuthenticate** イベントが発生する前に、 <xref:System.Web.HttpApplication.AuthorizeRequest> イベントです。 その結果、設定した場合、 <xref:System.Web.HttpContext.User%2A> 、現在のプロパティ <xref:System.Web.HttpContext> インスタンスにカスタムのユーザーに、アプリケーションの動作は影響ことができます。 たとえばを使用している場合、 <xref:System.Web.Security.FormsAuthentication> を指定してクラス `<deny users="?" />` だけで認証されたユーザーがアクセス権をサイトがあるこのサンプルの原因になりますが無視される要素、ユーザーは、名前を必要として \[構成\] セクションでは"default" 代わりに、指定すると `<deny users="default" />` に認証されたユーザーのみがサイトにアクセスできることを確認します。  
   
- [!code-csharp[System.Web.Security.DefaultAuthenticationModule#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/CS/global.asax#1)]
- [!code-vb[System.Web.Security.DefaultAuthenticationModule#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/VB/global.asax#1)]  
+ [!code-csharp[System.Web.Security.DefaultAuthenticationModule\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/CS/global.asax#1)]
+ [!code-vb[System.Web.Security.DefaultAuthenticationModule\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Security.DefaultAuthenticationModule/VB/global.asax#1)]  
   
  ]]></format>
         </remarks>
@@ -123,12 +124,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources, other than memory, used by the <see cref="T:System.Web.Security.DefaultAuthenticationModule" />.</summary>
+        <summary>によって使用されるメモリ以外のすべてのリソースを解放、 <see cref="T:System.Web.Security.DefaultAuthenticationModule" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is not intended to be called from application code.  
+## 解説  
+ このメソッドは、アプリケーション コードから呼び出されるものはありません。  
   
  ]]></format>
         </remarks>
@@ -150,15 +151,15 @@
         <Parameter Name="app" Type="System.Web.HttpApplication" />
       </Parameters>
       <Docs>
-        <param name="app">The current <see cref="T:System.Web.HttpApplication" /> instance.</param>
-        <summary>Initializes the <see cref="T:System.Web.Security.DefaultAuthenticationModule" /> object.</summary>
+        <param name="app">現在の <see cref="T:System.Web.HttpApplication" /> インスタンス。</param>
+        <summary>初期化、 <see cref="T:System.Web.Security.DefaultAuthenticationModule" /> オブジェクトです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is not intended to be called from application code.  
+## 解説  
+ このメソッドは、アプリケーション コードから呼び出されるものはありません。  
   
- The <xref:System.Web.Security.DefaultAuthenticationModule.Init%2A> method ensures that the <xref:System.Web.Security.DefaultAuthenticationModule> is included in the processing of events.  
+ <xref:System.Web.Security.DefaultAuthenticationModule.Init%2A> メソッドにより、 <xref:System.Web.Security.DefaultAuthenticationModule> イベントの処理に含まれています。  
   
  ]]></format>
         </remarks>

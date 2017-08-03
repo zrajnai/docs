@@ -9,23 +9,23 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Defines the optional contract that a binding can implement to specify whether incoming requests are handled synchronously or asynchronously by the service.</summary>
+    <summary>バインドが実装すると、受信した要求をサービスが同期または非同期のどちらで処理するかを指定できるようになるオプションのコントラクトを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In some cases it may be more efficient for a binding to process messages with the synchronous <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> or <xref:System.ServiceModel.Channels.IRequestChannel.Request%2A> methods. A <xref:System.ServiceModel.Channels.Binding> class can optionally implement <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> to indicate to callers that this is preferred.  
+## 解説  
+ 状況によっては、バインドが同期方式の <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> メソッドまたは <xref:System.ServiceModel.Channels.IRequestChannel.Request%2A> メソッドを使用してメッセージを処理する方が効率的な場合があります。 この方法が望ましいことを呼び出し側に示すために、<xref:System.ServiceModel.Channels.Binding> クラスでは、必要に応じて、<xref:System.ServiceModel.Channels.IBindingRuntimePreferences> を実装できます。  
   
- If a binding does not implement <xref:System.ServiceModel.Channels.IBindingRuntimePreferences>, the [!INCLUDE[indigo1](~/includes/indigo1-md.md)] Service Model Runtime layer defaults to using the asynchronous versions of the `Receive` and `Request` methods. If a binding does implement <xref:System.ServiceModel.Channels.IBindingRuntimePreferences>, the [!INCLUDE[indigo2](~/includes/indigo2-md.md)] Service Model Runtime layer checks the value of <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> and uses that to determine whether to call the synchronous versions of the these methods (<xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> or <xref:System.ServiceModel.Channels.IRequestChannel.Request%2A>) or the asynchronous versions (<xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> and <xref:System.ServiceModel.Channels.IInputChannel.EndReceive%28System.IAsyncResult%29> or <xref:System.ServiceModel.Channels.IRequestChannel.BeginRequest%2A> and <xref:System.ServiceModel.Channels.IRequestChannel.EndRequest%28System.IAsyncResult%29>. If <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> is implemented by the binding and returns `true` from the <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> property, it is recommended that you use the synchronous <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> and <xref:System.ServiceModel.Channels.IRequestChannel.Request%2A> methods to receive messages from the channel. If the binding does not implement <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> or returns `false` from the <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> property, it is recommended that you use the asynchronous <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> and <xref:System.ServiceModel.Channels.IInputChannel.EndReceive%28System.IAsyncResult%29> or <xref:System.ServiceModel.Channels.IRequestChannel.BeginRequest%2A> and <xref:System.ServiceModel.Channels.IRequestChannel.EndRequest%28System.IAsyncResult%29> methods.  
+ バインディングが <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> を実装しないと、[!INCLUDE[indigo1](~/includes/indigo1-md.md)] のサービス モデル ランタイム層は、既定で、非同期バージョンの `Receive` メソッドおよび `Request` メソッドを使用します。 バインディングが <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> を実装した場合は、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] のサービス モデル ランタイム層は、<xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> の値を調べて、同期バージョンのメソッド \(<xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> または <xref:System.ServiceModel.Channels.IRequestChannel.Request%2A>\) を呼び出すのか、または非同期バージョン \(<xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> と <xref:System.ServiceModel.Channels.IInputChannel.EndReceive%28System.IAsyncResult%29> または <xref:System.ServiceModel.Channels.IRequestChannel.BeginRequest%2A> と <xref:System.ServiceModel.Channels.IRequestChannel.EndRequest%28System.IAsyncResult%29>\) を呼び出すのかを決定します。 バインディングが <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> を実装していて、`true` プロパティが <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> を返す場合は、同期方式の <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> メソッドと <xref:System.ServiceModel.Channels.IRequestChannel.Request%2A> メソッドを使用して、チャネルからメッセージを受信することをお勧めします。 バインディングが <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> を実装していない場合、または `false` プロパティから <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> が返される場合は、非同期方式の <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> メソッドと <xref:System.ServiceModel.Channels.IInputChannel.EndReceive%28System.IAsyncResult%29> メソッド、または <xref:System.ServiceModel.Channels.IRequestChannel.BeginRequest%2A> メソッドと <xref:System.ServiceModel.Channels.IRequestChannel.EndRequest%28System.IAsyncResult%29> メソッドを使用することをお勧めします。  
   
- Regardless of the value returned by the <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> property, all bindings must still provide valid implementations of both the synchronous and asynchronous versions of the `Receive` methods for the specific channel types implemented. For more information about implementing custom channels, see [Developing Channels](~/docs/framework/wcf/extending/developing-channels.md).  
+ <xref:System.ServiceModel.Channels.IBindingRuntimePreferences.ReceiveSynchronously%2A> プロパティが返す値に関係なく、すべてのバインディングは、実装されている特定のチャネルの種類に対し、`Receive` メソッドの同期および非同期の両バージョンの有効な実装を提供する必要があります。 カスタム チャネルの実装の詳細については、「[Developing Channels](http://msdn.microsoft.com/ja-jp/0513af9f-a0c2-457b-9a50-5b6bfee48513)」を参照してください。  
   
    
   
-## Examples  
- The following example shows the implementation of a binding that implements the <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> interface. This code is taken from the [Chunking Channel](~/docs/framework/wcf/samples/chunking-channel.md) sample:  
+## 例  
+ <xref:System.ServiceModel.Channels.IBindingRuntimePreferences> インターフェイスを実装するバインドの実装例を次に示します。 このコードは、「[Chunking Channel](http://msdn.microsoft.com/ja-jp/e4d53379-b37c-4b19-8726-9cc914d5d39f)」のサンプルから引用しています。  
   
- [!code-csharp[S_UE_ChunkingChannel#0](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_chunkingchannel/cs/tcpchunkingbinding.cs#0)]  
+ [!code-csharp[S\_UE\_ChunkingChannel\#0](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_chunkingchannel/cs/tcpchunkingbinding.cs#0)]  
   
  ]]></format>
     </remarks>
@@ -45,19 +45,18 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether incoming requests can be handled more efficiently synchronously or asynchronously.</summary>
-        <value>
-          <see langword="true" /> if requests can be handled more efficiently synchronously; otherwise <see langword="false" />. The default is <see langword="false" />, to handle requests asynchronously.</value>
+        <summary>受信した要求を処理するには同期と非同期のどちらの方が効率的かを示す値を取得します。</summary>
+        <value>同期的に要求を処理する方が効率的な場合は <see langword="true" />。それ以外の場合は <see langword=" false" />。 既定は <see langword="false" /> で、要求を非同期的に処理します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The standard (system-provided) bindings provided by [!INCLUDE[indigo1](~/includes/indigo1-md.md)] have implemented this interface and in some cases override the default value to process incoming messages synchronously.  
+## 解説  
+ [!INCLUDE[indigo1](~/includes/indigo1-md.md)] が提供する標準 \(システム提供\) のバインディングでは、このインターフェイスが実装されており、一部のケースについて、受信メッセージを同期的に処理するよう、既定値がオーバーライドされています。  
   
    
   
-## Examples  
- [!code-csharp[S_UE_ChunkingChannel#1](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_chunkingchannel/cs/tcpchunkingbinding.cs#1)]  
+## 例  
+ [!code-csharp[S\_UE\_ChunkingChannel\#1](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_chunkingchannel/cs/tcpchunkingbinding.cs#1)]  
   
  ]]></format>
         </remarks>

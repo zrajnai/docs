@@ -11,78 +11,83 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents the HttpListener element in the configuration file. This class cannot be inherited.</summary>
+    <summary>構成ファイルで HttpListener 要素を表します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This class corresponds to the \<httpListener> Element (Network Settings) configuration element. This class provides programmatic access to information that can be stored in configuration files.  
+## 解説  
+ このクラスは、\< httpListener \> 要素 \(ネットワーク設定\) の構成要素に対応します。 このクラスは、構成ファイルに格納できる情報にプログラムでアクセスを提供します。  
   
- The <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> property indicates if <xref:System.Net.HttpListener> uses the raw unescaped URI instead of the converted URI where any percent-encoded values are converted and other normalization steps are taken.  
+ <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> プロパティは、場合を示します。 <xref:System.Net.HttpListener> 変換された URI でパーセント エンコード値を変換し、その他の正規化手順は実行ではなく生のエスケープ解除された URI を使用します。  
   
- When a <xref:System.Net.HttpListener> instance receives a request through the `http.sys` service, it creates an instance of the URI string provided by `http.sys`, and exposes it as the <xref:System.Net.HttpListenerRequest.Url%2A?displayProperty=fullName> property.  
+ ときに、 <xref:System.Net.HttpListener> インスタンスを介して要求を受け取ると、 `http.sys` により指定された URI 文字列のインスタンスを作成して、サービス `http.sys`, 、としてそれを公開し、 <xref:System.Net.HttpListenerRequest.Url%2A?displayProperty=fullName> プロパティです。  
   
- The `http.sys` service exposes two request URI strings:  
+ `http.sys` サービスは 2 つの要求 URI の文字列を公開します。  
   
--   Raw URI  
+-   生の URI  
   
--   Converted URI  
+-   変換された URI  
   
- The raw URI is the <xref:System.Uri?displayProperty=fullName> provided in the request line of a HTTP request:  
+ 生の URI は、 <xref:System.Uri?displayProperty=fullName> HTTP 要求の要求の行で提供されます。  
   
  `GET /path/`  
   
  `Host: www.contoso.com`  
   
- The raw URI provided by `http.sys` for the request mentioned above, is "/path/". This represents the string following the HTTP verb as it was sent over the network.  
+ によって提供される生 URI `http.sys` 、上記で説明した要求は「パス\/」です。 これは、次の HTTP 動詞をネットワーク経由で送信された文字列を表します。  
   
- The `http.sys` service creates a converted URI from the information provided in the request by using the URI provided in the HTTP request line and the Host header to determine the origin server the request should be forwarded to. This is done by comparing the information from the request with a set of registered URI prefixes. The HTTP Server SDK documentation refers to this converted URI as the [HTTP_COOKED_URL](http://go.microsoft.com/fwlink/?LinkID=166108) structure.  
+ `http.sys` サービスは、HTTP 要求ラインで指定されている URI を使用して、要求で指定された情報から、変換された URI を作成しに元のサーバーを決定するホスト ヘッダーを転送する必要があります。 これは、一連の登録済みの URI プレフィックスの要求からの情報を比較することによって行います。 HTTP サーバー SDK のドキュメントとして変換されたこの URI を指す、 [HTTP\_COOKED\_URL](http://go.microsoft.com/fwlink/?LinkID=166108) 構造体。  
   
- In order to be able to compare the request with registered URI prefixes, some normalization to the request needs to be done. For the sample above the converted URI would be as follows:  
+ 登録されている URI プレフィックスを持つ要求を比較できるようにするには、するために、要求にいくつかの正規化を実行する必要があります。 変換された URI 上のサンプルでは、次になります。  
   
  `http://www.contoso.com/path/`  
   
- The `http.sys` service combines the <xref:System.Uri.Host%2A?displayProperty=fullName> property value and the string in the request line to create a converted URI. In addition, `http.sys` and the <xref:System.Uri?displayProperty=fullName> class also do the following:  
+ `http.sys` サービスの結合、 <xref:System.Uri.Host%2A?displayProperty=fullName> プロパティの値と、変換された URI を作成する要求の行の文字列です。 さらに、 `http.sys` と <xref:System.Uri?displayProperty=fullName> クラスも、次の操作します。  
   
--   Un-escapes all percent encoded values.  
+-   エスケープを解除すべてパーセントでエンコードされた値。  
   
--   Converts percent-encoded non-ASCII characters into a UTF-16 character representation. Note that UTF-8 and ANSI/DBCS characters are supported as well as Unicode characters (Unicode encoding using the %uXXXX format).  
+-   Utf\-16 文字表現に非 ASCII 文字をパーセントでエンコードに変換します。 Unicode 文字 \(Unicode エンコード %uxxxx 形式を使用して\) だけでなく、utf\-8、ANSI や DBCS 文字がサポートされていることに注意してください。  
   
--   Executes other normalization steps, like path compression.  
+-   パスの圧縮など、他の正規化の手順を実行します。  
   
- Since the request doesn't contain any information about the encoding used for percent-encoded values, it may not be possible to determine the correct encoding just by parsing the percent-encoded values.  
+ 要求にはで値のパーセント エンコードに使用されるエンコーディングに関する情報が含まれていないためには、値のパーセント エンコード解析だけで正しいエンコーディングを判別ことはできません。  
   
- Therefore `http.sys` provides two registry keys for modifying the process:  
+ そのため `http.sys` プロセスを変更するための 2 つのレジストリ キーを提供します。  
   
-|Registry Key|Default Value|Description|  
-|------------------|-------------------|-----------------|  
-|EnableNonUTF8|1|If zero, `http.sys` accepts only UTF-8-encoded URLs.<br /><br /> If non-zero, `http.sys` also accepts ANSI-encoded or DBCS-encoded URLs in requests.|  
-|FavorUTF8|1|If non-zero, `http.sys` always tries to decode a URL as UTF-8 first; if that conversion fails and EnableNonUTF8 is non-zero, Http.sys then tries to decode it as ANSI or DBCS.<br /><br /> If zero (and EnableNonUTF8 is non-zero), `http.sys` tries to decode it as ANSI or DBCS; if that is not successful, it tries a UTF-8 conversion.|  
+|レジストリ キー|既定値|説明|  
+|--------------|---------|--------|  
+|EnableNonUTF8|1|0 の場合、 `http.sys` UTF エンコード Url のみを受け入れます。<br /><br /> 0 以外の場合 `http.sys` も要求で ANSI でエンコードされた、DBCS でエンコードされた Url を受け取ります。|  
+|FavorUTF8|1|0 以外の場合 `http.sys` し、その変換が失敗するし、EnableNonUTF8 は 0 以外に utf\-8 として URL を先にデコードすると常に、Http.sys ANSI または DBCS とデコードを試みます。<br /><br /> 0 の場合 \(および EnableNonUTF8 は 0 以外\)、 `http.sys` その場合は、ANSI または DBCS とデコードを試行が失敗したを utf\-8 変換を試みます。|  
   
- When <xref:System.Net.HttpListener> receives a request, it uses the converted URI from `http.sys` as input to the <xref:System.Net.HttpListenerRequest.Url%2A> property.  
+ <xref:System.Net.HttpListener> は、要求を受け取るから変換された URI を使用して `http.sys` への入力として、 <xref:System.Net.HttpListenerRequest.Url%2A> プロパティです。  
   
- There is a need for supporting characters besides characters and numbers in URIs. An example is the following URI, which is used to retrieve customer information for customer number "1/3812":  
+ Uri の文字と数字以外の文字をサポートする必要があります。 例としては、次の URI は、顧客の顧客情報の取得に使用される「1\/3812」の番号します。  
   
  `http://www.contoso.com/Customer('1%2F3812')/`  
   
- Note the percent-encoded slash in the Uri (%2F). This is necessary, since in this case the slash character represents data and not a path delimiter.  
+ Uri \(2 f %\) のパーセント エンコード スラッシュに注意してください。 これは、ここではスラッシュ文字を表し、データはパス区切り記号ではないため、必要に応じて。  
   
- Passing the string to Uri constructor will lead to the following URI:  
+ Uri のコンス トラクターに文字列を渡すことにつながるよう、次の URI。  
   
  `http://www.contoso.com/Customer('1/3812')/`  
   
- Splitting the path into its segments would result in the following elements:  
+ パスをそのセグメントに分割すると、次の要素が表示されます。  
   
  `Customer('1`  
   
  `3812')`  
   
- This is not the intent of the sender of the request.  
+ これは、要求の送信元の目的ではありません。  
   
- If the <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> property is set to false, then when the <xref:System.Net.HttpListener> receives a request, it uses the raw URI instead of the converted URI from `http.sys` as input to the <xref:System.Net.HttpListenerRequest.Url%2A> property.  
+ 場合、 <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> プロパティが false に設定されていると、 <xref:System.Net.HttpListener> は、要求を受け取るから変換された URI ではなく生の URI を使用して、 `http.sys` への入力として、 <xref:System.Net.HttpListenerRequest.Url%2A> プロパティです。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Net.HttpListener" />
+    <altmember cref="P:System.Net.HttpListenerRequest.Url" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -96,8 +101,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Net.Configuration.HttpListenerElement" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Net.Configuration.HttpListenerElement" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Properties">
@@ -136,11 +150,20 @@
         <ReturnType>System.Net.Configuration.HttpListenerTimeoutsElement</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the default timeout elements used for an <see cref="T:System.Net.HttpListener" /> object.</summary>
-        <value>Returns <see cref="T:System.Net.Configuration.HttpListenerTimeoutsElement" />.  
+        <summary>既定値に使用するタイムアウト要素を取得、 <see cref="T:System.Net.HttpListener" /> オブジェクトです。</summary>
+        <value>
+          <see cref="T:System.Net.Configuration.HttpListenerTimeoutsElement" /> を返します。  
   
- The timeout elements used for an <see cref="T:System.Net.HttpListener" /> object.</value>
-        <remarks>To be added.</remarks>
+ 使用するタイムアウトの要素、 <see cref="T:System.Net.HttpListener" /> オブジェクトです。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Net.HttpListener" />
+        <altmember cref="T:System.Net.HttpListenerTimeoutManager" />
+        <altmember cref="T:System.Net.Configuration.HttpListenerTimeoutsElement" />
       </Docs>
     </Member>
     <Member MemberName="UnescapeRequestUrl">
@@ -161,77 +184,82 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates if <see cref="T:System.Net.HttpListener" /> uses the raw unescaped URI instead of the converted URI.</summary>
-        <value>A Boolean value that indicates if <see cref="T:System.Net.HttpListener" /> uses the raw unescaped URI, rather than the converted URI.</value>
+        <summary>どうかを示す値を取得 <see cref="T:System.Net.HttpListener" /> 変換された URI ではなく生のエスケープ解除された URI を使用します。</summary>
+        <value>どうかを示すブール値 <see cref="T:System.Net.HttpListener" /> は変換された URI ではなく生のエスケープ解除された URI を使用します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> property indicates if <xref:System.Net.HttpListener> uses the raw unescaped URI instead of the converted URI where any percent-encoded values are converted and other normalization steps are taken.  
+## 解説  
+ <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> プロパティは、場合を示します。 <xref:System.Net.HttpListener> 変換された URI でパーセント エンコード値を変換し、その他の正規化手順は実行ではなく生のエスケープ解除された URI を使用します。  
   
- When a <xref:System.Net.HttpListener> instance receives a request through the `http.sys` service, it creates an instance of the URI string provided by `http.sys`, and exposes it as the <xref:System.Net.HttpListenerRequest.Url%2A?displayProperty=fullName> property.  
+ ときに、 <xref:System.Net.HttpListener> インスタンスを介して要求を受け取ると、 `http.sys` により指定された URI 文字列のインスタンスを作成して、サービス `http.sys`, 、としてそれを公開し、 <xref:System.Net.HttpListenerRequest.Url%2A?displayProperty=fullName> プロパティです。  
   
- The `http.sys` service exposes two request URI strings:  
+ `http.sys` サービスは 2 つの要求 URI の文字列を公開します。  
   
--   Raw URI  
+-   生の URI  
   
--   Converted URI  
+-   変換された URI  
   
- The raw URI is the <xref:System.Uri?displayProperty=fullName> provided in the request line of a HTTP request:  
+ 生の URI は、 <xref:System.Uri?displayProperty=fullName> HTTP 要求の要求の行で提供されます。  
   
  `GET /path/`  
   
  `Host: www.contoso.com`  
   
- The raw URI provided by `http.sys` for the request mentioned above, is "/path/". This represents the string following the HTTP verb as it was sent over the network.  
+ によって提供される生 URI `http.sys` 、上記で説明した要求は「パス\/」です。 これは、次の HTTP 動詞をネットワーク経由で送信された文字列を表します。  
   
- The `http.sys` service creates a converted URI from the information provided in the request by using the URI provided in the HTTP request line and the Host header to determine the origin server the request should be forwarded to. This is done by comparing the information from the request with a set of registered URI prefixes. The HTTP Server SDK documentation refers to this converted URI as the [HTTP_COOKED_URL](http://go.microsoft.com/fwlink/?LinkID=166108) structure.  
+ `http.sys` サービスは、HTTP 要求ラインで指定されている URI を使用して、要求で指定された情報から、変換された URI を作成しに元のサーバーを決定するホスト ヘッダーを転送する必要があります。 これは、一連の登録済みの URI プレフィックスの要求からの情報を比較することによって行います。 HTTP サーバー SDK のドキュメントとして変換されたこの URI を指す、 [HTTP\_COOKED\_URL](http://go.microsoft.com/fwlink/?LinkID=166108) 構造体。  
   
- In order to be able to compare the request with registered URI prefixes, some normalization to the request needs to be done. For the sample above the converted URI would be as follows:  
+ 登録されている URI プレフィックスを持つ要求を比較できるようにするには、するために、要求にいくつかの正規化を実行する必要があります。 変換された URI 上のサンプルでは、次になります。  
   
  `http://www.contoso.com/path/`  
   
- The `http.sys` service combines the <xref:System.Uri.Host%2A?displayProperty=fullName> property value and the string in the request line to create a converted URI. In addition, `http.sys` and the <xref:System.Uri?displayProperty=fullName> class also do the following:  
+ `http.sys` サービスの結合、 <xref:System.Uri.Host%2A?displayProperty=fullName> プロパティの値と、変換された URI を作成する要求の行の文字列です。 さらに、 `http.sys` と <xref:System.Uri?displayProperty=fullName> クラスも、次の操作します。  
   
--   Un-escapes all percent encoded values.  
+-   エスケープを解除すべてパーセントでエンコードされた値。  
   
--   Converts percent-encoded non-ASCII characters into a UTF-16 character representation. Note that UTF-8 and ANSI/DBCS characters are supported as well as Unicode characters (Unicode encoding using the %uXXXX format).  
+-   Utf\-16 文字表現に非 ASCII 文字をパーセントでエンコードに変換します。 Unicode 文字 \(Unicode エンコード %uxxxx 形式を使用して\) だけでなく、utf\-8、ANSI や DBCS 文字がサポートされていることに注意してください。  
   
--   Executes other normalization steps, like path compression.  
+-   パスの圧縮など、他の正規化の手順を実行します。  
   
- Since the request doesn't contain any information about the encoding used for percent-encoded values, it may not be possible to determine the correct encoding just by parsing the percent-encoded values.  
+ 要求にはで値のパーセント エンコードに使用されるエンコーディングに関する情報が含まれていないためには、値のパーセント エンコード解析だけで正しいエンコーディングを判別ことはできません。  
   
- Therefore `http.sys` provides two registry keys for modifying the process:  
+ そのため `http.sys` プロセスを変更するための 2 つのレジストリ キーを提供します。  
   
-|Registry Key|Default Value|Description|  
-|------------------|-------------------|-----------------|  
-|EnableNonUTF8|1|If zero, `http.sys` accepts only UTF-8-encoded URLs.<br /><br /> If non-zero, `http.sys` also accepts ANSI-encoded or DBCS-encoded URLs in requests.|  
-|FavorUTF8|1|If non-zero, `http.sys` always tries to decode a URL as UTF-8 first; if that conversion fails and EnableNonUTF8 is non-zero, Http.sys then tries to decode it as ANSI or DBCS.<br /><br /> If zero (and EnableNonUTF8 is non-zero), `http.sys` tries to decode it as ANSI or DBCS; if that is not successful, it tries a UTF-8 conversion.|  
+|レジストリ キー|既定値|説明|  
+|--------------|---------|--------|  
+|EnableNonUTF8|1|0 の場合、 `http.sys` UTF エンコード Url のみを受け入れます。<br /><br /> 0 以外の場合 `http.sys` も要求で ANSI でエンコードされた、DBCS でエンコードされた Url を受け取ります。|  
+|FavorUTF8|1|0 以外の場合 `http.sys` し、その変換が失敗するし、EnableNonUTF8 は 0 以外に utf\-8 として URL を先にデコードすると常に、Http.sys ANSI または DBCS とデコードを試みます。<br /><br /> 0 の場合 \(および EnableNonUTF8 は 0 以外\)、 `http.sys` その場合は、ANSI または DBCS とデコードを試行が失敗したを utf\-8 変換を試みます。|  
   
- When <xref:System.Net.HttpListener> receives a request, it uses the converted URI from `http.sys` as input to the <xref:System.Net.HttpListenerRequest.Url%2A> property.  
+ <xref:System.Net.HttpListener> は、要求を受け取るから変換された URI を使用して `http.sys` への入力として、 <xref:System.Net.HttpListenerRequest.Url%2A> プロパティです。  
   
- There is a need for supporting characters besides characters and numbers in URIs. An example is the following URI, which is used to retrieve customer information for customer number "1/3812":  
+ Uri の文字と数字以外の文字をサポートする必要があります。 例としては、次の URI は、顧客の顧客情報の取得に使用される「1\/3812」の番号します。  
   
  `http://www.contoso.com/Customer('1%2F3812')/`  
   
- Note the percent-encoded slash in the Uri (%2F). This is necessary, since in this case the slash character represents data and not a path delimiter.  
+ Uri \(2 f %\) のパーセント エンコード スラッシュに注意してください。 これは、ここではスラッシュ文字を表し、データはパス区切り記号ではないため、必要に応じて。  
   
- Passing the string to Uri constructor will lead to the following URI:  
+ Uri のコンス トラクターに文字列を渡すことにつながるよう、次の URI。  
   
  `http://www.contoso.com/Customer('1/3812')/`  
   
- Splitting the path into its segments would result in the following elements:  
+ パスをそのセグメントに分割すると、次の要素が表示されます。  
   
  `Customer('1`  
   
  `3812')`  
   
- This is not the intent of the sender of the request.  
+ これは、要求の送信元の目的ではありません。  
   
- If the <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> property is set to false, then when the <xref:System.Net.HttpListener> receives a request, it uses the raw URI instead of the converted URI from `http.sys` as input to the <xref:System.Net.HttpListenerRequest.Url%2A> property.  
+ 場合、 <xref:System.Net.Configuration.HttpListenerElement.UnescapeRequestUrl%2A> プロパティが false に設定されていると、 <xref:System.Net.HttpListener> は、要求を受け取るから変換された URI ではなく生の URI を使用して、 `http.sys` への入力として、 <xref:System.Net.HttpListenerRequest.Url%2A> プロパティです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Net.HttpListener" />
+        <altmember cref="P:System.Net.HttpListenerRequest.Url" />
       </Docs>
     </Member>
   </Members>

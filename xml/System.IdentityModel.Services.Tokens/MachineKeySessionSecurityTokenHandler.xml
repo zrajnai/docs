@@ -11,27 +11,27 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Processes session tokens by using signing and encryption keys specified in the ASP.NET <see langword="&lt;machineKey&gt;" /> element in a configuration file.</summary>
+    <summary>ASP.NET で指定された署名と暗号化キーを使用して、セッション トークンを処理 <see langword="&lt;machineKey&gt;" /> 構成ファイル内の要素。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- By default, the <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> class uses the <xref:System.IdentityModel.ProtectedDataCookieTransform> class, which uses the Data Protection API (DPAPI), to protect the session token. The DPAPI provides protection by using the user or machine credentials and stores the key data in the user profile. This means that a session token signed and encrypted on one computer cannot be validated or decrypted on a different computer.  
+## 解説  
+ 既定では、 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> クラスは、 <xref:System.IdentityModel.ProtectedDataCookieTransform> をセッションのトークンを保護するデータ保護 API \(DPAPI\) を使用するクラス。 DPAPI は、ユーザーまたはコンピューターの資格情報を使用して、保護を提供し、ユーザー プロファイルのキーのデータを格納します。 つまり、セッション トークンは署名され、1 台のコンピューター上で暗号化されているの検証または別のコンピューターで復号化できません。  
   
- By contrast, the <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> class uses the <xref:System.IdentityModel.Services.MachineKeyTransform> class, which protects the session cookie data by using the cryptographic material specified in the `<machineKey>` element in the configuration file. This means that the same keys (and session tokens) can be used across multiple computers. This is particularly important when an application is deployed in a web farm. For more information about how to use Windows Identity Foundation to protect applications that are deployed in a web farm, see [WIF and Web Farms](~/docs/framework/security/wif-and-web-farms.md).  
+ これに対し、 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> クラスは、 <xref:System.IdentityModel.Services.MachineKeyTransform> で指定された暗号化マテリアルを使用して、セッションの cookie データを保護するには、クラス、 `<machineKey>` 構成ファイル内の要素。 これは、同じキー \(およびセッション トークン\) を複数のコンピューターで使用できることを意味します。 これは、機能は、web ファームでアプリケーションを展開するときに特に重要です。 Windows Identity Foundation を使用して、web ファームに展開されているアプリケーションを保護する方法の詳細については、次を参照してください。 [WIF and Web Farms](http://msdn.microsoft.com/ja-jp/fc3cd7fa-2b45-4614-a44f-8fa9b9d15284)します。  
   
- Configure the application to use the <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> by adding it to the token handler collection. You must first remove the <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> (or any handler derived from the <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> class) from the token handler collection if such a handler is present. This is because <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> derives from <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> and a token handler collection cannot contain multiple handlers of any given type.  
+ 使用するアプリケーションを構成、 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> トークン ハンドラーのコレクションに追加しています。 まずを削除する必要があります、 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> \(またはいずれかのハンドラーから派生した、 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> クラス\) このようなハンドラーが存在する場合は、トークン ハンドラー コレクションからです。 これは、ため <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> から派生した <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> トークン ハンドラーのコレクションは、指定された型の複数のハンドラーを含めることはできません。  
   
    
   
-## Examples  
- The following XML shows how to use the ASP.NET `<machineKey>` element in configuration to explicitly specify signing and encryption keys. The `<machineKey>` element is specified under the `<system.web>` element in a configuration file.  
+## 例  
+ 次の XML は、ASP.NET を使用する方法を示しています。 `<machineKey>` 署名と暗号化キーを明示的に指定する構成要素。`<machineKey>` 下にある要素が指定されている、 `<system.web>` 構成ファイル内の要素。  
   
 ```xml  
 <machineKey compatibilityMode="Framework45" decryptionKey="CC510D … 8925E6" validationKey="BEAC8 … 6A4B1DE" />  
 ```  
   
- The following XML shows how to add the <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> to a token handler collection. The default <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> is first removed from the collection. Token handlers are configured under the [\&lt;securityTokenHandlers\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/securitytokenhandlers.md) element.  
+ 次の XML を追加する方法を示しています、 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> トークン ハンドラーのコレクションにします。 既定値 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> は、まず、コレクションから削除します。 トークン ハンドラーが構成されている、 [\<securityTokenHandlers\>](http://msdn.microsoft.com/ja-jp/f11a631d-4094-4e11-bb03-4ede74b30281) 要素。  
   
 ```xml  
 <securityTokenHandlers>  
@@ -42,6 +42,7 @@
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -55,8 +56,14 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -72,12 +79,33 @@
         <Parameter Name="tokenLifetime" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="tokenLifetime">The default lifetime for a token.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> class that has the specified default token lifetime.</summary>
-        <remarks>To be added.</remarks>
+        <param name="tokenLifetime">トークンの既定の有効期間。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> を指定した既定のトークン有効期間を持つクラス。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="tokenLifetime" /> is shorter than or equal to <see cref="F:System.TimeSpan.Zero" /></exception>
+          <paramref name="tokenLifetime" /> も短いか等しい <see cref="F:System.TimeSpan.Zero" /></exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

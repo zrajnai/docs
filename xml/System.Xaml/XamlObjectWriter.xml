@@ -15,39 +15,41 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Creates an object graph from a source XAML node stream.</summary>
+    <summary>ソース XAML ノード ストリームからオブジェクト グラフを作成します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `Write` methods of <xref:System.Xaml.XamlObjectWriter> implement a pattern so that the <xref:System.Xaml.XamlObjectWriter> uses the <xref:System.Xaml.XamlWriter> that is defined by the <xref:System.Xaml.XamlWriter.WriteNode%2A> method. <xref:System.Xaml.XamlWriter.WriteNode%2A> logic switches between the `Write` methods, depending on which node type is at the current position in the reader.  
+## 解説  
+ `Write` 方法 <xref:System.Xaml.XamlObjectWriter> パターンを実装するように、 <xref:System.Xaml.XamlObjectWriter> を使用して、 <xref:System.Xaml.XamlWriter> で定義されている、 <xref:System.Xaml.XamlWriter.WriteNode%2A> メソッドです。<xref:System.Xaml.XamlWriter.WriteNode%2A> 間の切り替えのロジック、 `Write` メソッド、型が、リーダーの現在位置にあるがどのノードによって異なります。  
   
-## Scope  
- A <xref:System.Xaml.XamlObjectWriter> has a concept of scope; that is, the <xref:System.Xaml.XamlObjectWriter> maintains a conceptual point of reference in its output object graph. For a particular scope, certain operations might be valid or invalid, or produce a no-operation result. For example, if you call <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> to write directives for initialization on an object that already exists as an instance, the default implementation throws an exception.  
+## スコープ  
+ A <xref:System.Xaml.XamlObjectWriter> ; であるスコープの概念を持つ、 <xref:System.Xaml.XamlObjectWriter> 出力オブジェクト グラフ内の参照の概念的な点が維持されます。 特定のスコープの特定の操作では、有効または無効にするか非操作の結果を生成可能性があります。 呼び出す場合など <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> ディレクティブを記述するインスタンスとして既にオブジェクトで初期化が存在するため、既定の実装が例外をスローします。  
   
- A possible technique for tracking scope in a custom <xref:System.Xaml.XamlObjectWriter> is to align the node actions with a stack or frame class. The stack or frame can keep track of push and pop for each level of object-model depth that is entered or exited while the <xref:System.Xaml.XamlObjectWriter> writes the object graph.  
+ カスタムのスコープを追跡する方法 <xref:System.Xaml.XamlObjectWriter> はスタックまたはフレーム クラスを使用してノードのアクションを配置します。 スタックまたはフレームを監視できるプッシュおよびポップが入力または終了しているオブジェクト モデル階層の各レベルの中に、 <xref:System.Xaml.XamlObjectWriter> オブジェクト グラフを書き込みます。  
   
-## Callbacks  
- To support intermediate and advanced <xref:System.Xaml.XamlObjectWriter> scenarios, the mechanism of writing an object graph provides callback entry points that occur when a <xref:System.Xaml.XamlObjectWriter> commits or is about to commit certain actions. Some callbacks are enabled in the settings and are not specific to the object type or the member being written; however, callback information is often available in context or is in the event data that is sent through the callback. The following is a list of relevant callbacks:  
+## コールバック  
+ 中級および上級をサポートするために <xref:System.Xaml.XamlObjectWriter> シナリオでは、オブジェクト グラフを作成するメカニズムはコールバックが提供されるエントリ ポイントと、 <xref:System.Xaml.XamlObjectWriter> がコミットまたは特定の操作をコミットしようとしています。 コールバックの一部の設定で有効になっているし、オブジェクト型またはメンバーの書き込み対象固有ではありません。ただし、コールバック情報は、コンテキストで使用できる、多くの場合、または、コールバックを通じて送信されるデータでは、イベント。 関連するコールバックの一覧を次に示します。  
   
--   The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A> is invoked when the scope goes to a new object and at the <xref:System.ComponentModel.ISupportInitialize.BeginInit%2A> phase of object lifetime for each created object.  
+-   宣言されているコールバック <xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A> スコープに新しいオブジェクトになったときに呼び出される、 <xref:System.ComponentModel.ISupportInitialize.BeginInit%2A> に作成されたオブジェクトごとにオブジェクトの有効期間のフェーズです。  
   
--   The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A> is invoked when the scope goes to a new object and at the <xref:System.ComponentModel.ISupportInitialize.EndInit%2A> phase of object lifetime for each created object.  
+-   宣言されているコールバック <xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A> スコープに新しいオブジェクトになったときに呼び出される、 <xref:System.ComponentModel.ISupportInitialize.EndInit%2A> に作成されたオブジェクトごとにオブジェクトの有効期間のフェーズです。  
   
--   The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A> is invoked when the scope starts in an object, and occurs when the first <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> call to that object scope is made but not yet committed.  
+-   宣言されているコールバック <xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A> スコープが、オブジェクトで開始し、発生したときに呼び出されるときに最初の <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> そのオブジェクトのスコープへの呼び出しが行われたが、まだコミットします。  
   
--   The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A> is invoked when the scope starts in an object, and happens when the <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> call to that object scope is made but not yet committed.  
+-   宣言されているコールバック <xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A> スコープは、オブジェクトで開始し、発生するときに呼び出されるときに、 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> そのオブジェクトのスコープへの呼び出しが行われたが、まだコミットします。  
   
--   The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> is invoked when <xref:System.Xaml.XamlObjectWriter.OnSetValue%2A> is called.  
+-   宣言されているコールバック <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> ときに呼び出される <xref:System.Xaml.XamlObjectWriter.OnSetValue%2A> が呼び出されます。  
   
-## Writing Dictionary Keys  
- The default implementation of <xref:System.Xaml.XamlObjectWriter> supports type conversion on the constraints of a <xref:System.Collections.Generic.Dictionary%602> before the dictionary contents are added to the object graph. In this manner, a generic dictionary can be keyed at run time by objects and can match the relevant generic `Add` and indexer behavior. However, as implemented for the base <xref:System.Xaml.XamlObjectWriter>, this capability exists only for object graph creation from the base <xref:System.Collections.Generic.Dictionary%602> class and not for derived classes of <xref:System.Collections.Generic.Dictionary%602>.  
+## ディクショナリ キーの記述  
+ 既定の実装 <xref:System.Xaml.XamlObjectWriter> の制約の種類の変換のサポート、 <xref:System.Collections.Generic.Dictionary%602> ディクショナリの前に、内容が、オブジェクト グラフに追加されます。 この方法でジェネリック ディクショナリが実行時にオブジェクトがキーに入力するおり、関連するジェネリックに適合する `Add` とインデクサーの動作です。 ただし、ベースの実装として <xref:System.Xaml.XamlObjectWriter>, 、ベースからオブジェクト グラフの作成にのみ、この機能が存在する <xref:System.Collections.Generic.Dictionary%602> クラスの派生クラスではなく <xref:System.Collections.Generic.Dictionary%602>です。  
   
-## Checks for Disposed  
- XAML writers are potentially used for deferred operations or where a call is made against a XAML writer instance that has been disposed in the interim. Various APIs of <xref:System.Xaml.XamlObjectWriter> might throw <xref:System.ObjectDisposedException> in these cases.  
+## チェックが破棄されます。  
+ XAML ライターは、可能性のある、遅延操作または間に破棄されている XAML ライターのインスタンスに対して呼び出しが行われる場所に使用されます。 さまざまな Api <xref:System.Xaml.XamlObjectWriter> が発生する <xref:System.ObjectDisposedException> このような場合です。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Xaml.XamlWriter" />
+    <altmember cref="T:System.Xaml.XamlObjectReader" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -63,11 +65,11 @@
         <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
       </Parameters>
       <Docs>
-        <param name="schemaContext">A XAML schema context that is shared with the XAML reader that provides nodes for writing.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlObjectWriter" /> class using  the XAML schema context that is used by a <see cref="T:System.Xaml.XamlReader" />.</summary>
+        <param name="schemaContext">書き込み用のノードを提供する XAML リーダーと共有されている XAML スキーマ コンテキスト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlObjectWriter" /> クラスによって使用される XAML スキーマ コンテキストを使用して、 <see cref="T:System.Xaml.XamlReader" />です。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+          <paramref name="schemaContext" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -84,12 +86,12 @@
         <Parameter Name="settings" Type="System.Xaml.XamlObjectWriterSettings" />
       </Parameters>
       <Docs>
-        <param name="schemaContext">A XAML schema context that is shared with the XAML reader that provides nodes for writing.</param>
-        <param name="settings">A settings object that specifies certain options for <see cref="T:System.Xaml.XamlObjectWriter" /> behavior and output.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.XamlObjectWriter" /> class using the context that is used by a <see cref="T:System.Xaml.XamlReader" /> and its settings.</summary>
+        <param name="schemaContext">書き込み用のノードを提供する XAML リーダーと共有されている XAML スキーマ コンテキスト。</param>
+        <param name="settings">特定のオプションを指定する設定オブジェクト <see cref="T:System.Xaml.XamlObjectWriter" /> 動作と出力します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Xaml.XamlObjectWriter" /> クラスによって使用されるコンテキストを使用して、 <see cref="T:System.Xaml.XamlReader" /> とその設定します。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="schemaContext" /> is <see langword="null" />.</exception>
+          <paramref name="schemaContext" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -106,8 +108,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Resets all possible frames and clears the object graph.</summary>
-        <remarks>To be added.</remarks>
+        <summary>使用可能なすべてのフレームをリセットし、オブジェクト グラフをクリアします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -126,10 +133,14 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release the managed resources; otherwise, <see langword="false" />.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Xaml.XamlObjectWriter" />, and optionally, releases the managed resources.</summary>
-        <remarks>To be added.</remarks>
+        <param name="disposing">マネージ リソースを解放するには <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <summary>使用されるアンマネージ リソースを解放、 <see cref="T:System.Xaml.XamlObjectWriter" />, 、し、必要に応じてマネージ リソースも解放します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnAfterBeginInit">
@@ -148,9 +159,14 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The object to report on. The object is packaged into <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</param>
-        <summary>Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" /> method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</summary>
-        <remarks>To be added.</remarks>
+        <param name="value">レポートするオブジェクト。 オブジェクトがパッケージ化されている <see cref="T:System.Xaml.XamlObjectEventArgs" /> 、ハンドラーが呼び出されるとき。</param>
+        <summary>いずれかを呼び出す <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" /> メソッドに関連付けられている <see cref="T:System.Xaml.XamlObjectWriterSettings" /> この <see cref="T:System.Xaml.XamlObjectWriter" />します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnAfterEndInit">
@@ -169,9 +185,14 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The object to report on. The value  is packaged into <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</param>
-        <summary>Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" /> method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</summary>
-        <remarks>To be added.</remarks>
+        <param name="value">レポートするオブジェクト。 値にパッケージ化 <see cref="T:System.Xaml.XamlObjectEventArgs" /> 、ハンドラーが呼び出されるとき。</param>
+        <summary>いずれかを呼び出す <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" /> メソッドに関連付けられている <see cref="T:System.Xaml.XamlObjectWriterSettings" /> この <see cref="T:System.Xaml.XamlObjectWriter" />します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnAfterProperties">
@@ -190,9 +211,14 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The object to report on. This is packaged into <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</param>
-        <summary>Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" /> referenced method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</summary>
-        <remarks>To be added.</remarks>
+        <param name="value">レポートするオブジェクト。 これにパッケージ化 <see cref="T:System.Xaml.XamlObjectEventArgs" /> 、ハンドラーが呼び出されるとき。</param>
+        <summary>いずれかを呼び出す <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" /> に関連付けられているメソッドが参照されている <see cref="T:System.Xaml.XamlObjectWriterSettings" /> この <see cref="T:System.Xaml.XamlObjectWriter" />します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnBeforeProperties">
@@ -211,9 +237,14 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The value to pass through <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</param>
-        <summary>Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" /> referenced method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</summary>
-        <remarks>To be added.</remarks>
+        <param name="value">値を渡す <see cref="T:System.Xaml.XamlObjectEventArgs" /> 、ハンドラーが呼び出されるとき。</param>
+        <summary>いずれかを呼び出す <see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" /> に関連付けられているメソッドが参照されている <see cref="T:System.Xaml.XamlObjectWriterSettings" /> この <see cref="T:System.Xaml.XamlObjectWriter" />します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnSetValue">
@@ -234,16 +265,16 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="eventSender">The object to report as the source to the handler.</param>
-        <param name="member">The name of the property to set, which is passed to the handler as part of <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />.</param>
-        <param name="value">The value to provide for the property that is named by <c>property</c>. The value is passed to the handler as part of <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />.</param>
-        <summary>Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /> referenced method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this writer, as long as <paramref name="handled" /> in <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> event data is not <see langword="true" />.</summary>
-        <returns>A Boolean value that is set by any associated handler; otherwise, <see langword="false" />.</returns>
+        <param name="eventSender">ハンドラーへのソースとしてレポートするオブジェクト。</param>
+        <param name="member">一部として、ハンドラーに渡されるを設定するプロパティの名前 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />します。</param>
+        <param name="value">名前が付けられたプロパティに提供する値 <c>property</c>です。 一部としてハンドラーに渡される値 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />です。</param>
+        <summary>いずれかを呼び出す <see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /> に関連付けられているメソッドを参照 <see cref="T:System.Xaml.XamlObjectWriterSettings" /> と同じくらいに、このライターの <paramref name="handled" /> で <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> イベント データが <see langword="true" />です。</summary>
+        <returns>ハンドラー; によって設定されるブール値それ以外の場合、 <see langword="false" />です。 「解説」を参照してください。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the `SetValue` operation for this XAML writer has an associated handler (a <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> is declared in <xref:System.Xaml.XamlObjectWriterSettings>), this method creates new <xref:System.Windows.Markup.XamlSetValueEventArgs> and passes them to the handler. The return value is set by reading the <xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A> value that is passed through the event data. If no handler exists and this method is invoked, the call returns `false`.  
+## 解説  
+ 場合、 `SetValue` XAML ライターのこの操作に関連付けられたハンドラーが必要がある \(、 <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> で宣言された <xref:System.Xaml.XamlObjectWriterSettings>\)、このメソッドを新規作成 <xref:System.Windows.Markup.XamlSetValueEventArgs> ハンドラーに渡します。 読み取ることによって、戻り値を設定、 <xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A> イベント データを通じて渡される値。 呼び出しが返すかどうかは、ハンドラーが存在しないと、このメソッドが呼び出され、 `false`です。  
   
  ]]></format>
         </remarks>
@@ -262,15 +293,15 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the last object that was written. Typically only called when the node stream is at its end and the object graph is complete.</summary>
-        <value>The last object written, or <see langword="null" />.</value>
+        <summary>書き込まれた最後のオブジェクトを取得します。 通常のみと呼ばれるノード ストリームがの末尾にあると、オブジェクト グラフが完了します。</summary>
+        <value>最後に書き込まれると、オブジェクトまたは <see langword="null" />です。 「解説」を参照してください。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The most typical usage of <xref:System.Xaml.XamlObjectWriter.Result%2A> is to call it only when the node stream is known to be at its end, and the object graph is complete. Otherwise, the object graph is likely to be incomplete, and is not useful for most platform scenarios.  
+## 解説  
+ 最も一般的な使用 <xref:System.Xaml.XamlObjectWriter.Result%2A> その end に存在するノード ストリームが確認されており、オブジェクト グラフは完全な場合にのみ呼び出すことです。 それ以外の場合、オブジェクト グラフは不完全になる可能性がありますしはほとんどのプラットフォーム シナリオに適していません。  
   
- <xref:System.Xaml.XamlObjectWriter.Result%2A> typically only contains a non-null value if it is called immediately after a call to <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>, and if the current scope is in the member where the object provides a value.  
+ <xref:System.Xaml.XamlObjectWriter.Result%2A> 通常の呼び出しの直後に呼び出された場合のみ null 以外の値を含む <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>, 、し、現在のスコープが、メンバー オブジェクトが値を提供します。  
   
  ]]></format>
         </remarks>
@@ -289,13 +320,14 @@
         <ReturnType>System.Windows.Markup.INameScope</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the <see cref="T:System.Windows.Markup.INameScope" /> service that maintains the XAML namescope for the absolute node root of the XAML object writer.</summary>
-        <value>The <see cref="T:System.Windows.Markup.INameScope" /> service that maintains the XAML namescope for the current root of the object writer.</value>
+        <summary>取得、 <see cref="T:System.Windows.Markup.INameScope" /> XAML オブジェクト ライターのノードの絶対ルートの XAML 名前スコープを維持するサービスです。</summary>
+        <value>
+          <see cref="T:System.Windows.Markup.INameScope" /> オブジェクト ライターの現在のルートの XAML 名前スコープを維持するサービスです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The value of this property may come from the object writer context.  
+## 解説  
+ このプロパティの値は、オブジェクト ライター コンテキストから得られる可能性があります。  
   
  ]]></format>
         </remarks>
@@ -314,13 +346,13 @@
         <ReturnType>System.Xaml.XamlSchemaContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the active XAML schema context.</summary>
-        <value>The XAML schema context.</value>
+        <summary>アクティブな XAML スキーマ コンテキストを取得します。</summary>
+        <value>XAML スキーマ コンテキスト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- XAML schema context is a necessary information source for most practical object-writing scenarios. The XAML schema context influences the type lookup for backing types and holds information about the assemblies where backing types exist. The default XAML schema context is based on CLR type-mapping rules. Frameworks typically provide their own XAML schema context in order to assure that that the assembly-loading mechanisms match the framework's programming amd application models.  
+## 解説  
+ XAML スキーマ コンテキストは、オブジェクト記述の実際のほとんどのシナリオに必要な情報源です。 XAML スキーマ コンテキストでは、バッキング型の型の照合に影響し、アセンブリに関する情報を保持するには、バッキング型が存在します。 既定の XAML スキーマ コンテキストは、CLR 型マッピングの規則に基づきます。 通常、フレームワークは、アセンブリの読み込みメカニズムが、framework のプログラミングの amd アプリケーション モデルと一致することを保証するために、独自の XAML スキーマ コンテキストを提供します。  
   
  ]]></format>
         </remarks>
@@ -343,14 +375,14 @@
         <Parameter Name="linePosition" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="lineNumber">The line number from the reader.</param>
-        <param name="linePosition">The line position from the reader.</param>
-        <summary>Implements <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> and provides line information for exceptions.</summary>
+        <param name="lineNumber">リーダーからの行番号。</param>
+        <param name="linePosition">リーダーからの行の位置。</param>
+        <summary>実装して <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> し、例外の行の情報を提供します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This service method is not intended to be called directly from your code. However, if you are creating a derived class from <xref:System.Xaml.XamlObjectWriter> and expect to report a context where line numbers are unavailable or not useful, this method may be called.  
+## 解説  
+ このサービス メソッドは、コードから直接呼び出されるものでありません。 ただし、派生クラスを作成する場合は <xref:System.Xaml.XamlObjectWriter> と行番号が使用可能なコンテキストを報告する予想または有効ではない、このメソッド呼び出すことができます。  
   
  ]]></format>
         </remarks>
@@ -369,14 +401,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that reports whether a line information service should provide values and therefore, should also call the <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> method when it is relevant.</summary>
+        <summary>値でありそのため、呼び出す必要がありますも行情報サービスを提供する必要があるかどうかを示す値を取得、 <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> メソッドは関連があるとします。</summary>
         <value>
-          <see langword="true" /> if line information is used by the writer; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 行の情報は、ライターが使用する場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This implementation always returns `true`.  
+## 解説  
+ この実装は常に `true` を返します。  
   
  ]]></format>
         </remarks>
@@ -396,9 +428,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes the current member scope, and may write the value of the member scope while it closes. The new scope becomes the parent object scope of the member.</summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">Failed to create member value from a value node that is encountered between this call and a previous <see langword="StartMember" />.</exception>
+        <summary>現在のメンバーのスコープを閉じ、終了中に、メンバーのスコープの値を書き込む場合があります。 新しいスコープでは、メンバーの親オブジェクトのスコープになります。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException">この呼び出しと以前の間で発生した値のノードからのメンバーの値の作成に失敗しました <see langword="StartMember" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteEndObject">
@@ -415,14 +452,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Closes the current object scope in the writer. The new object scope becomes the parent member scope.</summary>
+        <summary>ライターの現在のオブジェクトのスコープを閉じます。 新しいオブジェクトのスコープでは、親メンバーのスコープになります。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If this `EndObject` position scope is closing the root object, the new object scope becomes the root scope.  
+## 解説  
+ この場合 `EndObject` 位置のスコープがルート オブジェクトを閉じて、新しいオブジェクトのスコープのルート スコープになります。  
   
- The call to <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> might not yet have created the object because an object member might be a necessary initialization pathway, such as initialization text or initialization parameters. For these cases, the call to <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> actually writes the object.  
+ 呼び出し <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> がまだ作成していないオブジェクトのオブジェクト メンバーの初期化のテキストや初期化パラメーターなどの必要な初期化経路可能性があるためです。 このような場合、呼び出しを <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> 実際には、オブジェクトを書き込みます。  
   
  ]]></format>
         </remarks>
@@ -442,16 +479,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Writes the conceptual <see langword="StartObject" /> into the object graph when the specified object is a default or implicit value of the parent property. The implicit value comes from information that is obtained from the XAML schema context and backing type information, instead of being specified as an object value in the input XAML node set.</summary>
+        <summary>概念書き込みます <see langword="StartObject" /> 指定したオブジェクトが既定値または親のプロパティの暗黙の型の値である場合は、オブジェクト グラフにします。 暗黙の型の値は、XAML スキーマ コンテキストから取得される情報とバックアップの種類については、入力の XAML ノード セット内のオブジェクトの値として指定されているのではなくから取得されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The difference between writing with <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> and writing with <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> can be seen in the resulting object graph. <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> does not construct an instance of a type because the <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> API has no information to inform the object graph of what to construct. Instead, the object was created when the parent property was initialized; so a <xref:System.Xaml.XamlObjectWriter> does not need to construct it. In contrast, <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> specifies that an instance of that type should be constructed and inserted into the object graph.  
+## 解説  
+ 書き込みの違い <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> と書き込みの <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 生成されたオブジェクト グラフに表示できます。<xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> 型のインスタンスを作成しないため、 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> API には、オブジェクト グラフを構築する内容を通知する情報はありません。 代わりに、親プロパティを初期化したとき、オブジェクトの作成 <xref:System.Xaml.XamlObjectWriter> 構築する必要はありません。 これに対し、 <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> その型のインスタンスを構築し、オブジェクト グラフに挿入されたことを指定します。  
   
- If you think of the XAML node stream as a series of frames, a <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> is balanced to a <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> call. Therefore, the number of <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> plus <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> calls should equal the number of <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> calls as part of a complete object-writing evaluation of the XAML node stream.  
+ XAML ノード ストリームの一連のフレームとして考えられる場合、 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> に分散された、 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> を呼び出します。 そのため、数 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> plus <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 呼び出しの数に一致する必要があります <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> XAML ノード ストリームの完全なオブジェクトの記述評価の一部として呼び出しです。  
   
- The conceptual `StartObject` position for an implicit object in the object graph is necessary because although the object value itself is an implicit default, that object might still have members that need to be written based on the XAML node stream. A typical scenario where this occurs is when <xref:System.Xaml.XamlObjectWriter> writes member nodes for a collection property, and the collection initialization is implicit to creating the object that owns the collection property.  
+ 概念 `StartObject` オブジェクト グラフ内の暗黙の型のオブジェクトが必要なオブジェクトの値自体には、暗黙の既定値が、そのオブジェクトに書き込む必要があるに基づいて XAML ノード ストリームのメンバーをまだ持って可能性があるを配置します。 これが典型的なシナリオは <xref:System.Xaml.XamlObjectWriter> コレクション プロパティ、およびコレクションの初期化メンバー ノードの書き込みはコレクション プロパティを所有するオブジェクトの作成に暗黙的にします。  
   
  ]]></format>
         </remarks>
@@ -473,23 +510,24 @@
         <Parameter Name="namespaceDeclaration" Type="System.Xaml.NamespaceDeclaration" />
       </Parameters>
       <Docs>
-        <param name="namespaceDeclaration">The namespace declaration to write.</param>
-        <summary>Defines a namespace declaration that applies to the next object scope or member scope.</summary>
+        <param name="namespaceDeclaration">書き込む名前空間宣言します。</param>
+        <summary>次のオブジェクトのスコープまたはメンバーのスコープに適用される名前空間宣言を定義します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A namespace declaration can be written if the current scope is a root scope, object scope, or member scope. However, <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> can only be called immediately before a call to one of the following: <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>, <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>, or <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>. The consecutive <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> case is for writing multiple namespace declarations to the same node. Eventually, either <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> or <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> must be called.  
+## 解説  
+ 現在のスコープは、ルート スコープ、オブジェクトのスコープ、またはメンバーのスコープ、名前空間宣言を記述できます。 ただし、 <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> 、次のいずれかの呼び出しの直前にのみ呼び出すことができます: <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>, 、<xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>, 、または <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>です。 連続した <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> ケースは、同じノードに複数の名前空間宣言を記述します。 最終的には、いずれか <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> または <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> 呼び出す必要があります。  
   
- <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> does not use a `Start`/`End` metaphor. Although a XAML namespace has members in the CLR representation sense, the members are known and do not need to be represented as a special type of <xref:System.Xaml.XamlMember> for extensibility. To access the values of a <xref:System.Xaml.NamespaceDeclaration>, you access its <xref:System.Xaml.NamespaceDeclaration.Namespace%2A> and <xref:System.Xaml.NamespaceDeclaration.Prefix%2A> properties.  
+ <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> 使用しない、 `Start`\/`End` メタファです。 XAML 名前空間には、CLR の表現意味内のメンバーがありますが、メンバーが呼ばれ、特殊な種類の表現されている必要はありません <xref:System.Xaml.XamlMember> に機能を拡張します。 値にアクセスする、 <xref:System.Xaml.NamespaceDeclaration>, にアクセスするその <xref:System.Xaml.NamespaceDeclaration.Namespace%2A> と <xref:System.Xaml.NamespaceDeclaration.Prefix%2A> プロパティです。  
   
- A namespace declaration may have a <xref:System.String.Empty?displayProperty=fullName> value for the prefix. A <xref:System.String.Empty?displayProperty=fullName> prefix represents a declaration of the default XAML namespace. Do not attempt to use null to represent the default prefix;  it throws an exception in this API. For more information, see <xref:System.Xaml.NamespaceDeclaration>.  
+ 名前空間宣言があります、 <xref:System.String.Empty?displayProperty=fullName> プレフィックスの値。 A <xref:System.String.Empty?displayProperty=fullName> プレフィックスが既定の XAML 名前空間の宣言を表します。 既定のプレフィックスを表すために null を使用しようとはしないでください。 この api は、例外をスローします。 詳細については、「<xref:System.Xaml.NamespaceDeclaration>」を参照してください。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="namespaceDeclaration" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">A component of <paramref name="namespaceDeclaration" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.Xaml.XamlObjectReaderException">Tried to write a XAML namespace node in an invalid scope.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="namespaceDeclaration" /> が <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">コンポーネント <paramref name="namespaceDeclaration" /> は <see langword="null" />です。</exception>
+        <exception cref="T:System.Xaml.XamlObjectReaderException">無効なスコープで XAML 名前空間ノードを記述しようとしています。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartMember">
@@ -508,32 +546,32 @@
         <Parameter Name="property" Type="System.Xaml.XamlMember" />
       </Parameters>
       <Docs>
-        <param name="property">The XAML property to write. Typically you obtain this value from a XAML reader through the XAML node stream intermediate.</param>
-        <summary>Writes a new member node into the current object scope, and the scope becomes a new member scope.</summary>
+        <param name="property">書き込む XAML プロパティです。 通常、この値は、XAML ノード ストリームで XAML リーダーから取得します。</param>
+        <summary>現在のオブジェクトのスコープに新しいメンバー ノードを書き込みますスコープが新しいメンバーのスコープとします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!TIP]
->  Watch for a <xref:System.Xaml.XamlDuplicateMemberException>, which occurs when the same XAML property is set twice in the XAML input. In simple cases, such as when the same property is set in both attribute syntax and property element syntax, you can easily see this exception in the input markup. However, more subtle cases can occur that are more difficult to spot. For example, this exception might occur if you set a XAML content property, if you involve XAML ambient properties, and if a property enables both an attachable usage and an instance usage. In the debugging phases of development, you can often locate this exception by viewing the intermediate XAML node representation that connects the markup read and the object graph write.  
+>  監視、 <xref:System.Xaml.XamlDuplicateMemberException>, 、XAML 入力の 2 回同じ XAML プロパティが設定されている場合に発生します。 属性構文とプロパティ要素構文の両方に同じプロパティを設定する場合などの単純なケースで入力のマークアップでこの例外を簡単に参照してくださいことができます。 ただしを見つけにくい微妙な多くの場合に発生します。 たとえば、XAML のアンビエント プロパティが含まれる場合、XAML のコンテンツ プロパティを設定した場合、およびアタッチの使用法と、インスタンスの使用率の両方にプロパティが有効にした場合、この例外が発生する可能性がします。 開発のデバッグの段階で、マークアップを読み取ると、オブジェクト グラフの書き込みを接続する中間の XAML ノードの表現を表示することによって、多くの場合、この例外を検索できます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.Xaml.XamlObjectWriterException">
-          <paramref name="property" /> has <see cref="P:System.Xaml.XamlMember.IsUnknown" /> set to <see langword="true" />.  
+          <paramref name="property" /> <see cref="P:System.Xaml.XamlMember.IsUnknown" /> 設定 <see langword="true" />します。  
   
- -or-  
+ または  
   
- <see cref="P:System.Xaml.XamlLanguage.UnknownContent" /> passed, which indicates that the XAML node stream contained content for an object that does not support content.  
+ <see cref="P:System.Xaml.XamlLanguage.UnknownContent" /> XAML ノード ストリームにコンテンツをサポートしていないオブジェクトのコンテンツが含まれていることを示すが渡されると、します。  
   
- -or-  
+ または  
   
- Attempted to write a start member in an invalid scope.</exception>
+ 無効なスコープで開始メンバーを記述しようとしています。</exception>
         <exception cref="T:System.Xaml.XamlDuplicateMemberException">
-          <paramref name="property" /> specifies a property that is already explicitly set in the parent object scope.</exception>
+          <paramref name="property" /> 親オブジェクトのスコープで既に明示的に設定されているプロパティを指定します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="property" /> is <see langword="null" />.</exception>
+          <paramref name="property" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteStartObject">
@@ -552,17 +590,22 @@
         <Parameter Name="xamlType" Type="System.Xaml.XamlType" />
       </Parameters>
       <Docs>
-        <param name="xamlType">The type to write. Typically you obtain this value from a XAML reader.</param>
-        <summary>Writes an object node into the current scope, and sets the scope to a new object scope.</summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">Processing an <see cref="P:System.Xaml.XamlType.IsUnknown" /> type and cannot create an object.  
+        <param name="xamlType">記述する型。 通常この値は、XAML リーダーから取得します。</param>
+        <summary>オブジェクト ノードを現在のスコープに書き込み、スコープを新しいオブジェクトのスコープに設定します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
   
- -or-  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException">処理、 <see cref="P:System.Xaml.XamlType.IsUnknown" /> 入力し、オブジェクトを作成することはできません。  
   
- Attempted to write a start object in an invalid scope.</exception>
-        <exception cref="T:System.Xaml.XamlParseException">Attempted to write a root object when the root object was already provided in the settings.</exception>
+ または  
+  
+ 無効なスコープで開始オブジェクトを記述しようとしています。</exception>
+        <exception cref="T:System.Xaml.XamlParseException">ルート オブジェクトが既に設定で提供されている場合、ルート オブジェクトを記述しようとしています。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="xamlType" /> is <see langword="null" />.</exception>
+          <paramref name="xamlType" /> は <see langword="null" /> です。</exception>
         <block subset="none" type="overrides">
           <para>If the current scope is inside a collection, dictionary, or array, the new instance should be added to the collection, dictionary, or array by using the <see langword="Add" /> method of the relevant type. Otherwise, the member should be assigned to the new instance.</para>
         </block>
@@ -584,11 +627,26 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The value to write.</param>
-        <summary>Writes a value to the current member scope. If the current scope is inside a collection, dictionary, or array object, the value should be added to the collection, dictionary, or array.</summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">Attempted to write a value in an invalid scope.</exception>
+        <param name="value">書き込む値。</param>
+        <summary>現在のメンバーのスコープを書き込みます。 現在のスコープが、コレクション、ディクショナリ、または配列オブジェクトの内側にある場合は、コレクション、ディクショナリ、または配列に値を追加してください。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException">無効なスコープで値を記述しようとしています。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Xaml.XamlObjectWriter" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

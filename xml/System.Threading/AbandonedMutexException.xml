@@ -28,31 +28,32 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>The exception that is thrown when one thread acquires a <see cref="T:System.Threading.Mutex" /> object that another thread has abandoned by exiting without releasing it.</summary>
+    <summary>1 つのスレッドを取得するときにスローされる例外を <see cref="T:System.Threading.Mutex" /> オブジェクトの解放しないまま終了することによって、別のスレッドが中止されたことです。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a thread abandons a mutex, the exception is thrown in the next thread that acquires the mutex. The thread might acquire the mutex because it was already waiting on the mutex or because it enters the mutex at a later time.  
+## 解説  
+ スレッドはミュー テックスを破棄、ミュー テックスを取得する次のスレッドで例外がスローされます。 既にミュー テックスを待機しているか、後で、ミュー テックスが入るために、スレッドはミュー テックスを取得可能性があります。  
   
- An abandoned mutex indicates a serious programming error. When a thread exits without releasing the mutex, the data structures protected by the mutex might not be in a consistent state. Prior to version 2.0 of the .NET Framework, such problems were hard to discover because no exception was thrown if a wait completed as the result of an abandoned mutex. For more information, see the <xref:System.Threading.Mutex> class.  
+ ミュー テックスの破棄では、重大なプログラミング エラーを示します。 ミュー テックスを解放しないままスレッドの終了時に、ミュー テックスによって保護されていたデータ構造を一貫性のある状態で可能性がありますできません。 .NET Framework のバージョン 2.0 より前は、このような問題は、待機がミュー テックスの破棄の結果として完了した場合、例外はスローされませんを検出するのには困難でした。 詳細については、<xref:System.Threading.Mutex> クラスを参照してください。  
   
- The next thread to request ownership of the mutex can handle this exception and proceed, provided that the integrity of the data structures can be verified.  
+ ミュー テックスの所有権を要求する次のスレッドでは、この例外を処理でき、続行すると、データ構造の整合性を検証することができます。  
   
    
   
-## Examples  
- The following code example executes a thread that abandons five mutexes, demonstrating their effects on the <xref:System.Threading.WaitHandle.WaitOne%2A>, <xref:System.Threading.WaitHandle.WaitAny%2A>, and <xref:System.Threading.WaitHandle.WaitAll%2A> methods. The value of the <xref:System.Threading.AbandonedMutexException.MutexIndex%2A> property is displayed for the <xref:System.Threading.WaitHandle.WaitAny%2A> call.  
+## 例  
+ 次のコード例でその効果を示す 5 つのミュー テックスを破棄するスレッドを実行する、 <xref:System.Threading.WaitHandle.WaitOne%2A>, 、<xref:System.Threading.WaitHandle.WaitAny%2A>, 、および <xref:System.Threading.WaitHandle.WaitAll%2A> メソッドです。 値、 <xref:System.Threading.AbandonedMutexException.MutexIndex%2A> のプロパティを表示、 <xref:System.Threading.WaitHandle.WaitAny%2A> 呼び出します。  
   
 > [!NOTE]
->  The call to the <xref:System.Threading.WaitHandle.WaitAny%2A> method is interrupted by one of the abandoned mutexes. The other abandoned mutex could still cause an <xref:System.Threading.AbandonedMutexException> to be thrown by subsequent wait methods.  
+>  呼び出し、 <xref:System.Threading.WaitHandle.WaitAny%2A> メソッドが相互排他ロックを破棄済みのいずれかによって中断されました。 でも、その他の破棄されたミュー テックスが生じる可能性があります、 <xref:System.Threading.AbandonedMutexException> に後続の待機メソッドによってスローされます。  
   
- [!code-cpp[System.Threading.AbandonedMutexException#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CPP/koax.cpp#1)]
- [!code-csharp[System.Threading.AbandonedMutexException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CS/koax.cs#1)]
- [!code-vb[System.Threading.AbandonedMutexException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/VB/koax.vb#1)]  
+ [!code-cpp[System.Threading.AbandonedMutexException\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CPP/koax.cpp#1)]
+ [!code-csharp[System.Threading.AbandonedMutexException\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CS/koax.cs#1)]
+ [!code-vb[System.Threading.AbandonedMutexException\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/VB/koax.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Threading.Mutex" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -77,24 +78,29 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with default values.</summary>
+        <summary>
+          <see cref="T:System.Threading.AbandonedMutexException" /> クラスの新しいインスタンスを既定値で初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor initializes the <xref:System.Exception.Message%2A> property of the new instance to a system-supplied message that describes the error, such as "The wait completed due to an abandoned mutex." This message takes into account the current system culture.  
+## 解説  
+ このコンス トラクター、 <xref:System.Exception.Message%2A> 「ミュー テックスの破棄のため完了、待機」などのエラーを説明するシステム提供のメッセージの新しいインスタンスのプロパティ。 このメッセージには、現在のシステムのカルチャが考慮されます。  
   
- The following table shows the initial property values for an instance of <xref:System.Threading.AbandonedMutexException>.  
+ <xref:System.Threading.AbandonedMutexException> のインスタンスの初期プロパティ値を次の表に示します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|The system-supplied error message string.|  
-|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`null`.|  
-|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|–1 (minus one).|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|システム提供のエラー メッセージ文字列。|  
+|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`null`。|  
+|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|\(マイナス\) – 1 です。|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -121,25 +127,29 @@
         <Parameter Name="message" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="message">An error message that explains the reason for the exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with a specified error message.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <summary>指定したエラー メッセージを使用して、<see cref="T:System.Threading.AbandonedMutexException" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The content of `message` is intended to be understood by humans. The caller of this constructor is required to ensure that this string has been localized for the current system culture.  
+## 解説  
+ `message` の内容は、ユーザーが理解できる内容にします。 このコンストラクターの呼び出し元は、この文字列が現在のシステムのカルチャに合わせてローカライズ済みであることを確認しておく必要があります。  
   
- The following table shows the initial property values for an instance of <xref:System.Threading.AbandonedMutexException> initialized with this constructor.  
+ 次の表は、のインスタンスの初期プロパティ値を示しています。 <xref:System.Threading.AbandonedMutexException> このコンス トラクターを使用して初期化します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|`message`.|  
-|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`null`.|  
-|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|–1 (minus one).|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|`message`。|  
+|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`null`。|  
+|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|\(マイナス\) – 1 です。|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -167,26 +177,30 @@
         <Parameter Name="handle" Type="System.Threading.WaitHandle" />
       </Parameters>
       <Docs>
-        <param name="location">The index of the abandoned mutex in the array of wait handles if the exception is thrown for the <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> method, or –1 if the exception is thrown for the <see cref="Overload:System.Threading.WaitHandle.WaitOne" /> or <see cref="Overload:System.Threading.WaitHandle.WaitAll" /> methods.</param>
-        <param name="handle">A <see cref="T:System.Threading.Mutex" /> object that represents the abandoned mutex.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with a specified index for the abandoned mutex, if applicable, and a <see cref="T:System.Threading.Mutex" /> object that represents the mutex.</summary>
+        <param name="location">待機の配列に放棄されたミュー テックスのインデックス処理の例外がスローされた場合、 <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> メソッド、またはの例外がスローされた場合は – 1、 <see cref="Overload:System.Threading.WaitHandle.WaitOne" /> または <see cref="Overload:System.Threading.WaitHandle.WaitAll" /> メソッドです。</param>
+        <param name="handle">A <see cref="T:System.Threading.Mutex" /> を放棄されたミュー テックスを表すオブジェクト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Threading.AbandonedMutexException" /> 放棄されたミュー テックスの指定のインデックスを持つクラスの該当する場合、 <see cref="T:System.Threading.Mutex" /> 、ミュー テックスを表すオブジェクト。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor initializes the <xref:System.Exception.Message%2A> property of the new instance to a system-supplied message that describes the error, such as "The wait completed due to an abandoned mutex." This message takes into account the current system culture.  
+## 解説  
+ このコンス トラクター、 <xref:System.Exception.Message%2A> 「ミュー テックスの破棄のため完了、待機」などのエラーを説明するシステム提供のメッセージの新しいインスタンスのプロパティ。 このメッセージには、現在のシステムのカルチャが考慮されます。  
   
- The following table shows the initial property values for an instance of <xref:System.Threading.AbandonedMutexException> initialized with this constructor.  
+ 次の表は、のインスタンスの初期プロパティ値を示しています。 <xref:System.Threading.AbandonedMutexException> このコンス トラクターを使用して初期化します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|A system-supplied error message string.|  
-|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`handle`.|  
-|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|`location`.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|システム提供のエラー メッセージ文字列。|  
+|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`handle`。|  
+|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|`location`。|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -212,17 +226,21 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object that holds the serialized object data about the exception being thrown.</param>
-        <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> object that contains contextual information about the source or destination.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with serialized data.</summary>
+        <param name="info">スローされている例外に関するシリアル化済みオブジェクト データを保持している <see cref="T:System.Runtime.Serialization.SerializationInfo" /> オブジェクト。</param>
+        <param name="context">転送元または転送先に関するコンテキスト情報を格納する <see cref="T:System.Runtime.Serialization.StreamingContext" /> オブジェクト。</param>
+        <summary>シリアル化したデータを使用して、<see cref="T:System.Threading.AbandonedMutexException" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor is called during deserialization to reconstitute the exception object transmitted over a stream. For more information, see [XML and SOAP Serialization](~/docs/framework/serialization/xml-and-soap-serialization.md).  
+## 解説  
+ このコンストラクターは、逆シリアル化中に、ストリームで送信された例外オブジェクトを再構築するために呼び出されます。 詳細については、「[XML and SOAP Serialization](http://msdn.microsoft.com/ja-jp/832ac524-21bc-419a-a27b-ca8bfc45840f)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -250,28 +268,32 @@
         <Parameter Name="inner" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="message">An error message that explains the reason for the exception.</param>
-        <param name="inner">The exception that is the cause of the current exception. If the <c>inner</c> parameter is not <see langword="null" />, the current exception is raised in a <see langword="catch" /> block that handles the inner exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with a specified error message and inner exception.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <param name="inner">現在の例外の原因となった例外。<c>inner</c> パラメーターが <see langword="null" /> でない場合は、内部例外を処理する <see langword="catch" /> ブロックで現在の例外が発生します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Threading.AbandonedMutexException" /> クラスを指定したエラー メッセージと内部例外を使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The content of `message` is intended to be understood by humans. The caller of this constructor is required to ensure that this string has been localized for the current system culture.  
+## 解説  
+ `message` の内容は、ユーザーが理解できる内容にします。 このコンストラクターの呼び出し元は、この文字列が現在のシステムのカルチャに合わせてローカライズ済みであることを確認しておく必要があります。  
   
- An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or `null` if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
+ 前の例外の直接の結果としてスローされる例外については、<xref:System.Exception.InnerException%2A> プロパティに、前の例外への参照が格納されます。<xref:System.Exception.InnerException%2A> プロパティは、コンストラクターに渡されたものと同じ値を返します。`null` プロパティによって内部例外値がコンストラクターに渡されなかった場合は、<xref:System.Exception.InnerException%2A> を返します。  
   
- The following table shows the initial property values for an instance of <xref:System.Threading.AbandonedMutexException> initialized with this constructor.  
+ 次の表は、のインスタンスの初期プロパティ値を示しています。 <xref:System.Threading.AbandonedMutexException> このコンス トラクターを使用して初期化します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`inner`.|  
-|<xref:System.Exception.Message%2A>|`message`.|  
-|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`null`.|  
-|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|–1 (minus one).|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`inner`。|  
+|<xref:System.Exception.Message%2A>|`message`。|  
+|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`null`。|  
+|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|\(マイナス\) – 1 です。|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -300,27 +322,31 @@
         <Parameter Name="handle" Type="System.Threading.WaitHandle" />
       </Parameters>
       <Docs>
-        <param name="message">An error message that explains the reason for the exception.</param>
-        <param name="location">The index of the abandoned mutex in the array of wait handles if the exception is thrown for the <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> method, or –1 if the exception is thrown for the <see cref="Overload:System.Threading.WaitHandle.WaitOne" /> or <see cref="Overload:System.Threading.WaitHandle.WaitAll" /> methods.</param>
-        <param name="handle">A <see cref="T:System.Threading.Mutex" /> object that represents the abandoned mutex.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with a specified error message, the index of the abandoned mutex, if applicable, and the abandoned mutex.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <param name="location">待機の配列に放棄されたミュー テックスのインデックス処理の例外がスローされた場合、 <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> メソッド、またはの例外がスローされた場合は – 1、 <see cref="Overload:System.Threading.WaitHandle.WaitOne" /> または <see cref="Overload:System.Threading.WaitHandle.WaitAll" /> メソッドです。</param>
+        <param name="handle">A <see cref="T:System.Threading.Mutex" /> を放棄されたミュー テックスを表すオブジェクト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Threading.AbandonedMutexException" /> クラスを指定したエラー メッセージを破棄済みのミュー テックスの該当する場合、放棄されたミュー テックスのインデックス。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The content of `message` is intended to be understood by humans. The caller of this constructor is required to ensure that this string has been localized for the current system culture.  
+## 解説  
+ `message` の内容は、ユーザーが理解できる内容にします。 このコンストラクターの呼び出し元は、この文字列が現在のシステムのカルチャに合わせてローカライズ済みであることを確認しておく必要があります。  
   
- The following table shows the initial property values for an instance of <xref:System.Threading.AbandonedMutexException> initialized with this constructor.  
+ 次の表は、のインスタンスの初期プロパティ値を示しています。 <xref:System.Threading.AbandonedMutexException> このコンス トラクターを使用して初期化します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|`message`.|  
-|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`handle`.|  
-|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|`location`.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|`message`。|  
+|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`handle`。|  
+|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|`location`。|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -350,30 +376,34 @@
         <Parameter Name="handle" Type="System.Threading.WaitHandle" />
       </Parameters>
       <Docs>
-        <param name="message">An error message that explains the reason for the exception.</param>
-        <param name="inner">The exception that is the cause of the current exception. If the <c>inner</c> parameter is not <see langword="null" />, the current exception is raised in a <see langword="catch" /> block that handles the inner exception.</param>
-        <param name="location">The index of the abandoned mutex in the array of wait handles if the exception is thrown for the <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> method, or –1 if the exception is thrown for the <see cref="Overload:System.Threading.WaitHandle.WaitOne" /> or <see cref="Overload:System.Threading.WaitHandle.WaitAll" /> methods.</param>
-        <param name="handle">A <see cref="T:System.Threading.Mutex" /> object that represents the abandoned mutex.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.AbandonedMutexException" /> class with a specified error message, the inner exception, the index for the abandoned mutex, if applicable, and a <see cref="T:System.Threading.Mutex" /> object that represents the mutex.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <param name="inner">現在の例外の原因となった例外。<c>inner</c> パラメーターが <see langword="null" /> でない場合は、内部例外を処理する <see langword="catch" /> ブロックで現在の例外が発生します。</param>
+        <param name="location">待機の配列に放棄されたミュー テックスのインデックス処理の例外がスローされた場合、 <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> メソッド、またはの例外がスローされた場合は – 1、 <see cref="Overload:System.Threading.WaitHandle.WaitOne" /> または <see cref="Overload:System.Threading.WaitHandle.WaitAll" /> メソッドです。</param>
+        <param name="handle">A <see cref="T:System.Threading.Mutex" /> を放棄されたミュー テックスを表すオブジェクト。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Threading.AbandonedMutexException" /> 、必要に応じて、指定したエラー メッセージ、内部例外、放棄されたミュー テックスのインデックスを備えたクラス <see cref="T:System.Threading.Mutex" /> 、ミュー テックスを表すオブジェクト。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The content of `message` is a text string intended to inform the user about the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.  
+## 解説  
+ コンテンツ `message` テキスト文字列は、例外に関するユーザーに通知します。 このコンストラクターの呼び出し元は、この文字列が現在のシステムのカルチャに合わせてローカライズ済みであることを確認しておく必要があります。  
   
- An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or `null` if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
+ 前の例外の直接の結果としてスローされる例外については、<xref:System.Exception.InnerException%2A> プロパティに、前の例外への参照が格納されます。<xref:System.Exception.InnerException%2A> プロパティは、コンストラクターに渡されたものと同じ値を返します。`null` プロパティによって内部例外値がコンストラクターに渡されなかった場合は、<xref:System.Exception.InnerException%2A> を返します。  
   
- The following table shows the initial property values for an instance of <xref:System.Threading.AbandonedMutexException> initialized with this constructor.  
+ 次の表は、のインスタンスの初期プロパティ値を示しています。 <xref:System.Threading.AbandonedMutexException> このコンス トラクターを使用して初期化します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`inner`.|  
-|<xref:System.Exception.Message%2A>|`message`.|  
-|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`handle`.|  
-|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|`location`.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`inner`。|  
+|<xref:System.Exception.Message%2A>|`message`。|  
+|<xref:System.Threading.AbandonedMutexException.Mutex%2A>|`handle`。|  
+|<xref:System.Threading.AbandonedMutexException.MutexIndex%2A>|`location`。|  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName="Mutex">
@@ -400,16 +430,20 @@
         <ReturnType>System.Threading.Mutex</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the abandoned mutex that caused the exception, if known.</summary>
-        <value>A <see cref="T:System.Threading.Mutex" /> object that represents the abandoned mutex, or <see langword="null" /> if the abandoned mutex could not be identified.</value>
+        <summary>既知の場合、例外の原因となった放棄されたミュー テックスを取得します。</summary>
+        <value>A <see cref="T:System.Threading.Mutex" /> を放棄されたミュー テックスを表すオブジェクトまたは <see langword="null" /> 放棄されたミュー テックスが認識されない場合。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the exception is thrown on a call to the <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=fullName> method, the <xref:System.Threading.Mutex> returned is the abandoned mutex with the lowest index in the array of <xref:System.Threading.WaitHandle> objects that was passed to <xref:System.Threading.WaitHandle.WaitAny%2A>, or `null` if the abandoned mutex could not be identified. If the exception is thrown on a call to <xref:System.Threading.WaitHandle.WaitOne%2A> or <xref:System.Threading.WaitHandle.WaitAll%2A>, this property always returns `null`.  
+## 解説  
+ 呼び出しで例外がスローされた場合、 <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=fullName> 、メソッド、 <xref:System.Threading.Mutex> の配列内の最小のインデックスを破棄済み、ミュー テックスは、返される <xref:System.Threading.WaitHandle> に渡されたオブジェクト <xref:System.Threading.WaitHandle.WaitAny%2A>, 、または `null` 放棄されたミュー テックスが認識されない場合。 呼び出しで例外がスローされた場合 <xref:System.Threading.WaitHandle.WaitOne%2A> または <xref:System.Threading.WaitHandle.WaitAll%2A>, 、このプロパティは常に返します `null`します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
     <Member MemberName="MutexIndex">
@@ -436,29 +470,48 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the index of the abandoned mutex that caused the exception, if known.</summary>
-        <value>The index, in the array of wait handles passed to the <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> method, of the <see cref="T:System.Threading.Mutex" /> object that represents the abandoned mutex, or –1 if the index of the abandoned mutex could not be determined.</value>
+        <summary>既知の場合、例外の原因となった放棄されたミュー テックスのインデックスを取得します。</summary>
+        <value>渡された待機ハンドルの配列内のインデックス、 <see cref="Overload:System.Threading.WaitHandle.WaitAny" /> メソッドの <see cref="T:System.Threading.Mutex" /> 放棄されたミュー テックスのインデックスを特定できなかった場合、\-1 を放棄されたミュー テックスを表すオブジェクト。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the exception is thrown on a call to the <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=fullName> method, this property returns the index of the abandoned mutex with the lowest index in the array of <xref:System.Threading.WaitHandle> objects that was passed to <xref:System.Threading.WaitHandle.WaitAny%2A>, or –1 if the abandoned mutex could not be identified. If the exception is thrown on a call to <xref:System.Threading.WaitHandle.WaitOne%2A> or <xref:System.Threading.WaitHandle.WaitAll%2A>, this property always returns –1.  
+## 解説  
+ 呼び出しで例外がスローされた場合、 <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=fullName> の配列内のメソッドは、このプロパティ返します最小のインデックスを使用してインデックスを破棄済みのミュー テックスの <xref:System.Threading.WaitHandle> に渡されたオブジェクト <xref:System.Threading.WaitHandle.WaitAny%2A>, 、放棄されたミュー テックスが認識されない場合は\-1 を返します。 呼び出しで例外がスローされた場合 <xref:System.Threading.WaitHandle.WaitOne%2A> または <xref:System.Threading.WaitHandle.WaitAll%2A>, 、このプロパティは常に\-1 を返します。  
   
    
   
-## Examples  
- The following code example executes a thread that abandons five mutexes. The abandoned mutexes are used to demonstrate the effects on the <xref:System.Threading.WaitHandle.WaitOne%2A?displayProperty=fullName>, <xref:System.Threading.WaitHandle.WaitAny%2A>, and <xref:System.Threading.WaitHandle.WaitAll%2A> method calls. The value of the <xref:System.Threading.AbandonedMutexException.MutexIndex%2A> property is displayed for the <xref:System.Threading.WaitHandle.WaitAny%2A> call.  
+## 例  
+ 次のコード例では、5 つのミュー テックスを破棄するスレッドを実行します。 効果を示すために放棄されたミュー テックスが使用される、 <xref:System.Threading.WaitHandle.WaitOne%2A?displayProperty=fullName>, 、<xref:System.Threading.WaitHandle.WaitAny%2A>, 、および <xref:System.Threading.WaitHandle.WaitAll%2A> メソッドの呼び出しです。 値、 <xref:System.Threading.AbandonedMutexException.MutexIndex%2A> のプロパティを表示、 <xref:System.Threading.WaitHandle.WaitAny%2A> 呼び出します。  
   
 > [!NOTE]
->  The call to <xref:System.Threading.WaitHandle.WaitAny%2A> is interrupted by one of the abandoned mutexes. The other abandoned mutex could still cause an <xref:System.Threading.AbandonedMutexException> to be thrown by subsequent wait methods.  
+>  呼び出し <xref:System.Threading.WaitHandle.WaitAny%2A> 相互排他ロックを破棄済みのいずれかによって中断されました。 でも、その他の破棄されたミュー テックスが生じる可能性があります、 <xref:System.Threading.AbandonedMutexException> に後続の待機メソッドによってスローされます。  
   
- [!code-cpp[System.Threading.AbandonedMutexException#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CPP/koax.cpp#1)]
- [!code-csharp[System.Threading.AbandonedMutexException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CS/koax.cs#1)]
- [!code-vb[System.Threading.AbandonedMutexException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/VB/koax.vb#1)]  
+ [!code-cpp[System.Threading.AbandonedMutexException\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CPP/koax.cpp#1)]
+ [!code-csharp[System.Threading.AbandonedMutexException\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/CS/koax.cs#1)]
+ [!code-vb[System.Threading.AbandonedMutexException\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.AbandonedMutexException/VB/koax.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Threading.Mutex" />
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Threading.AbandonedMutexException" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

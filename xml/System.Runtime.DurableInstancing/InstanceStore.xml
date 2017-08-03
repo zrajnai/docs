@@ -11,17 +11,17 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents an instance store.</summary>
+    <summary>インスタンス ストアを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A persistence provider provides access to an instance store through a concrete implementation of the <xref:System.Runtime.DurableInstancing.InstanceStore> class.  
+## 解説  
+ 永続化プロバイダーによって、<xref:System.Runtime.DurableInstancing.InstanceStore> クラスの具象実装を通してインスタンス ストアにアクセスできます。  
   
- Persistence providers may call InstanceHandle.Free on handles passed to TryCommand, even after the command has finished executing. But persistence providers must not hold strong references to InstanceHandle or InstanceOwner objects, as this can prevent InstanceStore from being garbage collected.  
+ 永続化プロバイダーは、コマンドの実行が完了した後でも、TryCommand に渡されるハンドルの InstanceHandle.Free を呼び出すことができます。 ただし、永続化プロバイダーが InstanceHandle オブジェクトや InstanceOwner オブジェクトへの強参照を保持することはありません。これによって、InstanceStore がガベージ コレクトされない可能性があるためです。  
   
 > [!WARNING]
->  Workflow definitions for persisted workflows cannot be changed. If a workflow definition is changed after it is persisted, the workflow runtime will crash when the workflow is reloaded.  
+>  永続化されたワークフローのワークフロー定義を変更できません。 データは保持した後、ワークフロー定義が変更されると、ワークフロー ランタイムは、ワークフローが再度読み込まれるときにクラッシュすることにします。  
   
  ]]></format>
     </remarks>
@@ -38,8 +38,14 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes an instance of the <see cref="T:System.Runtime.DurableInstancing.InstanceStore" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Runtime.DurableInstancing.InstanceStore" /> クラスのインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginExecute">
@@ -62,18 +68,19 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="handle">An instance handle.</param>
-        <param name="command">The command to be executed.</param>
-        <param name="timeout">The timeout value for the command execution.</param>
-        <param name="callback">The asynchronous callback delegate that receives notification of the completion of the asynchronous operation.</param>
-        <param name="state">The state information.</param>
-        <summary>Asynchronously executes persistence commands such as <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" /> and <see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" />.</summary>
-        <returns>The state of the asynchronous operation.</returns>
+        <param name="handle">インスタンス ハンドル。</param>
+        <param name="command">実行するコマンド。</param>
+        <param name="timeout">コマンド実行のタイムアウト値。</param>
+        <param name="callback">非同期操作完了の通知を受信する非同期コールバック デリゲート。</param>
+        <param name="state">状態情報。</param>
+        <summary>
+          <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" />、<see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" /> などの永続化コマンドを非同期で実行します。</summary>
+        <returns>非同期操作の状態。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A host calls the <xref:System.Runtime.DurableInstancing.InstanceStore.BeginExecute%2A> method to execute a persistence command against an instance handle asynchronously. The host obtains the instance handle by invoking the <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> method. The instance handle may be bound to entities that represent the context and subject of the command, such as an instance, instance owner, or instance lock.  Only one command may be issued against an instance handle at a time.  
+## 解説  
+ ホストは、<xref:System.Runtime.DurableInstancing.InstanceStore.BeginExecute%2A> メソッドを呼び出して、永続化コマンドをインスタンス ハンドルに対して非同期で実行します。 ホストは、<xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> メソッドを呼び出して、インスタンス ハンドルを取得します。 インスタンス ハンドルは、インスタンス、インスタンス所有者、インスタンス ロックなどのコマンドのコンテキストとサブジェクトを表すエンティティにバインドできます。  インスタンス ハンドルに対して一度に発行できるコマンドは 1 つだけです。  
   
  ]]></format>
         </remarks>
@@ -99,21 +106,21 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="context">The instance context.</param>
-        <param name="command">The persistence command to be executed.</param>
-        <param name="timeout">The timeout value for the command execution.</param>
-        <param name="callback">The asynchronous callback delegate that receives notification of the completion of the asynchronous operation.</param>
-        <param name="state">The state information.</param>
-        <summary>A persistence provider implements this method, which determines whether a particular persistence command can be executed. If the command can be executed, executes the command asynchronously.</summary>
-        <returns>The state of the asynchronous operation.</returns>
+        <param name="context">インスタンス コンテキスト。</param>
+        <param name="command">実行する永続化コマンド。</param>
+        <param name="timeout">コマンド実行のタイムアウト値。</param>
+        <param name="callback">非同期操作完了の通知を受信する非同期コールバック デリゲート。</param>
+        <param name="state">状態情報。</param>
+        <summary>永続化プロバイダーはこのメソッドを実装して、特定の永続化コマンドを実行できるかどうかを決定します。 コマンドを実行できる場合は、コマンドを非同期で実行します。</summary>
+        <returns>非同期操作の状態。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the command can be executed, the persistence provider calls relevant methods on the InstancePersistenceContext to provide the results of the command.  
+## 解説  
+ コマンドを実行できる場合、永続化プロバイダーは InstancePersistenceContext 上の関連するメソッドを呼び出し、コマンドの結果を返します。  
   
 > [!WARNING]
->  Even though this method is declared as `virtual` rather than `abstract`, there is no implementation. This method must be overridden in order to provide functionality.  
+>  このメソッドとして宣言されている場合でも `virtual` なく `abstract`, 、実装はありません。 このメソッドは、機能を提供するためにオーバーライドする必要があります。  
   
  ]]></format>
         </remarks>
@@ -138,13 +145,19 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="handle">An instance handle.</param>
-        <param name="timeout">The period after which the operation times out.</param>
-        <param name="callback">The method to be called after the asynchronous operation is complete.</param>
-        <param name="state">An object containing the state information associated with the asynchronous operation.</param>
-        <summary>Begins an asynchronous operation to listen for any events raised by the instance store for a specific instance handle.</summary>
-        <returns>Returns an <see cref="T:System.IAsyncResult" /> object..</returns>
-        <remarks>To be added.</remarks>
+        <param name="handle">インスタンス ハンドル。</param>
+        <param name="timeout">操作がタイムアウトした後の期間。</param>
+        <param name="callback">非同期操作が完了した後に呼び出されるメソッド。</param>
+        <param name="state">非同期操作に関連付けられたステータス情報を格納しているオブジェクト。</param>
+        <summary>特定のインスタンス ハンドルのインスタンス ストアによって発生するイベントをリッスンする非同期操作を開始します。</summary>
+        <returns>
+          <see cref="T:System.IAsyncResult" /> オブジェクトを返します。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateInstanceHandle">
@@ -161,9 +174,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates an instance handle.</summary>
-        <returns>The instance handle.</returns>
-        <remarks>To be added.</remarks>
+        <summary>インスタンス ハンドルを作成します。</summary>
+        <returns>インスタンス ハンドル。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateInstanceHandle">
@@ -182,10 +200,15 @@
         <Parameter Name="instanceId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="instanceId">An instance identifier. Must not be Guid.Empty.</param>
-        <summary>Creates an instance handle.  If the DefaultInstanceOwner is set, the value is automatically bound as the new handle’s instance owner.  The instance identifier passed as a parameter is automatically bound as the new handle’s instance.</summary>
-        <returns>The instance handle.</returns>
-        <remarks>To be added.</remarks>
+        <param name="instanceId">インスタンス識別子。 Guid.Empty にすることはできません。</param>
+        <summary>インスタンス ハンドルを作成します。  DefaultInstanceOwner を設定すると、値は新しいハンドルのインスタンス所有者として自動的にバインドされます。  パラメーターとして渡されるインスタンス識別子は、新しいハンドルのインスタンスとして自動的にバインドされます。</summary>
+        <returns>インスタンス ハンドル。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateInstanceHandle">
@@ -204,10 +227,15 @@
         <Parameter Name="owner" Type="System.Runtime.DurableInstancing.InstanceOwner" />
       </Parameters>
       <Docs>
-        <param name="owner">The owner of an instance.</param>
-        <summary>Creates an instance handle. If the instance owner passed as a parameter is not null, the value is automatically bound as the new handle’s instance owner.  (Otherwise, no instance owner is bound, even if DefaultInstanceOwner is set.)</summary>
-        <returns>The instance handle. A null value indicates that the new handle should not be automatically bound to an instance owner.</returns>
-        <remarks>To be added.</remarks>
+        <param name="owner">インスタンスの所有者。</param>
+        <summary>インスタンス ハンドルを作成します。 パラメーターとして渡されるインスタンス所有者が null でない場合、値は新しいハンドルのインスタンス所有者として自動的にバインドされます   \(そうでない場合は、DefaultInstanceOwner が設定されていても、インスタンス所有者はバインドされません\)。</summary>
+        <returns>インスタンス ハンドル。 null 値は、新しいハンドルをインスタンス所有者に自動的にバインドしないことを示します。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateInstanceHandle">
@@ -227,11 +255,16 @@
         <Parameter Name="instanceId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="owner">An InstanceOwner object  that represents the owner of an instance. Pass null as the value for this parameter to indicate that the new handle should not be automatically bound to an instance owner.</param>
-        <param name="instanceId">An instance identifier. Must not be Guid.Empty.</param>
-        <summary>Creates an instance handle. If the instance owner passed as a parameter is not null, the value is automatically bound as the new handle’s instance owner.  (Otherwise, no instance owner is bound, even if DefaultInstanceOwner is set.) The instance identifier passed as a parameter is automatically bound as the new handle’s instance.</summary>
-        <returns>The instance handle.</returns>
-        <remarks>To be added.</remarks>
+        <param name="owner">インスタンスの所有者を表す InstanceOwner オブジェクト。 新しいハンドルをインスタンス所有者に自動的にバインドしないことを示すために、null をこのパラメーターの値として渡します。</param>
+        <param name="instanceId">インスタンス識別子。 Guid.Empty にすることはできません。</param>
+        <summary>インスタンス ハンドルを作成します。 パラメーターとして渡されるインスタンス所有者が null でない場合、値は新しいハンドルのインスタンス所有者として自動的にバインドされます   \(そうでない場合は、DefaultInstanceOwner が設定されていても、インスタンス所有者はバインドされません\)。 パラメーターとして渡されるインスタンス識別子は、新しいハンドルのインスタンスとして自動的にバインドされます。</summary>
+        <returns>インスタンス ハンドル。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultInstanceOwner">
@@ -247,18 +280,20 @@
         <ReturnType>System.Runtime.DurableInstancing.InstanceOwner</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the default instance owner.</summary>
-        <value>The default instance owner.</value>
+        <summary>既定のインスタンス所有者を取得または設定します。</summary>
+        <value>既定のインスタンス所有者です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Some hosts infer the instance owner to use by reading this property. WorkflowApplication can use this property. WorkflowServiceHost does not use this property.  
   
  The DefaultInstanceOwner propery must be set to null when it is no longer necessary. InstanceStore objects might not be garbage collected if DefaultInstanceOwner is not null.  
   
 > [!WARNING]
->  Even though this method is declared as `virtual` rather than `abstract`, there is no implementation. This method must be overridden in order to provide functionality.  
+>  Even though this method is declared as **languageKeyword tag is not supported!!!!**  
+>  rather than **languageKeyword tag is not supported!!!!**  
+> , there is no implementation. This method must be overridden in order to provide functionality.  
   
  ]]></format>
         </remarks>
@@ -280,14 +315,14 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The result of the operation.</param>
-        <summary>Ends the asynchronous operation.</summary>
-        <returns>An InstanceView object  representing the known state of the instance after the successful completion of the command.</returns>
+        <param name="result">操作の結果。</param>
+        <summary>非同期操作を終了します。</summary>
+        <returns>コマンドが正常に完了した後、インスタンスの既知の状態を表す InstanceView オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If BeginExecute was called under a transaction, this state may include uncommitted data. Once the transaction is committed successfully, the data in the InstanceView object can be considered committed.  
+## 解説  
+ BeginExecute がトランザクションの下で呼び出された場合、この状態にはコミットされていないデータを含めることができます。 トランザクションが正常にコミットされると、InstanceView オブジェクト内のデータはコミットされたと見なされます。  
   
  ]]></format>
         </remarks>
@@ -309,16 +344,18 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The result of the operation.</param>
-        <summary>Ends an asynchronous operation.</summary>
-        <returns>A persistence provider implementation should return false if it doesn’t support the command passed to the BeginTryCommand method. Otherwise it should return true or throw an exception.</returns>
+        <param name="result">操作の結果。</param>
+        <summary>非同期操作を終了します。</summary>
+        <returns>永続化プロバイダーの実装は、BeginTryCommand メソッドに渡されるコマンドをサポートしない場合には false を返します。 それ以外の場合は、true を返すか、例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!WARNING]
->  Even though this method is declared as `virtual` rather than `abstract`, there is no implementation. This method must be overridden in order to provide functionality.  
+>  Even though this method is declared as **languageKeyword tag is not supported!!!!**  
+>  rather than **languageKeyword tag is not supported!!!!**  
+> , there is no implementation. This method must be overridden in order to provide functionality.  
   
  ]]></format>
         </remarks>
@@ -340,10 +377,17 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">An IAsyncResult object that was handed over to the client by the Begin method.</param>
-        <summary>Ends the asynchronous operation initiated by the <see cref="M:System.Runtime.DurableInstancing.InstanceStore.BeginWaitForEvents(System.Runtime.DurableInstancing.InstanceHandle,System.TimeSpan,System.AsyncCallback,System.Object)" /> method.</summary>
-        <returns>Returns a list of <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> objects..</returns>
-        <remarks>To be added.</remarks>
+        <param name="result">Begin メソッドによってクライアントに渡された IAsyncResult オブジェクト。</param>
+        <summary>
+          <see cref="M:System.Runtime.DurableInstancing.InstanceStore.BeginWaitForEvents(System.Runtime.DurableInstancing.InstanceHandle,System.TimeSpan,System.AsyncCallback,System.Object)" /> メソッドによって開始される非同期操作を終了します。</summary>
+        <returns>
+          <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> オブジェクトの一覧を返します。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Execute">
@@ -364,21 +408,22 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="handle">An instance handle.</param>
-        <param name="command">The command to be executed.</param>
-        <param name="timeout">The timeout value for the operation.</param>
-        <summary>Executes a persistence command synchronously. Examples of persistence commands are: <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" /> and <see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" />.</summary>
-        <returns>An InstanceView object representing the known state of the instance after the successful completion of the command.  If Execute was called under a transaction, this state may include uncommitted data. Once the transaction is committed successfully, the data in the InstanceView object can be considered committed</returns>
+        <param name="handle">インスタンス ハンドル。</param>
+        <param name="command">実行するコマンド。</param>
+        <param name="timeout">操作で使用するタイムアウト値。</param>
+        <summary>永続化コマンドを同期的に実行します。 永続化コマンドには、<see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" />、<see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" /> などがあります。</summary>
+        <returns>コマンドが正常に完了した後で、インスタンスの既知の状態を表す InstanceView オブジェクト。  Execute がトランザクションの下で呼び出された場合、この状態にはコミットされていないデータを含めることができます。 トランザクションが正常にコミットされると、InstanceView オブジェクト内のデータはコミットされたと見なされます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  A host calls the <xref:System.Runtime.DurableInstancing.InstanceStore.Execute%2A> method to execute a persistence command against an instance handle, which the host obtains by invoking the <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> method. The instance handle may be bound to entities that represent the context and subject of the command, such as an instance, instance owner, or instance lock.  Only one command may be issued against an instance handle at a time.  
   
 > [!WARNING]
 >  If this method is executed with a <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>, it will create an <xref:System.Runtime.DurableInstancing.InstanceOwner> and bind it to the instance. This means that no other process will be able to access that workflow; if the process ends, the workflow cannot be recovered or executed. If such a workflow is executed again, a <xref:System.Runtime.DurableInstancing.InstanceLockedException> will be thrown.  
 >   
->  If <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand> is not used, the instance store will create a temporary <xref:System.Runtime.DurableInstancing.InstanceOwner> that will be deleted at the end of the process. However, if the process ends before the workflow’s final persistence point, this exception will be thrown, unless the period of time specified in the **HostLockRenewalPeriod** parameter has expired.  
+>  If <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand> is not used, the instance store will create a temporary <xref:System.Runtime.DurableInstancing.InstanceOwner> that will be deleted at the end of the process. However, if the process ends before the workflow’s final persistence point, this exception will be thrown, unless the period of time specified in the **embeddedLabel tag is not supported!!!!**  
+>  parameter has expired.  
   
  ]]></format>
         </remarks>
@@ -400,10 +445,17 @@
         <Parameter Name="owner" Type="System.Runtime.DurableInstancing.InstanceOwner" />
       </Parameters>
       <Docs>
-        <param name="owner">An <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> object representing the owner of an instance.</param>
-        <summary>Gets all the signaled events bound to an <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> object.</summary>
-        <returns>Returns an array of <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> objects..</returns>
-        <remarks>To be added.</remarks>
+        <param name="owner">インスタンスの所有者を表す <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> オブジェクト。</param>
+        <summary>
+          <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> オブジェクトにバインドされているシグナル状態のイベントをすべて取得します。</summary>
+        <returns>
+          <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> オブジェクトの配列を返します。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetInstanceOwners">
@@ -420,13 +472,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets each InstanceOwner object that is bound to a valid instance handle or has not been garbage collected.</summary>
-        <returns>The owner of the instance.</returns>
+        <summary>有効なインスタンス ハンドルにバインドされている、またはガベージ コレクトされていない InstanceOwner オブジェクトを取得します。</summary>
+        <returns>インスタンスの所有者。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Returns an array of InstanceOwner objects.  
+## 解説  
+ InstanceOwner オブジェクトの配列を返します。  
   
  ]]></format>
         </remarks>
@@ -449,10 +501,15 @@
         <Parameter Name="userContext" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="instanceHandle">The instance handle that was freed.</param>
-        <param name="userContext">The persistence provider’s user context information that was returned from OnNewInstanceHandle, or null if OnNewInstanceHandle is not overridden.</param>
-        <summary>Invoked when an instance handle is freed.</summary>
-        <remarks>To be added.</remarks>
+        <param name="instanceHandle">解放されたインスタンス ハンドルです。</param>
+        <param name="userContext">OnNewInstanceHandle から返された永続化プロバイダーのユーザー コンテキスト情報。OnNewInstanceHandle がオーバーライドされない場合は null を返します。</param>
+        <summary>インスタンス ハンドルが解放されると呼び出されます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnNewInstanceHandle">
@@ -471,10 +528,15 @@
         <Parameter Name="instanceHandle" Type="System.Runtime.DurableInstancing.InstanceHandle" />
       </Parameters>
       <Docs>
-        <param name="instanceHandle">An instance handle.</param>
-        <summary>Invoked when a new instance handle is created.</summary>
-        <returns>An object.  This user context object will be available to the persistence provider when commands are executed using the handle, and when the handle is freed.</returns>
-        <remarks>To be added.</remarks>
+        <param name="instanceHandle">インスタンス ハンドル。</param>
+        <summary>新しいインスタンス ハンドルが作成されると呼び出されます。</summary>
+        <returns>オブジェクト。  永続化プロバイダーは、ハンドルを使用してコマンドを実行する場合と、ハンドルが解放される場合に、このユーザー コンテキスト オブジェクトを使用できます。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ResetEvent">
@@ -494,10 +556,15 @@
         <Parameter Name="owner" Type="System.Runtime.DurableInstancing.InstanceOwner" />
       </Parameters>
       <Docs>
-        <param name="persistenceEvent">The persistence event that was signaled earlier and to be reset.</param>
-        <param name="owner">The instance owner associated with the persistence event.</param>
-        <summary>Resets the signaled event and removes the event from the signaled events list maintained by the instance owner.</summary>
-        <remarks>To be added.</remarks>
+        <param name="persistenceEvent">前にシグナル状態になり、リセットされる永続性イベント。</param>
+        <param name="owner">永続性イベントに関連付けられているインスタンス所有者。</param>
+        <summary>シグナル状態のイベントをリセットし、イベントをインスタンス所有者で維持されるシグナル状態のイベントから削除します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SignalEvent">
@@ -517,10 +584,15 @@
         <Parameter Name="owner" Type="System.Runtime.DurableInstancing.InstanceOwner" />
       </Parameters>
       <Docs>
-        <param name="persistenceEvent">The persistence event to be signaled.</param>
-        <param name="owner">The instance owner.</param>
-        <summary>An instance store invokes this method to signal an event. A workflow host that subscribes for this persistence event receives it and takes an appropriate action.</summary>
-        <remarks>To be added.</remarks>
+        <param name="persistenceEvent">シグナル状態に設定される永続性イベント。</param>
+        <param name="owner">インスタンスの所有者。</param>
+        <summary>インスタンス ストアはこのメソッドを呼び出してイベントをシグナル状態にします。 この永続性イベントを定期受信するワークフロー ホストは、これを受信して適切なアクションを実行します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TryCommand">
@@ -541,16 +613,16 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="context">The instance context.</param>
-        <param name="command">The command to be executed.</param>
-        <param name="timeout">Timeout value for the operation.</param>
-        <summary>A persistence provider implements this method, which determines whether a particular persistence command can be executed and if the command can be executed executes it asynchronously.</summary>
-        <returns>A persistence provider implementation should return <see langword="false" /> if it doesn’t support the command passed as a parameter; otherwise it should return <see langword="true" /> or throw an exception.</returns>
+        <param name="context">インスタンス コンテキスト。</param>
+        <param name="command">実行するコマンド。</param>
+        <param name="timeout">操作で使用するタイムアウト値。</param>
+        <summary>永続化プロバイダーはこのメソッドを実装して、特定の永続化コマンドを実行できるかどうかを判断し、できる場合は非同期で実行します。</summary>
+        <returns>永続化プロバイダーの実装を返す必要があります <see langword="false" /> パラメーターとして渡されるコマンドをサポートしていない場合は、それ以外の場合に返す必要があります <see langword="true" /> か、例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the command can be executed, the persistence provider calls relevant methods on the <xref:System.Runtime.DurableInstancing.InstancePersistenceContext> to provide the results of the command.  
+## 解説  
+ コマンドを実行できる場合、永続化プロバイダーは <xref:System.Runtime.DurableInstancing.InstancePersistenceContext> 上の関連するメソッドを呼び出し、コマンドの結果を返します。  
   
  ]]></format>
         </remarks>
@@ -573,12 +645,33 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="handle">The instance handle that is bound to the event.</param>
-        <param name="timeout">The time span after which the waiting operation times out.</param>
-        <summary>A workflow host typically invokes this method to wait for an event to be signaled.</summary>
-        <returns>A list of <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> objects.</returns>
-        <remarks>To be added.</remarks>
+        <param name="handle">イベントにバインドされているインスタンス ハンドル。</param>
+        <param name="timeout">待機操作がタイムアウトした後の時間。</param>
+        <summary>通常、ワークフロー ホストは、このメソッドを呼び出し、イベントがシングル状態になるまで待機します。</summary>
+        <returns>
+          <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> オブジェクトの一覧。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="CreateInstanceHandle">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.DurableInstancing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>インスタンス ハンドルを作成します。 DefaultInstanceOwner を設定すると、値は新しいハンドルのインスタンス所有者として自動的にバインドされます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

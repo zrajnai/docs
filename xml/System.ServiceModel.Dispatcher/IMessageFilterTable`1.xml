@@ -21,34 +21,34 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <typeparam name="TFilterData">The type of data associated with each filter in the table.</typeparam>
-    <summary>An <see langword="interface" /> that defines the contract that a filter table must implement to inspect messages with query criteria derived from one or more filters.</summary>
+    <typeparam name="TFilterData">テーブル内の各フィルターに関連付けられたデータの型。</typeparam>
+    <summary>1 つ以上のフィルターから派生するクエリ条件でメッセージを検査するために、フィルター テーブルで実装する必要があるコントラクトを定義する <see langword="interface" />。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The filter table is a core component of the filter engine. The primary use of the filter engine in [!INCLUDE[indigo1](~/includes/indigo1-md.md)] is to match application logic to messages by finding all the filters that match a message.  
+## 解説  
+ フィルター テーブルは、フィルター エンジンの核となるコンポーネントです。[!INCLUDE[indigo1](~/includes/indigo1-md.md)] でのフィルター エンジンの主な用途は、メッセージと一致するすべてのフィルターを見つけ、アプリケーションのロジックをメッセージと照合することです。  
   
- A filter table allows multiple filters to be matched against a single message more efficiently than they can be matched separately. A filter table associates filter data with filters. The table is a collection of key-value pairs, where the key is the <xref:System.ServiceModel.Dispatcher.MessageFilter>, and the value is the associated filter data. Filter data can be any data of the type specified in the generic parameter and can be used to specify what actions to take if a message is matched by a filter in the table.  
+ フィルター テーブルを使用すると、個別に行う場合より効率的に、複数のフィルターを 1 つのメッセージと照合することができます。 フィルター テーブルは、フィルター データをフィルターに関連付けます。 テーブルは、キーと値のペアのコレクションです。キーは <xref:System.ServiceModel.Dispatcher.MessageFilter> で、値は関連付けられたフィルター データです。 フィルター データは、ジェネリック パラメーターで指定されている型の任意のデータで、これを使用して、メッセージがテーブル内のフィルターと一致した場合に実行するアクションを指定できます。  
   
- Filter table entries can be accessed using the <xref:System.Collections.Generic.IDictionary%602> functionality that <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601> inherits.  
+ フィルター テーブルのエントリには、<xref:System.Collections.Generic.IDictionary%602> が継承する <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601> の機能を使用してアクセスできます。  
   
- Note that a filter instance can only be added to a given <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601> once. To add multiple instances of this filter to the same filter table, use a filter constructor to create additional instances.  
+ あるフィルター インスタンスを特定の <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601> に追加できるのは、1 回だけであることに注意してください。 このフィルターの複数のインスタンスを同じフィルター テーブルに追加するには、フィルター コンストラクターを使用して追加のインスタンスを作成します。  
   
- A filter matches a message when the message satisfies the query criteria of the filter. There are four overloaded matching methods. The data returned is either the filter data or the <xref:System.ServiceModel.Dispatcher.MessageFilter> objects themselves. This data is returned whether multiple matches are allowed or only a single match. The following table shows this information for each overload.  
+ フィルターは、メッセージがフィルターのクエリ条件を満たしているときに、メッセージと一致します。 オーバーロードされた一致メソッドは 4 つあります。 返されるデータは、フィルター データまたは <xref:System.ServiceModel.Dispatcher.MessageFilter> オブジェクト自体です。 このデータは、複数の一致が許可されている場合も、単一の一致しか許可されていない場合も、返されます。 次の表では、各オーバーロードについて、この情報を示します。  
   
-|Method Name|Matches|Data Returned|  
-|-----------------|-------------|-------------------|  
+|メソッド名|一致する文字列|返されるデータ|  
+|-----------|-------------|-------------|  
 |<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValue%2A>|Single|`FilterData`|  
 |<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A>|Single|<xref:System.ServiceModel.Dispatcher.MessageFilter>|  
-|<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A>|Multiple|`FilterData`|  
-|<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilters%2A>|Multiple|<xref:System.ServiceModel.Dispatcher.MessageFilter> objects|  
+|<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A>|複数|`FilterData`|  
+|<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilters%2A>|複数|<xref:System.ServiceModel.Dispatcher.MessageFilter> オブジェクト|  
   
- Each method contains two overloads. The difference between the two overloads is that one takes a <xref:System.ServiceModel.Channels.Message> parameter and is not permitted to examine the contents of the body; the other takes a <xref:System.ServiceModel.Channels.MessageBuffer> parameter and can examine any part of the message. If you call a method with the message parameter, and the filter table contains a filter that examines the content of the message body, an exception is thrown. If you are unsure about the filters in a table, call the overload that takes a message buffer.  
+ 各メソッドには、2 つのオーバーロードが含まれます。 2 つのオーバーロードの違いは、一方は <xref:System.ServiceModel.Channels.Message> パラメーターを受け取り、本文の内容を検査することはできないのに対し、他方は、<xref:System.ServiceModel.Channels.MessageBuffer> パラメーターを受け取り、メッセージのどの部分でも検査できるということです。 メッセージ パラメーターを指定してメソッドを呼び出したときに、フィルター テーブルにメッセージ本文の内容を検査するフィルターが含まれている場合は、例外がスローされます。 テーブル内のフィルターがどちらかはっきりしない場合は、メッセージ バッファーを受け取るオーバーロードを呼び出してください。  
   
- Message headers are automatically buffered and can be inspected by a filter without being consumed. But if the body is to be inspected by a filter, then the entire message must be buffered because an unbuffered message body is consumed by a query and its contents destroyed.  
+ メッセージ ヘッダーは自動的にバッファーに格納され、フィルターはその内容を取り込まずに調べることができます。 ただし、フィルターでメッセージ本文を調べる場合は、メッセージ全体をバッファーに格納する必要があります。これは、バッファーに格納されていないメッセージ本文は、クエリによって取り込まれ、その内容が破壊されるためです。  
   
- The following classes implement <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601>:  
+ 次のクラスは、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601> を実装しています。  
   
 -   <xref:System.ServiceModel.Dispatcher.MessageFilterTable%601>  
   
@@ -56,9 +56,9 @@
   
  ]]></format>
     </remarks>
-    <threadsafe>Filter tables are thread-safe with respect to matching operations, but are not thread-safe with respect to modification. Threads that access a filter table should be synchronized by the <see cref="T:System.Threading.ReaderWriterLock" /> or similar locking semantic. This lock allows multiple reads of a filter table (for example, a match operation) to run simultaneously, but in order to write to a filter table (for example, adding a filter), a thread must wait for an exclusive lock.  
+    <threadsafe>フィルター テーブルは、照合操作に関してはスレッド セーフですが、変更に関してはスレッド セーフではありません。 フィルター テーブルにアクセスするスレッドは、<see cref="T:System.Threading.ReaderWriterLock" /> または同様のロック セマンティックによって同期する必要があります。 このロックにより、フィルター テーブルの複数の読み取り \(たとえば照合操作\) は同時に実行できますが、フィルター テーブルに書き込むには \(たとえばフィルターの追加\)、スレッドが排他的ロックを待つ必要があります。  
   
- All compilation is done when filters are added to the table. If you create a filter table in advance, and never edit it, locking is not necessary during a match.</threadsafe>
+ フィルターがテーブルに追加されると、すべてのコンパイルが行われます。 事前にフィルター テーブルを作成しており、それを編集しない場合は、照合中のロックの必要はありません。</threadsafe>
   </Docs>
   <Members>
     <MemberGroup MemberName="GetMatchingFilter">
@@ -67,14 +67,14 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Returns a filter from the table whose query criteria are satisfied by a specified message or buffered message.</summary>
+        <summary>指定したメッセージまたはバッファー内のメッセージによってクエリ条件が満たされるフィルターをテーブルから返します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when a single filter is expected to match the message and the matching filter is required.  
+## 解説  
+ 1 つのフィルターがメッセージに一致すると推測され、一致するフィルターが必要な場合に、このメソッドを使用します。  
   
- Use <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> if the body content does not require examination. Use <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> if the contents of the message body may require examination.  
+ メッセージ本文の内容を調べる必要がない場合は、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> を使用します。 メッセージ本文の内容を調べる必要がある場合は、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> を使用します。  
   
  ]]></format>
         </remarks>
@@ -100,19 +100,22 @@
         <Parameter Name="filter" Type="System.ServiceModel.Dispatcher.MessageFilter&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.ServiceModel.Channels.Message" /> to test.</param>
+        <param name="message">テスト対象の <see cref="T:System.ServiceModel.Channels.Message" />。</param>
         <param name="result">To be added.</param>
-        <summary>Returns a value that indicates whether the match criterion of exactly one filter in the table is satisfied by the specified message, and returns that filter in an <see langword="out" /> parameter.</summary>
+        <summary>指定したメッセージがテーブル内のただ 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、そのフィルターを <see langword="out" /> パラメーターに設定して返します。</summary>
         <returns>
-          <see langword="true" /> if the match criterion of at least one filter in the table is satisfied by <paramref name="message" />; <see langword="false" /> if no filter is satisfied.</returns>
+          <see langword="true" /> がテーブル内の少なくとも 1 つのフィルターの一致条件を満たしている場合は <paramref name="message" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when a single filter is expected to match the message and the matching filter is required.  
+## 解説  
+ 1 つのフィルターがメッセージに一致すると推測され、一致するフィルターが必要な場合に、このメソッドを使用します。  
   
- If the body of the message must be inspected by a filter in the filter table, use the <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> version of the method.  
+ フィルター テーブル内のフィルターでメッセージの本文を検査する必要がある場合は、このメソッドの <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> バージョンを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -141,15 +144,18 @@
       <Docs>
         <param name="buffer">To be added.</param>
         <param name="result">To be added.</param>
-        <summary>Returns a value that indicates whether the match criterion of exactly one filter in the table is satisfied by the specified message or buffered message, and returns that filter in an <see langword="out" /> parameter.</summary>
+        <summary>指定したメッセージまたはバッファー内のメッセージがテーブル内のただ 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、そのフィルターを <see langword="out" /> パラメーターに設定して返します。</summary>
         <returns>
-          <see langword="true" /> if the match criterion of at least one filter in the table is satisfied by <paramref name="messageBuffer" />; <see langword="false" /> if no filter is satisfied.</returns>
+          <see langword="true" /> がテーブル内の少なくとも 1 つのフィルターの一致条件を満たしている場合は <paramref name="messageBuffer" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when a single filter is expected to match the buffered message, the matching filter must be returned, and the body of the message may have to be inspected.  
+## 解説  
+ 1 つのフィルターがバッファー内のメッセージに一致すると予測され、一致するフィルターを返す必要があり、メッセージ本文の検査が必要になる可能性がある場合は、このメソッドを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -160,16 +166,16 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Adds the filters whose query criteria are satisfied by a specified message or buffered message to a collection.</summary>
+        <summary>指定したメッセージまたはバッファー内のメッセージによってクエリ条件が満たされるフィルターをコレクションに追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use one of these methods when more than one filter is expected to match the message and the matching filters are required. Note that the collection that contains the filters is not cleared before the results are added. This allows you to accumulate all matches across multiple filter tables into a single collection.  
+## 解説  
+ 2 つ以上のフィルターがメッセージに一致すると推測され、一致するフィルターが必要な場合は、これらのうちいずれか 1 つのメソッドを使用します。 結果を追加する前に、フィルターが格納されたコレクションをクリアしないように注意してください。 そうすることで、複数のフィルター テーブルに含まれる一致フィルターのすべてを 1 つのコレクションに蓄積できます。  
   
- If the body of the message must be inspected by a filter in the filter table, buffer the message and pass it to the <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilters%2A> method. Otherwise, use <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilters%2A>.  
+ フィルター テーブル内のフィルターでメッセージの本文を検査する必要がある場合は、メッセージをバッファーに格納し、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilters%2A> メソッドに渡します。 それ以外の場合は、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilters%2A> を使用します。  
   
- The matching <xref:System.ServiceModel.Dispatcher.MessageFilter> objects are stored in the `results` parameter. The filter data can then be recovered from the filter table using these filters as keys with the methods provided by <xref:System.Collections.Generic.IDictionary%602>.  
+ 一致する <xref:System.ServiceModel.Dispatcher.MessageFilter> オブジェクトは、`results` パラメーターに格納されます。 これで、該当するフィルターをキーとして指定し、<xref:System.Collections.Generic.IDictionary%602> によって提供されているメソッドを使用して、フィルター データをフィルター テーブルから復元できます。  
   
  ]]></format>
         </remarks>
@@ -192,17 +198,21 @@
         <Parameter Name="results" Type="System.Collections.Generic.ICollection&lt;System.ServiceModel.Dispatcher.MessageFilter&gt;" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.ServiceModel.Channels.Message" /> to test.</param>
-        <param name="results">Reference parameter that stores the <see cref="T:System.ServiceModel.Dispatcher.MessageFilter" /> objects that match in <see cref="T:System.Collections.Generic.ICollection`1" />&lt;Filter&gt;.</param>
-        <summary>Returns a value that indicates whether the match criterion of a filter in the table is satisfied by the specified message, and adds the matching filters to a collection.</summary>
+        <param name="message">テスト対象の <see cref="T:System.ServiceModel.Channels.Message" />。</param>
+        <param name="results">
+          <see cref="T:System.ServiceModel.Dispatcher.MessageFilter" />&lt;Filter&gt; に一致する <see cref="T:System.Collections.Generic.ICollection`1" /> オブジェクトを格納する参照パラメーター。</param>
+        <summary>指定したメッセージがテーブル内のフィルターの一致条件を満たしているかどうかを示す値を返し、一致するフィルターをコレクションに追加します。</summary>
         <returns>
-          <see langword="true" /> if the match criterion of at least one filter in the table is satisfied by <paramref name="message" />; <see langword="false" /> if no filter is satisfied.</returns>
+          <see langword="true" /> がテーブル内の少なくとも 1 つのフィルターの一致条件を満たしている場合は <paramref name="message" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when more than one filter is expected to match the message, the matching filters are required, and the body of the message does not have to be inspected.  
+## 解説  
+ 2 つ以上のフィルターがメッセージに一致すると予測され、一致するフィルターが必要で、メッセージ本文を検査する必要がない場合は、このメソッドを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -228,16 +238,20 @@
       </Parameters>
       <Docs>
         <param name="buffer">To be added.</param>
-        <param name="results">Reference parameter that stores the <see cref="T:System.ServiceModel.Dispatcher.MessageFilter" /> objects that match in <see cref="T:System.Collections.Generic.ICollection`1" />&lt;Filter&gt;.</param>
-        <summary>Returns a value that indicates whether the match criterion of a filter in the table is satisfied by the specified buffered message, and adds the matching filters to a collection.</summary>
+        <param name="results">
+          <see cref="T:System.ServiceModel.Dispatcher.MessageFilter" />&lt;Filter&gt; に一致する <see cref="T:System.Collections.Generic.ICollection`1" /> オブジェクトを格納する参照パラメーター。</param>
+        <summary>指定したバッファー内のメッセージがテーブル内のフィルターの一致条件を満たしているかどうかを示す値を返し、一致するフィルターをコレクションに追加します。</summary>
         <returns>
-          <see langword="true" /> if the match criterion of at least one filter in the table is satisfied by <paramref name="messageBuffer" />; <see langword="false" /> if no filter is satisfied.</returns>
+          <see langword="true" /> がテーブル内の少なくとも 1 つのフィルターの一致条件を満たしている場合は <paramref name="messageBuffer" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when more than one filter is expected to match the buffered message, the matching filter is required, and the body of the message may have to be inspected.  
+## 解説  
+ 2 つ以上のフィルターがバッファー内のメッセージに一致すると予測され、一致するフィルターが必要で、メッセージ本文の検査が必要になる可能性がある場合は、このメソッドを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -248,16 +262,16 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Returns a value that indicates whether the match criterion of a filter in the table is satisfied by the specified message or buffered message, and returns the filter data for the filter that matched.</summary>
+        <summary>指定したメッセージまたはバッファー内のメッセージがテーブル内の 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、一致したフィルターのフィルター データを返します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use one of these methods when, at most, one filter is expected to match the message and only the filter data from the matching filter must be recovered. These methods return a boolean that indicates whether a matching filter was found and set the `data` reference parameter to the matching filter data.  
+## 解説  
+ 1 つのフィルターがメッセージに一致すると予測され、一致するフィルターからフィルター データだけを復元する必要がある場合は、これらのメソッドのいずれかを使用します。 これらのメソッドは、一致するフィルターが見つかったかどうかを示すブール値を返し、`data` 参照パラメーターに一致するフィルター データを設定します。  
   
- Use <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> if the body of the message is not inspected by any of the filters in the filter table.  
+ メッセージの本文を検査するフィルターがフィルター テーブル内に存在しない場合は、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> を使用します。  
   
- If the body of the message may be inspected by a filter in the filter table, buffer the message and pass it to the <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> version of the method.  
+ フィルター テーブル内のフィルターでメッセージの本文を検査する可能性がある場合は、メッセージをバッファーに格納し、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingFilter%2A> メソッドに渡します。  
   
  ]]></format>
         </remarks>
@@ -283,21 +297,23 @@
         <Parameter Name="value" Type="TFilterData&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.ServiceModel.Channels.Message" /> to test.</param>
+        <param name="message">テスト対象の <see cref="T:System.ServiceModel.Channels.Message" />。</param>
         <param name="data">To be added.</param>
-        <summary>Returns a value that indicates whether the match criterion of exactly one filter in the table is satisfied by the specified message, and adds the matching filter data to a collection.</summary>
-        <returns>
-          <see langword="true" /> if the match criterion of exactly one filter in the table is satisfied by the message; <see langword="false" /> if no filter is satisfied.</returns>
+        <summary>指定したメッセージがテーブル内のただ 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、一致するフィルターのデータをコレクションに追加します。</summary>
+        <returns>メッセージがテーブル内のただ 1 つのフィルターの一致条件を満たしている場合は <see langword="true" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when a single filter is expected to match the message and only the filter data from the matching filter must be recovered.  
+## 解説  
+ 1 つのフィルターがバッファー内のメッセージに一致すると予測され、一致するフィルターからフィルター データだけを復元する必要がある場合は、このメソッドを使用します。  
   
- This method expects at most a single matching filter. If more than one filter matches, a <xref:System.ServiceModel.Dispatcher.MultipleFilterMatchesException> must be thrown.  
+ このメソッドでは、一致するフィルターは、多くとも 1 つであると予想されます。 複数のフィルターが一致する場合は、<xref:System.ServiceModel.Dispatcher.MultipleFilterMatchesException> をスローする必要があります。  
   
- If the body of the message must be inspected by a filter in the filter table, buffer the message using <xref:System.ServiceModel.Channels.Message.CreateBufferedCopy%2A> and pass it to the <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValue%2A> version of the method.  
+ フィルター テーブル内のフィルターでメッセージの本文を検査する必要がある場合は、<xref:System.ServiceModel.Channels.Message.CreateBufferedCopy%2A> を使用してメッセージをバッファーに格納し、それを <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValue%2A> バージョンのメソッドに渡します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -326,15 +342,17 @@
       <Docs>
         <param name="buffer">To be added.</param>
         <param name="data">To be added.</param>
-        <summary>Returns a value that indicates whether the match criterion of exactly one filter in the table is satisfied by the specified buffered message, and adds the matching filter data to a collection.</summary>
-        <returns>
-          <see langword="true" /> if the match criterion of exactly one filter in the table is satisfied by the message; <see langword="false" /> if no filter is satisfied.</returns>
+        <summary>指定したバッファー内のメッセージがテーブル内のただ 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、一致するフィルターのデータをコレクションに追加します。</summary>
+        <returns>メッセージがテーブル内のただ 1 つのフィルターの一致条件を満たしている場合は <see langword="true" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when a single filter is expected to match the buffered message, only the filter data from the matching filter must be recovered, and the body of the message may have to be inspected.  
+## 解説  
+ 1 つのフィルターがバッファー内のメッセージに一致すると予測され、一致するフィルターからフィルター データだけを復元する必要があり、メッセージ本文の検査が必要になる可能性がある場合は、このメソッドを使用します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -348,16 +366,16 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Adds the filter data of the filters that match the specified message or buffered message to a collection.</summary>
+        <summary>指定したメッセージまたはバッファー内のメッセージと一致するフィルターのフィルター データを、コレクションに追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when more than one filter is expected to match and only the matching filter data is required. These methods return a boolean that indicates whether matching filters were found and put any matching filter data into a collection.  
+## 解説  
+ 2 つ以上のフィルターがメッセージに一致すると推測され、一致するフィルター データだけが必要な場合は、このメソッドを使用します。 これらのメソッドは、一致するフィルターが見つかったかどうかを示すブール値を返し、一致するフィルター データをすべてコレクションに格納します。  
   
- Note that the collection that contains the filter data is not cleared before the results are added. This allows you to accumulate all matches across multiple filter tables into a single collection.  
+ 結果を追加する前に、フィルターが格納されたコレクションをクリアしないように注意してください。 そうすることで、複数のフィルター テーブルに含まれる一致フィルターのすべてを 1 つのコレクションに蓄積できます。  
   
- Use <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A> if the contents of the message body do not require examination. Use <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A> if the contents of the message body requires examination.  
+ メッセージ本文の内容を確認する必要がない場合は、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A> を使用します。 メッセージ本文の内容を確認する必要がある場合は、<xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A> を使用します。  
   
  ]]></format>
         </remarks>
@@ -380,21 +398,24 @@
         <Parameter Name="results" Type="System.Collections.Generic.ICollection&lt;TFilterData&gt;" />
       </Parameters>
       <Docs>
-        <param name="message">The <see cref="T:System.ServiceModel.Channels.Message" /> to test.</param>
-        <param name="results">Reference parameter that stores the filter data of the matching filters in a generic collection.</param>
-        <summary>Returns a value that indicates whether the match criterion of at least one filter in the table is satisfied by the specified message, and adds the <paramref name="FilterData" /> of the matching filters to a collection.</summary>
+        <param name="message">テスト対象の <see cref="T:System.ServiceModel.Channels.Message" />。</param>
+        <param name="results">一致するフィルターのフィルター データをジェネリック コレクションに格納する参照パラメーター。</param>
+        <summary>指定したメッセージがテーブル内の少なくとも 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、一致するフィルターの <paramref name="FilterData" /> をコレクションに追加します。</summary>
         <returns>
-          <see langword="true" /> if the match criterion of at least one filter in the table is satisfied by <paramref name="message" />; <see langword="false" /> if no filter is satisfied.</returns>
+          <see langword="true" /> がテーブル内の少なくとも 1 つのフィルターの一致条件を満たしている場合は <paramref name="message" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when one or more filters are expected to match the message, only the filter data is required, and the contents of the body of the message are not to be inspected.  
+## 解説  
+ 1 つ以上のフィルターがメッセージに一致すると予測され、フィルター データだけが必要で、メッセージ本文の内容を検査しない場合は、このメソッドを使用します。  
   
- The filter data of the matching <xref:System.ServiceModel.Dispatcher.MessageFilter> objects is stored in the `results` parameter.  
+ 一致する <xref:System.ServiceModel.Dispatcher.MessageFilter> オブジェクトのフィルター データを `results` パラメーターに格納します。  
   
- If the body of the message is inspected by a filter in the filter table, buffer the message and pass it to the <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A> version of the method.  
+ フィルター テーブル内のフィルターでメッセージの本文を検査する場合は、メッセージをバッファーに格納し、それを <xref:System.ServiceModel.Dispatcher.IMessageFilterTable%601.GetMatchingValues%2A> バージョンのメソッドに渡します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -417,18 +438,21 @@
       </Parameters>
       <Docs>
         <param name="buffer">To be added.</param>
-        <param name="results">Reference parameter that stores the filter data of the matching filters in a generic <see cref="T:System.Collections.Generic.ICollection`1" />&lt;<c>FilterData</c>&gt;.</param>
-        <summary>Returns a value that indicates whether the match criterion of at least one filter in the table is satisfied by the specified buffered message, and adds the <paramref name="FilterData" /> of the matching filters to a collection.</summary>
+        <param name="results">汎用フィルターの一致するフィルター データを格納する参照パラメーター <see cref="T:System.Collections.Generic.ICollection`1" />&lt;<c>FilterData</c>&gt; です。</param>
+        <summary>指定したバッファー内のメッセージがテーブル内の少なくとも 1 つのフィルターの一致条件を満たしているかどうかを示す値を返し、一致するフィルターの <paramref name="FilterData" /> をコレクションに追加します。</summary>
         <returns>
-          <see langword="true" /> if the match criterion of at least one filter in the table is satisfied by <paramref name="messageBuffer" />; <see langword="false" /> if no filter is satisfied.</returns>
+          <see langword="true" /> がテーブル内の少なくとも 1 つのフィルターの一致条件を満たしている場合は <paramref name="messageBuffer" />、どのフィルター条件も満たしていない場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when one or more filters are expected to match the buffered message, only the filter data is required, and the body of the message may require inspection.  
+## 解説  
+ 1 つ以上のフィルターがバッファー内のメッセージに一致すると予測され、フィルター データだけが必要で、メッセージ本文の検査が必要になる可能性がある場合は、このメソッドを使用します。  
   
- The filter data of the matching <xref:System.ServiceModel.Dispatcher.MessageFilter> objects is stored in the `results` parameter.  
+ 一致する <xref:System.ServiceModel.Dispatcher.MessageFilter> オブジェクトのフィルター データを `results` パラメーターに格納します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>

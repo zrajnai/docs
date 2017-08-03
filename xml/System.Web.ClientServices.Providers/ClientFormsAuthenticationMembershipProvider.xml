@@ -11,35 +11,37 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Enables forms authentication with client application services.</summary>
+    <summary>クライアント アプリケーション サービスでのフォーム認証を有効にします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use client application services to validate users by using forms authentication. To enable forms authentication, you configure your application to use the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class. For more information, see [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md).  
+## 解説  
+ クライアント アプリケーション サービスを使用して、フォーム認証を使用してユーザーを検証することができます。 フォーム認証を有効にするを使用するアプリケーションを構成する、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。 詳細については、「[How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)」を参照してください。  
   
- After configuration, you can validate users by calling the `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method, which internally calls the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%28System.String%2CSystem.String%29?displayProperty=fullName> method.  
+ 構成後は、呼び出すことによってユーザーを検証することができます、 `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドを内部的に呼び出す、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%28System.String%2CSystem.String%29?displayProperty=fullName> メソッドです。  
   
- Forms authentication requires that the user specify their credentials through login controls provided by your application. You can retrieve the credentials and pass them to the <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method. You can also pass in empty strings or `null` to use a credentials provider. A credentials provider is an <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider> implementation specified in your application configuration file. You will typically implement the <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider.GetCredentials%2A?displayProperty=fullName> method to display a login dialog box and return a populated <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationCredentials> object. Using a credentials provider enables you to share a single login dialog box among multiple applications.  
+ フォーム認証では、ユーザーがアプリケーションによって提供されるログイン コントロールを通じて資格情報を指定する必要があります。 資格情報を取得し、それらに渡す、 <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドです。 空の文字列を渡すこともできますまたは `null` 、資格情報プロバイダーを使用します。 資格情報プロバイダーは、 <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider> 、アプリケーション構成ファイルで指定された実装。 通常、実装、 <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider.GetCredentials%2A?displayProperty=fullName> メソッドをログイン ダイアログ ボックスを表示し、データが設定された戻ります <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationCredentials> オブジェクトです。 資格情報プロバイダーを使用することにより、複数のアプリケーション間で同じログイン ダイアログ ボックスを共有できます。  
   
- The <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method authenticates users through the login service indicated by the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ServiceUri%2A> property. The value of the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ServiceUri%2A> property is typically retrieved from the application configuration file along with other configuration values. For more information, see [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md).  
+ <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドによって示されるログイン サービスを介してユーザーを認証する、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ServiceUri%2A> プロパティです。 値、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ServiceUri%2A> プロパティは通常他の構成値と共に、アプリケーション構成ファイルから取得します。 詳細については、「[How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)」を参照してください。  
   
- If the user is successfully authenticated, the service provider sets the `static` <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName> property to a new <xref:System.Web.ClientServices.ClientRolePrincipal> object that contains a new <xref:System.Web.ClientServices.ClientFormsIdentity> object that contains the user information. If a <xref:System.Web.ClientServices.Providers.ClientRoleProvider> is configured for your application, you can use the <xref:System.Web.ClientServices.ClientRolePrincipal> object to retrieve user role information from the roles service.  
+ サービス プロバイダーの設定、ユーザーが正常に認証されている場合、 `static` <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName> プロパティを新しい <xref:System.Web.ClientServices.ClientRolePrincipal> オブジェクトを含む新しい <xref:System.Web.ClientServices.ClientFormsIdentity> ユーザー情報を含むオブジェクト。  場合、 <xref:System.Web.ClientServices.Providers.ClientRoleProvider> が構成されている、アプリケーションに使用することができます、 <xref:System.Web.ClientServices.ClientRolePrincipal> ロール サービスからユーザー ロール情報を取得するオブジェクト。  
   
- You can retrieve a reference to the current <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> instance through the `static` <xref:System.Web.Security.Membership.Provider%2A?displayProperty=fullName> property. You can use the membership provider reference to call the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method directly. Additionally, you will need the membership provider reference to call the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Logout%2A> method, which is not available in the <xref:System.Web.Security.MembershipProvider> base class.  
+ 現在への参照を取得する <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> を通じてインスタンス、 `static` <xref:System.Web.Security.Membership.Provider%2A?displayProperty=fullName> プロパティです。  メンバーシップ プロバイダーの参照を使用して、呼び出す、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドを直接します。 またを呼び出すメンバーシップ プロバイダーの参照が必要、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Logout%2A> メソッドでは使用できません、 <xref:System.Web.Security.MembershipProvider> 基本クラスです。  
   
- You cannot use the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class to create, delete, or modify membership information. To create, delete, or modify users, you must change the configuration of the login service on the server.  
+ 使用することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスを作成、削除、またはメンバーシップ情報を変更します。 作成、削除、またはユーザーの変更、ログイン サービス、サーバー上の構成を変更する必要があります。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this method to validate the user by using an <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider> implementation.  
+## 例  
+ 次のコード例は、このメソッドを使用してを使用して、ユーザーを検証する方法を示します、 <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider> 実装します。  
   
- [!code-csharp[ClientApplicationServices#306](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#306)]
- [!code-vb[ClientApplicationServices#306](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#306)]  
+ [!code-csharp[ClientApplicationServices\#306](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#306)]
+ [!code-vb[ClientApplicationServices\#306](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#306)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="Overload:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser" />
+    <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -53,7 +55,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -70,13 +73,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>The name of the application using the custom membership provider.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>カスタム メンバーシップ プロバイダーを使用するアプリケーションの名前。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Setting this property has no effect.  
+## 解説  
+ このプロパティを設定しても効果はありません。  
   
  ]]></format>
         </remarks>
@@ -100,20 +103,20 @@
         <Parameter Name="newPassword" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="oldPassword">Not used.</param>
-        <param name="newPassword">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="oldPassword">使用しません。</param>
+        <param name="newPassword">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="ChangePasswordQuestionAndAnswer">
@@ -135,21 +138,21 @@
         <Parameter Name="newPasswordAnswer" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="password">Not used.</param>
-        <param name="newPasswordQuestion">Not used.</param>
-        <param name="newPasswordAnswer">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="password">使用しません。</param>
+        <param name="newPasswordQuestion">使用しません。</param>
+        <param name="newPasswordAnswer">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateUser">
@@ -175,25 +178,25 @@
         <Parameter Name="status" Type="System.Web.Security.MembershipCreateStatus&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="password">Not used.</param>
-        <param name="email">Not used.</param>
-        <param name="passwordQuestion">Not used.</param>
-        <param name="passwordAnswer">Not used.</param>
-        <param name="isApproved">Not used.</param>
-        <param name="providerUserKey">Not used.</param>
-        <param name="status">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="password">使用しません。</param>
+        <param name="email">使用しません。</param>
+        <param name="passwordQuestion">使用しません。</param>
+        <param name="passwordAnswer">使用しません。</param>
+        <param name="isApproved">使用しません。</param>
+        <param name="providerUserKey">使用しません。</param>
+        <param name="status">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="DeleteUser">
@@ -213,19 +216,19 @@
         <Parameter Name="deleteAllRelatedData" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="deleteAllRelatedData">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="deleteAllRelatedData">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="EnablePasswordReset">
@@ -241,12 +244,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always <see langword="false" />.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
   
  ]]></format>
@@ -266,12 +269,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always <see langword="false" />.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
   
  ]]></format>
@@ -297,14 +300,14 @@
         <Parameter Name="totalRecords" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="emailToMatch">Not used.</param>
-        <param name="pageIndex">Not used.</param>
-        <param name="pageSize">Not used.</param>
-        <param name="totalRecords">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="emailToMatch">使用しません。</param>
+        <param name="pageIndex">使用しません。</param>
+        <param name="pageSize">使用しません。</param>
+        <param name="totalRecords">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="FindUsersByName">
@@ -326,14 +329,14 @@
         <Parameter Name="totalRecords" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="usernameToMatch">Not used.</param>
-        <param name="pageIndex">Not used.</param>
-        <param name="pageSize">Not used.</param>
-        <param name="totalRecords">Not used. This parameter is passed uninitialized.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="usernameToMatch">使用しません。</param>
+        <param name="pageIndex">使用しません。</param>
+        <param name="pageSize">使用しません。</param>
+        <param name="totalRecords">使用しません。 このパラメーターは初期化せずに渡されます。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetAllUsers">
@@ -354,13 +357,13 @@
         <Parameter Name="totalRecords" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="pageIndex">Not used.</param>
-        <param name="pageSize">Not used.</param>
-        <param name="totalRecords">Not used. This parameter is passed uninitialized.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="pageIndex">使用しません。</param>
+        <param name="pageSize">使用しません。</param>
+        <param name="totalRecords">使用しません。 このパラメーターは初期化せずに渡されます。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetNumberOfUsersOnline">
@@ -377,10 +380,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当なし。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetPassword">
@@ -400,12 +403,12 @@
         <Parameter Name="answer" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="answer">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="answer">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetUser">
@@ -425,12 +428,12 @@
         <Parameter Name="userIsOnline" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="providerUserKey">Not used.</param>
-        <param name="userIsOnline">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="providerUserKey">使用しません。</param>
+        <param name="userIsOnline">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetUser">
@@ -450,12 +453,12 @@
         <Parameter Name="userIsOnline" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="userIsOnline">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="userIsOnline">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetUserNameByEmail">
@@ -474,11 +477,11 @@
         <Parameter Name="email" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="email">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="email">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="Initialize">
@@ -498,14 +501,14 @@
         <Parameter Name="config" Type="System.Collections.Specialized.NameValueCollection" />
       </Parameters>
       <Docs>
-        <param name="name">The friendly name of the provider.</param>
-        <param name="config">A collection of name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
-        <summary>Initializes the provider.</summary>
+        <param name="name">プロバイダーのフレンドリ名。</param>
+        <param name="config">このプロバイダーの構成で指定されたプロバイダーに固有の属性を表す名前\/値ペアのコレクション。</param>
+        <summary>プロバイダーを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] extensibility model calls the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Initialize%2A> method to initialize the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> using information in your application configuration file. This method recognizes the following authentication service configuration attributes:  
+## 解説  
+ [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 機能拡張モデルの呼び出し、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Initialize%2A> 初期化するメソッドを <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> 、アプリケーション構成ファイルに情報を使用します。 このメソッドは、次の認証サービスの構成属性を認識します。  
   
 -   `name`  
   
@@ -519,23 +522,23 @@
   
 -   `serviceUri`  
   
- For more information, see [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md).  
+ 詳細については、「[How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)」を参照してください。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" />.  
+          <paramref name="name" /> が <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="config" /> is <see langword="null" />.</exception>
+ <paramref name="config" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is empty.  
+          <paramref name="name" /> が空です。  
   
- -or-  
+ または  
   
- <paramref name="config" /> contains an unrecognized value.</exception>
-        <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider" /> has already been initialized.</exception>
+ <paramref name="config" /> 認識されない値が含まれています。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.InvalidOperationException">これは、 <see cref="T:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider" /> は既に初期化されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Logout">
@@ -552,28 +555,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Logs out the user.</summary>
+        <summary>ユーザーをログアウトします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Logout%2A> method clears all authentication cookies from the cookie cache and resets the `static` <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName> property to a <xref:System.Security.Principal.WindowsPrincipal> object that contains the current <xref:System.Security.Principal.WindowsIdentity>.  
+## 解説  
+ <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.Logout%2A> メソッドは、クッキーのキャッシュからすべての認証 cookie をクリアし、リセット、 `static` <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName> プロパティを <xref:System.Security.Principal.WindowsPrincipal> 現在を格納しているオブジェクト <xref:System.Security.Principal.WindowsIdentity>します。  
   
- After you call this method, the current user is no longer authenticated for client application services. This means that you cannot retrieve roles through the <xref:System.Web.ClientServices.Providers.ClientRoleProvider> class and settings through the <xref:System.Web.ClientServices.Providers.ClientSettingsProvider> class. However, because the user might have a valid Windows identity, you might still receive a `true` value from code such as the following: `Thread.CurrentPrincipal.Identity.IsAuthenticated`. To determine whether the user is authenticated for client application services, confirm that the <xref:System.Security.Principal.IPrincipal.Identity%2A> property value of the <xref:System.Security.Principal.IPrincipal> retrieved through the `static` <xref:System.Threading.Thread.CurrentPrincipal%2A> property is a <xref:System.Web.ClientServices.ClientFormsIdentity> reference. Then, check the <xref:System.Web.ClientServices.ClientFormsIdentity.IsAuthenticated%2A?displayProperty=fullName> property.  
+ このメソッドを呼び出した後、クライアント アプリケーション サービスの現在のユーザーは認証されなくなります。 つまり、を通じてロールを取得できません、 <xref:System.Web.ClientServices.Providers.ClientRoleProvider> クラスとを使用して設定、 <xref:System.Web.ClientServices.Providers.ClientSettingsProvider> クラスです。 ただし、ユーザーは、有効な Windows id を持って可能性がある、するが引き続き受信、 `true` 、次のようなコードからの値: `Thread.CurrentPrincipal.Identity.IsAuthenticated`です。 クライアント アプリケーション サービスのユーザーを認証するかどうかを判断することを確認、 <xref:System.Security.Principal.IPrincipal.Identity%2A> のプロパティの値、 <xref:System.Security.Principal.IPrincipal> を使用して取得、 `static` <xref:System.Threading.Thread.CurrentPrincipal%2A> プロパティは、 <xref:System.Web.ClientServices.ClientFormsIdentity> 参照します。  次に、チェック、 <xref:System.Web.ClientServices.ClientFormsIdentity.IsAuthenticated%2A?displayProperty=fullName> プロパティです。  
   
- To reauthenticate the current user, call the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method or the `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method.  
+ 現在のユーザーを再認証する、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドまたは `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドです。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this method to log out the user.  
+## 例  
+ 次のコード例では、このメソッドを使用して、ユーザーをログアウトする方法を示します。  
   
- [!code-csharp[ClientApplicationServices#070](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Form1.cs#070)]
- [!code-vb[ClientApplicationServices#070](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Form1.vb#070)]  
+ [!code-csharp[ClientApplicationServices\#070](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Form1.cs#070)]
+ [!code-vb[ClientApplicationServices\#070](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Form1.vb#070)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Net.WebException">The <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> property value is <see langword="false" /> and the membership provider is unable to access the authentication service.</exception>
+        <exception cref="T:System.Net.WebException">
+          <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> プロパティの値が <see langword="false" /> メンバーシップ プロバイダーでは、認証サービスにアクセスできないとします。</exception>
+        <altmember cref="Overload:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser" />
+        <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
       </Docs>
     </Member>
     <Member MemberName="MaxInvalidPasswordAttempts">
@@ -589,15 +595,15 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>The number of invalid password attempts allowed before the membership user is locked out.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>メンバーシップのユーザーがロックされるまで無効なパスワードの試行の数。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class always provides three password attempts. You cannot modify the provider to change the number of password attempts.  
+## 解説  
+ <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスには、次の 3 つのパスワードが常に用意されています。 パスワードの試行数を変更するプロバイダーを変更することはできません。  
   
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -616,13 +622,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always zero.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に 0 を返します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -641,13 +647,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always one.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に 1 つです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -666,13 +672,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>The number of minutes in which a maximum number of invalid password or password-answer attempts are allowed before the membership user is locked out.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>メンバーシップ ユーザーがロックアウトされるまでに、無効なパスワードまたはパスワードの回答の最大試行回数が許可される時間 \(分\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -691,13 +697,13 @@
         <ReturnType>System.Web.Security.MembershipPasswordFormat</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>The format for storing passwords in the store data.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>データの格納にパスワードを格納する形式。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -716,13 +722,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always "*".</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に"\*"です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -741,13 +747,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always <see langword="false" />.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -766,13 +772,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>This property is not used by this class.</summary>
-        <value>Always <see langword="false" />.</value>
+        <summary>このプロパティは、このクラスでは使用されません。</summary>
+        <value>常に <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
@@ -795,19 +801,19 @@
         <Parameter Name="answer" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <param name="answer">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <param name="answer">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="ServiceUri">
@@ -823,25 +829,25 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the URI of the authentication service.</summary>
-        <value>The authentication service URI.</value>
+        <summary>取得または認証サービスの URI を設定します。</summary>
+        <value>認証サービス URI。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can set the <xref:System.Web.ClientServices.Providers.ClientRoleProvider.ServiceUri%2A> property in your application code, but you will typically set the value in your application configuration file. This enables you to change the service location without recompiling your code.  
+## 解説  
+ 設定することができます、 <xref:System.Web.ClientServices.Providers.ClientRoleProvider.ServiceUri%2A> 、アプリケーション コードでプロパティが、アプリケーション構成ファイルで値を通常設定されます。 これにより、コードを再コンパイルしなくても、サービスの場所を変更することができます。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this property to programmatically set the authentication service location. When you set the service location programmatically, you must specify the complete service URI, which will always end with "Authentication_JSON_AppService.axd".  
+## 例  
+ 次のコード例では、このプロパティを使用してプログラムを使用して認証サービスの場所を設定する方法を示します。 プログラムを使用して、サービスの場所を設定すると、完全なサービスは、常に"Authentication\_JSON\_AppService.axd"で終わり、URI を指定する必要があります。  
   
- [!code-csharp[ClientApplicationServices#301](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#301)]
- [!code-vb[ClientApplicationServices#301](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#301)]  
+ [!code-csharp[ClientApplicationServices\#301](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#301)]
+ [!code-vb[ClientApplicationServices\#301](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#301)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">When getting this property, no service URI was found in the application configuration file, and this property has not been previously set.</exception>
+        <exception cref="T:System.ArgumentException">このプロパティを取得するときにサービスないため、URI が、アプリケーション構成ファイルでを見つけてこのプロパティが以前に設定されていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="UnlockUser">
@@ -860,18 +866,18 @@
         <Parameter Name="username" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">Not used.</param>
-        <summary>This method is not used by this class.</summary>
-        <returns>Not applicable. This method always throws an exception.</returns>
+        <param name="username">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+        <returns>該当しない。 このメソッドは、常に例外をスローします。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="UpdateUser">
@@ -890,17 +896,17 @@
         <Parameter Name="user" Type="System.Web.Security.MembershipUser" />
       </Parameters>
       <Docs>
-        <param name="user">Not used.</param>
-        <summary>This method is not used by this class.</summary>
+        <param name="user">使用しません。</param>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You cannot create, delete, or modify user information by using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> class.  
+## 解説  
+ 作成、削除、またはを使用してユーザー情報を変更することはできません、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Always thrown.</exception>
+        <exception cref="T:System.NotSupportedException">常にスローされます。</exception>
       </Docs>
     </Member>
     <Member MemberName="UserValidated">
@@ -916,25 +922,28 @@
         <ReturnType>System.EventHandler&lt;System.Web.ClientServices.Providers.UserValidatedEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the user is validated.</summary>
+        <summary>ユーザーが確認されると発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This event occurs only after the user is successfully validated. You can use this event to update your application to reflect the current user. For example, you can use the <xref:System.Web.ClientServices.Providers.UserValidatedEventArgs.UserName%2A?displayProperty=fullName> property to display the user name in your application user interface (UI).  
+## 解説  
+ このイベントは、ユーザーが正常に検証した後にのみ発生します。 このイベントを使用して、現在のユーザーを反映するようにアプリケーションを更新することができます。 たとえば、使用、 <xref:System.Web.ClientServices.Providers.UserValidatedEventArgs.UserName%2A?displayProperty=fullName> プロパティをアプリケーションのユーザー インターフェイス \(UI\) にユーザー名を表示します。  
   
- You can silently revalidate users by calling the <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A?displayProperty=fullName> method. Therefore, you should avoid using the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.UserValidated> event to display intrusive UI. For example, you should not use the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.UserValidated> event to display a welcome dialog box.  
+ 呼び出すことによってユーザーを再検証することがサイレント モードで、 <xref:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser%2A?displayProperty=fullName> メソッドです。 使用してそのため、避けて、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.UserValidated> UI を表示するイベントです。 たとえば、行わないで、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.UserValidated> \[ようこそ\] ダイアログ ボックスを表示するイベントです。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this event to display the user name in the title bar of a form.  
+## 例  
+ 次のコード例では、このイベントを使用して、フォームのタイトル バーで、ユーザー名を表示する方法を示します。  
   
- [!code-csharp[ClientApplicationServices#305](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#305)]
- [!code-vb[ClientApplicationServices#305](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#305)]  
+ [!code-csharp[ClientApplicationServices\#305](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#305)]
+ [!code-vb[ClientApplicationServices\#305](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#305)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.ClientServices.Providers.UserValidatedEventArgs" />
+        <altmember cref="P:System.Web.ClientServices.Providers.UserValidatedEventArgs.UserName" />
+        <altmember cref="M:System.Web.ClientServices.ClientFormsIdentity.RevalidateUser" />
       </Docs>
     </Member>
     <Member MemberName="ValidateUser">
@@ -954,30 +963,32 @@
         <Parameter Name="password" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">The name of the user to authenticate, or <see cref="F:System.String.Empty" /> or <see langword="null" /> to retrieve credentials from the <see cref="T:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider" /> implementation that this application is configured to use.</param>
-        <param name="password">The password of the user to authenticate.</param>
-        <summary>Authenticates a user by using the specified user name and password.</summary>
-        <returns>
-          <see langword="true" /> if the user was authenticated; otherwise, <see langword="false" />.</returns>
+        <param name="username">ユーザーを認証するための名前または <see cref="F:System.String.Empty" /> または <see langword="null" /> から資格情報を取得、 <see cref="T:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider" /> にこのアプリケーションが構成の実装を使用します。</param>
+        <param name="password">ユーザーの認証のパスワードです。</param>
+        <summary>指定されたユーザー名とパスワードを使用してユーザーを認証します。</summary>
+        <returns>ユーザーが認証されている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use client application services to validate users by using forms authentication. To validate users, you will typically call the `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method, which internally calls the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method. Alternatively, you can call this method directly, as shown in the Example section.  
+## 解説  
+ クライアント アプリケーション サービスを使用して、フォーム認証を使用してユーザーを検証することができます。 ユーザーを検証するには通常呼び出します、 `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドを内部的に呼び出す、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドです。  または、したがメソッドを呼び出し、直接例」のセクションで示すようにします。  
   
- Forms authentication requires that the user specify their credentials through login controls provided by your application. You can retrieve the credentials and pass them to the <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method. You can also pass in empty strings or `null` to use a credentials provider. For more information, see [How to: Implement User Login with Client Application Services](~/docs/framework/common-client-technologies/how-to-implement-user-login-with-client-application-services.md).  
+ フォーム認証では、ユーザーがアプリケーションによって提供されるログイン コントロールを通じて資格情報を指定する必要があります。 資格情報を取得し、それらに渡す、 <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドです。 空の文字列を渡すこともできますまたは `null` 、資格情報プロバイダーを使用します。 詳細については、「[How to: Implement User Login and Logout with Client Application Services](http://msdn.microsoft.com/ja-jp/5431a671-eb02-4e18-a651-24764fccec9a)」を参照してください。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this method to validate the user by using an <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider> implementation. This example requires that you to configure your application to use a credentials provider. For more information, see [How to: Configure Client Application Services](~/docs/framework/common-client-technologies/how-to-configure-client-application-services.md).  
+## 例  
+ 次のコード例は、このメソッドを使用してを使用して、ユーザーを検証する方法を示します、 <xref:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider> 実装します。 この例で必要とする資格情報プロバイダーを使用するアプリケーションを構成します。 詳細については、「[How to: Configure Client Application Services](http://msdn.microsoft.com/ja-jp/34a8688a-a32c-40d3-94be-c8e610c6a4e8)」を参照してください。  
   
- [!code-csharp[ClientApplicationServices#306](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#306)]
- [!code-vb[ClientApplicationServices#306](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#306)]  
+ [!code-csharp[ClientApplicationServices\#306](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#306)]
+ [!code-vb[ClientApplicationServices\#306](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#306)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Net.WebException">The <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> property value is <see langword="false" /> and the membership provider is unable to access the authentication service.</exception>
+        <exception cref="T:System.Net.WebException">
+          <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> プロパティの値が <see langword="false" /> メンバーシップ プロバイダーでは、認証サービスにアクセスできないとします。</exception>
+        <altmember cref="T:System.Web.ClientServices.Providers.IClientFormsAuthenticationCredentialsProvider" />
+        <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
       </Docs>
     </Member>
     <Member MemberName="ValidateUser">
@@ -998,30 +1009,31 @@
         <Parameter Name="rememberMe" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="username">The name of the user to authenticate.</param>
-        <param name="password">The password of the user to authenticate.</param>
+        <param name="username">認証にユーザーの名前。</param>
+        <param name="password">ユーザーの認証のパスワードです。</param>
         <param name="rememberMe">
-          <see langword="true" /> to store a hash of the password in the local data cache for offline use and for automatic reauthentication when the user authentication cookie expires; <see langword="false" /> to disable offline login or to require users to reauthenticate when the cookie expires.</param>
-        <summary>Authenticates a user by using the specified user name and password, optionally storing a hash of the password in the local data cache.</summary>
-        <returns>
-          <see langword="true" /> if the user was authenticated; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> ユーザーの認証 cookie の期限が切れたときに、オフラインで使用して、自動再認証のために、ローカル データ キャッシュでパスワードのハッシュを格納するには <see langword="false" /> をオフラインでログインを無効にするか、ユーザーのクッキーの有効期限が切れたときの再認証が必要です。</param>
+        <summary>指定されたユーザー名とパスワードを必要に応じてパスワードのハッシュを格納するローカル データ キャッシュ内を使用してユーザーを認証します。</summary>
+        <returns>ユーザーが認証されている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use client application services to validate users by using forms authentication. To validate users, you will typically call the `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method, which internally calls the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%28System.String%2CSystem.String%29?displayProperty=fullName> method. Alternatively, you can call the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method directly. You can call this overload to pass in a `rememberMe` value in addition to the `username` and `password` values.  
+## 解説  
+ クライアント アプリケーション サービスを使用して、フォーム認証を使用してユーザーを検証することができます。 ユーザーを検証するには通常呼び出します、 `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドを内部的に呼び出す、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%28System.String%2CSystem.String%29?displayProperty=fullName> メソッドです。  また、呼び出すことができます、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドを直接します。 指定するこのオーバー ロードを呼び出すことができます、 `rememberMe` 値に加え、 `username` と `password` 値。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this method to validate the user by using login controls in your application code. This example requires a <xref:System.Windows.Forms.TextBox> control named `usernameTextBox`, a <xref:System.Windows.Forms.TextBox> control named `passwordTextBox`, and a <xref:System.Windows.Forms.CheckBox> control named `rememberMeCheckBox`.  
+## 例  
+ 次のコード例では、このメソッドを使用して、アプリケーション コードでのログイン コントロールを使用して、ユーザーを検証する方法を示します。 この例は、 <xref:System.Windows.Forms.TextBox> という名前のコントロール `usernameTextBox`, 、 <xref:System.Windows.Forms.TextBox> という名前のコントロール `passwordTextBox`, 、および <xref:System.Windows.Forms.CheckBox> という名前のコントロール `rememberMeCheckBox`します。  
   
- [!code-csharp[ClientApplicationServices#307](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#307)]
- [!code-vb[ClientApplicationServices#307](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#307)]  
+ [!code-csharp[ClientApplicationServices\#307](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#307)]
+ [!code-vb[ClientApplicationServices\#307](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#307)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Net.WebException">The <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> property value is <see langword="false" /> and the membership provider is unable to access the authentication service.</exception>
+        <exception cref="T:System.Net.WebException">
+          <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> プロパティの値が <see langword="false" /> メンバーシップ プロバイダーでは、認証サービスにアクセスできないとします。</exception>
+        <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
       </Docs>
     </Member>
     <Member MemberName="ValidateUser">
@@ -1042,30 +1054,50 @@
         <Parameter Name="serviceUri" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="username">The name of the user to authenticate.</param>
-        <param name="password">The password of the user to authenticate.</param>
-        <param name="serviceUri">The URI of the authentication service to use.</param>
-        <summary>Authenticates a user at the specified service URI by using the specified user name and password.</summary>
-        <returns>
-          <see langword="true" /> if the user was authenticated; otherwise, <see langword="false" />.</returns>
+        <param name="username">認証にユーザーの名前。</param>
+        <param name="password">ユーザーの認証のパスワードです。</param>
+        <param name="serviceUri">使用する認証サービスの URI。</param>
+        <summary>指定されたユーザー名とパスワードを使用して、指定されたサービス URI にユーザーを認証します。</summary>
+        <returns>ユーザーが認証されている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use client application services to validate users by using forms authentication. To validate users, you will typically call the `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> method, which internally calls the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method. Alternatively, you can call the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> method directly. You can call this overload to access an authentication service at the location specified by the `serviceUri` parameter. Using this overload is an alternative to setting the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ServiceUri%2A> property and calling the <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%28System.String%2CSystem.String%29> overload.  
+## 解説  
+ クライアント アプリケーション サービスを使用して、フォーム認証を使用してユーザーを検証することができます。 ユーザーを検証するには通常呼び出します、 `static` <xref:System.Web.Security.Membership.ValidateUser%2A?displayProperty=fullName> メソッドを内部的に呼び出す、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドです。  また、呼び出すことができます、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%2A?displayProperty=fullName> メソッドを直接します。 によって指定された位置に認証サービスにアクセスするこのオーバー ロードを呼び出すことができます、 `serviceUri` パラメーター。 設定の代わりに、このオーバー ロードを使用して、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ServiceUri%2A> プロパティと呼び出し、 <xref:System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider.ValidateUser%28System.String%2CSystem.String%29> オーバー ロードします。  
   
    
   
-## Examples  
- The following example code demonstrates how to use this method to validate the user through an authentication service at a specified location. The user credentials are retrieved from login controls in your application code. This example requires a <xref:System.Windows.Forms.TextBox> control named `usernameTextBox` and a <xref:System.Windows.Forms.TextBox> control named `passwordTextBox`.  
+## 例  
+ 次のコード例では、このメソッドを使用して、指定された場所に認証サービスを介してユーザーを検証する方法を示します。 ユーザーの資格情報は、アプリケーション コードでのログイン コントロールから取得されます。 この例は、 <xref:System.Windows.Forms.TextBox> という名前のコントロール `usernameTextBox` と <xref:System.Windows.Forms.TextBox> という名前のコントロール `passwordTextBox`します。  
   
- [!code-csharp[ClientApplicationServices#308](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#308)]
- [!code-vb[ClientApplicationServices#308](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#308)]  
+ [!code-csharp[ClientApplicationServices\#308](~/samples/snippets/csharp/VS_Snippets_Winforms/ClientApplicationServices/CS/Class1.cs#308)]
+ [!code-vb[ClientApplicationServices\#308](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ClientApplicationServices/VB/Class1.vb#308)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Net.WebException">The <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> property value is <see langword="false" /> and the membership provider is unable to access the authentication service.</exception>
+        <exception cref="T:System.Net.WebException">
+          <see cref="P:System.Web.ClientServices.ConnectivityStatus.IsOffline" /> プロパティの値が <see langword="false" /> メンバーシップ プロバイダーでは、認証サービスにアクセスできないとします。</exception>
+        <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="ValidateUser">
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定された資格情報を使用してユーザーを認証します。</summary>
+        <altmember cref="M:System.Web.Security.Membership.ValidateUser(System.String,System.String)" />
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetUser">
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>このメソッドは、このクラスでは使用されません。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

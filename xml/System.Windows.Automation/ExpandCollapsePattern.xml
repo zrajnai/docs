@@ -11,18 +11,22 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents controls that visually expand to display content and collapse to hide content.</summary>
+    <summary>画面上で展開するとコンテンツが表示され、折りたたむとコンテンツが非表示になるコントロールを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Aggregate controls—built with child objects that provide the UI for expand/collapse functionality—must support the <xref:System.Windows.Automation.ExpandCollapsePattern> control pattern while their child elements do not. For example, a combo box control is built with a combination of list box, button, and edit controls, but it is only the parent combo box that must support the <xref:System.Windows.Automation.ExpandCollapsePattern>.  
+## 解説  
+ Aggregate controls—built with child objects that provide the UI for expand\/collapse functionality—must support the <xref:System.Windows.Automation.ExpandCollapsePattern> control pattern while their child elements do not. For example, a combo box control is built with a combination of list box, button, and edit controls, but it is only the parent combo box that must support the <xref:System.Windows.Automation.ExpandCollapsePattern>.  
   
 > [!NOTE]
 >  A menu control, even though an aggregate of individual menu items, is an exception to this rule. The menu items support the <xref:System.Windows.Automation.ExpandCollapsePattern> control pattern, but the parent menu control does not. A similar exception applies to the tree and tree item controls.  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Windows.Automation.Provider.IExpandCollapseProvider" />
   </Docs>
   <Members>
     <Member MemberName="Cached">
@@ -38,19 +42,22 @@
         <ReturnType>System.Windows.Automation.ExpandCollapsePattern+ExpandCollapsePatternInformation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the cached [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] property values for this <see cref="T:System.Windows.Automation.ExpandCollapsePattern" />.</summary>
-        <value>A structure containing the cached [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] property values for the control pattern.</value>
+        <summary>この <see cref="T:System.Windows.Automation.ExpandCollapsePattern" /> のキャッシュされた UI オートメーション プロパティ値を取得します。</summary>
+        <value>コントロール パターンのキャッシュされた UI オートメーション プロパティ値を格納する構造体。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Cached property values must have been previously requested using a <xref:System.Windows.Automation.CacheRequest>. Use <xref:System.Windows.Automation.SelectionPattern.Current%2A> to get the current value of a property.  
   
  For information on the properties available and their use, see <xref:System.Windows.Automation.SelectionPattern.SelectionPatternInformation>.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The requested property is not in the cache.</exception>
+        <exception cref="T:System.InvalidOperationException">要求されたプロパティがキャッシュ内にありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="Collapse">
@@ -67,18 +74,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Hides all descendant nodes, controls, or content of the <see cref="T:System.Windows.Automation.AutomationElement" />.</summary>
+        <summary>
+          <see cref="T:System.Windows.Automation.AutomationElement" /> の子孫ノード、コントロール、またはコンテンツをすべて非表示にします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This is a blocking method that returns after the UI Automation element has been collapsed.  
   
- There are cases when a UI Automation element that is marked as a leaf node might not know whether it has children until either the <xref:System.Windows.Automation.ExpandCollapsePattern.Collapse%2A> or the <xref:System.Windows.Automation.ExpandCollapsePattern.Expand%2A> method is called. This behavior is possible with a tree view control that does delayed loading of its child items. For example, [!INCLUDE[TLA#tla_winexpl](~/includes/tlasharptla-winexpl-md.md)] might display the expand icon for a node even though there are currently no child items; when the icon is clicked, the control polls for child items, finds none, and removes the expand icon. In these cases clients should listen for a property-changed event on the <xref:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation.ExpandCollapseState%2A> property by registering an event handler with the <xref:System.Windows.Automation.Automation.AddAutomationPropertyChangedEventHandler%2A> method.  
+ There are cases when a UI Automation element that is marked as a leaf node might not know whether it has children until either the <xref:System.Windows.Automation.ExpandCollapsePattern.Collapse%2A> or the <xref:System.Windows.Automation.ExpandCollapsePattern.Expand%2A> method is called. This behavior is possible with a tree view control that does delayed loading of its child items. For example, [!INCLUDE[TLA#tla_winexpl](~/includes/tlasharptla-winexpl-md.md)] might display the expand icon for a node even though there are currently no child items; when the icon is clicked, the control polls for child items, finds none, and removes the expand icon. In these cases clients should listen for a property\-changed event on the <xref:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation.ExpandCollapseState%2A> property by registering an event handler with the <xref:System.Windows.Automation.Automation.AddAutomationPropertyChangedEventHandler%2A> method.  
   
    
   
-## Examples  
+## 例  
  In the following example, a UI Automation element representing a menu item is passed to a function that attempts to expand or collapse the menu item based on its current <xref:System.Windows.Automation.ExpandCollapseState>.  
   
  [!code-csharp[UIAExpandCollapsePattern_snip#101](~/samples/snippets/csharp/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/CSharp/UIAExpandCollapsePattern_snippets.cs#101)]
@@ -89,7 +97,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="M:System.Windows.Automation.ExpandCollapsePattern.Collapse" /> is called when the <see cref="T:System.Windows.Automation.ExpandCollapseState" /> = <see cref="F:System.Windows.Automation.ExpandCollapseState.LeafNode" />.</exception>
+          <see cref="T:System.Windows.Automation.ExpandCollapseState" /> \= <see cref="F:System.Windows.Automation.ExpandCollapseState.LeafNode" /> の場合、<see cref="M:System.Windows.Automation.ExpandCollapsePattern.Collapse" /> が呼び出されます。</exception>
       </Docs>
     </Member>
     <Member MemberName="Current">
@@ -105,16 +113,19 @@
         <ReturnType>System.Windows.Automation.ExpandCollapsePattern+ExpandCollapsePatternInformation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the current [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] property values for this <see cref="T:System.Windows.Automation.ExpandCollapsePattern" />.</summary>
-        <value>A structure containing the current [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] property values for the control pattern.</value>
+        <summary>この <see cref="T:System.Windows.Automation.ExpandCollapsePattern" /> の現在の UI オートメーション プロパティ値を取得します。</summary>
+        <value>コントロール パターンの現在の UI オートメーション プロパティ値を格納する構造体。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This pattern must be from an <xref:System.Windows.Automation.AutomationElement> with an <xref:System.Windows.Automation.AutomationElementMode.Full> reference in order to get current values. If the <xref:System.Windows.Automation.AutomationElement> was obtained using <xref:System.Windows.Automation.AutomationElementMode.None>, it contains only cached data, and attempting to get the current value of any property raises an exception. Use <xref:System.Windows.Automation.ExpandCollapsePattern.Cached%2A> to get the cached value of a property that was previously specified using a <xref:System.Windows.Automation.CacheRequest>.  
+## 解説  
+ このパターンである必要があります、 <xref:System.Windows.Automation.AutomationElement> で、 <xref:System.Windows.Automation.AutomationElementMode.Full> の現在の値を取得するために参照します。 場合、 <xref:System.Windows.Automation.AutomationElement> を使用して取得された <xref:System.Windows.Automation.AutomationElementMode.None>, だけで、キャッシュされたデータが含まれている、いずれかのプロパティの現在の値を取得しようとすると例外が発生します。 使用する <xref:System.Windows.Automation.ExpandCollapsePattern.Cached%2A> を使用してあらかじめ指定されているプロパティのキャッシュされた値を取得する、 <xref:System.Windows.Automation.CacheRequest>です。  
   
- For information on the properties available and their use, see <xref:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation>.  
+ 使用可能なプロパティとその使用法については、次を参照してください。 <xref:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation>します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -133,19 +144,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Displays all child nodes, controls, or content of the <see cref="T:System.Windows.Automation.AutomationElement" />.</summary>
+        <summary>すべての子ノード、コントロール、またはコンテンツの表示、 <see cref="T:System.Windows.Automation.AutomationElement" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This is a blocking method that returns after the <xref:System.Windows.Automation.AutomationElement> has been expanded.  
+## 解説  
+ これは、後に返すブロッキング メソッド、 <xref:System.Windows.Automation.AutomationElement> が拡張されました。  
   
- There are cases when a <xref:System.Windows.Automation.AutomationElement>that is marked as a leaf node might not know whether it has children until either the <xref:System.Windows.Automation.ExpandCollapsePattern.Collapse%2A> or the <xref:System.Windows.Automation.ExpandCollapsePattern.Expand%2A> method is called. This behavior is possible with a tree view control that does delayed loading of its child items. For example, [!INCLUDE[TLA#tla_winexpl](~/includes/tlasharptla-winexpl-md.md)] might display the expand icon for a node even though there are currently no child items; when the icon is clicked, the control polls for child items, finds none, and removes the expand icon. In these cases clients should listen for a property-changed event on the <xref:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation.ExpandCollapseState%2A> property by registering an event handler with the <xref:System.Windows.Automation.Automation.AddAutomationPropertyChangedEventHandler%2A> method.  
+ ある場合に、 <xref:System.Windows.Automation.AutomationElement>リーフ ノードにまで子を持っているかどうかがわかりませんとしてマークされている、 <xref:System.Windows.Automation.ExpandCollapsePattern.Collapse%2A> または <xref:System.Windows.Automation.ExpandCollapsePattern.Expand%2A> メソッドが呼び出されます。 この動作は、ツリー ビュー コントロールがその子アイテムの遅延読み込みで実行できます。 たとえば、 [!INCLUDE[TLA#tla_winexpl](~/includes/tlasharptla-winexpl-md.md)] 現在子項目がない場合でも、ノードの展開アイコンを表示することがあります。 コントロールに子項目をポーリングし、\[なし\] を検出して、展開アイコンを削除アイコンをクリックするとします。 このような場合にクライアントがリッスン プロパティ変更イベントの <xref:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation.ExpandCollapseState%2A> プロパティを持つイベント ハンドラーを登録することによって、 <xref:System.Windows.Automation.Automation.AddAutomationPropertyChangedEventHandler%2A> メソッドです。  
   
    
   
-## Examples  
- In the following example, an <xref:System.Windows.Automation.AutomationElement>representing a menu item is passed to a function that attempts to expand or collapse the menu item based on its current <xref:System.Windows.Automation.ExpandCollapseState>.  
+## 例  
+ 次の例では、 <xref:System.Windows.Automation.AutomationElement>メニュー アイテムが現在のに基づいて展開または折りたたむしようとする関数に渡されるメニュー項目を表す <xref:System.Windows.Automation.ExpandCollapseState>します。  
   
  [!code-csharp[UIAExpandCollapsePattern_snip#101](~/samples/snippets/csharp/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/CSharp/UIAExpandCollapsePattern_snippets.cs#101)]
  [!code-vb[UIAExpandCollapsePattern_snip#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/VisualBasic/UIAExpandCollapsePattern_snippets.vb#101)]  
@@ -155,7 +166,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="M:System.Windows.Automation.ExpandCollapsePattern.Expand" /> is called when the <see cref="T:System.Windows.Automation.ExpandCollapseState" /> = <see cref="F:System.Windows.Automation.ExpandCollapseState.LeafNode" />.</exception>
+          <see cref="T:System.Windows.Automation.ExpandCollapseState" /> \= <see cref="F:System.Windows.Automation.ExpandCollapseState.LeafNode" /> の場合、<see cref="M:System.Windows.Automation.ExpandCollapsePattern.Expand" /> が呼び出されます。</exception>
       </Docs>
     </Member>
     <Member MemberName="ExpandCollapseStateProperty">
@@ -171,11 +182,12 @@
         <ReturnType>System.Windows.Automation.AutomationProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation.ExpandCollapseState" /> property.</summary>
+        <summary>
+          <see cref="P:System.Windows.Automation.ExpandCollapsePattern.ExpandCollapsePatternInformation.ExpandCollapseState" /> プロパティを識別します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This identifier is used by UI Automation client applications. UI Automation providers should use the equivalent field in <xref:System.Windows.Automation.ExpandCollapsePatternIdentifiers>.  
   
  <xref:System.Windows.Automation.ExpandCollapseState> refers to the visibility of immediate child objects only; it does not refer to the visibility of all descendant objects.  
@@ -184,11 +196,11 @@
   
    
   
-## Examples  
+## 例  
  In the following example, a root element is passed to a function that returns a collection of [!INCLUDE[TLA2#tla_uiautomation](~/includes/tla2sharptla-uiautomation-md.md)] elements that are descendants of the root and satisfy a set of property conditions.  
   
- [!code-csharp[UIAExpandCollapsePattern_snip#100](~/samples/snippets/csharp/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/CSharp/UIAExpandCollapsePattern_snippets.cs#100)]
- [!code-vb[UIAExpandCollapsePattern_snip#100](~/samples/snippets/visualbasic/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/VisualBasic/UIAExpandCollapsePattern_snippets.vb#100)]  
+ [!code-csharp[UIAExpandCollapsePattern\_snip\#100](~/samples/snippets/csharp/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/CSharp/UIAExpandCollapsePattern_snippets.cs#100)]
+ [!code-vb[UIAExpandCollapsePattern\_snip\#100](~/samples/snippets/visualbasic/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/VisualBasic/UIAExpandCollapsePattern_snippets.vb#100)]  
   
  ]]></format>
         </remarks>
@@ -207,22 +219,23 @@
         <ReturnType>System.Windows.Automation.AutomationPattern</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="T:System.Windows.Automation.ExpandCollapsePattern" /> control pattern.</summary>
+        <summary>
+          <see cref="T:System.Windows.Automation.ExpandCollapsePattern" /> コントロール パターンを識別します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This identifier is used by UI Automation client applications. UI Automation providers should use the equivalent field in <xref:System.Windows.Automation.ExpandCollapsePatternIdentifiers>.  
+## 解説  
+ この識別子は、UI オートメーション クライアント アプリケーションによって使用されます。 UI オートメーション プロバイダーの相当するフィールドを使用する必要があります <xref:System.Windows.Automation.ExpandCollapsePatternIdentifiers>します。  
   
- The pattern [!INCLUDE[TLA#tla_id](~/includes/tlasharptla-id-md.md)] is passed to methods such as <xref:System.Windows.Automation.AutomationElement.GetCurrentPattern%2A> to retrieve the control pattern of interest from the specified <xref:System.Windows.Automation.AutomationElement>.  
+ パターン [!INCLUDE[TLA#tla_id](~/includes/tlasharptla-id-md.md)] などのメソッドに渡された <xref:System.Windows.Automation.AutomationElement.GetCurrentPattern%2A> 指定された対象から目的のコントロール パターンを取得する <xref:System.Windows.Automation.AutomationElement>です。  
   
    
   
-## Examples  
- In the following example, a <xref:System.Windows.Automation.ExpandCollapsePattern> control pattern is obtained from a UI Automation element.  
+## 例  
+ 次の例では、 <xref:System.Windows.Automation.ExpandCollapsePattern> コントロール パターンは、UI オートメーション要素から取得されます。  
   
- [!code-csharp[UIAExpandCollapsePattern_snip#101](~/samples/snippets/csharp/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/CSharp/UIAExpandCollapsePattern_snippets.cs#101)]
- [!code-vb[UIAExpandCollapsePattern_snip#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/VisualBasic/UIAExpandCollapsePattern_snippets.vb#101)]  
+ [!code-csharp[UIAExpandCollapsePattern\_snip\#101](~/samples/snippets/csharp/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/CSharp/UIAExpandCollapsePattern_snippets.cs#101)]
+ [!code-vb[UIAExpandCollapsePattern\_snip\#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/UIAExpandCollapsePattern_snip/VisualBasic/UIAExpandCollapsePattern_snippets.vb#101)]  
   
  ]]></format>
         </remarks>

@@ -9,68 +9,68 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Implements methods that can be used to extend run-time behavior for a contract in either a service or client application.</summary>
+    <summary>サービスまたはクライアント アプリケーションでコントラクトのランタイム動作を拡張するために使用できるメソッドを実装します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Description.IContractBehavior> interface to modify, examine, or extend some aspect of contract-wide execution at the application level. Unlike <xref:System.ServiceModel.Description.IServiceBehavior> and <xref:System.ServiceModel.Description.IEndpointBehavior> objects, <xref:System.ServiceModel.Description.IContractBehavior> objects cannot be added to the runtime using an application configuration file; they can only be added programmatically or using an attribute.  
+## 解説  
+ コントラクト全体にわたる実行の一部の側面を、アプリケーション レベルで変更、確認、または拡張するには、<xref:System.ServiceModel.Description.IContractBehavior> インターフェイスを実装します。<xref:System.ServiceModel.Description.IServiceBehavior> オブジェクトは、<xref:System.ServiceModel.Description.IEndpointBehavior> オブジェクトおよび <xref:System.ServiceModel.Description.IContractBehavior> オブジェクトとは異なり、アプリケーション構成ファイルを使用してランタイムに追加することはできません。プログラムによって、または属性を使用することによってのみ追加できます。  
   
- For more information about choosing between service, endpoint, and contract behaviors, see [Configuring and Extending the Runtime with Behaviors](~/docs/framework/wcf/extending/configuring-and-extending-the-runtime-with-behaviors.md).  
+ サービス、エンドポイント、およびコントラクトの動作の選択の詳細については、「[Attaching Extensions Using Behaviors](http://msdn.microsoft.com/ja-jp/149b99b6-6eb6-4f45-be22-c967279677d9)」を参照してください。  
   
--   Use the <xref:System.ServiceModel.Description.IContractBehavior.AddBindingParameters%2A> method to provide binding elements with custom data to support the behavior.  
+-   <xref:System.ServiceModel.Description.IContractBehavior.AddBindingParameters%2A> メソッドを使用して、動作をサポートするためのカスタム データをバインディング要素に提供します。  
   
--   Use the <xref:System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior%2A> method to modify, examine, or insert extensions to a contract in a client application.  
+-   <xref:System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior%2A> メソッドを使用して、クライアント アプリケーションでコントラクトを変更または確認したり、コントラクトに拡張機能を挿入したりできます。  
   
--   Use the <xref:System.ServiceModel.Description.IContractBehavior.ApplyDispatchBehavior%2A> method to modify, examine, or insert extensions to a contract in a service application.  
+-   <xref:System.ServiceModel.Description.IContractBehavior.ApplyDispatchBehavior%2A> メソッドを使用して、サービス アプリケーションでコントラクトを変更または確認したり、コントラクトに拡張機能を挿入したりできます。  
   
--   Use the <xref:System.ServiceModel.Description.IContractBehavior.Validate%2A> method to ensure that a contract can support a particular feature.  
+-   <xref:System.ServiceModel.Description.IContractBehavior.Validate%2A> メソッドを使用して、コントラクトが特定の機能をサポートしていることを確認します。  
   
- <xref:System.ServiceModel.Description.IContractBehavior> objects can make use of any of these methods, but often only one is important; in such cases, the unused methods can return without any value.  
-  
-> [!NOTE]
->  All of the <xref:System.ServiceModel.Description.IContractBehavior> methods pass <xref:System.ServiceModel.Description.ContractDescription?displayProperty=fullName> and <xref:System.ServiceModel.Description.ServiceEndpoint?displayProperty=fullName> as parameters. These parameters are for examination; if you modify the objects the execution behavior is undefined.  
-  
- <xref:System.ServiceModel.Description.IContractBehavior> types can be used on either the service or the client, or both. To perform a customization task on the service, the <xref:System.ServiceModel.Description.IContractBehavior> object must be added to the <xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> property prior to the construction of the service runtime, which occurs when the <xref:System.ServiceModel.ICommunicationObject.Open%2A?displayProperty=fullName> method is called on the <xref:System.ServiceModel.ServiceHost?displayProperty=fullName> object. There are two ways to do this.  
-  
- The first method is to programmatically add the custom contract behavior to the <xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> property prior to the point when the <xref:System.ServiceModel.ICommunicationObject.Open%2A?displayProperty=fullName> method is called on the <xref:System.ServiceModel.ServiceHost?displayProperty=fullName> object. When applied this way, the behavior is applied for all messages flowing through that contract on any endpoint.  
+ <xref:System.ServiceModel.Description.IContractBehavior> オブジェクトは、これらのメソッドをどれでも使用できますが、通常は、重要なメソッドは 1 つだけです。この場合、使用されないメソッドは、値なしで戻ることができます。  
   
 > [!NOTE]
->  The behavior is applied to all contracts of the same type. For example, if you programmatically add the same contract type to more than one endpoint, the behavior modifies all endpoints that refer to the same contract object.  
+>  すべての <xref:System.ServiceModel.Description.IContractBehavior> メソッドは <xref:System.ServiceModel.Description.ContractDescription?displayProperty=fullName> および <xref:System.ServiceModel.Description.ServiceEndpoint?displayProperty=fullName> をパラメーターとして渡します。 これらのパラメーターは、検査に使用されます。これらのオブジェクトを変更した場合、実行の動作は未定義になります。  
   
- The second method is to create a custom attribute that implements <xref:System.ServiceModel.Description.IContractBehavior> and apply that to:  
+ <xref:System.ServiceModel.Description.IContractBehavior> 型は、サービス、クライアント、またはその両方で使用できます。 サービスでカスタマイズ タスクを実行するには、<xref:System.ServiceModel.Description.IContractBehavior> メソッドが <xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> オブジェクトで呼び出されるときに行われるサービス ランタイムの構築の前に、<xref:System.ServiceModel.ICommunicationObject.Open%2A?displayProperty=fullName> オブジェクトを <xref:System.ServiceModel.ServiceHost?displayProperty=fullName> プロパティに追加しておく必要があります。 これには、2 つの方法があります。  
   
--   A contract interface. In this case, the behavior is applied to all contracts of that type in any endpoint.  
+ 1 つは、<xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> メソッドが <xref:System.ServiceModel.ICommunicationObject.Open%2A?displayProperty=fullName> オブジェクトで呼び出される前に、プログラムを使用して、<xref:System.ServiceModel.ServiceHost?displayProperty=fullName> プロパティにコントラクトのカスタム動作を追加する方法です。 この場合、動作は、エンドポイント上でそのコントラクトを使用して送信されるすべてのメッセージに適用されます。  
   
--   A service class.  In this case, the behavior is applied to all endpoints regardless of contract.  
+> [!NOTE]
+>  動作は、同じ種類のすべてのコントラクトに適用されます。 たとえば、プログラムを使用して同じ種類のコントラクトを複数のエンドポイントに追加した場合、同じコントラクト オブジェクトを参照するすべてのエンドポイントで動作が変更されます。  
   
--   A callback class.  In this case, the behavior is applied to the duplex client's endpoint.  
+ もう 1 つは、<xref:System.ServiceModel.Description.IContractBehavior> を実装するカスタム属性を作成し、それを次のものに適用する方法です。  
   
- The behavior of the second approach varies slightly if the custom attribute also implements <xref:System.ServiceModel.Description.IContractBehaviorAttribute?displayProperty=fullName>. In this case, the behavior is as follows:  
+-   コントラクト インターフェイス。 この場合、動作は任意のエンドポイント内の該当の型のすべてのコントラクトに適用されます。  
   
--   A contract interface. In this case, the behavior is applied to all contracts of that type in any endpoint and [!INCLUDE[indigo1](~/includes/indigo1-md.md)] ignores the value of the <xref:System.ServiceModel.Description.IContractBehaviorAttribute.TargetContract%2A?displayProperty=fullName> property.  
+-   サービス クラス。  この場合、動作はコントラクトとは関係なくすべてのエンドポイントに適用されます。  
   
--   A service class.  In this case, the behavior is applied only to endpoints the contract of which is the value of the <xref:System.ServiceModel.Description.IContractBehaviorAttribute.TargetContract%2A?displayProperty=fullName> property.  
+-   コールバック クラス。  この場合、動作は双方向クライアントのエンドポイントに適用されます。  
   
--   A callback class.  In this case, the behavior is applied to the duplex client's endpoint and [!INCLUDE[indigo2](~/includes/indigo2-md.md)] ignores the value of the <xref:System.ServiceModel.Description.IContractBehaviorAttribute.TargetContract%2A?displayProperty=fullName> property.  
+ カスタム属性が <xref:System.ServiceModel.Description.IContractBehaviorAttribute?displayProperty=fullName> を同時に実装している場合、2 番目の方法の動作は少し異なります。 この場合、動作は次のようになります。  
   
- To perform the customization task on the client for which it is intended, the <xref:System.ServiceModel.Description.IContractBehavior> object must be added to the <xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> property prior to the construction of the client runtime, which occurs when <xref:System.ServiceModel.ChannelFactory%601.CreateChannel%2A?displayProperty=fullName> is called. There are two ways to do this:  
+-   コントラクト インターフェイス。 この場合、動作は任意のエンドポイント内の該当の型のすべてのコントラクトに適用されます。[!INCLUDE[indigo1](~/includes/indigo1-md.md)] は、<xref:System.ServiceModel.Description.IContractBehaviorAttribute.TargetContract%2A?displayProperty=fullName> プロパティの値を無視します。  
   
--   Programmatically add the custom contract behavior to the <xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> property prior to the point when the <xref:System.ServiceModel.ChannelFactory%601.CreateChannel%2A?displayProperty=fullName> is called.  
+-   サービス クラス。  この場合、動作はコントラクトが <xref:System.ServiceModel.Description.IContractBehaviorAttribute.TargetContract%2A?displayProperty=fullName> プロパティの値であるエンドポイントにのみ適用されます。  
   
--   Create a custom attribute that also implements <xref:System.ServiceModel.Description.IContractBehavior>.  
+-   コールバック クラス。  この場合、動作は双方向クライアントのエンドポイントに適用されます。[!INCLUDE[indigo2](~/includes/indigo2-md.md)] は、<xref:System.ServiceModel.Description.IContractBehaviorAttribute.TargetContract%2A?displayProperty=fullName> プロパティの値を無視します。  
   
- For more information on programmatically adding <xref:System.ServiceModel.Description.IContractBehavior> types to either the client or service application, see [Configuring and Extending the Runtime with Behaviors](~/docs/framework/wcf/extending/configuring-and-extending-the-runtime-with-behaviors.md).  
+ 想定されているカスタマイズ タスクをクライアントで実行するには、<xref:System.ServiceModel.Description.IContractBehavior> が呼び出されるときに行われるクライアント ランタイムの構築の前に、<xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> オブジェクトを <xref:System.ServiceModel.ChannelFactory%601.CreateChannel%2A?displayProperty=fullName> プロパティに追加しておく必要があります。 これには、2 つの方法があります。  
+  
+-   <xref:System.ServiceModel.Description.ContractDescription.Behaviors%2A> が呼び出される前に、プログラムを使用して、<xref:System.ServiceModel.ChannelFactory%601.CreateChannel%2A?displayProperty=fullName> プロパティにコントラクトのカスタム動作を追加します。  
+  
+-   <xref:System.ServiceModel.Description.IContractBehavior> を同時に実装するカスタム属性を作成します。  
+  
+ プログラムを使用してクライアントまたはサービス アプリケーションに <xref:System.ServiceModel.Description.IContractBehavior> 型を追加する方法の詳細については、「[Attaching Extensions Using Behaviors](http://msdn.microsoft.com/ja-jp/149b99b6-6eb6-4f45-be22-c967279677d9)」を参照してください。  
   
    
   
-## Examples  
- The following code example assumes a custom <xref:System.ServiceModel.Dispatcher.IInstanceProvider> implementation called `ObjectProviderBehavior` that provides a "singleton" behavior; it always returns the same service instance and does not recycle it.  
+## 例  
+ 次のコード例は、カスタムの <xref:System.ServiceModel.Dispatcher.IInstanceProvider> 実装が "シングルトン" 動作を提供する `ObjectProviderBehavior` を呼び出したことを前提としています。これは、常に同じサービス インスタンスを返し、リサイクルはしません。  
   
- To insert the instance provider customization, the example shows how to implement a custom attribute (`SingletonBehaviorAttribute`) that implements <xref:System.ServiceModel.Description.IContractBehavior> to insert the custom service instance provider. It also implements <xref:System.ServiceModel.Description.IContractBehaviorAttribute>, which binds its use to the `ISampleService` contract.  
+ インスタンス プロバイダーのカスタマイズを挿入するために、例では、`SingletonBehaviorAttribute` を実装するカスタム属性 \(<xref:System.ServiceModel.Description.IContractBehavior>\) を実装してカスタム サービス インスタンス プロバイダーを挿入する方法を示しています。 また、<xref:System.ServiceModel.Description.IContractBehaviorAttribute> も実装します。これは、その使用を `ISampleService` コントラクトにバインドします。  
   
- [!code-csharp[IContractBehavior#2](~/samples/snippets/csharp/VS_Snippets_CFX/icontractbehavior/cs/objectproviderbehavior.cs#2)]
- [!code-vb[IContractBehavior#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/icontractbehavior/vb/objectproviderbehavior.vb#2)]  
+ [!code-csharp[IContractBehavior\#2](~/samples/snippets/csharp/VS_Snippets_CFX/icontractbehavior/cs/objectproviderbehavior.cs#2)]
+ [!code-vb[IContractBehavior\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/icontractbehavior/vb/objectproviderbehavior.vb#2)]  
   
  ]]></format>
     </remarks>
@@ -95,18 +95,21 @@
         <Parameter Name="bindingParameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
       </Parameters>
       <Docs>
-        <param name="contractDescription">The contract description to modify.</param>
-        <param name="endpoint">The endpoint to modify.</param>
-        <param name="bindingParameters">The objects that binding elements require to support the behavior.</param>
-        <summary>Configures any binding elements to support the contract behavior.</summary>
+        <param name="contractDescription">変更するコントラクトの説明。</param>
+        <param name="endpoint">変更するエンドポイント。</param>
+        <param name="bindingParameters">動作をサポートするためにバインド要素が要求するオブジェクト。</param>
+        <summary>任意のバインディング要素を、コントラクトの動作をサポートするように構成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Description.IContractBehavior.AddBindingParameters%2A> method to provide binding elements with the extra objects they require to support the contract behavior.  
+## 解説  
+ コントラクトの動作をサポートするために必要な追加のオブジェクトをバインディング要素に提供するには、<xref:System.ServiceModel.Description.IContractBehavior.AddBindingParameters%2A> メソッドを実装します。  
   
- This method is called once for each endpoint that uses the specified service contract.  
+ このメソッドは、指定されたサービス コントラクトを使用するエンドポイントごとに 1 回呼び出されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -130,33 +133,33 @@
         <Parameter Name="clientRuntime" Type="System.ServiceModel.Dispatcher.ClientRuntime" />
       </Parameters>
       <Docs>
-        <param name="contractDescription">The contract description for which the extension is intended.</param>
-        <param name="endpoint">The endpoint.</param>
-        <param name="clientRuntime">The client runtime.</param>
-        <summary>Implements a modification or extension of the client across a contract.</summary>
+        <param name="contractDescription">拡張対象のコントラクトの説明。</param>
+        <param name="endpoint">エンドポイント。</param>
+        <param name="clientRuntime">クライアント ランタイム。</param>
+        <summary>コントラクト全体にわたってクライアントの変更または拡張を実装します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior%2A> method to view, modify, or add custom extensions to the client runtime across all messages or for one specific operation. For details about what customizations you can do with a client run-time object, see <xref:System.ServiceModel.Dispatcher.ClientRuntime> and <xref:System.ServiceModel.Dispatcher.ClientOperation>.  
+## 解説  
+ すべてのメッセージまたは特定の 1 つの操作について、クライアント ランタイムを表示または変更したり、クライアント ランタイムにカスタム拡張機能を追加したりするには、<xref:System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior%2A> メソッドを実装します。 クライアントのランタイム オブジェクトで実行できるカスタマイズの詳細については、<xref:System.ServiceModel.Dispatcher.ClientRuntime> および <xref:System.ServiceModel.Dispatcher.ClientOperation> を参照してください。  
   
- The <xref:System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior%2A> method can throw a <xref:System.NotImplementedException> exception if the behavior is only intended for use in a service application.  
+ 動作をサービス アプリケーションでのみ使用する場合は、<xref:System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior%2A> メソッドで <xref:System.NotImplementedException> 例外をスローさせることができます。  
   
- This method is called once for each endpoint that uses the specified service contract.  
+ このメソッドは、指定されたサービス コントラクトを使用するエンドポイントごとに 1 回呼び出されます。  
   
- Note that there can be two operations with the same name in the description (one in each direction), so if you must iterate through operations where the contract is a duplex contract, you must correlate the message direction between the endpoint <xref:System.ServiceModel.Dispatcher.ClientRuntime> and that returned by the <xref:System.ServiceModel.Dispatcher.ClientRuntime.CallbackDispatchRuntime%2A> property.  
+ 説明 \(各方向に 1 つずつ\) では同じ名前の操作が 2 つ存在する場合がありますので注意してください。このため、双方向コントラクトで操作の反復が必要な場合は、エンドポイント <xref:System.ServiceModel.Dispatcher.ClientRuntime> と、<xref:System.ServiceModel.Dispatcher.ClientRuntime.CallbackDispatchRuntime%2A> プロパティによって返されるエンドポイント間で、メッセージの方向を関連付ける必要があります。  
   
- Because other behaviors may have already added or removed some operations from the runtime, there is no guarantee that there are the same number of operations in the description as there are <xref:System.ServiceModel.Dispatcher.ClientOperation> objects in the <xref:System.ServiceModel.Dispatcher.ClientRuntime.Operations%2A> property.  
+ 既に他の動作によって一部の操作が追加されているか、ランタイムから削除されている可能性があるので、<xref:System.ServiceModel.Dispatcher.ClientOperation> プロパティにある <xref:System.ServiceModel.Dispatcher.ClientRuntime.Operations%2A> オブジェクトと同じ数の操作が説明に存在するという保証はありません。  
   
    
   
-## Examples  
- The following code example assumes a custom <xref:System.ServiceModel.Dispatcher.IInstanceProvider> implementation called `ObjectProviderBehavior` that provides a "singleton" behavior; it always returns the same service instance and does not recycle it.  
+## 例  
+ 次のコード例は、カスタムの <xref:System.ServiceModel.Dispatcher.IInstanceProvider> 実装が "シングルトン" 動作を提供する `ObjectProviderBehavior` を呼び出したことを前提としています。これは、常に同じサービス インスタンスを返し、リサイクルはしません。  
   
- To insert the instance provider customization, the example shows how to implement a custom attribute (`SingletonBehaviorAttribute`) that implements <xref:System.ServiceModel.Description.IContractBehavior> to insert the custom service instance provider. It also implements <xref:System.ServiceModel.Description.IContractBehaviorAttribute>, which binds its use to the `ISampleService` contract.  
+ インスタンス プロバイダーのカスタマイズを挿入するために、例では、`SingletonBehaviorAttribute` を実装するカスタム属性 \(<xref:System.ServiceModel.Description.IContractBehavior>\) を実装してカスタム サービス インスタンス プロバイダーを挿入する方法を示しています。 また、<xref:System.ServiceModel.Description.IContractBehaviorAttribute> も実装します。これは、その使用を `ISampleService` コントラクトにバインドします。  
   
- [!code-csharp[IContractBehavior#2](~/samples/snippets/csharp/VS_Snippets_CFX/icontractbehavior/cs/objectproviderbehavior.cs#2)]
- [!code-vb[IContractBehavior#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/icontractbehavior/vb/objectproviderbehavior.vb#2)]  
+ [!code-csharp[IContractBehavior\#2](~/samples/snippets/csharp/VS_Snippets_CFX/icontractbehavior/cs/objectproviderbehavior.cs#2)]
+ [!code-vb[IContractBehavior\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/icontractbehavior/vb/objectproviderbehavior.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -181,33 +184,33 @@
         <Parameter Name="dispatchRuntime" Type="System.ServiceModel.Dispatcher.DispatchRuntime" />
       </Parameters>
       <Docs>
-        <param name="contractDescription">The contract description to be modified.</param>
-        <param name="endpoint">The endpoint that exposes the contract.</param>
-        <param name="dispatchRuntime">The dispatch runtime that controls service execution.</param>
-        <summary>Implements a modification or extension of the client across a contract.</summary>
+        <param name="contractDescription">変更するコントラクトの説明。</param>
+        <param name="endpoint">コントラクトを公開するエンドポイント。</param>
+        <param name="dispatchRuntime">サービス実行を制御するディスパッチ ランタイム。</param>
+        <summary>コントラクト全体にわたってクライアントの変更または拡張を実装します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Implement the <xref:System.ServiceModel.Description.IContractBehavior.ApplyDispatchBehavior%2A> to view, modify, or add custom extensions to the service runtime across all messages in a specific contract or for one specific operation in that contract. For details about what customizations you can perform in a service application, see <xref:System.ServiceModel.Dispatcher.DispatchRuntime> and <xref:System.ServiceModel.Dispatcher.DispatchOperation>.  
   
  The <xref:System.ServiceModel.Description.IContractBehavior.ApplyDispatchBehavior%2A> method can throw a <xref:System.NotImplementedException> exception if the behavior is only intended for use in a client application.  
   
  This method is called once for each endpoint that uses the specified service contract.  
   
- Note that there can be two operations with the same name in the description (one in each direction), so if you must iterate through operations where the contract is a duplex contract, you must correlate the message direction between the endpoint <xref:System.ServiceModel.Dispatcher.DispatchRuntime> and that returned by the <xref:System.ServiceModel.Dispatcher.DispatchRuntime.CallbackClientRuntime%2A> property.  
+ Note that there can be two operations with the same name in the description \(one in each direction\), so if you must iterate through operations where the contract is a duplex contract, you must correlate the message direction between the endpoint <xref:System.ServiceModel.Dispatcher.DispatchRuntime> and that returned by the <xref:System.ServiceModel.Dispatcher.DispatchRuntime.CallbackClientRuntime%2A> property.  
   
  In addition, because other behaviors may have already added or removed some operations from the runtime, there is no guarantee that there are the same number of operations in description as there are <xref:System.ServiceModel.Dispatcher.DispatchOperation> objects in the <xref:System.ServiceModel.Dispatcher.DispatchRuntime.Operations%2A> property.  
   
    
   
-## Examples  
+## 例  
  The following code example assumes a custom <xref:System.ServiceModel.Dispatcher.IInstanceProvider> implementation called `ObjectProviderBehavior` that provides a "singleton" behavior; it always returns the same service instance and does not recycle it.  
   
- To insert the instance provider customization, the example shows how to implement a custom attribute (`SingletonBehaviorAttribute`) that implements <xref:System.ServiceModel.Description.IContractBehavior> to insert the custom service instance provider. It also implements <xref:System.ServiceModel.Description.IContractBehaviorAttribute>, which binds its use to the `ISampleService` contract.  
+ To insert the instance provider customization, the example shows how to implement a custom attribute \(`SingletonBehaviorAttribute`\) that implements <xref:System.ServiceModel.Description.IContractBehavior> to insert the custom service instance provider. It also implements <xref:System.ServiceModel.Description.IContractBehaviorAttribute>, which binds its use to the `ISampleService` contract.  
   
- [!code-csharp[IContractBehavior#2](~/samples/snippets/csharp/VS_Snippets_CFX/icontractbehavior/cs/objectproviderbehavior.cs#2)]
- [!code-vb[IContractBehavior#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/icontractbehavior/vb/objectproviderbehavior.vb#2)]  
+ [!code-csharp[IContractBehavior\#2](~/samples/snippets/csharp/VS_Snippets_CFX/icontractbehavior/cs/objectproviderbehavior.cs#2)]
+ [!code-vb[IContractBehavior\#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/icontractbehavior/vb/objectproviderbehavior.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -231,17 +234,20 @@
         <Parameter Name="endpoint" Type="System.ServiceModel.Description.ServiceEndpoint" />
       </Parameters>
       <Docs>
-        <param name="contractDescription">The contract to validate.</param>
-        <param name="endpoint">The endpoint to validate.</param>
-        <summary>Implement to confirm that the contract and endpoint can support the contract behavior.</summary>
+        <param name="contractDescription">検証対象のコントラクト。</param>
+        <param name="endpoint">検証対象のエンドポイント。</param>
+        <summary>コントラクトおよびエンドポイントがコントラクトの動作をサポートしていることを確認するために実装します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implement the <xref:System.ServiceModel.Description.IContractBehavior.Validate%2A> method to confirm that the contract description is sufficient to support the custom contract behavior. Implementations can inspect the description and either throw or return no value.  
+## 解説  
+ コントラクトの説明がコントラクトのカスタム動作をサポートするための要件を満たしていることを確認するには、<xref:System.ServiceModel.Description.IContractBehavior.Validate%2A> メソッドを実装します。 実装では、説明を検査して値をスローするかまたは値を返さないようにすることができます。  
   
- This method is called once for each endpoint that uses the specified service contract.  
+ このメソッドは、指定されたサービス コントラクトを使用するエンドポイントごとに 1 回呼び出されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>

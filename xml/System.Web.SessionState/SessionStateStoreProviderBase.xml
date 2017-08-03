@@ -11,37 +11,37 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Defines the required members of a session-state provider for a data store.</summary>
+    <summary>データ ストアのセッション状態プロバイダーの必要なメンバーを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- ASP.NET session state reads and writes session data from and to a data store using a session-state store provider. A session-state store provider is a class that inherits the <xref:System.Web.SessionState.SessionStateStoreProviderBase> abstract class and overrides its members with implementations specific to the data store. The session-state store provider is called by the <xref:System.Web.SessionState.SessionStateModule> class during the processing of an ASP.NET page to communicate with the data store for the storage and retrieval of session variables and related session information such as the time-out value.  
+## 解説  
+ ASP.NET セッション状態は、読み取り、セッション状態を使用してデータ ストアからデータをセッション ストア プロバイダーを書き込みます。 セッション状態ストアのプロバイダーは、継承するクラス、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 抽象クラスとオーバーライドのデータに固有の実装では、そのメンバーを格納します。 セッション状態ストアのプロバイダーがによって呼び出される、 <xref:System.Web.SessionState.SessionStateModule> ストレージのデータ ストアと通信するために、ASP.NET ページの処理とセッション変数とタイムアウト値などの関連するセッション情報の取得中にクラスです。  
   
- Session data within each ASP.NET application is stored separately for each <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> property. ASP.NET applications do not share session data.  
+ 各 ASP.NET アプリケーション内でのセッション データがごとに個別に格納されている <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> プロパティです。 ASP.NET アプリケーションは、セッション データを共有していません。  
   
- You can specify a custom <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementation for an ASP.NET application by setting the `mode` attribute of the `sessionState` configuration element to <xref:System.Web.SessionState.SessionStateMode.Custom> and the `customProvider` attribute to the name of the custom provider, as shown in the example for this topic.  
+ カスタムを指定する <xref:System.Web.SessionState.SessionStateStoreProviderBase> を設定して、ASP.NET アプリケーションの実装、 `mode` の属性、 `sessionState` 構成要素を <xref:System.Web.SessionState.SessionStateMode.Custom> と `customProvider` 属性のカスタム プロバイダーの名前に、このトピックの例に示すようにします。  
   
-## Locking Session Store Data  
- Because ASP.NET applications are multithreaded to support responding to concurrent requests, it is possible that concurrent requests might attempt to access the same session information. Consider a scenario where multiple frames in a frameset all access the same application. The separate requests for each frame in the frameset can be executed on the Web server concurrently on different threads. If the ASP.NET pages for each frame source access session-state variables, then you could have multiple threads accessing the session store concurrently.  
+## セッション ストア データのロック  
+ ASP.NET アプリケーションは、同時要求に応答をサポートするマルチ スレッド、ために、同時実行の要求が同じセッションの情報にアクセスしようとする可能性がありますが可能です。 すべてのフレーム セット内の複数のフレームが同じアプリケーションにアクセスする場合を検討してください。 フレーム セット内の各フレームの個々 の要求は、異なるスレッドで同時に Web サーバーで実行できます。 各フレームのソースの ASP.NET ページは、セッション状態変数にアクセスすると、セッション ストアへのアクセスを同時に複数のスレッドが割り当てることもできます。  
   
- To avoid data collisions at the session store and unexpected session-state behavior, the <xref:System.Web.SessionState.SessionStateModule> and <xref:System.Web.SessionState.SessionStateStoreProviderBase> classes include lock functionality that exclusively locks the session store item for a particular session for the duration of the execution of an ASP.NET page. Note that even if the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is marked as `ReadOnly`, other ASP.NET pages in the same application might be able to write to the session store, so a request for read-only session data from the store might still end up waiting for locked data to be freed.  
+ 予期しないセッション状態動作とセッション ストアでデータの競合を避けるため、 <xref:System.Web.SessionState.SessionStateModule> と <xref:System.Web.SessionState.SessionStateStoreProviderBase> クラスには、専用の ASP.NET ページの実行中の特定のセッションのセッション ストアの項目をロックするロック機能が含まれます。 注意してください、 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> として属性がマークされている `ReadOnly`, 、同じアプリケーションの場合は、その他の ASP.NET ページは、ストアからデータに入れられますを待機している読み取り専用のセッションの要求に解放するデータがロックされているため、セッション ストアへの書き込みできる場合があります。  
   
- A lock is set on session-store data at the beginning of the request, in the call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method. When the request completes, the lock is released during the call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> method.  
+ セッション ストア データへの呼び出しで、要求の開始時にロックが設定されている、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドです。 要求が完了すると、呼び出し中に、ロックが解放、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> メソッドです。  
   
- If the <xref:System.Web.SessionState.SessionStateModule> object encounters locked session data during the call to either the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> or the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method, it will re-request the session data at half-second intervals until either the lock is released or the amount of time that the session data has been locked exceeds the value of the <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> property. If the execution time out is exceeded, the <xref:System.Web.SessionState.SessionStateModule> object will call the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method to free the session-store data and request the session-store data at that time.  
+ 場合、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトでは、いずれかへの呼び出し中にロックされているセッション データが検出した、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> または <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドを再要求してセッション データ 0.5 秒間隔で、ロックが解除されるか、セッション データがロックされている時間の値を超えるまで、 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> プロパティです。 実行のタイムアウトを超えた場合、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトが呼び出す、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> セッション ストア データを解放して、その時点でセッション ストア データを要求します。  
   
- Because locked session-store data might have been freed by a call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method on a separate thread before the call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> method for the current response, an attempt could be made to set and release session-state store data that has already been released and modified by another session. To avoid this situation, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> and <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> methods return a lock identifier. This lock identifier must be included with each request to modify locked session-store data. Session-store data is modified only if the lock identifier in the data store matches the lock identifier supplied by the <xref:System.Web.SessionState.SessionStateModule>.  
+ セッション ストアがロックされているためへの呼び出しによってデータが解放される可能性がありますが、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> メソッドを呼び出す前に別のスレッドで、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 現在の応答のメソッド、しようを設定し、セッション状態ストアのデータを持ち、既に解放されている別のセッションで変更を行った可能性があります。 この状況を避けるため、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> と <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドは、ロック識別子を返します。 このロック識別子は、ロックされているセッション ストア データを変更するには、各要求に含める必要があります。 セッション ストア データを変更すると、データ ストア内のロック識別子には、によって提供されるロック識別子と一致する場合にのみ、 <xref:System.Web.SessionState.SessionStateModule>です。  
   
-## Deleting Expired Session Store Data  
- When the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method is called for a particular session, the data for that session is deleted from the data store using the <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> method; otherwise, the data will remain in the session data store to server future requests for the session. It is up to the <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementation to delete expired session data.  
+## 有効期限が切れたセッション ストア データを削除します。  
+ ときに、 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> メソッドが特定のセッションで呼び出されると、そのセッションのデータが使用して、データ ストアから削除、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> メソッドは、データを将来の要求をサーバーにセッション データ ストアに存在、セッションのそれ以外の場合。<xref:System.Web.SessionState.SessionStateStoreProviderBase> 期限切れのセッション データを削除する実装。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
- The following code example shows the Web.config file for an ASP.NET application that is configured to use a custom session-state store provider.  
+ 次のコード例では、セッション状態ストアのカスタム プロバイダーを使用して構成されている ASP.NET アプリケーションの Web.config ファイルを示します。  
   
 ```  
 <configuration>  
@@ -78,17 +78,18 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You are not required to implement a constructor for a class that inherits the <xref:System.Web.SessionState.SessionStateStoreProviderBase> abstract class. Initialization values for a <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementation are passed to the <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> method implementation.  
+## 解説  
+ 継承するクラスのコンス トラクターを実装する必要はありません、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 抽象クラスです。 初期設定の値は、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> に実装が渡される、 <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> メソッドの実装です。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -111,26 +112,27 @@
         <Parameter Name="timeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="timeout">The session-state <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> value for the new <see cref="T:System.Web.SessionState.SessionStateStoreData" />.</param>
-        <summary>Creates a new <see cref="T:System.Web.SessionState.SessionStateStoreData" /> object to be used for the current request.</summary>
-        <returns>A new <see cref="T:System.Web.SessionState.SessionStateStoreData" /> for the current request.</returns>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="timeout">セッション状態 <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> の新しい値 <see cref="T:System.Web.SessionState.SessionStateStoreData" />です。</param>
+        <summary>新しい <see cref="T:System.Web.SessionState.SessionStateStoreData" /> オブジェクトを現在の要求に対して使用できます。</summary>
+        <returns>新しい <see cref="T:System.Web.SessionState.SessionStateStoreData" /> の現在の要求。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> method at the beginning of a request for an ASP.NET page, during the <xref:System.Web.HttpApplication.AcquireRequestState> event. The <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> method is called if:  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> ASP.NET ページの要求の先頭にあるメソッド中に、 <xref:System.Web.HttpApplication.AcquireRequestState> イベントです。<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> 場合、メソッドが呼び出されます。  
   
--   the incoming request has no session ID, or  
+-   受信要求はセッション ID を持たないか、  
   
--   the incoming request has a session ID, but the session is not found in the data store.  
+-   受信要求は、セッション ID を持つが、データ ストア内に、セッションが見つかりません。  
   
- The <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> method creates a new <xref:System.Web.SessionState.SessionStateStoreData> object with an empty <xref:System.Web.SessionState.ISessionStateItemCollection> object, an <xref:System.Web.HttpStaticObjectsCollection> collection, and the specified `timeout` value. The <xref:System.Web.HttpStaticObjectsCollection> collection for the ASP.NET application can be retrieved using the <xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A> method.  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> メソッドが、新たに作成 <xref:System.Web.SessionState.SessionStateStoreData> 、空のオブジェクト <xref:System.Web.SessionState.ISessionStateItemCollection> オブジェクト、 <xref:System.Web.HttpStaticObjectsCollection> コレクション、および指定した `timeout` 値。<xref:System.Web.HttpStaticObjectsCollection> を使用して ASP.NET アプリケーションのコレクションを取得でき、 <xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A> メソッドです。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -154,26 +156,28 @@
         <Parameter Name="timeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> for the current request.</param>
-        <param name="timeout">The session <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> for the current request.</param>
-        <summary>Adds a new session-state item to the data store.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">
+          <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> の現在の要求。</param>
+        <param name="timeout">セッション <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> の現在の要求。</param>
+        <summary>データ ストアに新しいセッション状態の項目を追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> method is used with sessions when the `cookieless` and `regenerateExpiredSessionId` attributes are both `true`. Having the `regenerateExpiredSessionId attribute` set to `true` causes the <xref:System.Web.SessionState.SessionStateModule> object to generate a new <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value when an expired <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value is encountered.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> メソッドは、セッションで使用時に、 `cookieless` と `regenerateExpiredSessionId` 属性は、どちらも `true`です。`regenerateExpiredSessionId attribute` に設定 `true` により、 <xref:System.Web.SessionState.SessionStateModule> 新しいを生成するオブジェクト <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 、有効期限が切れたときの値 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値が検出されました。  
   
- The process of generating a new <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value requires redirecting the browser to a URL that contains the newly generated <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value. The <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> method is called during the initial request that contains an expired <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value. After the <xref:System.Web.SessionState.SessionStateModule> object acquires a new <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value to replace the expired value, it calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> method to add an uninitialized entry to the session-state data store. The browser is then redirected to the URL containing the newly generated <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value. The existence of the uninitialized entry in the session data store ensures that the redirected request that includes the newly generated <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value is not mistaken for a request for an expired session and is, instead, treated as a new session.  
+ 新しいを生成するプロセス <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値は、新しく生成されたを含む URL にブラウザーをリダイレクトする必要があります <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値。<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> 有効期限切れを含む最初の要求時に呼び出されます <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値。 後に、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトを取得、新しい <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値の有効期限切れの値を置き換えるため、呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> セッション状態のデータ ストアに初期化されていないエントリを追加するメソッドです。 ブラウザーが新たに生成されたを含む URL にリダイレクトし、 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値。 セッションのデータ ストアに初期化されていないエントリの存在により、リダイレクトされたを含む要求、新しく生成された <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値は、期限切れのセッションの要求の誤りについてされませんし、新しいセッションとして扱われます、代わりに、します。  
   
- The uninitialized entry in the session data store is associated with the newly generated <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value and contains only default values, including an expiration date and time and a value that corresponds to the `actionFlags` parameter of the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> and <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> methods. The uninitialized entry in the session-state store should include an `actionFlags` value equal to the <xref:System.Web.SessionState.SessionStateActions.InitializeItem> enumeration value. This value is passed to the <xref:System.Web.SessionState.SessionStateModule> object by the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> and <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> methods, and informs the <xref:System.Web.SessionState.SessionStateModule> object that the current session is a new but uninitialized session. The <xref:System.Web.SessionState.SessionStateModule> object will then initialize the new session and raise the `Session_OnStart` event.  
+ セッション データ ストアに初期化されていないエントリは、新しく生成されたに関連付けられて <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値し、有効期限の日付と時刻に対応する値を含むに、既定値のみを含む、 `actionFlags` のパラメーター、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> と <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドです。 セッション状態ストアの初期化されていないエントリを含める必要があります、 `actionFlags` に等しい値が、 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 列挙値。 この値は、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトを <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> と <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッド、し、通知、 <xref:System.Web.SessionState.SessionStateModule> 、現在のセッションは、新しいがオブジェクトには、セッションが初期化されていません。<xref:System.Web.SessionState.SessionStateModule> オブジェクトは新しいセッションを初期化し、発生させる、 `Session_OnStart` イベントです。  
   
- For more information about cookieless sessions, see the <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> property.  
+ Cookieless セッションに関する詳細については、次を参照してください。、 <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> プロパティです。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -193,17 +197,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> implementation.</summary>
+        <summary>使用されるすべてのリソースを解放、 <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> 実装します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=fullName> method is called when the <xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=fullName> method executes at the closing of the application domain. Classes that inherit the <xref:System.Web.SessionState.SessionStateStoreProviderBase> class can use this method to free any resources no longer in use.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=fullName> メソッドが呼び出されます、 <xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=fullName> メソッドがアプリケーション ドメインの終了時に実行されます。 継承するクラス、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> クラスは、このメソッドを使用して使用されていないリソースを解放します。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -225,18 +229,19 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <summary>Called by the <see cref="T:System.Web.SessionState.SessionStateModule" /> object at the end of a request.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <summary>によって呼び出される、 <see cref="T:System.Web.SessionState.SessionStateModule" /> 要求の最後にあるオブジェクト。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> method at the end of a request for an ASP.NET page, during the <xref:System.Web.HttpApplication.EndRequest> event. You can use the <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> method to perform any per-request cleanup required by your session-state store provider.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> メソッドは、要求の最後に、ASP.NET ページの中に、 <xref:System.Web.HttpApplication.EndRequest> イベントです。 使用することができます、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> 、セッション状態ストア プロバイダーで必要な要求ごとのクリーンアップを実行するメソッドです。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -263,34 +268,36 @@
         <Parameter Name="actions" Type="System.Web.SessionState.SessionStateActions&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> for the current request.</param>
-        <param name="locked">When this method returns, contains a Boolean value that is set to <see langword="true" /> if the requested session item is locked at the session data store; otherwise, <see langword="false" />.</param>
-        <param name="lockAge">When this method returns, contains a <see cref="T:System.TimeSpan" /> object that is set to the amount of time that an item in the session data store has been locked.</param>
-        <param name="lockId">When this method returns, contains an object that is set to the lock identifier for the current request. For details on the lock identifier, see "Locking Session-Store Data" in the <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> class summary.</param>
-        <param name="actions">When this method returns, contains one of the <see cref="T:System.Web.SessionState.SessionStateActions" /> values, indicating whether the current session is an uninitialized, cookieless session.</param>
-        <summary>Returns read-only session-state data from the session data store.</summary>
-        <returns>A <see cref="T:System.Web.SessionState.SessionStateStoreData" /> populated with session values and information from the session data store.</returns>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">
+          <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> の現在の要求。</param>
+        <param name="locked">このメソッドが戻るときに設定されるブール値が含まれています。 <see langword="true" /> 場合、要求したセッション項目はセッション データ ストアでロックされている以外の場合、 <see langword="false" />です。</param>
+        <param name="lockAge">このメソッドが戻るとき、 <see cref="T:System.TimeSpan" /> セッション データ ストア内の項目がロックされている時間に設定されているオブジェクト。</param>
+        <param name="lockId">このメソッドが戻るときに、現在の要求に対するロック識別子に設定されているオブジェクトが含まれています。 ロック識別子の詳細については、「セッション ストア データのロック」を参照してください、 <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> クラスの概要です。</param>
+        <param name="actions">このメソッドが戻るときのいずれかを含む、 <see cref="T:System.Web.SessionState.SessionStateActions" /> 、現在のセッションが、初期化されていない cookieless セッションかどうかを示す値。</param>
+        <summary>セッションのデータ ストアから読み取り専用のセッション状態データを返します。</summary>
+        <returns>A <see cref="T:System.Web.SessionState.SessionStateStoreData" /> セッション値とセッション データ ストアからの情報が設定されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method at the beginning of a request, during the <xref:System.Web.HttpApplication.AcquireRequestState> event, when the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is set to `ReadOnly`. If the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is set to `true`, the <xref:System.Web.SessionState.SessionStateModule> object instead calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドに、要求の開始中に、 <xref:System.Web.HttpApplication.AcquireRequestState> イベントときに、 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> に属性が設定されている `ReadOnly`します。 場合、 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> に属性が設定されている `true`, 、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出しの代わりに、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドです。  
   
- The <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method returns a <xref:System.Web.SessionState.SessionStateStoreData> object populated with session information from the data store and updates the expiration date of the session data. If no session-item data is found at the data store, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method sets the `locked` `out` parameter to `false` and returns `null`. This causes the <xref:System.Web.SessionState.SessionStateModule> object to call the <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> method to create a new session item in the data store.  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドが返される、 <xref:System.Web.SessionState.SessionStateStoreData> オブジェクトのデータ ストアからセッション情報を設定し、セッション データの有効期限を更新します。 データ ストアでは、セッション項目データが存在しない場合、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドのセット、 `locked``out` パラメーターを `false` し、返します `null`します。 これにより、 <xref:System.Web.SessionState.SessionStateModule> を呼び出すオブジェクト、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> データ ストアの新しいセッション項目を作成する方法です。  
   
- If session-item data is found at the data store but the data is locked, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method sets the `locked` `out` parameter to `true`, sets the `lockAge` `out` parameter to the current date and time minus the date and time when the item was locked (which is retrieved from the data store), sets the `lockId` `out` parameter to the lock identifier retrieved from the data store, and returns `null`. This causes the <xref:System.Web.SessionState.SessionStateModule> object to call the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method again after a half-second interval to attempt to retrieve the session-item information.  
+ 場合はセッション項目データがデータ ストアで見つかりましたが、データがロックされている、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドのセット、 `locked``out` パラメーターを `true`, 、設定、 `lockAge``out` パラメーター セット \(これは、データ ストアから取得\)、現在の日付と時刻、日付から差し引いたものと、項目がロックされた時刻に、 `lockId``out` ロック識別子にパラメーターがデータ ストアと返しますから取得 `null`します。 これにより、 <xref:System.Web.SessionState.SessionStateModule> を呼び出すオブジェクト、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> セッション項目情報を取得しようとする 0.5 秒間隔の後にもう一度メソッドです。  
   
- If the value that the `lockAge` `out` parameter is set to exceed the <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> value, then the <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method to clear the lock on the session-item data, and then calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method again.  
+ 場合、値を `lockAge``out` を超えるパラメーターを設定、 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 値、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> セッション項目データと、呼び出しをロックを解除する方法、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドを再度します。  
   
- The `actionFlags` parameter is used when both the `cookieless` and `regenerateExpiredSessionId` attributes are set to `true`. An `actionFlags` value set to <xref:System.Web.SessionState.SessionStateActions.InitializeItem> indicates that the entry in the session data store is a new session that requires initialization. Uninitialized entries in the session data store are created by a call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> method. If the item from the session data store is not an uninitialized item, the `actionFlags` parameter will be set to zero.  
+ `actionFlags` パラメーターが使用されるときに両方、 `cookieless` と `regenerateExpiredSessionId` 属性に設定されて `true`します。`actionFlags` 値に設定 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> セッション データ ストアのエントリが初期化を必要とする新しいセッションであることを示します。 呼び出しによってセッション データ ストアに初期化されていないエントリが作成された、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> メソッドです。 セッションのデータ ストアから項目が、初期化されていない項目ではない場合、 `actionFlags` パラメーターを 0 に設定されます。  
   
- Custom session-state store implementers that support cookieless sessions should set the `actionFlags` `out` parameter to the value returned from the session data store for the current item. If the `actionFlags` parameter value for the requested session-store item equals the <xref:System.Web.SessionState.SessionStateActions.InitializeItem> enumeration value, then the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method should set the value in the data store to zero after setting the `actionFlags` `out` parameter.  
+ クッキーなしのセッションをサポートするカスタム セッション状態ストアの実行者に設定する必要があります、 `actionFlags` `out` 、セッション データ ストアから現在のアイテムのパラメーターの値が返されます。  場合、 `actionFlags` 要求されたセッション ストアのパラメーター値が項目と等しい、 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 列挙値、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドは 0 を設定した後にデータ ストア内の値を設定する必要があります、 `actionFlags` `out` パラメーター。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -317,30 +324,32 @@
         <Parameter Name="actions" Type="System.Web.SessionState.SessionStateActions&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> for the current request.</param>
-        <param name="locked">When this method returns, contains a Boolean value that is set to <see langword="true" /> if a lock is successfully obtained; otherwise, <see langword="false" />.</param>
-        <param name="lockAge">When this method returns, contains a <see cref="T:System.TimeSpan" /> object that is set to the amount of time that an item in the session data store has been locked.</param>
-        <param name="lockId">When this method returns, contains an object that is set to the lock identifier for the current request. For details on the lock identifier, see "Locking Session-Store Data" in the <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> class summary.</param>
-        <param name="actions">When this method returns, contains one of the <see cref="T:System.Web.SessionState.SessionStateActions" /> values, indicating whether the current session is an uninitialized, cookieless session.</param>
-        <summary>Returns read-only session-state data from the session data store.</summary>
-        <returns>A <see cref="T:System.Web.SessionState.SessionStateStoreData" /> populated with session values and information from the session data store.</returns>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">
+          <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> の現在の要求。</param>
+        <param name="locked">このメソッドが戻るときに設定されるブール値が含まれています。 <see langword="true" /> 、ロックが正常に取得した、それ以外の場合 <see langword="false" />します。</param>
+        <param name="lockAge">このメソッドが戻るとき、 <see cref="T:System.TimeSpan" /> セッション データ ストア内の項目がロックされている時間に設定されているオブジェクト。</param>
+        <param name="lockId">このメソッドが戻るときに、現在の要求に対するロック識別子に設定されているオブジェクトが含まれています。 ロック識別子の詳細については、「セッション ストア データのロック」を参照してください、 <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> クラスの概要です。</param>
+        <param name="actions">このメソッドが戻るときのいずれかを含む、 <see cref="T:System.Web.SessionState.SessionStateActions" /> 、現在のセッションが、初期化されていない cookieless セッションかどうかを示す値。</param>
+        <summary>セッションのデータ ストアから読み取り専用のセッション状態データを返します。</summary>
+        <returns>A <see cref="T:System.Web.SessionState.SessionStateStoreData" /> セッション値とセッション データ ストアからの情報が設定されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method at the beginning of a request, during the <xref:System.Web.HttpApplication.AcquireRequestState> event, when the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is set to `true`, which is the default. If the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is set to `ReadOnly`, the <xref:System.Web.SessionState.SessionStateModule> object instead calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> method.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドに、要求の開始中に、 <xref:System.Web.HttpApplication.AcquireRequestState> イベントときに、 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> に属性が設定されている `true`, 、既定であります。 場合、 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> に属性が設定されている `ReadOnly`, 、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出しの代わりに、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> メソッドです。  
   
- The <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method returns a <xref:System.Web.SessionState.SessionStateStoreData> object populated with session information from the data store, updates the expiration date of the stored data, and locks the session-item data at the data store for the duration of the request. If no session-item data is found at the data store, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method sets the `locked` `out` parameter to `false` and returns `null`. This causes the <xref:System.Web.SessionState.SessionStateModule> object to call the <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> method to create a new session item in the data store. If session-item data is found at the data store but the data is locked, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method sets the `locked` `out` parameter to `true`, sets the `lockAge` `out` parameter to the current date and time minus the date and time when the item was locked (which is retrieved from the data store), sets the `lockId` `out` parameter to the lock identifier retrieved from the data store, and returns `null`. This causes the <xref:System.Web.SessionState.SessionStateModule> object to call the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method again after a half-second interval to attempt to retrieve the session-item information and obtain a lock on the data. If the value that the `lockAge` `out` parameter is set to exceeds the <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> value, then the <xref:System.Web.SessionState.SessionStateModule> calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method to clear the lock on the session-item data, and then calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method again.  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドが返される、 <xref:System.Web.SessionState.SessionStateStoreData> データ ストアからセッション情報が設定されるオブジェクトが格納されたデータの有効期限を更新し、要求の期間、データ ストアでは、セッション項目のデータをロックします。 データ ストアでは、セッション項目データが存在しない場合、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドのセット、 `locked` `out` パラメーターを `false` し、返します `null`します。  これにより、 <xref:System.Web.SessionState.SessionStateModule> を呼び出すオブジェクト、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> データ ストアの新しいセッション項目を作成する方法です。 場合はセッション項目データがデータ ストアで見つかりましたが、データがロックされている、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドのセット、 `locked` `out` パラメーターを `true`, 、設定、 `lockAge` `out` パラメーター セット \(これは、データ ストアから取得\)、現在の日付と時刻、日付から差し引いたものと、項目がロックされた時刻に、 `lockId` `out` ロック識別子にパラメーターがデータ ストアと返しますから取得 `null`します。    これにより、 <xref:System.Web.SessionState.SessionStateModule> を呼び出すオブジェクト、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> セッション項目情報を取得し、データのロックを取得しようとする 0.5 秒間隔の後にもう一度メソッドです。 場合、値を `lockAge` `out` を超えるにパラメーターが設定されている、 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 値、 <xref:System.Web.SessionState.SessionStateModule> 呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> セッション項目データと、呼び出しをロックを解除する方法、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドを再度します。  
   
- The `actionFlags` parameter is used when the `cookieless` and `regenerateExpiredSessionId` attributes are both set to `true`. An `actionFlags` value set to <xref:System.Web.SessionState.SessionStateActions.InitializeItem> indicates that the entry in the session data store is a new session that requires initialization. Uninitialized entries in the session data store are created by a call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> method. If the item from the session data store is not an uninitialized item, the `actionFlags` parameter will be set to zero.  
+ `actionFlags` パラメーターが使用されるときに、 `cookieless` と `regenerateExpiredSessionId` 属性に設定されて `true`します。`actionFlags` 値に設定 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> セッション データ ストアのエントリが初期化を必要とする新しいセッションであることを示します。 呼び出しによってセッション データ ストアに初期化されていないエントリが作成された、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> メソッドです。 セッションのデータ ストアから項目が、初期化されていない項目ではない場合、 `actionFlags` パラメーターを 0 に設定されます。  
   
- Custom session-state store implementers that support cookieless sessions should set the `actionFlags` `out` parameter to the value returned from the session data store for the current item. If the `actionFlags` parameter value for the requested session-store item equals the <xref:System.Web.SessionState.SessionStateActions.InitializeItem> enumeration value, then the <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> method should set the value in the data store to zero after setting the `actionFlags` `out` parameter.  
+ クッキーなしのセッションをサポートするカスタム セッション状態ストアの実行者に設定する必要があります、 `actionFlags` `out` 、セッション データ ストアから現在のアイテムのパラメーターの値が返されます。  場合、 `actionFlags` 要求されたセッション ストアのパラメーター値が項目と等しい、 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 列挙値、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> メソッドは 0 を設定した後にデータ ストア内の値を設定する必要があります、 `actionFlags` `out` パラメーター。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -362,18 +371,19 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <summary>Called by the <see cref="T:System.Web.SessionState.SessionStateModule" /> object for per-request initialization.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <summary>によって呼び出される、 <see cref="T:System.Web.SessionState.SessionStateModule" /> 要求ごとの初期化のオブジェクト。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> method before calling any other <xref:System.Web.SessionState.SessionStateStoreProviderBase> method. You can use the <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> method to perform any per-request initialization required by your session-state store provider.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> メソッドを呼び出すその他の前に <xref:System.Web.SessionState.SessionStateStoreProviderBase> メソッドです。 使用することができます、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> 、セッション状態ストア プロバイダーで必要な要求ごとの初期化を実行するメソッドです。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -397,24 +407,25 @@
         <Parameter Name="lockId" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The session identifier for the current request.</param>
-        <param name="lockId">The lock identifier for the current request.</param>
-        <summary>Releases a lock on an item in the session data store.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">現在の要求に対するセッションの識別子です。</param>
+        <param name="lockId">現在の要求に対するロック識別子。</param>
+        <summary>リリース セッション データ内の項目のロックを格納します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method to update the expiration date and release a lock on an item in the session data store. It is called at the end of a request, during the <xref:System.Web.HttpApplication.ReleaseRequestState> event, if session values are unchanged. If session values have been modified, the <xref:System.Web.SessionState.SessionStateModule> object instead calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> method.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 期限を更新し、セッション データ ストア内のアイテムのロックを解放します。 中に、要求の終了時に呼び出されます、 <xref:System.Web.HttpApplication.ReleaseRequestState> イベント、セッションの値が変更されていない場合。 セッションの値が変更された場合、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出しの代わりに、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> メソッドです。  
   
- The <xref:System.Web.SessionState.SessionStateModule> object also calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method when a lock on an item in the session data store has exceeded the <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> value. For more information about locking and details about the lock identifier, see "Locking Session-Store Data" in the <xref:System.Web.SessionState.SessionStateStoreProviderBase> class overview.  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトも呼び出して、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> セッション データ ストア内の項目のロックを超えた場合は、メソッド、 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 値。 詳細については、ロックとロック識別子の詳細は、「セッション ストア データのロック」を参照してください、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> クラスの概要です。  
   
- The <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method only removes the lock from an item in the session data store for the current application that matches the supplied session `id` and `lockId` values. If the `lockId` does not match the one in the data store, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method does nothing.  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> メソッドでは提供されているセッションと一致する現在のアプリケーションのセッションのデータ ストア内の項目から、ロックが削除されるだけ `id` と `lockId` 値。 場合、 `lockId` データ ストア内の 1 つと一致しない、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> メソッドは何です。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -439,21 +450,23 @@
         <Parameter Name="item" Type="System.Web.SessionState.SessionStateStoreData" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The session identifier for the current request.</param>
-        <param name="lockId">The lock identifier for the current request.</param>
-        <param name="item">The <see cref="T:System.Web.SessionState.SessionStateStoreData" /> that represents the item to delete from the data store.</param>
-        <summary>Deletes item data from the session data store.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">現在の要求に対するセッションの識別子です。</param>
+        <param name="lockId">現在の要求に対するロック識別子。</param>
+        <param name="item">
+          <see cref="T:System.Web.SessionState.SessionStateStoreData" /> データ ストアから削除する項目を表します。</param>
+        <summary>項目のセッションのデータ ストアからデータを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> method at the end of a request, during the <xref:System.Web.HttpApplication.ReleaseRequestState> event, to delete the data for a session item from the session data store if the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method has been called. Only session data for the current application that matches the supplied session `id` and `lockId` values is deleted. For more information about locking and details about the lock identifier, see "Locking Session-Store Data" in the <xref:System.Web.SessionState.SessionStateStoreProviderBase> class overview.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> メソッド、要求の最後に中に、 <xref:System.Web.HttpApplication.ReleaseRequestState> セッション データ ストアからセッションのアイテムのデータを削除する、イベント、 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> メソッドが呼び出されました。 提供されているセッションと一致する現在のアプリケーションのセッション データのみ `id` と `lockId` 値を削除します。 詳細については、ロックとロック識別子の詳細は、「セッション ストア データのロック」を参照してください、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> クラスの概要です。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -476,25 +489,26 @@
         <Parameter Name="id" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The session identifier for the current request.</param>
-        <summary>Updates the expiration date and time of an item in the session data store.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">現在の要求に対するセッションの識別子です。</param>
+        <summary>セッションのデータ ストア内の項目の有効期限日時を更新します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> method to update the expiration date and time for a session to the current date and time plus the session <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> value when either:  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> に現在の日付と時刻と、セッションにセッションの有効期限日時を更新する方法 <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> 値といずれか。  
   
--   the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is `true`, or  
+-   <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 属性は `true`, 、または  
   
--   the request did not raise the <xref:System.Web.HttpApplication.AcquireRequestState> and <xref:System.Web.HttpApplication.ReleaseRequestState> events due to an error.  
+-   要求が生成していない、 <xref:System.Web.HttpApplication.AcquireRequestState> と <xref:System.Web.HttpApplication.ReleaseRequestState> エラーのためのイベントです。  
   
- If an ASP.NET page is requested and the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> attribute is set to `false`, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> method is still called to update the expiration date and time of the data in the session data store.  
+ ASP.NET ページが要求された場合、 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> に属性が設定されている `false`, 、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> メソッドは、有効期限の日付と時刻、セッション データ ストア内のデータを更新すると呼ばれます。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -520,27 +534,29 @@
         <Parameter Name="newItem" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the current request.</param>
-        <param name="id">The session identifier for the current request.</param>
-        <param name="item">The <see cref="T:System.Web.SessionState.SessionStateStoreData" /> object that contains the current session values to be stored.</param>
-        <param name="lockId">The lock identifier for the current request.</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> の現在の要求。</param>
+        <param name="id">現在の要求に対するセッションの識別子です。</param>
+        <param name="item">
+          <see cref="T:System.Web.SessionState.SessionStateStoreData" /> を格納する現在のセッション値を含むオブジェクト。</param>
+        <param name="lockId">現在の要求に対するロック識別子。</param>
         <param name="newItem">
-          <see langword="true" /> to identify the session item as a new item; <see langword="false" /> to identify the session item as an existing item.</param>
-        <summary>Updates the session-item information in the session-state data store with values from the current request, and clears the lock on the data.</summary>
+          <see langword="true" /> 新しい項目として、セッション項目を識別するには <see langword="false" /> セッション項目を既存の項目を識別します。</param>
+        <summary>現在の要求からの値でセッション状態のデータ ストア内のセッション項目情報を更新し、データのロックを解除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> method at the end of a request, during the <xref:System.Web.HttpApplication.ReleaseRequestState> event, to insert current session-item information into the data store or update existing session-item information in the data store with current values, to update the expiration time on the item, and to release the lock on the data. Only session data for the current application that matches the supplied session `id` and `lockId` values is updated. For more information about locking, see "Locking Session Store Data" in the <xref:System.Web.SessionState.SessionStateStoreProviderBase> class overview.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> メソッド、要求の最後に中に、 <xref:System.Web.HttpApplication.ReleaseRequestState> イベントをデータ ストアに現在のセッション項目情報を挿入したり、アイテムでは、有効期限を更新して、データのロックを解除するのには、現在の値に基づいてデータ ストア内の既存のセッション項目情報を更新します。 提供されているセッションと一致する現在のアプリケーションのセッション データのみ `id` と `lockId` の値を更新します。 ロックの詳細については「セッション ストア データのロック」を参照してください、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> クラスの概要です。  
   
- If the session values for the current request have not been modified, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> method is not called. Instead, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> method is called.  
+ 現在の要求に対するセッションの値が変更されていない場合、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> メソッドは呼び出されません。 代わりに、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> メソッドが呼び出されます。  
   
- If the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method has been called, the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> method is not called. Instead, the <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> method to delete session-item data from the data source.  
+ 場合、 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> メソッドが呼び出された、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> メソッドは呼び出されません。 代わりに、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> メソッドは、データ ソースからセッション項目データを削除します。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>
@@ -562,22 +578,23 @@
         <Parameter Name="expireCallback" Type="System.Web.SessionState.SessionStateItemExpireCallback" />
       </Parameters>
       <Docs>
-        <param name="expireCallback">The <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> delegate for the <see langword="Session_OnEnd" /> event defined in the Global.asax file.</param>
-        <summary>Sets a reference to the <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> delegate for the <see langword="Session_OnEnd" /> event defined in the Global.asax file.</summary>
+        <param name="expireCallback">
+          <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> デリゲートは、 <see langword="Session_OnEnd" /> Global.asax ファイルで定義されたイベント。</param>
+        <summary>参照を設定、 <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> デリゲートは、 <see langword="Session_OnEnd" /> Global.asax ファイルで定義されたイベント。</summary>
         <returns>
-          <see langword="true" /> if the session-state store provider supports calling the <see langword="Session_OnEnd" /> event; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> セッション状態ストアのプロバイダーには、通話がサポートされている場合、 <see langword="Session_OnEnd" /> イベント以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.SessionStateModule> object calls the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> method when the module is initialized to determine whether calls to the `Session_OnEnd` event are supported by the <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementation and to associate the <xref:System.Web.SessionState.SessionStateItemExpireCallback> delegate with the `Session_OnEnd` event.  
+## 解説  
+ <xref:System.Web.SessionState.SessionStateModule> オブジェクトの呼び出し、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> メソッドを決定する、モジュールが初期化されるとかどうかを呼び出す、 `Session_OnEnd` でイベントがサポートされて、 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 実装およびに関連付けるには、 <xref:System.Web.SessionState.SessionStateItemExpireCallback> を持つデリゲート、 `Session_OnEnd` イベントです。  
   
- Custom session-state store provider implementers should use the <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> method to inform the <xref:System.Web.SessionState.SessionStateModule> object whether calls to the `Session_OnEnd` event are supported and to set a local reference to the <xref:System.Web.SessionState.SessionStateItemExpireCallback> delegate supplied by the `expireCallback` parameter. The custom implementation must decide when the local <xref:System.Web.SessionState.SessionStateItemExpireCallback> delegate will be called. For example, the delegate could be called during the call to the <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> method, which is called when a session is abandoned.  
+ カスタム セッション状態ストア プロバイダーの実装を使用する必要があります、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> に通知するメソッド、 <xref:System.Web.SessionState.SessionStateModule> オブジェクトかどうかへの呼び出し、 `Session_OnEnd` イベントがサポートされているローカル参照に設定して、 <xref:System.Web.SessionState.SessionStateItemExpireCallback> によって提供されるデリゲート、 `expireCallback` パラメーター。 カスタムの実装は時期を決定する必要があります、ローカル <xref:System.Web.SessionState.SessionStateItemExpireCallback> デリゲートが呼び出されます。 たとえば、呼び出し中に、デリゲートを呼び出すことができます、 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> 、セッションが中断されるときに呼び出されるメソッド。  
   
    
   
-## Examples  
- For an example of a session-state store provider implementation, see [Implementing a Session-State Store Provider](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+## 例  
+ セッション状態ストアのプロバイダーの実装の例は、次を参照してください。 [Implementing a Session\-State Store Provider](http://msdn.microsoft.com/ja-jp/baadfec5-c881-468a-9681-7d8796b05a66)します。  
   
  ]]></format>
         </remarks>

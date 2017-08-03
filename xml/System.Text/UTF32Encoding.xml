@@ -21,73 +21,81 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents a UTF-32 encoding of Unicode characters.</summary>
+    <summary>Unicode 文字の UTF\-32 エンコーディングを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Encoding is the process of transforming a set of Unicode characters into a sequence of bytes. Decoding is the process of transforming a sequence of encoded bytes into a set of Unicode characters.  
+## 解説  
+ エンコーディングは、Unicode 文字のセットをバイト シーケンスに変換するプロセスです。 デコードは、Unicode 文字のセットにエンコードされたバイト シーケンスを変換するプロセスです。  
   
- The [Unicode Standard](http://go.microsoft.com/fwlink/?linkid=37123) assigns a code point (a number) to each character in every supported script. A Unicode Transformation Format (UTF) is a way to encode that code point. The [Unicode Standard](http://go.microsoft.com/fwlink/?linkid=37123) uses the following UTFs:  
+ [Unicode Standard](http://go.microsoft.com/fwlink/?linkid=37123) コード ポイント \(数値\) をすべてサポートされているスクリプト内の各文字に割り当てます。 Unicode 変換形式 \(UTF\) は、そのコード ポイントをエンコードする方法です。[Unicode Standard](http://go.microsoft.com/fwlink/?linkid=37123) 次 UTFs を使用します。  
   
--   UTF-8, which represents each code point as a sequence of one to four bytes.  
+-   Utf\-8、各コード ポイントを 1 ~ 4 バイトのシーケンスとして表します。  
   
--   UTF-16, which represents each code point as a sequence of one to two 16-bit integers.  
+-   Utf\-16、各コード ポイントを 1 ~ 2 の 16 ビット整数のシーケンスとして表現します。  
   
--   UTF-32, which represents each code point as a 32-bit integer.  
+-   Utf\-32、32 ビット整数として各コード ポイントを表します。  
   
- For more information about the UTFs and other encodings supported by <xref:System.Text>, see .  
+ 詳細については、UTFs とでサポートされているその他のエンコーディングの <xref:System.Text>, を参照してください。  
   
- The <xref:System.Text.UTF32Encoding> class represents a UTF-32 encoding. The encoder can use the big endian byte order (most significant byte first) or the little endian byte order (least significant byte first). For example, the Latin Capital Letter A (code point U+0041) is serialized as follows (in hexadecimal):  
+ <xref:System.Text.UTF32Encoding> クラスは、utf\-32 エンコーディングを表します。 エンコーダーは、ビッグ エンディアン バイト順を使用できます \(最上位バイト最初\) またはリトル エンディアン バイト順 \(最下位バイト最初\)。 たとえば、アルファベットの大文字 a \(コード ポイント u\+0041\) としてシリアル化された次のように 16 進数\)。  
   
--   Big endian byte order: 00 00 00 41  
+-   ビッグ エンディアン バイト順: 00 00 00 41  
   
--   Little endian byte order: 41 00 00 00  
+-   リトル エンディアン バイト順: 41 00 00 00  
   
- It is generally more efficient to store Unicode characters using the native byte order. For example, it is better to use the little endian byte order on little endian platforms, such as Intel computers. <xref:System.Text.UTF32Encoding> corresponds to the Windows code pages 12000 (little endian byte order) and 12001 (big endian byte order). You can determine the "endianness" of a particular architecture by calling the <xref:System.BitConverter.IsLittleEndian?displayProperty=fullName> method.  
+ これは、ネイティブのバイト順を使用して Unicode 文字を格納する方が効率的です。 たとえば、intel ベースのコンピューターなど、リトル エンディアンのプラットフォームでリトル エンディアン バイト順を使用することをお勧めします。<xref:System.Text.UTF32Encoding> Windows コード ページ \(リトル エンディアン バイト順\) 12000、12001 \(ビッグ エンディアン バイト順\) に対応します。 呼び出して、特定のアーキテクチャ「エンディアン」を指定できます、 <xref:System.BitConverter.IsLittleEndian?displayProperty=fullName> メソッドです。  
   
- Optionally, the <xref:System.Text.UTF32Encoding> object provides a byte order mark (BOM), which is an array of bytes that can be prefixed to the sequence of bytes resulting from the encoding process. If the preamble contains a byte order mark (BOM), it helps the decoder determine the byte order and the transformation format or UTF of a byte array.  
+ 必要に応じて、 <xref:System.Text.UTF32Encoding> オブジェクトは、この場合、配列の先頭には、エンコーディング プロセスに起因するバイトのシーケンスをバイト数のバイト順マーク \(BOM\) を提供します。 プリアンブルにバイト順マーク \(BOM\) が含まれている場合、バイト順および変換形式または UTF バイト配列の決定、デコーダーが役立ちます。  
   
- If the <xref:System.Text.UTF32Encoding> instance is configured to provide a BOM, you can retrieve it by calling the <xref:System.Text.UTF32Encoding.GetPreamble%2A> method; otherwise, the method returns an empty array. Note that, even if a <xref:System.Text.UTF32Encoding> object is configured for BOM support, you must include the BOM at the beginning of the encoded byte stream as appropriate; the encoding methods of the <xref:System.Text.UTF32Encoding> class do not do this automatically.  
+ 場合、 <xref:System.Text.UTF32Encoding> BOM を提供するインスタンスが構成されているを呼び出して取得することができます、 <xref:System.Text.UTF32Encoding.GetPreamble%2A> メソッドです。 それ以外の場合、メソッドが空の配列を返します。 なお、場合でも、 <xref:System.Text.UTF32Encoding> オブジェクトは、BOM サポートのために構成されている、必要に応じて、エンコードされたバイト ストリームの先頭に BOM を含める必要がありますのエンコード方法、 <xref:System.Text.UTF32Encoding> クラスしないで自動的にします。  
   
- To enable error detection and to make the class instance more secure, you should instantiate a <xref:System.Text.UTF32Encoding> object by calling the <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> constructor and setting its `throwOnInvalidBytes` argument to `true`. With error detection, a method that detects an invalid sequence of characters or bytes throws an <xref:System.ArgumentException> exception. Without error detection, no exception is thrown, and the invalid sequence is generally ignored.  
+ エラーの検出を有効にして、クラスのインスタンスのセキュリティを強化するには、インスタンスを作成、 <xref:System.Text.UTF32Encoding> オブジェクトを呼び出して、 <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> コンス トラクターと設定、 `throwOnInvalidBytes` への引数 `true`します。 エラーの検出、無効な文字またはバイトのシーケンスを検出するメソッドがスローされます、 <xref:System.ArgumentException> 例外です。 エラー検出例外はスローされませんし、無効なシーケンスが通常は無視されます。  
   
- You can instantiate a <xref:System.Text.UTF32Encoding> object in a number of ways, depending on whether you want to it to provide a byte order mark (BOM), whether you want big-endian or little-endian encoding, and whether you want to enable error detection. The following table lists the <xref:System.Text.UTF32Encoding> constructors and the <xref:System.Text.Encoding> properties that return a <xref:System.Text.UnicodeEncoding> object.  
+ インスタンスを作成できる、 <xref:System.Text.UTF32Encoding> オブジェクトは、さまざまな方法でするかどうか、バイト順マーク \(BOM\) を提供する、ビッグ エンディアンまたはリトル エンディアン エンコーディングするかどうか、およびエラーの検出を有効にするかどうかによって異なります。 次の表に、 <xref:System.Text.UTF32Encoding> コンス トラクターと <xref:System.Text.Encoding> を返すプロパティ、 <xref:System.Text.UnicodeEncoding> オブジェクトです。  
   
-|Member|Endianness|BOM|Error detection|  
-|------------|----------------|---------|---------------------|  
-|<xref:System.Text.Encoding.UTF32%2A?displayProperty=fullName>|Little-endian|Yes|No (Replacement fallback)|  
-|<xref:System.Text.UTF32Encoding.%23ctor?displayProperty=fullName>|Little-endian|Yes|No (Replacement fallback)|  
-|<xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%29?displayProperty=fullName>|Configurable|Configurable|No (Replacement fallback)|  
-|<xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29?displayProperty=fullName>|Configurable|Configurable|Configurable|  
+|メンバー|エンディアン|BOM|エラーの検出|  
+|----------|------------|---------|------------|  
+|<xref:System.Text.Encoding.UTF32%2A?displayProperty=fullName>|リトル エンディアン|はい|なし \(置換フォールバック\)|  
+|<xref:System.Text.UTF32Encoding.%23ctor?displayProperty=fullName>|リトル エンディアン|はい|なし \(置換フォールバック\)|  
+|<xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%29?displayProperty=fullName>|構成可能|構成可能|なし \(置換フォールバック\)|  
+|<xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29?displayProperty=fullName>|構成可能|構成可能|構成可能|  
   
- The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method determines how many bytes result in encoding a set of Unicode characters, and the <xref:System.Text.UTF32Encoding.GetBytes%2A> method performs the actual encoding.  
+ <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、Unicode 文字のセットをエンコードで発生するまでのバイト数を決定し、 <xref:System.Text.UTF32Encoding.GetBytes%2A> メソッドでは、実際のエンコードを実行します。  
   
- Likewise, the <xref:System.Text.UTF32Encoding.GetCharCount%2A> method determines how many characters result in decoding a sequence of bytes, and the <xref:System.Text.UTF32Encoding.GetChars%2A> and <xref:System.Text.UTF32Encoding.GetString%2A> methods perform the actual decoding.  
+ 同様に、 <xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドは、バイト シーケンスをデコード中に発生する文字数を決定し、 <xref:System.Text.UTF32Encoding.GetChars%2A> と <xref:System.Text.UTF32Encoding.GetString%2A> メソッドは、実際のデコードを実行します。  
   
- For an encoder or decoder that is able to save state information when encoding or decoding data that spans multiple blocks (such as string of 1 million characters that is encoded in 100,000-character segments), use the <xref:System.Text.UTF32Encoding.GetEncoder%2A> and <xref:System.Text.UTF32Encoding.GetDecoder%2A> properties, respectively.  
+ エンコーダーまたはデコーダー エンコードまたはデコード \(100,000 文字セグメントでエンコードされている 100万文字の文字列\) などの複数のブロックにわたるデータと状態情報を保存、使用することであるため、 <xref:System.Text.UTF32Encoding.GetEncoder%2A> と <xref:System.Text.UTF32Encoding.GetDecoder%2A> プロパティそれぞれします。  
   
    
   
-## Examples  
- The following example demonstrates the behavior of <xref:System.Text.UTF32Encoding> objects with and without error detection enabled. It creates a byte array whose last four bytes represent an invalid surrogate pair; the high surrogate U+D8FF is followed by an U+01FF, which is outside the range of low surrogates (0xDC00 through 0xDFFF). Without error detection, the UTF32 decoder uses replacement fallback to replace the invalid surrogate pair with REPLACEMENT CHARACTER (U+FFFD).  
+## 例  
+ 次の例の動作を示します <xref:System.Text.UTF32Encoding> オブジェクトとそうでないエラー検出を有効にします。 最後の 4 つのバイトを含むが、無効なサロゲート ペアを表すバイト配列が作成されます。上位サロゲート U \+ D8FF の後に、U \+ 01FF、低いサロゲート \(0xDC00 から 0 xdfff を通じて\) の範囲外であります。 エラーの検出、UTF32 デコーダーは、置換フォールバックを使用して、REPLACEMENT CHARACTER \(U\+FFFD\) に無効なサロゲート ペアを置き換えます。  
   
- [!code-cpp[System.Text.UTF32Encoding.ErrorDetection#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CPP/errordetection.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.ErrorDetection#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CS/errordetection.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.ErrorDetection#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/VB/ErrorDetection.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.ErrorDetection\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CPP/errordetection.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.ErrorDetection\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CS/errordetection.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.ErrorDetection\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/VB/ErrorDetection.vb#1)]  
   
- The following example encodes a string of Unicode characters into a byte array by using a <xref:System.Text.UTF32Encoding> object. The byte array is then decoded into a string to demonstrate that there is no loss of data.  
+ 次の例では、バイト配列に Unicode 文字の文字列をエンコードを使用して、 <xref:System.Text.UTF32Encoding> オブジェクトです。 バイト配列は、データの損失がないことを示すために文字列にデコードされます。  
   
- [!code-csharp[System.Text.UTF32Encoding.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.class/cs/snippet.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.class/vb/snippet.vb#1)]  
+ [!code-csharp[System.Text.UTF32Encoding.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.class/cs/snippet.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.class/vb/snippet.vb#1)]  
   
- The following example uses the same string as the previous one, except that it writes the encoded bytes to a file and prefixes the byte stream with a byte order mark (BOM). It then reads the file in two different ways: as a text file by using a <xref:System.IO.StreamReader> object; and as a binary file. As you would expect, in neither case is the BOM included in the newly read string.  
+ 点を除いて、ファイルにエンコードされたバイトを書き込み、バイト順マーク \(BOM\) をバイト ストリームの前に、次の例は前の項目と同じ文字列を使用します。 これは、後、2 つの方法で、ファイルを読み取ります: を使用してテキスト ファイルとして、 <xref:System.IO.StreamReader> オブジェクトおよびバイナリ ファイルです。 想定されるように、どちらの場合には、BOM が含まれて新しく読み取られた文字列には。  
   
- [!code-csharp[System.Text.UTF32Encoding.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.class/cs/bom1.cs#2)]
- [!code-vb[System.Text.UTF32Encoding.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.class/vb/bom1.vb#2)]  
+ [!code-csharp[System.Text.UTF32Encoding.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.class/cs/bom1.cs#2)]
+ [!code-vb[System.Text.UTF32Encoding.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.class/vb/bom1.vb#2)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Text.Encoding" />
+    <altmember cref="T:System.Text.Encoder" />
+    <altmember cref="T:System.Text.Decoder" />
+    <altmember cref="T:System.Text.UTF8Encoding" />
+    <altmember cref="T:System.Text.ASCIIEncoding" />
+    <altmember cref="T:System.Text.UnicodeEncoding" />
+    <altmember cref="T:System.Globalization.UnicodeCategory" />
+    <altmember cref="T:System.Globalization.CharUnicodeInfo" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -111,24 +119,25 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Text.UTF32Encoding" /> class.</summary>
+        <summary>
+          <see cref="T:System.Text.UTF32Encoding" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor creates an instance that uses the little endian byte order, provides a Unicode byte order mark, and does not throw an exception when an invalid encoding is detected.  
+## 解説  
+ このコンス トラクターでは、リトル エンディアン バイト順を使用して、Unicode バイト順マークを提供し、無効なエンコードが検出されると、例外をスローしないインスタンスを作成します。  
   
 > [!NOTE]
->  For security reasons, you should enable error detection by calling the <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> constructor and setting its `throwOnInvalidCharacters` argument to `true`.  
+>  セキュリティ上の理由を呼び出してエラーの検出を有効に.、 <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> コンス トラクターと設定、 `throwOnInvalidCharacters` 引数 `true`します。  
   
    
   
-## Examples  
- The following example retrieves and displays the byte order mark for different <xref:System.Text.UTF32Encoding> instances.  
+## 例  
+ 次の例の取得と、バイト順のマークを付けるさまざまな表示 <xref:System.Text.UTF32Encoding> インスタンス。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CPP/getpreamble.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/GetPreamble.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CPP/getpreamble.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/GetPreamble.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -158,31 +167,31 @@
         <Parameter Name="byteOrderMark" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="bigEndian">
-          <see langword="true" /> to use the big endian byte order (most significant byte first), or <see langword="false" /> to use the little endian byte order (least significant byte first).</param>
-        <param name="byteOrderMark">
-          <see langword="true" /> to specify that a Unicode byte order mark is provided; otherwise, <see langword="false" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Text.UTF32Encoding" /> class. Parameters specify whether to use the big endian byte order and whether the <see cref="M:System.Text.UTF32Encoding.GetPreamble" /> method returns a Unicode Unicode byte order mark.</summary>
+        <param name="bigEndian">最上位バイトが先頭に配置されるビッグ エンディアン バイト順を使用する場合は <see langword="true" />。最下位バイトが先頭に配置されるリトル エンディアン バイト順を使用する場合は <see langword="false" />。</param>
+        <param name="byteOrderMark">Unicode バイト順マークを付加するよう指定する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Text.UTF32Encoding" /> クラスの新しいインスタンスを初期化します。 パラメーターでは、ビッグ エンディアン バイト順を使用するかどうか、および <see cref="M:System.Text.UTF32Encoding.GetPreamble" /> メソッドが Unicode の Unicode バイト順マークを返すかどうかを指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor creates an instance that does not throw an exception when an invalid encoding is detected.  
+## 解説  
+ このコンス トラクターでは、無効なエンコードが検出されると、例外をスローしないインスタンスを作成します。  
   
 > [!NOTE]
->  For security reasons, you should enable error detection by calling the <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> constructor and setting its `throwOnInvalidCharacters` argument to `true`.  
+>  セキュリティ上の理由を呼び出してエラーの検出を有効に.、 <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> コンス トラクターと設定、 `throwOnInvalidCharacters` 引数 `true`します。  
   
    
   
-## Examples  
- The following example retrieves and displays the byte order mark for different <xref:System.Text.UTF32Encoding> instances.  
+## 例  
+ 次の例の取得と、バイト順のマークを付けるさまざまな表示 <xref:System.Text.UTF32Encoding> インスタンス。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CPP/getpreamble.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/GetPreamble.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CPP/getpreamble.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/GetPreamble.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Text.UTF32Encoding.GetPreamble" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -210,33 +219,32 @@
         <Parameter Name="throwOnInvalidCharacters" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="bigEndian">
-          <see langword="true" /> to use the big endian byte order (most significant byte first), or <see langword="false" /> to use the little endian byte order (least significant byte first).</param>
-        <param name="byteOrderMark">
-          <see langword="true" /> to specify that a Unicode byte order mark is provided; otherwise, <see langword="false" />.</param>
-        <param name="throwOnInvalidCharacters">
-          <see langword="true" /> to specify that an exception should be thrown when an invalid encoding is detected; otherwise, <see langword="false" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Text.UTF32Encoding" /> class. Parameters specify whether to use the big endian byte order, whether to provide a Unicode byte order mark, and whether to throw an exception when an invalid encoding is detected.</summary>
+        <param name="bigEndian">最上位バイトが先頭に配置されるビッグ エンディアン バイト順を使用する場合は <see langword="true" />。最下位バイトが先頭に配置されるリトル エンディアン バイト順を使用する場合は <see langword="false" />。</param>
+        <param name="byteOrderMark">Unicode バイト順マークを付加するよう指定する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</param>
+        <param name="throwOnInvalidCharacters">無効なエンコーディングが検出されたときに例外をスローすることを指定する場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Text.UTF32Encoding" /> クラスの新しいインスタンスを初期化します。 パラメーターでは、ビッグ エンディアン バイト順を使用するかどうか、Unicode バイト順マークを付加するかどうか、および無効なエンコーディングを検出したときに例外をスローするかどうかを指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `throwOnInvalidCharacters` is `true`, a method that detects an invalid byte sequence throws <xref:System.ArgumentException?displayProperty=fullName>. Otherwise, the method does not throw an exception, and the invalid sequence is ignored.  
+## 解説  
+ 場合 `throwOnInvalidCharacters` は `true`, 、無効なバイト シーケンスを検出するメソッドがスローされます <xref:System.ArgumentException?displayProperty=fullName>します。 それ以外の場合、メソッドは、例外をスローしていないと、順序が無効ですが無視されます。  
   
 > [!NOTE]
->  For security reasons, you should enable error detection by calling the <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> constructor and setting its `throwOnInvalidCharacters` argument to `true`.  
+>  セキュリティ上の理由を呼び出してエラーの検出を有効に.、 <xref:System.Text.UTF32Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29> コンス トラクターと設定、 `throwOnInvalidCharacters` 引数 `true`します。  
   
    
   
-## Examples  
- The following example demonstrates the behavior of <xref:System.Text.UTF32Encoding>, both with error detection enabled and without.  
+## 例  
+ 次の例の動作を示します <xref:System.Text.UTF32Encoding>, 、エラーの検出を有効になっているとなし。  
   
- [!code-cpp[System.Text.UTF32Encoding.ErrorDetection#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CPP/errordetection.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.ErrorDetection#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CS/errordetection.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.ErrorDetection#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/VB/ErrorDetection.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.ErrorDetection\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CPP/errordetection.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.ErrorDetection\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/CS/errordetection.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.ErrorDetection\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.ErrorDetection/VB/ErrorDetection.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Text.UTF32Encoding.GetPreamble" />
       </Docs>
     </Member>
     <Member MemberName="Equals">
@@ -265,14 +273,14 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="value">The <see cref="T:System.Object" /> to compare with the current object.</param>
-        <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Text.UTF32Encoding" /> object.</summary>
+        <param name="value">比較相手の <see cref="T:System.Object" />。これと現在のオブジェクトを比較することになります。</param>
+        <summary>指定した <see cref="T:System.Object" /> が、現在の <see cref="T:System.Text.UTF32Encoding" /> オブジェクトと等しいかどうかを判断します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="value" /> is an instance of <see cref="T:System.Text.UTF32Encoding" /> and is equal to the current object; otherwise, <see langword="false" />.</returns>
+          <paramref name="value" /> が <see cref="T:System.Text.UTF32Encoding" /> のインスタンスで、現在のオブジェクトと等しい場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Two <xref:System.Text.UTF32Encoding> objects are considered equal if all of the following conditions are true:  
   
 -   Both objects use the same byte order.  
@@ -285,15 +293,17 @@
   
    
   
-## Examples  
+## 例  
  The following example creates <xref:System.Text.UTF32Encoding> objects using different parameter values and then checks them for equality.  
   
- [!code-cpp[System.Text.UTF32Encoding.Equals#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.Equals/CPP/equals.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.Equals#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.Equals/CS/equals.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.Equals#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.Equals/VB/equals.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.Equals\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.Equals/CPP/equals.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.Equals\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.Equals/CS/equals.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.Equals\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.Equals/VB/equals.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Text.UTF32Encoding.#ctor" />
+        <altmember cref="M:System.Object.Equals(System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="GetByteCount">
@@ -327,38 +337,41 @@
         <Parameter Name="s" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="s">The <see cref="T:System.String" /> containing the set of characters to encode.</param>
-        <summary>Calculates the number of bytes produced by encoding the characters in the specified <see cref="T:System.String" />.</summary>
-        <returns>The number of bytes produced by encoding the specified characters.</returns>
+        <param name="s">エンコード対象の文字のセットを格納している <see cref="T:System.String" />。</param>
+        <summary>指定した <see cref="T:System.String" /> 内の文字をエンコードすることによって生成されるバイト数を計算します。</summary>
+        <returns>指定した文字をエンコードすることによって生成されるバイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する <xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドです。<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 <xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- To ensure that the encoded bytes are decoded properly when they are saved as a file or as a stream, you can prefix a stream of encoded bytes with a preamble. Inserting the preamble at the beginning of a byte stream (such as at the beginning of a series of bytes to be written to a file) is the developer's responsibility, and the number of bytes in the preamble is not reflected in the value returned by the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method.  
+ ファイルまたはストリームに保存されるときに、エンコード済みバイトが正しくデコードすることを確認するには、プリアンブルでエンコードされたバイトのストリームの先頭を付加することができます。 バイト ストリームの先頭にある preamble を挿入する \(など一連のファイルに書き込まれるバイト数の先頭にある\) は、開発者の責任であり、preamble のバイト数はによって返される値に反映されず、 <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。  
   
    
   
-## Examples  
- The following example calls the <xref:System.Text.UnicodeEncoding.GetMaxByteCount%2A> and <xref:System.Text.UnicodeEncoding.GetByteCount%28System.String%29> methods to calculate the maximum and actual number of bytes required to encode a string. It also displays the actual number of bytes required to store a byte stream with a byte order mark.  
+## 例  
+ 次の例では、 <xref:System.Text.UnicodeEncoding.GetMaxByteCount%2A> と <xref:System.Text.UnicodeEncoding.GetByteCount%28System.String%29> 、文字列をエンコードするために必要なバイトの最大値と実際の数を計算する方法です。 また、実際のバイト ストリームにバイト オーダー マークの保存に必要なバイト数も表示されます。  
   
- [!code-csharp[System.Text.Utf32Encoding.GetByteCount#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/cs/getbytecount1.cs#1)]
- [!code-vb[System.Text.Utf32Encoding.GetByteCount#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/vb/getbytecount1.vb#1)]  
+ [!code-csharp[System.Text.Utf32Encoding.GetByteCount\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/cs/getbytecount1.cs#1)]
+ [!code-vb[System.Text.Utf32Encoding.GetByteCount\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/vb/getbytecount1.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="s" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="s" /> contains an invalid sequence of characters.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+          <paramref name="s" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">結果のバイト数は、整数値として返すことができる最大数を超えています。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になっていると <paramref name="s" /> 、無効な文字のシーケンスが含まれています。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetBytes(System.String,System.Int32,System.Int32,System.Byte[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxByteCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
       </Docs>
     </Member>
     <Member MemberName="GetByteCount">
@@ -396,37 +409,40 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="chars">A pointer to the first character to encode.</param>
-        <param name="count">The number of characters to encode.</param>
-        <summary>Calculates the number of bytes produced by encoding a set of characters starting at the specified character pointer.</summary>
-        <returns>The number of bytes produced by encoding the specified characters.</returns>
+        <param name="chars">エンコードする最初の文字へのポインター。</param>
+        <param name="count">エンコードする文字数。</param>
+        <summary>指定した文字ポインターで始まる文字のセットをエンコードすることによって生成されるバイト数を計算します。</summary>
+        <returns>指定した文字をエンコードすることによって生成されるバイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A>. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する <xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A>です。<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw an <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 <xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- To ensure that the encoded bytes are decoded properly when they are saved as a file or a stream, you can prefix a stream of encoded bytes with a preamble. Inserting a preamble at the beginning of a byte stream (such as at the beginning of a series of bytes to be written to a file) is the developer's responsibility, and the number of bytes in the preamble Is not reflected in the value returned by the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method.  
+ ファイルまたはストリームとして保存される際に、エンコード済みバイトが正しくデコードすることを確認するには、プリアンブルでエンコードされたバイトのストリームの先頭を付加することができます。 バイト ストリームの先頭に、preamble を挿入する \(など、一連のファイルに書き込まれるバイト数の先頭にある\) は開発者の責任であり、preamble のバイト数はによって返される値に反映されず、 <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="chars" /> is <see langword="null" />.</exception>
+          <paramref name="chars" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="count" /> is less than zero.  
+          <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="chars" /> contains an invalid sequence of characters.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ 結果のバイト数が、整数として返すことのできる最大数を超えています。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になっていると <paramref name="chars" /> 、無効な文字のシーケンスが含まれています。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Text.UTF32Encoding.GetBytes(System.String,System.Int32,System.Int32,System.Byte[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxByteCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
       </Docs>
     </Member>
     <Member MemberName="GetByteCount">
@@ -462,49 +478,52 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="chars">The character array containing the set of characters to encode.</param>
-        <param name="index">The index of the first character to encode.</param>
-        <param name="count">The number of characters to encode.</param>
-        <summary>Calculates the number of bytes produced by encoding a set of characters from the specified character array.</summary>
-        <returns>The number of bytes produced by encoding the specified characters.</returns>
+        <param name="chars">エンコード対象の文字のセットを格納している文字配列。</param>
+        <param name="index">エンコードする最初の文字のインデックス。</param>
+        <param name="count">エンコードする文字数。</param>
+        <summary>指定した文字配列から文字のセットをエンコードすることによって生成されるバイト数を計算します。</summary>
+        <returns>指定した文字をエンコードすることによって生成されるバイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する [GetByteCount メソッド \(Char\<xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 [GetByteCount メソッド \(Char\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 [GetByteCount メソッド \(Char\<xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドです。[GetByteCount メソッド \(Char\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 [GetByteCount メソッド \(Char\<xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 [GetByteCount メソッド \(Char\<xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- To ensure that the encoded bytes are decoded properly when they are saved as a file or a stream, you can prefix a stream of encoded bytes with a preamble. Inserting a preamble at the beginning of a byte stream (such as at the beginning of a series of bytes to be written to a file) is the developer's responsibility, and the number of bytes in the preamble Is not reflected in the value returned by the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method.  
+ ファイルまたはストリームとして保存される際に、エンコード済みバイトが正しくデコードすることを確認するには、プリアンブルでエンコードされたバイトのストリームの先頭を付加することができます。 バイト ストリームの先頭に、preamble を挿入する \(など、一連のファイルに書き込まれるバイト数の先頭にある\) は開発者の責任であり、preamble のバイト数はによって返される値に反映されず、 [GetByteCount メソッド \(Char\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。  
   
    
   
-## Examples  
- The following example populates an array with a Latin uppercase and lowercase characters and calls the <xref:System.Text.UnicodeEncoding.GetByteCount%28System.Char%5B%5D%2CSystem.Int32%2CSystem.Int32%29> method to determine the number of bytes needed to encode the Latin lowercase characters. It then displays this information along with the total number of bytes needed if a byte order mark is added. It compares this number with the value returned by the <xref:System.Text.UnicodeEncoding.GetMaxByteCount%2A> method, which indicates maximum number of bytes needed to encode the Latin lowercase characters. The following example populates an array with a combination of Greek and Cyrillic characters and calls the <xref:System.Text.UnicodeEncoding.GetByteCount%28System.Char%5B%5D%2CSystem.Int32%2CSystem.Int32%29> method to determine the number of bytes needed to encode the Cyrillic characters. It then displays this information along with the total number of bytes needed if a byte order mark is added. It compares this number with the value returned by the <xref:System.Text.UnicodeEncoding.GetMaxByteCount%2A> method, which indicates maximum number of bytes needed to encode the Cyrillic characters.  
+## 例  
+ ラテン文字の大文字を持つ配列と文字の小文字と呼び出しを設定する例を次の [GetByteCount メソッド \(Char\<xref:System.Text.UnicodeEncoding.GetByteCount%28System.Char%5B%5D%2CSystem.Int32%2CSystem.Int32%29> ラテン文字の小文字の文字をエンコードするために必要なバイト数を決定する方法です。 バイト順マークが追加された場合に必要なバイトの合計数と共にこの情報が表示されます。 この番号によって返される値を比較して、 [GetByteCount メソッド \(Char\<xref:System.Text.UnicodeEncoding.GetMaxByteCount%2A> メソッドで、ラテン文字の小文字の文字をエンコードするために必要なバイトの最大数を示します。 次の例は、ギリシャ語、キリル文字の文字と呼び出しの組み合わせを含む配列を設定、 [GetByteCount メソッド \(Char\<xref:System.Text.UnicodeEncoding.GetByteCount%28System.Char%5B%5D%2CSystem.Int32%2CSystem.Int32%29> キリル文字をエンコードするために必要なバイト数を決定する方法です。 バイト順マークが追加された場合に必要なバイトの合計数と共にこの情報が表示されます。 この番号によって返される値を比較して、 [GetByteCount メソッド \(Char\<xref:System.Text.UnicodeEncoding.GetMaxByteCount%2A> メソッドで、キリル文字をエンコードするために必要なバイトの最大数を示します。  
   
- [!code-csharp[System.Text.Utf32Encoding.GetByteCount#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/cs/getbytecount2.cs#2)]
- [!code-vb[System.Text.Utf32Encoding.GetByteCount#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/vb/getbytecount2.vb#2)]  
+ [!code-csharp[System.Text.Utf32Encoding.GetByteCount\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/cs/getbytecount2.cs#2)]
+ [!code-vb[System.Text.Utf32Encoding.GetByteCount\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getbytecount/vb/getbytecount2.vb#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="chars" /> is <see langword="null" />.</exception>
+          <paramref name="chars" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.  
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="index" /> and <paramref name="count" /> do not denote a valid range in <paramref name="chars" />.  
+ <paramref name="index" /> および <paramref name="count" /> は <paramref name="chars" /> において有効な範囲を表していません。  
   
- -or-  
+ または  
   
- The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="chars" /> contains an invalid sequence of characters.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ 結果のバイト数が、整数として返すことのできる最大数を超えています。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になっていると <paramref name="chars" /> 、無効な文字のシーケンスが含まれています。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetBytes(System.String,System.Int32,System.Int32,System.Byte[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxByteCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -544,46 +563,50 @@
         <Parameter Name="byteCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="chars">A pointer to the first character to encode.</param>
-        <param name="charCount">The number of characters to encode.</param>
-        <param name="bytes">A pointer to the location at which to start writing the resulting sequence of bytes.</param>
-        <param name="byteCount">The maximum number of bytes to write.</param>
-        <summary>Encodes a set of characters starting at the specified character pointer into a sequence of bytes that are stored starting at the specified byte pointer.</summary>
-        <returns>The actual number of bytes written at the location indicated by the <paramref name="bytes" /> parameter.</returns>
+        <param name="chars">エンコードする最初の文字へのポインター。</param>
+        <param name="charCount">エンコードする文字数。</param>
+        <param name="bytes">結果のバイト シーケンスの書き込みを開始する位置へのポインター。</param>
+        <param name="byteCount">書き込む最大バイト数。</param>
+        <summary>指定した文字ポインターで始まる文字のセットを、指定したバイト ポインターを開始位置として格納されるバイト シーケンスにエンコードします。</summary>
+        <returns>
+          <paramref name="bytes" /> パラメーターによって示される位置に書き込む実際のバイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する <xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドです。<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 <xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- Data to be converted, such as data read from a stream, might be available only in sequential blocks. In this case, or if the amount of data is so large that it needs to be divided into smaller blocks, the application uses the <xref:System.Text.Decoder> or the <xref:System.Text.Encoder> provided by the <xref:System.Text.UTF32Encoding.GetDecoder%2A> method or the <xref:System.Text.UTF32Encoding.GetEncoder%2A> method, respectively.  
+ ストリームから読み取ったデータなど、変換するデータは、シーケンシャル ブロック内でのみ使用可能な可能性があります。 この場合は、アプリケーションを使用してデータの量が小さなブロックに分割する必要があることが非常に大きい場合、または、 <xref:System.Text.Decoder> または <xref:System.Text.Encoder> によって提供される、 <xref:System.Text.UTF32Encoding.GetDecoder%2A> メソッドまたは <xref:System.Text.UTF32Encoding.GetEncoder%2A> メソッドをそれぞれします。  
   
 > [!NOTE]
->  To ensure that the encoded bytes are decoded properly when they are saved as a file or as a stream, you can prefix a stream of encoded bytes with a preamble. Inserting a preamble at the beginning of a byte stream (such as at the beginning of a series of bytes to be written to a file) is the developer's responsibility. The <xref:System.Text.UTF32Encoding.GetBytes%2A> method does not prepend a preamble to the beginning of a sequence of encoded bytes.  
+>  ファイルまたはストリームに保存されるときに、エンコード済みバイトが正しくデコードすることを確認するには、プリアンブルでエンコードされたバイトのストリームの先頭を付加することができます。 バイト ストリームの先頭に、preamble を挿入する \(など、一連のファイルに書き込まれるバイト数の先頭にある\) 開発者の責任です。<xref:System.Text.UTF32Encoding.GetBytes%2A> メソッドはエンコードされたバイト シーケンスの先頭に preamble を追加しません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="chars" /> is <see langword="null" />.  
+          <paramref name="chars" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="bytes" /> is <see langword="null" />.</exception>
+ <paramref name="bytes" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="charCount" /> or <paramref name="byteCount" /> is less than zero.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="chars" /> contains an invalid sequence of characters.  
+          <paramref name="charCount" /> または <paramref name="byteCount" /> が 0 未満です。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="chars" /> に無効な文字のシーケンスが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="byteCount" /> is less than the resulting number of bytes.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ <paramref name="byteCount" /> 結果のバイト数より少ない。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetByteCount(System.Char[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxByteCount(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -621,63 +644,67 @@
         <Parameter Name="byteIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="chars">The character array containing the set of characters to encode.</param>
-        <param name="charIndex">The index of the first character to encode.</param>
-        <param name="charCount">The number of characters to encode.</param>
-        <param name="bytes">The byte array to contain the resulting sequence of bytes.</param>
-        <param name="byteIndex">The index at which to start writing the resulting sequence of bytes.</param>
-        <summary>Encodes a set of characters from the specified character array into the specified byte array.</summary>
-        <returns>The actual number of bytes written into <paramref name="bytes" />.</returns>
+        <param name="chars">エンコード対象の文字のセットを格納している文字配列。</param>
+        <param name="charIndex">エンコードする最初の文字のインデックス。</param>
+        <param name="charCount">エンコードする文字数。</param>
+        <param name="bytes">結果のバイト シーケンスを格納するバイト配列。</param>
+        <param name="byteIndex">結果のバイト シーケンスを書き込む開始位置のインデックス。</param>
+        <summary>指定した文字配列に格納されている文字のセットを指定したバイト配列にエンコードします。</summary>
+        <returns>
+          <paramref name="bytes" /> に書き込まれた実際のバイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドです。[GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- Data to be converted, such as data read from a stream, might be available only in sequential blocks. In this case, or if the amount of data is so large that it needs to be divided into smaller blocks, the application uses the <xref:System.Text.Decoder> or the <xref:System.Text.Encoder> provided by the <xref:System.Text.UTF32Encoding.GetDecoder%2A> method or the <xref:System.Text.UTF32Encoding.GetEncoder%2A> method, respectively.  
+ ストリームから読み取ったデータなど、変換するデータは、シーケンシャル ブロック内でのみ使用可能な可能性があります。 この場合は、アプリケーションを使用してデータの量が小さなブロックに分割する必要があることが非常に大きい場合、または、 [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.Decoder> または [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.Encoder> によって提供される、 [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetDecoder%2A> メソッドまたは [GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetEncoder%2A> メソッドをそれぞれします。  
   
 > [!NOTE]
->  To ensure that the encoded bytes are decoded properly when they are saved as a file or as a stream, you can prefix a stream of encoded bytes with a preamble. Inserting a preamble at the beginning of a byte stream (such as at the beginning of a series of bytes to be written to a file) is the developer's responsibility. The <xref:System.Text.UTF32Encoding.GetBytes%2A> method does not prepend a preamble to the beginning of a sequence of encoded bytes.  
+>  ファイルまたはストリームに保存されるときに、エンコード済みバイトが正しくデコードすることを確認するには、プリアンブルでエンコードされたバイトのストリームの先頭を付加することができます。 バイト ストリームの先頭に、preamble を挿入する \(など、一連のファイルに書き込まれるバイト数の先頭にある\) 開発者の責任です。[GetBytes メソッド \(Char\[\], Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetBytes%2A> メソッドはエンコードされたバイト シーケンスの先頭に preamble を追加しません。  
   
    
   
-## Examples  
- The following example determines the number of bytes required to encode three characters from a character array, then encodes the characters and displays the resulting bytes.  
+## 例  
+ 次の例は、文字配列から次の 3 つの文字をエンコードするために必要なバイト数を指定の文字をエンコードし、結果のバイト数を表示します。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetBytes_CharArr#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_CharArr/CPP/getbytes_chararr.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetBytes_CharArr#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_CharArr/CS/getbytes_chararr.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetBytes_CharArr#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_CharArr/VB/GetBytes_CharArr.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetBytes\_CharArr\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_CharArr/CPP/getbytes_chararr.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetBytes\_CharArr\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_CharArr/CS/getbytes_chararr.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetBytes\_CharArr\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_CharArr/VB/GetBytes_CharArr.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="chars" /> is <see langword="null" />.  
+          <paramref name="chars" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="bytes" /> is <see langword="null" />.</exception>
+ <paramref name="bytes" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="charIndex" /> or <paramref name="charCount" /> or <paramref name="byteIndex" /> is less than zero.  
+          <paramref name="charIndex" /> または <paramref name="charCount" /> または <paramref name="byteIndex" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="charIndex" /> and <paramref name="charCount" /> do not denote a valid range in <paramref name="chars" />.  
+ <paramref name="charIndex" /> <paramref name="charCount" /> で有効な範囲を表していません <paramref name="chars" />します。  
   
- -or-  
+ または  
   
- <paramref name="byteIndex" /> is not a valid index in <paramref name="bytes" />.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="chars" /> contains an invalid sequence of characters.  
+ <paramref name="byteIndex" /> が <paramref name="bytes" /> の有効なインデックスではありません。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="chars" /> に無効な文字のシーケンスが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="bytes" /> does not have enough capacity from <paramref name="byteIndex" /> to the end of the array to accommodate the resulting bytes.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ <paramref name="bytes" /> 十分な容量がない <paramref name="byteIndex" /> に結果のバイトを合わせて、配列の末尾にします。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetByteCount(System.Char[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxByteCount(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -715,63 +742,67 @@
         <Parameter Name="byteIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="s">The <see cref="T:System.String" /> containing the set of characters to encode.</param>
-        <param name="charIndex">The index of the first character to encode.</param>
-        <param name="charCount">The number of characters to encode.</param>
-        <param name="bytes">The byte array to contain the resulting sequence of bytes.</param>
-        <param name="byteIndex">The index at which to start writing the resulting sequence of bytes.</param>
-        <summary>Encodes a set of characters from the specified <see cref="T:System.String" /> into the specified byte array.</summary>
-        <returns>The actual number of bytes written into <paramref name="bytes" />.</returns>
+        <param name="s">エンコード対象の文字のセットを格納している <see cref="T:System.String" />。</param>
+        <param name="charIndex">エンコードする最初の文字のインデックス。</param>
+        <param name="charCount">エンコードする文字数。</param>
+        <param name="bytes">結果のバイト シーケンスを格納するバイト配列。</param>
+        <param name="byteIndex">結果のバイト シーケンスを書き込む開始位置のインデックス。</param>
+        <summary>指定した <see cref="T:System.String" /> の文字セットを、指定したバイト配列にエンコードします。</summary>
+        <returns>
+          <paramref name="bytes" /> に書き込まれた実際のバイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドです。[GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- Data to be converted, such as data read from a stream, might be available only in sequential blocks. In this case, or if the amount of data is so large that it needs to be divided into smaller blocks, the application uses the <xref:System.Text.Decoder> or the <xref:System.Text.Encoder> provided by the <xref:System.Text.UTF32Encoding.GetDecoder%2A> method or the <xref:System.Text.UTF32Encoding.GetEncoder%2A> method, respectively.  
+ ストリームから読み取ったデータなど、変換するデータは、シーケンシャル ブロック内でのみ使用可能な可能性があります。 この場合は、アプリケーションを使用してデータの量が小さなブロックに分割する必要があることが非常に大きい場合、または、 [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.Decoder> または [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.Encoder> によって提供される、 [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetDecoder%2A> メソッドまたは [GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetEncoder%2A> メソッドをそれぞれします。  
   
 > [!NOTE]
->  To ensure that the encoded bytes are decoded properly when they are saved as a file or as a stream, you can prefix a stream of encoded bytes with a preamble. Inserting a preamble at the beginning of a byte stream (such as at the beginning of a series of bytes to be written to a file) is the developer's responsibility. The <xref:System.Text.UTF32Encoding.GetBytes%2A> method does not prepend a preamble to the beginning of a sequence of encoded bytes.  
+>  ファイルまたはストリームに保存されるときに、エンコード済みバイトが正しくデコードすることを確認するには、プリアンブルでエンコードされたバイトのストリームの先頭を付加することができます。 バイト ストリームの先頭に、preamble を挿入する \(など、一連のファイルに書き込まれるバイト数の先頭にある\) 開発者の責任です。[GetBytes メソッド \(String, Int32, Int32, Byte\<xref:System.Text.UTF32Encoding.GetBytes%2A> メソッドはエンコードされたバイト シーケンスの先頭に preamble を追加しません。  
   
    
   
-## Examples  
- The following example determines the number of bytes required to encode a string, then encodes the string and displays the resulting bytes.  
+## 例  
+ 次の例は、文字列をエンコードするために必要なバイト数を決定、文字列をエンコードし、結果のバイト数を表示します。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetBytes_String#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CPP/getbytes_string.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetBytes_String#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CS/getbytes_string.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetBytes_String#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/VB/GetBytes_String.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetBytes\_String\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CPP/getbytes_string.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetBytes\_String\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CS/getbytes_string.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetBytes\_String\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/VB/GetBytes_String.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="s" /> is <see langword="null" />.  
+          <paramref name="s" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="bytes" /> is <see langword="null" />.</exception>
+ <paramref name="bytes" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="charIndex" /> or <paramref name="charCount" /> or <paramref name="byteIndex" /> is less than zero.  
+          <paramref name="charIndex" /> または <paramref name="charCount" /> または <paramref name="byteIndex" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="charIndex" /> and <paramref name="charCount" /> do not denote a valid range in <paramref name="chars" />.  
+ <paramref name="charIndex" /> および <paramref name="charCount" /> は <paramref name="chars" /> において有効な範囲を表していません。  
   
- -or-  
+ または  
   
- <paramref name="byteIndex" /> is not a valid index in <paramref name="bytes" />.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="s" /> contains an invalid sequence of characters.  
+ <paramref name="byteIndex" /> が <paramref name="bytes" /> の有効なインデックスではありません。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="s" /> に無効な文字のシーケンスが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="bytes" /> does not have enough capacity from <paramref name="byteIndex" /> to the end of the array to accommodate the resulting bytes.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ <paramref name="bytes" /> 十分な容量がない <paramref name="byteIndex" /> に結果のバイトを合わせて、配列の末尾にします。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetByteCount(System.Char[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxByteCount(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetCharCount">
@@ -809,35 +840,38 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytes">A pointer to the first byte to decode.</param>
-        <param name="count">The number of bytes to decode.</param>
-        <summary>Calculates the number of characters produced by decoding a sequence of bytes starting at the specified byte pointer.</summary>
-        <returns>The number of characters produced by decoding the specified sequence of bytes.</returns>
+        <param name="bytes">デコードする最初のバイトへのポインター。</param>
+        <param name="count">デコードするバイト数。</param>
+        <summary>指定したバイト ポインターで始まるバイト シーケンスをデコードすることによって生成される文字数を計算します。</summary>
+        <returns>指定したバイト シーケンスをデコードすることによって生成される文字数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Text.UTF32Encoding.GetCharCount%2A> calculates the exact array size required by the <xref:System.Text.UTF32Encoding.GetChars%2A> method to store the resulting characters. To calculate the maximum array size, call the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method. The <xref:System.Text.UTF32Encoding.GetCharCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method generally executes faster.  
+## 解説  
+ <xref:System.Text.UTF32Encoding.GetCharCount%2A> 必要な正確な配列のサイズの計算、 <xref:System.Text.UTF32Encoding.GetChars%2A> 結果の文字を格納する方法です。 配列の最大サイズを計算するには、呼び出し、 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドです。<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 <xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="bytes" /> is <see langword="null" />.</exception>
+          <paramref name="bytes" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="count" /> is less than zero.  
+          <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="bytes" /> contains an invalid sequence of bytes.</exception>
-        <exception cref="T:System.Text.DecoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ 結果のバイト数が、整数として返すことのできる最大数を超えています。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="bytes" /> に無効なバイト シーケンスが含まれています。</exception>
+        <exception cref="T:System.Text.DecoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.DecoderFallback" /> is set to <see cref="T:System.Text.DecoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.DecoderFallback" /> が <see cref="T:System.Text.DecoderExceptionFallback" /> に設定されます。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="Overload:System.Text.UTF32Encoding.GetChars" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxCharCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
       </Docs>
     </Member>
     <Member MemberName="GetCharCount">
@@ -873,48 +907,51 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytes">The byte array containing the sequence of bytes to decode.</param>
-        <param name="index">The index of the first byte to decode.</param>
-        <param name="count">The number of bytes to decode.</param>
-        <summary>Calculates the number of characters produced by decoding a sequence of bytes from the specified byte array.</summary>
-        <returns>The number of characters produced by decoding the specified sequence of bytes.</returns>
+        <param name="bytes">デコード対象のバイト シーケンスが格納されたバイト配列。</param>
+        <param name="index">デコードする最初のバイトのインデックス。</param>
+        <param name="count">デコードするバイト数。</param>
+        <summary>指定したバイト配列からバイト シーケンスをデコードすることによって生成される文字数を計算します。</summary>
+        <returns>指定したバイト シーケンスをデコードすることによって生成される文字数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.UTF32Encoding.GetCharCount%2A> method calculates the exact array size required by the <xref:System.Text.UTF32Encoding.GetChars%2A> method to store the resulting characters. To calculate the maximum array size, call the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method. The <xref:System.Text.UTF32Encoding.GetCharCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method generally executes faster.  
+## 解説  
+ [GetCharCount メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドで必要な正確な配列のサイズを計算する、 [GetCharCount メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetChars%2A> 結果の文字を格納する方法です。 配列の最大サイズを計算するには、呼び出し、 [GetCharCount メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドです。[GetCharCount メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 [GetCharCount メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 [GetCharCount メソッド \(Byte\<xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
    
   
-## Examples  
- The following example encodes a string into an array of bytes, and then decodes the bytes into an array of characters.  
+## 例  
+ 次の例では、文字列、バイト配列にエンコードし、文字の配列にバイトをデコードします。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CPP/getchars.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CS/getchars.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/VB/GetChars.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CPP/getchars.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CS/getchars.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/VB/GetChars.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="bytes" /> is <see langword="null" />.</exception>
+          <paramref name="bytes" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.  
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="index" /> and <paramref name="count" /> do not denote a valid range in <paramref name="bytes" />.  
+ <paramref name="index" /> および <paramref name="count" /> は <paramref name="bytes" /> において有効な範囲を表していません。  
   
- -or-  
+ または  
   
- The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="bytes" /> contains an invalid sequence of bytes.</exception>
-        <exception cref="T:System.Text.DecoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ 結果のバイト数が、整数として返すことのできる最大数を超えています。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="bytes" /> に無効なバイト シーケンスが含まれています。</exception>
+        <exception cref="T:System.Text.DecoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.DecoderFallback" /> is set to <see cref="T:System.Text.DecoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.DecoderFallback" /> が <see cref="T:System.Text.DecoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="Overload:System.Text.UTF32Encoding.GetChars" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxCharCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
       </Docs>
     </Member>
     <Member MemberName="GetChars">
@@ -954,45 +991,50 @@
         <Parameter Name="charCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytes">A pointer to the first byte to decode.</param>
-        <param name="byteCount">The number of bytes to decode.</param>
-        <param name="chars">A pointer to the location at which to start writing the resulting set of characters.</param>
-        <param name="charCount">The maximum number of characters to write.</param>
-        <summary>Decodes a sequence of bytes starting at the specified byte pointer into a set of characters that are stored starting at the specified character pointer.</summary>
-        <returns>The actual number of characters written at the location indicated by <paramref name="chars" />.</returns>
+        <param name="bytes">デコードする最初のバイトへのポインター。</param>
+        <param name="byteCount">デコードするバイト数。</param>
+        <param name="chars">結果の文字セットの書き込みを開始する位置へのポインター。</param>
+        <param name="charCount">書き込む文字の最大数。</param>
+        <summary>指定したバイト ポインターで始まるバイト シーケンスを、指定した文字ポインターを開始位置として格納される文字のセットにデコードします。</summary>
+        <returns>
+          <paramref name="chars" /> によって示される位置に書き込まれる実際の文字数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetChars%2A> to store the resulting characters, call the <xref:System.Text.UTF32Encoding.GetCharCount%2A> method. To calculate the maximum array size, call the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method. The <xref:System.Text.UTF32Encoding.GetCharCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する <xref:System.Text.UTF32Encoding.GetChars%2A> 結果の文字を格納する、 <xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドです。 配列の最大サイズを計算するには、呼び出し、 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドです。<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 <xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- If the range of bytes to be decoded includes the byte order mark (BOM) and the byte array was returned by a method of a non-BOM aware type, the character U+FFFE is included in the character array returned by this method. You can remove it by calling the <xref:System.String.TrimStart%2A?displayProperty=fullName> method.  
+ デコードするバイトの範囲には、バイト順マーク \(BOM\) が含まれているバイト配列が BOM で非対応型のメソッドによって返された場合は、このメソッドによって返される文字配列には文字 U \+ FFFE が含まれます。 これを削除するには呼び出すことによって、 <xref:System.String.TrimStart%2A?displayProperty=fullName> メソッドです。  
   
- Data to be converted, such as data read from a stream, might be available only in sequential blocks. In this case, or if the amount of data is so large that it needs to be divided into smaller blocks, the application uses the <xref:System.Text.Decoder> or the <xref:System.Text.Encoder> provided by the <xref:System.Text.UTF32Encoding.GetDecoder%2A> method or the <xref:System.Text.UTF32Encoding.GetEncoder%2A> method, respectively.  
+ ストリームから読み取ったデータなど、変換するデータは、シーケンシャル ブロック内でのみ使用可能な可能性があります。 この場合は、アプリケーションを使用してデータの量が小さなブロックに分割する必要があることが非常に大きい場合、または、 <xref:System.Text.Decoder> または <xref:System.Text.Encoder> によって提供される、 <xref:System.Text.UTF32Encoding.GetDecoder%2A> メソッドまたは <xref:System.Text.UTF32Encoding.GetEncoder%2A> メソッドをそれぞれします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="bytes" /> is <see langword="null" />.  
+          <paramref name="bytes" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="chars" /> is <see langword="null" />.</exception>
+ <paramref name="chars" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="byteCount" /> or <paramref name="charCount" /> is less than zero.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="bytes" /> contains an invalid sequence of bytes.  
+          <paramref name="byteCount" /> または <paramref name="charCount" /> が 0 未満です。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="bytes" /> に無効なバイト シーケンスが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="charCount" /> is less than the resulting number of characters.</exception>
-        <exception cref="T:System.Text.DecoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ <paramref name="charCount" /> 結果の文字数より少ない。</exception>
+        <exception cref="T:System.Text.DecoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.DecoderFallback" /> is set to <see cref="T:System.Text.DecoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.DecoderFallback" /> が <see cref="T:System.Text.DecoderExceptionFallback" /> に設定されます。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Text.UTF32Encoding.GetCharCount(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxCharCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetString(System.Byte[],System.Int32,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetChars">
@@ -1030,62 +1072,67 @@
         <Parameter Name="charIndex" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytes">The byte array containing the sequence of bytes to decode.</param>
-        <param name="byteIndex">The index of the first byte to decode.</param>
-        <param name="byteCount">The number of bytes to decode.</param>
-        <param name="chars">The character array to contain the resulting set of characters.</param>
-        <param name="charIndex">The index at which to start writing the resulting set of characters.</param>
-        <summary>Decodes a sequence of bytes from the specified byte array into the specified character array.</summary>
-        <returns>The actual number of characters written into <paramref name="chars" />.</returns>
+        <param name="bytes">デコード対象のバイト シーケンスが格納されたバイト配列。</param>
+        <param name="byteIndex">デコードする最初のバイトのインデックス。</param>
+        <param name="byteCount">デコードするバイト数。</param>
+        <param name="chars">結果の文字のセットを格納する文字配列。</param>
+        <param name="charIndex">結果の文字のセットを書き込む開始位置のインデックス。</param>
+        <summary>指定したバイト配列に格納されているバイト シーケンスを指定した文字配列にデコードします。</summary>
+        <returns>
+          <paramref name="chars" /> に書き込まれた実際の文字数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetChars%2A> to store the resulting characters, call the <xref:System.Text.UTF32Encoding.GetCharCount%2A> method. To calculate the maximum array size, call the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method. The <xref:System.Text.UTF32Encoding.GetCharCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetChars%2A> 結果の文字を格納する、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドです。 配列の最大サイズを計算するには、呼び出し、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドです。[GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドは通常、高速に実行されます。  
   
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- If the range of bytes to be decoded includes the byte order mark (BOM) and the byte array was returned by a method of a non-BOM aware type, the character U+FFFE is included in the character array returned by this method. You can remove it by calling the <xref:System.String.TrimStart%2A?displayProperty=fullName> method.  
+ デコードするバイトの範囲には、バイト順マーク \(BOM\) が含まれているバイト配列が BOM で非対応型のメソッドによって返された場合は、このメソッドによって返される文字配列には文字 U \+ FFFE が含まれます。 これを削除するには呼び出すことによって、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.String.TrimStart%2A?displayProperty=fullName> メソッドです。  
   
- Data to be converted, such as data read from a stream, might be available only in sequential blocks. In this case, or if the amount of data is so large that it needs to be divided into smaller blocks, the application uses the <xref:System.Text.Decoder> or the <xref:System.Text.Encoder> provided by the <xref:System.Text.UTF32Encoding.GetDecoder%2A> method or the <xref:System.Text.UTF32Encoding.GetEncoder%2A> method, respectively.  
+ ストリームから読み取ったデータなど、変換するデータは、シーケンシャル ブロック内でのみ使用可能な可能性があります。 この場合は、アプリケーションを使用してデータの量が小さなブロックに分割する必要があることが非常に大きい場合、または、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.Decoder> または [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.Encoder> によって提供される、 [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetDecoder%2A> メソッドまたは [GetChars メソッド \(Byte\[\], Int32, Int32, Char\<xref:System.Text.UTF32Encoding.GetEncoder%2A> メソッドをそれぞれします。  
   
    
   
-## Examples  
- The following example encodes a string into an array of bytes, and then decodes the bytes into an array of characters.  
+## 例  
+ 次の例では、文字列、バイト配列にエンコードし、文字の配列にバイトをデコードします。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CPP/getchars.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CS/getchars.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/VB/GetChars.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CPP/getchars.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CS/getchars.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/VB/GetChars.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="bytes" /> is <see langword="null" />.  
+          <paramref name="bytes" /> は <see langword="null" /> です。  
   
- -or-  
+ \-または\-  
   
- <paramref name="chars" /> is <see langword="null" />.</exception>
+ <paramref name="chars" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="byteIndex" /> or <paramref name="byteCount" /> or <paramref name="charIndex" /> is less than zero.  
+          <paramref name="byteIndex" /> または <paramref name="byteCount" /> または <paramref name="charIndex" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="byteindex" /> and <paramref name="byteCount" /> do not denote a valid range in <paramref name="bytes" />.  
+ <paramref name="byteindex" /> <paramref name="byteCount" /> で有効な範囲を表していません <paramref name="bytes" />します。  
   
- -or-  
+ または  
   
- <paramref name="charIndex" /> is not a valid index in <paramref name="chars" />.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="bytes" /> contains an invalid sequence of bytes.  
+ <paramref name="charIndex" /> が <paramref name="chars" /> の有効なインデックスではありません。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="bytes" /> に無効なバイト シーケンスが含まれています。  
   
- -or-  
+ または  
   
- <paramref name="chars" /> does not have enough capacity from <paramref name="charIndex" /> to the end of the array to accommodate the resulting characters.</exception>
-        <exception cref="T:System.Text.DecoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ <paramref name="chars" /> 十分な容量がない <paramref name="charIndex" /> に結果の文字を合わせて、配列の末尾にします。</exception>
+        <exception cref="T:System.Text.DecoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.DecoderFallback" /> is set to <see cref="T:System.Text.DecoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.DecoderFallback" /> が <see cref="T:System.Text.DecoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetCharCount(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxCharCount(System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetString(System.Byte[],System.Int32,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="GetDecoder">
@@ -1112,27 +1159,32 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Obtains a decoder that converts a UTF-32 encoded sequence of bytes into a sequence of Unicode characters.</summary>
-        <returns>A <see cref="T:System.Text.Decoder" /> that converts a UTF-32 encoded sequence of bytes into a sequence of Unicode characters.</returns>
+        <summary>UTF\-32 でエンコードされたバイト シーケンスを Unicode 文字のシーケンスに変換するデコーダーを取得します。</summary>
+        <returns>UTF\-32 でエンコードされたバイト シーケンスを Unicode 文字のシーケンスに変換する <see cref="T:System.Text.Decoder" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.Decoder.GetChars%2A?displayProperty=fullName> method converts sequential blocks of bytes into sequential blocks of characters, in a manner similar to the <xref:System.Text.UTF32Encoding.GetChars%2A> method. However, a <xref:System.Text.Decoder> maintains state information between calls so it can correctly decode byte sequences that span blocks. The <xref:System.Text.Decoder> also preserves trailing bytes at the end of data blocks and uses the trailing bytes in the next decoding operation. Therefore, <xref:System.Text.UTF32Encoding.GetDecoder%2A> and <xref:System.Text.UTF32Encoding.GetEncoder%2A> are useful for network transmission and file operations, because those operations often deal with blocks of data instead of a complete data stream.  
+## 解説  
+ <xref:System.Text.Decoder.GetChars%2A?displayProperty=fullName> メソッドと同様の方法での文字の連続ブロックにバイトの連続したブロックを変換する、 <xref:System.Text.UTF32Encoding.GetChars%2A> メソッドです。 ただし、 <xref:System.Text.Decoder> ブロックにまたがるバイト シーケンスを正しくデコードすることができますので、呼び出しの間で状態情報を保持します。<xref:System.Text.Decoder> もデータ ブロックの末尾にある末尾のバイトを保持し、次のデコード操作で末尾のバイトを使用します。 したがって、 <xref:System.Text.UTF32Encoding.GetDecoder%2A> と <xref:System.Text.UTF32Encoding.GetEncoder%2A> の完全なデータ ストリームではなくデータ ブロックを頻繁にこれらの操作を処理するためには、ネットワーク転送とファイルの操作に便利です。  
   
- If error detection is enabled, that is, the `throwOnInvalidCharacters` parameter of the constructor was set to `true`, error detection is also enabled in the <xref:System.Text.Decoder> returned by this method. If error detection is enabled and an invalid sequence is encountered, the state of the decoder is undefined and processing must stop.  
+ かどうかはエラー検出が有効な場合は、 `throwOnInvalidCharacters` コンス トラクターのパラメーターに設定された `true`, でエラーの検出が有効にも、 <xref:System.Text.Decoder> このメソッドによって返されます。 エラーの検出を有効にし、無効なシーケンスが発生した場合は、デコーダーの状態は未定義と処理を停止する必要があります。  
   
    
   
-## Examples  
- The following example uses an encoder and a decoder to encode a string into an array of bytes, and then decode the bytes into an array of characters.  
+## 例  
+ 次の例は、エンコーダーとデコーダーを使用して、\(バイト単位\) の配列に文字列をエンコードして、文字の配列にバイトをデコードします。  
   
- [!code-cpp[System.Text.UTF32Encoding.EncDec#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CPP/encdec.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.EncDec#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CS/encdec.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.EncDec#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/VB/EncDec.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.EncDec\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CPP/encdec.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.EncDec\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CS/encdec.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.EncDec\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/VB/EncDec.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Text.Decoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetChars(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetString(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetCharCount(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
       </Docs>
     </Member>
     <Member MemberName="GetEncoder">
@@ -1159,27 +1211,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Obtains an encoder that converts a sequence of Unicode characters into a UTF-32 encoded sequence of bytes.</summary>
-        <returns>A <see cref="T:System.Text.Encoder" /> that converts a sequence of Unicode characters into a UTF-32 encoded sequence of bytes.</returns>
+        <summary>Unicode 文字のシーケンスを UTF\-32 でエンコードされたバイト シーケンスに変換するエンコーダーを取得します。</summary>
+        <returns>Unicode 文字のシーケンスを UTF\-32 でエンコードされたバイト シーケンスに変換する <see cref="T:System.Text.Encoder" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.Encoder.GetBytes%2A?displayProperty=fullName> method converts sequential blocks of characters into sequential blocks of bytes, in a manner similar to the <xref:System.Text.UTF32Encoding.GetBytes%2A> method. However, a <xref:System.Text.Encoder> maintains state information between calls so it can correctly encode character sequences that span blocks. The <xref:System.Text.Encoder> also preserves trailing characters at the end of data blocks and uses the trailing characters in the next encoding operation. For example, a data block might end with an unmatched high-surrogate, and the matching low-surrogate might be in the next data block. Therefore, <xref:System.Text.UTF32Encoding.GetDecoder%2A> and <xref:System.Text.UTF32Encoding.GetEncoder%2A> are useful for network transmission and file operations, because those operations often deal with blocks of data instead of a complete data stream.  
+## 解説  
+ <xref:System.Text.Encoder.GetBytes%2A?displayProperty=fullName> メソッドと同様の方法のバイト数の連続ブロックに文字の連続したブロックを変換する、 <xref:System.Text.UTF32Encoding.GetBytes%2A> メソッドです。 ただし、 <xref:System.Text.Encoder> ブロックにまたがる文字のシーケンスを正しくエンコードすることができますので、呼び出しの間で状態情報を保持します。<xref:System.Text.Encoder> も保持末尾のデータ ブロックの末尾に文字を使用して末尾の文字の次のエンコード操作します。 たとえば、データ ブロック比類のない上位サロゲートで終了し、次のデータ ブロックの下位サロゲートが一致する場合があります。 したがって、 <xref:System.Text.UTF32Encoding.GetDecoder%2A> と <xref:System.Text.UTF32Encoding.GetEncoder%2A> の完全なデータ ストリームではなくデータ ブロックを頻繁にこれらの操作を処理するためには、ネットワーク転送とファイルの操作に便利です。  
   
- If error detection is enabled, that is, the `throwOnInvalidCharacters` parameter of the constructor was set to `true`, error detection is also enabled in the <xref:System.Text.Encoder> returned by this method. If error detection is enabled and an invalid sequence is encountered, the state of the encoder is undefined and processing must stop.  
+ かどうかはエラー検出が有効な場合は、 `throwOnInvalidCharacters` コンス トラクターのパラメーターに設定された `true`, でエラーの検出が有効にも、 <xref:System.Text.Encoder> このメソッドによって返されます。 エラーの検出を有効にし、無効なシーケンスが発生した場合は、エンコーダーの状態は未定義と処理を停止する必要があります。  
   
    
   
-## Examples  
- The following example uses an encoder and a decoder to encode a string into an array of bytes, and then decode the bytes into an array of characters.  
+## 例  
+ 次の例は、エンコーダーとデコーダーを使用して、\(バイト単位\) の配列に文字列をエンコードして、文字の配列にバイトをデコードします。  
   
- [!code-cpp[System.Text.UTF32Encoding.EncDec#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CPP/encdec.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.EncDec#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CS/encdec.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.EncDec#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/VB/EncDec.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.EncDec\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CPP/encdec.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.EncDec\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/CS/encdec.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.EncDec\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.EncDec/VB/EncDec.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Text.Encoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetBytes(System.String,System.Int32,System.Int32,System.Byte[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetByteCount(System.Char[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
       </Docs>
     </Member>
     <Member MemberName="GetHashCode">
@@ -1206,9 +1262,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the hash code for the current instance.</summary>
-        <returns>The hash code for the current <see cref="T:System.Text.UTF32Encoding" /> object.</returns>
+        <summary>現在のインスタンスのハッシュ コードを返します。</summary>
+        <returns>現在の <see cref="T:System.Text.UTF32Encoding" /> オブジェクトのハッシュ コード。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Object.GetHashCode" />
       </Docs>
     </Member>
     <Member MemberName="GetMaxByteCount">
@@ -1237,46 +1294,49 @@
         <Parameter Name="charCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="charCount">The number of characters to encode.</param>
-        <summary>Calculates the maximum number of bytes produced by encoding the specified number of characters.</summary>
-        <returns>The maximum number of bytes produced by encoding the specified number of characters.</returns>
+        <param name="charCount">エンコードする文字数。</param>
+        <summary>指定した文字数をエンコードすることによって生成される最大バイト数を計算します。</summary>
+        <returns>指定した文字数をエンコードすることによって生成される最大バイト数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetBytes%2A> to store the resulting bytes, you call the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method. The <xref:System.Text.UTF32Encoding.GetByteCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する <xref:System.Text.UTF32Encoding.GetBytes%2A> 結果のバイトを格納するを呼び出す、 <xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドです。<xref:System.Text.UTF32Encoding.GetByteCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> メソッドは通常、高速に実行されます。  
   
- <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> is a worst-case number, including the worst case for the currently selected <xref:System.Text.EncoderFallback>. If a fallback is chosen with a potentially large string,  <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> can return large values.  
+ <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> 現在選択されている最悪のケースを含む、最悪のケースの数は、 <xref:System.Text.EncoderFallback>です。 フォールバックが大きくなる可能性の文字列で選択した場合  <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> 大きな値を返すことができます。  
   
- In most cases, this method returns reasonable numbers for small strings. For large strings, you might have to choose between using very large buffers and catching errors in the rare case that a more reasonable buffer is exceeded. You might also want to consider a different approach and use <xref:System.Text.UTF32Encoding.GetByteCount%2A> or <xref:System.Text.Encoder.Convert%2A?displayProperty=fullName>.  
+ ほとんどの場合は、このメソッドは、短い文字列では適切な数値を返します。 大きな文字列の場合に、非常に大きなバッファーを使用してより適切なバッファーを超えているというまれなケースでエラーの検出を選択する必要があります。 異なるアプローチを検討しを使用することも <xref:System.Text.UTF32Encoding.GetByteCount%2A> または <xref:System.Text.Encoder.Convert%2A?displayProperty=fullName>です。  
   
- <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> has no relationship to <xref:System.Text.UTF32Encoding.GetChars%2A>. If you need a similar function to use with <xref:System.Text.UTF32Encoding.GetChars%2A>, use <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A>.  
+ <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A> リレーションシップを持たない <xref:System.Text.UTF32Encoding.GetChars%2A>します。 同様の機能を使用する必要がある場合 <xref:System.Text.UTF32Encoding.GetChars%2A>, を使用して <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A>します。  
   
 > [!NOTE]
->  `GetMaxByteCount(N)` is not necessarily the same value as `N* GetMaxByteCount(1)`.  
+>  `GetMaxByteCount(N)` 同じ値とは限りません `N* GetMaxByteCount(1)`します。  
   
    
   
-## Examples  
- The following example determines the number of bytes required to encode a string, then encodes the string and displays the resulting bytes.  
+## 例  
+ 次の例は、文字列をエンコードするために必要なバイト数を決定、文字列をエンコードし、結果のバイト数を表示します。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetBytes_String#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CPP/getbytes_string.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetBytes_String#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CS/getbytes_string.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetBytes_String#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/VB/GetBytes_String.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetBytes\_String\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CPP/getbytes_string.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetBytes\_String\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/CS/getbytes_string.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetBytes\_String\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetBytes_String/VB/GetBytes_String.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="charCount" /> is less than zero.  
+          <paramref name="charCount" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.Text.EncoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ 結果のバイト数が、整数として返すことのできる最大数を超えています。</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.EncoderFallback" /> is set to <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.EncoderFallback" /> が <see cref="T:System.Text.EncoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetBytes(System.String,System.Int32,System.Int32,System.Byte[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetByteCount(System.Char[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetEncoder" />
       </Docs>
     </Member>
     <Member MemberName="GetMaxCharCount">
@@ -1305,46 +1365,50 @@
         <Parameter Name="byteCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="byteCount">The number of bytes to decode.</param>
-        <summary>Calculates the maximum number of characters produced by decoding the specified number of bytes.</summary>
-        <returns>The maximum number of characters produced by decoding the specified number of bytes.</returns>
+        <param name="byteCount">デコードするバイト数。</param>
+        <summary>指定したバイト数をデコードすることによって生成される最大文字数を計算します。</summary>
+        <returns>指定したバイト数をデコードすることによって生成される最大文字数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- To calculate the exact array size required by <xref:System.Text.UTF32Encoding.GetChars%2A> to store the resulting characters, you call the <xref:System.Text.UTF32Encoding.GetCharCount%2A> method. To calculate the maximum array size, you call the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method. The <xref:System.Text.UTF32Encoding.GetCharCount%2A> method generally allocates less memory, while the <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> method generally executes faster.  
+## 解説  
+ 必要な正確な配列のサイズを計算する <xref:System.Text.UTF32Encoding.GetChars%2A> 結果の文字を格納するを呼び出す、 <xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドです。 配列の最大サイズを計算するを呼び出す、 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドです。<xref:System.Text.UTF32Encoding.GetCharCount%2A> メソッドでは、メモリも減り、一般が割り当てるときに、 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> メソッドは通常、高速に実行されます。  
   
- <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> is a worst-case number, including the worst case for the currently selected <xref:System.Text.DecoderFallback>. If a fallback is chosen with a potentially large string, <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> can return large values.  
+ <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> 現在選択されている最悪のケースを含む、最悪のケースの数は、 <xref:System.Text.DecoderFallback>です。 フォールバックが大きくなる可能性の文字列で選択した場合 <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> 大きな値を返すことができます。  
   
- In most cases, this method returns reasonable numbers for small strings. For large strings, you might have to choose between using very large buffers and catching errors in the rare case that a more reasonable buffer is exceeded. You might also want to consider a different approach and use <xref:System.Text.UTF32Encoding.GetCharCount%2A> or <xref:System.Text.Decoder.Convert%2A>.  
+ ほとんどの場合は、このメソッドは、短い文字列では適切な数値を返します。 大きな文字列の場合に、非常に大きなバッファーを使用してより適切なバッファーを超えているというまれなケースでエラーの検出を選択する必要があります。 異なるアプローチを検討しを使用することも <xref:System.Text.UTF32Encoding.GetCharCount%2A> または <xref:System.Text.Decoder.Convert%2A>です。  
   
- <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> has no relationship to <xref:System.Text.UTF32Encoding.GetBytes%2A>. If you need a similar function to use with <xref:System.Text.UTF32Encoding.GetBytes%2A>, use <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A>.  
+ <xref:System.Text.UTF32Encoding.GetMaxCharCount%2A> リレーションシップを持たない <xref:System.Text.UTF32Encoding.GetBytes%2A>します。 同様の機能を使用する必要がある場合 <xref:System.Text.UTF32Encoding.GetBytes%2A>, を使用して <xref:System.Text.UTF32Encoding.GetMaxByteCount%2A>します。  
   
 > [!NOTE]
->  `GetMaxCharCount(N)` is not necessarily the same value as `N* GetMaxCharCount(1)`.  
+>  `GetMaxCharCount(N)` 同じ値とは限りません `N* GetMaxCharCount(1)`します。  
   
    
   
-## Examples  
- The following example encodes a string into an array of bytes, and then decodes the bytes into an array of characters.  
+## 例  
+ 次の例では、文字列、バイト配列にエンコードし、文字の配列にバイトをデコードします。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CPP/getchars.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CS/getchars.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetChars#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/VB/GetChars.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CPP/getchars.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/CS/getchars.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetChars\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetChars/VB/GetChars.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="byteCount" /> is less than zero.  
+          <paramref name="byteCount" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The resulting number of bytes is greater than the maximum number that can be returned as an integer.</exception>
-        <exception cref="T:System.Text.DecoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for complete explanation)  
+ 結果のバイト数が、整数として返すことのできる最大数を超えています。</exception>
+        <exception cref="T:System.Text.DecoderFallbackException">フォールバックが発生しました \(詳細については、「[Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)」を参照してください\)。  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.DecoderFallback" /> is set to <see cref="T:System.Text.DecoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.DecoderFallback" /> が <see cref="T:System.Text.DecoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetChars(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetString(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetCharCount(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
       </Docs>
     </Member>
     <Member MemberName="GetPreamble">
@@ -1371,52 +1435,54 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a Unicode byte order mark encoded in UTF-32 format, if the <see cref="T:System.Text.UTF32Encoding" /> object is configured to supply one.</summary>
-        <returns>A byte array containing the Unicode byte order mark, if the <see cref="T:System.Text.UTF32Encoding" /> object is configured to supply one. Otherwise, this method returns a zero-length byte array.</returns>
+        <summary>
+          <see cref="T:System.Text.UTF32Encoding" /> オブジェクトが UTF\-32 形式でエンコードされた Unicode バイト順マークを提供するように構成されている場合、そのようなマークが返されます。</summary>
+        <returns>Unicode のバイト順マークが格納されたバイト配列を提供するように <see cref="T:System.Text.UTF32Encoding" /> オブジェクトが構成されている場合には、そうしたバイト配列。 それ以外の場合、このメソッドは長さがゼロのバイト配列を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Text.UTF32Encoding> object can provide a preamble, which is an array of bytes that can be prefixed to the sequence of bytes resulting from the encoding process. Prefacing a sequence of encoded bytes with a byte order mark (code points U+0000 U+FEFF) helps the decoder determine the byte order and the transformation format, or UTF. The Unicode byte order mark (BOM) is serialized as follows (in hexadecimal):  
+## 解説  
+ <xref:System.Text.UTF32Encoding> オブジェクトがこの場合、配列の先頭には、エンコーディング プロセスに起因するバイトのシーケンスをバイトのプリアンブルを提供します。 バイト順マーク \(コード ポイントと 0000 U\+FEFF\) でエンコードされたバイト シーケンスの先頭には、バイト順および変換形式または UTF デコーダーことができます。 Unicode バイト順マーク \(BOM\) が \(16 進\) に次のようにシリアル化されます。  
   
--   Big endian byte order: 00 00 FE FF  
+-   ビッグ エンディアン バイト順: 00 00 FE FF  
   
--   Little endian byte order: FF FE 00 00  
+-   リトル エンディアン バイト順: FF FE 00 00  
   
- You can instantiate a <xref:System.Text.UTF32Encoding> object whose <xref:System.Text.UTF32Encoding.GetPreamble%2A> method returns a valid BOM in the following ways:  
+ インスタンスを作成できる、 <xref:System.Text.UTF32Encoding> オブジェクト <xref:System.Text.UTF32Encoding.GetPreamble%2A> メソッドは、次の方法で有効な BOM を返します。  
   
--   By retrieving the <xref:System.Text.UTF32Encoding> object returned by the <xref:System.Text.Encoding.UTF32%2A?displayProperty=fullName> property.  
+-   取得することによって、 <xref:System.Text.UTF32Encoding> によって返されるオブジェクト、 <xref:System.Text.Encoding.UTF32%2A?displayProperty=fullName> プロパティです。  
   
--   By calling the parameterless <xref:System.Text.UTF32Encoding.%23ctor> constructor to instantiate a <xref:System.Text.UTF32Encoding> object.  
+-   パラメーターなしで呼び出すことによって <xref:System.Text.UTF32Encoding.%23ctor> インスタンスを作成するコンス トラクター、 <xref:System.Text.UTF32Encoding> オブジェクトです。  
   
--   By supplying `true` as the value of the `byteOrderMark` argument to the <xref:System.Text.UTF32Encoding.%23ctor%2A> and <xref:System.Text.UTF32Encoding.%23ctor%2A> constructors.  
+-   指定して `true` の値として、 `byteOrderMark` への引数、 <xref:System.Text.UTF32Encoding.%23ctor%2A> と <xref:System.Text.UTF32Encoding.%23ctor%2A> コンス トラクターです。  
   
- We recommend that you use the BOM, since it provides nearly certain identification of an encoding for files that otherwise have lost reference to the <xref:System.Text.UTF32Encoding> object, for example, untagged or improperly tagged web data, or random text files stored when a business did not have international concerns or other data. Often, user problems might be avoided if data is consistently and properly tagged.  
+ ファイルをそれ以外の場合にへの参照が失われたため、エンコーディングの特定の id にほぼが用意されているので、BOM を使用することをお勧め、 <xref:System.Text.UTF32Encoding> オブジェクト、たとえば、タグなし web データを不適切なタグまたはときビジネス保存されたランダムなテキスト ファイルは、国際的な関心やその他のデータがありませんでした。 多くの場合、データが一貫して適切なタグとは、ユーザーの問題を回避できる可能性があります。  
   
- For standards that provide an encoding type, a BOM is somewhat redundant. However, it can be used to help a server send the correct encoding header. Alternatively, it can be used as a fallback in case the encoding is otherwise lost.  
+ エンコードの種類を定義した標準から、BOM は、少し冗長です。 ただし、適切なエンコードのヘッダーを送信するサーバーのヘルプを使用できます。 または、そのとして使用できます、フォールバック エンコーディングが失われたそれ以外の場合に備えてします。  
   
- There are some disadvantages to using a BOM. For example, knowing how to limit the database fields that use a BOM can be difficult. Concatenation of files can be a problem also, for example, when files are merged in such a way that an unnecessary character can end up in the middle of data. In spite of the few disadvantages, however, the use of a BOM is highly recommended.  
+ BOM を使用するいくつかのデメリットがあります。 たとえば、BOM を使用するデータベース フィールドを制限する方法についての知識が難しくなります。 ファイルの連結問題になる場合も、たとえば、ファイルを結合するようにデータの途中で不要な文字は最終的にする方法です。 いくつかの短所にもかかわらずただし、部品表の使用強くお勧めします。  
   
- For more information on byte order and the byte order mark, see The Unicode Standard at the [Unicode home page](http://go.microsoft.com/fwlink/?LinkId=37123).  
+ バイト順とバイト順マークの詳細についてで Unicode 標準を参照してください、 [Unicode home page](http://go.microsoft.com/fwlink/?LinkId=37123)します。  
   
 > [!CAUTION]
->  To ensure that the encoded bytes are decoded properly, you should prefix encoded bytes with a preamble. Note that the <xref:System.Text.UTF32Encoding.GetBytes%2A> method does not prepend a BOM to a sequence of encoded bytes; supplying a BOM at the beginning of an appropriate byte stream is the developer's responsibility.  
+>  エンコードされたバイトを正しくデコードするためには、エンコード済みバイトのプリアンブルとプレフィックスにする必要があります。 なお、 <xref:System.Text.UTF32Encoding.GetBytes%2A> メソッドでエンコードされたバイト シーケンスに BOM が追加しません。 開発者の責任は、適切なバイト ストリームの先頭に BOM を指定することです。  
   
    
   
-## Examples  
- The following code example retrieves and displays the byte order mark for different <xref:System.Text.UTF32Encoding> instances.  
+## 例  
+ 次のコード例の取得と、バイト順のマークを付けるさまざまな表示 <xref:System.Text.UTF32Encoding> インスタンス。  
   
- [!code-cpp[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CPP/getpreamble.cpp#1)]
- [!code-csharp[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetPreamble#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/GetPreamble.vb#1)]  
+ [!code-cpp[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CPP/getpreamble.cpp#1)]
+ [!code-csharp[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetPreamble\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/GetPreamble.vb#1)]  
   
- The following example instantiates two <xref:System.Text.UTF32Encoding> objects, the first of which does not provide a BOM and the second of which does. It then calls the <xref:System.Text.UTF32Encoding.GetPreamble%2A> method to write the BOM to a file before writing a UTF-32-encoded string. As the output from the example shows, the file that saves the bytes from the second encoder has four more bytes that the first.  
+ 次の例では、2 つをインスタンス化 <xref:System.Text.UTF32Encoding> オブジェクトは、まずは、BOM とどのは 2 つ目は提供しません。 呼び出して、 <xref:System.Text.UTF32Encoding.GetPreamble%2A> UTF 32 エンコードされた文字列を書き込む前に、ファイルには BOM を書き込みます。 2 つ目のエンコーダーからのバイトを保存するファイルの例では、出力結果は 4 バイトを 1 つ目です。  
   
- [!code-csharp[System.Text.UTF32Encoding.GetPreamble#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble1.cs#2)]
- [!code-vb[System.Text.UTF32Encoding.GetPreamble#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/getpreamble1.vb#2)]  
+ [!code-csharp[System.Text.UTF32Encoding.GetPreamble\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/CS/getpreamble1.cs#2)]
+ [!code-vb[System.Text.UTF32Encoding.GetPreamble\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Text.UTF32Encoding.GetPreamble/VB/getpreamble1.vb#2)]  
   
- You can also compare the files by using the `fc` command in a console window, or you can inspect the files in a text editor that includes a Hex View mode. Note that when the file is opened in an editor that supports UTF-32, the BOM is not displayed.  
+ You can also compare the files by using the **languageKeyword tag is not supported!!!!**  
+ command in a console window, or you can inspect the files in a text editor that includes a Hex View mode. Note that when the file is opened in an editor that supports UTF\-32, the BOM is not displayed.  
   
  ]]></format>
         </remarks>
@@ -1455,53 +1521,108 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytes">The byte array containing the sequence of bytes to decode.</param>
-        <param name="index">The index of the first byte to decode.</param>
-        <param name="count">The number of bytes to decode.</param>
-        <summary>Decodes a range of bytes from a byte array into a string.</summary>
-        <returns>A string that contains the results of decoding the specified sequence of bytes.</returns>
+        <param name="bytes">デコード対象のバイト シーケンスが格納されたバイト配列。</param>
+        <param name="index">デコードする最初のバイトのインデックス。</param>
+        <param name="count">デコードするバイト数。</param>
+        <summary>バイト配列に格納されているある範囲のバイトを文字列にデコードします。</summary>
+        <returns>指定したバイト シーケンスのデコード結果が格納されている文字列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- With error detection, an invalid sequence causes this method to throw a <xref:System.ArgumentException>. Without error detection, invalid sequences are ignored, and no exception is thrown.  
+## 解説  
+ 無効なシーケンス エラーの検出でこのメソッドをスローすると、 [GetString メソッド \(Byte\<xref:System.ArgumentException>です。 エラー検出を無効なシーケンスは無視され、例外はスローされません。  
   
- If the range of bytes to be decoded includes the byte order mark (BOM), and the byte array was returned by a method of a non-BOM aware type, the character U+FFFE is included in the character array returned by this method. You can remove it by calling the <xref:System.String.TrimStart%2A?displayProperty=fullName> method.  
+ デコードするバイトの範囲には、バイト順マーク \(BOM\) が含まれているバイト配列が BOM で非対応型のメソッドによって返された場合は、このメソッドによって返される文字配列には文字 U \+ FFFE が含まれます。 これを削除するには呼び出すことによって、 [GetString メソッド \(Byte\<xref:System.String.TrimStart%2A?displayProperty=fullName> メソッドです。  
   
- Data to be converted, such as data read from a stream, might be available only in sequential blocks. In this case, or if the amount of data is so large that it needs to be divided into smaller blocks, the application should use the <xref:System.Text.Decoder> or the <xref:System.Text.Encoder> provided by the <xref:System.Text.UTF32Encoding.GetDecoder%2A> method or the <xref:System.Text.UTF32Encoding.GetEncoder%2A> method, respectively.  
+ ストリームから読み取ったデータなど、変換するデータは、シーケンシャル ブロック内でのみ使用可能な可能性があります。 この場合、またはデータの量が小さなブロックに分割する必要があることが非常に大きい場合は、アプリケーションが使用する必要があります、 [GetString メソッド \(Byte\<xref:System.Text.Decoder> または [GetString メソッド \(Byte\<xref:System.Text.Encoder> によって提供される、 [GetString メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetDecoder%2A> メソッドまたは [GetString メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetEncoder%2A> メソッドをそれぞれします。  
   
    
   
-## Examples  
- The following example encodes a string into two arrays arrays of bytes, one in little-endian order and the other in big-endian order. It then decodes the bytes back into a string.  
+## 例  
+ 次の例では、バイト、リトル エンディアン順で 1 つ、およびビッグ エンディアン順で、その他の 2 つのアレイ配列に文字列をエンコードします。 文字列、バイトをデコードします。  
   
- [!code-csharp[System.Text.UTF32Encoding.GetString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/CS/getstring.cs#1)]
- [!code-vb[System.Text.UTF32Encoding.GetString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/VB/GetString.vb#1)]  
+ [!code-csharp[System.Text.UTF32Encoding.GetString\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/CS/getstring.cs#1)]
+ [!code-vb[System.Text.UTF32Encoding.GetString\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/VB/GetString.vb#1)]  
   
- The following example initializes an array by calling the <xref:System.Text.UTF32Encoding.GetByteCount%2A> method to determine exactly how many bytes are required for an encoded string and then adding the size of the byte order mark (BOM). The example then calls the <xref:System.Text.UTF32Encoding.GetPreamble%2A> method to store the BOM to the array before calling the <xref:System.Text.UTF32Encoding.GetBytes%2A> method to store the encoded bytes to the array. The example then calls the <xref:System.Text.UTF32Encoding.GetString%2A> method to decode the string.  
+ 次の例では、配列を初期化を呼び出して、 [GetString メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetByteCount%2A> バイト数をエンコードされた文字列とバイト順マーク \(BOM\) のサイズを追加するために必要な正確に決定する方法です。 次の [GetString メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetPreamble%2A> は BOM を呼び出す前に、配列を格納する方法、 [GetString メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetBytes%2A> 配列にエンコードされたバイトを格納するメソッドです。 次の [GetString メソッド \(Byte\<xref:System.Text.UTF32Encoding.GetString%2A> 文字列をデコードする方法です。  
   
- [!code-csharp[System.Text.UTF32Encoding.GetString#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/CS/GetString1.cs#2)]
- [!code-vb[System.Text.UTF32Encoding.GetString#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/VB/GetString1.vb#2)]  
+ [!code-csharp[System.Text.UTF32Encoding.GetString\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/CS/GetString1.cs#2)]
+ [!code-vb[System.Text.UTF32Encoding.GetString\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.text.utf32encoding.getstring/VB/GetString1.vb#2)]  
   
- Note that in this case the decoded string differs from the original string, since it begins with a 32-bit byte order mark U+FFFE U+0000. This means that the two strings will compare as unequal, and that if the string is output, the BOM will be displayed as the replacement character "?".  
+ Note that in this case the decoded string differs from the original string, since it begins with a 32\-bit byte order mark U\+FFFE U\+0000. This means that the two strings will compare as unequal, and that if the string is output, the BOM will be displayed as the replacement character "?".  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="bytes" /> is <see langword="null" />.</exception>
+          <paramref name="bytes" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> or <paramref name="count" /> is less than zero.  
+          <paramref name="index" /> または <paramref name="count" /> が 0 未満です。  
   
- -or-  
+ または  
   
- <paramref name="index" /> and <paramref name="count" /> do not denote a valid range in <paramref name="bytes" />.</exception>
-        <exception cref="T:System.ArgumentException">Error detection is enabled, and <paramref name="bytes" /> contains an invalid sequence of bytes.</exception>
-        <exception cref="T:System.Text.DecoderFallbackException">A fallback occurred (see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md) for a complete explanation)  
+ <paramref name="index" /> および <paramref name="count" /> は <paramref name="bytes" /> において有効な範囲を表していません。</exception>
+        <exception cref="T:System.ArgumentException">エラーの検出が有効になり、<paramref name="bytes" /> に無効なバイト シーケンスが含まれています。</exception>
+        <exception cref="T:System.Text.DecoderFallbackException">フォールバックが発生しました \(を参照してください [Understanding Encodings](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9) の詳しい説明について\)  
   
- -and-  
+ および  
   
- <see cref="P:System.Text.Encoding.DecoderFallback" /> is set to <see cref="T:System.Text.DecoderExceptionFallback" />.</exception>
+ <see cref="P:System.Text.Encoding.DecoderFallback" /> が <see cref="T:System.Text.DecoderExceptionFallback" /> に設定されます。</exception>
+        <altmember cref="M:System.Text.UTF32Encoding.GetChars(System.Byte[],System.Int32,System.Int32,System.Char[],System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetDecoder" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetCharCount(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Text.UTF32Encoding.GetMaxCharCount(System.Int32)" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="GetByteCount">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>文字のセットをエンコードすることによって生成されるバイト数を計算します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetCharCount">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>バイト シーケンスをデコードすることによって生成される文字数を計算します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetChars">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>バイト シーケンスを文字のセットにデコードします。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetBytes">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>文字のセットをバイト シーケンスにエンコードします。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Text.UTF32Encoding" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

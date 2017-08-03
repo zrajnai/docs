@@ -42,67 +42,104 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents errors that occur during application execution.</summary>
+    <summary>アプリケーションの実行中に発生したエラーを表します。  
+  
+ この型の .NET Framework ソース コードを参照するには、[参照ソース](http://referencesource.microsoft.com/#mscorlib/system/exception.cs#f092fb2b893a0162)をご覧ください。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  To view the .NET Framework source code for this type, see the [Reference Source](http://referencesource.microsoft.com/#mscorlib/system/exception.cs#f092fb2b893a0162). You can browse through the source code online, download the reference for offline viewing, and step through the sources (including patches and updates) during debugging; see [instructions](http://referencesource.microsoft.com/).  
+>  To view the .NET Framework source code for this type, see the [Reference Source](http://referencesource.microsoft.com/#mscorlib/system/exception.cs#f092fb2b893a0162). You can browse through the source code online, download the reference for offline viewing, and step through the sources \(including patches and updates\) during debugging; see [instructions](http://referencesource.microsoft.com/).  
   
  This class is the base class for all exceptions. When an error occurs, either the system or the currently executing application reports it by throwing an exception that contains information about the error. After an exception is thrown, it is handled by the application or by the default exception handler.  
   
  In this section:  
   
  [Errors and exceptions](#Errors)   
- [Try/catch blocks](#TryCatch)   
+ [Try\/catch blocks](#TryCatch)   
  [Exception type features](#Features)   
  [Exception class properties](#Properties)   
  [Performance considerations](#Performance)   
- [Re-throwing an exception](#Rethrow)   
+ [Re\-throwing an exception](#Rethrow)   
  [Choosing standard exceptions](#Standard)   
  [Implementing custom exceptions](#Custom)  
   
 <a name="Errors"></a>   
 ## Errors and exceptions  
- Run-time errors can occur for a variety of reasons. However, not all errors should be handled as exceptions in your code. Here are some categories of errors that can occur at run time and the appropriate ways to respond to them.  
+ Run\-time errors can occur for a variety of reasons. However, not all errors should be handled as exceptions in your code. Here are some categories of errors that can occur at run time and the appropriate ways to respond to them.  
   
--   **Usage errors.** A usage error represents an error in program logic that can result in an exception. However, the error should be addressed not through exception handling but by modifying the faulty code. For example, the override of the <xref:System.Object.Equals%28System.Object%29?displayProperty=fullName> method in the following example assumes that the `obj` argument must always be non-null.  
+-   **Usage errors.** A usage error represents an error in program logic that can result in an exception. However, the error should be addressed not through exception handling but by modifying the faulty code. For example, the override of the <xref:System.Object.Equals%28System.Object%29?displayProperty=fullName> method in the following example assumes that the `obj` argument must always be non\-null.  
   
-     [!code-csharp[System.Exception.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/usageerrors1.cs#4)]
-     [!code-vb[System.Exception.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/usageerrors1.vb#4)]  
+     [!code-csharp[System.Exception.Class\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/usageerrors1.cs#4)]
+     [!code-vb[System.Exception.Class\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/usageerrors1.vb#4)]  
   
-     The <xref:System.NullReferenceException> exception that results when `obj` is `null` can be eliminated by modifying the source code to explicitly test for null before calling the <xref:System.Object.Equals%2A?displayProperty=fullName> override and then re-compiling. The following example contains the corrected source code that handles a `null` argument.  
+     The <xref:System.NullReferenceException> exception that results when **parameterReference tag is not supported!!!!**  
+     is **languageKeyword tag is not supported!!!!**  
+     can be eliminated by modifying the source code to explicitly test for null before calling the <xref:System.Object.Equals%2A?displayProperty=fullName> override and then re\-compiling. The following example contains the corrected source code that handles a **languageKeyword tag is not supported!!!!**  
+     argument.  
   
-     [!code-csharp[System.Exception.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/usageerrors2.cs#5)]
-     [!code-vb[System.Exception.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/usageerrors2.vb#5)]  
+     [!code-csharp[System.Exception.Class\#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/usageerrors2.cs#5)]
+     [!code-vb[System.Exception.Class\#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/usageerrors2.vb#5)]  
   
-     Instead of using exception handling for usage errors, you can use the <xref:System.Diagnostics.Debug.Assert%2A?displayProperty=fullName> method to identify usage errors in debug builds, and the <xref:System.Diagnostics.Trace.Assert%2A?displayProperty=fullName> method to identify usage errors in both debug and release builds. For more information, see [Assertions in Managed Code](http://msdn.microsoft.com/library/70ab2522-6486-4076-a1a9-e0f11cd0f3a1).  
+     Instead of using exception handling for usage errors, you can use the <xref:System.Diagnostics.Debug.Assert%2A?displayProperty=fullName> method to identify usage errors in debug builds, and the <xref:System.Diagnostics.Trace.Assert%2A?displayProperty=fullName> method to identify usage errors in both debug and release builds. For more information, see [Assertions in Managed Code](http://msdn.microsoft.com/ja-jp/70ab2522-6486-4076-a1a9-e0f11cd0f3a1).  
   
--   **Program errors.** A program error is a run-time error that cannot necessarily be avoided by writing bug-free code.  
+-   **Program errors.** A program error is a run\-time error that cannot necessarily be avoided by writing bug\-free code.  
   
      In some cases, a program error may reflect an expected or routine error condition. In this case, you may want to avoid using exception handling to deal with the program error and instead retry the operation. For example, if the user is expected to input a date in a particular format, you can parse the date string by calling the <xref:System.DateTime.TryParseExact%2A?displayProperty=fullName> method, which returns a <xref:System.Boolean> value that indicates whether the parse operation succeeded, instead of using the <xref:System.DateTime.ParseExact%2A?displayProperty=fullName> method, which throws a <xref:System.FormatException> exception if the date string cannot be converted to a <xref:System.DateTime> value. Similarly, if a user tries to open a file that does not exist, you can first call the <xref:System.IO.File.Exists%2A?displayProperty=fullName> method to check whether the file exists and, if it does not, prompt the user whether he or she wants to create it.  
   
      In other cases, a program error reflects an unexpected error condition that can be handled in your code. For example, even if you've checked to ensure that a file exists, it may be deleted before you can open it, or it may be corrupted. In that case, trying to open the file by instantiating a <xref:System.IO.StreamReader> object or calling the <xref:System.IO.File.Open%2A> method may throw a <xref:System.IO.FileNotFoundException> exception. In these cases, you should use exception handling to recover from the error.  
   
--   **System failures.** A system failure is a run-time error that cannot be handled programmatically in a meaningful way. For example, any method can throw an <xref:System.OutOfMemoryException> exception if the common language runtime is unable to allocate additional memory. Ordinarily, system failures are not handled by using exception handling. Instead, you may be able to use an event such as <xref:System.AppDomain.UnhandledException?displayProperty=fullName> and call the <xref:System.Environment.FailFast%2A?displayProperty=fullName> method to log exception information and notify the user of the failure before the application terminates.  
+-   **System failures.** A system failure is a run\-time error that cannot be handled programmatically in a meaningful way. For example, any method can throw an <xref:System.OutOfMemoryException> exception if the common language runtime is unable to allocate additional memory. Ordinarily, system failures are not handled by using exception handling. Instead, you may be able to use an event such as <xref:System.AppDomain.UnhandledException?displayProperty=fullName> and call the <xref:System.Environment.FailFast%2A?displayProperty=fullName> method to log exception information and notify the user of the failure before the application terminates.  
   
 <a name="TryCatch"></a>   
-## Try/catch blocks  
- The common language runtime provides an exception handling model that is based on the representation of exceptions as objects, and the separation of program code and exception handling code into `try` blocks and `catch` blocks. There can be one or more `catch` blocks, each designed to handle a particular type of exception, or one block designed to catch a more specific exception than another block.  
+## Try\/catch blocks  
+ The common language runtime provides an exception handling model that is based on the representation of exceptions as objects, and the separation of program code and exception handling code into **languageKeyword tag is not supported!!!!**  
+ blocks and **languageKeyword tag is not supported!!!!**  
+ blocks. There can be one or more **languageKeyword tag is not supported!!!!**  
+ blocks, each designed to handle a particular type of exception, or one block designed to catch a more specific exception than another block.  
   
- If an application handles exceptions that occur during the execution of a block of application code, the code must be placed within a `try` statement and is called a `try` block. Application code that handles exceptions thrown by a `try` block is placed within a `catch` statement and is called a `catch` block. Zero or more `catch` blocks are associated with a `try` block, and each `catch` block includes a type filter that determines the types of exceptions it handles.  
+ If an application handles exceptions that occur during the execution of a block of application code, the code must be placed within a **languageKeyword tag is not supported!!!!**  
+ statement and is called a **languageKeyword tag is not supported!!!!**  
+ block. Application code that handles exceptions thrown by a **languageKeyword tag is not supported!!!!**  
+ block is placed within a **languageKeyword tag is not supported!!!!**  
+ statement and is called a **languageKeyword tag is not supported!!!!**  
+ block. Zero or more **languageKeyword tag is not supported!!!!**  
+ blocks are associated with a **languageKeyword tag is not supported!!!!**  
+ block, and each **languageKeyword tag is not supported!!!!**  
+ block includes a type filter that determines the types of exceptions it handles.  
   
- When an exception occurs in a `try` block, the system searches the associated `catch` blocks in the order they appear in application code, until it locates a `catch` block that handles the exception. A `catch` block handles an exception of type `T` if the type filter of the catch block specifies `T` or any type that `T` derives from. The system stops searching after it finds the first `catch` block that handles the exception. For this reason, in application code, a `catch` block that handles a type must be specified before a `catch` block that handles its base types, as demonstrated in the example that follows this section. A catch block that handles `System.Exception` is specified last.  
+ When an exception occurs in a **languageKeyword tag is not supported!!!!**  
+ block, the system searches the associated **languageKeyword tag is not supported!!!!**  
+ blocks in the order they appear in application code, until it locates a **languageKeyword tag is not supported!!!!**  
+ block that handles the exception. A **languageKeyword tag is not supported!!!!**  
+ block handles an exception of type **languageKeyword tag is not supported!!!!**  
+ if the type filter of the catch block specifies **languageKeyword tag is not supported!!!!**  
+ or any type that **languageKeyword tag is not supported!!!!**  
+ derives from. The system stops searching after it finds the first **languageKeyword tag is not supported!!!!**  
+ block that handles the exception. For this reason, in application code, a **languageKeyword tag is not supported!!!!**  
+ block that handles a type must be specified before a **languageKeyword tag is not supported!!!!**  
+ block that handles its base types, as demonstrated in the example that follows this section. A catch block that handles **languageKeyword tag is not supported!!!!**  
+ is specified last.  
   
- If none of the `catch` blocks associated with the current `try` block handle the exception, and the current `try` block is nested within other `try` blocks in the current call, the `catch` blocks associated with the next enclosing `try` block are searched. If no `catch` block for the exception is found, the system searches previous nesting levels in the current call. If no `catch` block for the exception is found in the current call, the exception is passed up the call stack, and the previous stack frame is searched for a `catch` block that handles the exception. The search of the call stack continues until the exception is handled or until no more frames exist on the call stack. If the top of the call stack is reached without finding a `catch` block that handles the exception, the default exception handler handles it and the application terminates.  
+ If none of the **languageKeyword tag is not supported!!!!**  
+ blocks associated with the current **languageKeyword tag is not supported!!!!**  
+ block handle the exception, and the current **languageKeyword tag is not supported!!!!**  
+ block is nested within other **languageKeyword tag is not supported!!!!**  
+ blocks in the current call, the **languageKeyword tag is not supported!!!!**  
+ blocks associated with the next enclosing **languageKeyword tag is not supported!!!!**  
+ block are searched. If no **languageKeyword tag is not supported!!!!**  
+ block for the exception is found, the system searches previous nesting levels in the current call. If no **languageKeyword tag is not supported!!!!**  
+ block for the exception is found in the current call, the exception is passed up the call stack, and the previous stack frame is searched for a **languageKeyword tag is not supported!!!!**  
+ block that handles the exception. The search of the call stack continues until the exception is handled or until no more frames exist on the call stack. If the top of the call stack is reached without finding a **languageKeyword tag is not supported!!!!**  
+ block that handles the exception, the default exception handler handles it and the application terminates.  
   
 <a name="Features"></a>   
 ## Exception type features  
  Exception types support the following features:  
   
--   Human-readable text that describes the error. When an exception occurs, the runtime makes a text message available to inform the user of the nature of the error and to suggest action to resolve the problem. This text message is held in the <xref:System.Exception.Message%2A> property of the exception object. During the creation of the exception object, you can pass a text string to the constructor to describe the details of that particular exception. If no error message argument is supplied to the constructor, the default error message is used. For more information, see the <xref:System.Exception.Message%2A> property.  
+-   Human\-readable text that describes the error. When an exception occurs, the runtime makes a text message available to inform the user of the nature of the error and to suggest action to resolve the problem. This text message is held in the <xref:System.Exception.Message%2A> property of the exception object. During the creation of the exception object, you can pass a text string to the constructor to describe the details of that particular exception. If no error message argument is supplied to the constructor, the default error message is used. For more information, see the <xref:System.Exception.Message%2A> property.  
   
 -   The state of the call stack when the exception was thrown. The <xref:System.Exception.StackTrace%2A> property carries a stack trace that can be used to determine where the error occurs in the code. The stack trace lists all the called methods and the line numbers in the source file where the calls are made.  
   
@@ -110,41 +147,42 @@
 ## Exception class properties  
  The <xref:System.Exception> class includes a number of properties that help identify the code location, the type, the help file, and the reason for the exception: <xref:System.Exception.StackTrace%2A>, <xref:System.Exception.InnerException%2A>, <xref:System.Exception.Message%2A>, <xref:System.Exception.HelpLink%2A>, <xref:System.Exception.HResult%2A>, <xref:System.Exception.Source%2A>, <xref:System.Exception.TargetSite%2A>, and <xref:System.Exception.Data%2A>.  
   
- When a causal relationship exists between two or more exceptions, the <xref:System.Exception.InnerException%2A> property maintains this information. The outer exception is thrown in response to this inner exception. The code that handles the outer exception can use the information from the earlier inner exception to handle the error more appropriately. Supplementary information about the exception can be stored as a collection of key/value pairs in the <xref:System.Exception.Data%2A> property.  
+ When a causal relationship exists between two or more exceptions, the <xref:System.Exception.InnerException%2A> property maintains this information. The outer exception is thrown in response to this inner exception. The code that handles the outer exception can use the information from the earlier inner exception to handle the error more appropriately. Supplementary information about the exception can be stored as a collection of key\/value pairs in the <xref:System.Exception.Data%2A> property.  
   
- The error message string that is passed to the constructor during the creation of the exception object should be localized and can be supplied from a resource file by using the <xref:System.Resources.ResourceManager> class. For more information about localized resources, see the [Creating Satellite Assemblies](~/docs/framework/resources/creating-satellite-assemblies-for-desktop-apps.md) and [Packaging and Deploying Resources](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md) topics.  
+ The error message string that is passed to the constructor during the creation of the exception object should be localized and can be supplied from a resource file by using the <xref:System.Resources.ResourceManager> class. For more information about localized resources, see the [Creating Satellite Assemblies for Desktop Apps](http://msdn.microsoft.com/ja-jp/8d5c6044-2919-41d2-8321-274706b295ac) and [Packaging and Deploying Resources in Desktop Apps](http://msdn.microsoft.com/ja-jp/b224d7c0-35f8-4e82-a705-dd76795e8d16) topics.  
   
- To provide the user with extensive information about why the exception occurred, the <xref:System.Exception.HelpLink%2A> property can hold a URL (or URN) to a help file.  
+ To provide the user with extensive information about why the exception occurred, the <xref:System.Exception.HelpLink%2A> property can hold a URL \(or URN\) to a help file.  
   
- The <xref:System.Exception> class uses the HRESULT COR_E_EXCEPTION, which has the value 0x80131500.  
+ The <xref:System.Exception> class uses the HRESULT COR\_E\_EXCEPTION, which has the value 0x80131500.  
   
  For a list of initial property values for an instance of the <xref:System.Exception> class, see the <xref:System.Exception.%23ctor%2A> constructors.  
   
 <a name="Performance"></a>   
 ## Performance considerations  
- Throwing or handling an exception consumes a significant amount of system resources and execution time. Throw exceptions only to handle truly extraordinary conditions, not to handle predictable events or flow control. For example, in some cases, such as when you're developing a class library, it's reasonable to throw an exception if a method argument is invalid, because you expect your method to be called with valid parameters. An invalid method argument, if it is not the result of a usage error, means that something extraordinary has occurred. Conversely, do not throw an exception if user input is invalid, because you can expect users to occasionally enter invalid data. Instead, provide a retry mechanism so users can enter valid input. Nor should you use exceptions to handle usage errors. Instead, use [assertions](http://msdn.microsoft.com/library/70ab2522-6486-4076-a1a9-e0f11cd0f3a1) to identify and correct usage errors.  
+ Throwing or handling an exception consumes a significant amount of system resources and execution time. Throw exceptions only to handle truly extraordinary conditions, not to handle predictable events or flow control. For example, in some cases, such as when you're developing a class library, it's reasonable to throw an exception if a method argument is invalid, because you expect your method to be called with valid parameters. An invalid method argument, if it is not the result of a usage error, means that something extraordinary has occurred. Conversely, do not throw an exception if user input is invalid, because you can expect users to occasionally enter invalid data. Instead, provide a retry mechanism so users can enter valid input. Nor should you use exceptions to handle usage errors. Instead, use [assertions](http://msdn.microsoft.com/ja-jp/70ab2522-6486-4076-a1a9-e0f11cd0f3a1) to identify and correct usage errors.  
   
  In addition, do not throw an exception when a return code is sufficient; do not convert a return code to an exception; and do not routinely catch an exception, ignore it, and then continue processing.  
   
 <a name="Rethrow"></a>   
-## Re-throwing an exception  
+## Re\-throwing an exception  
  In many cases, an exception handler simply wants to pass the exception on to the caller. This most often occurs in:  
   
 -   A class library that in turn wraps calls to methods in the .NET Framework class library or other class libraries.  
   
--   An application or library that encounters a fatal exception. The exception handler can log the exception and then re-throw the exception.  
+-   An application or library that encounters a fatal exception. The exception handler can log the exception and then re\-throw the exception.  
   
- The recommended way to re-throw an exception is to simply use the [throw](~/docs/csharp/language-reference/keywords/throw.md) statement in C# and the [Throw](~/docs/visual-basic/language-reference/statements/throw-statement.md) statement in Visual Basic without including an expression. This ensures that all call stack information is preserved when the exception is propagated to the caller. The following example illustrates this. A string extension method, `FindOccurrences`, wraps one or more calls to <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=fullName> without validating its arguments beforehand.  
+ The recommended way to re\-throw an exception is to simply use the [throw](http://msdn.microsoft.com/ja-jp/5ac4feef-4b1a-4c61-aeb4-61d549e5dd42) statement in C\# and the [Throw](http://msdn.microsoft.com/ja-jp/a6e07406-5c8a-4498-87a2-8339f3651d62) statement in Visual Basic without including an expression. This ensures that all call stack information is preserved when the exception is propagated to the caller. The following example illustrates this. A string extension method, `FindOccurrences`, wraps one or more calls to <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=fullName> without validating its arguments beforehand.  
   
- [!code-csharp[System.Exception.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow1.cs#6)]
- [!code-vb[System.Exception.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow1.vb#6)]  
+ [!code-csharp[System.Exception.Class\#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow1.cs#6)]
+ [!code-vb[System.Exception.Class\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow1.vb#6)]  
   
- A caller then calls `FindOccurrences` twice. In the second call to `FindOccurrences`, the caller passes a `null` as the search string, which cases the <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=fullName> method to throw an <xref:System.ArgumentNullException> exception. This exception is handled by the `FindOccurrences` method and passed back to the caller. Because the throw statement is used with no expression, the output from the example shows that the call stack is preserved.  
+ A caller then calls `FindOccurrences` twice. In the second call to `FindOccurrences`, the caller passes a **languageKeyword tag is not supported!!!!**  
+ as the search string, which cases the <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=fullName> method to throw an <xref:System.ArgumentNullException> exception. This exception is handled by the `FindOccurrences` method and passed back to the caller. Because the throw statement is used with no expression, the output from the example shows that the call stack is preserved.  
   
- [!code-csharp[System.Exception.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow1.cs#7)]
- [!code-vb[System.Exception.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow1.vb#7)]  
+ [!code-csharp[System.Exception.Class\#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow1.cs#7)]
+ [!code-vb[System.Exception.Class\#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow1.vb#7)]  
   
- In contrast, if the exception is re-thrown by using the  
+ In contrast, if the exception is re\-thrown by using the  
   
 ```csharp  
 throw e  
@@ -173,34 +211,34 @@ Stack Trace:
   
  A slightly more cumbersome alternative is to throw a new exception, and to preserve the original exception's call stack information in an inner exception. The caller can then use the new exception's <xref:System.Exception.InnerException%2A> property to retrieve stack frame and other information about the original exception. In this case, the throw statement is:  
   
- [!code-csharp[System.Exception.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow3.cs#8)]
- [!code-vb[System.Exception.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow3.vb#8)]  
+ [!code-csharp[System.Exception.Class\#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow3.cs#8)]
+ [!code-vb[System.Exception.Class\#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow3.vb#8)]  
   
  The user code that handles the exception has to know that the <xref:System.Exception.InnerException%2A> property contains information about the original exception, as the following exception handler illustrates.  
   
- [!code-csharp[System.Exception.Class#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow3.cs#9)]
- [!code-vb[System.Exception.Class#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow3.vb#9)]  
+ [!code-csharp[System.Exception.Class\#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow3.cs#9)]
+ [!code-vb[System.Exception.Class\#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow3.vb#9)]  
   
 <a name="Standard"></a>   
 ## Choosing standard exceptions  
  When you have to throw an exception, you can often use an existing exception type in the .NET Framework instead of implementing a custom exception. You should use a standard exception type under these two conditions:  
   
--   You are throwing an exception that is caused by a usage error (that is, by an error in program logic made by the developer who is calling your method). Typically, you would throw an exception such as <xref:System.ArgumentException>, <xref:System.ArgumentNullException>, <xref:System.InvalidOperationException>, or <xref:System.NotSupportedException>. The string you supply to the exception object's constructor when instantiating the exception object should describe the error so that the developer can fix it. For more information, see the <xref:System.Exception.Message%2A> property.  
+-   You are throwing an exception that is caused by a usage error \(that is, by an error in program logic made by the developer who is calling your method\). Typically, you would throw an exception such as <xref:System.ArgumentException>, <xref:System.ArgumentNullException>, <xref:System.InvalidOperationException>, or <xref:System.NotSupportedException>. The string you supply to the exception object's constructor when instantiating the exception object should describe the error so that the developer can fix it. For more information, see the <xref:System.Exception.Message%2A> property.  
   
--   You are handling an error that can be communicated to the caller with an existing .NET Framework exception. You should throw the most derived exception possible. For example, if a method requires an argument to be a valid member of an enumeration type, you should throw an <xref:System.ComponentModel.InvalidEnumArgumentException> (the most derived class) rather than an <xref:System.ArgumentException>.  
+-   You are handling an error that can be communicated to the caller with an existing .NET Framework exception. You should throw the most derived exception possible. For example, if a method requires an argument to be a valid member of an enumeration type, you should throw an <xref:System.ComponentModel.InvalidEnumArgumentException> \(the most derived class\) rather than an <xref:System.ArgumentException>.  
   
  The following table lists common exception types and the conditions under which you would throw them.  
   
 |Exception|Condition|  
 |---------------|---------------|  
-|<xref:System.ArgumentException>|A non-null argument that is passed to a method is invalid.|  
-|<xref:System.ArgumentNullException>|An argument that is passed to a method is `null`.|  
+|<xref:System.ArgumentException>|A non\-null argument that is passed to a method is invalid.|  
+|<xref:System.ArgumentNullException>|An argument that is passed to a method is **languageKeyword tag is not supported!!!!**<br />.|  
 |<xref:System.ArgumentOutOfRangeException>|An argument is outside the range of valid values.|  
 |<xref:System.IO.DirectoryNotFoundException>|Part of a directory path is not valid.|  
 |<xref:System.DivideByZeroException>|The denominator in an integer or <xref:System.Decimal> division operation is zero.|  
 |<xref:System.IO.DriveNotFoundException>|A drive is unavailable or does not exist.|  
 |<xref:System.IO.FileNotFoundException>|A file does not exist.|  
-|<xref:System.FormatException>|A value is not in an appropriate format to be converted from a string by a conversion method such as `Parse`.|  
+|<xref:System.FormatException>|A value is not in an appropriate format to be converted from a string by a conversion method such as **languageKeyword tag is not supported!!!!**<br />.|  
 |<xref:System.IndexOutOfRangeException>|An index is outside the bounds of an array or collection.|  
 |<xref:System.InvalidOperationException>|A method call is invalid in an object's current state.|  
 |<xref:System.Collections.Generic.KeyNotFoundException>|The specified key for accessing a member in a collection cannot be found.|  
@@ -208,11 +246,11 @@ Stack Trace:
 |<xref:System.NotSupportedException>|A method or operation is not supported.|  
 |<xref:System.ObjectDisposedException>|An operation is performed on an object that has been disposed.|  
 |<xref:System.OverflowException>|An arithmetic, casting, or conversion operation results in an overflow.|  
-|<xref:System.IO.PathTooLongException>|A path or file name exceeds the maximum system-defined length.|  
+|<xref:System.IO.PathTooLongException>|A path or file name exceeds the maximum system\-defined length.|  
 |<xref:System.PlatformNotSupportedException>|The operation is not supported on the current platform.|  
 |<xref:System.RankException>|An array with the wrong number of dimensions is passed to a method.|  
 |<xref:System.TimeoutException>|The time interval allotted to an operation has expired.|  
-|<xref:System.UriFormatException>|An invalid Uniform Resource Identifier (URI) is used.|  
+|<xref:System.UriFormatException>|An invalid Uniform Resource Identifier \(URI\) is used.|  
   
 <a name="Custom"></a>   
 ## Implementing custom exceptions  
@@ -226,7 +264,7 @@ Stack Trace:
   
  To define your own exception class:  
   
-1.  Define a class that inherits from <xref:System.Exception>. If necessary, define any unique members needed by your class to provide additional information about the exception. For example, the <xref:System.ArgumentException> class includes a <xref:System.ArgumentException.ParamName%2A> property that specifies the name of the parameter whose argument caused the exception, and the <xref:System.Text.RegularExpressions.RegexMatchTimeoutException> property includes a <xref:System.Text.RegularExpressions.RegexMatchTimeoutException.MatchTimeout%2A> property that indicates the time-out interval.  
+1.  Define a class that inherits from <xref:System.Exception>. If necessary, define any unique members needed by your class to provide additional information about the exception. For example, the <xref:System.ArgumentException> class includes a <xref:System.ArgumentException.ParamName%2A> property that specifies the name of the parameter whose argument caused the exception, and the <xref:System.Text.RegularExpressions.RegexMatchTimeoutException> property includes a <xref:System.Text.RegularExpressions.RegexMatchTimeoutException.MatchTimeout%2A> property that indicates the time\-out interval.  
   
 2.  If necessary, override any inherited members whose functionality you want to change or modify. Note that most existing derived classes of <xref:System.Exception> do not override the behavior of inherited members.  
   
@@ -242,32 +280,35 @@ Stack Trace:
   
     -   <xref:System.Exception.%23ctor%28System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext%29>, which is a `protected` constructor that initializes a new exception object from serialized data. You should implement this constructor if you've chosen to make your exception object serializable.  
   
- The following example illustrates the use of a custom exception class. It defines a `NotPrimeException` exception that is thrown when a client tries to retrieve a sequence of prime numbers by specifying a starting number that is not prime. The exception defines a new property, `NonPrime`, that returns the non-prime number that caused the exception. Besides implementing a protected parameterless constructor and a constructor with <xref:System.Runtime.Serialization.SerializationInfo> and <xref:System.Runtime.Serialization.StreamingContext> parameters for serialization, the `NotPrimeException` class defines three additional constructors to support the `NonPrime` property.  Each constructor calls a base class constructor in addition to preserving the value of the non-prime number. The `NotPrimeException` class is also marked with the <xref:System.SerializableAttribute> attribute.  
+ The following example illustrates the use of a custom exception class. It defines a `NotPrimeException` exception that is thrown when a client tries to retrieve a sequence of prime numbers by specifying a starting number that is not prime. The exception defines a new property, `NonPrime`, that returns the non\-prime number that caused the exception. Besides implementing a protected parameterless constructor and a constructor with <xref:System.Runtime.Serialization.SerializationInfo> and <xref:System.Runtime.Serialization.StreamingContext> parameters for serialization, the `NotPrimeException` class defines three additional constructors to support the `NonPrime` property.  Each constructor calls a base class constructor in addition to preserving the value of the non\-prime number. The `NotPrimeException` class is also marked with the <xref:System.SerializableAttribute> attribute.  
   
- [!code-csharp[System.Exception.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/notprimeexception.cs#1)]
- [!code-vb[System.Exception.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/notprimeexception.vb#1)]  
+ [!code-csharp[System.Exception.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/notprimeexception.cs#1)]
+ [!code-vb[System.Exception.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/notprimeexception.vb#1)]  
   
  The `PrimeNumberGenerator` class shown in the following example uses the Sieve of Eratosthenes to calculate the sequence of prime numbers from 2 to a limit specified by the client in the call to its class constructor. The `GetPrimesFrom` method returns all prime numbers that are greater than or equal to a specified lower limit, but throws a `NotPrimeException` if that lower limit is not a prime number.  
   
- [!code-csharp[System.Exception.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/primenumbergenerator.cs#2)]
- [!code-vb[System.Exception.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/primenumbergenerator.vb#2)]  
+ [!code-csharp[System.Exception.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/primenumbergenerator.cs#2)]
+ [!code-vb[System.Exception.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/primenumbergenerator.vb#2)]  
   
- The following example makes two calls to the `GetPrimesFrom` method with non-prime numbers, one of which crosses application domain boundaries. In both cases, the exception is thrown and successfully handled in client code.  
+ The following example makes two calls to the `GetPrimesFrom` method with non\-prime numbers, one of which crosses application domain boundaries. In both cases, the exception is thrown and successfully handled in client code.  
   
- [!code-csharp[System.Exception.Class#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/example.cs#3)]
- [!code-vb[System.Exception.Class#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/example.vb#3)]  
+ [!code-csharp[System.Exception.Class\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/example.cs#3)]
+ [!code-vb[System.Exception.Class\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/example.vb#3)]  
   
 ## Windows Runtime and [!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
- In [!INCLUDE[net_win8_profile](~/includes/net-win8-profile-md.md)] for [!INCLUDE[win8](~/includes/win8-md.md)], some exception information is typically lost when an exception is propagated through non-.NET Framework stack frames. Starting with the [!INCLUDE[net_v451](~/includes/net-v451-md.md)] and [!INCLUDE[win81](~/includes/win81-md.md)], the common language runtime continues to use the original <xref:System.Exception> object that was thrown unless that exception was modified in a non-.NET Framework stack frame.  
+ In [!INCLUDE[net_win8_profile](~/includes/net-win8-profile-md.md)] for [!INCLUDE[win8](~/includes/win8-md.md)], some exception information is typically lost when an exception is propagated through non\-.NET Framework stack frames. Starting with the [!INCLUDE[net_v451](~/includes/net-v451-md.md)] and [!INCLUDE[win81](~/includes/win81-md.md)], the common language runtime continues to use the original <xref:System.Exception> object that was thrown unless that exception was modified in a non\-.NET Framework stack frame.  
   
    
   
-## Examples  
- The following example demonstrates a `catch` block that is defined to handle <xref:System.ArithmeticException> errors. This `catch` block also catches <xref:System.DivideByZeroException> errors, because <xref:System.DivideByZeroException> derives from <xref:System.ArithmeticException> and there is no `catch` block explicitly defined for <xref:System.DivideByZeroException> errors.  
+## 例  
+ The following example demonstrates a **languageKeyword tag is not supported!!!!**  
+ block that is defined to handle <xref:System.ArithmeticException> errors. This **languageKeyword tag is not supported!!!!**  
+ block also catches <xref:System.DivideByZeroException> errors, because <xref:System.DivideByZeroException> derives from <xref:System.ArithmeticException> and there is no **languageKeyword tag is not supported!!!!**  
+ block explicitly defined for <xref:System.DivideByZeroException> errors.  
   
- [!code-cpp[CatchException#1](~/samples/snippets/cpp/VS_Snippets_CLR/CatchException/CPP/catchexception.cpp#1)]
- [!code-csharp[CatchException#1](~/samples/snippets/csharp/VS_Snippets_CLR/CatchException/CS/catchexception.cs#1)]
- [!code-vb[CatchException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CatchException/VB/catchexception.vb#1)]  
+ [!code-cpp[CatchException\#1](~/samples/snippets/cpp/VS_Snippets_CLR/CatchException/CPP/catchexception.cpp#1)]
+ [!code-csharp[CatchException\#1](~/samples/snippets/csharp/VS_Snippets_CLR/CatchException/CS/catchexception.cs#1)]
+ [!code-vb[CatchException\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/CatchException/VB/catchexception.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -297,28 +338,31 @@ Stack Trace:
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Exception" /> class.</summary>
+        <summary>
+          <see cref="T:System.Exception" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor initializes the <xref:System.Exception.Message%2A> property of the new instance to a system-supplied message that describes the error and takes into account the current system culture.  
+## 解説  
+ This constructor initializes the <xref:System.Exception.Message%2A> property of the new instance to a system\-supplied message that describes the error and takes into account the current system culture.  
   
  All the derived classes should provide this default constructor. The following table shows the initial property values for an instance of <xref:System.Exception>.  
   
 |Property|Value|  
 |--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|A null reference (`Nothing` in Visual Basic).|  
-|<xref:System.Exception.Message%2A>|A system-supplied localized description.|  
+|<xref:System.Exception.InnerException%2A>|A null reference \(**languageKeyword tag is not supported!!!!**<br /> in Visual Basic\).|  
+|<xref:System.Exception.Message%2A>|A system\-supplied localized description.|  
   
    
   
-## Examples  
- The following code example derives an `Exception` that uses a predefined message. The code demonstrates the use of the parameterless constructor for the derived class and the base `Exception` class.  
+## 例  
+ The following code example derives an **languageKeyword tag is not supported!!!!**  
+ that uses a predefined message. The code demonstrates the use of the parameterless constructor for the derived class and the base **languageKeyword tag is not supported!!!!**  
+ class.  
   
- [!code-cpp[System.Exception.Ctor#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/new.cpp#1)]
- [!code-csharp[System.Exception.Ctor#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/new.cs#1)]
- [!code-vb[System.Exception.Ctor#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Ctor/VB/new.vb#1)]  
+ [!code-cpp[System.Exception.Ctor\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/new.cpp#1)]
+ [!code-csharp[System.Exception.Ctor\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/new.cs#1)]
+ [!code-vb[System.Exception.Ctor\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Ctor/VB/new.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -350,29 +394,34 @@ Stack Trace:
         <Parameter Name="message" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="message">The message that describes the error.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Exception" /> class with a specified error message.</summary>
+        <param name="message">エラーを説明するメッセージ。</param>
+        <summary>指定したエラー メッセージを使用して、<see cref="T:System.Exception" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor initializes the <xref:System.Exception.Message%2A> property of the new instance by using the `message` parameter. If the `message` parameter is `null`, this is the same as calling the <xref:System.Exception.%23ctor%2A> constructor.  
+## 解説  
+ This constructor initializes the <xref:System.Exception.Message%2A> property of the new instance by using the **parameterReference tag is not supported!!!!**  
+ parameter. If the **parameterReference tag is not supported!!!!**  
+ parameter is **languageKeyword tag is not supported!!!!**  
+, this is the same as calling the <xref:System.Exception.%23ctor%2A> constructor.  
   
  The following table shows the initial property values for an instance of <xref:System.Exception>.  
   
 |Property|Value|  
 |--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|A null reference (`Nothing` in Visual Basic).|  
+|<xref:System.Exception.InnerException%2A>|A null reference \(**languageKeyword tag is not supported!!!!**<br /> in Visual Basic\).|  
 |<xref:System.Exception.Message%2A>|The error message string.|  
   
    
   
-## Examples  
- The following code example derives an `Exception` for a specific condition. The code demonstrates the use of the constructor that takes a caller-specified message as a parameter, for both the derived class and the base `Exception` class.  
+## 例  
+ The following code example derives an **languageKeyword tag is not supported!!!!**  
+ for a specific condition. The code demonstrates the use of the constructor that takes a caller\-specified message as a parameter, for both the derived class and the base **languageKeyword tag is not supported!!!!**  
+ class.  
   
- [!code-cpp[System.Exception.Ctor#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/news.cpp#2)]
- [!code-csharp[System.Exception.Ctor#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/news.cs#2)]
- [!code-vb[System.Exception.Ctor#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Ctor/VB/news.vb#2)]  
+ [!code-cpp[System.Exception.Ctor\#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/news.cpp#2)]
+ [!code-csharp[System.Exception.Ctor\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/news.cs#2)]
+ [!code-vb[System.Exception.Ctor\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Ctor/VB/news.vb#2)]  
   
  ]]></format>
         </remarks>
@@ -406,28 +455,32 @@ Stack Trace:
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
-        <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Exception" /> class with serialized data.</summary>
+        <param name="info">スローされている例外に関するシリアル化済みオブジェクト データを保持している <see cref="T:System.Runtime.Serialization.SerializationInfo" />。</param>
+        <param name="context">転送元または転送先についてのコンテキスト情報を含む <see cref="T:System.Runtime.Serialization.StreamingContext" /> です。</param>
+        <summary>シリアル化したデータを使用して、<see cref="T:System.Exception" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor is called during deserialization to reconstitute the exception object transmitted over a stream. For more information, see [XML and SOAP Serialization](~/docs/framework/serialization/xml-and-soap-serialization.md).  
+## 解説  
+ This constructor is called during deserialization to reconstitute the exception object transmitted over a stream. For more information, see [XML and SOAP Serialization](http://msdn.microsoft.com/ja-jp/832ac524-21bc-419a-a27b-ca8bfc45840f).  
   
    
   
-## Examples  
- The following code example defines a derived serializable `Exception` class. The code forces a divide-by-0 error and then creates an instance of the derived exception using the (<xref:System.Runtime.Serialization.SerializationInfo>, <xref:System.Runtime.Serialization.StreamingContext>) constructor. The code serializes the instance to a file, deserializes the file into a new exception, which it throws, and then catches and displays the exception's data.  
+## 例  
+ The following code example defines a derived serializable **languageKeyword tag is not supported!!!!**  
+ class. The code forces a divide\-by\-0 error and then creates an instance of the derived exception using the \(<xref:System.Runtime.Serialization.SerializationInfo>, <xref:System.Runtime.Serialization.StreamingContext>\) constructor. The code serializes the instance to a file, deserializes the file into a new exception, which it throws, and then catches and displays the exception's data.  
   
- [!code-cpp[System.Exception.GetObjectData#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CPP/getobjdata.cpp#1)]
- [!code-csharp[System.Exception.GetObjectData#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CS/getobjdata.cs#1)]
- [!code-vb[System.Exception.GetObjectData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.GetObjectData/VB/getobjdata.vb#1)]  
+ [!code-cpp[System.Exception.GetObjectData\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CPP/getobjdata.cpp#1)]
+ [!code-csharp[System.Exception.GetObjectData\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CS/getobjdata.cs#1)]
+ [!code-vb[System.Exception.GetObjectData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.GetObjectData/VB/getobjdata.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="info" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is <see langword="null" /> or <see cref="P:System.Exception.HResult" /> is zero (0).</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="info" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">クラス名が <see langword="null" /> であるか、<see cref="P:System.Exception.HResult" /> が 0 です。</exception>
+        <altmember cref="T:System.Runtime.Serialization.SerializationInfo" />
+        <altmember cref="T:System.Runtime.Serialization.StreamingContext" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -457,14 +510,15 @@ Stack Trace:
         <Parameter Name="innerException" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="message">The error message that explains the reason for the exception.</param>
-        <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Exception" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <param name="innerException">現在の例外の原因である例外。内部例外が指定されていない場合は null 参照 \(Visual Basic では、<see langword="Nothing" />\)。</param>
+        <summary>指定したエラー メッセージおよびこの例外の原因となった内部例外への参照を使用して、<see cref="T:System.Exception" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or a null reference (`Nothing` in Visual Basic) if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
+## 解説  
+ An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or a null reference \(**languageKeyword tag is not supported!!!!**  
+ in Visual Basic\) if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
   
  The following table shows the initial property values for an instance of <xref:System.Exception>.  
   
@@ -475,12 +529,14 @@ Stack Trace:
   
    
   
-## Examples  
- The following code example derives an `Exception` for a specific condition. The code demonstrates the use of the constructor that takes a message and an inner exception as parameters, for both the derived class and the base `Exception` class.  
+## 例  
+ The following code example derives an **languageKeyword tag is not supported!!!!**  
+ for a specific condition. The code demonstrates the use of the constructor that takes a message and an inner exception as parameters, for both the derived class and the base **languageKeyword tag is not supported!!!!**  
+ class.  
   
- [!code-cpp[System.Exception.Ctor#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/newsi.cpp#3)]
- [!code-csharp[System.Exception.Ctor#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/newsi.cs#3)]
- [!code-vb[System.Exception.Ctor#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Ctor/VB/newsi.vb#3)]  
+ [!code-cpp[System.Exception.Ctor\#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/newsi.cpp#3)]
+ [!code-csharp[System.Exception.Ctor\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/newsi.cs#3)]
+ [!code-vb[System.Exception.Ctor\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Ctor/VB/newsi.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -517,43 +573,45 @@ Stack Trace:
         <ReturnType>System.Collections.IDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of key/value pairs that provide additional user-defined information about the exception.</summary>
-        <value>An object that implements the <see cref="T:System.Collections.IDictionary" /> interface and contains a collection of user-defined key/value pairs. The default is an empty collection.</value>
+        <summary>例外に関する追加のユーザー定義情報を提供する、キー\/値ペアのコレクションを取得します。</summary>
+        <value>
+          <see cref="T:System.Collections.IDictionary" /> インターフェイスを実装し、ユーザー定義のキー\/値ペアのコレクションを格納するオブジェクト。 既定値は空のコレクションです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Collections.IDictionary?displayProperty=fullName> object returned by the <xref:System.Exception.Data%2A> property to store and retrieve supplementary information relevant to the exception. The information is in the form of an arbitrary number of user-defined key/value pairs. The key component of each key/value pair is typically an identifying string, whereas the value component of the pair can be any type of object.  
+## 解説  
+ Use the <xref:System.Collections.IDictionary?displayProperty=fullName> object returned by the <xref:System.Exception.Data%2A> property to store and retrieve supplementary information relevant to the exception. The information is in the form of an arbitrary number of user\-defined key\/value pairs. The key component of each key\/value pair is typically an identifying string, whereas the value component of the pair can be any type of object.  
   
-## Key/Value Pair Security  
- The key/value pairs stored in the collection returned by the <xref:System.Exception.Data%2A> property are not secure. If your application calls a nested series of routines, and each routine contains exception handlers, the resulting call stack contains a hierarchy of those exception handlers. If a lower-level routine throws an exception, any upper-level exception handler in the call stack hierarchy can read and/or modify the key/value pairs stored in the collection by any other exception handler. This means you must guarantee that the information in the key/value pairs is not confidential and that your application will operate correctly if the information in the key/value pairs is corrupted.  
+## Key\/Value Pair Security  
+ The key\/value pairs stored in the collection returned by the <xref:System.Exception.Data%2A> property are not secure. If your application calls a nested series of routines, and each routine contains exception handlers, the resulting call stack contains a hierarchy of those exception handlers. If a lower\-level routine throws an exception, any upper\-level exception handler in the call stack hierarchy can read and\/or modify the key\/value pairs stored in the collection by any other exception handler. This means you must guarantee that the information in the key\/value pairs is not confidential and that your application will operate correctly if the information in the key\/value pairs is corrupted.  
   
 ## Key Conflicts  
- A key conflict occurs when different exception handlers specify the same key to access a key/value pair. Use caution when developing your application because the consequence of a key conflict is that lower-level exception handlers can inadvertently communicate with higher-level exception handlers, and this communication might cause subtle program errors. However, if you are cautious you can use key conflicts to enhance your application.  
+ A key conflict occurs when different exception handlers specify the same key to access a key\/value pair. Use caution when developing your application because the consequence of a key conflict is that lower\-level exception handlers can inadvertently communicate with higher\-level exception handlers, and this communication might cause subtle program errors. However, if you are cautious you can use key conflicts to enhance your application.  
   
 ## Avoiding Key Conflicts  
- Avoid key conflicts by adopting a naming convention to generate unique keys for key/value pairs. For example, a naming convention might yield a key that consists of the period-delimited name of your application, the method that provides supplementary information for the pair, and a unique identifier.  
+ Avoid key conflicts by adopting a naming convention to generate unique keys for key\/value pairs. For example, a naming convention might yield a key that consists of the period\-delimited name of your application, the method that provides supplementary information for the pair, and a unique identifier.  
   
- Suppose two applications, named Products and Suppliers, each has a method named Sales. The Sales method in the Products application provides the identification number (the stock keeping unit or SKU) of a product. The Sales method in the Suppliers application provides the identification number, or SID, of a supplier. Consequently, the naming convention for this example yields the keys, "Products.Sales.SKU" and "Suppliers.Sales.SID".  
+ Suppose two applications, named Products and Suppliers, each has a method named Sales. The Sales method in the Products application provides the identification number \(the stock keeping unit or SKU\) of a product. The Sales method in the Suppliers application provides the identification number, or SID, of a supplier. Consequently, the naming convention for this example yields the keys, "Products.Sales.SKU" and "Suppliers.Sales.SID".  
   
 ## Exploiting Key Conflicts  
- Exploit key conflicts by using the presence of one or more special, prearranged keys to control processing. Suppose, in one scenario, the highest level exception handler in the call stack hierarchy catches all exceptions thrown by lower-level exception handlers. If a key/value pair with a special key exists, the high-level exception handler formats the remaining key/value pairs in the <xref:System.Collections.IDictionary> object in some nonstandard way; otherwise, the remaining key/value pairs are formatted in some normal manner.  
+ Exploit key conflicts by using the presence of one or more special, prearranged keys to control processing. Suppose, in one scenario, the highest level exception handler in the call stack hierarchy catches all exceptions thrown by lower\-level exception handlers. If a key\/value pair with a special key exists, the high\-level exception handler formats the remaining key\/value pairs in the <xref:System.Collections.IDictionary> object in some nonstandard way; otherwise, the remaining key\/value pairs are formatted in some normal manner.  
   
- Now suppose, in another scenario, the exception handler at each level of the call stack hierarchy catches the exception thrown by the next lower-level exception handler. In addition, each exception handler knows the collection returned by the <xref:System.Exception.Data%2A> property contains a set of key/value pairs that can be accessed with a prearranged set of keys.  
+ Now suppose, in another scenario, the exception handler at each level of the call stack hierarchy catches the exception thrown by the next lower\-level exception handler. In addition, each exception handler knows the collection returned by the <xref:System.Exception.Data%2A> property contains a set of key\/value pairs that can be accessed with a prearranged set of keys.  
   
- Each exception handler uses the prearranged set of keys to update the value component of the corresponding key/value pair with information unique to that exception handler. After the update process is complete, the exception handler throws the exception to the next higher-level exception handler. Finally, the highest level exception handler accesses the key/value pairs and displays the consolidated update information from all the lower-level exception handlers.  
+ Each exception handler uses the prearranged set of keys to update the value component of the corresponding key\/value pair with information unique to that exception handler. After the update process is complete, the exception handler throws the exception to the next higher\-level exception handler. Finally, the highest level exception handler accesses the key\/value pairs and displays the consolidated update information from all the lower\-level exception handlers.  
   
    
   
-## Examples  
+## 例  
  The following example demonstrates how to add and retrieve information using the <xref:System.Exception.Data%2A> property.  
   
- [!code-cpp[exception.data#1](~/samples/snippets/cpp/VS_Snippets_CLR/exception.data/CPP/data.cpp#1)]
- [!code-csharp[exception.data#1](~/samples/snippets/csharp/VS_Snippets_CLR/exception.data/CS/data.cs#1)]
- [!code-vb[exception.data#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/exception.data/VB/data.vb#1)]  
+ [!code-cpp[exception.data\#1](~/samples/snippets/cpp/VS_Snippets_CLR/exception.data/CPP/data.cpp#1)]
+ [!code-csharp[exception.data\#1](~/samples/snippets/csharp/VS_Snippets_CLR/exception.data/CS/data.cs#1)]
+ [!code-vb[exception.data\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/exception.data/VB/data.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Collections.DictionaryEntry" />
       </Docs>
     </Member>
     <Member MemberName="GetBaseException">
@@ -583,26 +641,26 @@ Stack Trace:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, returns the <see cref="T:System.Exception" /> that is the root cause of one or more subsequent exceptions.</summary>
-        <returns>The first exception thrown in a chain of exceptions. If the <see cref="P:System.Exception.InnerException" /> property of the current exception is a null reference (<see langword="Nothing" /> in Visual Basic), this property returns the current exception.</returns>
+        <summary>派生クラスでオーバーライドされた場合、それ以後に発生する 1 つ以上の例外の主要な原因である <see cref="T:System.Exception" /> を返します。</summary>
+        <returns>例外のチェインでスローされた最初の例外。 現在の例外の <see cref="P:System.Exception.InnerException" /> プロパティが null 参照 \(Visual Basic の場合は <see langword="Nothing" />\) である場合、このプロパティは現在の例外を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A chain of exceptions consists of a set of exceptions such that each exception in the chain was thrown as a direct result of the exception referenced in its `InnerException` property. For a given chain, there can be exactly one exception that is the root cause of all other exceptions in the chain. This exception is called the base exception and its `InnerException` property always contains a null reference.  
+## 解説  
+ 例外のチェインから成る例外のセットで参照されている例外の直接の結果として、チェーン内の各例外がスローされたようにその`InnerException`プロパティです。 チェーンの指定した場合、チェーン内の他のすべての例外の根本原因である 1 つだけ例外があります。 この例外は、基本的な例外と呼ばれると、その`InnerException`プロパティには常に null 参照が含まれています。  
   
- For all exceptions in a chain of exceptions, the `GetBaseException` method must return the same object (the base exception).  
+ すべての例外の例外のチェイン、`GetBaseException`メソッドは、同じオブジェクト \(基本例外\) を返す必要があります。  
   
- Use the `GetBaseException` method when you want to find the root cause of an exception but do not need information about exceptions that may have occurred between the current exception and the first exception.  
+ 使用して、`GetBaseException`メソッド例外の根本原因を見つけるには、現在の例外と最初の例外の間で発生した例外に関する情報は必要ありません。  
   
    
   
-## Examples  
- The following code example defines two derived `Exception` classes. It forces an exception and then throws it again with each of the derived classes. The code shows the use of the `GetBaseException` method to retrieve the original exception.  
+## 例  
+ 次のコード例では、2 つの派生を定義します`Exception`クラスです。 例外を強制しの各派生クラスに再度スローします。 コードの使用方法を示します、`GetBaseException`元の例外を取得します。  
   
- [!code-cpp[System.Exception.GetBaseException#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetBaseException/CPP/getbaseexc.cpp#1)]
- [!code-csharp[System.Exception.GetBaseException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetBaseException/CS/getbaseexc.cs#1)]
- [!code-vb[System.Exception.GetBaseException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.GetBaseException/VB/getbaseexc.vb#1)]  
+ [!code-cpp[System.Exception.GetBaseException\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetBaseException/CPP/getbaseexc.cpp#1)]
+ [!code-csharp[System.Exception.GetBaseException\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetBaseException/CS/getbaseexc.cs#1)]
+ [!code-vb[System.Exception.GetBaseException\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.GetBaseException/VB/getbaseexc.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -642,28 +700,31 @@ Stack Trace:
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
-        <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination.</param>
-        <summary>When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with information about the exception.</summary>
+        <param name="info">スローされた例外に関する、シリアル化されたオブジェクト データを保持する <see cref="T:System.Runtime.Serialization.SerializationInfo" /> です。</param>
+        <param name="context">転送元または転送先についてのコンテキスト情報を含む <see cref="T:System.Runtime.Serialization.StreamingContext" /> です。</param>
+        <summary>派生クラスでオーバーライドされた場合は、その例外に関する情報を使用して <see cref="T:System.Runtime.Serialization.SerializationInfo" /> を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- `GetObjectData` sets a <xref:System.Runtime.Serialization.SerializationInfo> with all the exception object data targeted for serialization. During deserialization, the exception is reconstituted from the `SerializationInfo` transmitted over the stream.  
+## 解説  
+ `GetObjectData` は、シリアル化する対象のすべての例外オブジェクト データを使用して、<xref:System.Runtime.Serialization.SerializationInfo> を設定します。 逆シリアル化中に、ストリームで転送された `SerializationInfo` から例外が再構成されます。  
   
    
   
-## Examples  
- The following code example defines a derived serializable `Exception` class that implements `GetObjectData`, which makes minor changes to two properties and then calls the base class to perform the serialization. The example forces a divide-by-0 error and then creates an instance of the derived exception. The code serializes the instance to a file, deserializes the file into a new exception, which it throws, and then catches and displays the exception's data.  
+## 例  
+ 次のコード例は、派生を定義シリアル化可能な`Exception`を実装するクラス`GetObjectData`軽微な変更するため 2 つのプロパティに対して、および、呼び出しの基本クラスをシリアル化を実行します。 例は、0 による除算エラーを強制し、派生した例外のインスタンスが作成されます。 コード ファイルにインスタンスをシリアル化する、新しい例外のスローにファイルを逆シリアル化し、キャッチして、例外のデータが表示されます。  
   
- [!code-cpp[System.Exception.GetObjectData#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CPP/getobjdata.cpp#1)]
- [!code-csharp[System.Exception.GetObjectData#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CS/getobjdata.cs#1)]
- [!code-vb[System.Exception.GetObjectData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.GetObjectData/VB/getobjdata.vb#1)]  
+ [!code-cpp[System.Exception.GetObjectData\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CPP/getobjdata.cpp#1)]
+ [!code-csharp[System.Exception.GetObjectData\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CS/getobjdata.cs#1)]
+ [!code-vb[System.Exception.GetObjectData\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.GetObjectData/VB/getobjdata.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="info" /> parameter is a null reference (<see langword="Nothing" /> in Visual Basic).</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="info" /> パラメーターが null 参照 \(Visual Basic の場合は <see langword="Nothing" />\) です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="T:System.Runtime.Serialization.SerializationInfo" />
+        <altmember cref="T:System.Runtime.Serialization.StreamingContext" />
       </Docs>
     </Member>
     <Member MemberName="GetType">
@@ -689,16 +750,18 @@ Stack Trace:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Gets the runtime type of the current instance.</summary>
-        <returns>A <see cref="T:System.Type" /> object that represents the exact runtime type of the current instance.</returns>
+        <summary>現在のインスタンスのランタイム型を取得します。</summary>
+        <returns>現在のインスタンスの正確なランタイム型を表す <see cref="T:System.Type" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Exception.GetType%2A> method exists to support the .NET Framework infrastructure, and internally invokes the fundamental method, <xref:System.Object.GetType%2A?displayProperty=fullName>.  
+## 解説  
+ <xref:System.Exception.GetType%2A>メソッドは、.NET Framework インフラストラクチャをサポートするために存在し、内部的には、基本的なメソッドを呼び出します<xref:System.Object.GetType%2A?displayProperty=fullName>です。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Type" />
+        <altmember cref="T:System.Object" />
       </Docs>
     </Member>
     <Member MemberName="HelpLink">
@@ -727,24 +790,24 @@ Stack Trace:
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a link to the help file associated with this exception.</summary>
-        <value>The Uniform Resource Name (URN) or Uniform Resource Locator (URL).</value>
+        <summary>この例外に関連付けられているヘルプ ファイルへのリンクを取得または設定します。</summary>
+        <value>URN \(Uniform Resource Name\) または URL \(Uniform Resource Locator\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The return value, which represents a help file, is a URN or URL. For example, the `HelpLink` value could be:  
+## 解説  
+ ヘルプ ファイルを表す戻り値は、URN または URL です。 たとえば、`HelpLink`値可能性があります。  
   
- "file:///C:/Applications/Bazzal/help.html#ErrorNum42"  
+ "file:\/\/\/C:\/Applications\/Bazzal\/help.html\#ErrorNum42"  
   
    
   
-## Examples  
- The following code example throws an `Exception` that sets the `HelpLink` property in its constructor and then catches the exception and displays `HelpLink`.  
+## 例  
+ 次のコード例をスロー、`Exception`が設定された、`HelpLink`プロパティには、そのコンス トラクターとし、キャッチされた例外と表示`HelpLink`です。  
   
- [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
- [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
- [!code-vb[System.Exception.Properties#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
+ [!code-cpp[System.Exception.Properties\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
+ [!code-csharp[System.Exception.Properties\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
+ [!code-vb[System.Exception.Properties\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -776,24 +839,24 @@ Stack Trace:
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets HRESULT, a coded numerical value that is assigned to a specific exception.</summary>
-        <value>The HRESULT value.</value>
+        <summary>特定の例外に割り当てられているコード化数値である HRESULT を取得または設定します。</summary>
+        <value>HRESULT 値。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- HRESULT is a 32-bit value, divided into three different fields: a severity code, a facility code, and an error code. The severity code indicates whether the return value represents information, warning, or error. The facility code identifies the area of the system responsible for the error. The error code is a unique number that is assigned to represent the exception. Each exception is mapped to a distinct HRESULT. When managed code throws an exception, the runtime passes the HRESULT to the COM client. When unmanaged code returns an error, the HRESULT is converted to an exception, which is then thrown by the runtime. For information about HRESULT values and their corresponding .NET Framework exceptions, see [How to: Map HRESULTs and Exceptions](~/docs/framework/interop/how-to-map-hresults-and-exceptions.md). See [Common HRESULT Values](http://msdn.microsoft.com/library/windows/desktop/aa378137.aspx) in the Windows documentation for a list of the values you are most likely to encounter.  
+## 解説  
+ HRESULT は 32 ビットの値を 3 つのフィールドに分かれています。 重大度コード、機能コード、およびエラー コード。 重大度コードでは、戻り値が、情報、警告、またはエラーを表すかどうかを示します。 機能コードでは、エラーの原因のシステムの領域を識別します。 エラー コードとは、例外を表すために割り当てられている一意の番号です。 各例外は、個別の HRESULT にマップされます。 マネージ コードでは、例外をスローするときに、ランタイムは、HRESULT を COM クライアントに渡します。 アンマネージ コードにエラーが返されるとき、HRESULT がランタイムによってスローされる例外に変換されます。 HRESULT 値と、対応する .NET Framework の例外については、次を参照してください。 [How to: Map HRESULTs and Exceptions](http://msdn.microsoft.com/ja-jp/610b364b-2761-429d-9c4a-afbc3e66f1b9)します。 参照してください [Common HRESULT Values](http://msdn.microsoft.com/library/windows/desktop/aa378137.aspx) が発生する可能性が最も高い値の一覧については、Windows ドキュメントです。  
   
- Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], the <xref:System.Exception.HResult%2A> property's setter is protected, whereas its getter is public.  In previous versions of the .NET Framework, both getter and setter are protected.  
+ 以降で、 [!INCLUDE[net_v45](~/includes/net-v45-md.md)], 、 <xref:System.Exception.HResult%2A> プロパティの set アクセス操作子が保護されている、その取得メソッドはパブリックです。  .NET Framework の以前のバージョンでは、getter と setter の両方を保護します。  
   
    
   
-## Examples  
- The following code example defines a derived `Exception` class that sets the `HResult` property to a custom value in its constructor.  
+## 例  
+ 次のコード例は、派生を定義 `Exception` に設定するクラス、 `HResult` プロパティをコンス トラクター内でのカスタム値にします。  
   
- [!code-cpp[System.Exception.HResult#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.HResult/CPP/hresult.cpp#1)]
- [!code-csharp[System.Exception.HResult#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.HResult/CS/hresult.cs#1)]
- [!code-vb[System.Exception.HResult#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.HResult/VB/hresult.vb#1)]  
+ [!code-cpp[System.Exception.HResult\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.HResult/CPP/hresult.cpp#1)]
+ [!code-csharp[System.Exception.HResult\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.HResult/CS/hresult.cs#1)]
+ [!code-vb[System.Exception.HResult\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.HResult/VB/hresult.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -825,30 +888,30 @@ Stack Trace:
         <ReturnType>System.Exception</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the <see cref="T:System.Exception" /> instance that caused the current exception.</summary>
-        <value>An object that describes the error that caused the current exception. The <see cref="P:System.Exception.InnerException" /> property returns the same value as was passed into the <see cref="M:System.Exception.#ctor(System.String,System.Exception)" /> constructor, or <see langword="null" /> if the inner exception value was not supplied to the constructor. This property is read-only.</value>
+        <summary>現在の例外の原因となる <see cref="T:System.Exception" /> インスタンスを取得します。</summary>
+        <value>現在の例外を発生させたエラーを説明するオブジェクト。<see cref="P:System.Exception.InnerException" /> プロパティは、<see cref="M:System.Exception.#ctor(System.String,System.Exception)" /> コンストラクターに渡されたものと同じ値を返します。内部例外の値がコンストラクターに渡されなかった場合は <see langword="null" /> を返します。 このプロパティは読み取り専用です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When an exception `X` is thrown as a direct result of a previous exception `Y`, the <xref:System.Exception.InnerException%2A> property of `X` should contain a reference to `Y`.  
+## 解説  
+ ときに例外`X`前の例外の直接の結果としてスローされる`Y`、<xref:System.Exception.InnerException%2A>プロパティ`X`への参照を含める必要があります`Y`です。  
   
- Use the <xref:System.Exception.InnerException%2A> property to obtain the set of exceptions that led to the current exception.  
+ <xref:System.Exception.InnerException%2A> プロパティを使用して、現在の例外の原因になった例外のセットを取得します。  
   
- You can create a new exception that catches an earlier exception. The code that handles the second exception can make use of the additional information from the earlier exception to handle the error more appropriately.  
+ 以前の例外をキャッチする新しい例外を作成することができます。 2 つ目の例外を処理エラーより適切に処理前の例外からの追加情報に使用するコードです。  
   
- Suppose that there is a function that reads a file and formats the data from that file. In this example, as the code tries to read the file, an <xref:System.IO.IOException> is thrown. The function catches the <xref:System.IO.IOException> and throws a <xref:System.IO.FileNotFoundException>. The <xref:System.IO.IOException> could be saved in the <xref:System.Exception.InnerException%2A> property of the <xref:System.IO.FileNotFoundException>, enabling the code that catches the <xref:System.IO.FileNotFoundException> to examine the cause of the initial error.  
+ ファイルを読み取り、そのファイルからデータを書式設定する関数があるとします。 コード ファイルを読み取るしようと、この例では、<xref:System.IO.IOException>がスローされます。 関数をキャッチ、<xref:System.IO.IOException>をスローし、<xref:System.IO.FileNotFoundException>です。<xref:System.IO.IOException>で保存することでした、<xref:System.Exception.InnerException%2A>のプロパティ、 <xref:System.IO.FileNotFoundException>、キャッチするコードを有効にすると、<xref:System.IO.FileNotFoundException>最初のエラーの原因をチェックします。  
   
- The <xref:System.Exception.InnerException%2A> property, which holds a reference to the inner exception, is set upon initialization of the exception object.  
+ <xref:System.Exception.InnerException%2A>例外オブジェクトの初期化時に、内部例外への参照を保持するプロパティを設定します。  
   
    
   
-## Examples  
- The following example demonstrates throwing and catching an exception that references an inner exception.  
+## 例  
+ 次の例では、スローして、内部例外を参照する例外をキャッチするを示します。  
   
- [!code-cpp[InnerEx#1](~/samples/snippets/cpp/VS_Snippets_CLR/InnerEx/CPP/innerex.cpp#1)]
- [!code-csharp[InnerEx#1](~/samples/snippets/csharp/VS_Snippets_CLR/InnerEx/CS/innerex.cs#1)]
- [!code-vb[InnerEx#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/InnerEx/VB/innerex.vb#1)]  
+ [!code-cpp[InnerEx\#1](~/samples/snippets/cpp/VS_Snippets_CLR/InnerEx/CPP/innerex.cpp#1)]
+ [!code-csharp[InnerEx\#1](~/samples/snippets/csharp/VS_Snippets_CLR/InnerEx/CS/innerex.cs#1)]
+ [!code-vb[InnerEx\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/InnerEx/VB/innerex.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -880,30 +943,30 @@ Stack Trace:
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a message that describes the current exception.</summary>
-        <value>The error message that explains the reason for the exception, or an empty string ("").</value>
+        <summary>現在の例外を説明するメッセージを取得します。</summary>
+        <value>例外の理由を説明するエラー メッセージ、または空の文字列 \(""\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Error messages target the developer who is handling the exception. The text of the <xref:System.Exception.Message%2A> property should completely describe the error and, when possible, should also explain how to correct the error. Top-level exception handlers may display the message to end-users, so you should ensure that it is grammatically correct and that each sentence of the message ends with a period. Do not use question marks or exclamation points. If your application uses localized exception messages, you should ensure that they are accurately translated.  
+## 解説  
+ エラー メッセージは、例外を処理する開発者を対象します。 テキスト、<xref:System.Exception.Message%2A>プロパティは、エラーを完全に記述する必要があり、可能であれば、する必要があります、エラーを修正する方法を説明もします。 トップレベルの例外ハンドラーをエンドユーザーのメッセージを表示するには、するようにする必要がありますが文法的に正しいことと、メッセージの文がピリオドで終了します。 疑問符 \(?\) または感嘆符は使用しないでください。 アプリケーションでは、ローカライズされた例外メッセージを使用する場合は、正確に変換されていることを確認する必要があります。  
   
 > [!IMPORTANT]
->  Do not disclose sensitive information in exception messages without checking for the appropriate permissions.  
+>  適切なアクセス許可をチェックせず例外メッセージ内の機密情報が開示されません。  
   
- The value of the <xref:System.Exception.Message%2A> property is included in the information returned by <xref:System.Exception.ToString%2A>.The <xref:System.Exception.Message%2A> property is set only when creating an <xref:System.Exception>. If no message was supplied to the constructor for the current instance, the system supplies a default message that is formatted using the current system culture.  
+ 値、<xref:System.Exception.Message%2A>によって返される情報のプロパティが含まれている<xref:System.Exception.ToString%2A>です。<xref:System.Exception.Message%2A>プロパティを作成するときにのみ、<xref:System.Exception>です。 現在のインスタンスのコンス トラクターにメッセージが指定されていない場合、システムは、現在のシステムのカルチャを使用して書式設定されている既定のメッセージを提供します。  
   
-## Windows Runtime and [!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
- Starting with the [!INCLUDE[net_v451](~/includes/net-v451-md.md)] and [!INCLUDE[win81](~/includes/win81-md.md)], the fidelity of error messages from exceptions that are propagated from Windows Runtime types and members that are not part of the .NET Framework is improved. In particular, exception messages from Visual C++ component extensions (C++/CX) are now propagated back into .NET Framework <xref:System.Exception> objects.  
+## Windows ランタイムと[!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
+ 以降で、[!INCLUDE[net_v451](~/includes/net-v451-md.md)]と[!INCLUDE[win81](~/includes/win81-md.md)]、Windows ランタイム型と .NET Framework の一部ではないメンバーから反映される例外からエラー メッセージの忠実性が向上します。 Visual C コンポーネント拡張からの例外のメッセージは具体的には、\(C \+ \+ CX\) .NET Framework に反映されるようになりました<xref:System.Exception>オブジェクト。  
   
    
   
-## Examples  
- The following code example throws and then catches an <xref:System.Exception>Exception and displays the exception's text message using the <xref:System.Exception.Message%2A> property.  
+## 例  
+ 次のコード例をスローおよびキャッチし、<xref:System.Exception>例外、例外のテキストを表示し、、使用してメッセージ、<xref:System.Exception.Message%2A>プロパティです。  
   
- [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
- [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
- [!code-vb[System.Exception.Properties#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
+ [!code-cpp[System.Exception.Properties\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
+ [!code-csharp[System.Exception.Properties\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
+ [!code-vb[System.Exception.Properties\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -939,30 +1002,30 @@ Stack Trace:
         <ReturnType>System.EventHandler&lt;System.Runtime.Serialization.SafeSerializationEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when an exception is serialized to create an exception state object that contains serialized data about the exception.</summary>
+        <summary>例外がシリアル化され、例外に関するシリアル化されたデータを含む例外状態オブジェクトが作成されたときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The exception state object implements the <xref:System.Runtime.Serialization.ISafeSerializationData> interface.  
+## 解説  
+ 例外状態オブジェクトを実装して、<xref:System.Runtime.Serialization.ISafeSerializationData>インターフェイスです。  
   
- When the <xref:System.Exception.SerializeObjectState> event is subscribed to, the exception is deserialized and created as an empty exception. The exception's constructor is not run, and the exception state is also deserialized. The <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A> callback method of the exception state object is then notified so that it can push deserialized data into the empty exception.  
+ ときに、<xref:System.Exception.SerializeObjectState>イベントがサブスクライブしている場合、例外が逆シリアル化し、空の例外として作成します。 例外状態を逆シリアル化もと、例外のコンス トラクターは実行されず、します。<xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A>例外状態オブジェクトのコールバック メソッドに通知し、逆シリアル化されたデータを空の例外をプッシュすることができます。  
   
- The <xref:System.Exception.SerializeObjectState> event enables transparent exception types to serialize and deserialize exception data. Transparent code can execute commands within the bounds of the permission set it is operating within, but cannot execute, call, derive from, or contain critical code.  
+ <xref:System.Exception.SerializeObjectState>イベントおよび例外データを逆シリアル化に透過的な例外の種類を有効にします。 透過的なコード内で、動作しているアクセス許可セットの範囲内のコマンドを実行ことはできません実行、呼び出しから派生したりクリティカルなコードが含まれてできます。  
   
- If the <xref:System.Exception.SerializeObjectState> event is not subscribed to, deserialization occurs as usual using the <xref:System.Exception.%23ctor%2A> constructor.  
+ 場合、<xref:System.Exception.SerializeObjectState>イベントがサブスクライブしていないかを使用して通常どおりに逆シリアル化が発生した、<xref:System.Exception.%23ctor%2A>コンス トラクターです。  
   
- Typically, a handler for the <xref:System.Exception.SerializeObjectState> event is added in the exception's constructor to provide for its serialization. But because the constructor is not executed when the <xref:System.Exception.SerializeObjectState> event handler executes, serializing a deserialized exception can throw a <xref:System.Runtime.Serialization.SerializationException> exception when you try to deserialize the exception. To avoid this, you should also add the handler for the <xref:System.Exception.SerializeObjectState> event in the <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=fullName> method. See the Examples section for an illustration.  
+ 通常のハンドラーを<xref:System.Exception.SerializeObjectState>そのシリアル化を提供する例外のコンス トラクターでイベントを追加します。 コンス トラクターがないため、実行すると実行、<xref:System.Exception.SerializeObjectState>イベント ハンドラーが実行されると、シリアル化、逆シリアル化された例外をスローできます、<xref:System.Runtime.Serialization.SerializationException>例外を逆シリアル化しようとしたときに例外です。 これを回避するにはのハンドラーを追加する必要がありますも、<xref:System.Exception.SerializeObjectState>内のイベント、<xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=fullName>メソッドです。 具体的な使用例」を参照してください。  
   
    
   
-## Examples  
- The following example defines a `BadDivisionException` that handles the <xref:System.Exception.SerializeObjectState> event. It also contains a state object, which is a nested structure named `BadDivisionExceptionState` that implements the <xref:System.Runtime.Serialization.ISafeSerializationData> interface.  
+## 例  
+ 次の例では定義、`BadDivisionException`を処理する、<xref:System.Exception.SerializeObjectState>イベント。 これは、入れ子になった状態オブジェクトも含まれています。 という名前の構造`BadDivisionExceptionState`を実装する、<xref:System.Runtime.Serialization.ISafeSerializationData>インターフェイスです。  
   
- [!code-csharp[System.Exception.SerializeObjectState#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.serializeobjectstate/cs/example2.cs#1)]
- [!code-vb[System.Exception.SerializeObjectState#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.serializeobjectstate/vb/example2.vb#1)]  
+ [!code-csharp[System.Exception.SerializeObjectState\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.serializeobjectstate/cs/example2.cs#1)]
+ [!code-vb[System.Exception.SerializeObjectState\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.serializeobjectstate/vb/example2.vb#1)]  
   
- The `BadDivisionException` exception is thrown when a floating-point division by zero occurs. During the first division by zero, the example instantiates a `BadDivisionException` object, serializes it, and throws the exception. When subsequent divisions by zero occur, the example deserializes the  previously serialized object, reserializes it, and throws the exception. To provide for object serialization, deserialization, reserialization, and deserialization, the example adds the <xref:System.Exception.SerializeObjectState> event handler both in the `BadDivisionException` class constructor and in the <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=fullName> implementation.  
+ The `BadDivisionException` exception is thrown when a floating\-point division by zero occurs. During the first division by zero, the example instantiates a `BadDivisionException` object, serializes it, and throws the exception. When subsequent divisions by zero occur, the example deserializes the  previously serialized object, reserializes it, and throws the exception. To provide for object serialization, deserialization, reserialization, and deserialization, the example adds the <xref:System.Exception.SerializeObjectState> event handler both in the `BadDivisionException` class constructor and in the <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=fullName> implementation.  
   
  ]]></format>
         </remarks>
@@ -997,26 +1060,26 @@ Stack Trace:
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the application or the object that causes the error.</summary>
-        <value>The name of the application or the object that causes the error.</value>
+        <summary>エラーの原因となるアプリケーションまたはオブジェクトの名前を取得または設定します。</summary>
+        <value>エラーの原因となるアプリケーションまたはオブジェクトの名前。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Exception.Source%2A> property is not set explicitly, the runtime automatically sets it to the name of the assembly in which the exception originated.  
+## 解説  
+ 場合、<xref:System.Exception.Source%2A>プロパティが明示的に設定されていない、ランタイムに自動的に設定、例外が発生したアセンブリの名前。  
   
    
   
-## Examples  
- The following example throws an `Exception` that sets the `Source` property in its constructor and then catches the exception and displays `Source`.  
+## 例  
+ 次の例をスロー、`Exception`が設定された、`Source`プロパティには、そのコンス トラクターとし、キャッチされた例外と表示`Source`です。  
   
- [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
- [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
- [!code-vb[System.Exception.Properties#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
+ [!code-cpp[System.Exception.Properties\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
+ [!code-csharp[System.Exception.Properties\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
+ [!code-vb[System.Exception.Properties\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The object must be a runtime <see cref="N:System.Reflection" /> object</exception>
+        <exception cref="T:System.ArgumentException">このオブジェクトはランタイム <see cref="N:System.Reflection" /> オブジェクトでなければなりません。</exception>
       </Docs>
     </Member>
     <Member MemberName="StackTrace">
@@ -1045,28 +1108,28 @@ Stack Trace:
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a string representation of the immediate frames on the call stack.</summary>
-        <value>A string that describes the immediate frames of the call stack.</value>
+        <summary>呼び出し履歴で直前のフレームの文字列形式を取得します。</summary>
+        <value>呼び出し履歴の直前のフレームを説明する文字列。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The execution stack keeps track of all the methods that are in execution at a given instant. A trace of the method calls is called a stack trace. The stack trace listing provides a way to follow the call stack to the line number in the method where the exception occurs.  
+## 解説  
+ 実行スタックは、指定された時点で実行されているすべてのメソッドを追跡します。 メソッド呼び出しのトレースは、スタック トレースと呼ばれます。 スタック トレースの一覧は、例外が発生する、メソッド内の行番号に呼び出し履歴を追跡する方法を提供します。  
   
- The <xref:System.Exception.StackTrace%2A> property returns the frames of the call stack that originate at the location where the exception was thrown. You can obtain information about additional frames in the call stack by creating a new instance of the <xref:System.Diagnostics.StackTrace?displayProperty=fullName> class and using its <xref:System.Diagnostics.StackTrace.ToString%2A?displayProperty=fullName> method.  
+ <xref:System.Exception.StackTrace%2A>プロパティは、例外がスローされた場所に送られたコール スタックのフレームを返します。 新しいインスタンスを作成することで、コール スタック フレームに関する情報を取得することができます、<xref:System.Diagnostics.StackTrace?displayProperty=fullName>クラスを使用してその<xref:System.Diagnostics.StackTrace.ToString%2A?displayProperty=fullName>メソッドです。  
   
- The common language runtime (CLR) updates the stack trace whenever an exception is thrown in application code (by using the `throw` keyword). If the exception was rethrown in a method that is different than the method where it was originally thrown, the stack trace contains both the location in the method where the exception was originally thrown, and the location in the method where the exception was rethrown. If the exception is thrown, and later rethrown, in the same method, the stack trace only contains the location where the exception was rethrown and does not include the location where the exception was originally thrown.  
+ アプリケーション コードで例外がスローされるたびに、共通言語ランタイム \(CLR\) は、スタック トレースを更新 \(を使用して、`throw`キーワード\) です。 場合は、例外がスローされましたが、メソッドと異なるメソッドで再スローされました、スタック トレースには、ここで例外がスローされた最初、メソッド内の場所と、例外が再スロー メソッド内の場所の両方が含まれています。 場合は、例外がスローされ、後で再度スローされ、同じ方法で、スタック トレースには、例外が再スローして例外をスローした場所には含まれませんの場所にはのみが含まれます。  
   
- The <xref:System.Exception.StackTrace%2A> property may not report as many method calls as expected because of code transformations, such as inlining, that occur during optimization.  
+ <xref:System.Exception.StackTrace%2A>プロパティは多くのメソッド呼び出しなどのコード変換のため期待どおりに、報告可能性があります、インライン展開の最適化中に発生します。  
   
    
   
-## Examples  
- The following code example throws an `Exception` and then catches it and displays a stack trace using the `StackTrace` property.  
+## 例  
+ 次のコード例をスロー、`Exception`し、その例外をキャッチしてスタック トレースを使用して、表示、`StackTrace`プロパティです。  
   
- [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
- [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
- [!code-vb[System.Exception.Properties#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
+ [!code-cpp[System.Exception.Properties\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
+ [!code-csharp[System.Exception.Properties\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
+ [!code-vb[System.Exception.Properties\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1075,6 +1138,7 @@ Stack Trace:
   
  By default, the stack trace is captured immediately before an exception object is thrown. Use <see cref="P:System.Environment.StackTrace" /> to get stack trace information when no exception is being thrown.</para>
         </block>
+        <altmember cref="P:System.Environment.StackTrace" />
       </Docs>
     </Member>
     <Member MemberName="TargetSite">
@@ -1104,25 +1168,25 @@ Stack Trace:
         <ReturnType>System.Reflection.MethodBase</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the method that throws the current exception.</summary>
-        <value>The <see cref="T:System.Reflection.MethodBase" /> that threw the current exception.</value>
+        <summary>現在の例外がスローされたメソッドを取得します。</summary>
+        <value>現在の例外をスローした <see cref="T:System.Reflection.MethodBase" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the method that throws this exception is not available and the stack trace is not a null reference (`Nothing` in Visual Basic), <xref:System.Exception.TargetSite%2A> obtains the method from the stack trace. If the stack trace is a null reference, <xref:System.Exception.TargetSite%2A> also returns a null reference.  
+## 解説  
+ この例外をスローするメソッドを使用できない、スタック トレースが null 参照ではない場合 \(`Nothing` Visual Basic で\)、<xref:System.Exception.TargetSite%2A>スタック トレースからメソッドを取得します。 スタック トレースが null 参照であると、<xref:System.Exception.TargetSite%2A> も null 参照を返します。  
   
 > [!NOTE]
->  The <xref:System.Exception.TargetSite%2A> property may not accurately report the name of the method in which an exception was thrown if the exception handler handles an exception across application domain boundaries.  
+>  <xref:System.Exception.TargetSite%2A>プロパティは、例外がスローされた例外ハンドラーがアプリケーション ドメインの境界を越えて例外を処理する場合、メソッドの名前を正確に表示されない場合があります。  
   
    
   
-## Examples  
- The following code example throws an `Exception` and then catches it and displays the originating method using the `TargetSite` property.  
+## 例  
+ 次のコード例をスロー、`Exception`し、その例外をキャッチして元メソッドを使用して、表示、`TargetSite`プロパティです。  
   
- [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
- [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
- [!code-vb[System.Exception.Properties#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
+ [!code-cpp[System.Exception.Properties\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
+ [!code-csharp[System.Exception.Properties\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
+ [!code-vb[System.Exception.Properties\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Exception.Properties/VB/properties.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1155,32 +1219,46 @@ Stack Trace:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates and returns a string representation of the current exception.</summary>
-        <returns>A string representation of the current exception.</returns>
+        <summary>現在の例外の文字列形式を作成して返します。</summary>
+        <returns>現在の例外の文字列形式。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Exception.ToString%2A> returns a representation of the current exception that is intended to be understood by humans. Where the exception contains culture-sensitive data, the string representation returned by `ToString` is required to take into account the current system culture. Although there are no exact requirements for the format of the returned string, it should attempt to reflect the value of the object as perceived by the user.  
+## 解説  
+ <xref:System.Exception.ToString%2A>ユーザーが理解できるものでは現在の例外の表現を返します。 例外には、カルチャに依存するデータが含まれています、文字列形式にによって返されます`ToString`は現在のシステム カルチャが考慮するために必要です。 返される文字列の形式の正確な要件はありませんが、ユーザー側で認識されるオブジェクトの値を反映するようにしようとする必要があります。  
   
- The default implementation of <xref:System.Exception.ToString%2A> obtains the name of the class that threw the current exception, the message, the result of calling <xref:System.Exception.ToString%2A> on the inner exception, and the result of calling <xref:System.Environment.StackTrace%2A?displayProperty=fullName>. If any of these members is `null`, its value is not included in the returned string.  
+ 既定の実装<xref:System.Exception.ToString%2A>を現在の例外、メッセージ、呼び出しの結果をスローしたクラスの名前を取得<xref:System.Exception.ToString%2A>、内部例外、および呼び出しの結果で<xref:System.Environment.StackTrace%2A?displayProperty=fullName>です。 これらのメンバーのいずれかが場合`null`、その値が返される文字列に含まれていません。  
   
- If there is no error message or if it is an empty string (""), then no error message is returned. The name of the inner exception and the stack trace are returned only if they are not `null`.  
+ エラー メッセージが存在しない場合、または空の文字列である場合 \(""\)、エラー メッセージも返されません。 されていない場合にのみ、内部例外とスタック トレースの名前が返されます`null`です。  
   
- This method overrides <xref:System.Object.ToString%2A?displayProperty=fullName>.  
+ このメソッドは<xref:System.Object.ToString%2A?displayProperty=fullName>します。  
   
    
   
-## Examples  
- The following example causes an exception and displays the result of calling <xref:System.Exception.ToString%2A> on that exception. Note that the <xref:System.Exception.ToString%2A?displayProperty=fullName> method is called implicitly when the Exception class instance appears in the argument list of the <xref:System.Console.WriteLine%2A?displayProperty=fullName> method.  
+## 例  
+ 次の例は、例外が発生し、呼び出し元の結果を表示<xref:System.Exception.ToString%2A>その例外でします。 なお、<xref:System.Exception.ToString%2A?displayProperty=fullName>例外クラス インスタンスの引数リストに表示されるときに、メソッドが暗黙的に呼び出される、<xref:System.Console.WriteLine%2A?displayProperty=fullName>メソッドです。  
   
- [!code-cpp[System.Exception.ToString#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.exception.tostring/cpp/ToStringEx1.cpp#1)]
- [!code-csharp[System.Exception.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.tostring/cs/ToStringEx1.cs#1)]
- [!code-vb[System.Exception.ToString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.tostring/vb/ToStringEx1.vb#1)]  
+ [!code-cpp[System.Exception.ToString\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.exception.tostring/cpp/ToStringEx1.cpp#1)]
+ [!code-csharp[System.Exception.ToString\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.tostring/cs/ToStringEx1.cs#1)]
+ [!code-vb[System.Exception.ToString\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.tostring/vb/ToStringEx1.vb#1)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Exception" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

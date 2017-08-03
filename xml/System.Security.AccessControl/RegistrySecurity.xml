@@ -20,74 +20,74 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Represents the Windows access control security for a registry key. This class cannot be inherited.</summary>
+    <summary>レジストリ キーの Windows アクセス制御セキュリティを表します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.Security.AccessControl.RegistrySecurity> object specifies access rights for a registry key, and also specifies how access attempts are audited. Access rights to the registry key are expressed as rules, with each access rule represented by a <xref:System.Security.AccessControl.RegistryAccessRule> object. Each auditing rule is represented by a <xref:System.Security.AccessControl.RegistryAuditRule> object.  
+## 解説  
+ A <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトは、レジストリ キーに対するアクセス権を指定し、アクセス試行を監査する方法を指定します。 レジストリ キーへのアクセス権がによって表される各アクセス規則との規則で表され、 <xref:System.Security.AccessControl.RegistryAccessRule> オブジェクトです。 各監査規則は、 <xref:System.Security.AccessControl.RegistryAuditRule> オブジェクトです。  
   
- This mirrors the underlying Windows security system, in which each securable object has at most one discretionary access control list (DACL) that controls access to the secured object, and at most one system access control list (SACL) that specifies which access attempts are audited. The DACL and SACL are ordered lists of access control entries (ACE) that specify access and auditing for users and groups. A <xref:System.Security.AccessControl.RegistryAccessRule> or <xref:System.Security.AccessControl.RegistryAuditRule> object might represent more than one ACE.  
+ これには、セキュリティ保護可能な各オブジェクトに含まれる最大で 1 つ随意アクセス制御リスト \(DACL\) をセキュリティで保護されたオブジェクトと最大で 1 つシステム アクセス制御リスト \(SACL\) 指定するアクセス試行を監査するアクセスを制御する、基になる Windows セキュリティ システムがミラー化します。 DACL と SACL は、アクセスおよびユーザーとグループの監査を指定するアクセス制御エントリ \(ACE\) の一覧を並べ替えられます。 A <xref:System.Security.AccessControl.RegistryAccessRule> または <xref:System.Security.AccessControl.RegistryAuditRule> オブジェクトは 1 つ以上の ACE を表すことがあります。  
   
 > [!NOTE]
->  Windows access control security can only be applied to registry keys. It cannot be applied to individual key/value pairs stored in a key.  
+>  Windows のアクセス制御セキュリティは、レジストリ キーにのみ適用できます。 キーに格納されている個別のキー\/値ペアにも適用することはできません。  
   
- The <xref:System.Security.AccessControl.RegistrySecurity>, <xref:System.Security.AccessControl.RegistryAccessRule>, and <xref:System.Security.AccessControl.RegistryAuditRule> classes hide the implementation details of ACLs and ACEs. They allow you to ignore the seventeen different ACE types and the complexity of correctly maintaining inheritance and propagation of access rights. These objects are also designed to prevent the following common access control errors:  
+ <xref:System.Security.AccessControl.RegistrySecurity>, 、<xref:System.Security.AccessControl.RegistryAccessRule>, 、および <xref:System.Security.AccessControl.RegistryAuditRule> クラスは、Acl、Ace の実装の詳細を非表示にします。 17 のさまざまな ACE 型と正しく継承とアクセス権の反映を維持するための複雑さを無視できます。 また、これらのオブジェクトは次の一般的なアクセス制御エラーを回避する設計に。  
   
--   Creating a security descriptor with a null DACL. A null reference to a DACL allows any user to add access rules to an object, potentially creating a denial-of-service attack. A new <xref:System.Security.AccessControl.RegistrySecurity> object always starts with an empty DACL, which denies all access for all users.  
+-   Null DACL のセキュリティ記述子を作成しています。 DACL を null 参照は、すべてのユーザーにサービス拒否攻撃の可能性のある作成のオブジェクトにアクセス規則を追加できます。 新しい <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトは常にすべてのユーザーのすべてのアクセスを拒否する空の DACL で始まります。  
   
--   Violating the canonical ordering of ACEs. If the ACE list in the DACL is not kept in the canonical order, users might inadvertently be given access to the secured object. For example, denied access rights must always appear before allowed access rights. <xref:System.Security.AccessControl.RegistrySecurity> objects maintain the correct order internally.  
+-   Ace の正規の順序に違反しています。 DACL の ACE リストが正規順序で維持されない場合は、ユーザー誤ってを付与するアクセス セキュリティで保護されたオブジェクト。 たとえば、拒否するアクセス権は必要があります許可されるアクセス権の前に常に表示されます。<xref:System.Security.AccessControl.RegistrySecurity> オブジェクトは、内部で適切な順序を保持します。  
   
--   Manipulating security descriptor flags, which should be under resource manager control only.  
+-   操作に使用するセキュリティ記述子のフラグをリソース マネージャーの管理のみの対象にする必要があります。  
   
--   Creating invalid combinations of ACE flags.  
+-   ACE のフラグの無効な組み合わせを作成しています。  
   
--   Manipulating inherited ACEs. Inheritance and propagation are handled by the resource manager, in response to changes you make to access and audit rules.  
+-   継承された Ace を操作します。 継承と伝達は、アクセスおよび監査のルールに加えた変更に応答のリソース マネージャーによって処理されます。  
   
--   Inserting meaningless ACEs into ACLs.  
+-   Acl に無意味な Ace を挿入します。  
   
- The only capabilities not supported by the .NET security objects are dangerous activities that should be avoided by the majority of application developers, such as the following:  
+ .NET セキュリティ オブジェクトでサポートされていない機能だけでは、次のようなアプリケーションの開発者の大部分は避ける必要が危険なアクティビティが。  
   
--   Low-level tasks that are normally performed by the resource manager.  
+-   通常、リソース マネージャーで実行される低レベルのタスクです。  
   
--   Adding or removing access control entries in ways that do not maintain the canonical ordering.  
+-   追加または標準の順序を保持しない方法でアクセス制御エントリを削除します。  
   
- To modify Windows access control security for a registry key, use the <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> method to get the <xref:System.Security.AccessControl.RegistrySecurity> object. Modify the security object by adding and removing rules, and then use the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method to reattach it.  
+ レジストリ キーの Windows アクセス制御セキュリティを変更するには、使用、 <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> 取得するメソッド、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。 追加と削除の規則では、セキュリティ オブジェクトを変更し、 <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> メソッドを再添付します。  
   
 > [!IMPORTANT]
->  Changes you make to a <xref:System.Security.AccessControl.RegistrySecurity> object do not affect the access levels of the registry key until you call the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method to assign the altered security object to the registry key.  
+>  対して行った変更、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトに、レジストリ キーのアクセス レベルは影響しませんが呼び出されるまで、 <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> レジストリ キーに変更されたセキュリティ オブジェクトを割り当てる方法です。  
   
- To copy access control security from one registry key to another, use the <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> method to get a <xref:System.Security.AccessControl.RegistrySecurity> object representing the access and audit rules for the first registry key, and then use the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method to assign those rules to the second registry key. You can also assign the rules to a second registry key with an <xref:Microsoft.Win32.RegistryKey.OpenSubKey%2A?displayProperty=fullName> or <xref:Microsoft.Win32.RegistryKey.CreateSubKey%2A?displayProperty=fullName> method that takes a <xref:System.Security.AccessControl.RegistrySecurity> object parameter.  
+ 間、1 つのレジストリ キーからのアクセス制御セキュリティをコピーを使用して、 <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> 取得するメソッド、 <xref:System.Security.AccessControl.RegistrySecurity> 最初のレジストリ キーのアクセスおよび監査規則を表すオブジェクトをクリックして、 <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> にそれらの規則を 2 番目のレジストリ キーに割り当てる方法です。 ルールを 2 番目のレジストリ キーに割り当てることも、 <xref:Microsoft.Win32.RegistryKey.OpenSubKey%2A?displayProperty=fullName> または <xref:Microsoft.Win32.RegistryKey.CreateSubKey%2A?displayProperty=fullName> を受け取るメソッド、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクト パラメーターです。  
   
- Users with an investment in the security descriptor definition language (SDDL) can use the <xref:System.Security.AccessControl.ObjectSecurity.SetSecurityDescriptorSddlForm%2A> method to set access rules for a registry key, and the <xref:System.Security.AccessControl.ObjectSecurity.GetSecurityDescriptorSddlForm%2A> method to obtain a string that represents the access rules in SDDL format. This is not recommended for new development.  
+ ユーザー セキュリティ記述子定義言語 \(SDDL\) への投資で使用して、 <xref:System.Security.AccessControl.ObjectSecurity.SetSecurityDescriptorSddlForm%2A> レジストリ キーのアクセス ルールを設定するメソッドを <xref:System.Security.AccessControl.ObjectSecurity.GetSecurityDescriptorSddlForm%2A> SDDL 形式のアクセス ルールを表す文字列を取得します。 これは、説明は、新規の開発は推奨されません。  
   
    
   
-## Examples  
- This section contains two code examples. The first example shows how compatible rules merge when added and removed, and the second shows how inheritance and propagation flags affect the addition and deletion of rules.  
+## 例  
+ このセクションでは、2 つのコード例を示します。 最初の例は追加や削除、際の互換性のあるルール マージし、2 番目に示す追加と削除の規則の継承と伝達のフラグの影響です。  
   
- Example 1  
+ 例 1  
   
- The following code example shows how the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> method removes rights from a compatible rule, and how the <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> method merges rights with compatible rules.  
+ 次のコード例に示す方法、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> メソッドは、互換性のある規則から権限を削除方法、および <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> メソッドは、互換性のあるルールに権限をマージします。  
   
- The example creates a <xref:System.Security.AccessControl.RegistrySecurity> object and adds a rule that allows the current user <xref:System.Security.AccessControl.RegistryRights?displayProperty=fullName> rights. The example then creates a rule that grants the user <xref:System.Security.AccessControl.RegistryRights?displayProperty=fullName>, with the same inheritance and propagation rights as the first rule, and uses the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> method to remove this new rule from the <xref:System.Security.AccessControl.RegistrySecurity> object. <xref:System.Security.AccessControl.RegistryRights.SetValue> is a constituent of <xref:System.Security.AccessControl.RegistryRights.ReadKey>, so it is removed from the compatible rule. The rules in the <xref:System.Security.AccessControl.RegistrySecurity> object are displayed, showing the remaining constituents of <xref:System.Security.AccessControl.RegistryRights.ReadKey>.  
+ 例を作成し、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトし、現在のユーザーを許可するルールを追加 <xref:System.Security.AccessControl.RegistryRights.ReadKey?displayProperty=fullName> 権限です。 ユーザーを許可するルールを作成し <xref:System.Security.AccessControl.RegistryRights.SetValue?displayProperty=fullName>, し、同じ継承と伝達の権限を使用して最初のルールと、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> からこの新しいルールを削除する方法、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。<xref:System.Security.AccessControl.RegistryRights.SetValue> 構成要素は、 <xref:System.Security.AccessControl.RegistryRights.ReadKey>, ので、互換性のある規則から削除されます。 内のルール、 <xref:System.Security.AccessControl.RegistrySecurity> の残りの構成要素をと共に、オブジェクトが表示されます <xref:System.Security.AccessControl.RegistryRights.ReadKey>します。  
   
- The example code then calls the <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> method to merge the <xref:System.Security.AccessControl.RegistryRights.SetValue> right back into the rule in the <xref:System.Security.AccessControl.RegistrySecurity> object.  
+ このコード例を呼び出して、 <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> にマージするメソッド、 <xref:System.Security.AccessControl.RegistryRights.SetValue> 内のルールに右、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. The second example in this section attaches a security object, and so do the examples in <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> and <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 このセクションでは、2 番目の例は、セキュリティ オブジェクトをアタッチおよびは <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> と <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName>です。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/VB/source.vb#1)]  
   
- Example 2  
+ 例 2  
   
- The following code example demonstrates access rules with inheritance and propagation. The example creates a <xref:System.Security.AccessControl.RegistrySecurity> object, then creates and adds two rules that have the <xref:System.Security.AccessControl.InheritanceFlags.ContainerInherit> flag. The first rule has no propagation flags, while the second has <xref:System.Security.AccessControl.PropagationFlags.NoPropagateInherit> and <xref:System.Security.AccessControl.PropagationFlags.InheritOnly>.  
+ 次のコード例では、継承と伝達を行うアクセス規則を示します。 例を作成し、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトを作成しを持つ 2 つの規則を追加、 <xref:System.Security.AccessControl.InheritanceFlags.ContainerInherit> フラグ。 最初のルールを持たない伝達フラグ、2 つ目があるときに <xref:System.Security.AccessControl.PropagationFlags.NoPropagateInherit> と <xref:System.Security.AccessControl.PropagationFlags.InheritOnly>です。  
   
- The program displays the rules in the <xref:System.Security.AccessControl.RegistrySecurity> object, and then uses the <xref:System.Security.AccessControl.RegistrySecurity> object to create a subkey. The program creates a child subkey and a grandchild subkey, then displays the security for each subkey. Finally, the program deletes the test keys.  
+ プログラムは、表示内のルール、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトを使用して、 <xref:System.Security.AccessControl.RegistrySecurity> 、サブキーを作成するオブジェクト。 プログラムは、子サブキーと孫サブキーを作成し、各サブキーのセキュリティを表示します。 最後に、プログラムでは、テスト キーを削除します。  
   
- [!code-csharp[System.Security.AccessControl.RegistryAccessRule.ctor2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistryAccessRule.ctor2/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistryAccessRule.ctor2#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistryAccessRule.ctor2/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistryAccessRule.ctor2\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistryAccessRule.ctor2/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistryAccessRule.ctor2\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistryAccessRule.ctor2/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -113,12 +113,13 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Security.AccessControl.RegistrySecurity" /> class with default values.</summary>
+        <summary>
+          <see cref="T:System.Security.AccessControl.RegistrySecurity" /> クラスの新しいインスタンスを既定値で初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A new <xref:System.Security.AccessControl.RegistrySecurity> object always starts with an empty discretionary access list (DACL), which denies all access for all users.  
+## 解説  
+ A new <xref:System.Security.AccessControl.RegistrySecurity> object always starts with an empty discretionary access list \(DACL\), which denies all access for all users.  
   
  ]]></format>
         </remarks>
@@ -146,13 +147,13 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the enumeration type that the <see cref="T:System.Security.AccessControl.RegistrySecurity" /> class uses to represent access rights.</summary>
-        <value>A <see cref="T:System.Type" /> object representing the <see cref="T:System.Security.AccessControl.RegistryRights" /> enumeration.</value>
+        <summary>列挙型を取得、 <see cref="T:System.Security.AccessControl.RegistrySecurity" /> クラスのアクセス権を表現するために使用します。</summary>
+        <value>A <see cref="T:System.Type" /> を表すオブジェクト、 <see cref="T:System.Security.AccessControl.RegistryRights" /> 列挙します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Security.AccessControl.ObjectSecurity> class override the <xref:System.Security.AccessControl.ObjectSecurity.AccessRightType%2A> property and return the type they use to represent access rights. When you work with arrays or collections that contain multiple types of security objects, use this property to determine the correct enumeration type to use with each security object.  
+## 解説  
+ 派生するクラス、 <xref:System.Security.AccessControl.ObjectSecurity> クラスのオーバーライド、 <xref:System.Security.AccessControl.ObjectSecurity.AccessRightType%2A> プロパティと戻り値を使用してアクセス権を表す型。 配列または複数のセキュリティ オブジェクトの種類が含まれているコレクションを使用する場合は、このプロパティを使用して、各セキュリティ オブジェクトで使用する適切な列挙型を判断します。  
   
  ]]></format>
         </remarks>
@@ -188,35 +189,36 @@
         <Parameter Name="type" Type="System.Security.AccessControl.AccessControlType" />
       </Parameters>
       <Docs>
-        <param name="identityReference">An <see cref="T:System.Security.Principal.IdentityReference" /> that identifies the user or group the rule applies to.</param>
-        <param name="accessMask">A bitwise combination of <see cref="T:System.Security.AccessControl.RegistryRights" /> values specifying the access rights to allow or deny, cast to an integer.</param>
-        <param name="isInherited">A Boolean value specifying whether the rule is inherited.</param>
-        <param name="inheritanceFlags">A bitwise combination of <see cref="T:System.Security.AccessControl.InheritanceFlags" /> values specifying how the rule is inherited by subkeys.</param>
-        <param name="propagationFlags">A bitwise combination of <see cref="T:System.Security.AccessControl.PropagationFlags" /> values that modify the way the rule is inherited by subkeys. Meaningless if the value of <c>inheritanceFlags</c> is <see cref="F:System.Security.AccessControl.InheritanceFlags.None" />.</param>
-        <param name="type">One of the <see cref="T:System.Security.AccessControl.AccessControlType" /> values specifying whether the rights are allowed or denied.</param>
-        <summary>Creates a new access control rule for the specified user, with the specified access rights, access control, and flags.</summary>
-        <returns>A <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> object representing the specified rights for the specified user.</returns>
+        <param name="identityReference">
+          <see cref="T:System.Security.Principal.IdentityReference" /> 、ユーザーを識別する、またはにグループのルールが適用されます。</param>
+        <param name="accessMask">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.RegistryRights" /> 、許可または拒否するアクセス権を指定する値が整数にキャストします。</param>
+        <param name="isInherited">ルールを継承するかどうかを指定するブール値。</param>
+        <param name="inheritanceFlags">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.InheritanceFlags" /> のサブキーによってルールを継承する方法を指定する値。</param>
+        <param name="propagationFlags">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.PropagationFlags" /> サブキーによってルールを継承する方法を変更する値。 意味のない場合の値 <c>inheritanceFlags</c> は <see cref="F:System.Security.AccessControl.InheritanceFlags.None" />です。</param>
+        <param name="type">いずれか、 <see cref="T:System.Security.AccessControl.AccessControlType" /> 権限を許可または拒否するかどうかを指定する値。</param>
+        <summary>指定したアクセス権、アクセス制御、およびフラグで指定されたユーザーの新しいアクセス制御規則を作成します。</summary>
+        <returns>A <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> 指定されたユーザーの指定された権限を表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The recommended way to create access control rules is to use the constructors of the <xref:System.Security.AccessControl.RegistryAccessRule> class.  
+## 解説  
+ アクセス制御規則を作成することをお勧めのコンス トラクターを使用して、 <xref:System.Security.AccessControl.RegistryAccessRule> クラスです。  
   
 > [!NOTE]
->  Although you can specify the <xref:System.Security.AccessControl.InheritanceFlags?displayProperty=fullName> flag, there is no point in doing so. For the purposes of access control, the name/value pairs in a subkey are not separate objects. The access rights to name/value pairs are controlled by the rights of the subkey. Furthermore, since all subkeys are containers (that is, they can contain other subkeys), they are not affected by the <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> flag. Finally, specifying the <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> flag needlessly complicates the maintenance of rules, because it interferes with the normal combination of compatible rules.  
+>  指定できますが、 <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit?displayProperty=fullName> フラグは、その際に意味がありません。 アクセス制御のために、サブキーの名前と値のペアは個別のオブジェクトではないです。 名前と値のペアへのアクセス権は、サブキーの権限によって制御されます。 さらに、すべてのサブキーがコンテナーであるため \(つまりがあるその他のサブキー\)、によるを受けていないこと、 <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> フラグ。 最後に、指定する、 <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> 通常の組み合わせの互換性のある規則と競合しているためにフラグが、ルールのメンテナンスに不必要に複雑にします。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="accessMask" />, <paramref name="inheritanceFlags" />, <paramref name="propagationFlags" />, or <paramref name="type" /> specifies an invalid value.</exception>
+          <paramref name="accessMask" />, 、<paramref name="inheritanceFlags" />, 、<paramref name="propagationFlags" />, 、または <paramref name="type" /> 無効な値を指定します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="identityReference" /> is <see langword="null" />.  
+          <paramref name="identityReference" /> は <see langword="null" /> です。  
   
- -or-  
+ または  
   
- <paramref name="accessMask" /> is zero.</exception>
+ <paramref name="accessMask" /> 0 です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="identityReference" /> is neither of type <see cref="T:System.Security.Principal.SecurityIdentifier" />, nor of a type such as <see cref="T:System.Security.Principal.NTAccount" /> that can be converted to type <see cref="T:System.Security.Principal.SecurityIdentifier" />.</exception>
+          <paramref name="identityReference" /> 型のどちらも、 <see cref="T:System.Security.Principal.SecurityIdentifier" />, 、やなどの型の <see cref="T:System.Security.Principal.NTAccount" /> 型に変換できる <see cref="T:System.Security.Principal.SecurityIdentifier" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AccessRuleType">
@@ -241,13 +243,13 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type that the <see cref="T:System.Security.AccessControl.RegistrySecurity" /> class uses to represent access rules.</summary>
-        <value>A <see cref="T:System.Type" /> object representing the <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> class.</value>
+        <summary>型を取得、 <see cref="T:System.Security.AccessControl.RegistrySecurity" /> クラスのアクセス ルールを表現するために使用します。</summary>
+        <value>A <see cref="T:System.Type" /> を表すオブジェクト、 <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> クラスです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Security.AccessControl.ObjectSecurity> class override the <xref:System.Security.AccessControl.ObjectSecurity.AccessRuleType%2A> property and return the type they use to represent access rules. When you work with arrays or collections that contain multiple types of security objects, use this property to determine the correct access rule type to use with each security object.  
+## 解説  
+ 派生するクラス、 <xref:System.Security.AccessControl.ObjectSecurity> クラスのオーバーライド、 <xref:System.Security.AccessControl.ObjectSecurity.AccessRuleType%2A> プロパティと戻り値を使用して、アクセス ルールを表す型。 配列または複数のセキュリティ オブジェクトの種類が含まれているコレクションを使用する場合は、このプロパティを使用して、各セキュリティ オブジェクトで使用する適切なアクセス規則の種類を決定します。  
   
  ]]></format>
         </remarks>
@@ -278,37 +280,37 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The access control rule to add.</param>
-        <summary>Searches for a matching access control with which the new rule can be merged. If none are found, adds the new rule.</summary>
+        <param name="rule">追加するアクセス制御規則。</param>
+        <summary>使用する新しい規則をマージできる対応するアクセス制御を検索します。 何も見つからない場合は、新しい規則を追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> method searches for rules with the same user or group and the same <xref:System.Security.AccessControl.AccessControlType> as `rule`. If none are found, `rule` is added. If a matching rule is found, the rights in `rule` are merged with the existing rule.  
+## 解説  
+ <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> メソッドは、同じユーザーまたはグループと同じ規則を検索 <xref:System.Security.AccessControl.AccessControlType> として `rule`します。 何も見つからない場合 `rule` が追加されます。 照合ルールが見つからないかどうかは、rights in `rule` は既存の規則にマージされます。  
   
- Rules cannot be merged if they have different inheritance flags. For example, if a user is allowed read access with no inheritance flags, and <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> is used to add a rule giving the user write access with inheritance for subkeys (<xref:System.Security.AccessControl.InheritanceFlags?displayProperty=fullName>), the two rules cannot be merged.  
+ ルールは、別の継承フラグが設定されている場合、マージできません。 たとえば、ユーザーには、継承フラグなしで読み取りアクセスが許可された場合と <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> サブキーの継承を持つユーザーの書き込みアクセス権を付与する規則を追加するために使用 \(<xref:System.Security.AccessControl.InheritanceFlags.ContainerInherit?displayProperty=fullName>\)、2 つのルールをマージすることはできません。  
   
- Rules with different <xref:System.Security.AccessControl.AccessControlType> values are never merged.  
+ さまざまなルール <xref:System.Security.AccessControl.AccessControlType> 値はマージされません。  
   
- Rules express rights in the most economical way. For example, if a user has <xref:System.Security.AccessControl.RegistryRights.QueryValues>, <xref:System.Security.AccessControl.RegistryRights.Notify> and <xref:System.Security.AccessControl.RegistryRights.ReadPermissions> rights, and you add a rule allowing <xref:System.Security.AccessControl.RegistryRights.EnumerateSubKeys> rights, the user has all the constituent parts of <xref:System.Security.AccessControl.RegistryRights.ReadKey> rights. If you query the user's rights, you will see a rule containing <xref:System.Security.AccessControl.RegistryRights.ReadKey> rights. Similarly, if you remove <xref:System.Security.AccessControl.RegistryRights.EnumerateSubKeys> rights, the other constituents of <xref:System.Security.AccessControl.RegistryRights.ReadKey> rights will reappear.  
+ ルールは、最も経済的な方法で権限を表現します。 たとえば、ユーザーが持っている <xref:System.Security.AccessControl.RegistryRights.QueryValues>, 、<xref:System.Security.AccessControl.RegistryRights.Notify> と <xref:System.Security.AccessControl.RegistryRights.ReadPermissions> 権限、および、許可するルールを追加 <xref:System.Security.AccessControl.RegistryRights.EnumerateSubKeys> 、権限の構成要素であるすべての部分をユーザーが持っている <xref:System.Security.AccessControl.RegistryRights.ReadKey> 権限です。 ユーザーの権利をクエリする場合を含むルールが表示されます <xref:System.Security.AccessControl.RegistryRights.ReadKey> 権限です。 同様に、削除した場合 <xref:System.Security.AccessControl.RegistryRights.EnumerateSubKeys> の他の構成要素の権限 <xref:System.Security.AccessControl.RegistryRights.ReadKey> 権限は再表示されます。  
   
    
   
-## Examples  
- The following code example creates registry access rules and adds them to a <xref:System.Security.AccessControl.RegistrySecurity> object, showing how rules that allow and deny rights remain separate, while compatible rules of the same kind are merged.  
+## 例  
+ 次のコード例は、レジストリ アクセス規則を作成しに追加、 <xref:System.Security.AccessControl.RegistrySecurity> 許可し、権限を拒否するルールは、同じ互換性のあるルールの中には別方法の種類を示すオブジェクトをマージします。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. Examples that attach security objects can be found in <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> and <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 セキュリティ オブジェクトをアタッチする例を参照して <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> と <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName>です。  
   
- A code example that demonstrates inheritance and propagation flags can be found in the <xref:System.Security.AccessControl.RegistryAccessRule> class.  
+ 継承と伝達フラグを示すコード例を参照して、 <xref:System.Security.AccessControl.RegistryAccessRule> クラスです。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.AddAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.AddAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.AddAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.AddAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.AddAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.AddAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.AddAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.AddAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AddAuditRule">
@@ -336,15 +338,15 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The audit rule to add. The user specified by this rule determines the search.</param>
-        <summary>Searches for an audit rule with which the new rule can be merged. If none are found, adds the new rule.</summary>
+        <param name="rule">追加する監査規則。 このルールで指定されたユーザーは、検索を決定します。</param>
+        <summary>使用する新しい規則をマージできる監査規則を検索します。 何も見つからない場合は、新しい規則を追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Security.AccessControl.RegistrySecurity.AddAuditRule%2A> method searches for rules with the same user or group as `rule`. If none are found, `rule` is added. If a matching rule is found, the flags in `rule` are merged into the existing rule.  
+## 解説  
+ <xref:System.Security.AccessControl.RegistrySecurity.AddAuditRule%2A> メソッドを探してルールと同じユーザーまたはグループとして `rule`します。 何も見つからない場合 `rule` が追加されます。 照合ルールが見つからないかどうかでフラグ `rule` 既存のルールにマージされます。  
   
- Rules cannot be merged if they have different inheritance flags. For example, if failed attempts to write to a key are audited for a particular user, with no inheritance flags, and <xref:System.Security.AccessControl.RegistrySecurity.AddAuditRule%2A> is used to add a rule specifying that failed attempts to change permissions are to be audited for the same user, but with inheritance for subkeys (<xref:System.Security.AccessControl.InheritanceFlags?displayProperty=fullName>), the two rules cannot be merged.  
+ ルールは、別の継承フラグが設定されている場合、マージできません。 継承フラグなしでの特定のユーザーのキーへの書き込み試行が失敗した場合の監査などと <xref:System.Security.AccessControl.RegistrySecurity.AddAuditRule%2A> を使用してアクセス許可を変更する試みが失敗したなサブキーの継承を持つが、同じユーザーを監査することを指定するルールを追加 \(<xref:System.Security.AccessControl.InheritanceFlags.ContainerInherit?displayProperty=fullName>\)、2 つのルールをマージすることはできません。  
   
  ]]></format>
         </remarks>
@@ -380,35 +382,39 @@
         <Parameter Name="flags" Type="System.Security.AccessControl.AuditFlags" />
       </Parameters>
       <Docs>
-        <param name="identityReference">An <see cref="T:System.Security.Principal.IdentityReference" /> that identifies the user or group the rule applies to.</param>
-        <param name="accessMask">A bitwise combination of <see cref="T:System.Security.AccessControl.RegistryRights" /> values specifying the access rights to audit, cast to an integer.</param>
-        <param name="isInherited">A Boolean value specifying whether the rule is inherited.</param>
-        <param name="inheritanceFlags">A bitwise combination of <see cref="T:System.Security.AccessControl.InheritanceFlags" /> values specifying how the rule is inherited by subkeys.</param>
-        <param name="propagationFlags">A bitwise combination of <see cref="T:System.Security.AccessControl.PropagationFlags" /> values that modify the way the rule is inherited by subkeys. Meaningless if the value of <c>inheritanceFlags</c> is <see cref="F:System.Security.AccessControl.InheritanceFlags.None" />.</param>
-        <param name="flags">A bitwise combination of <see cref="T:System.Security.AccessControl.AuditFlags" /> values specifying whether to audit successful access, failed access, or both.</param>
-        <summary>Creates a new audit rule, specifying the user the rule applies to, the access rights to audit, the inheritance and propagation of the rule, and the outcome that triggers the rule.</summary>
-        <returns>A <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> object representing the specified audit rule for the specified user, with the specified flags. The return type of the method is the base class, <see cref="T:System.Security.AccessControl.AuditRule" />, but the return value can be cast safely to the derived class.</returns>
+        <param name="identityReference">
+          <see cref="T:System.Security.Principal.IdentityReference" /> 、ユーザーを識別する、またはにグループのルールが適用されます。</param>
+        <param name="accessMask">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.RegistryRights" /> を監査するアクセス権を指定する値が整数にキャストします。</param>
+        <param name="isInherited">ルールを継承するかどうかを指定するブール値。</param>
+        <param name="inheritanceFlags">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.InheritanceFlags" /> のサブキーによってルールを継承する方法を指定する値。</param>
+        <param name="propagationFlags">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.PropagationFlags" /> サブキーによってルールを継承する方法を変更する値。 意味のない場合の値 <c>inheritanceFlags</c> は <see cref="F:System.Security.AccessControl.InheritanceFlags.None" />です。</param>
+        <param name="flags">ビットごとの組み合わせ <see cref="T:System.Security.AccessControl.AuditFlags" /> 成功したアクセス、アクセスの失敗、またはその両方を監査するかどうかを指定する値。</param>
+        <summary>規則を適用、監査、継承の規則の伝達およびへのアクセス権をユーザーと、ルールをトリガーする結果を指定して、新しい監査規則を作成します。</summary>
+        <returns>A <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> に指定したフラグの指定されたユーザーの指定した監査規則を表すオブジェクト。 メソッドの戻り値の型は、基本クラス <see cref="T:System.Security.AccessControl.AuditRule" />, 、戻り値は、派生クラスを安全にキャストすることができますが、します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The recommended way to create audit rules is to use the constructors of the <xref:System.Security.AccessControl.RegistryAuditRule> class.  
+## 解説  
+ 監査規則を作成することをお勧めのコンス トラクターを使用して、 <xref:System.Security.AccessControl.RegistryAuditRule> クラスです。  
   
 > [!NOTE]
->  Although you can specify the <xref:System.Security.AccessControl.InheritanceFlags?displayProperty=fullName> flag, there is no point in doing so. For the purposes of audit control, the name/value pairs in a subkey are not separate objects. The audit rights to name/value pairs are controlled by the rights of the subkey. Furthermore, since all subkeys are containers (that is, they can contain other subkeys), they are not affected by the <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> flag. Finally, specifying the <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> flag needlessly complicates the maintenance of rules, because it interferes with the normal combination of compatible rules.  
+>  指定できますが、 <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit?displayProperty=fullName> フラグは、その際に意味がありません。 監査の管理のためは、サブキーの名前と値のペアと、独立したオブジェクトではありません。 名前と値のペアに対する監査権限は、サブキーの権限によって制御されます。 さらに、すべてのサブキーがコンテナーであるため \(つまりがあるその他のサブキー\)、によるを受けていないこと、 <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> フラグ。 最後に、指定する、 <xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit> 通常の組み合わせの互換性のある規則と競合しているためにフラグが、ルールのメンテナンスに不必要に複雑にします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="accessMask" />, <paramref name="inheritanceFlags" />, <paramref name="propagationFlags" />, or <paramref name="flags" /> specifies an invalid value.</exception>
+          <paramref name="accessMask" />, 、<paramref name="inheritanceFlags" />, 、<paramref name="propagationFlags" />, 、または <paramref name="flags" /> 無効な値を指定します。</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="identityReference" /> is <see langword="null" />.  
+          <paramref name="identityReference" /> は <see langword="null" /> です。  
   
- -or-  
+ または  
   
- <paramref name="accessMask" /> is zero.</exception>
+ <paramref name="accessMask" /> 0 です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="identityReference" /> is neither of type <see cref="T:System.Security.Principal.SecurityIdentifier" />, nor of a type such as <see cref="T:System.Security.Principal.NTAccount" /> that can be converted to type <see cref="T:System.Security.Principal.SecurityIdentifier" />.</exception>
+          <paramref name="identityReference" /> 型のどちらも、 <see cref="T:System.Security.Principal.SecurityIdentifier" />, 、やなどの型の <see cref="T:System.Security.Principal.NTAccount" /> 型に変換できる <see cref="T:System.Security.Principal.SecurityIdentifier" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AuditRuleType">
@@ -433,13 +439,13 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the type that the <see cref="T:System.Security.AccessControl.RegistrySecurity" /> class uses to represent audit rules.</summary>
-        <value>A <see cref="T:System.Type" /> object representing the <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> class.</value>
+        <summary>型を取得、 <see cref="T:System.Security.AccessControl.RegistrySecurity" /> 監査規則を表すクラスします。</summary>
+        <value>A <see cref="T:System.Type" /> を表すオブジェクト、 <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> クラスです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes that derive from the <xref:System.Security.AccessControl.ObjectSecurity> class override the <xref:System.Security.AccessControl.ObjectSecurity.AuditRuleType%2A> property and return the type they use to represent audit rights. When you work with arrays or collections that contain multiple types of security objects, use this property to determine the correct audit rule type to use with each security object.  
+## 解説  
+ 派生するクラス、 <xref:System.Security.AccessControl.ObjectSecurity> クラスのオーバーライド、 <xref:System.Security.AccessControl.ObjectSecurity.AuditRuleType%2A> プロパティと戻り値を使用して監査権限を表す型。 配列または複数のセキュリティ オブジェクトの種類が含まれているコレクションを使用する場合は、このプロパティを使用して、各セキュリティ オブジェクトで使用する適切な監査規則の種類を決定します。  
   
  ]]></format>
         </remarks>
@@ -470,35 +476,35 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> that specifies the user and <see cref="T:System.Security.AccessControl.AccessControlType" /> to search for, and a set of inheritance and propagation flags that a matching rule, if found, must be compatible with. Specifies the rights to remove from the compatible rule, if found.</param>
-        <summary>Searches for an access control rule with the same user and <see cref="T:System.Security.AccessControl.AccessControlType" /> (allow or deny) as the specified access rule, and with compatible inheritance and propagation flags; if such a rule is found, the rights contained in the specified access rule are removed from it.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> ユーザーを指定し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> 検索、および一連のルール、一致する場合の継承と伝達のフラグに見つかると、互換性がある必要があります。 互換性のある規則から削除する権限を指定します。</param>
+        <summary>同じユーザーがアクセス制御規則を検索し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> \(許可または拒否\) このようなルールが見つかった場合、指定されたアクセス ルールに含まれている権限から削除されます指定のアクセス ルールとは互換性のある継承と伝達フラグを使用します。</summary>
         <returns>
-          <see langword="true" /> if a compatible rule is found; otherwise <see langword="false" />.</returns>
+          <see langword="true" /> 互換性のある規則が見つかった場合それ以外の場合 <see langword="false" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.RegistrySecurity> is searched for a rule that has the same user and the same <xref:System.Security.AccessControl.AccessControlType> value as `rule`. If no such rule is found, no action is taken, and the method returns `false`. If matching rules are found, their inheritance and compatibility flags are checked for compatibility with the flags specified in `rule`. If no compatible rule is found, no action is taken, and the method returns `false`. If a rule with compatible flags is found, the rights specified in `rule` are removed from the compatible rule, and the method returns `true`. If `rule` specifies rights not contained in the compatible rule, no action is taken with respect to those rights. If all rights are removed from the compatible rule, the entire rule is removed from the current <xref:System.Security.AccessControl.RegistrySecurity> object.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.RegistrySecurity> は同じユーザーと同じを持つルールの検索は <xref:System.Security.AccessControl.AccessControlType> として値 `rule`です。 このような規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 照合ルールが見つからない場合は、継承との互換性フラグがチェックされてで指定されたフラグと互換性のため `rule`です。 互換性のある規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 権限が指定された互換性フラグを含むルールが見つかった場合 `rule` 互換性のある規則から削除されますが返されます `true`します。 場合 `rule` 互換性のあるルールに含まれていない権限をこれらの権限に関する処理は行われません。 現在の全体の規則が削除される場合は、互換性のある規則ですべての権限が削除されて <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。  
   
    
   
-## Examples  
- The following code example shows how the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> method removes rights from a compatible rule, and how the <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> method merges rights with compatible rules.  
+## 例  
+ 次のコード例に示す方法、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> メソッドは、互換性のある規則から権限を削除方法、および <xref:System.Security.AccessControl.RegistrySecurity.AddAccessRule%2A> メソッドは、互換性のあるルールに権限をマージします。  
   
- The example creates a <xref:System.Security.AccessControl.RegistrySecurity> object and adds a rule that allows the current user <xref:System.Security.AccessControl.RegistryRights?displayProperty=fullName> rights. The example then creates a rule that grants the user <xref:System.Security.AccessControl.RegistryRights?displayProperty=fullName>, with the same inheritance and propagation rights as the first rule, and uses the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> method to remove this new rule from the <xref:System.Security.AccessControl.RegistrySecurity> object. <xref:System.Security.AccessControl.RegistryRights.SetValue> is a constituent of <xref:System.Security.AccessControl.RegistryRights.ReadKey>, so it is removed from the compatible rule. The rules in the <xref:System.Security.AccessControl.RegistrySecurity> object are displayed, showing the remaining constituents of <xref:System.Security.AccessControl.RegistryRights.ReadKey>.  
+ 例を作成し、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトし、現在のユーザーを許可するルールを追加 <xref:System.Security.AccessControl.RegistryRights.ReadKey?displayProperty=fullName> 権限です。 ユーザーを許可するルールを作成し <xref:System.Security.AccessControl.RegistryRights.SetValue?displayProperty=fullName>, し、同じ継承と伝達の権限を使用して最初のルールと、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> からこの新しいルールを削除する方法、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。<xref:System.Security.AccessControl.RegistryRights.SetValue> 構成要素は、 <xref:System.Security.AccessControl.RegistryRights.ReadKey>, ので、互換性のある規則から削除されます。 内のルール、 <xref:System.Security.AccessControl.RegistrySecurity> の残りの構成要素をと共に、オブジェクトが表示されます <xref:System.Security.AccessControl.RegistryRights.ReadKey>します。  
   
- The example code then calls the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> method to merge the <xref:System.Security.AccessControl.RegistryRights.SetValue> right back into the rule in the <xref:System.Security.AccessControl.RegistrySecurity> object.  
+ このコード例を呼び出して、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> にマージするメソッド、 <xref:System.Security.AccessControl.RegistryRights.SetValue> 内のルールに右、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. The second example in this section attaches a security object, and so do the examples in <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName><xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName>.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 このセクションでは、2 番目の例は、セキュリティ オブジェクトをアタッチおよびは <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName><xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName>します。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAccessRuleAll">
@@ -526,33 +532,33 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> that specifies the user and <see cref="T:System.Security.AccessControl.AccessControlType" /> to search for. Any rights, inheritance flags, or propagation flags specified by this rule are ignored.</param>
-        <summary>Searches for all access control rules with the same user and <see cref="T:System.Security.AccessControl.AccessControlType" /> (allow or deny) as the specified rule and, if found, removes them.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> ユーザーを指定し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> を検索します。 権限、継承フラグ、またはこの規則で指定された伝達フラグは無視されます。</param>
+        <summary>同じユーザーが制御規則をアクセスするすべての検索と <see cref="T:System.Security.AccessControl.AccessControlType" /> \(許可または拒否\) 指定したと削除、見つかった場合にします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.RegistrySecurity> is searched for rules that have the same user and the same <xref:System.Security.AccessControl.AccessControlType> value as `rule`. Any rights, inheritance flags, or propagation flags specified by `rule` are ignored when performing this search. If no matching rules are found, no action is taken.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.RegistrySecurity> いる同じユーザーと同じ規則が検索 <xref:System.Security.AccessControl.AccessControlType> として値 `rule`です。 すべての権利、継承フラグ、または伝達フラグで指定された `rule` は、この検索を実行するときに無視されます。 照合ルールが見つからない場合、処理は行われません。  
   
- For example, if a user has multiple rules that allow various rights with different inheritance and propagation flags, you can remove all those rules by creating a <xref:System.Security.AccessControl.RegistryAccessRule> object that specifies the user and <xref:System.Security.AccessControl.AccessControlType?displayProperty=fullName>, with any arbitrary rights and flags, and passing that rule to the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll%2A> method.  
+ たとえば、ユーザーに別の継承と伝達フラグを使用して、さまざまな権限を許可する複数のルールがある場合は、削除できますこれらのルールを作成して、 <xref:System.Security.AccessControl.RegistryAccessRule> ユーザーを示すオブジェクトと <xref:System.Security.AccessControl.AccessControlType.Allow?displayProperty=fullName>, では、任意の権限とフラグ、および受け渡しするルールを、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example shows that the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll%2A> method removes all rules that match user and <xref:System.Security.AccessControl.AccessControlType>, ignoring rights and flags.  
+## 例  
+ 次のコード例を示していますが、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll%2A> メソッドは、ユーザーに一致するすべてのルールを削除および <xref:System.Security.AccessControl.AccessControlType>, 、権限とフラグを無視しています。  
   
- The example creates a <xref:System.Security.AccessControl.RegistrySecurity> object and adds rules that allow and deny various rights for the current user, with different inheritance and propagation flags. The example then creates a new rule that allows the current user to take ownership, and passes that rule to the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll%2A> method to remove the two rules that allow access.  
+ 例を作成し、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトし、を可能にする別の継承と伝達フラグと、現在のユーザーのさまざまな権限を拒否する規則を追加します。 新しい規則を所有権を取得する現在のユーザーは、渡すという規則を作成し、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll%2A> アクセスを許可する 2 つのルールを削除する方法です。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. See the <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> method and the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 参照してください、 <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> メソッドおよび <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> メソッドです。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleAll/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAccessRuleSpecific">
@@ -580,34 +586,34 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> to remove.</param>
-        <summary>Searches for an access control rule that exactly matches the specified rule and, if found, removes it.</summary>
+        <param name="rule">削除する <see cref="T:System.Security.AccessControl.RegistryAccessRule" />。</param>
+        <summary>厳密に一致する指定されたアクセス制御規則を検索し、削除を見つかった場合は、そのします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The rule is removed only if it exactly matches `rule` in all details, including flags. Other rules with the same user and <xref:System.Security.AccessControl.AccessControlType> are not affected.  
+## 解説  
+ ルールが削除されるは、完全に一致する場合にのみ `rule` フラグを含むすべての詳細にします。 同じユーザーが他のルールと <xref:System.Security.AccessControl.AccessControlType> は影響しません。  
   
 > [!IMPORTANT]
->  A rule represents one or more underlying access control entries (ACE), and these entries are split or combined as necessary when you modify the access security rules for a user. Thus, a rule might no longer exist in the specific form it had when it was added, and in that case the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> method cannot remove it.  
+>  以上基になるアクセス制御エントリ \(ACE\) およびこれらのエントリが分割またはユーザーのアクセスのセキュリティ規則を変更する場合に、必要に応じて、結合またはルールが 1 つを表します。 そのため、ルールが存在しなくで追加されたときに存在していた特定のフォームおよびそのケース、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> 方法はそれを削除することはできません。  
   
    
   
-## Examples  
- The following code example shows that the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> method removes a rule only if it matches exactly.  
+## 例  
+ 次のコード例を示していますが、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> メソッドが正確に一致した場合にのみ、ルールを削除します。  
   
- The example creates two rules that allow different rights. The rules have compatible inheritance and propagation flags, so when the second rule is added it merges with the first. The example calls the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> method, specifying the first rule, but because the rules are merged there is no rule that matches. The example then calls the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> method to the remove the second rule from the merged rule, and finally calls the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> method to remove the first rule.  
+ この例では、異なる権限を許可する 2 つのルールを作成します。 規則はあるので、1 つ目とマージされる 2 番目のルールが追加されたときに、互換性の継承と伝達フラグです。 呼び出しの例、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> 最初のルールを指定して、メソッドと一致するルールがありませんので、規則がマージされます。 次、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRule%2A> 結合ルールと最後に呼び出しからの削除\] の 2 番目のルールにメソッド、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific%2A> 最初のルールを削除する方法です。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. See the <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> method and the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 参照してください、 <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> メソッドおよび <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> メソッドです。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.RemoveAccessRuleSpecific/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAuditRule">
@@ -635,20 +641,20 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> that specifies the user to search for, and a set of inheritance and propagation flags that a matching rule, if found, must be compatible with. Specifies the rights to remove from the compatible rule, if found.</param>
-        <summary>Searches for an audit control rule with the same user as the specified rule, and with compatible inheritance and propagation flags; if a compatible rule is found, the rights contained in the specified rule are removed from it.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> を検索して、ユーザーと一致する規則の場合の継承と伝達のフラグのセットを指定する場合は、互換性がある必要があります。 互換性のある規則から削除する権限を指定します。</param>
+        <summary>監査の制御規則として、互換性のある継承および伝達フラグと、指定されたルールと同じユーザーの検索互換性のある規則が見つかった場合、指定されたルールに含まれる権限は、そこから削除されます。</summary>
         <returns>
-          <see langword="true" /> if a compatible rule is found; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 互換性のある規則が見つかった場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.RegistrySecurity> is searched for an audit rule that has the same user as `rule`. If no such rule is found, no action is taken, and the method returns `false`. If matching rules are found, their inheritance and compatibility flags are checked for compatibility with the flags specified in `rule`. If no compatible rule is found, no action is taken, and the method returns `false`. If a rule with compatible flags is found, the rights specified in `rule` are removed from the compatible rule, and the method returns `true`. If `rule` specifies rights not contained in the compatible rule, no action is taken with respect to those rights. If all rights are removed from the compatible rule, the entire rule is removed from the current <xref:System.Security.AccessControl.RegistrySecurity> object.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.RegistrySecurity> を同一のユーザーを持つ監査規則の検索 `rule`します。 このような規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 照合ルールが見つからない場合は、継承との互換性フラグがチェックされてで指定されたフラグと互換性のため `rule`です。 互換性のある規則が見つからないと、処理は行われませんおよび、メソッドが戻る `false`します。 権限が指定された互換性フラグを含むルールが見つかった場合 `rule` 互換性のある規則から削除されますが返されます `true`します。 場合 `rule` 互換性のあるルールに含まれていない権限をこれらの権限に関する処理は行われません。 現在の全体の規則が削除される場合は、互換性のある規則ですべての権限が削除されて <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAuditRuleAll">
@@ -676,18 +682,18 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> that specifies the user to search for. Any rights, inheritance flags, or propagation flags specified by this rule are ignored.</param>
-        <summary>Searches for all audit rules with the same user as the specified rule and, if found, removes them.</summary>
+        <param name="rule">A <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> を検索するユーザーを指定します。 権限、継承フラグ、またはこの規則で指定された伝達フラグは無視されます。</param>
+        <summary>場合とすべての監査、指定されたルールと同じユーザーが規則の検索を発見し、それらを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current <xref:System.Security.AccessControl.RegistrySecurity> is searched for audit rules that have the same user as `rule`. Any rights, inheritance flags, or propagation flags specified by `rule` are ignored when performing this search. If no matching rules are found, no action is taken.  
+## 解説  
+ 現在 <xref:System.Security.AccessControl.RegistrySecurity> 監査規則を持つユーザーと同じユーザーが検索 `rule`します。 すべての権利、継承フラグ、または伝達フラグで指定された `rule` は、この検索を実行するときに無視されます。 照合ルールが見つからない場合、処理は行われません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveAuditRuleSpecific">
@@ -715,21 +721,21 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> to be removed.</param>
-        <summary>Searches for an audit rule that exactly matches the specified rule and, if found, removes it.</summary>
+        <param name="rule">削除する <see cref="T:System.Security.AccessControl.RegistryAuditRule" />。</param>
+        <summary>厳密に一致する指定された監査規則を検索し、削除を見つかった場合は、そのします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The rule is removed only if it exactly matches `rule` in all details, including flags. Other audit rules for the same user are not affected.  
+## 解説  
+ ルールが削除されるは、完全に一致する場合にのみ `rule` フラグを含むすべての詳細にします。 同じユーザーの場合は、その他の監査規則には影響しません。  
   
 > [!IMPORTANT]
->  A rule represents one or more underlying access control entries (ACE), and these entries are split or combined as necessary when you modify the audit security rules for a user. Thus, a rule might no longer exist in the specific form it had when it was added, and in that case the <xref:System.Security.AccessControl.RegistrySecurity.RemoveAuditRuleSpecific%2A> method cannot remove it.  
+>  以上基になるアクセス制御エントリ \(ACE\) およびこれらのエントリが分割またはユーザーの監査のセキュリティの規則を変更する場合に、必要に応じて、結合またはルールが 1 つを表します。 そのため、ルールが存在しなくで追加されたときに存在していた特定のフォームおよびそのケース、 <xref:System.Security.AccessControl.RegistrySecurity.RemoveAuditRuleSpecific%2A> 方法はそれを削除することはできません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="ResetAccessRule">
@@ -757,26 +763,26 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> to add. The user specified by this rule determines the rules to remove before this rule is added.</param>
-        <summary>Removes all access control rules with the same user as the specified rule, regardless of <see cref="T:System.Security.AccessControl.AccessControlType" />, and then adds the specified rule.</summary>
+        <param name="rule">追加する <see cref="T:System.Security.AccessControl.RegistryAccessRule" />。 このルールで指定されたユーザーは、このルールが追加される前に削除する規則を決定します。</param>
+        <summary>関係なく、指定されたルールと同じユーザーを持つすべてのアクセス制御規則を削除 <see cref="T:System.Security.AccessControl.AccessControlType" />, 、し、指定されたルールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If there are no access rules whose user matches the specified rule, `rule` is added.  
+## 解説  
+ ユーザーが、指定されたルールに一致するアクセス ルールがない場合 `rule` が追加されます。  
   
    
   
-## Examples  
- The following code example shows how the <xref:System.Security.AccessControl.RegistrySecurity.ResetAccessRule%2A> method replaces all rules for the matching user with the rule specified for the match.  
+## 例  
+ 次のコード例に示す方法、 <xref:System.Security.AccessControl.RegistrySecurity.ResetAccessRule%2A> メソッドは、一致する指定された規則に一致するユーザーのすべての規則を置き換えます。  
   
- The example creates a <xref:System.Security.AccessControl.RegistrySecurity> object and adds rules that allow and deny various rights for the current user, with different inheritance and propagation flags. The example then creates a new rule that allows the current user only to read the key, and uses the <xref:System.Security.AccessControl.RegistrySecurity.ResetAccessRule%2A> method to remove the all rules for the user and replace them with the new rule.  
+ 例を作成し、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトし、を可能にする別の継承と伝達フラグと、現在のユーザーのさまざまな権限を拒否する規則を追加します。 使用して、キーを読み取る場合にのみ、現在のユーザーを許可する新しい規則を作成し、 <xref:System.Security.AccessControl.RegistrySecurity.ResetAccessRule%2A> メソッドをユーザーのすべてのルールを削除し、新しいルールに置き換えます。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. See the <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> method and the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 参照してください、 <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> メソッドおよび <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> メソッドです。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.ResetAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.ResetAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.ResetAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.ResetAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.ResetAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.ResetAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.ResetAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.ResetAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -807,33 +813,33 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAccessRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.RegistryAccessRule" /> to add. The user and <see cref="T:System.Security.AccessControl.AccessControlType" /> of this rule determine the rules to remove before this rule is added.</param>
-        <summary>Removes all access control rules with the same user and <see cref="T:System.Security.AccessControl.AccessControlType" /> (allow or deny) as the specified rule, and then adds the specified rule.</summary>
+        <param name="rule">追加する <see cref="T:System.Security.AccessControl.RegistryAccessRule" />。 ユーザーと <see cref="T:System.Security.AccessControl.AccessControlType" /> この規則には、この規則を追加する前に削除の規則を決定します。</param>
+        <summary>同じユーザーを持つすべてのアクセス制御規則を削除し、 <see cref="T:System.Security.AccessControl.AccessControlType" /> \(許可または拒否\)、指定されたルールとし、指定されたルールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the specified rule has <xref:System.Security.AccessControl.AccessControlType.Allow>, the effect of this method is to remove all <xref:System.Security.AccessControl.AccessControlType.Allow> rules for the specified user, replacing them with the specified rule. If the specified rule has <xref:System.Security.AccessControl.AccessControlType.Deny>, all <xref:System.Security.AccessControl.AccessControlType.Deny> rules for the specified user are replaced with the specified rule.  
+## 解説  
+ 指定されたルールがある場合 <xref:System.Security.AccessControl.AccessControlType.Allow>, 、このメソッドの効果がすべて削除するには <xref:System.Security.AccessControl.AccessControlType.Allow> を指定されたルールに置き換えること、指定したユーザーの規則。 指定されたルールがある場合 <xref:System.Security.AccessControl.AccessControlType.Deny>, すべて <xref:System.Security.AccessControl.AccessControlType.Deny> 指定されたユーザーのルールは、指定されたルールに置き換えられます。  
   
- If there are no rules whose user and <xref:System.Security.AccessControl.AccessControlType> match the specified rule, `rule` is added.  
+ 規則がないユーザーの場合と <xref:System.Security.AccessControl.AccessControlType> 指定のルールと一致する `rule` が追加されます。  
   
    
   
-## Examples  
- The following code example shows that the <xref:System.Security.AccessControl.RegistrySecurity.SetAccessRule%2A> method removes all rules that match both the user and the <xref:System.Security.AccessControl.AccessControlType> of `rule`, ignoring rights and flags, and replaces them with `rule`.  
+## 例  
+ 次のコード例を示していますが、 <xref:System.Security.AccessControl.RegistrySecurity.SetAccessRule%2A> メソッドは両方のユーザーと一致するすべてのルールを削除し、 <xref:System.Security.AccessControl.AccessControlType> の `rule`, 、権限と、フラグを無視し、それらが置き換えられます `rule`します。  
   
- The example creates a <xref:System.Security.AccessControl.RegistrySecurity> object and adds rules that allow and deny various rights for the current user, with different inheritance and propagation flags. The example then creates a new rule that allows the current user only to read the key, and uses the <xref:System.Security.AccessControl.RegistrySecurity.SetAccessRule%2A> method to remove the two rules that allow access and to replace them with the new rule. The rule that denies access is not affected.  
+ 例を作成し、 <xref:System.Security.AccessControl.RegistrySecurity> オブジェクトし、を可能にする別の継承と伝達フラグと、現在のユーザーのさまざまな権限を拒否する規則を追加します。 使用して、キーを読み取る場合にのみ、現在のユーザーを許可する新しい規則を作成し、 <xref:System.Security.AccessControl.RegistrySecurity.SetAccessRule%2A> アクセスを許可する 2 つのルールを削除して、新しいルールに置き換える方法です。 アクセスを拒否するルールが影響を受けません。  
   
 > [!NOTE]
->  This example does not attach the security object to a <xref:Microsoft.Win32.RegistryKey> object. See the <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> method and the <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> method.  
+>  この例では、セキュリティ オブジェクトにはアタッチされません、 <xref:Microsoft.Win32.RegistryKey> オブジェクトです。 参照してください、 <xref:Microsoft.Win32.RegistryKey.GetAccessControl%2A?displayProperty=fullName> メソッドおよび <xref:Microsoft.Win32.RegistryKey.SetAccessControl%2A?displayProperty=fullName> メソッドです。  
   
- [!code-csharp[System.Security.AccessControl.RegistrySecurity.SetAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.SetAccessRule/CS/source.cs#1)]
- [!code-vb[System.Security.AccessControl.RegistrySecurity.SetAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.SetAccessRule/VB/source.vb#1)]  
+ [!code-csharp[System.Security.AccessControl.RegistrySecurity.SetAccessRule\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.SetAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.RegistrySecurity.SetAccessRule\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.RegistrySecurity.SetAccessRule/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="SetAuditRule">
@@ -861,18 +867,18 @@
         <Parameter Name="rule" Type="System.Security.AccessControl.RegistryAuditRule" />
       </Parameters>
       <Docs>
-        <param name="rule">The <see cref="T:System.Security.AccessControl.RegistryAuditRule" /> to add. The user specified by this rule determines the rules to remove before this rule is added.</param>
-        <summary>Removes all audit rules with the same user as the specified rule, regardless of the <see cref="T:System.Security.AccessControl.AuditFlags" /> value, and then adds the specified rule.</summary>
+        <param name="rule">追加する <see cref="T:System.Security.AccessControl.RegistryAuditRule" />。 このルールで指定されたユーザーは、このルールが追加される前に削除する規則を決定します。</param>
+        <summary>すべてに関係なく、指定されたルールと同じユーザーが規則の監査を削除、 <see cref="T:System.Security.AccessControl.AuditFlags" /> 値に設定して、指定されたルールを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If there are no audit rules whose user matches the specified rule, `rule` is added.  
+## 解説  
+ ユーザーが、指定されたルールに一致する監査規則がない場合 `rule` が追加されます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="rule" /> is <see langword="null" />.</exception>
+          <paramref name="rule" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
   </Members>

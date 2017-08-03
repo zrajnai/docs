@@ -20,44 +20,48 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Specifies the permitted use of isolated storage.</summary>
+    <summary>分離ストレージのアクセス許可の使用を指定します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Isolated storage uses evidence to determine a unique storage area for use by an application or component. The identity of an assembly uniquely determines the root of a virtual file system for use by that assembly. Thus, rather than many applications and components sharing a common resource such as the file system or registry, each has its own file area inherently assigned to it.  
+## 解説  
+ 分離ストレージでは、証拠を使用して、アプリケーションまたはコンポーネントで使用するための一意のストレージ領域を調べます。 アセンブリの id は、そのアセンブリで使用するための仮想ファイル システムのルートを一意に決定します。 このように、多くのアプリケーションとファイル システムまたはレジストリなどの一般的なリソースの共有コンポーネントではなく、独自のファイル領域が本質的に割り当てられた各です。  
   
- Four basic isolation scopes are used when assigning isolated storage:  
+ 次の 4 つの基本的な分離スコープは、分離ストレージを割り当てるときに使用されます。  
   
--   `User` - Code is always scoped according to the current user. The same assembly will receive different stores when being run by different users.  
+-   `User` コードは常に現在のユーザーに従ってスコープ設定されます。 複数のユーザーによって実行されているときに、同じアセンブリは別のストアを受け取ります。  
   
--   `Machine` - Code is always scoped according to the machine. The same assembly will receive the same stores when being run by different users on the same machine.  
+-   `Machine` コードは常に、マシンに従ってスコープ設定されます。 同じコンピューター上の複数のユーザーによって実行中に、同じアセンブリは同じストアを受け取ります。  
   
--   `Assembly` - Code is identified cryptographically by strong name (for example, Microsoft.Office.* or Microsoft.Office.Word), by publisher (based on public key), by URL (for example, http://www.fourthcoffee.com/process/grind.htm), by site, or by zone.  
+-   `Assembly` コードは、サイト、またはゾーンで url \(たとえば、http:\/\/www.fourthcoffee.com\/process\/grind.htm\) \(公開キーに基づく\)、発行元によって、厳密な名前 \(たとえば、Microsoft.Office.\* または Microsoft.Office.Word\) で暗号化に使用する識別します。  
   
--   `Domain` - Code is identified based on evidence associated with the application domain. Web application identity is derived from the site's URL, or by the Web page's URL, site, or zone. Local code identity is based on the application directory path.  
+-   `Domain` コードを識別するには、アプリケーション ドメインに関連付けられた証拠に基づいて決定されます。 サイトの URL または Web ページの URL、サイト、またはゾーンによって、web アプリケーションの id が派生します。 ローカル コード id は、アプリケーションのディレクトリ パスに基づきます。  
   
- For definitions of URL, site, and zone, see <xref:System.Security.Permissions.UrlIdentityPermission>, <xref:System.Security.Permissions.SiteIdentityPermission>, and <xref:System.Security.Permissions.ZoneIdentityPermission>.  
+ URL、サイト、およびゾーンの定義は、次を参照してください。 <xref:System.Security.Permissions.UrlIdentityPermission>, 、<xref:System.Security.Permissions.SiteIdentityPermission>, 、および <xref:System.Security.Permissions.ZoneIdentityPermission>です。  
   
- These identities are grouped together, in which case the identities are applied one after another until the desired isolated storage is created. The valid groupings are User+Assembly and User+Assembly+Domain. This grouping of identities is useful in many different applications.  
+ これらの id はグループ化場合 id は、1 つずつまで適用目的の分離ストレージを作成します。 有効なグループには、ユーザー \+ アセンブリおよびユーザー \+ アセンブリ \+ ドメインです。 このユーザーのグループ化は、さまざまなアプリケーションで便利です。  
   
- If data is stored by domain, user, and assembly, the data is private in that only code in that assembly can access the data. The data store is also isolated by the application in which it runs, so that the assembly does not represent a potential leak by exposing data to other applications.  
+ データがドメイン、ユーザー、およびアセンブリが格納されている場合、データの値はアセンブリがデータにアクセスできる点でコードだけではプライベートです。 データ ストアは、アセンブリでは、その他のアプリケーションにデータを公開することでは、潜在的なリークは表しませんようにが実行される、アプリケーションでも分離されます。  
   
- Isolation by assembly and user could be used for user data that applies across multiple applications; for example, license information, or a user's personal information (name, authentication credentials, and so on) that is independent of an application.  
+ アセンブリとユーザー別の分離は、複数のアプリケーションに適用されるユーザー データの使用可能性があります。たとえば、情報、またはユーザーの個人情報 \(名前や認証資格情報\) は、アプリケーションの別のライセンスを取得します。  
   
- <xref:System.Security.Permissions.IsolatedStorageContainment> exposes flags that determine whether an application is allowed to use isolated storage and, if so, which identity combinations are allowed to use it. It also determines whether an application is allowed to store information in a location that can roam with a user (Windows Roaming User Profiles or Folder Redirection must be configured).  
+ <xref:System.Security.Permissions.IsolatedStorageContainment> アプリケーションが分離ストレージを使用できるかどうかを決定するフラグを公開して、そのため、identity 組み合わせを使用できることです。 また、アプリケーションがユーザー \(Windows 移動ユーザー プロファイルやフォルダ リダイレクトを構成する必要があります\) にローミングできる場所に情報を保存できるかどうかも決定します。  
   
    
   
-## Examples  
- This example shows how to tell the CLR that code in this assembly requires the <xref:System.Security.Permissions.IsolatedStoragePermission> and also demonstrates how to write and read from isolated storage.  
+## 例  
+ この例では、このアセンブリ内のコードが必要であることを CLR に指示、 <xref:System.Security.Permissions.IsolatedStoragePermission> と分離ストレージからの読み取りし、書き込みをする方法を示しています。  
   
- [!code-cpp[IsolatedStoragePermissionAttribute#1](~/samples/snippets/cpp/VS_Snippets_CLR/IsolatedStoragePermissionAttribute/cpp/IsolatedStoragePermissionAttribute.cpp#1)]
- [!code-csharp[IsolatedStoragePermissionAttribute#1](~/samples/snippets/csharp/VS_Snippets_CLR/IsolatedStoragePermissionAttribute/CS/IsolatedStoragePermissionAttribute.cs#1)]
- [!code-vb[IsolatedStoragePermissionAttribute#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IsolatedStoragePermissionAttribute/VB/program.vb#1)]  
+ [!code-cpp[IsolatedStoragePermissionAttribute\#1](~/samples/snippets/cpp/VS_Snippets_CLR/IsolatedStoragePermissionAttribute/cpp/IsolatedStoragePermissionAttribute.cpp#1)]
+ [!code-csharp[IsolatedStoragePermissionAttribute\#1](~/samples/snippets/csharp/VS_Snippets_CLR/IsolatedStoragePermissionAttribute/CS/IsolatedStoragePermissionAttribute.cs#1)]
+ [!code-vb[IsolatedStoragePermissionAttribute\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IsolatedStoragePermissionAttribute/VB/program.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Security.Permissions.IsolatedStoragePermission" />
+    <altmember cref="T:System.Security.Permissions.IsolatedStoragePermissionAttribute" />
+    <altmember cref="T:System.Security.Permissions.IsolatedStorageFilePermission" />
+    <altmember cref="T:System.Security.Permissions.IsolatedStorageFilePermissionAttribute" />
   </Docs>
   <Members>
     <Member MemberName="AdministerIsolatedStorageByUser">
@@ -78,7 +82,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Unlimited administration ability for the user store. Allows browsing and deletion of the entire user store, but not read access other than the user's own domain/assembly identity.</summary>
+        <summary>ユーザー ストアの無制限の管理機能。 参照と、全体のユーザー ストア以外のユーザーのドメインとアセンブリ id の読み取りアクセス以外の削除を許可します。</summary>
       </Docs>
     </Member>
     <Member MemberName="ApplicationIsolationByMachine">
@@ -99,7 +103,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by computer and then by application. This provides a data store for the application that is accessible in any domain context. The per-application data compartment requires additional trust because it potentially provides a "tunnel" between applications that could compromise the data isolation of applications in particular Web sites.</summary>
+        <summary>ストレージは、最初のコンピューターで次のアプリケーションによって分離です。 これは、任意のドメイン コンテキストでアクセス可能なアプリケーションのデータ ストアを提供します。 アプリケーションごとのデータ コンパートメントには、可能性のある特定の Web サイト内のアプリケーションのデータの分離を損なうおそれのあるアプリケーション間での「トンネル」を提供するための追加の信頼が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="ApplicationIsolationByRoamingUser">
@@ -120,7 +124,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by user and then by application evidence. Storage will roam if Windows user data roaming is enabled. This provides a data store for the application that is accessible in any domain context. The per-application data compartment requires additional trust because it potentially provides a "tunnel" between applications that could compromise the data isolation of applications in particular Web sites.</summary>
+        <summary>ストレージは、最初はユーザーによっておよびに分離し、アプリケーションの証拠です。 Windows のユーザー データのローミングが有効になっている場合、記憶域を移動します。 これは、任意のドメイン コンテキストでアクセス可能なアプリケーションのデータ ストアを提供します。 アプリケーションごとのデータ コンパートメントには、可能性のある特定の Web サイト内のアプリケーションのデータの分離を損なうおそれのあるアプリケーション間での「トンネル」を提供するための追加の信頼が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="ApplicationIsolationByUser">
@@ -141,7 +145,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by user and then by application. Storage is also isolated by computer. This provides a data store for the application that is accessible in any domain context. The per-application data compartment requires additional trust because it potentially provides a "tunnel" between applications that could compromise the data isolation of applications in particular Web sites.</summary>
+        <summary>ストレージは、最初はユーザーによって次のアプリケーションによって分離です。 記憶域はコンピューターからも分離されます。 これは、任意のドメイン コンテキストでアクセス可能なアプリケーションのデータ ストアを提供します。 アプリケーションごとのデータ コンパートメントには、可能性のある特定の Web サイト内のアプリケーションのデータの分離を損なうおそれのあるアプリケーション間での「トンネル」を提供するための追加の信頼が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="AssemblyIsolationByMachine">
@@ -162,7 +166,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by computer and then by code assembly. This provides a data store for the assembly that is accessible in any domain context. The per-assembly data compartment requires additional trust because it potentially provides a "tunnel" between applications that could compromise the data isolation of applications in particular Web sites.</summary>
+        <summary>記憶域は、まずコンピューターられ、続いてコード アセンブリは分離されます。 これは、任意のドメイン コンテキストでアクセスできるアセンブリのデータ ストアを提供します。 アセンブリごとのデータ コンパートメントには、可能性のある特定の Web サイト内のアプリケーションのデータの分離を損なうおそれのあるアプリケーション間での「トンネル」を提供するための追加の信頼が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="AssemblyIsolationByRoamingUser">
@@ -183,7 +187,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by user and then by assembly evidence. Storage will roam if Windows user data roaming is enabled. This provides a data store for the assembly that is accessible in any domain context. The per-assembly data compartment requires additional trust because it potentially provides a "tunnel" between applications that could compromise the data isolation of applications in particular Web sites.</summary>
+        <summary>ストレージは、最初はユーザーによっておよびに分離し、アセンブリの証拠です。 Windows のユーザー データのローミングが有効になっている場合、記憶域を移動します。 これは、任意のドメイン コンテキストでアクセスできるアセンブリのデータ ストアを提供します。 アセンブリごとのデータ コンパートメントには、可能性のある特定の Web サイト内のアプリケーションのデータの分離を損なうおそれのあるアプリケーション間での「トンネル」を提供するための追加の信頼が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="AssemblyIsolationByUser">
@@ -204,7 +208,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by user and then by code assembly. Storage is also isolated by computer. This provides a data store for the assembly that is accessible in any domain context. The per-assembly data compartment requires additional trust because it potentially provides a "tunnel" between applications that could compromise the data isolation of applications in particular Web sites.</summary>
+        <summary>ストレージは、最初はユーザーによって次のコードのアセンブリによって分離です。 記憶域はコンピューターからも分離されます。 これは、任意のドメイン コンテキストでアクセスできるアセンブリのデータ ストアを提供します。 アセンブリごとのデータ コンパートメントには、可能性のある特定の Web サイト内のアプリケーションのデータの分離を損なうおそれのあるアプリケーション間での「トンネル」を提供するための追加の信頼が必要です。</summary>
       </Docs>
     </Member>
     <Member MemberName="DomainIsolationByMachine">
@@ -225,7 +229,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by computer and then by domain and assembly. Data can only be accessed within the context of the same application and only when run on the same computer. This is helpful when a third-party assembly wants to keep a private data store.</summary>
+        <summary>ストレージは、最初のコンピューターで次にドメインおよびアセンブリによる分離です。 データは、同じアプリケーションのと同じコンピューター上の実行時のみのコンテキスト内でのみアクセスできます。 これは、機能は、サードパーティ製のアセンブリがプライベート データ ストアを保持するときに便利です。</summary>
       </Docs>
     </Member>
     <Member MemberName="DomainIsolationByRoamingUser">
@@ -246,7 +250,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by user and then by domain and assembly. Storage will roam if Windows user data roaming is enabled. Data can only be accessed within the context of the same application and only when run by the same user. This is helpful when a third-party assembly wants to keep a private data store.</summary>
+        <summary>ストレージは、最初はユーザーによって次のドメインおよびアセンブリによる分離です。 Windows のユーザー データのローミングが有効になっている場合、記憶域を移動します。 データは、同じアプリケーションのと同じユーザーによって実行時のみのコンテキスト内でのみアクセスできます。 これは、機能は、サードパーティ製のアセンブリがプライベート データ ストアを保持するときに便利です。</summary>
       </Docs>
     </Member>
     <Member MemberName="DomainIsolationByUser">
@@ -267,7 +271,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Storage is isolated first by user and then by domain and assembly. Storage is also isolated by computer. Data can only be accessed within the context of the same application and only when run by the same user. This is helpful when a third-party assembly wants to keep a private data store.</summary>
+        <summary>ストレージは、最初はユーザーによって次のドメインおよびアセンブリによる分離です。 記憶域はコンピューターからも分離されます。 データは、同じアプリケーションのと同じユーザーによって実行時のみのコンテキスト内でのみアクセスできます。 これは、機能は、サードパーティ製のアセンブリがプライベート データ ストアを保持するときに便利です。</summary>
       </Docs>
     </Member>
     <Member MemberName="None">
@@ -288,7 +292,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Use of isolated storage is not allowed.</summary>
+        <summary>分離ストレージの使用は許可されません。</summary>
       </Docs>
     </Member>
     <Member MemberName="UnrestrictedIsolatedStorage">
@@ -309,7 +313,7 @@
         <ReturnType>System.Security.Permissions.IsolatedStorageContainment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Use of isolated storage is allowed without restriction. Code has full access to any part of the user store, regardless of the identity of the domain or assembly. This use of isolated storage includes the ability to enumerate the contents of the isolated storage data store.</summary>
+        <summary>分離ストレージの使用は制限なしで許可します。 コードでは、ドメインまたはアセンブリの id に関係なく、ユーザー ストアの一部へのフル アクセスを持っています。 この分離ストレージの使用には、分離ストレージのデータ ストアの内容を列挙する機能が含まれています。</summary>
       </Docs>
     </Member>
   </Members>

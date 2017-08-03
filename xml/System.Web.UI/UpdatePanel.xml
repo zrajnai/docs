@@ -32,75 +32,75 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Enables sections of a page to be partially rendered without a postback.</summary>
+    <summary>ポストバックなしでページのセクションを部分的にレンダリングできるようにします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In this topic:  
+## 解説  
+ このトピックの内容  
   
--   [Introduction](#introduction)  
+-   [はじめに](#introduction)  
   
--   [Refreshing UpdatePanel Content](#refreshing_updatepanel_content)  
+-   [UpdatePanel のコンテンツを更新します。](#refreshing_updatepanel_content)  
   
--   [UpdatePanel Usage](#updatepanel_usage)  
+-   [UpdatePanel の使用状況](#updatepanel_usage)  
   
--   [Applying Styles](#applying_styles)  
+-   [スタイルを適用します。](#applying_styles)  
   
--   [Declarative Syntax](#declarative_syntax)  
+-   [宣言構文](#declarative_syntax)  
   
 <a name="introduction"></a>   
-## Introduction  
- <xref:System.Web.UI.UpdatePanel> controls are a central part of AJAX functionality in ASP.NET. They are used with the <xref:System.Web.UI.ScriptManager> control to enable partial-page rendering. Partial-page rendering reduces the need for synchronous postbacks and complete page updates when only part of the page has to be updated. Partial-page rendering improves the user experience because it reduces the screen flicker that occurs during a full-page postback and improves Web page interactivity.  
+## はじめに  
+ <xref:System.Web.UI.UpdatePanel> コントロールは、asp.net AJAX 機能の中核です。 使用される、 <xref:System.Web.UI.ScriptManager> 部分ページ レンダリングを有効にするコントロール。 部分ページ レンダリングは、ページの一部のみが更新する必要がある場合、同期ポストバックとページ全体の更新の必要性を削減します。 部分ページ レンダリングでは、ページ全体のポストバック中に発生し、Web ページの対話性が向上する画面のちらつきが減るため、ユーザー エクスペリエンスが向上します。  
   
 <a name="refreshing_updatepanel_content"></a>   
-## Refreshing UpdatePanel Content  
- When partial-page rendering is enabled, a control can perform a postback that updates the whole page or an asynchronous postback that updates the content of one or more <xref:System.Web.UI.UpdatePanel> controls. Whether a control causes an asynchronous postback and updates an <xref:System.Web.UI.UpdatePanel> control depends on the following:  
+## UpdatePanel のコンテンツを更新します。  
+ コントロールがページ全体を更新するポストバックまたは 1 つまたは複数のコンテンツを更新する非同期ポストバックを実行できます部分ページ レンダリングを有効にすると、 <xref:System.Web.UI.UpdatePanel> コントロールです。 コントロールが非同期ポストバックと更新プログラムがどのように発生するかどうか、 <xref:System.Web.UI.UpdatePanel> 制御は、次のように依存します。  
   
--   If the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property of the <xref:System.Web.UI.UpdatePanel> control is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Always>, the <xref:System.Web.UI.UpdatePanel> control's content is updated on every postback that originates from the page. This includes asynchronous postbacks from controls that are inside other <xref:System.Web.UI.UpdatePanel> controls and postbacks from controls that are not inside <xref:System.Web.UI.UpdatePanel> controls.  
+-   場合、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> のプロパティ、 <xref:System.Web.UI.UpdatePanel> にコントロールが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Always>, 、 <xref:System.Web.UI.UpdatePanel> ページから送られてくるすべてのポストバック時にコントロールのコンテンツを更新します。 これにより、その他の内部にあるコントロールからの非同期ポストバックが含まれます。 <xref:System.Web.UI.UpdatePanel> コントロールと内部ではないコントロールからのポストバック <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
--   If the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>, the <xref:System.Web.UI.UpdatePanel> control's content is updated in the following circumstances:  
+-   場合、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>, 、 <xref:System.Web.UI.UpdatePanel> 、次の状況でコントロールのコンテンツを更新します。  
   
-    -   When you call the <xref:System.Web.UI.UpdatePanel.Update%2A> method of the <xref:System.Web.UI.UpdatePanel> control explicitly.  
+    -   呼び出すと、 <xref:System.Web.UI.UpdatePanel.Update%2A> のメソッド、 <xref:System.Web.UI.UpdatePanel> 明示的に制御します。  
   
-    -   When the <xref:System.Web.UI.UpdatePanel> control is nested inside another <xref:System.Web.UI.UpdatePanel> control, and the parent panel is updated.  
+    -   ときに、 <xref:System.Web.UI.UpdatePanel> コントロールが別の内部に入れ子になった <xref:System.Web.UI.UpdatePanel> 制御、および親パネルを更新します。  
   
-    -   When a postback is caused by a control that is defined as a trigger by using the `Triggers` property of the <xref:System.Web.UI.UpdatePanel> control. In this scenario, the control explicitly triggers an update of the panel content. The control can be either inside or outside the <xref:System.Web.UI.UpdatePanel> control that the trigger is associated with.  
+    -   使用して、トリガーとして定義されているコントロールによってポストバックを発生する場合、 `Triggers` のプロパティ、 <xref:System.Web.UI.UpdatePanel> コントロールです。 このシナリオでは、コントロールは、パネル コンテンツの更新を明示的にトリガーされます。 コントロールが内部または外部のいずれかにすることができます、 <xref:System.Web.UI.UpdatePanel> トリガーに関連付けられているコントロール。  
   
-    -   When the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property is set to `true` and a child control of the <xref:System.Web.UI.UpdatePanel> control causes a postback. Child controls of nested <xref:System.Web.UI.UpdatePanel> controls do not cause an update to the outer <xref:System.Web.UI.UpdatePanel> control unless they are explicitly defined as triggers.  
+    -   ときに、 <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> プロパティに設定されて `true` と子コントロールの <xref:System.Web.UI.UpdatePanel> コントロールがポストバックが発生します。 子コントロールが入れ子になった <xref:System.Web.UI.UpdatePanel> コントロールでは、外側の更新が発生しない <xref:System.Web.UI.UpdatePanel> トリガーとして明示的に定義されていない限りを制御します。  
   
- The combination of setting the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property to `false` and the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property to <xref:System.Web.UI.UpdatePanelUpdateMode.Always> is not allowed and will throw an exception.  
+ 設定の組み合わせ、 <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> プロパティを `false` と <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> プロパティを <xref:System.Web.UI.UpdatePanelUpdateMode.Always> は許可されず、例外がスローされます。  
   
- When the <xref:System.Web.UI.UpdatePanel> control performs an asynchronous post, it adds a custom HTTP header. Some proxies remove this custom HTTP header. If this occurs, the server handles the request as a regular postback, which causes a client error. To resolve this issue, insert a custom form field when you perform asynchronous posts. Then check the header or the custom form field in server code.  
+ ときに、 <xref:System.Web.UI.UpdatePanel> コントロールが非同期 post を実行するカスタム HTTP ヘッダーを追加します。 一部のプロキシでは、このカスタム HTTP ヘッダーを削除します。 このような場合、サーバーは、クライアントのエラーと、通常のポストバックとして要求を処理します。 この問題を解決するには、非同期の投稿を実行するときに、カスタム フォーム フィールドを挿入します。 ヘッダーまたはサーバー コードでカスタム フォームのフィールドを確認します。  
   
 <a name="updatepanel_usage"></a>   
-## UpdatePanel Usage  
- You can use multiple <xref:System.Web.UI.UpdatePanel> controls to update different page regions independently. When the page that contains one or more <xref:System.Web.UI.UpdatePanel> controls is first rendered, all the content of all <xref:System.Web.UI.UpdatePanel> controls are rendered and sent to the browser. On subsequent asynchronous postbacks, the content of each <xref:System.Web.UI.UpdatePanel> control might not be updated depending on the panel settings and on client or server logic for individual panels.  
+## UpdatePanel の使用状況  
+ 複数回使用することができます <xref:System.Web.UI.UpdatePanel> 別に更新するコントロール ページ別に領域されていません。 時を 1 つまたは複数を含むページ <xref:System.Web.UI.UpdatePanel> コントロールが初めて表示された、すべての内容をすべて <xref:System.Web.UI.UpdatePanel> コントロールが描画され、ブラウザーに送信します。 以降の非同期ポストバック、それぞれのコンテンツで <xref:System.Web.UI.UpdatePanel> パネルの設定や個別のパネルのクライアントまたはサーバーのロジックに基づいて、コントロールを更新しない場合があります。  
   
- You can also use <xref:System.Web.UI.UpdatePanel> controls in the following scenarios:  
+ 使用することも <xref:System.Web.UI.UpdatePanel> 次のシナリオで制御します。  
   
--   In user controls.  
+-   でユーザーを制御します。  
   
--   On master and content pages.  
+-   マスター ページやコンテンツ ページです。  
   
--   Nested inside other <xref:System.Web.UI.UpdatePanel> controls.  
+-   その他の内部に入れ子になった <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
--   Inside templated controls such as the <xref:System.Web.UI.WebControls.GridView> or <xref:System.Web.UI.WebControls.Repeater> controls.  
+-   テンプレートの内側などのコントロール、 <xref:System.Web.UI.WebControls.GridView> または <xref:System.Web.UI.WebControls.Repeater> コントロールです。  
   
- <xref:System.Web.UI.UpdatePanel> controls can be added declaratively or programmatically.  
+ <xref:System.Web.UI.UpdatePanel> 宣言またはプログラムによって、コントロールを追加できます。  
   
- You can add an <xref:System.Web.UI.UpdatePanel> control programmatically, but you cannot add triggers programmatically. To create trigger-like behavior, you can register a control on the page as an asynchronous postback control. You do this by calling the <xref:System.Web.UI.ScriptManager.RegisterAsyncPostBackControl%2A> method of the <xref:System.Web.UI.ScriptManager> control. You can then create an event handler that runs in response to the asynchronous postback, and in the handler, call the <xref:System.Web.UI.UpdatePanel.Update%2A> method of the <xref:System.Web.UI.UpdatePanel> control.  
+ 追加することができます、 <xref:System.Web.UI.UpdatePanel> プログラムを使用して、制御しますが、プログラムでトリガーを追加することはできません。 トリガーのような動作を作成するには、非同期ポストバック コントロールとして、ページ上のコントロールを登録できます。 呼び出すことによって、これを行う、 <xref:System.Web.UI.ScriptManager.RegisterAsyncPostBackControl%2A> のメソッド、 <xref:System.Web.UI.ScriptManager> コントロールです。 非同期ポストバックへの応答と、ハンドラーの呼び出しで実行するイベント ハンドラーを作成し、 <xref:System.Web.UI.UpdatePanel.Update%2A> のメソッド、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
 <a name="applying_styles"></a>   
-## Applying Styles  
- The <xref:System.Web.UI.UpdatePanel> control accepts expando attributes. This lets you set a CSS class for the HTMLelements that the controls render. For example, you might create the markup shown in the following example:  
+## スタイルを適用します。  
+ <xref:System.Web.UI.UpdatePanel> コントロール expando 属性に使用できます。 これにより、HTML の CSS クラスを設定できますコントロールによってレンダリングされる要素。 たとえば、次の例に示すようにマークアップを作成する場合があります。  
   
 ```  
 <asp:UpdatePanel runat="server" class="myStyle">  
 </asp:UpdatePanel>   
 ```  
   
- The markup in the previous example renders HTML similar to the following when the page runs:  
+ 前の例では、マークアップ HTML を表示、次のようなページの実行時。  
   
 ```  
 <div id="ctl00_MainContent_UpdatePanel1" class="MyStyle">  
@@ -108,7 +108,7 @@
 ```  
   
 <a name="declarative_syntax"></a>   
-## Declarative Syntax  
+## 宣言構文  
   
 ```  
 <asp:UpdatePanel  
@@ -145,34 +145,35 @@
   
    
   
-## Examples  
- The following examples show different uses of the <xref:System.Web.UI.UpdatePanel> control.  
+## 例  
+ 次の例では、さまざまな用途、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
- **Controls Inside an UpdatePanel Control**  
+ **UpdatePanel コントロール内のコントロール**  
   
- The following example shows how to put controls inside an <xref:System.Web.UI.UpdatePanel> control to reduce screen flicker when you post to the server. In this example, a <xref:System.Web.UI.WebControls.Calendar> and a <xref:System.Web.UI.WebControls.DropDownList> control are inside an <xref:System.Web.UI.UpdatePanel> control. By default, the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is <xref:System.Web.UI.UpdatePanelUpdateMode.Always> and the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property is `true`. Therefore, child controls of the panel cause an asynchronous postback.  
+ 次の例では、内部のコントロールを配置する方法、 <xref:System.Web.UI.UpdatePanel> サーバーにポストする場合は、画面のちらつきを軽減するコントロール。 この例では、 <xref:System.Web.UI.WebControls.Calendar> と <xref:System.Web.UI.WebControls.DropDownList> コントロール内にある、 <xref:System.Web.UI.UpdatePanel> コントロールです。 既定では、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> プロパティは <xref:System.Web.UI.UpdatePanelUpdateMode.Always> と <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> プロパティは `true`です。 そのため、コントロール パネルの子コントロールには、非同期ポストバックが発生します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/CS/UpdatePanelExample1CS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/VB/UpdatePanelExample1VB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/CS/UpdatePanelExample1CS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/VB/UpdatePanelExample1VB.aspx#1)]  
   
- **Master/Detail Scenario with UpdatePanel Controls**  
+ **UpdatePanel コントロールのマスター\/詳細シナリオ**  
   
- In the following example, an <xref:System.Web.UI.UpdatePanel> control is used in a master/detail scenario that shows orders and order details from the Northwind database. One <xref:System.Web.UI.UpdatePanel> control contains the <xref:System.Web.UI.WebControls.GridView> control that displays a list of orders. A second <xref:System.Web.UI.UpdatePanel> control contains a <xref:System.Web.UI.WebControls.DetailsView> control that displays the details of one order. When you select an order from the first table, details for that order are displayed in the second table. The second table is updated asynchronously based on the selection in the first table. The sorting and paging operations in the orders summary table also cause partial updates.  
+ 次の例では、 <xref:System.Web.UI.UpdatePanel> 注文および Northwind データベースからの注文の詳細を示すマスター\/詳細シナリオでコントロールを使用します。 1 つ <xref:System.Web.UI.UpdatePanel> コントロールに含まれる、 <xref:System.Web.UI.WebControls.GridView> 注文の一覧を表示するコントロール。 1 秒あたり <xref:System.Web.UI.UpdatePanel> コントロールに含まれる、 <xref:System.Web.UI.WebControls.DetailsView> 1 つの注文の詳細を表示するコントロール。 最初のテーブルから注文を選択するときに、2 番目のテーブルに注文の詳細が表示されます。 2 番目の表は、最初のテーブルで選択内容に基づいて、非同期的に更新されます。 注文の概要テーブルで並べ替えおよびページング操作では、部分的な更新プログラムもあります。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel#2](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/CS/UpdatePanelExample2CS.aspx#2)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel#2](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/VB/UpdatePanelExample2VB.aspx#2)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel\#2](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/CS/UpdatePanelExample2CS.aspx#2)]
+ [!code-vb[System.Web.UI.UpdatePanel\#2](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/VB/UpdatePanelExample2VB.aspx#2)]  
   
- If you put a <xref:System.Web.UI.WebControls.GridView> control inside an <xref:System.Web.UI.UpdatePanel> control, setting the <xref:System.Web.UI.WebControls.GridView> control's <xref:System.Web.UI.WebControls.GridView.EnableSortingAndPagingCallbacks%2A> property to `true` is not supported. However, because the <xref:System.Web.UI.UpdatePanel> control supports asynchronous postbacks, any postbacks that change the <xref:System.Web.UI.WebControls.GridView> control inside an <xref:System.Web.UI.UpdatePanel> control cause the same behavior as sorting and paging callbacks.  
+ 配置した場合、 <xref:System.Web.UI.WebControls.GridView> 内の制御、 <xref:System.Web.UI.UpdatePanel> 制御の設定、 <xref:System.Web.UI.WebControls.GridView> コントロールの <xref:System.Web.UI.WebControls.GridView.EnableSortingAndPagingCallbacks%2A> プロパティを `true` はサポートされていません。 ただし、ため、 <xref:System.Web.UI.UpdatePanel> コントロールを変更するすべてのポストバック、非同期ポストバックをサポートしている、 <xref:System.Web.UI.WebControls.GridView> 内部制御、 <xref:System.Web.UI.UpdatePanel> コントロール並べ替えとページングのコールバックと同じ動作が発生します。  
   
- **Using an UpdatePanel Control in a Template**  
+ **テンプレートで、UpdatePanel コントロールを使用します。**  
   
- In the following example, an <xref:System.Web.UI.UpdatePanel> control is used in the item template of a <xref:System.Web.UI.WebControls.GridView> control. <xref:System.Web.UI.UpdatePanel> controls in each data row are generated automatically. Each row's <xref:System.Web.UI.UpdatePanel> control contains a <xref:System.Web.UI.WebControls.Label> control to display the quantity of the item in that row and a <xref:System.Web.UI.WebControls.Button> control to decrease and increase the quantity.  
+ 次の例では、 <xref:System.Web.UI.UpdatePanel> の項目テンプレートにコントロールを使用、 <xref:System.Web.UI.WebControls.GridView> コントロールです。<xref:System.Web.UI.UpdatePanel> 各データ行にコントロールが自動的に生成されます。 すべての行の <xref:System.Web.UI.UpdatePanel> コントロールに含まれる、 <xref:System.Web.UI.WebControls.Label> その行の品目の数量を表示するコントロールと <xref:System.Web.UI.WebControls.Button> 減少し、数量を増加させるコントロールです。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel#3](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/CS/UpdatePanelExample3CS.aspx#3)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel#3](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/VB/UpdatePanelExample3VB.aspx#3)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel\#3](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/CS/UpdatePanelExample3CS.aspx#3)]
+ [!code-vb[System.Web.UI.UpdatePanel\#3](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel/VB/UpdatePanelExample3VB.aspx#3)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Web.UI.ScriptManager" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -186,23 +187,25 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.UpdatePanel" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.UpdatePanel" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this constructor to initialize a new instance of the <xref:System.Web.UI.UpdatePanel> class. To dynamically add an <xref:System.Web.UI.UpdatePanel> control to a page, create a new <xref:System.Web.UI.UpdatePanel> instance and then add child controls to the control object that is exposed by the instance's <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property.  
+## 解説  
+ 新しいインスタンスを初期化するためにこのコンス トラクターを使用して、 <xref:System.Web.UI.UpdatePanel> クラスです。 動的に追加する、 <xref:System.Web.UI.UpdatePanel> コントロールをページ、\[新しい <xref:System.Web.UI.UpdatePanel> をインスタンス化し、インスタンスによって公開されるコントロール オブジェクトに子コントロールを追加 <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> プロパティです。  
   
    
   
-## Examples  
- The following example shows how to dynamically create an <xref:System.Web.UI.UpdatePanel> control and add it to a page. When you click the button inside the <xref:System.Web.UI.UpdatePanel> control, the message is refreshed with the date and time. Child controls are added by using the <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property.  
+## 例  
+ 次の例では、動的に作成する方法、 <xref:System.Web.UI.UpdatePanel> を制御し、ページに追加します。 内のボタンをクリックすると、 <xref:System.Web.UI.UpdatePanel> コントロール メッセージは、日付と時刻に更新します。 子コントロールを使用して、追加、 <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> プロパティです。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel.Constructor#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/CS/UpdatePanelConstructorCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel.Constructor#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/VB/UpdatePanelConstructorVB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel.Constructor\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/CS/UpdatePanelConstructorCS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel.Constructor\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/VB/UpdatePanelConstructorVB.aspx#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.UpdatePanel.UpdateMode" />
       </Docs>
     </Member>
     <Member MemberName="Attributes">
@@ -229,14 +232,17 @@
         <ReturnType>System.Web.UI.AttributeCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the cascading style sheet (CSS) attributes collection of the <see cref="T:System.Web.UI.UpdatePanel" /> control.</summary>
-        <value>The names of the CSS style rules in the attributes collection.</value>
+        <summary>カスケード スタイル シート \(CSS\) 属性のコレクションを取得、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</summary>
+        <value>属性コレクションにスタイル ルールを CSS の名前。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.Attributes%2A> property contains a collection of CSS style attributes that can be used in the enclosing `div` element of the <xref:System.Web.UI.UpdatePanel> control.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.Attributes%2A> プロパティには、囲んでいるで使用できる CSS スタイル属性のコレクションが含まれています。 `div` の要素、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -262,22 +268,24 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether postbacks from immediate child controls of an <see cref="T:System.Web.UI.UpdatePanel" /> control update the panel's content.</summary>
+        <summary>取得または設定のすぐ下の子からのポストバックを制御するかどうかを示す値、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロール パネルのコンテンツを更新します。</summary>
         <value>
-          <see langword="true" /> if postbacks from immediate child controls of the <see cref="T:System.Web.UI.UpdatePanel" /> control update the panel's content; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+          <see langword="true" /> 直接の子からのポストバック コントロールのかどうか、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロール更新パネルのコンテンツ以外の場合、 <see langword="false" />です。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Set the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property to `true` if you want postbacks from immediate child controls of the <xref:System.Web.UI.UpdatePanel> control to cause an update of the panel's content. Child controls of nested <xref:System.Web.UI.UpdatePanel> controls will not cause an update of the parent <xref:System.Web.UI.UpdatePanel> control's content unless you call the <xref:System.Web.UI.UpdatePanel.Update%2A> method explicitly or you define the child controls as triggers.  
+## 解説  
+ 設定、 <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> プロパティを `true` の直接の子コントロールからのポストバックの場合、 <xref:System.Web.UI.UpdatePanel> コントロール パネルのコンテンツの更新が発生します。 子コントロールが入れ子になった <xref:System.Web.UI.UpdatePanel> コントロールには、親の更新は起きません <xref:System.Web.UI.UpdatePanel> を呼び出さない限り、コントロールのコンテンツ、 <xref:System.Web.UI.UpdatePanel.Update%2A> メソッドに明示的に子コントロールをトリガーとして定義します。  
   
 > [!NOTE]
->  When the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Always> and the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property is set to `false`, an <xref:System.InvalidOperationException> exception is thrown during the <xref:System.Web.UI.UpdatePanel.OnPreRender%2A> method. This combination of properties is not allowed for the <xref:System.Web.UI.UpdatePanel> control.  
+>  ときに、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Always> と <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> にプロパティが設定されている `false`, 、 <xref:System.InvalidOperationException> 中に例外をスロー、 <xref:System.Web.UI.UpdatePanel.OnPreRender%2A> メソッドです。 このプロパティの組み合わせは許可されていません、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
- A scenario where you might set <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> to `false` is when you have two <xref:System.Web.UI.UpdatePanel> controls and you want a postback from the first panel to update the content of the second panel but not update its own content. For example, the first panel might be a list of products to buy and the second panel might be a shopping cart.  
+ 設定することがありますシナリオ <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> に `false` は 2 つある場合 <xref:System.Web.UI.UpdatePanel> コントロールし、2 番目のパネルのコンテンツを更新が、独自のコンテンツは更新する最初のパネルからポストバックします。 たとえば、最初のパネルを購入する製品の一覧である可能性があり、2 番目のパネルがショッピング カートにあります。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.UpdatePanel.UpdateMode" />
+        <altmember cref="M:System.Web.UI.UpdatePanel.OnPreRender(System.EventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="ContentTemplate">
@@ -304,21 +312,26 @@
         <ReturnType>System.Web.UI.ITemplate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the template that defines the content of the <see cref="T:System.Web.UI.UpdatePanel" /> control.</summary>
-        <value>An <see cref="T:System.Web.UI.ITemplate" /> instance that defines the content of the <see cref="T:System.Web.UI.UpdatePanel" /> control. The default is <see langword="null" />.</value>
+        <summary>取得または設定の内容を定義するテンプレート、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</summary>
+        <value>
+          <see cref="T:System.Web.UI.ITemplate" /> の内容を定義するインスタンス、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。 既定値は、<see langword="null" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> property contains the content that appears inside an <xref:System.Web.UI.UpdatePanel> control when it is rendered. You can create the template's content declaratively or programmatically. The content template of an <xref:System.Web.UI.UpdatePanel> control is a single-instance template. Therefore, the properties of the controls it contains can be accessed directly on the page without using the <xref:System.Web.UI.Page.FindControl%2A> method. For more information, see the <xref:System.Web.UI.TemplateInstanceAttribute> class overview.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> プロパティが内部に表示されるコンテンツを含む、 <xref:System.Web.UI.UpdatePanel> が表示された場合を制御します。 宣言またはプログラムによっては、テンプレートの内容を作成できます。 コンテンツ テンプレート、 <xref:System.Web.UI.UpdatePanel> コントロールは、単一インスタンス テンプレートです。 そのためが含まれているコントロールのプロパティでアクセスできる直接ページを使用せず、 <xref:System.Web.UI.Page.FindControl%2A> メソッドです。 詳細については、次を参照してください。、 <xref:System.Web.UI.TemplateInstanceAttribute> クラスの概要です。  
   
- To add items to the <xref:System.Web.UI.UpdatePanel> control declaratively, add an `<ContentTemplate>` element between the opening and closing tags of the <xref:System.Web.UI.UpdatePanel> control. Inside the `<ContentTemplate>` element tags, declare other controls and HTML elements.  
+ 項目を追加する、 <xref:System.Web.UI.UpdatePanel> 宣言的にコントロールを追加、 `<ContentTemplate>` 要素開始タグと終了タグの間、 <xref:System.Web.UI.UpdatePanel> コントロールです。 内部、 `<ContentTemplate>` 要素タグは、他のコントロールや HTML 要素を宣言します。  
   
- To add items to the <xref:System.Web.UI.UpdatePanel> control dynamically, use the <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property, which enables you to add child controls without having to create a custom template that implements the <xref:System.Web.UI.ITemplate> interface.  
+ 項目を追加する、 <xref:System.Web.UI.UpdatePanel> 動的に制御を使用して、 <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> プロパティを実装するカスタム テンプレートを作成することがなく、子コントロールを追加することにより、 <xref:System.Web.UI.ITemplate> インターフェイスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Web.UI.UpdatePanel.ContentTemplate" /> property of the <see cref="T:System.Web.UI.UpdatePanel" /> control is set after an instance of the template is created or after the content template container is created.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Web.UI.UpdatePanel.ContentTemplate" /> のプロパティ、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールが、テンプレートのインスタンスを作成した後、またはコンテンツ テンプレート コンテナーが作成された後に設定されています。</exception>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" />
+        <altmember cref="T:System.Web.UI.TemplateInstanceAttribute" />
+        <altmember cref="T:System.Web.UI.ITemplate" />
       </Docs>
     </Member>
     <Member MemberName="ContentTemplateContainer">
@@ -339,24 +352,25 @@
         <ReturnType>System.Web.UI.Control</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a control object to which you can programmatically add child controls.</summary>
-        <value>A <see cref="T:System.Web.UI.Control" /> object that defines the content of the <see cref="T:System.Web.UI.UpdatePanel" /> control.</value>
+        <summary>プログラムで子コントロールを追加することができますコントロール オブジェクトを取得します。</summary>
+        <value>A <see cref="T:System.Web.UI.Control" /> の内容を定義するオブジェクト、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property enables you to programmatically add child controls to the <xref:System.Web.UI.UpdatePanel> control without having to define a custom template that inherits from the <xref:System.Web.UI.ITemplate> interface. If you are adding content to the <xref:System.Web.UI.UpdatePanel> control declaratively or through a designer, you should add content to the <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> property by using a `<ContentTemplate>` element.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> プロパティでは、プログラムで子コントロールを追加することができます、 <xref:System.Web.UI.UpdatePanel> コントロールから継承するカスタム テンプレートを定義することがなく、 <xref:System.Web.UI.ITemplate> インターフェイスです。 コンテンツを追加する場合、 <xref:System.Web.UI.UpdatePanel> 宣言によって制御や、デザイナーを使用するコンテンツを追加する必要があります、 <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> プロパティを使用して、 `<ContentTemplate>` 要素。  
   
    
   
-## Examples  
- The following example shows how to programmatically specify the <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property of an <xref:System.Web.UI.UpdatePanel> control. The <xref:System.Web.UI.WebControls.Label.Text%2A> property of a <xref:System.Web.UI.WebControls.Label> control is set when `Button1` is clicked.  
+## 例  
+ 次の例では、プログラムで指定する方法、 <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> のプロパティ、 <xref:System.Web.UI.UpdatePanel> コントロールです。<xref:System.Web.UI.WebControls.Label.Text%2A> のプロパティ、 <xref:System.Web.UI.WebControls.Label> 場合、コントロールが設定 `Button1` をクリックします。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel.Constructor#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/CS/UpdatePanelConstructorCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel.Constructor#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/VB/UpdatePanelConstructorVB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel.Constructor\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/CS/UpdatePanelConstructorCS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel.Constructor\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.Constructor/VB/UpdatePanelConstructorVB.aspx#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplate" />
       </Docs>
     </Member>
     <Member MemberName="Controls">
@@ -372,17 +386,19 @@
         <ReturnType>System.Web.UI.ControlCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the <see cref="T:System.Web.UI.ControlCollection" /> object that contains the child controls for the <see cref="T:System.Web.UI.UpdatePanel" /> control.</summary>
-        <value>The collection of child controls for the <see cref="T:System.Web.UI.UpdatePanel" /> control.</value>
+        <summary>取得、 <see cref="T:System.Web.UI.ControlCollection" /> の子を含むオブジェクトを制御、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</summary>
+        <value>子コントロールのコレクション、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.Controls%2A> property is overridden from the base <xref:System.Web.UI.Control> class and sealed to prevent additional derivation. To add controls to the <xref:System.Web.UI.UpdatePanel> control declaratively, create a `<ContentTemplate>` element inside the <xref:System.Web.UI.UpdatePanel> control markup. To add controls to the <xref:System.Web.UI.UpdatePanel> control programmatically, use the <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.Controls%2A> ベースからプロパティをオーバーライド <xref:System.Web.UI.Control> クラスし、その他の派生が防止に封印します。 コントロールを追加する、 <xref:System.Web.UI.UpdatePanel> 宣言によって制御は、作成、 `<ContentTemplate>` 内の要素、 <xref:System.Web.UI.UpdatePanel> コントロールのマークアップ。 コントロールを追加する、 <xref:System.Web.UI.UpdatePanel> をプログラムで制御を使用して、 <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> プロパティです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="M:System.Web.UI.ControlCollection.Add(System.Web.UI.Control)" />, <see cref="M:System.Web.UI.ControlCollection.AddAt(System.Int32,System.Web.UI.Control)" />, <see cref="M:System.Web.UI.ControlCollection.Clear" />, <see cref="M:System.Web.UI.ControlCollection.Remove(System.Web.UI.Control)" />, or <see cref="M:System.Web.UI.ControlCollection.RemoveAt(System.Int32)" /> method of the <see cref="T:System.Web.UI.ControlCollection" /> class has been called. To change the content of the <see cref="T:System.Web.UI.UpdatePanel" /> control, modify the child controls of the <see cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" /> property.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="M:System.Web.UI.ControlCollection.Add(System.Web.UI.Control)" />, 、<see cref="M:System.Web.UI.ControlCollection.AddAt(System.Int32,System.Web.UI.Control)" />, 、<see cref="M:System.Web.UI.ControlCollection.Clear" />, 、<see cref="M:System.Web.UI.ControlCollection.Remove(System.Web.UI.Control)" />, 、または <see cref="M:System.Web.UI.ControlCollection.RemoveAt(System.Int32)" /> のメソッド、 <see cref="T:System.Web.UI.ControlCollection" /> クラスが呼び出されています。 内容を変更する、 <see cref="T:System.Web.UI.UpdatePanel" /> の子コントロールの変更、制御、 <see cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" /> プロパティです。</exception>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" />
       </Docs>
     </Member>
     <Member MemberName="CreateContentTemplateContainer">
@@ -399,31 +415,33 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a <see cref="T:System.Web.UI.Control" /> object that acts as a container for child controls that define the <see cref="T:System.Web.UI.UpdatePanel" /> control's content.</summary>
-        <returns>A <see cref="T:System.Web.UI.Control" /> container for the <see cref="T:System.Web.UI.UpdatePanel" /> control's content.</returns>
+        <summary>作成、 <see cref="T:System.Web.UI.Control" /> を定義する子コントロールのコンテナーとして機能するオブジェクト、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールのコンテンツ。</summary>
+        <returns>A <see cref="T:System.Web.UI.Control" /> のコンテナー、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールのコンテンツ。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is intended for use by control developers who want to extend the <xref:System.Web.UI.UpdatePanel> control. For example, in derived classes, you can provide a different root control that acts as a container for your <xref:System.Web.UI.UpdatePanel> control's content. The default implementation returns a <xref:System.Web.UI.Control> object.  
+## 解説  
+ このメソッドは、使用するための拡張を希望するコントロールの開発者によって、 <xref:System.Web.UI.UpdatePanel> コントロールです。 たとえば、派生クラスで使用できるのコンテナーとして機能する別のルート コントロール、 <xref:System.Web.UI.UpdatePanel> コントロールのコンテンツ。 既定の実装、 <xref:System.Web.UI.Control> オブジェクトです。  
   
    
   
-## Examples  
- The following example shows how to override the <xref:System.Web.UI.UpdatePanel.CreateContentTemplateContainer%2A> method in a custom <xref:System.Web.UI.UpdatePanel> control to always render the `<fieldset>` and `<legend>` elements for the panel's content. The custom <xref:System.Web.UI.UpdatePanel> control defines a public property named `GroupingText` that is a string literal inside the `<legend>` element.  
+## 例  
+ 次の例は、オーバーライドする方法を示します、 <xref:System.Web.UI.UpdatePanel.CreateContentTemplateContainer%2A> カスタム メソッド <xref:System.Web.UI.UpdatePanel> 常に表示されるコントロール、 `<fieldset>` と `<legend>` パネルのコンテンツの要素。 カスタム <xref:System.Web.UI.UpdatePanel> コントロールという名前のパブリック プロパティを定義する `GroupingText` 内のリテラル文字列は、 `<legend>` 要素。  
   
- A custom <xref:System.Web.UI.UpdatePanel> control named `CustomUpdatePanel` derives from <xref:System.Web.UI.UpdatePanel> and overrides the <xref:System.Web.UI.UpdatePanel.CreateContentTemplateContainer%2A> method. Put the `CustomUpdatePanel` class source code in the Web site's App_Code folder.  
+ カスタム <xref:System.Web.UI.UpdatePanel> という名前のコントロール `CustomUpdatePanel` から派生した <xref:System.Web.UI.UpdatePanel> と上書き、 <xref:System.Web.UI.UpdatePanel.CreateContentTemplateContainer%2A> メソッドです。 Put、 `CustomUpdatePanel` Web サイトの App\_Code フォルダー内のソース コードをクラスです。  
   
- [!code-csharp[System.Web.UI.UpdatePanel.CreateContentTemplateContainer#2](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/CS/App_Code/CustomUpdatePanel.cs#2)]
- [!code-vb[System.Web.UI.UpdatePanel.CreateContentTemplateContainer#2](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/VB/App_Code/CustomUpdatePanel.vb#2)]  
+ [!code-csharp[System.Web.UI.UpdatePanel.CreateContentTemplateContainer\#2](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/CS/App_Code/CustomUpdatePanel.cs#2)]
+ [!code-vb[System.Web.UI.UpdatePanel.CreateContentTemplateContainer\#2](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/VB/App_Code/CustomUpdatePanel.vb#2)]  
   
- The custom <xref:System.Web.UI.UpdatePanel> control is used on the page just as the <xref:System.Web.UI.UpdatePanel> control is. The following example shows a page that contains the custom <xref:System.Web.UI.UpdatePanel> control.  
+ カスタム <xref:System.Web.UI.UpdatePanel> コントロールは、ページで使用と同様、 <xref:System.Web.UI.UpdatePanel> コントロールです。 次の例では、ユーザー設定を含むページ <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel.CreateContentTemplateContainer#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/CS/UpdatePanelCreateContentTemplateContainerCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel.CreateContentTemplateContainer#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/VB/UpdatePanelCreateContentTemplateContainerVB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel.CreateContentTemplateContainer\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/CS/UpdatePanelCreateContentTemplateContainerCS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel.CreateContentTemplateContainer\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.CreateContentTemplateContainer/VB/UpdatePanelCreateContentTemplateContainerVB.aspx#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" />
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplate" />
       </Docs>
     </Member>
     <Member MemberName="CreateControlCollection">
@@ -440,18 +458,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the collection of all controls that are contained in the <see cref="T:System.Web.UI.UpdatePanel" /> control.</summary>
-        <returns>A <see cref="T:System.Web.UI.ControlCollection" /> object that consists of all controls that define the content of the <see cref="T:System.Web.UI.UpdatePanel" /> control.</returns>
+        <summary>含まれているすべてのコントロールのコレクションを返す、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</summary>
+        <returns>A <see cref="T:System.Web.UI.ControlCollection" /> オブジェクトの内容を定義するすべてのコントロールで構成される、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.CreateControlCollection%2A> method is used by control developers.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.CreateControlCollection%2A> メソッドはコントロールの開発者によって使用されます。  
   
- Because this method is protected and sealed, it is visible to classes that inherit from the <xref:System.Web.UI.UpdatePanel> class, but it cannot be overridden. This method overrides the base implementation to return a specialized <xref:System.Web.UI.ControlCollection> object that throws an <xref:System.InvalidOperationException> when the <xref:System.Web.UI.ControlCollection.Add%2A>, <xref:System.Web.UI.ControlCollection.AddAt%2A>, <xref:System.Web.UI.ControlCollection.Clear%2A>, <xref:System.Web.UI.ControlCollection.Remove%2A>, or <xref:System.Web.UI.ControlCollection.RemoveAt%2A> method of the <xref:System.Web.UI.ControlCollection> class is invoked. To change the content of the <xref:System.Web.UI.UpdatePanel> control, modify the child controls of the <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> property.  
+ 継承するクラスに表示されてため、このメソッドが保護されシール、 <xref:System.Web.UI.UpdatePanel> クラスが、それをオーバーライドすることはできません。 このメソッドは、基本実装をオーバーライドする特殊な <xref:System.Web.UI.ControlCollection> をスローするオブジェクト、 <xref:System.InvalidOperationException> ときに、 <xref:System.Web.UI.ControlCollection.Add%2A>, 、<xref:System.Web.UI.ControlCollection.AddAt%2A>, 、<xref:System.Web.UI.ControlCollection.Clear%2A>, 、<xref:System.Web.UI.ControlCollection.Remove%2A>, 、または <xref:System.Web.UI.ControlCollection.RemoveAt%2A> のメソッド、 <xref:System.Web.UI.ControlCollection> クラスが呼び出されます。 内容を変更する、 <xref:System.Web.UI.UpdatePanel> の子コントロールの変更、制御、 <xref:System.Web.UI.UpdatePanel.ContentTemplateContainer%2A> プロパティです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" />
       </Docs>
     </Member>
     <Member MemberName="Initialize">
@@ -468,18 +487,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Initializes the <see cref="T:System.Web.UI.UpdatePanel" /> control trigger collection if partial-page rendering is enabled.</summary>
+        <summary>初期化、 <see cref="T:System.Web.UI.UpdatePanel" /> 部分ページ レンダリングが有効になっている場合は、トリガーの収集を制御します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If partial-page rendering is not enabled, the triggers that are defined in the <xref:System.Web.UI.UpdatePanel.Triggers%2A> property are not initialized because they have no effect. The <xref:System.Web.UI.ScriptManager.EnablePartialRendering%2A> property of the <xref:System.Web.UI.ScriptManager> control gets or sets a value that indicates whether partial-page rendering is enabled. The <xref:System.Web.UI.ScriptManager.SupportsPartialRendering%2A> property of the <xref:System.Web.UI.ScriptManager> control gets or sets a value that indicates whether partial-page rendering is supported.  
+## 解説  
+ 部分ページ レンダリングが有効でない場合に定義されているトリガー、 <xref:System.Web.UI.UpdatePanel.Triggers%2A> 効果がないために、プロパティが初期化されていません。<xref:System.Web.UI.ScriptManager.EnablePartialRendering%2A> のプロパティ、 <xref:System.Web.UI.ScriptManager> コントロールを取得または部分ページ レンダリングが有効になっているかどうかを示す値を設定します。<xref:System.Web.UI.ScriptManager.SupportsPartialRendering%2A> のプロパティ、 <xref:System.Web.UI.ScriptManager> コントロールを取得または部分ページ レンダリングがサポートされているかどうかを示す値を設定します。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>When you override the <see cref="M:System.Web.UI.UpdatePanel.Initialize" /> method, make sure to call the base class so that triggers are registered if partial-page rendering is enabled.</para>
         </block>
+        <altmember cref="P:System.Web.UI.ScriptManager.EnablePartialRendering" />
+        <altmember cref="P:System.Web.UI.ScriptManager.SupportsPartialRendering" />
       </Docs>
     </Member>
     <Member MemberName="IsInPartialRendering">
@@ -500,17 +521,21 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the <see cref="T:System.Web.UI.UpdatePanel" /> control is being updated as a result of an asynchronous postback.</summary>
+        <summary>示す値を取得するかどうか、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールが非同期ポストバックの結果として更新中です。</summary>
         <value>
-          <see langword="true" /> if the current <see cref="T:System.Web.UI.UpdatePanel" /> control is being updated as a result of an asynchronous postback; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 場合は、現在 <see cref="T:System.Web.UI.UpdatePanel" /> 非同期ポストバックの結果として更新された以外の場合、コントロールが表示される <see langword="false" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.IsInPartialRendering%2A> property is intended for use by control developers who want to know when an <xref:System.Web.UI.UpdatePanel> control is being updated as a result of an asynchronous postback. In page development scenarios, use the <xref:System.Web.UI.ScriptManager.IsInAsyncPostBack%2A> property to determine whether a page is processing as a result of an asynchronous postback.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.IsInPartialRendering%2A> プロパティは使用するタイミングを認識するコントロールの開発者によってため、 <xref:System.Web.UI.UpdatePanel> コントロールが非同期ポストバックの結果として更新中です。 ページの開発シナ リオで使用して、 <xref:System.Web.UI.ScriptManager.IsInAsyncPostBack%2A> プロパティ ページが非同期ポストバックの結果として処理するかどうかを確認します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Web.UI.ScriptManager.IsInAsyncPostBack" />
       </Docs>
     </Member>
     <Member MemberName="OnInit">
@@ -529,19 +554,21 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Web.UI.Control.Init" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" /> オブジェクト。</param>
+        <summary>
+          <see cref="E:System.Web.UI.Control.Init" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel> control's <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> property is instantiated during the <xref:System.Web.UI.UpdatePanel.OnInit%2A> method.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel> コントロールの <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> 中にプロパティがインスタンス化、 <xref:System.Web.UI.UpdatePanel.OnInit%2A> メソッドです。  
   
- The <xref:System.Web.UI.UpdatePanel.OnInit%2A> method is used by control developers to extend the functionality of the <xref:System.Web.UI.UpdatePanel> control.  
+ <xref:System.Web.UI.UpdatePanel.OnInit%2A> の機能を拡張するメソッドがコントロールの開発者によって使用される、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Web.UI.UpdatePanel.ContentTemplate" /> property is being defined when the <see cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" /> property has already been created.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Web.UI.UpdatePanel.ContentTemplate" /> プロパティが表示されている場合に定義、 <see cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer" /> プロパティが既に作成されています。</exception>
         <block subset="none" type="overrides">
           <para>When you override the <see cref="M:System.Web.UI.UpdatePanel.OnInit(System.EventArgs)" /> method in a derived class, make sure to call the <see cref="M:System.Web.UI.UpdatePanel.OnInit(System.EventArgs)" /> method of the base class so that registered delegates can receive the event.</para>
         </block>
@@ -563,12 +590,22 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Web.UI.Control.Load" /> event for the <see cref="T:System.Web.UI.UpdatePanel" /> control and invokes the <see cref="M:System.Web.UI.UpdatePanel.Initialize" /> method when partial-page rendering is not enabled.</summary>
-        <remarks>To be added.</remarks>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" /> オブジェクト。</param>
+        <summary>生成、 <see cref="E:System.Web.UI.Control.Load" /> イベントを <see cref="T:System.Web.UI.UpdatePanel" /> を制御し、起動、 <see cref="M:System.Web.UI.UpdatePanel.Initialize" /> 部分ページ レンダリングが有効になっていない場合は、メソッドです。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
         <block subset="none" type="overrides">
           <para>If you override the <see cref="M:System.Web.UI.UpdatePanel.OnLoad(System.EventArgs)" /> method, make sure to call the base class so that the <see cref="E:System.Web.UI.Control.Load" /> event will be raised.</para>
         </block>
+        <altmember cref="M:System.Web.UI.UpdatePanel.Initialize" />
+        <altmember cref="P:System.Web.UI.ScriptManager.EnablePartialRendering" />
       </Docs>
     </Member>
     <Member MemberName="OnPreRender">
@@ -587,17 +624,21 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" /> オブジェクト。</param>
+        <summary>
+          <see cref="E:System.Web.UI.Control.PreRender" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.OnPreRender%2A> method is used by control developers to extend the functionality of the <xref:System.Web.UI.UpdatePanel> control.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.OnPreRender%2A> の機能を拡張するメソッドがコントロールの開発者によって使用される、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Web.UI.UpdatePanel.ChildrenAsTriggers" /> property is set to <see langword="false" />, and the <see cref="P:System.Web.UI.UpdatePanel.UpdateMode" /> property is set to <see cref="F:System.Web.UI.UpdatePanelUpdateMode.Always" />.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Web.UI.UpdatePanel.ChildrenAsTriggers" /> にプロパティが設定されている <see langword="false" />, 、および <see cref="P:System.Web.UI.UpdatePanel.UpdateMode" /> にプロパティが設定されている <see cref="F:System.Web.UI.UpdatePanelUpdateMode.Always" />します。</exception>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ChildrenAsTriggers" />
+        <altmember cref="P:System.Web.UI.UpdatePanel.UpdateMode" />
       </Docs>
     </Member>
     <Member MemberName="OnUnload">
@@ -616,13 +657,14 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> object that contains event data.</param>
-        <summary>Raises the base <see cref="E:System.Web.UI.Control.Unload" /> event.</summary>
+        <param name="e">
+          <see cref="T:System.EventArgs" /> イベント データを格納するオブジェクト。</param>
+        <summary>基数を発生させる <see cref="E:System.Web.UI.Control.Unload" /> イベントです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.OnUnload%2A> method is used by control developers to extend the functionality of the <xref:System.Web.UI.UpdatePanel> control  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.OnUnload%2A> の機能を拡張するメソッドがコントロールの開発者によって使用される、 <xref:System.Web.UI.UpdatePanel> コントロール  
   
  ]]></format>
         </remarks>
@@ -644,15 +686,17 @@
         <Parameter Name="writer" Type="System.Web.UI.HtmlTextWriter" />
       </Parameters>
       <Docs>
-        <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter" /> object that represents the output stream for rendering HTML content.</param>
-        <summary>Raises the <see cref="M:System.Web.UI.Control.Render(System.Web.UI.HtmlTextWriter)" /> event.</summary>
+        <param name="writer">
+          <see cref="T:System.Web.UI.HtmlTextWriter" /> HTML コンテンツをレンダリングする出力ストリームを表すオブジェクト。</param>
+        <summary>
+          <see cref="M:System.Web.UI.Control.Render(System.Web.UI.HtmlTextWriter)" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.Render%2A> method is used by control developers to extend the functionality of the <xref:System.Web.UI.UpdatePanel> control.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.Render%2A> の機能を拡張するメソッドがコントロールの開発者によって使用される、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
- The <xref:System.Web.UI.UpdatePanel.Render%2A> method writes the rendered content of the <xref:System.Web.UI.UpdatePanel> control to the browser by using the supplied <xref:System.Web.UI.HtmlTextWriter> object. When you override the <xref:System.Web.UI.UpdatePanel.Render%2A> method in a derived class, make sure to call the <xref:System.Web.UI.UpdatePanel.Render%2A> method of the base class so that the child controls of the <xref:System.Web.UI.UpdatePanel> control are rendered.  
+ <xref:System.Web.UI.UpdatePanel.Render%2A> メソッドは、のレンダリングされたコンテンツを書き込みます、 <xref:System.Web.UI.UpdatePanel> コントロールでは、指定されたを使用して、ブラウザーを <xref:System.Web.UI.HtmlTextWriter> オブジェクトです。 オーバーライドする場合、 <xref:System.Web.UI.UpdatePanel.Render%2A> 派生クラスでメソッドを必ず呼び出して、 <xref:System.Web.UI.UpdatePanel.Render%2A> メソッド ベースのクラスの子コントロールが、 <xref:System.Web.UI.UpdatePanel> コントロールを表示します。  
   
  ]]></format>
         </remarks>
@@ -674,15 +718,17 @@
         <Parameter Name="writer" Type="System.Web.UI.HtmlTextWriter" />
       </Parameters>
       <Docs>
-        <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter" /> object that represents the output stream for rendering HTML content.</param>
-        <summary>Raises the <see cref="M:System.Web.UI.UpdatePanel.RenderChildren(System.Web.UI.HtmlTextWriter)" /> event.</summary>
+        <param name="writer">
+          <see cref="T:System.Web.UI.HtmlTextWriter" /> HTML コンテンツをレンダリングする出力ストリームを表すオブジェクト。</param>
+        <summary>
+          <see cref="M:System.Web.UI.UpdatePanel.RenderChildren(System.Web.UI.HtmlTextWriter)" /> イベントを発生させます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> method is used by control developers to extend the functionality of the <xref:System.Web.UI.UpdatePanel> control.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> の機能を拡張するメソッドがコントロールの開発者によって使用される、 <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
- The <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> method writes the rendered content of the <xref:System.Web.UI.UpdatePanel> control to the browser by using the supplied <xref:System.Web.UI.HtmlTextWriter> object. When you override the <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> method in a derived class, make sure to call the <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> method of the base class so that the child controls of the <xref:System.Web.UI.UpdatePanel> control are rendered.  
+ <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> メソッドは、のレンダリングされたコンテンツを書き込みます、 <xref:System.Web.UI.UpdatePanel> コントロールでは、指定されたを使用して、ブラウザーを <xref:System.Web.UI.HtmlTextWriter> オブジェクトです。 オーバーライドする場合、 <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> 派生クラスでメソッドを必ず呼び出して、 <xref:System.Web.UI.UpdatePanel.RenderChildren%2A> メソッド ベースのクラスの子コントロールが、 <xref:System.Web.UI.UpdatePanel> コントロールを表示します。  
   
  ]]></format>
         </remarks>
@@ -709,24 +755,26 @@
         <ReturnType>System.Web.UI.UpdatePanelRenderMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether an <see cref="T:System.Web.UI.UpdatePanel" /> control's content is enclosed in an HTML <see langword="&lt;div&gt;" /> or <see langword="&lt;span&gt;" /> element.</summary>
-        <value>One of the <see cref="T:System.Web.UI.UpdatePanelRenderMode" /> values. The default is <see cref="F:System.Web.UI.UpdatePanelRenderMode.Block" /> so that the content of the panel is enclosed in an HTML <see langword="&lt;div&gt;" /> element.</value>
+        <summary>取得または設定を示す値かどうか、 <see cref="T:System.Web.UI.UpdatePanel" /> html コントロールのコンテンツを囲む <see langword="&lt;div&gt;" /> または <see langword="&lt;span&gt;" /> 要素。</summary>
+        <value>
+          <see cref="T:System.Web.UI.UpdatePanelRenderMode" /> 値のいずれか。 既定値は <see cref="F:System.Web.UI.UpdatePanelRenderMode.Block" /> パネルのコンテンツが HTML で囲まれるように <see langword="&lt;div&gt;" /> 要素。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Web.UI.UpdatePanel.RenderMode%2A> property is set to <xref:System.Web.UI.UpdatePanelRenderMode.Inline>, the content of an <xref:System.Web.UI.UpdatePanel> control is rendered inside an HTML `<span>` element. If the <xref:System.Web.UI.UpdatePanel.RenderMode%2A> property is set to <xref:System.Web.UI.UpdatePanelRenderMode.Block>, it is rendered inside an HTML `<div>` element.  
+## 解説  
+ 場合、 <xref:System.Web.UI.UpdatePanel.RenderMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelRenderMode.Inline>, のコンテンツ、 <xref:System.Web.UI.UpdatePanel> HTML 内にコントロールをレンダリング `<span>` 要素。 場合、 <xref:System.Web.UI.UpdatePanel.RenderMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelRenderMode.Block>, 、HTML 内にレンダリングされた `<div>` 要素。  
   
    
   
-## Examples  
- The following example shows how to set the <xref:System.Web.UI.UpdatePanel.RenderMode%2A> property declaratively. The <xref:System.Web.UI.UpdatePanel> control named `UpdatePanel1` is rendered in an HTML `<span>` element. If the <xref:System.Web.UI.UpdatePanel.RenderMode%2A> property were set to <xref:System.Web.UI.UpdatePanelRenderMode.Block>, the resulting paragraph would appear disjointed because of the way in which the HTML `<div>` element is rendered.  
+## 例  
+ 次の例では、設定する方法、 <xref:System.Web.UI.UpdatePanel.RenderMode%2A> プロパティ宣言します。<xref:System.Web.UI.UpdatePanel> という名前のコントロール `UpdatePanel1` HTML でレンダリング `<span>` 要素。 場合、 <xref:System.Web.UI.UpdatePanel.RenderMode%2A> プロパティは次のように設定されました <xref:System.Web.UI.UpdatePanelRenderMode.Block>, 、する方法のため、段落に切り離された表示は、HTML `<div>` 要素を表示します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel.RenderMode#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.RenderMode/CS/UpdatePanelRenderModeCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel.RenderMode#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.RenderMode/VB/UpdatePanelRenderModeVB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel.RenderMode\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.RenderMode/CS/UpdatePanelRenderModeCS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel.RenderMode\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.RenderMode/VB/UpdatePanelRenderModeVB.aspx#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.UI.UpdatePanelRenderMode" />
       </Docs>
     </Member>
     <Member MemberName="RequiresUpdate">
@@ -742,16 +790,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the content of the <see cref="T:System.Web.UI.UpdatePanel" /> control will be updated.</summary>
+        <summary>示す値を取得するかどうかのコンテンツ、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールが更新されます。</summary>
         <value>
-          <see langword="true" /> if the <see cref="T:System.Web.UI.UpdatePanel" /> control's content will be updated; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 場合、 <see cref="T:System.Web.UI.UpdatePanel" /> 更新以外の場合、コントロールのコンテンツが表示されます <see langword="false" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- By default, the <xref:System.Web.UI.UpdatePanel.RequiresUpdate%2A> property returns `true` if the <xref:System.Web.UI.UpdatePanel.Update%2A> method was explicitly called or if the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Always>.  
+## 解説  
+ 既定では、 <xref:System.Web.UI.UpdatePanel.RequiresUpdate%2A> プロパティを返します。 `true` 場合、 <xref:System.Web.UI.UpdatePanel.Update%2A> メソッドが明示的に呼び出された場合は、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Always>します。  
   
- This property is intended for use by control developers who want to extend the <xref:System.Web.UI.UpdatePanel> control. For example, in derived classes, you might provide additional logic to determine whether an <xref:System.Web.UI.UpdatePanel> control should be updated.  
+ このプロパティは使用するコントロールの開発者が拡張するため、 <xref:System.Web.UI.UpdatePanel> コントロールです。 たとえば、派生クラスで提供できますを判断するロジックを追加するかどうか、 <xref:System.Web.UI.UpdatePanel> コントロールを更新する必要があります。  
   
  ]]></format>
         </remarks>
@@ -773,15 +821,18 @@
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="key">The name of the attribute.</param>
-        <summary>Returns an attribute of a Web control by using a specified name.</summary>
-        <returns>The value of the attribute.</returns>
+        <param name="key">属性の名前。</param>
+        <summary>指定した名前を使用して、Web コントロールの属性を返します。</summary>
+        <returns>属性の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Web.UI.UpdatePanel> instance is cast to an <xref:System.Web.UI.IAttributeAccessor> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Web.UI.UpdatePanel> のインスタンスが <xref:System.Web.UI.IAttributeAccessor> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -803,15 +854,18 @@
         <Parameter Name="value" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="key">The name of the attribute to set.</param>
-        <param name="value">The value of the attribute to set.</param>
-        <summary>Sets the value of the specified control attribute.</summary>
+        <param name="key">設定する属性名です。</param>
+        <param name="value">設定する属性の値。</param>
+        <summary>指定したコントロールの属性の値を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This member is an explicit interface member implementation. It can be used only when the <xref:System.Web.UI.UpdatePanel> instance is cast to an <xref:System.Web.UI.IAttributeAccessor> interface.  
+## 解説  
+ このメンバーは、明示的なインターフェイス メンバーの実装です。 これは、<xref:System.Web.UI.UpdatePanel> のインスタンスが <xref:System.Web.UI.IAttributeAccessor> インターフェイスにキャストされる場合にのみ、使用できます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -846,20 +900,28 @@
         <ReturnType>System.Web.UI.UpdatePanelTriggerCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an <see cref="T:System.Web.UI.UpdatePanelTriggerCollection" /> object that contains <see cref="T:System.Web.UI.AsyncPostBackTrigger" /> and <see cref="T:System.Web.UI.PostBackTrigger" /> objects that were registered declaratively for the <see cref="T:System.Web.UI.UpdatePanel" /> control.</summary>
-        <value>A collection of objects of type <see cref="T:System.Web.UI.AsyncPostBackTrigger" /> and <see cref="T:System.Web.UI.PostBackTrigger" />.</value>
+        <summary>取得、 <see cref="T:System.Web.UI.UpdatePanelTriggerCollection" /> を含むオブジェクト <see cref="T:System.Web.UI.AsyncPostBackTrigger" /> と <see cref="T:System.Web.UI.PostBackTrigger" /> オブジェクトに登録されている宣言によって、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</summary>
+        <value>型のオブジェクトのコレクション <see cref="T:System.Web.UI.AsyncPostBackTrigger" /> と <see cref="T:System.Web.UI.PostBackTrigger" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.UpdatePanel.Triggers%2A> property gets a collection of all the triggers that have been defined for the <xref:System.Web.UI.UpdatePanel> control. (You can define triggers declaratively by using the **UpdatePanelTrigger Collection Editor** dialog box in the designer or by using the `<Triggers>` element of the <xref:System.Web.UI.UpdatePanel> control.) The collection includes <xref:System.Web.UI.AsyncPostBackTrigger> and <xref:System.Web.UI.PostBackTrigger> objects.  
+## 解説  
+ <xref:System.Web.UI.UpdatePanel.Triggers%2A> プロパティに対して定義されているすべてのトリガーのコレクションを取得する、 <xref:System.Web.UI.UpdatePanel> コントロールです。 \(トリガーを宣言で定義するにを使用して、 **\[UpdatePanelTrigger コレクション エディター** \] ダイアログ ボックス、デザイナーでまたはを使用して、 `<Triggers>` の要素、 <xref:System.Web.UI.UpdatePanel> コントロールです\)。 コレクションが含まれます <xref:System.Web.UI.AsyncPostBackTrigger> と <xref:System.Web.UI.PostBackTrigger> オブジェクトです。  
   
- Declarative triggers that are defined in the <xref:System.Web.UI.UpdatePanel.Triggers%2A> collection are not tracked in view state.  
+ 宣言型のトリガーで定義されている、 <xref:System.Web.UI.UpdatePanel.Triggers%2A> コレクションは、ビュー ステートでは追跡されません。  
   
- When a control that is a naming container is used as a trigger, all its child controls that cause postback behave as triggers.  
+ 名前付けコンテナーであるコントロールは、トリガーとして使用され、ポストバックが発生するすべての子コントロールがトリガーとして機能します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.UI.UpdatePanelTriggerCollection" />
+        <altmember cref="T:System.Web.UI.UpdatePanelTrigger" />
+        <altmember cref="T:System.Web.UI.AsyncPostBackTrigger" />
+        <altmember cref="M:System.Web.UI.ScriptManager.RegisterAsyncPostBackControl(System.Web.UI.Control)" />
+        <altmember cref="M:System.Web.UI.ScriptManager.RegisterPostBackControl(System.Web.UI.Control)" />
       </Docs>
     </Member>
     <Member MemberName="Update">
@@ -876,32 +938,35 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Causes an update of the content of an <see cref="T:System.Web.UI.UpdatePanel" /> control.</summary>
+        <summary>内容を更新するよう、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the page is enabled for partial-page rendering, when you invoke the <xref:System.Web.UI.UpdatePanel.Update%2A> method, the <xref:System.Web.UI.UpdatePanel> control's content is updated in the browser. Call the <xref:System.Web.UI.UpdatePanel.Update%2A> method if you have server code that must execute to determine whether an <xref:System.Web.UI.UpdatePanel> control should be updated. If you plan to use the <xref:System.Web.UI.UpdatePanel.Update%2A> method, set the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property to <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>. If you want the decision to update the panel in server logic, make sure that the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property is `false` and that no explicit triggers are defined for the panel.  
+## 解説  
+ 呼び出すときに、部分ページ レンダリングのページが有効にした場合、 <xref:System.Web.UI.UpdatePanel.Update%2A> 、メソッド、 <xref:System.Web.UI.UpdatePanel> 、ブラウザーでコントロールのコンテンツを更新します。 呼び出す、 <xref:System.Web.UI.UpdatePanel.Update%2A> メソッドを決定するために実行する必要がありますサーバー コードがあるかどうか、 <xref:System.Web.UI.UpdatePanel> コントロールを更新する必要があります。 使用する予定の場合、 <xref:System.Web.UI.UpdatePanel.Update%2A> 方法、設定、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> プロパティを <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>します。 サーバーのロジック内のパネルを更新する意思決定する場合は、以下のことを確認して、 <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> プロパティは、 `false` パネルの明示的なトリガーが定義されていないこととします。  
   
- In a typical page development scenario, if you define triggers or if the <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property is `true` for the <xref:System.Web.UI.UpdatePanel> control, the <xref:System.Web.UI.UpdatePanel.Update%2A> method is automatically called during the page life cycle.  
+ シナリオでは、一般的なページの開発、トリガーを定義する場合、または、 <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> プロパティは、 `true` の <xref:System.Web.UI.UpdatePanel> コントロール、 <xref:System.Web.UI.UpdatePanel.Update%2A> メソッドがページのライフ サイクル中に自動的に呼び出されます。  
   
- If the <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> property is not defined for the <xref:System.Web.UI.UpdatePanel> control, no updates of the panel will occur.  
+ 場合、 <xref:System.Web.UI.UpdatePanel.ContentTemplate%2A> プロパティが定義されていません、 <xref:System.Web.UI.UpdatePanel> を制御するパネルの更新は行われません。  
   
    
   
-## Examples  
- The following example uses the <xref:System.Web.UI.UpdatePanel.Update%2A> method to update the content of an <xref:System.Web.UI.UpdatePanel> control when more than five seconds have elapsed since the last update.  
+## 例  
+ 次の例では、 <xref:System.Web.UI.UpdatePanel.Update%2A> の内容を更新する方法、 <xref:System.Web.UI.UpdatePanel> と 5 秒以上経過した最後の更新を制御します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel.UpdateMode#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/CS/UpdatePanelUpdateModeCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel.UpdateMode#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/VB/UpdatePanelUpdateModeVB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel.UpdateMode\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/CS/UpdatePanelUpdateModeCS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel.UpdateMode\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/VB/UpdatePanelUpdateModeVB.aspx#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Web.UI.UpdatePanel.UpdateMode" /> property is set to <see cref="F:System.Web.UI.UpdatePanelUpdateMode.Always" />.  
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Web.UI.UpdatePanel.UpdateMode" /> プロパティが <see cref="F:System.Web.UI.UpdatePanelUpdateMode.Always" /> に設定されている。  
   
- \- or –  
+ \- または \-  
   
- The <see cref="M:System.Web.UI.UpdatePanel.Update" /> method is called during or after the page's <see cref="M:System.Web.UI.Page.Render(System.Web.UI.HtmlTextWriter)" /> event.</exception>
+ <see cref="M:System.Web.UI.UpdatePanel.Update" /> 中またはページの後に、メソッドが呼び出されます <see cref="M:System.Web.UI.Page.Render(System.Web.UI.HtmlTextWriter)" /> イベントです。</exception>
+        <altmember cref="P:System.Web.UI.UpdatePanel.ContentTemplate" />
+        <altmember cref="M:System.Web.UI.ScriptManager.RegisterAsyncPostBackControl(System.Web.UI.Control)" />
       </Docs>
     </Member>
     <Member MemberName="UpdateMode">
@@ -925,39 +990,43 @@
         <ReturnType>System.Web.UI.UpdatePanelUpdateMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates when an <see cref="T:System.Web.UI.UpdatePanel" /> control's content is updated.</summary>
-        <value>One of the <see cref="T:System.Web.UI.UpdatePanelUpdateMode" /> values. The default is <see cref="F:System.Web.UI.UpdatePanelUpdateMode.Always" />.</value>
+        <summary>取得またはタイミングを示す値を設定、 <see cref="T:System.Web.UI.UpdatePanel" /> コントロールのコンテンツを更新します。</summary>
+        <value>
+          <see cref="T:System.Web.UI.UpdatePanelUpdateMode" /> 値のいずれか。 既定値は、<see cref="F:System.Web.UI.UpdatePanelUpdateMode.Always" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When an <xref:System.Web.UI.UpdatePanel> control is not inside another <xref:System.Web.UI.UpdatePanel> control, the panel is updated according to the settings of the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> and <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> properties, together with the collection of triggers. When an <xref:System.Web.UI.UpdatePanel> control is inside another <xref:System.Web.UI.UpdatePanel> control, the child panel is automatically updated when the parent panel is updated.  
+## 解説  
+ ときに、 <xref:System.Web.UI.UpdatePanel> コントロールが別の内部にありません <xref:System.Web.UI.UpdatePanel> コントロール、パネルが更新の設定に従って、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> と <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> トリガーのコレクションと共にのプロパティです。 ときに、 <xref:System.Web.UI.UpdatePanel> 中に別のコントロールが <xref:System.Web.UI.UpdatePanel> 親パネルが更新されたときに、コントロール、子パネルが自動的に更新します。  
   
- The content of an <xref:System.Web.UI.UpdatePanel> control is updated in the following circumstances:  
+ 内容、 <xref:System.Web.UI.UpdatePanel> コントロールは、次の状況で更新します。  
   
--   If the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Always>, the <xref:System.Web.UI.UpdatePanel> control's content is updated on every postback that originates from anywhere on the page. This includes asynchronous postbacks from controls that are inside other <xref:System.Web.UI.UpdatePanel> controls and postbacks from controls that are not inside <xref:System.Web.UI.UpdatePanel> controls.  
+-   場合、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Always>, 、 <xref:System.Web.UI.UpdatePanel> \] ページで任意の場所から発信されるすべてのポストバック時にコントロールのコンテンツを更新します。 これにより、その他の内部にあるコントロールからの非同期ポストバックが含まれます。 <xref:System.Web.UI.UpdatePanel> コントロールと内部ではないコントロールからのポストバック <xref:System.Web.UI.UpdatePanel> コントロールです。  
   
--   If the <xref:System.Web.UI.UpdatePanel> control is nested inside another <xref:System.Web.UI.UpdatePanel> control and the parent update panel is updated.  
+-   場合、 <xref:System.Web.UI.UpdatePanel> コントロールが別の内部に入れ子になった <xref:System.Web.UI.UpdatePanel> コントロールと親更新パネルを更新します。  
   
--   If the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>, and one of the following conditions occurs:  
+-   場合、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>, 、次の条件のいずれかが発生します。  
   
-    -   You call the <xref:System.Web.UI.UpdatePanel.Update%2A> method of the <xref:System.Web.UI.UpdatePanel> control explicitly.  
+    -   呼び出す、 <xref:System.Web.UI.UpdatePanel.Update%2A> のメソッド、 <xref:System.Web.UI.UpdatePanel> 明示的に制御します。  
   
-    -   The postback is caused by a control that is defined as a trigger by using the <xref:System.Web.UI.UpdatePanel.Triggers%2A> property of the <xref:System.Web.UI.UpdatePanel> control. In this scenario, the control explicitly triggers an update of the panel content. The control can be either inside or outside the <xref:System.Web.UI.UpdatePanel> control that defines the trigger.  
+    -   使用して、トリガーとして定義されているコントロールでポストバックが原因となった、 <xref:System.Web.UI.UpdatePanel.Triggers%2A> のプロパティ、 <xref:System.Web.UI.UpdatePanel> コントロールです。 このシナリオでは、コントロールは、パネル コンテンツの更新を明示的にトリガーされます。 コントロールが内部または外部のいずれかにすることができます、 <xref:System.Web.UI.UpdatePanel> コントロール トリガーを定義します。  
   
-    -   The <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> property is set to `true` and a child control of the <xref:System.Web.UI.UpdatePanel> control causes a postback. A child control of a nested <xref:System.Web.UI.UpdatePanel> control does not cause an update to the outer <xref:System.Web.UI.UpdatePanel> control unless it is explicitly defined as a trigger.  
+    -   <xref:System.Web.UI.UpdatePanel.ChildrenAsTriggers%2A> にプロパティが設定されている `true` と子コントロールの <xref:System.Web.UI.UpdatePanel> コントロールがポストバックが発生します。 入れ子になったの子コントロール <xref:System.Web.UI.UpdatePanel> コントロールが、外側の更新プログラムを引き起こさない <xref:System.Web.UI.UpdatePanel> トリガーとして明示的に定義されている場合を除き、します。  
   
    
   
-## Examples  
- The following example shows how to use the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property. The example declares two <xref:System.Web.UI.UpdatePanel> controls. In the first panel, the <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> property is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>. In the second panel, <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> is set to <xref:System.Web.UI.UpdatePanelUpdateMode.Always>. A button outside both panels is registered as an asynchronous postback control by calling the <xref:System.Web.UI.ScriptManager.RegisterAsyncPostBackControl%2A> method of the <xref:System.Web.UI.ScriptManager> control. In the button's `Click` event handler, the <xref:System.Web.UI.UpdatePanel.Update%2A> method of the first panel is called if more than five seconds have elapsed since its last update. In this scenario, the panel’s content is updated only if the last panel refresh was more than five seconds ago. The content of the second panel is always updated.  
+## 例  
+ <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> プロパティを使用する方法を次の例に示します。 例 2 <xref:System.Web.UI.UpdatePanel> コントロールです。 最初のパネルで、 <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> にプロパティが設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Conditional>します。 2 番目のパネルで <xref:System.Web.UI.UpdatePanel.UpdateMode%2A> に設定されている <xref:System.Web.UI.UpdatePanelUpdateMode.Always>します。 2 つのパネルの外部ボタンを呼び出して非同期ポストバック コントロールとして登録されている、 <xref:System.Web.UI.ScriptManager.RegisterAsyncPostBackControl%2A> のメソッド、 <xref:System.Web.UI.ScriptManager> コントロールです。 ボタンの `Click` イベント ハンドラー、 <xref:System.Web.UI.UpdatePanel.Update%2A> 前回更新から 5 秒以上が経過した場合に最初のパネルのメソッドが呼び出されます。 このシナリオでは、前回のパネルの更新が 5 秒以上の場合にのみ、パネルのコンテンツが更新されます。 2 番目のパネルのコンテンツは常に更新します。  
   
- <!-- TODO: review snippet reference [!code-csharp[System.Web.UI.UpdatePanel.UpdateMode#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/CS/UpdatePanelUpdateModeCS.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[System.Web.UI.UpdatePanel.UpdateMode#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/VB/UpdatePanelUpdateModeVB.aspx#1)]  -->  
+ [!code-csharp[System.Web.UI.UpdatePanel.UpdateMode\#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/CS/UpdatePanelUpdateModeCS.aspx#1)]
+ [!code-vb[System.Web.UI.UpdatePanel.UpdateMode\#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.UI.UpdatePanel.UpdateMode/VB/UpdatePanelUpdateModeVB.aspx#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The specified type is not one of the <see cref="T:System.Web.UI.UpdatePanelUpdateMode" /> values.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">指定した型が、 <see cref="T:System.Web.UI.UpdatePanelUpdateMode" /> 値。</exception>
+        <altmember cref="T:System.Web.UI.UpdatePanelUpdateMode" />
+        <altmember cref="M:System.Web.UI.UpdatePanel.Update" />
+        <altmember cref="P:System.Web.UI.UpdatePanel.ChildrenAsTriggers" />
       </Docs>
     </Member>
   </Members>

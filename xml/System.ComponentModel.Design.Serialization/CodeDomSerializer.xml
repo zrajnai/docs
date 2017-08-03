@@ -16,45 +16,46 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Serializes an object graph to a series of CodeDOM statements. This class provides an abstract base class for a serializer.</summary>
+    <summary>一連の CodeDOM ステートメントにオブジェクト グラフをシリアル化します。 このクラスは、シリアライザーの抽象基本クラスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can implement a custom <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> to control the generation of component initialization code for a type of component at design time.  
+## 解説  
+ カスタムを実装する <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> をデザイン時コンポーネントの型のコンポーネント初期化コードの生成を制御します。  
   
- To implement a custom <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> for a type, you must:  
+ カスタムの実装に <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> の種類で行う必要があります。  
   
-1.  Define a class that derives from <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>.  
+1.  <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> から派生するクラスを定義します。  
   
-2.  Implement method overrides for serialization or deserialization methods. (See the information below for details.)  
+2.  実装メソッドは、シリアル化または逆シリアル化メソッドをオーバーライドします。 \(詳細については、以下の情報を参照してください\)。  
   
-3.  Associate your custom <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> implementation with a type of component using a <xref:System.ComponentModel.Design.Serialization.DesignerSerializerAttribute>.  
+3.  カスタムを関連付ける <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer> 型を使用してコンポーネントの実装、 <xref:System.ComponentModel.Design.Serialization.DesignerSerializerAttribute>です。  
   
- To implement a serialization method for generating configuration code for a component:  
+ コンポーネントの構成コードを生成するためのシリアル化メソッドを実装します。  
   
-1.  Within a class that derives from <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>, override an appropriate serialization or deserialization method of the base class.  
+1.  派生したクラス内で <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>, 、適切なシリアル化をオーバーライドまたは基本クラスのメソッドを逆シリアル化します。  
   
-2.  If you want the default serializer to generate code statements that perform the default component configuration, you must obtain and call the base serializer for the component. To obtain the base serializer for the component, call the <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer%2A> method of the <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> passed to your method override. Pass the <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer%2A> method the type of the component to serialize the configuration of, along with the base type of serializer you are requesting, which is <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>. Call the method of the same name you are overriding on the base serializer, using the <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> and object passed to your method override. If you are implementing the <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer.Serialize%2A> method, the <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer.Serialize%2A> method of the base serializer will return an object. The type of this object depends on the type of base serializer which depends on the type of component you are serializing the values of. If you are implementing the <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializeEvents%2A>, <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializeProperties%2A>, or <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializePropertiesToResources%2A> method, you must create a new <xref:System.CodeDom.CodeStatementCollection> to contain the generated code statements, and pass it to the method.  
+2.  既定のシリアライザーを既定のコンポーネントの構成を実行するコード ステートメントを生成する場合を取得して、コンポーネントの基本のシリアライザーを呼び出す必要があります。 コンポーネントの基本のシリアライザーを取得するを呼び出して、 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer%2A> のメソッド、 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> メソッドのオーバーライドに渡されます。 渡す、 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer%2A> メソッドは、要求しているシリアライザーの基本データ型と共にの構成をシリアル化するコンポーネントの型 <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>します。 使用して、基本のシリアライザーをオーバーライドして、同じ名前のメソッドを呼び出して、 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> をオーバーライドしてメソッドに渡されるオブジェクトとします。 実装する場合、 <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer.Serialize%2A> 、メソッド、 <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer.Serialize%2A> ベースのシリアライザーのメソッドでは、オブジェクトを返します。 このオブジェクトの種類は、コンポーネントの値をシリアル化の種類に依存する基本のシリアライザーの型によって異なります。 実装する場合、 <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializeEvents%2A>, 、<xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializeProperties%2A>, 、または <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializePropertiesToResources%2A> メソッドを作成する必要が新しい <xref:System.CodeDom.CodeStatementCollection> に生成されたコードのステートメントを含めるし、メソッドに渡します。  
   
-3.  If you have called a base serializer method, you will have a <xref:System.CodeDom.CodeStatementCollection> that contains the statements to generate to initialize the component. Otherwise you should create a <xref:System.CodeDom.CodeStatementCollection>. You can add <xref:System.CodeDom.CodeStatement> objects representing statements to generate in the component configuration code to this collection.  
+3.  基本シリアライザー メソッドを呼び出した場合、 <xref:System.CodeDom.CodeStatementCollection> コンポーネントを初期化するために生成するステートメントを含みます。 作成してそれ以外の場合、 <xref:System.CodeDom.CodeStatementCollection>です。 追加する <xref:System.CodeDom.CodeStatement> をこのコレクションにコンポーネントの構成コードを生成するステートメントを表すオブジェクト。  
   
-4.  Return the <xref:System.CodeDom.CodeStatementCollection> that represents the source code to generate to configure the component.  
+4.  返す、 <xref:System.CodeDom.CodeStatementCollection> コンポーネントの構成を生成するソース コードを表します。  
   
    
   
-## Examples  
- The following code example illustrates how to create a custom CodeDOM serializer that derives from <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>.  
+## 例  
+ 次のコード例から派生したカスタムの CodeDOM シリアライザーを作成する方法を示しています。 <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer>します。  
   
- [!code-cpp[IDesignerSerializationManagerSample#1](~/samples/snippets/cpp/VS_Snippets_Winforms/IDesignerSerializationManagerSample/CPP/idesignerserializationmanagersample.cpp#1)]
- [!code-csharp[IDesignerSerializationManagerSample#1](~/samples/snippets/csharp/VS_Snippets_Winforms/IDesignerSerializationManagerSample/CS/idesignerserializationmanagersample.cs#1)]
- [!code-vb[IDesignerSerializationManagerSample#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/IDesignerSerializationManagerSample/VB/idesignerserializationmanagersample.vb#1)]  
+ [!code-cpp[IDesignerSerializationManagerSample\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/IDesignerSerializationManagerSample/CPP/idesignerserializationmanagersample.cpp#1)]
+ [!code-csharp[IDesignerSerializationManagerSample\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/IDesignerSerializationManagerSample/CS/idesignerserializationmanagersample.cs#1)]
+ [!code-vb[IDesignerSerializationManagerSample\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/IDesignerSerializationManagerSample/VB/idesignerserializationmanagersample.vb#1)]  
   
  ]]></format>
     </remarks>
     <block subset="none" type="overrides">
       <para>When you inherit from <see cref="T:System.ComponentModel.Design.Serialization.CodeDomSerializer" />, you must override the following members: <see cref="M:System.ComponentModel.Design.Serialization.CodeDomSerializer.Deserialize(System.ComponentModel.Design.Serialization.IDesignerSerializationManager,System.Object)" /> and <see cref="M:System.ComponentModel.Design.Serialization.CodeDomSerializer.Serialize(System.ComponentModel.Design.Serialization.IDesignerSerializationManager,System.Object)" />.</para>
     </block>
+    <altmember cref="T:System.ComponentModel.Design.Serialization.DesignerSerializerAttribute" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -68,7 +69,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.Design.Serialization.CodeDomSerializer" /> class.</summary>
+        <summary>
+          <see cref="T:System.ComponentModel.Design.Serialization.CodeDomSerializer" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -89,22 +91,22 @@
         <Parameter Name="codeObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="manager">A serialization manager interface that is used during the deserialization process.</param>
-        <param name="codeObject">A serialized CodeDOM object to deserialize.</param>
-        <summary>Deserializes the specified serialized CodeDOM object into an object.</summary>
-        <returns>The deserialized CodeDOM object.</returns>
+        <param name="manager">逆シリアル化プロセス中に使用されるシリアル化マネージャーのインターフェイスです。</param>
+        <param name="codeObject">逆シリアル化のシリアル化した CodeDOM オブジェクト。</param>
+        <summary>オブジェクトには、指定したシリアル化した CodeDOM オブジェクトをシリアル化解除します。</summary>
+        <returns>逆シリアル化された CodeDOM オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method uses the serialization manager to create objects and resolve data types. The root of the object graph is returned.  
+## 解説  
+ このメソッドでは、シリアル化マネージャーを使用して、オブジェクトを作成し、データ型を解決します。 オブジェクト グラフのルートが返されます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="manager" /> or <paramref name="codeObject" /> is <see langword="null" />.</exception>
+          <paramref name="manager" /> または <paramref name="codeObject" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="codeObject" /> is an unsupported code element.</exception>
+          <paramref name="codeObject" /> サポートされていないコード要素です。</exception>
       </Docs>
     </Member>
     <Member MemberName="DeserializeStatementToInstance">
@@ -124,15 +126,15 @@
         <Parameter Name="statement" Type="System.CodeDom.CodeStatement" />
       </Parameters>
       <Docs>
-        <param name="manager">The serialization manager to use for serialization.</param>
-        <param name="statement">The statement to deserialize.</param>
-        <summary>Deserializes a single statement.</summary>
-        <returns>An object instance resulting from deserializing <paramref name="statement" />.</returns>
+        <param name="manager">シリアル化に使用するシリアル化マネージャー。</param>
+        <param name="statement">逆シリアル化するステートメント。</param>
+        <summary>1 つのステートメントを逆シリアル化します。</summary>
+        <returns>オブジェクトのインスタンスを逆シリアル化による <paramref name="statement" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer.DeserializeStatementToInstance%2A> is equivalent of calling <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.DeserializeStatement%2A>, except that it returns an object instance if the resulting statement was a variable assign statement, a variable declaration with an init expression, or a field assignment statement.  
+## 解説  
+ <xref:System.ComponentModel.Design.Serialization.CodeDomSerializer.DeserializeStatementToInstance%2A> は呼び出すのと同じ <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.DeserializeStatement%2A>, 点が異なりますが、変数の代入ステートメントでは、初期化式、またはフィールドの代入ステートメントで変数の宣言ステートメントで結果として得られる場合は、オブジェクトのインスタンスを返します。  
   
  ]]></format>
         </remarks>
@@ -156,11 +158,13 @@
         <Parameter Name="targetType" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="statement">The <see cref="T:System.CodeDom.CodeStatement" /> for which to determine the group.</param>
-        <param name="expression">A <see cref="T:System.CodeDom.CodeExpression" /> that <c>statement</c> has been reduced to.</param>
-        <param name="targetType">The <see cref="T:System.Type" /> of <c>statement</c>.</param>
-        <summary>Determines which statement group the given statement should belong to.</summary>
-        <returns>The name of the component with which <paramref name="statement" /> should be grouped.</returns>
+        <param name="statement">
+          <see cref="T:System.CodeDom.CodeStatement" /> グループを決定します。</param>
+        <param name="expression">A <see cref="T:System.CodeDom.CodeExpression" /> を <c>statement</c> に削減されました。</param>
+        <param name="targetType">
+          <see cref="T:System.Type" /> の <c>statement</c>。</param>
+        <summary>指定したステートメントに属している必要のあるステートメント グループを決定します。</summary>
+        <returns>使用するコンポーネントの名前 <paramref name="statement" /> グループ化する必要があります。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -181,13 +185,13 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="manager">The serialization manager to use during serialization.</param>
-        <param name="value">The object to serialize.</param>
-        <summary>Serializes the specified object into a CodeDOM object.</summary>
-        <returns>A CodeDOM object representing the object that has been serialized.</returns>
+        <param name="manager">シリアル化時に使用するシリアル化マネージャー。</param>
+        <param name="value">シリアル化するオブジェクト。</param>
+        <summary>特定のオブジェクトをシリアル化して、CodeDOM オブジェクトを生成します。</summary>
+        <returns>シリアル化されたオブジェクトを表す CodeDOM オブジェクト。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="manager" /> or <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="manager" /> または <paramref name="value" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="SerializeAbsolute">
@@ -207,13 +211,13 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="manager">The serialization manager to use for serialization.</param>
-        <param name="value">The object to serialize.</param>
-        <summary>Serializes the given object, accounting for default values.</summary>
-        <returns>A CodeDom object representing <paramref name="value" />.</returns>
+        <param name="manager">シリアル化に使用するシリアル化マネージャー。</param>
+        <param name="value">シリアル化するオブジェクト。</param>
+        <summary>既定値を特定のオブジェクトをシリアル化します。</summary>
+        <returns>表す CodeDom オブジェクト <paramref name="value" />します。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="manager" /> or <paramref name="value" /> is <see langword="null" />.</exception>
+          <paramref name="manager" /> または <paramref name="value" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="SerializeMember">
@@ -234,16 +238,18 @@
         <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
       </Parameters>
       <Docs>
-        <param name="manager">The serialization manager to use for serialization.</param>
-        <param name="owningObject">The object to which is <c>member</c> attached.</param>
-        <param name="member">The member to serialize.</param>
-        <summary>Serializes the given member on the given object.</summary>
-        <returns>A <see cref="T:System.CodeDom.CodeStatementCollection" /> representing the serialized state of <paramref name="member" />.</returns>
+        <param name="manager">シリアル化に使用するシリアル化マネージャー。</param>
+        <param name="owningObject">
+          <c>member</c> がアタッチされているオブジェクト。</param>
+        <param name="member">シリアル化するメンバー。</param>
+        <summary>指定されたオブジェクトの指定されたメンバーをシリアル化します。</summary>
+        <returns>
+          <paramref name="member" /> のシリアル化された状態を表す <see cref="T:System.CodeDom.CodeStatementCollection" />。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="manager" />, <paramref name="owningObject" />, or <paramref name="member" /> is <see langword="null" />.</exception>
+          <paramref name="manager" />、<paramref name="owningObject" />、または <paramref name="member" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="member" /> is not a serializable type.</exception>
+          <paramref name="member" /> がシリアル化可能な型ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="SerializeMemberAbsolute">
@@ -264,16 +270,18 @@
         <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
       </Parameters>
       <Docs>
-        <param name="manager">The serialization manager to use for serialization.</param>
-        <param name="owningObject">The object to which is <c>member</c> attached.</param>
-        <param name="member">The member to serialize.</param>
-        <summary>Serializes the given member, accounting for default values.</summary>
-        <returns>A CodeDom object representing <paramref name="member" />.</returns>
+        <param name="manager">シリアル化に使用するシリアル化マネージャー。</param>
+        <param name="owningObject">
+          <c>member</c> がアタッチされているオブジェクト。</param>
+        <param name="member">シリアル化するメンバー。</param>
+        <summary>既定値を考慮して、指定されたメンバーをシリアル化します。</summary>
+        <returns>
+          <paramref name="member" /> を表す CodeDom オブジェクト。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="manager" />, <paramref name="owningObject" />, or <paramref name="member" /> is <see langword="null" />.</exception>
+          <paramref name="manager" />、<paramref name="owningObject" />、または <paramref name="member" /> が <see langword="null" /> です。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="member" /> is not a serializable type.</exception>
+          <paramref name="member" /> がシリアル化可能な型ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="SerializeToReferenceExpression">
@@ -298,15 +306,15 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="manager">The serialization manager to use during serialization.</param>
-        <param name="value">The object to serialize.</param>
-        <summary>Serializes the specified value to a CodeDOM expression.</summary>
-        <returns>The serialized value. This returns <see langword="null" /> if no reference expression can be obtained for the specified value, or the value cannot be serialized.</returns>
+        <param name="manager">シリアル化時に使用するシリアル化マネージャー。</param>
+        <param name="value">シリアル化するオブジェクト。</param>
+        <summary>CodeDOM 式に指定した値をシリアル化します。</summary>
+        <returns>シリアル化された値。 返されます。 <see langword="null" /> 参照式を指定した値を取得できない場合、または、値をシリアル化することはできません。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is similar to <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializeToExpression%2A>, except that it stops if it cannot obtain a simple reference expression for the value. Call this method when you expect the resulting expression to be used as a parameter or target of a statement.  
+## 解説  
+ このメソッドは <xref:System.ComponentModel.Design.Serialization.CodeDomSerializerBase.SerializeToExpression%2A>, 点が、値の単純な参照式を取得できない場合は停止します。 パラメーターまたはステートメントの対象として使用される結果の式が予想される場合は、このメソッドを呼び出します。  
   
  ]]></format>
         </remarks>

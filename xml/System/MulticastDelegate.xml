@@ -29,35 +29,35 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents a multicast delegate; that is, a delegate that can have more than one element in its invocation list.</summary>
+    <summary>マルチキャスト デリゲート、つまり呼び出しリストに複数の要素を組み込むことができるデリゲートを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.MulticastDelegate> is a special class. Compilers and other tools can derive from this class, but you cannot derive from it explicitly. The same is true of the <xref:System.Delegate> class.  
+## 解説  
+ <xref:System.MulticastDelegate> 特殊なクラスです。 コンパイラ、およびその他のツールは、このクラスから派生できますが、明示的にそこから派生させることはできません。 場合も同様です、 <xref:System.Delegate> クラスです。  
   
- In addition to the methods that delegate types inherit from <xref:System.MulticastDelegate>, the common language runtime provides two special methods: `BeginInvoke` and `EndInvoke`. For more information about these methods, see [Calling Synchronous Methods Asynchronously](~/docs/standard/asynchronous-programming-patterns/calling-synchronous-methods-asynchronously.md).  
+ 継承するデリゲート型のメソッドに加えて <xref:System.MulticastDelegate>, 、共通言語ランタイムは、2 つの特殊なメソッドを提供します。 `BeginInvoke` と `EndInvoke`です。 これらのメソッドの詳細については、「[Calling Synchronous Methods Asynchronously](http://msdn.microsoft.com/ja-jp/41972034-92ed-450a-9664-ab93fcc6f1fb)」を参照してください。  
   
- A <xref:System.MulticastDelegate> has a linked list of delegates, called an invocation list, consisting of one or more elements. When a multicast delegate is invoked, the delegates in the invocation list are called synchronously in the order in which they appear. If an error occurs during execution of the list then an exception is thrown.  
+ A <xref:System.MulticastDelegate> デリゲートの呼び出しリストと呼ばれる 1 つまたは複数の要素で構成されるリンク リストがあります。 マルチキャスト デリゲートが呼び出されたときに表示される順序で、呼び出しリストにデリゲートが同期的に呼び出されます。 リストの実行中にエラーが発生した場合は、例外がスローされます。  
   
    
   
-## Examples  
- The following example defines a class, `StringContainer`, which includes a collection of strings. One of its members is the `CheckAndDisplayDelegate` delegate, which is used to display strings stored in a `StringContainer` object that satisfy particular criteria. The delegate takes a single string as a parameter and returns `void` (or, in Visual Basic, it's a `Sub` procedure). It also includes a method, `DisplayAllQualified`, that has a single parameter, a `CheckAndDisplayDelegate` delegate. This allows the method to be called and to display a set of strings that are filtered based on the methods that the delegate contains.  
+## 例  
+ 次の例では、クラス、 `StringContainer`, 、文字列のコレクションが含まれます。 そのメンバーの 1 つは、 `CheckAndDisplayDelegate` 委任に格納された文字列の表示に使用される、 `StringContainer` 特定の条件を満たすオブジェクトです。 デリゲートは、単一の文字列パラメーターとして受け取るし、返します `void` \(または Visual basic では、 `Sub` プロシージャ\) です。 メソッドも含まれています。 `DisplayAllQualified`, 、1 つのパラメーターを持つ、 `CheckAndDisplayDelegate` を委任します。 これにより、呼び出されるメソッドとデリゲートを含むメソッドに基づいてフィルター処理されている文字列のセットを表示します。  
   
- The example also defines a utility class, `StringExtensions`, that has two methods:  
+ ユーティリティ クラスも定義 `StringExtensions`, 、2 つのメソッドを持ちます。  
   
--   `ConStart`, which displays strings that begin with a consonant.  
+-   `ConStart`, 、子音で始まる文字列が表示されます。  
   
--   `VowelStart`, which displays strings that begin with a vowel.  
+-   `VowelStart`, 、母音で始まる文字列が表示されます。  
   
- Note that both methods include a single string parameter and return `void`. In other words, both methods can be assigned to the  `CheckAndDisplayDelegate` delegate.  
+ どちらの方法で 1 つの文字列パラメーターを含める、返す `void`します。 つまり、両方のメソッドに割り当てることが、  `CheckAndDisplayDelegate` を委任します。  
   
- The `Test.Main` method is the application entry point. It instantiates a `StringContainer` object, populates it with strings, and creates two `CheckAndDisplayDelegate` delegates, `conStart` and `vowelStart`, that invoke a single method. It then calls the <xref:System.Delegate.Combine%2A?displayProperty=fullName> method to create the `multipleDelegates` delegate, which initially contains the `ConStart` and  `VowelStart` delegates. Note that when the `multipleDelegates` delegate is invoked, it displays all the strings in the collection in their original order. This is because each letter is passed separately to each delegate, and each letter meets the filtering criteria of only one of the two delegates. Finally, after calls to <xref:System.Delegate.Remove%2A?displayProperty=fullName> and <xref:System.Delegate.Combine%2A?displayProperty=fullName>, `multipleDelegates` contains two `conStart` delegates. When it is invoked, each string in the `StringContainer` object is displayed twice.  
+ `Test.Main` メソッドは、アプリケーションのエントリ ポイントです。 インスタンス化、 `StringContainer` オブジェクト、文字列をそこに格納し、2 つ作成されます `CheckAndDisplayDelegate` デリゲート、 `conStart` と `vowelStart`, 、1 つのメソッドを呼び出す場合です。 順に呼び出して、 <xref:System.Delegate.Combine%2A?displayProperty=fullName> を作成する方法、 `multipleDelegates` 委任、初期状態を含む、 `ConStart` と  `VowelStart` デリゲート。 場合、 `multipleDelegates` デリゲートが呼び出される、元の順序でコレクション内のすべての文字列が表示されます。 これは、それぞれの文字を個別に各デリゲートに渡され、それぞれの文字が 2 つのデリゲートの 1 つだけのフィルターの条件を満たしているためです。 呼び出し後に最後に、 <xref:System.Delegate.Remove%2A?displayProperty=fullName> と <xref:System.Delegate.Combine%2A?displayProperty=fullName>, 、`multipleDelegates` には 2 つ `conStart` デリゲート。 呼び出されると、内の各文字列、 `StringContainer` オブジェクトが 2 回表示されます。  
   
- [!code-cpp[Multicast Delegate Introduction#1](~/samples/snippets/cpp/VS_Snippets_CLR/Multicast Delegate Introduction/CPP/delegatestring.cpp#1)]
- [!code-csharp[Multicast Delegate Introduction#1](~/samples/snippets/csharp/VS_Snippets_CLR/Multicast Delegate Introduction/CS/delegatestring.cs#1)]
- [!code-vb[Multicast Delegate Introduction#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Multicast Delegate Introduction/VB/delegatestring.vb#1)]  
+ [!code-cpp[Multicast Delegate Introduction\#1](~/samples/snippets/cpp/VS_Snippets_CLR/Multicast Delegate Introduction/CPP/delegatestring.cpp#1)]
+ [!code-csharp[Multicast Delegate Introduction\#1](~/samples/snippets/csharp/VS_Snippets_CLR/Multicast Delegate Introduction/CS/delegatestring.cs#1)]
+ [!code-vb[Multicast Delegate Introduction\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Multicast Delegate Introduction/VB/delegatestring.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -86,19 +86,20 @@
         <Parameter Name="method" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="target">The object on which <c>method</c> is defined.</param>
-        <param name="method">The name of the method for which a delegate is created.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.MulticastDelegate" /> class.</summary>
+        <param name="target">対象となるオブジェクト <c>method</c> が定義されています。</param>
+        <param name="method">デリゲートを作成するメソッドの名前。</param>
+        <summary>
+          <see cref="T:System.MulticastDelegate" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor cannot be used in application code. To create a delegate by specifying the name of an instance method, use an overload of the <xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> method that specifies a method name and a target object. For example, the <xref:System.Delegate.CreateDelegate%28System.Type%2CSystem.Object%2CSystem.String%29?displayProperty=fullName> method overload creates a delegate for an instance method with a specified name.  
+## 解説  
+ このコンス トラクターは、アプリケーション コードでは使用できません。 インスタンス メソッドの名前を指定することによって、デリゲートを作成するには、オーバー ロードを使用して、 <xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> メソッドがメソッド名とターゲット オブジェクトを指定します。 たとえば、 <xref:System.Delegate.CreateDelegate%28System.Type%2CSystem.Object%2CSystem.String%29?displayProperty=fullName> メソッド オーバー ロードは、指定の名前を持つインスタンス メソッドのデリゲートを作成します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" />.</permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" />.</permission>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -124,19 +125,20 @@
         <Parameter Name="method" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="target">The type of object on which <c>method</c> is defined.</param>
-        <param name="method">The name of the static method for which a delegate is created.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.MulticastDelegate" /> class.</summary>
+        <param name="target">対象となるオブジェクトの種類 <c>method</c> が定義されています。</param>
+        <param name="method">デリゲートを作成する静的メソッドの名前。</param>
+        <summary>
+          <see cref="T:System.MulticastDelegate" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor cannot be used in application code. To create a delegate by specifying the name of a static method, use an overload of the <xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> method that specifies a method name but does not specify a target object. For example, the <xref:System.Delegate.CreateDelegate%28System.Type%2CSystem.Type%2CSystem.String%29?displayProperty=fullName> method overload creates a static delegate for a method with a specified name.  
+## 解説  
+ このコンス トラクターは、アプリケーション コードでは使用できません。 静的メソッドの名前を指定することによって、デリゲートを作成するには、オーバー ロードを使用して、 <xref:System.Delegate.CreateDelegate%2A?displayProperty=fullName> メソッド名を指定するターゲット オブジェクトが指定されていないメソッド。 たとえば、 <xref:System.Delegate.CreateDelegate%28System.Type%2CSystem.Type%2CSystem.String%29?displayProperty=fullName> メソッド オーバー ロードは、指定した名前のメソッドの静的なデリゲートを作成します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="CombineImpl">
@@ -164,14 +166,14 @@
         <Parameter Name="follow" Type="System.Delegate" />
       </Parameters>
       <Docs>
-        <param name="follow">The delegate to combine with this delegate.</param>
-        <summary>Combines this <see cref="T:System.Delegate" /> with the specified <see cref="T:System.Delegate" /> to form a new delegate.</summary>
-        <returns>A delegate that is the new root of the <see cref="T:System.MulticastDelegate" /> invocation list.</returns>
+        <param name="follow">このデリゲートと結合するデリゲート。</param>
+        <summary>これを組み合わせて<see cref="T:System.Delegate" />、指定した<see cref="T:System.Delegate" />新しいデリゲートを作成します。</summary>
+        <returns>A であるデリゲートの新しいルート、<see cref="T:System.MulticastDelegate" />呼び出しリスト。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="follow" /> does not have the same type as this instance.</exception>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+          <paramref name="follow" />このインスタンスと同じ型がありません。</exception>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="DynamicInvokeImpl">
@@ -226,22 +228,22 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to compare with this instance.</param>
-        <summary>Determines whether this multicast delegate and the specified object are equal.</summary>
+        <param name="obj">このインスタンスと比較するオブジェクト。</param>
+        <summary>このマルチキャスト デリゲートと指定されたオブジェクトが等しいかどうかを確認します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="obj" /> and this instance have the same invocation lists; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合 <paramref name="obj" /> しこのインスタンスが同じ呼び出しリストを設定しない場合は、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Two delegates are equal if they are not `null` and are of exactly the same type, their invocation lists contain the same number of elements, and every element in the invocation list of the first delegate is equal to the corresponding element in the invocation list of the second delegate.  
+## 解説  
+ 2 つのデリゲートが等しくない場合は `null` とまったく同じ型のそれぞれの呼び出しリストには、同じ数要素にはが含まれてし、最初のデリゲートの呼び出しリスト内のすべての要素は 2 つ目のデリゲートの呼び出しリスト内の対応する要素と同じです。  
   
- Two invocation list elements are equal if they invoke the same instance method on the same target instance, or they invoke the same static method.  
+ 2 つの呼び出しリストの要素が場合は、同じターゲット インスタンスで同じインスタンス メソッドを呼び出し、または同じ静的メソッドを呼び出し、等しい。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="GetHashCode">
@@ -271,11 +273,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the hash code for this instance.</summary>
-        <returns>A 32-bit signed integer hash code.</returns>
+        <summary>このインスタンスのハッシュ コードを返します。</summary>
+        <returns>32 ビット符号付き整数ハッシュ コード。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="GetInvocationList">
@@ -305,18 +307,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the invocation list of this multicast delegate, in invocation order.</summary>
-        <returns>An array of delegates whose invocation lists collectively match the invocation list of this instance.</returns>
+        <summary>このマルチキャスト デリゲートの呼び出しリストを呼び出し順に返します。</summary>
+        <returns>対象のインスタンスの呼び出しリストと完全に一致する呼び出しリストを持つデリゲートの配列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The array contains a set of delegates, each with an invocation list of one entry. Invoking these delegates sequentially, in the order they appear in the array, produces the same results as invoking the current instance.  
+## 解説  
+ 配列には、それぞれ 1 つのエントリの呼び出しリストに、デリゲートのセットが含まれています。 配列の順序で順番に、これらのデリゲートを呼び出すには、現在のインスタンスを呼び出すのと同じ結果が生成されます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="GetMethodImpl">
@@ -342,14 +344,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a static method represented by the current <see cref="T:System.MulticastDelegate" />.</summary>
-        <returns>A static method represented by the current <see cref="T:System.MulticastDelegate" />.</returns>
+        <summary>現在の静的メソッドを返す <see cref="T:System.MulticastDelegate" />します。</summary>
+        <returns>現在の静的メソッド <see cref="T:System.MulticastDelegate" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.MulticastDelegate> represents multiple methods, only one method is returned.  
+## 解説  
+ 場合、 <xref:System.MulticastDelegate> 複数のメソッドを表す 1 つだけのメソッドが返されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -380,28 +385,30 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">An object that holds all the data needed to serialize or deserialize this instance.</param>
-        <param name="context">(Reserved) The location where serialized data is stored and retrieved.</param>
-        <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object with all the data needed to serialize this instance.</summary>
+        <param name="info">このインスタンスのシリアル化または逆シリアル化に必要なすべてのデータを保持するオブジェクト。</param>
+        <param name="context">\(予約済み\) シリアル化データを格納および取得する位置。</param>
+        <summary>設定、 <see cref="T:System.Runtime.Serialization.SerializationInfo" /> をこのインスタンスをシリアル化するために必要なすべてのデータを含むオブジェクト。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method stores all the information in `info` necessary to serialize this instance.  
+## 解説  
+ このメソッド内のすべての情報を格納する `info` をこのインスタンスをシリアル化するために必要なです。  
   
- The `context` parameter is reserved and is not currently used in the execution of this method.  
+ `context` パラメーターは予約されており、このメソッドの実行で使用されていません。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="info" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">A serialization error occurred.</exception>
+          <paramref name="info" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">シリアル化エラーが発生しました。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="T:System.Object" />
+        <altmember cref="T:System.Runtime.Serialization.SerializationInfo" />
       </Docs>
     </Member>
     <Member MemberName="op_Equality">
-      <MemberSignature Language="C#" Value="public static bool operator == (MulticastDelegate d1, MulticastDelegate d2);" />
+      <MemberSignature Language="C#" Value="public static bool op_Equality (MulticastDelegate d1, MulticastDelegate d2);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Equality(class System.MulticastDelegate d1, class System.MulticastDelegate d2) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.MulticastDelegate.op_Equality(System.MulticastDelegate,System.MulticastDelegate)" />
       <MemberType>Method</MemberType>
@@ -430,27 +437,27 @@
         <Parameter Name="d2" Type="System.MulticastDelegate" />
       </Parameters>
       <Docs>
-        <param name="d1">The left operand.</param>
-        <param name="d2">The right operand.</param>
-        <summary>Determines whether two <see cref="T:System.MulticastDelegate" /> objects are equal.</summary>
+        <param name="d1">左オペランド。</param>
+        <param name="d2">右オペランド。</param>
+        <summary>2 つの <see cref="T:System.MulticastDelegate" /> オブジェクトが等しいかどうかを判断します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="d1" /> and <paramref name="d2" /> have the same invocation lists; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合 <paramref name="d1" /> と <paramref name="d2" /> 同じ呼び出しリストがある。 そうしないと、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Two delegates are equal if they are not `null` and are of exactly the same type, their invocation lists contain the same number of elements, and every element in the invocation list of the first delegate is equal to the corresponding element in the invocation list of the second delegate.  
+## 解説  
+ 2 つのデリゲートが等しくない場合は `null` とまったく同じ型のそれぞれの呼び出しリストには、同じ数要素にはが含まれてし、最初のデリゲートの呼び出しリスト内のすべての要素は 2 つ目のデリゲートの呼び出しリスト内の対応する要素と同じです。  
   
- Two invocation list elements are equal if they invoke the same instance method on the same target instance, or they invoke the same static method.  
+ 2 つの呼び出しリストの要素が場合は、同じターゲット インスタンスで同じインスタンス メソッドを呼び出し、または同じ静的メソッドを呼び出し、等しい。  
   
  The equivalent method for this operator is <xref:System.MulticastDelegate.Equals%28System.Object%29?displayProperty=fullName>]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="op_Inequality">
-      <MemberSignature Language="C#" Value="public static bool operator != (MulticastDelegate d1, MulticastDelegate d2);" />
+      <MemberSignature Language="C#" Value="public static bool op_Inequality (MulticastDelegate d1, MulticastDelegate d2);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Inequality(class System.MulticastDelegate d1, class System.MulticastDelegate d2) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.MulticastDelegate.op_Inequality(System.MulticastDelegate,System.MulticastDelegate)" />
       <MemberType>Method</MemberType>
@@ -479,23 +486,23 @@
         <Parameter Name="d2" Type="System.MulticastDelegate" />
       </Parameters>
       <Docs>
-        <param name="d1">The left operand.</param>
-        <param name="d2">The right operand.</param>
-        <summary>Determines whether two <see cref="T:System.MulticastDelegate" /> objects are not equal.</summary>
+        <param name="d1">左オペランド。</param>
+        <param name="d2">右オペランド。</param>
+        <summary>2 つあるかどうかを決定 <see cref="T:System.MulticastDelegate" /> オブジェクトが等しくないです。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="d1" /> and <paramref name="d2" /> do not have the same invocation lists; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合 <paramref name="d1" /> と <paramref name="d2" /> 呼び出しのリストが同じではありません。 そうしないと、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Two delegates are equal if they are not `null` and are of exactly the same type, their invocation lists contain the same number of elements, and every element in the invocation list of the first delegate is equal to the corresponding element in the invocation list of the second delegate.  
+## 解説  
+ 2 つのデリゲートが等しくない場合は `null` とまったく同じ型のそれぞれの呼び出しリストには、同じ数要素にはが含まれてし、最初のデリゲートの呼び出しリスト内のすべての要素は 2 つ目のデリゲートの呼び出しリスト内の対応する要素と同じです。  
   
- Two invocation list elements are equal if they invoke the same instance method on the same target instance, or they invoke the same static method.  
+ 2 つの呼び出しリストの要素が場合は、同じターゲット インスタンスで同じインスタンス メソッドを呼び出し、または同じ静的メソッドを呼び出し、等しい。  
   
  The equivalent method for this operator is <xref:System.MulticastDelegate.Equals%28System.Object%29?displayProperty=fullName>]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
     <Member MemberName="RemoveImpl">
@@ -523,13 +530,24 @@
         <Parameter Name="value" Type="System.Delegate" />
       </Parameters>
       <Docs>
-        <param name="value">The delegate to search for in the invocation list.</param>
-        <summary>Removes an element from the invocation list of this <see cref="T:System.MulticastDelegate" /> that is equal to the specified delegate.</summary>
-        <returns>If <paramref name="value" /> is found in the invocation list for this instance, then a new <see cref="T:System.Delegate" /> without <paramref name="value" /> in its invocation list; otherwise, this instance with its original invocation list.</returns>
+        <param name="value">呼び出しリスト内で検索するデリゲート。</param>
+        <summary>この呼び出しリストから要素を削除 <see cref="T:System.MulticastDelegate" /> の値が、指定したデリゲート。</summary>
+        <returns>場合 <paramref name="value" /> し、新しい、このインスタンスの呼び出しリストにある <see cref="T:System.Delegate" /> せず <paramref name="value" /> 、呼び出しリストです。 それ以外の場合、このインスタンスで元の呼び出しリストです。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.MemberAccessException">Cannot create an instance of an abstract class, or this member was invoked with a late-binding mechanism.</exception>
-        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <exception cref="T:System.MemberAccessException">抽象クラスのインスタンスを作成することができないか、またはこのメンバーは遅延バインド メカニズムで呼び出されました。</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">when invoked late\-bound through mechanisms such as <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />. Associated enumeration: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.MulticastDelegate" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

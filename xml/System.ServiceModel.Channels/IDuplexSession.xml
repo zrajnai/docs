@@ -16,15 +16,18 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Defines the interface for the session implemented on each side of a bi-directional communication between messaging endpoints.</summary>
+    <summary>メッセージング エンドポイント間の双方向通信の両側に実装されるセッションのインターフェイスを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.Channels.IDuplexSession> interface is the union of the inbound session, defined by the <xref:System.ServiceModel.Channels.IInputSession> interface, and the outbound session, defined by the <xref:System.ServiceModel.Channels.IOutputSession> interface. Either the inbound session or outbound session can be terminated independently of the other. The outbound session can be terminated synchronously by calling <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> or asynchronously by calling <xref:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession%2A>.  
+## 解説  
+ <xref:System.ServiceModel.Channels.IDuplexSession> インターフェイスは、<xref:System.ServiceModel.Channels.IInputSession> インターフェイスで定義されている受信セッションと、<xref:System.ServiceModel.Channels.IOutputSession> インターフェイスで定義されている送信セッションの結合です。 受信セッションと送信セッションは、どちらも、もう一方に関係なく終了できます。 送信セッションは、<xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> を呼び出して同期的に終了するか、または <xref:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession%2A> を呼び出して非同期的に終了することができます。  
   
- The inbound session can be remotely terminated. The <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> associated with the inbound session starts returning `null` when that session is shutdown.  
+ 受信セッションは、リモート操作で終了できます。 受信セッションに関連付けられた <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> は、そのセッションがシャットダウンすると、`null` を返すようになります。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -47,16 +50,20 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate.</param>
-        <param name="state">An <see langword="object" /> that contains state information for this request.</param>
-        <summary>Begins an asynchronous operation to terminate the outbound session.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous outbound session termination.</returns>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> デリゲート。</param>
+        <param name="state">この要求の状態情報を格納する <see langword="object" />。</param>
+        <summary>送信セッションを終了する非同期操作を開始します。</summary>
+        <returns>非同期送信セッションの終了を参照する <see cref="T:System.IAsyncResult" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Terminating the outbound session does not affect the incoming session and so makes no statement about the ability to receive messages on the session associated with the input channel. This operation must complete within a default interval of time.  
+## 解説  
+ 送信セッションを終了しても、受信セッションに影響はないため、入力チャネルに関連付けられているセッションでのメッセージ受信機能についてのステートメントはありません。 この操作は、既定の時間内に完了する必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -80,17 +87,21 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout">The <see cref="T:System.TimeSpan" /> that specifies the interval of time within which the operation must complete.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate.</param>
-        <param name="state">An <see langword="object" /> that contains state information for this request.</param>
-        <summary>Begins an asynchronous operation to terminate the outbound session with a specified timeout within which the operation must complete.</summary>
-        <returns>The <see cref="T:System.IAsyncResult" /> that references the asynchronous outbound session termination.</returns>
+        <param name="timeout">操作完了の制限時間を指定する <see cref="T:System.TimeSpan" />。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> デリゲート。</param>
+        <param name="state">この要求の状態情報を格納する <see langword="object" />。</param>
+        <summary>操作がその時間内に完了する必要があるタイムアウトを指定して、送信セッションを終了する非同期操作を開始します。</summary>
+        <returns>非同期送信セッションの終了を参照する <see cref="T:System.IAsyncResult" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Terminating the outbound session does not affect the incoming session and so makes no statement about the ability to receive messages on the session associated with the input channel.  
+## 解説  
+ 送信セッションを終了しても、受信セッションに影響はないため、入力チャネルに関連付けられているセッションでのメッセージ受信機能についてのステートメントはありません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -110,15 +121,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Terminates the outbound session that indicates that no more messages will be sent from this endpoint on the channel associated with the session.</summary>
+        <summary>セッションに関連付けられたチャネルのエンドポイントから、これ以上メッセージが送信されないことを示している送信セッションを終了します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession> signals to the other side of the session that it should return `null` from any outstanding or subsequent calls made to <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> is idempotent, so calling it again has no effect.  
+## 解説  
+ Calling <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession> signals to the other side of the session that it should return **languageKeyword tag is not supported!!!!**  
+ from any outstanding or subsequent calls made to <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> is idempotent, so calling it again has no effect.  
   
  Terminating the outbound session does not affect the incoming session and so makes no statement about the ability to receive messages on the session associated with the input channel.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -154,16 +169,20 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">The <see cref="T:System.TimeSpan" /> that specifies the interval of time within which the operation must complete.</param>
-        <summary>Terminates the outbound session that indicates that no more messages will be sent from this endpoint on the channel associated with the session within a specified interval of time.</summary>
+        <param name="timeout">操作完了の制限時間を指定する <see cref="T:System.TimeSpan" />。</param>
+        <summary>指定した時間内に、セッションに関連付けられたチャネルのエンドポイントから、これ以上メッセージが送信されないことを示している送信セッションを終了します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%28System.TimeSpan%29> signals to the other side of the session that it should return `null` from any outstanding or subsequent calls made to <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> is idempotent, so calling it again has no effect.  
+## 解説  
+ Calling <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%28System.TimeSpan%29> signals to the other side of the session that it should return **languageKeyword tag is not supported!!!!**  
+ from any outstanding or subsequent calls made to <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> is idempotent, so calling it again has no effect.  
   
  Terminating the outbound session does not affect the incoming session and so makes no statement about the ability to receive messages on the session associated with the input channel.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -199,17 +218,52 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">The <see cref="T:System.IAsyncResult" /> returned by a call to one of the <see cref="Overload:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession" /> methods.</param>
-        <summary>Completes an asynchronous operation to terminate the outbound session that indicates that no more messages will be sent from this endpoint on the channel associated with the session.</summary>
+        <param name="result">いずれかの <see cref="T:System.IAsyncResult" /> メソッドへの呼び出しで返された <see cref="Overload:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession" />。</param>
+        <summary>セッションに関連付けられたチャネルのエンドポイントから、これ以上メッセージが送信されないことを示している送信セッションに対して、セッションを終了する非同期操作を完了します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Terminating the outbound session does not affect the incoming session and so makes no statement about the ability to receive messages on the session associated with the input channel  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="BeginCloseOutputSession">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>送信セッションを終了する非同期操作を開始します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="CloseOutputSession">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>セッションに関連付けられたチャネルのエンドポイントから、これ以上メッセージが送信されないことを示している送信セッションを終了します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

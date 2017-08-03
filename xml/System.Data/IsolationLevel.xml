@@ -20,27 +20,27 @@
     <BaseTypeName>System.Enum</BaseTypeName>
   </Base>
   <Docs>
-    <summary>Specifies the transaction locking behavior for the connection.</summary>
+    <summary>接続のトランザクション ロック動作を指定します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Data.IsolationLevel> values are used by a .NET Framework data provider when performing a transaction.  
+## 解説  
+ <xref:System.Data.IsolationLevel> 値は、トランザクションを実行するときに .NET Framework データ プロバイダーにより使用されます。  
   
- The <xref:System.Data.IsolationLevel> remains in effect until explicitly changed, but it can be changed at any time. The new value is used at execution time, not parse time. If changed during a transaction, the expected behavior of the server is to apply the new locking level to all statements remaining.  
+ <xref:System.Data.IsolationLevel> が有効にするまで明示的に変更しますが、いつでも変更できます。 新しい値は、解析時ではないに、実行時に使用されます。 トランザクション中に変更された場合、サーバーの予期される動作は、残りのすべてのステートメントに、新しいロック レベルを適用します。  
   
    
   
-## Examples  
- This application demonstrates how to use <xref:System.Data.IsolationLevel> in <xref:System.Data.Common.DbTransaction>. The sample will demonstrate which of the following behaviors are allowed in the different isolation levels:  
+## 例  
+ このアプリケーションを使用する方法を示して <xref:System.Data.IsolationLevel> で <xref:System.Data.Common.DbTransaction>します。 サンプルは、別の分離レベルで許可されている、次の動作を示しています。  
   
--   Dirty reads.  
+-   ダーティ リードです。  
   
--   Non-repeatable reads.  
+-   非繰り返しを読み取ります。  
   
--   Phantoms.  
+-   ファントムします。  
   
- This application will execute in the following isolation levels:  
+ このアプリケーションは、次の分離レベルで実行されます。  
   
 -   ReadUncommitted  
   
@@ -48,86 +48,86 @@
   
 -   RepeatableRead  
   
--   Serializable  
+-   シリアル化可能です  
   
--   Snapshot  
+-   スナップショット  
   
- The PhantomReadThreads class demonstrates if the specific transaction allows the Phantom Read behavior. If the transaction allows the behavior, the threads will operate in the following order:  
+ PhantomReadThreads クラスでは、特定のトランザクション ファントム読み取り動作できるようにするかどうかを示します。 トランザクションは、動作を許可している場合、スレッドは、次の順序で動作します。  
   
--   In first thread, select the products(All).  
+-   最初のスレッドで、products\(All\) を選択します。  
   
--   In the second thread, insert a new product.  
+-   2 番目のスレッドでは、新しい製品を挿入します。  
   
--   Commit the transaction in second thread.  
+-   2 番目のスレッドでのトランザクションをコミットします。  
   
--   Select the products again.  
+-   製品を再度選択します。  
   
--   Commit the transaction in first thread.  
+-   最初のスレッドでトランザクションをコミットします。  
   
- If the transaction allows the behavior, the two Select operations will get the different results.  
+ トランザクションは、動作を許可している場合、2 つの Select 操作は異なる結果を取得します。  
   
- The NonrepeatableReadThreads class demonstrates if the specific transaction allows the Nonrepeatable Read behavior. If the transaction allows the behavior, the threads will operate in the following order:  
+ NonrepeatableReadThreads クラスは、特定のトランザクションが、反復不能読み取りの動作を示します。 トランザクションは、動作を許可している場合、スレッドは、次の順序で動作します。  
   
--   In first thread, select the product(ProductId=1).  
+-   最初のスレッドで、product\(ProductId\=1\) を選択します。  
   
--   In the second thread, update the Quantity value(ProductId=1).  
+-   2 番目のスレッドでは、数量 value\(ProductId\=1\) を更新します。  
   
--   Commit the transaction in second thread.  
+-   2 番目のスレッドでのトランザクションをコミットします。  
   
--   Select the product again.  
+-   製品を再度選択します。  
   
--   Commit the transaction in first thread.  
+-   最初のスレッドでトランザクションをコミットします。  
   
- If the transaction allows the behavior, the two Select operations will get the different results.  
+ トランザクションは、動作を許可している場合、2 つの Select 操作は異なる結果を取得します。  
   
- The ExchangeValuesThreads class demonstrates the difference between the Serializable and Snapshot transaction. For the the Serializable transaction, threads will operate in the following order:  
+ ExchangeValuesThreads クラスでは、Serializable、およびスナップショット トランザクションの違いについて説明します。 スレッドは、シリアル化可能なトランザクションは次の順序で動作します。  
   
--   In first thread, get the Price of product(ProductId=2) and store in the variable.  
+-   最初のスレッドでは、変数に product\(ProductId\=2\) とストアの価格を取得します。  
   
--   In first thread, update the Price of product(ProductId=1) with the price of product(ProductId=2).  
+-   最初のスレッドでは、product\(ProductId\=2\) の価格 product\(ProductId\=1\) の価格を更新します。  
   
--   Commit the transaction in first thread.  
+-   最初のスレッドでトランザクションをコミットします。  
   
--   In second thread, get the Price of product(ProductId=1) and store in the variable.  
+-   2 番目のスレッドでは、変数に product\(ProductId\=1\) およびストアの価格を取得します。  
   
--   In second thread, update the Price of product(ProductId=2) with the price of product(ProductId=1).  
+-   2 番目のスレッドでは、product\(ProductId\=1\) の価格 product\(ProductId\=2\) の価格を更新します。  
   
--   Commit the transaction in second thread.  
+-   2 番目のスレッドでのトランザクションをコミットします。  
   
- Now the values of the Price(ProductId=1 and ProductId=2) are as same as the original Price of Product(ProductId=2).  
+ 今すぐ価格の値 \(ProductId \= 1、ProductId \= 2\) は、元の価格 Product\(ProductId\=2\) と同じです。  
   
- For the Snapshot transaction, threads will operate in the following order:  
+ スナップショット トランザクションのスレッドは、次の順序で動作します。  
   
--   In first thread, get the Price of product(ProductId=2) and store in the variable;  
+-   最初のスレッドでは、\[変数の product\(ProductId\=2\) およびストアの価格を取得します。  
   
--   In first thread, update the Price of product(ProductId=1) with the price of product(ProductId=2).  
+-   最初のスレッドでは、product\(ProductId\=2\) の価格 product\(ProductId\=1\) の価格を更新します。  
   
--   In second thread, get the Price of product(ProductId=1) from the snapshot and store in the variable.  
+-   2 番目のスレッドでは、スナップショットから product\(ProductId\=1\) の価格を取得し、変数に格納します。  
   
--   In second thread, update the Price of product(ProductId=2) with the price of product(ProductId=1).  
+-   2 番目のスレッドでは、product\(ProductId\=1\) の価格 product\(ProductId\=2\) の価格を更新します。  
   
--   Commit the transaction in second thread.  
+-   2 番目のスレッドでのトランザクションをコミットします。  
   
--   Commit the transaction in first thread.  
+-   最初のスレッドでトランザクションをコミットします。  
   
- Now exchange the Price of products(ProductId=1 and ProductId=2).  
+ 交換するように製品の価格 \(ProductId \= 1、ProductId \= 2\)。  
   
- The DirtyReadThreads class demonstrates if the specific transaction allows the Dirty Read behavior. If the transaction allows the behavior, the threads will operate in the following order:  
+ DirtyReadThreads クラスでは、特定のトランザクション ダーティ リード動作できるようにするかどうかを示します。 トランザクションは、動作を許可している場合、スレッドは、次の順序で動作します。  
   
--   In first thread, begin a transaction and add the Quantity value(ProductId=1).  
+-   最初のスレッドでは、トランザクションを開始し、数量 value\(ProductId\=1\) を追加します。  
   
--   In the second thread, read the Quantity value and add the value again.  
+-   2 番目のスレッドで数量の値を読み取るし、値をもう一度追加します。  
   
--   Commit the transaction in second thread.  
+-   2 番目のスレッドでのトランザクションをコミットします。  
   
--   Roll back the transaction in first thread.  
+-   最初のスレッドで、トランザクションをロールバックします。  
   
- If the transaction allows the behavior, the Quantity value will be added twice.  
+ トランザクションは、動作を許可している場合、数量の値を 2 回追加されます。  
   
- C# and Visual Basic projects with this code sample can be found on [Developer Code Samples](http://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Type=SearchText&ac=4).  
+ このコードのサンプルの c\# および Visual Basic のプロジェクトを参照して [Developer Code Samples](http://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Type=SearchText&ac=4)します。  
   
- [!code-csharp[system_data_IsolationLevel#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/system_data_isolationlevel/cs/source.cs#1)]
- [!code-vb[system_data_IsolationLevel#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/system_data_isolationlevel/vb/source.vb#1)]  
+ [!code-csharp[system\_data\_IsolationLevel\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/system_data_isolationlevel/cs/source.cs#1)]
+ [!code-vb[system\_data\_IsolationLevel\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/system_data_isolationlevel/vb/source.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -156,7 +156,7 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The pending changes from more highly isolated transactions cannot be overwritten.</summary>
+        <summary>高度な分離レベルのトランザクションから保留中の変更は上書きされません。</summary>
       </Docs>
     </Member>
     <Member MemberName="ReadCommitted">
@@ -182,7 +182,7 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Shared locks are held while the data is being read to avoid dirty reads, but the data can be changed before the end of the transaction, resulting in non-repeatable reads or phantom data.</summary>
+        <summary>共有ロックがダーティ リードを回避する、データが読み取られて、その結果、反復不可能読み取りやファントム データ、トランザクションが終了する前にデータを変更することができます。</summary>
       </Docs>
     </Member>
     <Member MemberName="ReadUncommitted">
@@ -208,7 +208,7 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A dirty read is possible, meaning that no shared locks are issued and no exclusive locks are honored.</summary>
+        <summary>ダーティ リードが可能であれば、共有ロックが発行されると、排他ロックは受け入れられません。</summary>
       </Docs>
     </Member>
     <Member MemberName="RepeatableRead">
@@ -234,7 +234,7 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Locks are placed on all data that is used in a query, preventing other users from updating the data. Prevents non-repeatable reads but phantom rows are still possible.</summary>
+        <summary>他のユーザーがデータを更新することを防止し、クエリで使用されているすべてのデータには、ロックを設定します。 により、反復不可能読み取りがファントム行は引き続き可能です。</summary>
       </Docs>
     </Member>
     <Member MemberName="Serializable">
@@ -260,7 +260,7 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A range lock is placed on the <see cref="T:System.Data.DataSet" />, preventing other users from updating or inserting rows into the dataset until the transaction is complete.</summary>
+        <summary>範囲ロックがかけ、 <see cref="T:System.Data.DataSet" />, 、ほかのユーザーは、トランザクションが完了するまでに、データセットに行を挿入したり、更新します。</summary>
       </Docs>
     </Member>
     <Member MemberName="Snapshot">
@@ -286,7 +286,7 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Reduces blocking by storing a version of data that one application can read while another is modifying the same data. Indicates that from one transaction you cannot see changes made in other transactions, even if you requery.</summary>
+        <summary>他に、同じデータを変更するときに 1 つのアプリケーションが読み取ることができるデータのバージョンを格納することにより、ブロッキングを減らします。 1 つのトランザクションから表示できない他のトランザクションで行われた変更を再実行する場合でもを示します。</summary>
       </Docs>
     </Member>
     <Member MemberName="Unspecified">
@@ -312,12 +312,12 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A different isolation level than the one specified is being used, but the level cannot be determined.</summary>
+        <summary>指定した別の分離レベルが使用されているが、レベルを特定できません。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When using <xref:System.Data.Odbc.OdbcTransaction>, if you do not set <xref:System.Data.IsolationLevel> or you set <xref:System.Data.IsolationLevel> to `Unspecified`, the transaction executes according to the isolation level that is determined by the driver that is being used.  
+## 解説  
+ 使用する場合 <xref:System.Data.Odbc.OdbcTransaction>, を設定しない場合は、 <xref:System.Data.IsolationLevel> 設定することも <xref:System.Data.IsolationLevel> に `Unspecified`, 、トランザクションが使用されているドライバーによって決定される分離レベルに従って実行します。  
   
  ]]></format>
         </remarks>

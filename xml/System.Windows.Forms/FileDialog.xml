@@ -19,49 +19,60 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Displays a dialog box from which the user can select a file.</summary>
+    <summary>ユーザーがファイルを選択するダイアログ ボックスを表示します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Forms.FileDialog> is an abstract class that contains common behavior for the <xref:System.Windows.Forms.OpenFileDialog> and <xref:System.Windows.Forms.SaveFileDialog> classes. It is not intended to be used directly but contains common behavior for those two classes. You cannot create an instance of <xref:System.Windows.Forms.FileDialog>. Although the class is declared public, you cannot inherit from it, as it contains internal abstract methods. To create a dialog box to select or save a file, use <xref:System.Windows.Forms.OpenFileDialog> or <xref:System.Windows.Forms.SaveFileDialog>.  
+## 解説  
+ <xref:System.Windows.Forms.FileDialog> 一般的な動作を含む抽象クラスであり、 <xref:System.Windows.Forms.OpenFileDialog> と <xref:System.Windows.Forms.SaveFileDialog> クラスです。 直接使用するものではありませんが、これら 2 つのクラスの共通の動作が含まれています。 インスタンスを作成することはできません <xref:System.Windows.Forms.FileDialog>します。 クラスは、パブリック宣言は、内部の抽象メソッドが含まれているため、そこから継承できません。 選択するか、ファイルを保存するには、ダイアログ ボックスを作成するには使用 <xref:System.Windows.Forms.OpenFileDialog> または <xref:System.Windows.Forms.SaveFileDialog>です。  
   
- <xref:System.Windows.Forms.FileDialog> is a modal dialog box; therefore, when shown, it blocks the rest of the application until the user has chosen a file. When a dialog box is displayed modally, no input (keyboard or mouse click) can occur except to objects on the dialog box. The program must hide or close the dialog box (usually in response to some user action) before input to the calling program can occur.  
+ <xref:System.Windows.Forms.FileDialog> モーダル ダイアログ ボックスです。したがって、表示されると、アプリケーションの残りの部分までブロック、ユーザーがファイルを選択します。 ダイアログ ボックスはモーダルとして表示される場合 \(キーボードやマウスのクリック\) の入力しか発生しません\] ダイアログ ボックス上のオブジェクトにします。 プログラムを非表示にする必要があります。 または呼び出し元のプログラムへの入力 \(通常はユーザーの操作への応答\) で、ダイアログ ボックスが閉じる発生することができます。  
   
 > [!CAUTION]
->  When you use classes derived from <xref:System.Windows.Forms.FileDialog>, such as <xref:System.Windows.Forms.OpenFileDialog> and <xref:System.Windows.Forms.SaveFileDialog>, avoid using string literals containing absolute paths. Instead, dynamically obtain the path using one or more of the techniques described in the following table.  
+>  派生したクラスを使用すると <xref:System.Windows.Forms.FileDialog>, など <xref:System.Windows.Forms.OpenFileDialog> と <xref:System.Windows.Forms.SaveFileDialog>, 、絶対パスを含んでいる文字列リテラルを使用しないでください。 代わりに、次の表で説明した手法の 1 つ以上を使用してパスを動的に取得します。  
   
- If you want to enable users to select a folder instead of a file, use the <xref:System.Windows.Forms.FolderBrowserDialog>.  
+ ユーザーはファイルの代わりにフォルダーを選択して、使用を有効にする場合、 <xref:System.Windows.Forms.FolderBrowserDialog>です。  
   
- Depending upon the type of application, how data associated with the application is stored, and the reason for accessing the file system, there are many possible ways in which you can create a directory path. The following table shows the techniques for creating paths dynamically.  
+ アプリケーション、アプリケーションに関連付けられているデータの格納方法、およびファイル システムにアクセスするための種類によっては、方法は多数あります可能なディレクトリ パスを作成することができます。 次の表は、パスを動的に作成するためのテクニックを示します。  
   
-|Path or program category|Class and members to use|  
-|------------------------------|------------------------------|  
-|Standard Windows paths, such as Program Files, MyDocuments, the Desktop and so on|The <xref:System.Environment?displayProperty=fullName> class is the most complete source for these, either through its static methods, such as <xref:System.Environment.SystemDirectory%2A>, or through the <xref:System.Environment.GetFolderPath%2A> method, using one of the <xref:System.Environment.SpecialFolder> enumerated values.|  
-|Paths related to the current application|The <xref:System.Windows.Forms.Application> class has static members to obtain certain paths, such as <xref:System.Windows.Forms.Application.StartupPath%2A>, <xref:System.Windows.Forms.Application.ExecutablePath%2A>, <xref:System.Windows.Forms.Application.LocalUserAppDataPath%2A>, and <xref:System.Windows.Forms.Application.CommonAppDataPath%2A>.<br /><br /> The <xref:System.IO.Path.GetTempPath%2A> method of the <xref:System.IO.Path?displayProperty=fullName> returns the path of the temporary folder.<br /><br /> The <xref:System.IO.Directory.GetCurrentDirectory%2A> method of the <xref:System.IO.Directory?displayProperty=fullName> class returns the application's current executing directory.<br /><br /> The <xref:System.IO.DriveInfo.RootDirectory%2A> property of the <xref:System.IO.DriveInfo> class represents the specified drive's root directory.|  
-|Paths stored as application settings|Access the corresponding applications settings property of the wrapper class derived from <xref:System.Configuration.ApplicationSettingsBase>. For more information, see [Application Settings for Windows Forms](~/docs/framework/winforms/advanced/application-settings-for-windows-forms.md).|  
-|Registry storage|Some applications store directory information in the registry. The <xref:System.Windows.Forms.Application> class has the <xref:System.Windows.Forms.Application.CommonAppDataPath%2A> and <xref:System.Windows.Forms.Application.LocalUserAppDataPath%2A> properties that resolve to a <xref:Microsoft.Win32.RegistryKey> value.|  
-|ClickOnce applications|For ClickOnce applications, use <xref:System.Windows.Forms.Application> class members such as <xref:System.Windows.Forms.Application.UserAppDataPath%2A>, which will return a pointer to the ClickOnce data directory. For more information, see [Accessing Local and Remote Data in ClickOnce Applications](http://msdn.microsoft.com/library/be5cbe12-6cb6-49c9-aa59-a1624e1eef3d).|  
-|International applications|For international applications, retrieve the relative path portion from a string resource in your application by using the <xref:System.Resources.ResourceReader?displayProperty=fullName> class. For more information about globalization and localization, see the topic [Globalization and Localization](http://msdn.microsoft.com/library/9a59696b-d89b-45bd-946d-c75da4732d02).|  
+|パスまたはプログラムのカテゴリ|クラスとメンバーを使用するには|  
+|---------------------|---------------------|  
+|プログラム ファイル、マイ ドキュメント、デスクトップのなどの標準の Windows パス|<xref:System.Environment?displayProperty=fullName> クラスなど、これらの静的メソッドを使用するかの最も包括的なソースは、 <xref:System.Environment.SystemDirectory%2A>, 、または、 <xref:System.Environment.GetFolderPath%2A> のいずれかを使用して、メソッド、 <xref:System.Environment.SpecialFolder> 列挙値。|  
+|現在のアプリケーションに関連するパス|<xref:System.Windows.Forms.Application> クラスなど、特定のパスを取得する静的メンバーには <xref:System.Windows.Forms.Application.StartupPath%2A>, 、<xref:System.Windows.Forms.Application.ExecutablePath%2A>, 、<xref:System.Windows.Forms.Application.LocalUserAppDataPath%2A>, 、および <xref:System.Windows.Forms.Application.CommonAppDataPath%2A>です。<br /><br /> <xref:System.IO.Path.GetTempPath%2A> のメソッド、 <xref:System.IO.Path?displayProperty=fullName> の一時フォルダーのパスを返します。<br /><br /> <xref:System.IO.Directory.GetCurrentDirectory%2A> のメソッド、 <xref:System.IO.Directory?displayProperty=fullName> クラスは、現在実行中のアプリケーションのディレクトリを返します。<br /><br /> <xref:System.IO.DriveInfo.RootDirectory%2A> のプロパティ、 <xref:System.IO.DriveInfo> クラスは、指定したドライブのルート ディレクトリを表します。|  
+|アプリケーション設定として格納されたパス|派生したラッパー クラスの設定のプロパティの対応するアプリケーションにアクセスする <xref:System.Configuration.ApplicationSettingsBase>です。 詳細については、「[Application Settings for Windows Forms](http://msdn.microsoft.com/ja-jp/64090a34-8556-4904-8ea0-20efe9f8c886)」を参照してください。|  
+|レジストリのストレージ|一部のアプリケーションでは、ディレクトリ情報をレジストリに格納します。<xref:System.Windows.Forms.Application> クラスには、 <xref:System.Windows.Forms.Application.CommonAppDataPath%2A> と <xref:System.Windows.Forms.Application.LocalUserAppDataPath%2A> に解決されるプロパティ、 <xref:Microsoft.Win32.RegistryKey> 値。|  
+|ClickOnce アプリケーション|ClickOnce アプリケーションを使用して <xref:System.Windows.Forms.Application> クラスのメンバーなど <xref:System.Windows.Forms.Application.UserAppDataPath%2A>, 、するには、ClickOnce データ ディレクトリにポインターを返します。 詳細については、「[Accessing Local and Remote Data in ClickOnce Applications](http://msdn.microsoft.com/ja-jp/be5cbe12-6cb6-49c9-aa59-a1624e1eef3d)」を参照してください。|  
+|国際対応のアプリケーション|国際対応のアプリケーションの相対パスの部分から取得、アプリケーションでの文字列リソースを使用して、 <xref:System.Resources.ResourceReader?displayProperty=fullName> クラスです。 グローバリゼーションおよびローカリゼーションの詳細については、トピックを参照してください。 [Encoding and Localization](http://msdn.microsoft.com/ja-jp/9a59696b-d89b-45bd-946d-c75da4732d02)します。|  
   
- Notice that a full path may be built up using one or more of the described techniques. For example, the <xref:System.Environment.GetFolderPath%2A> method might be used to obtain the path to the MyDocuments folder, then an application setting may be used to add a relative subdirectory portion.  
+ 完全なパスは構築する記載された方法の 1 つ以上使用に注意してください。 たとえば、 <xref:System.Environment.GetFolderPath%2A> マイ ドキュメント フォルダーへのパスを取得する方法を使用できますし、アプリケーション設定を使用するをサブディレクトリの相対部分を追加します。  
   
- The <xref:System.IO.Path?displayProperty=fullName> class contains static members to assist in manipulating absolute and relative path strings, whereas the <xref:System.IO.File?displayProperty=fullName> and <xref:System.IO.Directory?displayProperty=fullName> classes have static members that actually manipulate files and directories, respectively.  
+ <xref:System.IO.Path?displayProperty=fullName> クラスには、絶対パスと相対パス文字列の操作を支援する静的メンバーが含まれています、 <xref:System.IO.File?displayProperty=fullName> と <xref:System.IO.Directory?displayProperty=fullName> クラスは、実際には、ファイルとディレクトリをそれぞれ操作する静的メンバーを持ちます。  
   
 > [!IMPORTANT]
->  If the user of your application changes the folder in the <xref:System.Windows.Forms.FileDialog>, then the current working directory for your application is set to the location specified in the <xref:System.Windows.Forms.FileDialog>. To prevent this, set the <xref:System.Windows.Forms.FileDialog.RestoreDirectory%2A> property to `true`.  
+>  アプリケーションのユーザーがフォルダーを変更するかどうか、 <xref:System.Windows.Forms.FileDialog>, で指定した場所に、アプリケーションの現在の作業ディレクトリを設定し、 <xref:System.Windows.Forms.FileDialog>です。 これを防ぐためには、設定、 <xref:System.Windows.Forms.FileDialog.RestoreDirectory%2A> プロパティを `true`します。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Windows.Forms.OpenFileDialog> implementation of <xref:System.Windows.Forms.FileDialog> and illustrates creating, setting of properties, and showing the dialog box. The example uses the <xref:System.Windows.Forms.CommonDialog.ShowDialog%2A> method to display the dialog box and return the <xref:System.Windows.Forms.DialogResult>. The example requires a form with a <xref:System.Windows.Forms.Button> placed on it and the <xref:System.IO> namespace added to it.  
+## 例  
+ 次のコード例では、 <xref:System.Windows.Forms.OpenFileDialog> の実装 <xref:System.Windows.Forms.FileDialog> を作成して、プロパティの設定、ダイアログ ボックスを表示します。 例では、 <xref:System.Windows.Forms.CommonDialog.ShowDialog%2A> \] ダイアログ ボックスを表示し、返すメソッド、 <xref:System.Windows.Forms.DialogResult>です。 使用して、フォームでは、 <xref:System.Windows.Forms.Button> に課せられたと <xref:System.IO> 名前空間を追加します。  
   
- [!code-cpp[Classic OpenFileDialog Example#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
- [!code-csharp[Classic OpenFileDialog Example#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
- [!code-vb[Classic OpenFileDialog Example#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
+ [!code-cpp[Classic OpenFileDialog Example\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic OpenFileDialog Example\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
+ [!code-vb[Classic OpenFileDialog Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Windows.Forms.CommonDialog" />
+    <altmember cref="T:System.Windows.Forms.OpenFileDialog" />
+    <altmember cref="T:System.Windows.Forms.SaveFileDialog" />
+    <altmember cref="T:System.Windows.Forms.FolderBrowserDialog" />
+    <altmember cref="T:System.IO.Path" />
+    <altmember cref="T:System.IO.File" />
+    <altmember cref="T:System.IO.Directory" />
+    <altmember cref="T:System.Environment" />
+    <altmember cref="T:System.Windows.Forms.Application" />
+    <altmember cref="T:Microsoft.Win32.Registry" />
+    <altmember cref="T:System.Resources.ResourceReader" />
   </Docs>
   <Members>
     <Member MemberName="AddExtension">
@@ -82,22 +93,24 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the dialog box automatically adds an extension to a file name if the user omits the extension.</summary>
+        <summary>ユーザーが拡張子を指定しない場合、ダイアログ ボックスがファイル名に自動的に拡張子を付けるかどうかを示す値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if the dialog box adds an extension to a file name if the user omits the extension; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> ユーザーが拡張子を省略した場合、ダイアログ ボックスがファイル名に拡張子を付ける場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The extension added to a file name depends on the currently selected file filter and the value of the <xref:System.Windows.Forms.FileDialog.CheckFileExists%2A> property.  
+## 解説  
+ ファイル名に追加された拡張機能は、現在選択されているファイルのフィルターとの値によって異なります。、 <xref:System.Windows.Forms.FileDialog.CheckFileExists%2A> プロパティです。  
   
- If the <xref:System.Windows.Forms.FileDialog.CheckFileExists%2A> property is `true`, the dialog box adds the first extension from the current file filter that matches an existing file. If no files match the current file filter, the dialog box adds the extension specified in the <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> property.  
+ 場合、 <xref:System.Windows.Forms.FileDialog.CheckFileExists%2A> プロパティは、 `true`, 、ダイアログ ボックスでは、既存のファイルと一致する現在のファイル フィルターから最初の拡張機能を追加します。 ダイアログ ボックスがで指定された拡張子を付けるファイルに現在のファイル フィルターが一致しない場合、 <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> プロパティです。  
   
- If the <xref:System.Windows.Forms.FileDialog.CheckFileExists%2A> property is `false`, the dialog box adds the first valid file name extension from the current file filter. If the current file filter contains no valid file name extensions, the dialog box adds the extension specified in the <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> property.  
+ 場合、 <xref:System.Windows.Forms.FileDialog.CheckFileExists%2A> プロパティは、 `false`, 、ダイアログ ボックスでは、現在のファイル フィルターから最初の有効なファイル名拡張子を追加します。 ダイアログ ボックスがで指定された拡張機能を追加して現在のファイル フィルターに有効なファイル名拡張子が含まれていない場合、 <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> プロパティです。  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">for adding an extension if the user omits it. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.Filter" />
+        <altmember cref="P:System.Windows.Forms.FileDialog.FilterIndex" />
       </Docs>
     </Member>
     <Member MemberName="AutoUpgradeEnabled">
@@ -118,17 +131,20 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether this <see cref="T:System.Windows.Forms.FileDialog" /> instance should automatically upgrade appearance and behavior when running on [!INCLUDE[wiprlhext](~/includes/wiprlhext-md.md)].</summary>
+        <summary>取得または設定を示す値かどうかこの <see cref="T:System.Windows.Forms.FileDialog" /> インスタンスを自動的にアップグレードの外観と動作で実行されているときに Windows Vistaします。</summary>
         <value>
-          <see langword="true" /> if this <see cref="T:System.Windows.Forms.FileDialog" /> instance should automatically upgrade appearance and behavior when running on [!INCLUDE[wiprlhext](~/includes/wiprlhext-md.md)]; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+          <see langword="true" /> この場合 <see cref="T:System.Windows.Forms.FileDialog" /> インスタンスを自動的にアップグレードの外観と動作で実行されているときに Windows Vista。 そうしないと、 <see langword="false" />です。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If this property is `false`, the <xref:System.Windows.Forms.FileDialog> class will have a [!INCLUDE[winxp](~/includes/winxp-md.md)]-style appearance and behavior on [!INCLUDE[wiprlhext](~/includes/wiprlhext-md.md)].  
+## 解説  
+ 場合は、このプロパティは `false`, 、 <xref:System.Windows.Forms.FileDialog> クラスが持つ、 [!INCLUDE[winxp](~/includes/winxp-md.md)]\-スタイルの外観と動作 [!INCLUDE[wiprlhext](~/includes/wiprlhext-md.md)]します。  
   
- On [!INCLUDE[winxp](~/includes/winxp-md.md)], this property does not have any effect.  
+ [!INCLUDE[winxp](~/includes/winxp-md.md)], 、このプロパティには、任意の効果はありません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -151,18 +167,19 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the dialog box displays a warning if the user specifies a file name that does not exist.</summary>
+        <summary>存在しないファイルの名前をユーザーが指定した場合に、ダイアログ ボックスが警告を表示するかどうかを示す値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if the dialog box displays a warning if the user specifies a file name that does not exist; otherwise, <see langword="false" />. The default value is <see langword="false" />.</value>
+          <see langword="true" /> ユーザーが存在しないファイル名を指定した場合、ダイアログ ボックスに警告が表示される場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default value is `true` for an inheriting <xref:System.Windows.Forms.OpenFileDialog> and `false` for an inheriting <xref:System.Windows.Forms.SaveFileDialog>.  
+## 解説  
+ 既定値は `true` を継承する <xref:System.Windows.Forms.OpenFileDialog> と `false` を継承する <xref:System.Windows.Forms.SaveFileDialog>です。  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">to display a warning if the file already exists. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.CheckPathExists" />
       </Docs>
     </Member>
     <Member MemberName="CheckPathExists">
@@ -183,11 +200,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the dialog box displays a warning if the user specifies a path that does not exist.</summary>
+        <summary>存在しないパスをユーザーが指定したときに、ダイアログ ボックスに警告を表示するかどうかを示す値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if the dialog box displays a warning when the user specifies a path that does not exist; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> ユーザーが存在しないパスを指定すると、ダイアログ ボックスに警告が表示される場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>To be added.</remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">to display a warning if the user specifies a path that already exists. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.CheckFileExists" />
       </Docs>
     </Member>
     <Member MemberName="CustomPlaces">
@@ -211,21 +229,21 @@
         <ReturnType>System.Windows.Forms.FileDialogCustomPlacesCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the custom places collection for this <see cref="T:System.Windows.Forms.FileDialog" /> instance.</summary>
-        <value>The custom places collection for this <see cref="T:System.Windows.Forms.FileDialog" /> instance.</value>
+        <summary>このカスタム プレイスのコレクションを取得 <see cref="T:System.Windows.Forms.FileDialog" /> インスタンス。</summary>
+        <value>カスタム プレイスのコレクション <see cref="T:System.Windows.Forms.FileDialog" /> インスタンス。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- On [!INCLUDE[winxp](~/includes/winxp-md.md)], this property does not have any effect.  
+## 解説  
+ [!INCLUDE[winxp](~/includes/winxp-md.md)], 、このプロパティには、任意の効果はありません。  
   
    
   
-## Examples  
- The following code example demonstrates how to use the <xref:System.Windows.Forms.FileDialog.CustomPlaces%2A> collection. To run this example, paste the following code into a Windows Form and call `InitializeDialogAndButton` from the form's constructor or <xref:System.Windows.Forms.Form.Load> event-handling method.  
+## 例  
+ 次のコード例では、使用して、 <xref:System.Windows.Forms.FileDialog.CustomPlaces%2A> コレクションです。 この例を実行するには、Windows フォームと呼び出しを次のコードを貼り付けます `InitializeDialogAndButton` フォームのコンス トラクターからまたは <xref:System.Windows.Forms.Form.Load> イベント処理メソッドです。  
   
- [!code-csharp[System.Windows.Forms.FileDialogCommonPlaces#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.FileDialogCommonPlaces/CS/Form1.cs#1)]
- [!code-vb[System.Windows.Forms.FileDialogCommonPlaces#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.FileDialogCommonPlaces/VB/Form1.vb#1)]  
+ [!code-csharp[System.Windows.Forms.FileDialogCommonPlaces\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.FileDialogCommonPlaces/CS/Form1.cs#1)]
+ [!code-vb[System.Windows.Forms.FileDialogCommonPlaces\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.FileDialogCommonPlaces/VB/Form1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -249,24 +267,24 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the default file name extension.</summary>
-        <value>The default file name extension. The returned string does not include the period. The default value is an empty string ("").</value>
+        <summary>既定のファイル名の拡張子を取得または設定します。</summary>
+        <value>既定のファイル名の拡張子です。 返される文字列にはピリオドが含まれません。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the user of your application specifies a file name without an extension, the <xref:System.Windows.Forms.FileDialog> appends an extension to the file name. The extension that is used is determined by the <xref:System.Windows.Forms.FileDialog.Filter%2A> and <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> properties. If a filter is selected in the <xref:System.Windows.Forms.FileDialog> and the filter specifies an extension, then that extension is used. If the filter selected uses a wildcard in place of the extension, then the extension specified in the <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> property is used.  
+## 解説  
+ アプリケーションのユーザーが、拡張子のないファイル名を指定すると、 <xref:System.Windows.Forms.FileDialog> 、ファイル名に拡張機能を追加します。 によって使用される拡張子が決まります、 <xref:System.Windows.Forms.FileDialog.Filter%2A> と <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> プロパティです。 フィルターを選択した場合、 <xref:System.Windows.Forms.FileDialog> フィルターは、拡張子を指定し、その拡張機能を使用します。 選択されているフィルターは、拡張機能の代わりにワイルドカードを使用しで、拡張機能が指定したかどうか、 <xref:System.Windows.Forms.FileDialog.DefaultExt%2A> プロパティを使用します。  
   
    
   
-## Examples  
- The following code example demonstrates using the <xref:System.Windows.Forms.RichTextBox.SaveFile%2A?displayProperty=fullName> and <xref:System.Windows.Forms.RichTextBox.LoadFile%2A?displayProperty=fullName> methods with streams. It also demonstrates using the <xref:System.Windows.Forms.FileDialog.FileName%2A>, <xref:System.Windows.Forms.FileDialog.DefaultExt%2A>, <xref:System.Windows.Forms.SaveFileDialog.CreatePrompt%2A?displayProperty=fullName>, and <xref:System.Windows.Forms.SaveFileDialog.OverwritePrompt%2A?displayProperty=fullName> members.  
+## 例  
+ 次のコード例では、使用方法を示します、 <xref:System.Windows.Forms.RichTextBox.SaveFile%2A?displayProperty=fullName> と <xref:System.Windows.Forms.RichTextBox.LoadFile%2A?displayProperty=fullName> ストリームを持つメソッドです。 使用しても示します、 <xref:System.Windows.Forms.FileDialog.FileName%2A>, 、<xref:System.Windows.Forms.FileDialog.DefaultExt%2A>, 、<xref:System.Windows.Forms.SaveFileDialog.CreatePrompt%2A?displayProperty=fullName>, 、および <xref:System.Windows.Forms.SaveFileDialog.OverwritePrompt%2A?displayProperty=fullName> メンバーです。  
   
- This is a complete example that is ready to run when you copy it to your project.  
+ これは、プロジェクトにコピーするときに実行する準備が整っている完全な例です。  
   
- [!code-cpp[System.Windows.Forms.RichTextBoxSaveFile#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CPP/form1.cpp#1)]
- [!code-csharp[System.Windows.Forms.RichTextBoxSaveFile#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CS/form1.cs#1)]
- [!code-vb[System.Windows.Forms.RichTextBoxSaveFile#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/VB/form1.vb#1)]  
+ [!code-cpp[System.Windows.Forms.RichTextBoxSaveFile\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CPP/form1.cpp#1)]
+ [!code-csharp[System.Windows.Forms.RichTextBoxSaveFile\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CS/form1.cs#1)]
+ [!code-vb[System.Windows.Forms.RichTextBoxSaveFile\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/VB/form1.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -290,9 +308,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the dialog box returns the location of the file referenced by the shortcut or whether it returns the location of the shortcut (.lnk).</summary>
+        <summary>ダイアログ ボックスが、ショートカットで参照されたファイルの場所を返すかどうか、またはショートカットの場所 \(.lnk\) を返すかどうかを指定する値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if the dialog box returns the location of the file referenced by the shortcut; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> ダイアログ ボックスがショートカットで参照されるファイルの場所を返す場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>To be added.</remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">to set the property. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
       </Docs>
@@ -310,7 +328,7 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Owns the <see cref="E:System.Windows.Forms.FileDialog.FileOk" /> event.</summary>
+        <summary>所有している、 <see cref="E:System.Windows.Forms.FileDialog.FileOk" /> イベントです。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -332,32 +350,35 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a string containing the file name selected in the file dialog box.</summary>
-        <value>The file name selected in the file dialog box. The default value is an empty string ("").</value>
+        <summary>ファイル ダイアログ ボックスで選択されたファイル名を含む文字列を取得または設定します。</summary>
+        <value>ファイル ダイアログ ボックスで選択されたファイルの名前。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The file name includes both the file path and the extension. If no files are selected, this method returns an empty string ("").  
+## 解説  
+ ファイル名には、ファイルのパスと、拡張機能の両方が含まれています。 ファイルが選択されていない場合、このメソッドは、空の文字列を返します \(""\) です。  
   
- When used from the <xref:System.Windows.Forms.SaveFileDialog> class, this property represents the file being saved; when used from the <xref:System.Windows.Forms.OpenFileDialog> class, it represents the file being opened.  
+ 使用する場合、 <xref:System.Windows.Forms.SaveFileDialog> クラス、このプロパティから使用すると、保存ファイルを表す、 <xref:System.Windows.Forms.OpenFileDialog> クラス、これはファイルを開こうとしています。  
   
- This property can only be the name of one selected file. If you want to return an array containing the names of all selected files in a multiple-selection dialog box, use <xref:System.Windows.Forms.FileDialog.FileNames%2A>.  
+ このプロパティは、選択した 1 つのファイルの名前のみできます。 複数選択\] ダイアログ ボックスで、使用して選択したすべてのファイルの名前を格納する配列を取得するかどうかは <xref:System.Windows.Forms.FileDialog.FileNames%2A>です。  
   
    
   
-## Examples  
- The following code example demonstrates using the <xref:System.Windows.Forms.RichTextBox.SaveFile%2A?displayProperty=fullName> and <xref:System.Windows.Forms.RichTextBox.LoadFile%2A?displayProperty=fullName> methods with streams. It also demonstrates using the <xref:System.Windows.Forms.FileDialog.FileName%2A>, <xref:System.Windows.Forms.FileDialog.DefaultExt%2A>, <xref:System.Windows.Forms.SaveFileDialog.CreatePrompt%2A?displayProperty=fullName>, and <xref:System.Windows.Forms.SaveFileDialog.OverwritePrompt%2A?displayProperty=fullName> members.  
+## 例  
+ 次のコード例では、使用方法を示します、 <xref:System.Windows.Forms.RichTextBox.SaveFile%2A?displayProperty=fullName> と <xref:System.Windows.Forms.RichTextBox.LoadFile%2A?displayProperty=fullName> ストリームを持つメソッドです。 使用しても示します、 <xref:System.Windows.Forms.FileDialog.FileName%2A>, 、<xref:System.Windows.Forms.FileDialog.DefaultExt%2A>, 、<xref:System.Windows.Forms.SaveFileDialog.CreatePrompt%2A?displayProperty=fullName>, 、および <xref:System.Windows.Forms.SaveFileDialog.OverwritePrompt%2A?displayProperty=fullName> メンバーです。  
   
- This is a complete example that is ready to run when you copy it to your project.  
+ これは、プロジェクトにコピーするときに実行する準備が整っている完全な例です。  
   
- [!code-cpp[System.Windows.Forms.RichTextBoxSaveFile#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CPP/form1.cpp#1)]
- [!code-csharp[System.Windows.Forms.RichTextBoxSaveFile#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CS/form1.cs#1)]
- [!code-vb[System.Windows.Forms.RichTextBoxSaveFile#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/VB/form1.vb#1)]  
+ [!code-cpp[System.Windows.Forms.RichTextBoxSaveFile\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CPP/form1.cpp#1)]
+ [!code-csharp[System.Windows.Forms.RichTextBoxSaveFile\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/CS/form1.cs#1)]
+ [!code-vb[System.Windows.Forms.RichTextBoxSaveFile\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.RichTextBoxSaveFile/VB/form1.vb#1)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">to get or set the file name. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.FileNames" />
+        <altmember cref="T:System.Windows.Forms.SaveFileDialog" />
+        <altmember cref="T:System.Windows.Forms.OpenFileDialog" />
       </Docs>
     </Member>
     <Member MemberName="FileNames">
@@ -381,25 +402,26 @@
         <ReturnType>System.String[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the file names of all selected files in the dialog box.</summary>
-        <value>An array of type <see cref="T:System.String" />, containing the file names of all selected files in the dialog box.</value>
+        <summary>ダイアログ ボックスで選択されたすべてのファイルの名前を取得します。</summary>
+        <value>型の配列 <see cref="T:System.String" />, 、ダイアログ ボックスで選択されているすべてのファイルのファイル名を含みます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Each file name includes both the file path and the extension. If no files are selected, this method returns an empty array.  
+## 解説  
+ 各ファイル名には、ファイルのパスと、拡張機能の両方が含まれています。 ファイルが選択されていない場合、このメソッドは、空の配列を返します。  
   
    
   
-## Examples  
- The following code example allows the user to select a number of images and display them in <xref:System.Windows.Forms.PictureBox> controls on a Form. It demonstrates initializing an <xref:System.Windows.Forms.OpenFileDialog>, setting the <xref:System.Windows.Forms.FileDialog.Title%2A> and <xref:System.Windows.Forms.FileDialog.Filter%2A> properties, and allowing the user to select multiple files by setting the <xref:System.Windows.Forms.OpenFileDialog.Multiselect%2A> property to true. This code example assumes that your form already has an <xref:System.Windows.Forms.OpenFileDialog> control named `openFileDialog1`, a <xref:System.Windows.Forms.Button> named `SelectFileButton`, and a <xref:System.Windows.Forms.FlowLayoutPanel> named `flowLayoutPanel1`.  
+## 例  
+ 次のコード例には、イメージの数を選択し、表示でそれらをできます <xref:System.Windows.Forms.PictureBox> フォーム上のコントロールです。 初期化を示しています、 <xref:System.Windows.Forms.OpenFileDialog>, で、設定、 <xref:System.Windows.Forms.FileDialog.Title%2A> と <xref:System.Windows.Forms.FileDialog.Filter%2A> プロパティ、およびユーザーが設定して複数のファイルを選択できるようにする、 <xref:System.Windows.Forms.OpenFileDialog.Multiselect%2A> プロパティを true にします。 このコード例では、フォームが既に持っていると想定しています、 <xref:System.Windows.Forms.OpenFileDialog> という名前のコントロール `openFileDialog1`, 、 <xref:System.Windows.Forms.Button> という `SelectFileButton`, 、および <xref:System.Windows.Forms.FlowLayoutPanel> という名前 `flowLayoutPanel1`します。  
   
- [!code-csharp[System.Windows.Forms.OpenFileDialog.MultiSelect#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.OpenFileDialog.MultiSelect/CS/Form1.cs#1)]
- [!code-vb[System.Windows.Forms.OpenFileDialog.MultiSelect#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.OpenFileDialog.MultiSelect/VB/Form1.vb#1)]  
+ [!code-csharp[System.Windows.Forms.OpenFileDialog.MultiSelect\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.OpenFileDialog.MultiSelect/CS/Form1.cs#1)]
+ [!code-vb[System.Windows.Forms.OpenFileDialog.MultiSelect\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.OpenFileDialog.MultiSelect/VB/Form1.vb#1)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">to get the file names. Associated enumeration: <see cref="F:System.Security.Permissions.FileIOPermissionAccess.AllAccess" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.FileName" />
       </Docs>
     </Member>
     <Member MemberName="FileOk">
@@ -415,24 +437,25 @@
         <ReturnType>System.ComponentModel.CancelEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the user clicks on the **Open** or **Save** button on a file dialog box.</summary>
+        <summary>ユーザーがクリックしたときに発生、 **開く** または **保存** ファイル ダイアログ ボックスのボタンをします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For information about handling events, see [Handling and Raising Events](http://msdn.microsoft.com/library/b6f65241-e0ad-4590-a99f-200ce741bb1f).  
+## 解説  
+ イベントを処理する方法の詳細については、次を参照してください。 [クラスへのイベント](http://msdn.microsoft.com/ja-jp/b6f65241-e0ad-4590-a99f-200ce741bb1f)します。  
   
    
   
-## Examples  
- The following code example demonstrates using the <xref:System.Windows.Forms.FileDialog.FileNames%2A> property, handling the <xref:System.Windows.Forms.FileDialog.FileOk> event and using the <xref:System.Windows.Forms.Application.DoEvents%2A?displayProperty=fullName> method. When the example runs, a user can select graphics files from an <xref:System.Windows.Forms.OpenFileDialog> object. The selected files are displayed in the form. The <xref:System.Windows.Forms.Application.DoEvents%2A?displayProperty=fullName> method forces a repaint of the form for each graphics file opened. To run this example paste the following code in a form containing a <xref:System.Windows.Forms.PictureBox> named `PictureBox1`, an <xref:System.Windows.Forms.OpenFileDialog> named `OpenFileDialog1`, and a <xref:System.Windows.Forms.Button> named `fileButton`. Call the `InitializePictureBox` and `InitializeOpenFileDialog` methods from the form's constructor or `Load` method. When the example is running, display the dialog box by clicking the button.  
+## 例  
+ 次のコード例では、使用方法を示します、 <xref:System.Windows.Forms.FileDialog.FileNames%2A> プロパティ、処理、 <xref:System.Windows.Forms.FileDialog.FileOk> イベントを使用して、 <xref:System.Windows.Forms.Application.DoEvents%2A?displayProperty=fullName> メソッドです。 グラフィックス ファイルの例の実行時にユーザーが選択できる、 <xref:System.Windows.Forms.OpenFileDialog> オブジェクトです。 選択したファイルは、フォームに表示されます。<xref:System.Windows.Forms.Application.DoEvents%2A?displayProperty=fullName> メソッド強制的に開いている各グラフィックス ファイルのフォームの再描画します。 格納しているフォームに貼り付けを次のコードでこの例を実行する、 <xref:System.Windows.Forms.PictureBox> という `PictureBox1`, 、 <xref:System.Windows.Forms.OpenFileDialog> という名前 `OpenFileDialog1`, 、および <xref:System.Windows.Forms.Button> という名前 `fileButton`します。 呼び出す、 `InitializePictureBox` と `InitializeOpenFileDialog` フォームのコンス トラクターからのメソッドまたは `Load` メソッドです。 例を実行する場合は、ボタンをクリックしてダイアログ ボックスを表示します。  
   
- [!code-cpp[System.Windows.Forms.FileDialog#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CPP/filedialogform.cpp#1)]
- [!code-csharp[System.Windows.Forms.FileDialog#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CS/filedialogform.cs#1)]
- [!code-vb[System.Windows.Forms.FileDialog#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/VB/filedialogform.vb#1)]  
+ [!code-cpp[System.Windows.Forms.FileDialog\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CPP/filedialogform.cpp#1)]
+ [!code-csharp[System.Windows.Forms.FileDialog\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CS/filedialogform.cs#1)]
+ [!code-vb[System.Windows.Forms.FileDialog\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/VB/filedialogform.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Forms.FileDialog.OnFileOk(System.ComponentModel.CancelEventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="Filter">
@@ -456,37 +479,39 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the current file name filter string, which determines the choices that appear in the "Save as file type" or "Files of type" box in the dialog box.</summary>
-        <value>The file filtering options available in the dialog box.</value>
+        <summary>ダイアログ ボックスの \[保存先ファイルの種類\] または \[ファイルの種類\] ボックスに表示される選択肢を決定する、現在のファイル名のフィルター文字列を取得または設定します。</summary>
+        <value>ダイアログ ボックスで使用できるファイル フィルター処理オプション。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For each filtering option, the filter string contains a description of the filter, followed by the vertical bar (&#124;) and the filter pattern. The strings for different filtering options are separated by the vertical bar.  
+## 解説  
+ 各フィルター オプションのフィルター文字列に続いて縦、フィルターの説明が含まれています \(&#124;\) とフィルター パターンです。 異なるフィルター オプションの文字列は、縦棒で区切ります。  
   
- The following is an example of a filter string:  
+ フィルター文字列の例を次に示します。  
   
  `Text files (*.txt)|*.txt|All files (*.*)|*.*`  
   
- You can add several filter patterns to a filter by separating the file types with semicolons, for example:  
+ フィルターに複数のフィルター パターンを追加するには、次に例をセミコロンで区切って、ファイルの種類を区切ること。  
   
  `Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*`  
   
- Use the <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> property to set which filtering option is shown first to the user.  
+ 使用して、 <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> するフィルター処理オプションを設定するプロパティが、ユーザーに最初に表示します。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Windows.Forms.OpenFileDialog> implementation of <xref:System.Windows.Forms.FileDialog> and illustrates creating, setting of properties, and showing the dialog box. The example uses the <xref:System.Windows.Forms.FileDialog.Filter%2A> and <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> properties to provide a list of filters for the user. The example requires a form with a <xref:System.Windows.Forms.Button> placed on it and the <xref:System.IO> namespace added to it.  
+## 例  
+ 次のコード例では、 <xref:System.Windows.Forms.OpenFileDialog> の実装 <xref:System.Windows.Forms.FileDialog> を作成して、プロパティの設定、ダイアログ ボックスを表示します。 例では、 <xref:System.Windows.Forms.FileDialog.Filter%2A> と <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> ユーザーのフィルターの一覧を提供するプロパティです。 使用して、フォームでは、 <xref:System.Windows.Forms.Button> に課せられたと <xref:System.IO> 名前空間を追加します。  
   
- [!code-cpp[Classic OpenFileDialog Example#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
- [!code-csharp[Classic OpenFileDialog Example#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
- [!code-vb[Classic OpenFileDialog Example#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
+ [!code-cpp[Classic OpenFileDialog Example\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic OpenFileDialog Example\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
+ [!code-vb[Classic OpenFileDialog Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="Filter" /> format is invalid.</exception>
+          <paramref name="Filter" /> 形式が正しくありません。</exception>
+        <altmember cref="P:System.Windows.Forms.FileDialog.CheckFileExists" />
+        <altmember cref="P:System.Windows.Forms.FileDialog.FilterIndex" />
       </Docs>
     </Member>
     <Member MemberName="FilterIndex">
@@ -507,28 +532,30 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the index of the filter currently selected in the file dialog box.</summary>
-        <value>A value containing the index of the filter currently selected in the file dialog box. The default value is 1.</value>
+        <summary>ファイル ダイアログ ボックスで現在選択されているフィルターのインデックスを取得または設定します。</summary>
+        <value>ファイル ダイアログ ボックスで現在選択されているフィルターのインデックスを含む値。 既定値は 1 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> property to set which filtering option is shown first to the user. You can also use the value of <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> after showing the file dialog to perform special file operations depending upon the filter chosen.  
+## 解説  
+ 使用して、 <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> するフィルター処理オプションを設定するプロパティが、ユーザーに最初に表示します。 値を使用することもできます。 <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> 後、選択したフィルターによって特殊なファイル操作を実行するファイル ダイアログを表示します。  
   
 > [!NOTE]
->  The index value of the first filter entry is 1.  
+>  最初のフィルター エントリのインデックス値は 1 です。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Windows.Forms.OpenFileDialog> implementation of <xref:System.Windows.Forms.FileDialog> and illustrates creating, setting of properties, and showing the dialog box. The example uses the <xref:System.Windows.Forms.FileDialog.Filter%2A> and <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> properties to provide a list of filters for the user. The example requires a form with a <xref:System.Windows.Forms.Button> placed on it and the <xref:System.IO> namespace added to it.  
+## 例  
+ 次のコード例では、 <xref:System.Windows.Forms.OpenFileDialog> の実装 <xref:System.Windows.Forms.FileDialog> を作成して、プロパティの設定、ダイアログ ボックスを表示します。 例では、 <xref:System.Windows.Forms.FileDialog.Filter%2A> と <xref:System.Windows.Forms.FileDialog.FilterIndex%2A> ユーザーのフィルターの一覧を提供するプロパティです。 使用して、フォームでは、 <xref:System.Windows.Forms.Button> に課せられたと <xref:System.IO> 名前空間を追加します。  
   
- [!code-cpp[Classic OpenFileDialog Example#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
- [!code-csharp[Classic OpenFileDialog Example#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
- [!code-vb[Classic OpenFileDialog Example#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
+ [!code-cpp[Classic OpenFileDialog Example\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic OpenFileDialog Example\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
+ [!code-vb[Classic OpenFileDialog Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Forms.FileDialog.CheckFileExists" />
+        <altmember cref="P:System.Windows.Forms.FileDialog.Filter" />
       </Docs>
     </Member>
     <Member MemberName="HookProc">
@@ -550,19 +577,19 @@
         <Parameter Name="lparam" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="hWnd">The handle to the dialog box window.</param>
-        <param name="msg">The message received by the dialog box.</param>
-        <param name="wparam">Additional information about the message.</param>
-        <param name="lparam">Additional information about the message.</param>
-        <summary>Defines the common dialog box hook procedure that is overridden to add specific functionality to the file dialog box.</summary>
-        <returns>Returns zero if the default dialog box procedure processes the message; returns a nonzero value if the default dialog box procedure ignores the message.</returns>
+        <param name="hWnd">ダイアログ ボックスのウィンドウ ハンドル。</param>
+        <param name="msg">ダイアログ ボックスが受け取ったメッセージ。</param>
+        <param name="wparam">メッセージに関する追加情報。</param>
+        <param name="lparam">メッセージに関する追加情報。</param>
+        <summary>ファイル ダイアログ ボックスに特定の機能を追加するためにオーバーライドされる、コモン ダイアログ ボックスのフック プロシージャを定義します。</summary>
+        <returns>既定のダイアログ ボックス プロシージャがメッセージを処理する場合は 0 を返します。既定のダイアログ ボックス プロシージャがメッセージを無視する場合は 0 以外の値を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A hook procedure allows the user to connect or insert other routines into a routine or application for the purpose of debugging or enhancing functionality.  
+## 解説  
+ 用のフック プロシージャは、接続またはルーチンまたはデバッグまたは機能を強化するためにアプリケーションを他のルーチンを挿入できます。  
   
- By default, the hook procedure centers the dialog box on the screen in response to a WM_INITDIALOG message.  
+ 既定ではのフック プロシージャ中央スクリーン WM\_INITDIALOG メッセージへの応答では、ダイアログ ボックスに配置します。  
   
  ]]></format>
         </remarks>
@@ -589,38 +616,43 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the initial directory displayed by the file dialog box.</summary>
-        <value>The initial directory displayed by the file dialog box. The default is an empty string ("").</value>
+        <summary>ファイル ダイアログ ボックスに表示される起動ディレクトリを取得または設定します。</summary>
+        <value>ファイル ダイアログ ボックスに表示される起動ディレクトリ。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Forms.FileDialog.InitialDirectory%2A> property is typically set using one of the following sources:  
+## 解説  
+ <xref:System.Windows.Forms.FileDialog.InitialDirectory%2A> 通常プロパティが次のソースのいずれかを使用します。  
   
--   A path that was previously used in the program, perhaps retained from the last directory or file operation.  
+-   最後のディレクトリまたはファイルの操作からの維持など、プログラムで使用されていたのパス。  
   
--   A path read from a persistent source, such as an application setting, a <xref:Microsoft.Win32.Registry> or a string resource in the application.  
+-   アプリケーションの設定などの永続的なソースからのパスを読み取る、 <xref:Microsoft.Win32.Registry> またはアプリケーション内の文字列リソースです。  
   
--   Standard Windows system and user paths, such as Program Files, MyDocuments, MyMusic, and so on (which you can obtain using the <xref:System.Environment.GetFolderPath%2A> method)  
+-   標準的な Windows システムとユーザーのパス、Program Files"、"マイ ドキュメント"、"マイ ミュージック、"など \(を使用して取得した、 <xref:System.Environment.GetFolderPath%2A> メソッド\)  
   
--   A path related to the current application, such as its startup directory (which you can obtain using properties on the <xref:System.Windows.Forms.Application> object).  
+-   起動ディレクトリなど、現在のアプリケーションに関連するパス \(上のプロパティを使用して取得した、 <xref:System.Windows.Forms.Application> オブジェクト\)。  
   
- For more information about creating dynamic paths, see the <xref:System.Windows.Forms.FileDialog> class overview.  
+ 動的パスの作成の詳細については、次を参照してください。、 <xref:System.Windows.Forms.FileDialog> クラスの概要です。  
   
- On [!INCLUDE[wiprlhext](~/includes/wiprlhext-md.md)], if <xref:System.Windows.Forms.FileDialog.InitialDirectory%2A> is set to a full file name instead of just a directory path, the initial directory will default either to the application path, or to the directory from which the user last selected a file.  
+ [!INCLUDE[wiprlhext](~/includes/wiprlhext-md.md)], 場合は、 <xref:System.Windows.Forms.FileDialog.InitialDirectory%2A> 設定されているディレクトリのパスだけではなく完全なファイル名に \[初期ディレクトリは既定でアプリケーションのパス、または元となるユーザー最後に選択したファイル ディレクトリのいずれかです。  
   
    
   
-## Examples  
- The following code example uses the <xref:System.Windows.Forms.OpenFileDialog> implementation of <xref:System.Windows.Forms.FileDialog> and illustrates creating, setting of properties, and showing the dialog box. The example uses the <xref:System.Windows.Forms.FileDialog.InitialDirectory%2A> property to set what the initial directory is when the dialog box is displayed to the user. The example requires a form with a <xref:System.Windows.Forms.Button> placed on it and the <xref:System.IO> namespace added to it.  
+## 例  
+ 次のコード例では、 <xref:System.Windows.Forms.OpenFileDialog> の実装 <xref:System.Windows.Forms.FileDialog> を作成して、プロパティの設定、ダイアログ ボックスを表示します。 例では、 <xref:System.Windows.Forms.FileDialog.InitialDirectory%2A> プロパティを初期のディレクトリがユーザーにダイアログ ボックスが表示されるときにを設定します。 使用して、フォームでは、 <xref:System.Windows.Forms.Button> に課せられたと <xref:System.IO> 名前空間を追加します。  
   
- [!code-cpp[Classic OpenFileDialog Example#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
- [!code-csharp[Classic OpenFileDialog Example#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
- [!code-vb[Classic OpenFileDialog Example#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
+ [!code-cpp[Classic OpenFileDialog Example\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic OpenFileDialog Example\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
+ [!code-vb[Classic OpenFileDialog Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">Required to set the initial directory. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.RestoreDirectory" />
+        <altmember cref="T:Microsoft.Win32.Registry" />
+        <altmember cref="T:System.Windows.Forms.Application" />
+        <altmember cref="T:System.Environment" />
+        <altmember cref="T:System.IO.Path" />
       </Docs>
     </Member>
     <Member MemberName="Instance">
@@ -636,8 +668,8 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the Win32 instance handle for the application.</summary>
-        <value>A Win32 instance handle for the application.</value>
+        <summary>アプリケーションの Win32 インスタンス ハンドルを取得します。</summary>
+        <value>アプリケーションの Win32 インスタンス ハンドル。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -657,9 +689,11 @@
         <Parameter Name="e" Type="System.ComponentModel.CancelEventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs" /> that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Windows.Forms.FileDialog.FileOk" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.ComponentModel.CancelEventArgs" />。</param>
+        <summary>
+          <see cref="E:System.Windows.Forms.FileDialog.FileOk" /> イベントを発生させます。</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="E:System.Windows.Forms.FileDialog.FileOk" />
       </Docs>
     </Member>
     <Member MemberName="Options">
@@ -675,13 +709,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets values to initialize the <see cref="T:System.Windows.Forms.FileDialog" />.</summary>
-        <value>A bitwise combination of internal values that initializes the <see cref="T:System.Windows.Forms.FileDialog" />.</value>
+        <summary>初期化する値を取得、 <see cref="T:System.Windows.Forms.FileDialog" />です。</summary>
+        <value>初期化する内部値のビットごとの組み合わせ、 <see cref="T:System.Windows.Forms.FileDialog" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Forms.FileDialog.Options%2A> property corresponds to the flags used to initialize a file dialog box using Win32. Use the properties of the <xref:System.Windows.Forms.FileDialog> class to get and set the options.  
+## 解説  
+ <xref:System.Windows.Forms.FileDialog.Options%2A> プロパティは、Win32 を使用して、ファイル ダイアログ ボックスの初期化に使用されるフラグに対応しています。 プロパティを使用して、 <xref:System.Windows.Forms.FileDialog> クラスを取得し、オプションを設定します。  
   
  ]]></format>
         </remarks>
@@ -701,8 +735,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Resets all properties to their default values.</summary>
-        <remarks>To be added.</remarks>
+        <summary>すべてのプロパティを既定値にリセットします。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <block subset="none" type="overrides">
           <para>When overriding <see cref="M:System.Windows.Forms.FileDialog.Reset" /> in a derived class, be sure to call the base class's <see cref="M:System.Windows.Forms.CommonDialog.Reset" /> method.</para>
         </block>
@@ -726,22 +765,22 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the dialog box restores the directory to the previously selected directory before closing.</summary>
-        <value>
-          <see langword="true" /> if the dialog box restores the current directory to the previously selected directory if the user changed the directory while searching for files; otherwise, <see langword="false" />. The default value is <see langword="false" />.</value>
+        <summary>ダイアログ ボックスを閉じる前に、ディレクトリを以前選択されていたディレクトリに復元するかどうかを示す値を取得または設定します。</summary>
+        <value>ファイルの検索中にユーザーがディレクトリを変更したときに、ダイアログ ボックスが現在のディレクトリを以前選択されていたディレクトリに復元する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。 既定値は <see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example uses the <xref:System.Windows.Forms.OpenFileDialog> implementation of <xref:System.Windows.Forms.FileDialog> and illustrates creating, setting of properties, and showing the dialog box. The example uses the <xref:System.Windows.Forms.FileDialog.RestoreDirectory%2A> property to ensure that the previously selected directory is restored when the dialog box is closed. The example requires a form with a <xref:System.Windows.Forms.Button> placed on it and the <xref:System.IO> namespace added to it.  
+## 例  
+ 次のコード例では、 <xref:System.Windows.Forms.OpenFileDialog> の実装 <xref:System.Windows.Forms.FileDialog> を作成して、プロパティの設定、ダイアログ ボックスを表示します。 例では、 <xref:System.Windows.Forms.FileDialog.RestoreDirectory%2A> プロパティ\] ダイアログ ボックスが閉じられたときに、以前に選択したディレクトリが復元されることを確認します。 使用して、フォームでは、 <xref:System.Windows.Forms.Button> に課せられたと <xref:System.IO> 名前空間を追加します。  
   
- [!code-cpp[Classic OpenFileDialog Example#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
- [!code-csharp[Classic OpenFileDialog Example#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
- [!code-vb[Classic OpenFileDialog Example#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
+ [!code-cpp[Classic OpenFileDialog Example\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic OpenFileDialog Example\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/Classic OpenFileDialog Example/CS/source.cs#1)]
+ [!code-vb[Classic OpenFileDialog Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/Classic OpenFileDialog Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
         <permission cref="T:System.Security.Permissions.FileIOPermission">to set the property. Associated enumeration: <see cref="F:System.Security.Permissions.PermissionState.Unrestricted" />.</permission>
+        <altmember cref="P:System.Windows.Forms.FileDialog.InitialDirectory" />
       </Docs>
     </Member>
     <Member MemberName="RunDialog">
@@ -760,17 +799,17 @@
         <Parameter Name="hWndOwner" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="hWndOwner">A value that represents the window handle of the owner window for the common dialog box.</param>
-        <summary>Specifies a common dialog box.</summary>
+        <param name="hWndOwner">コモン ダイアログ ボックスのオーナー ウィンドウのウィンドウ ハンドルを表す値。</param>
+        <summary>コモン ダイアログ ボックスを指定します。</summary>
         <returns>
-          <see langword="true" /> if the file could be opened; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合は、ファイルを開けませんできます。それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides an implementation of <xref:System.Windows.Forms.CommonDialog.RunDialog%2A>, and is invoked when the user of a file dialog invokes <xref:System.Windows.Forms.CommonDialog.ShowDialog%2A>.  
+## 解説  
+ このメソッドの実装を提供する <xref:System.Windows.Forms.CommonDialog.RunDialog%2A>, 、ファイル ダイアログ ボックスのユーザーを呼び出したときに呼び出されると <xref:System.Windows.Forms.CommonDialog.ShowDialog%2A>です。  
   
- In the derived classes <xref:System.Windows.Forms.OpenFileDialog> and <xref:System.Windows.Forms.SaveFileDialog> an invalid file name <xref:System.Exception> can be raised.  
+ 派生クラスで <xref:System.Windows.Forms.OpenFileDialog> と <xref:System.Windows.Forms.SaveFileDialog> 無効なファイル名 <xref:System.Exception> 生成されることができます。  
   
  ]]></format>
         </remarks>
@@ -794,14 +833,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the **Help** button is displayed in the file dialog box.</summary>
+        <summary>取得または設定を示す値かどうか、 **ヘルプ** ファイル\] ダイアログ ボックスにボタンを表示します。</summary>
         <value>
-          <see langword="true" /> if the dialog box includes a help button; otherwise, <see langword="false" />. The default value is <see langword="false" />.</value>
+          <see langword="true" /> ダイアログ ボックスには、ヘルプ\] ボタンが含まれている場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A <xref:System.Windows.Forms.Control.HelpRequested> event is raised when the user clicks the **Help** button.  
+## 解説  
+ A <xref:System.Windows.Forms.Control.HelpRequested> イベントは、ユーザーがクリックすると、 **ヘルプ** \] ボタンをクリックします。  
   
  ]]></format>
         </remarks>
@@ -825,27 +864,28 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets whether the dialog box supports displaying and saving files that have multiple file name extensions.</summary>
+        <summary>複数のファイル名拡張子を持つファイルの表示および保存をダイアログ ボックスがサポートするかどうかを示す値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if the dialog box supports multiple file name extensions; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+          <see langword="true" /> ダイアログ ボックスは、複数のファイル名拡張子をサポートしている場合それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Sometimes users must open and save files that use multiple file name extensions. For example, the application manifest files used by the [!INCLUDE[ndptecclick](~/includes/ndptecclick-md.md)] deployment technology end in the complex file name extension ".exe.manifest". Setting this property to `true` enables you to set the <xref:System.Windows.Forms.FileDialog.Filter%2A> property to a multi-dotted extension.  
+## 解説  
+ 場合もありますユーザーを開くし、複数のファイル名拡張子を使用してファイルを保存する必要があります。 たとえば、アプリケーション マニフェスト ファイルで使用される、 [!INCLUDE[ndptecclick](~/includes/ndptecclick-md.md)] 展開テクノロジの終了、複雑なファイル名拡張子に". exe.manifest"です。 このプロパティを設定 `true` を設定することができます、 <xref:System.Windows.Forms.FileDialog.Filter%2A> をドット形式の複数の拡張機能のプロパティです。  
   
- If <xref:System.Windows.Forms.FileDialog.SupportMultiDottedExtensions%2A> is `false`, and you assign a multi-dotted extension to <xref:System.Windows.Forms.FileDialog.Filter%2A>, derived controls such as <xref:System.Windows.Forms.SaveFileDialog> will only use the last extension in the string. For example, ".manifest" will be used instead of ".exe.manifest".  
+ 場合 <xref:System.Windows.Forms.FileDialog.SupportMultiDottedExtensions%2A> は `false`, 、マルチ ドットで区切られた拡張子の割り当てと <xref:System.Windows.Forms.FileDialog.Filter%2A>, などのコントロールの派生 <xref:System.Windows.Forms.SaveFileDialog> のみ使用を文字列内の最後の拡張機能はします。 代わりに".manifest"を使用するなどの". exe.manifest"です。  
   
    
   
-## Examples  
- The following code example saves files with the extension ".data.txt". This code example requires that your application host a <xref:System.Windows.Forms.SaveFileDialog> named `saveFileDialog1` and a <xref:System.Windows.Forms.Button> named `button1`.  
+## 例  
+ 次のコード例は、拡張子を持つファイルを保存"します。 data.txt"です。 このコード例で必要とするアプリケーション ホスト、 <xref:System.Windows.Forms.SaveFileDialog> という名前 `saveFileDialog1` と <xref:System.Windows.Forms.Button> という名前 `button1`します。  
   
- [!code-csharp[SupportMultiDottedExtensions#1](~/samples/snippets/csharp/VS_Snippets_Winforms/SupportMultiDottedExtensions/CS/Form1.cs#1)]
- [!code-vb[SupportMultiDottedExtensions#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/SupportMultiDottedExtensions/VB/Form1.vb#1)]  
+ [!code-csharp[SupportMultiDottedExtensions\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/SupportMultiDottedExtensions/CS/Form1.cs#1)]
+ [!code-vb[SupportMultiDottedExtensions\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/SupportMultiDottedExtensions/VB/Form1.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Forms.FileDialog.Filter" />
       </Docs>
     </Member>
     <Member MemberName="Title">
@@ -869,22 +909,22 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the file dialog box title.</summary>
-        <value>The file dialog box title. The default value is an empty string ("").</value>
+        <summary>ファイル ダイアログ ボックスのタイトルを取得または設定します。</summary>
+        <value>ファイル ダイアログ ボックスのタイトル。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The string is placed in the title bar of the dialog box. If the title is an empty string, the system uses a default title, which is either "Save As" or "Open".  
+## 解説  
+ 文字列は、ダイアログ ボックスのタイトル バーに配置されます。 タイトルが、空の文字列の場合は"名前を付けて保存\] または"Open"のいずれか、既定のタイトルが使用されます。  
   
    
   
-## Examples  
- The following code example demonstrates initializing an <xref:System.Windows.Forms.OpenFileDialog>, setting the <xref:System.Windows.Forms.FileDialog.Title%2A> and <xref:System.Windows.Forms.FileDialog.Filter%2A> properties, and allowing the user to select multiple files by setting the <xref:System.Windows.Forms.OpenFileDialog.Multiselect%2A?displayProperty=fullName> property to true. To run this example, paste the following code in a form containing an <xref:System.Windows.Forms.OpenFileDialog> named `OpenFileDialog1` and a <xref:System.Windows.Forms.Button> named `fileButton`. Call the `InitializeOpenFileDialog` method in the form's constructor or `Load` method. The example also requires that the `Click` event of the `Button` control is connected to the event handler defined in the example.  
+## 例  
+ 次のコード例では、初期化を示しています、 <xref:System.Windows.Forms.OpenFileDialog>, で、設定、 <xref:System.Windows.Forms.FileDialog.Title%2A> と <xref:System.Windows.Forms.FileDialog.Filter%2A> プロパティ、およびユーザーが設定して複数のファイルを選択できるようにする、 <xref:System.Windows.Forms.OpenFileDialog.Multiselect%2A?displayProperty=fullName> プロパティを true にします。 この例を実行するを含むフォームに次のコードを貼り付け、 <xref:System.Windows.Forms.OpenFileDialog> という名前 `OpenFileDialog1` と <xref:System.Windows.Forms.Button> という名前 `fileButton`します。 呼び出す、 `InitializeOpenFileDialog` フォームのコンス トラクター メソッドまたは `Load` メソッドです。 例では、する必要があります、 `Click` のイベント、 `Button` の例で定義されているイベント ハンドラーに制御が接続されています。  
   
- [!code-cpp[System.Windows.Forms.FileDialog#6](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CPP/filedialogform.cpp#6)]
- [!code-csharp[System.Windows.Forms.FileDialog#6](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CS/filedialogform.cs#6)]
- [!code-vb[System.Windows.Forms.FileDialog#6](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/VB/filedialogform.vb#6)]  
+ [!code-cpp[System.Windows.Forms.FileDialog\#6](~/samples/snippets/cpp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CPP/filedialogform.cpp#6)]
+ [!code-csharp[System.Windows.Forms.FileDialog\#6](~/samples/snippets/csharp/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/CS/filedialogform.cs#6)]
+ [!code-vb[System.Windows.Forms.FileDialog\#6](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.Windows.Forms.FileDialog/VB/filedialogform.vb#6)]  
   
  ]]></format>
         </remarks>
@@ -905,8 +945,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Provides a string version of this object.</summary>
-        <returns>A string version of this object.</returns>
+        <summary>このオブジェクトの文字列形式を示します。</summary>
+        <returns>このオブジェクトの文字列形式。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -928,14 +968,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value indicating whether the dialog box accepts only valid Win32 file names.</summary>
+        <summary>ダイアログ ボックスが有効な Win32 ファイル名だけを受け入れるかどうかを示す値を取得または設定します。</summary>
         <value>
-          <see langword="true" /> if the dialog box accepts only valid Win32 file names; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> ダイアログ ボックスが有効な Win32 ファイル名のみを受け入れる場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the edit control contains anything but spaces when the user clicks **OK**, the dialog box returns the file name, whether it is valid or not. No default extension is added to the text.  
+## 解説  
+ エディット コントロールがすべて含まれますが、スペースの場合、ユーザーがクリックすると **OK**, 、ダイアログ ボックスが有効かどうか、ファイル名が返されます。 テキストには、既定の拡張機能は追加されません。  
   
  ]]></format>
         </remarks>

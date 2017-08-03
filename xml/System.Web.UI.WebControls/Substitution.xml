@@ -25,32 +25,32 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Specifies a section on an output-cached Web page that is exempt from caching. At this location, dynamic content is retrieved and substituted for the <see cref="T:System.Web.UI.WebControls.Substitution" /> control.</summary>
+    <summary>キャッシュから除外される出力キャッシュ Web ページ上のセクションを指定します。 この領域では、動的コンテンツが取得され、<see cref="T:System.Web.UI.WebControls.Substitution" /> コントロールの代わりに配置されます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- In this topic:  
+## 解説  
+ このトピックの内容  
   
--   [Introduction](#introduction)  
+-   [はじめに](#introduction)  
   
--   [Declarative Syntax](#declarative_syntax)  
+-   [宣言構文](#declarative_syntax)  
   
 <a name="introduction"></a>   
-## Introduction  
- Use the <xref:System.Web.UI.WebControls.Substitution> control to specify a section on an output-cached Web page where you want dynamic content substituted for the control. The <xref:System.Web.UI.WebControls.Substitution> control offers a simplified solution to partial page caching for pages where the majority of the content is cached. You can output-cache the entire page, and then use <xref:System.Web.UI.WebControls.Substitution> controls to specify the parts of the page that are exempt from caching. Cached regions execute only once and are replayed from the cache until the cache entry expires or is purged. Dynamic regions execute each time the page is requested. This caching model simplifies the code for pages that are primarily static, because you do not have to encapsulate the sections to cache in Web user controls. For example, this caching model is useful in a scenario where you have a page that contains static content, such as news stories, and an <xref:System.Web.UI.WebControls.AdRotator> control that displays advertisements. The news stories do not change, which means that they can be cached. However, each time a user requests the page, you want to display a new advertisement. The <xref:System.Web.UI.WebControls.AdRotator> control directly supports post-cache substitution and renders a new advertisement each time the page posts back, regardless of whether the page is cached.  
+## はじめに  
+ 使用して、 <xref:System.Web.UI.WebControls.Substitution> コントロールのコントロールでコンテンツを動的する出力キャッシュ Web ページのセクションを指定する代わりに使用します。<xref:System.Web.UI.WebControls.Substitution> コントロールは、大部分のコンテンツがキャッシュされているページの部分的なページがキャッシュ機能に単純なソリューションを提供しています。 出力キャッシュ全体のページして、使用すると <xref:System.Web.UI.WebControls.Substitution> コントロール、ページのキャッシュから除外されている部分を指定します。 キャッシュされた領域では、1 回だけ実行され、キャッシュからキャッシュ エントリの有効期限が切れるかが削除されるまでに再生されます。 動的領域では、ページが要求されるたびに実行します。 このキャッシュ モデルでは、Web ユーザー コントロール内のキャッシュにセクションをカプセル化する必要はありませんので、主に静的なページのためのコードが簡略化します。 たとえば、このキャッシュ モデルは、ニュースなどの静的コンテンツを含むページがある状況で役立ちますと <xref:System.Web.UI.WebControls.AdRotator> 提供情報を表示するコントロール。 ニュースの話題は変わらないのでキャッシュできます。 ただし、ユーザーが、ページを要求するたびにする新しい提供情報を表示します。<xref:System.Web.UI.WebControls.AdRotator> コントロールは、直接キャッシュ後の置換をサポートし、新しい提供情報ごとに、ページがポストバック、ページをキャッシュするかどうかに関係なくをレンダリングします。  
   
 > [!NOTE]
->  You can place a <xref:System.Web.UI.WebControls.Substitution> control in a user control that is contained in a cached page. However, you cannot place a <xref:System.Web.UI.WebControls.Substitution> control in an output-cached user control.  
+>  配置することができます、 <xref:System.Web.UI.WebControls.Substitution> キャッシュされたページに含まれているユーザー コントロール内のコントロールです。 ただし、配置することはできません、 <xref:System.Web.UI.WebControls.Substitution> 出力キャッシュのユーザー コントロール内のコントロールです。  
   
- When the <xref:System.Web.UI.WebControls.Substitution> control executes, it calls a method that returns a string. The string that the method returns is the content to display on the page at the location of the <xref:System.Web.UI.WebControls.Substitution> control. Use the <xref:System.Web.UI.WebControls.Substitution.MethodName%2A> property to specify the name of the callback method to invoke when the <xref:System.Web.UI.WebControls.Substitution> control executes. The callback method that you specify must be a static method on the page or user control that contains the <xref:System.Web.UI.WebControls.Substitution> control. The signature for the callback method must match the signature for an <xref:System.Web.HttpResponseSubstitutionCallback> delegate that takes an <xref:System.Web.HttpContext> parameter and returns a string.  
+ ときに、 <xref:System.Web.UI.WebControls.Substitution> コントロールが実行される、文字列を返すメソッドを呼び出します。 メソッドが返す文字列は、コンテンツの場所にあるページに表示する、 <xref:System.Web.UI.WebControls.Substitution> コントロールです。 使用して、 <xref:System.Web.UI.WebControls.Substitution.MethodName%2A> プロパティを呼び出すときにコールバック メソッドの名前を指定する、 <xref:System.Web.UI.WebControls.Substitution> コントロールは実行されます。 指定したコールバック メソッドを含むページやユーザー コントロールの静的メソッドをする必要があります、 <xref:System.Web.UI.WebControls.Substitution> コントロールです。 コールバック メソッドのシグネチャの署名が一致する必要があります、 <xref:System.Web.HttpResponseSubstitutionCallback> を受け取るデリゲート、 <xref:System.Web.HttpContext> パラメーター文字列を返します。  
   
- To manipulate the output cache for a page, you can use the [@ OutputCache](http://msdn.microsoft.com/en-us/28a9e101-fb44-4198-9cb6-b8a52312fec2) directive, the <xref:System.Web.HttpCachePolicy> class, or the <xref:System.Web.HttpResponse.Cache%2A> property. For more information on caching pages, see [Caching ASP.NET Pages](http://msdn.microsoft.com/library/e9666a1b-88df-4931-af0b-a754fc65660b) and [Caching Portions of an ASP.NET Page](http://msdn.microsoft.com/library/cdd8e523-7305-4685-a456-c5be1de1367e).  
+ ページ出力キャッシュを操作するには、使用することができます、 [@ OutputCache](http://msdn.microsoft.com/ja-jp/28a9e101-fb44-4198-9cb6-b8a52312fec2) 、ディレクティブ、 <xref:System.Web.HttpCachePolicy> クラス、または <xref:System.Web.HttpResponse.Cache%2A> プロパティです。 ページのキャッシュの詳細については、次を参照してください。 [Caching ASP.NET Pages](http://msdn.microsoft.com/ja-jp/e9666a1b-88df-4931-af0b-a754fc65660b) と [Caching Portions of an ASP.NET Page](http://msdn.microsoft.com/ja-jp/cdd8e523-7305-4685-a456-c5be1de1367e)です。  
   
- As an alternative to using the <xref:System.Web.UI.WebControls.Substitution> control, you can also get substitution caching behavior using a <xref:System.Web.HttpResponseSubstitutionCallback> delegate. In addition, you can get substitution caching behavior on controls, such as the <xref:System.Web.UI.WebControls.AdRotator> control, that directly support this feature. For more information, see [Dynamically Updating Portions of a Cached Page](http://msdn.microsoft.com/library/09c9bd9a-0d68-4a5c-aa6f-1b461c208795).  
+ 使用する代わりに、 <xref:System.Web.UI.WebControls.Substitution> 、コントロールの動作を使用するキャッシュの置換も取得できます、 <xref:System.Web.HttpResponseSubstitutionCallback> を委任します。 また、置換などのキャッシュ、コントロールの動作を取得することができます、 <xref:System.Web.UI.WebControls.AdRotator> 直接この機能をサポートするコントロール。 詳細については、「[Dynamically Updating Portions of a Cached Page](http://msdn.microsoft.com/ja-jp/09c9bd9a-0d68-4a5c-aa6f-1b461c208795)」を参照してください。  
   
 <a name="declarative_syntax"></a>   
-## Declarative Syntax  
+## 宣言構文  
   
 ```  
 <asp:Substitution  
@@ -72,14 +72,19 @@
   
    
   
-## Examples  
- The following code example demonstrates how to add a <xref:System.Web.UI.WebControls.Substitution> control declaratively to an output-cached Web page. When the page loads, the current date and time are displayed to the user in a label. This section of the page is cached and updated only every 60 seconds. When the <xref:System.Web.UI.WebControls.Substitution> control executes, it calls the `GetCurrentDateTime` method. The string returned by `GetCurrentDateTime` is displayed to the user. This section of the page is not cached and is updated each time the page is refreshed.  
+## 例  
+ 次のコード例では、追加、 <xref:System.Web.UI.WebControls.Substitution> 出力キャッシュの Web ページに宣言によって制御します。 ページが読み込まれると、現在の日付と時刻がラベル内のユーザーに表示されます。 ここで、ページがキャッシュされ、60 秒ごとに更新します。 ときに、 <xref:System.Web.UI.WebControls.Substitution> コントロールの実行、呼び出し、 `GetCurrentDateTime` メソッドです。 によって返される文字列 `GetCurrentDateTime` がユーザーに表示されます。 ページのこのセクションでは、キャッシュされていないし、ページが更新されるたびに更新されます。  
   
- <!-- TODO: review snippet reference [!code-csharp[SubstitutionsClass1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/SubstitutionsClass1/CS/substitutionclass1cs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[SubstitutionsClass1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/SubstitutionsClass1/VB/substitutionclass1vb.aspx#1)]  -->  
+ [!code-csharp[SubstitutionsClass1\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/SubstitutionsClass1/CS/substitutionclass1cs.aspx#1)]
+ [!code-vb[SubstitutionsClass1\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/SubstitutionsClass1/VB/substitutionclass1vb.aspx#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="P:System.Web.UI.WebControls.Substitution.MethodName" />
+    <altmember cref="T:System.Web.HttpResponseSubstitutionCallback" />
+    <altmember cref="T:System.Web.HttpContext" />
+    <altmember cref="T:System.Web.HttpCachePolicy" />
+    <altmember cref="P:System.Web.HttpResponse.Cache" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -93,20 +98,21 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Web.UI.WebControls.Substitution" /> class.</summary>
+        <summary>
+          <see cref="T:System.Web.UI.WebControls.Substitution" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Web.UI.WebControls.Substitution.%23ctor%2A> constructor to create and initialize a new instance of the <xref:System.Web.UI.WebControls.Substitution> class.  
+## 解説  
+ 使用して、 <xref:System.Web.UI.WebControls.Substitution.%23ctor%2A> 作成しての新しいインスタンスを初期化するコンス トラクター、 <xref:System.Web.UI.WebControls.Substitution> クラスです。  
   
    
   
-## Examples  
- The following code example demonstrates how to add a <xref:System.Web.UI.WebControls.Substitution> control programmatically to an output-cached Web page. When the page loads, the current date and time are displayed to the user in a label. This section of the page is cached and updated only every 60 seconds. When the <xref:System.Web.UI.WebControls.Substitution> control executes, it calls the `GetCurrentDateTime` method. The string returned by `GetCurrentDateTime` is displayed to the user. This section of the page is not cached and is updated each time the page is refreshed.  
+## 例  
+ 次のコード例では、追加、 <xref:System.Web.UI.WebControls.Substitution> 出力キャッシュの Web ページにプログラムで制御します。 ページが読み込まれると、現在の日付と時刻がラベル内のユーザーに表示されます。 ここで、ページがキャッシュされ、60 秒ごとに更新します。 ときに、 <xref:System.Web.UI.WebControls.Substitution> コントロールの実行、呼び出し、 `GetCurrentDateTime` メソッドです。 によって返される文字列 `GetCurrentDateTime` がユーザーに表示されます。 ページのこのセクションでは、キャッシュされていないし、ページが更新されるたびに更新されます。  
   
- <!-- TODO: review snippet reference [!code-csharp[SubstitutionCstr#1](~/samples/snippets/csharp/VS_Snippets_WebNet/SubstitutionCstr/CS/substitutioncstrcs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[SubstitutionCstr#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/SubstitutionCstr/VB/substitutioncstrvb.aspx#1)]  -->  
+ [!code-csharp[SubstitutionCstr\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/SubstitutionCstr/CS/substitutioncstrcs.aspx#1)]
+ [!code-vb[SubstitutionCstr\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/SubstitutionCstr/VB/substitutioncstrvb.aspx#1)]  
   
  ]]></format>
         </remarks>
@@ -126,19 +132,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an <see cref="T:System.Web.UI.EmptyControlCollection" /> object, indicating that the <see cref="T:System.Web.UI.WebControls.Substitution" /> control does not support child controls.</summary>
-        <returns>An <see cref="T:System.Web.UI.EmptyControlCollection" />, indicating that the control does not support child controls.</returns>
+        <summary>返します。、 <see cref="T:System.Web.UI.EmptyControlCollection" /> オブジェクトのことを示す、 <see cref="T:System.Web.UI.WebControls.Substitution" /> コントロールで子コントロールがサポートされていません。</summary>
+        <returns>
+          <see cref="T:System.Web.UI.EmptyControlCollection" />, 、コントロールが子コントロールをサポートしていないことを示します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.Substitution.CreateControlCollection%2A> method is typically used to create a <xref:System.Web.UI.ControlCollection> object to store the child controls for a control. The implementation of the <xref:System.Web.UI.WebControls.Substitution.CreateControlCollection%2A> method for a <xref:System.Web.UI.WebControls.Substitution> control always returns an <xref:System.Web.UI.EmptyControlCollection> object, to indicate that the <xref:System.Web.UI.WebControls.Substitution> control does not support child controls.  
+## 解説  
+ <xref:System.Web.UI.WebControls.Substitution.CreateControlCollection%2A> メソッドは通常作成に使用する <xref:System.Web.UI.ControlCollection> コントロールの子コントロールを格納するオブジェクト。 実装、 <xref:System.Web.UI.WebControls.Substitution.CreateControlCollection%2A> のメソッド、 <xref:System.Web.UI.WebControls.Substitution> 制御を返します。 では常に、 <xref:System.Web.UI.EmptyControlCollection> オブジェクトを示すために、 <xref:System.Web.UI.WebControls.Substitution> コントロールで子コントロールがサポートされていません。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>When extending the <see cref="T:System.Web.UI.WebControls.Substitution" /> control, you can override the <see cref="M:System.Web.UI.WebControls.Substitution.CreateControlCollection" /> method in a derived class to support child controls.</para>
         </block>
+        <altmember cref="T:System.Web.UI.EmptyControlCollection" />
+        <altmember cref="T:System.Web.UI.ControlCollection" />
       </Docs>
     </Member>
     <Member MemberName="MethodName">
@@ -159,26 +168,28 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the callback method to invoke when the <see cref="T:System.Web.UI.WebControls.Substitution" /> control executes.</summary>
-        <value>A string that represents the name of the method to invoke when the <see cref="T:System.Web.UI.WebControls.Substitution" /> control executes.</value>
+        <summary>取得または設定を呼び出すときにコールバック メソッドの名前、 <see cref="T:System.Web.UI.WebControls.Substitution" /> コントロールは実行されます。</summary>
+        <value>時に呼び出されるメソッドの名前を表す文字列、 <see cref="T:System.Web.UI.WebControls.Substitution" /> コントロールは実行されます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Web.UI.WebControls.Substitution.MethodName%2A> property to specify the name of the callback method to invoke when the <xref:System.Web.UI.WebControls.Substitution> control executes. The callback method that you specify must be a static method on the page or user control that contains the <xref:System.Web.UI.WebControls.Substitution> control. The signature for the callback method must match the signature for a <xref:System.Web.HttpResponseSubstitutionCallback> delegate that takes an <xref:System.Web.HttpContext> parameter and returns a string. The string that the callback method returns is the content to display on the page at the location of the <xref:System.Web.UI.WebControls.Substitution> control.  
+## 解説  
+ 使用して、 <xref:System.Web.UI.WebControls.Substitution.MethodName%2A> プロパティを呼び出すときにコールバック メソッドの名前を指定する、 <xref:System.Web.UI.WebControls.Substitution> コントロールは実行されます。 指定したコールバック メソッドを含むページやユーザー コントロールの静的メソッドをする必要があります、 <xref:System.Web.UI.WebControls.Substitution> コントロールです。 コールバック メソッドのシグネチャの署名が一致する必要があります、 <xref:System.Web.HttpResponseSubstitutionCallback> を受け取るデリゲート、 <xref:System.Web.HttpContext> パラメーター文字列を返します。 コールバック メソッドから返される文字列は、コンテンツの場所にあるページに表示する、 <xref:System.Web.UI.WebControls.Substitution> コントロールです。  
   
- The <xref:System.Web.HttpContext> parameter encapsulates all HTTP-specific information about an individual HTTP request. You can use it to access session variables, authorization information, and personalization details. For more information, see <xref:System.Web.HttpResponseSubstitutionCallback>.  
+ <xref:System.Web.HttpContext> パラメーターは、個々 の HTTP 要求に関する HTTP 固有のすべての情報をカプセル化します。 セッション変数、承認情報、および個人用設定の詳細情報にアクセスするのにには、それを使用できます。 詳細については、「<xref:System.Web.HttpResponseSubstitutionCallback>」を参照してください。  
   
    
   
-## Examples  
- The following code example demonstrates how to add a <xref:System.Web.UI.WebControls.Substitution> control declaratively to an output-cached Web page. When the page loads, a static bulleted list is displayed to the user. This section of the page is cached and updated only every 60 seconds. When the <xref:System.Web.UI.WebControls.Substitution> control executes, it calls the `GetUser` method, which returns a string that represents the current user. This string is displayed at the location of the <xref:System.Web.UI.WebControls.Substitution> control on the page. This section of the page is not cached and is updated each time the page is refreshed.  
+## 例  
+ 次のコード例では、追加、 <xref:System.Web.UI.WebControls.Substitution> 出力キャッシュの Web ページに宣言によって制御します。 ページが読み込まれると、ユーザーに静的な箇条書きリストが表示されます。 ここで、ページがキャッシュされ、60 秒ごとに更新します。 ときに、 <xref:System.Web.UI.WebControls.Substitution> コントロールの実行、呼び出し、 `GetUser` メソッドで、現在のユーザーを表す文字列を返します。 位置に表示する文字列を <xref:System.Web.UI.WebControls.Substitution> ページ上のコントロールです。 ページのこのセクションでは、キャッシュされていないし、ページが更新されるたびに更新されます。  
   
- <!-- TODO: review snippet reference [!code-csharp[Substitution.MethodName#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Substitution.MethodName/CS/substitution.methodnamecs.aspx#1)]  -->
- <!-- TODO: review snippet reference [!code-vb[Substitution.MethodName#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Substitution.MethodName/VB/substitution.methodnamevb.aspx#1)]  -->  
+ [!code-csharp[Substitution.MethodName\#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Substitution.MethodName/CS/substitution.methodnamecs.aspx#1)]
+ [!code-vb[Substitution.MethodName\#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Substitution.MethodName/VB/substitution.methodnamevb.aspx#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Web.HttpResponseSubstitutionCallback" />
+        <altmember cref="T:System.Web.HttpContext" />
       </Docs>
     </Member>
     <Member MemberName="OnPreRender">
@@ -197,10 +208,12 @@
         <Parameter Name="e" Type="System.EventArgs" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
-        <summary>Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.</summary>
+        <param name="e">イベント データを格納している <see cref="T:System.EventArgs" /> オブジェクト。</param>
+        <summary>
+          <see cref="E:System.Web.UI.Control.PreRender" /> イベントを発生させます。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.Web.HttpException">The parent control or master page is cached.</exception>
+        <exception cref="T:System.Web.HttpException">親コントロールまたはマスター ページがキャッシュされます。</exception>
+        <altmember cref="M:System.Web.UI.Control.OnPreRender(System.EventArgs)" />
       </Docs>
     </Member>
     <Member MemberName="Render">
@@ -219,9 +232,10 @@
         <Parameter Name="writer" Type="System.Web.UI.HtmlTextWriter" />
       </Parameters>
       <Docs>
-        <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the server control content.</param>
-        <summary>Sends server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter" /> object, which writes the content to be rendered on the clien</summary>
+        <param name="writer">サーバー コントロールの内容を受け取る <see cref="T:System.Web.UI.HtmlTextWriter" /> オブジェクト。</param>
+        <summary>提供されたクライアントに表示される内容を書き込む <see cref="T:System.Web.UI.HtmlTextWriter" /> オブジェクトに、サーバー コントロールの内容を送信します。</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Web.UI.Control.Render(System.Web.UI.HtmlTextWriter)" />
       </Docs>
     </Member>
   </Members>

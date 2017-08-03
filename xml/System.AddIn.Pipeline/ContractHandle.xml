@@ -15,26 +15,26 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Provides methods that control the lifetime of an add-in.</summary>
+    <summary>アドインの有効期間を制御する方法を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Because the add-in model provides the ability for add-ins to communicate between application domains and between processes, it cannot rely on the garbage collector to reclaim them. This class provides a reference counting mechanism for the add-in by obtaining a lifetime token to its contract.  
+## 解説  
+ アドイン モデルでは、アプリケーション ドメイン間およびプロセス間で通信するには、アドインの機能を提供するため場合は、それらを解放するガベージ コレクターに依存することはできません。 このクラスは、参照カウントをそのコントラクトの有効期間のトークンを取得することで、アドインの手法を提供します。  
   
- When a <xref:System.AddIn.Pipeline.ContractHandle> object is constructed, it calls the <xref:System.AddIn.Pipeline.ContractBase.AcquireLifetimeToken%2A> method on the contract that is passed to the constructor. When the <xref:System.AddIn.Pipeline.ContractHandle> object is disposed or finalized, it calls the <xref:System.AddIn.Pipeline.ContractBase.RevokeLifetimeToken%2A> method on the contract, which removes its hold on the contract.  
+ ときに、 <xref:System.AddIn.Pipeline.ContractHandle> オブジェクトを構築を呼び出す、 <xref:System.AddIn.Pipeline.ContractBase.AcquireLifetimeToken%2A> のコンス トラクターに渡されるコントラクトのメソッドです。 ときに、 <xref:System.AddIn.Pipeline.ContractHandle> 呼び出し、オブジェクトが破棄または終了、 <xref:System.AddIn.Pipeline.ContractBase.RevokeLifetimeToken%2A> 保持契約が削除され、コントラクトのメソッドです。  
   
- Adapters implement the contract. The <xref:System.AddIn.Pipeline.ContractHandle> class is designed to be used in a contract-to-view adapter to help pipeline developers manage the lifetime of the contract that is being adapted. Typically, an instance of this class is instantiated during the construction of the adapter class and is stored in an instance field of the adapter. When the adapter class is garbage-collected, the <xref:System.AddIn.Pipeline.ContractHandle> object will also be collected and the <xref:System.AddIn.Pipeline.ContractHandle> object will revoke the lifetime token on the contract.  
+ アダプターは、コントラクトを実装します。<xref:System.AddIn.Pipeline.ContractHandle> パイプラインを開発者が適合しているコントラクトの有効期間を管理するため、コントラクトからビューへのアダプターで使用されるクラスは設計されています。 通常は、このクラスのインスタンスは、アダプター クラスの構築時にインスタンス化され、アダプターのインスタンスのフィールドに格納されます。 アダプター クラスは、ガベージ コレクトされるときに、 <xref:System.AddIn.Pipeline.ContractHandle> オブジェクトも収集されると、 <xref:System.AddIn.Pipeline.ContractHandle> オブジェクト、契約の有効期間のトークンが取り消されます。  
   
- It is recommended that your view-to-contract adapters inherit from the <xref:System.AddIn.Pipeline.ContractBase> class. You can then use a default implementation for the members of <xref:System.AddIn.Contract.IContract>, which means you need to implement only the members of your specific contract.  
+ ビューからコントラクトへのアダプターが継承することをお勧めします <xref:System.AddIn.Pipeline.ContractBase> クラスです。 メンバーの既定の実装を使用することができますし、 <xref:System.AddIn.Contract.IContract>, 、つまり、特定のコントラクトのメンバーのみを実装する必要があります。  
   
    
   
-## Examples  
- The following example shows how to set the lifetime token handle in a contract-to-view adapter on the add-in side of a pipeline.  
+## 例  
+ 次の例では、コントラクトからビューへのアダプターで、パイプラインのアドイン側で有効期間のトークン ハンドルを設定する方法を示します。  
   
- [!code-csharp[AddinP2HostSideAdapters#2](~/samples/snippets/csharp/VS_Snippets_CLR/AddInP2HostSideAdapters/cs/Calc2ContractToViewHostSideAdapter.cs#2)]
- [!code-vb[AddinP2HostSideAdapters#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AddInP2HostSideAdapters/vb/Calc2ContractToViewHostSideAdapter.vb#2)]  
+ [!code-csharp[AddinP2HostSideAdapters\#2](~/samples/snippets/csharp/VS_Snippets_CLR/AddInP2HostSideAdapters/cs/Calc2ContractToViewHostSideAdapter.cs#2)]
+ [!code-vb[AddinP2HostSideAdapters\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AddInP2HostSideAdapters/vb/Calc2ContractToViewHostSideAdapter.vb#2)]  
   
  ]]></format>
     </remarks>
@@ -53,11 +53,20 @@
         <Parameter Name="contract" Type="System.AddIn.Contract.IContract" />
       </Parameters>
       <Docs>
-        <param name="contract">The contract to use in the pipeline.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.AddIn.Pipeline.ContractHandle" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <param name="contract">パイプラインで使用されるコントラクト。</param>
+        <summary>
+          <see cref="T:System.AddIn.Pipeline.ContractHandle" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="contract" /> is <see langword="null" />.</exception>
+          <paramref name="contract" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="AppDomainOwner">
@@ -76,21 +85,25 @@
         <Parameter Name="domain" Type="System.AppDomain" />
       </Parameters>
       <Docs>
-        <param name="domain">The application domain to check.</param>
-        <summary>Gets the instance of the add-in-side adapter when the application domain was created.</summary>
-        <returns>An <see cref="T:System.AddIn.Contract.IContract" /> object that represents the owner of the application domain.</returns>
+        <param name="domain">アプリケーション ドメインを確認します。</param>
+        <summary>アプリケーション ドメインの作成時に、追加アドイン側アダプターのインスタンスを取得します。</summary>
+        <returns>
+          <see cref="T:System.AddIn.Contract.IContract" /> をアプリケーション ドメインの所有者を表すオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The add-in-side adapters are typed as <xref:System.AddIn.Contract.IContract>.  
+## 解説  
+ 追加アドイン側アダプターは、入力 <xref:System.AddIn.Contract.IContract>します。  
   
- If the application domain was previously created by a user, there is no owner.  
+ 場合は、ユーザーがアプリケーション ドメインを作成した以前、所有者はありません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="domain" /> is <see langword="null" />.</exception>
+          <paramref name="domain" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Contract">
@@ -106,9 +119,17 @@
         <ReturnType>System.AddIn.Contract.IContract</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the contract used by a pipeline.</summary>
-        <value>The contract, which is derived from <see cref="T:System.AddIn.Contract.IContract" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>パイプラインで使用されるコントラクトを取得します。</summary>
+        <value>派生したコントラクト <see cref="T:System.AddIn.Contract.IContract" />します。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ContractOwnsAppDomain">
@@ -128,14 +149,22 @@
         <Parameter Name="domain" Type="System.AppDomain" />
       </Parameters>
       <Docs>
-        <param name="contract">The contract to check.</param>
-        <param name="domain">The application domain to check.</param>
-        <summary>Determines whether an application domain is owned by the specified contract.</summary>
+        <param name="contract">チェックするコントラクト。</param>
+        <param name="domain">アプリケーション ドメインを確認します。</param>
+        <summary>アプリケーション ドメインが指定されたコントラクトを所有するかどうかを決定します。</summary>
         <returns>
-          <see langword="true" /> if the contract owns the application domain; otherwise, <see langword="false" />.</returns>
-        <remarks>To be added.</remarks>
+          <see langword="true" /> コントラクトは、アプリケーション ドメインを所有している場合それ以外の場合、 <see langword="false" />です。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="contract" /> or <paramref name="domain" /> is <see langword="null" />.</exception>
+          <paramref name="contract" /> または <paramref name="domain" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -152,8 +181,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Revokes the lifetime token on a contract, regardless of input.</summary>
-        <remarks>To be added.</remarks>
+        <summary>入力に関係なく、コントラクトの有効期間のトークンを取り消します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -172,10 +209,17 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Revokes the lifetime token on the contract regardless of input and optionally releases the managed resources.</summary>
-        <remarks>To be added.</remarks>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>入力に関係なく、コントラクトの有効期間のトークンを失効し、必要に応じてマネージ リソースも解放されます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -192,18 +236,37 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the resources associated with the <see cref="T:System.AddIn.Pipeline.ContractHandle" /> instance.</summary>
+        <summary>
+          <see cref="T:System.AddIn.Pipeline.ContractHandle" /> インスタンスと関連付けられたリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method overrides <xref:System.Object.Finalize%2A?displayProperty=fullName>. Application code should not call this method; an object's <xref:System.AddIn.Pipeline.ContractHandle.Finalize%2A> method is automatically invoked during garbage collection, unless finalization by the garbage collector has been disabled by a call to the <xref:System.GC.SuppressFinalize%2A?displayProperty=fullName> method.  
+## 解説  
+ このメソッドは<xref:System.Object.Finalize%2A?displayProperty=fullName>します。 アプリケーション コードではこのメソッドを呼び出す必要がありますいません。オブジェクトの<xref:System.AddIn.Pipeline.ContractHandle.Finalize%2A>への呼び出しによって、ガベージ コレクターによって終了処理が無効になっていない限り、ガベージ コレクション中にメソッドが自動的に起動、<xref:System.GC.SuppressFinalize%2A?displayProperty=fullName>メソッドです。  
   
- When called by the garbage collector, this method calls the <xref:System.AddIn.Pipeline.ContractHandle.Dispose%28System.Boolean%29> method.  
+ ガベージ コレクターによって呼び出されると、このメソッドが呼び出す、<xref:System.AddIn.Pipeline.ContractHandle.Dispose%28System.Boolean%29>メソッドです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>コントラクトの有効期間のトークンを取り消します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

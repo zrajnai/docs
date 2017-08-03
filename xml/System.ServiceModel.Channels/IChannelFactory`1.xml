@@ -16,13 +16,13 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <typeparam name="TChannel">The type of channel that the channel factory creates.</typeparam>
-    <summary>Defines the interface that must be implemented by channel factories that create type-specific channels.</summary>
+    <typeparam name="TChannel">チャネル ファクトリが作成するチャネルの型。</typeparam>
+    <summary>種類に固有のチャネルを作成するためにチャネル ファクトリが実装する必要があるインターフェイスを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Implementing the <xref:System.ServiceModel.Channels.IChannelFactory%601> contract allows users to create multiple channels of a given type without having to specify the channel type each time. In other words, defining the channel type as a generic parameter for the channel factory implementing the <xref:System.ServiceModel.Channels.IChannelFactory%601> interface means that it is not necessary to pass the type into the <xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%2A> methods. If users want to create different channel types, they can create additional channel factories for each type of channel required. The <xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%28System.ServiceModel.EndpointAddress%2CSystem.Uri%29> overload allows you to distinguish the address to which the message is initially sent from the ultimate destination. For a discussion of addressing, see the [Addresses](~/docs/framework/wcf/feature-details/endpoint-addresses.md) topic.  
+## 解説  
+ <xref:System.ServiceModel.Channels.IChannelFactory%601> コントラクトを実装することで、その都度チャネルの種類を指定することなく、特定の種類の複数のチャネルを作成することができます。 つまり、<xref:System.ServiceModel.Channels.IChannelFactory%601> インターフェイスを実装するチャネル ファクトリのジェネリック パラメーターとしてチャネルの種類を定義することは、<xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%2A> のメソッドに種類を渡す必要がないことを意味します。 異なる種類のチャネルを作成する必要がある場合は、必要なチャネルの種類ごとに別のチャネル ファクトリを作成できます。<xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%28System.ServiceModel.EndpointAddress%2CSystem.Uri%29> のオーバーロードにより、メッセージが最初に送信されるアドレスと、最終的な宛先を区別することができます。 アドレス指定については、「[Addresses](http://msdn.microsoft.com/ja-jp/13f269e3-ebb1-433c-86cf-54fbd866a627)」を参照してください。  
   
  ]]></format>
     </remarks>
@@ -35,12 +35,12 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Creates a channel of a specified type to a specified endpoint address.</summary>
+        <summary>指定したエンドポイント アドレスへの指定した種類のチャネルを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%28System.ServiceModel.EndpointAddress%2CSystem.Uri%29> overload to distinguish the address to which the message is initially sent from the ultimate destination when you want to do manual routing. Note that any channels created by this channel factory are closed when the channel factory is closed. For a discussion of addressing, see the [Addresses](~/docs/framework/wcf/feature-details/endpoint-addresses.md) topic.  
+## 解説  
+ メッセージの最初の送信先アドレスと最後の宛先アドレスを区別することが手動ルーティングで必要な場合、<xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%28System.ServiceModel.EndpointAddress%2CSystem.Uri%29> オーバーロードを使用します。 チャネル ファクトリを閉じると、そのチャネル ファクトリで作成されたチャネルも閉じられることに注意してください。 アドレス指定については、「[Addresses](http://msdn.microsoft.com/ja-jp/13f269e3-ebb1-433c-86cf-54fbd866a627)」を参照してください。  
   
  ]]></format>
         </remarks>
@@ -63,13 +63,13 @@
         <Parameter Name="to" Type="System.ServiceModel.EndpointAddress" />
       </Parameters>
       <Docs>
-        <param name="to">The <see cref="T:System.ServiceModel.EndpointAddress" /> that provides the location of the service.</param>
-        <summary>Creates a channel of a specified type to a specified endpoint address.</summary>
-        <returns>A channel of type <paramref name="TChannel" /> to the specified endpoint address.</returns>
+        <param name="to">サービスの場所を提供する <see cref="T:System.ServiceModel.EndpointAddress" />。</param>
+        <summary>指定したエンドポイント アドレスへの指定した種類のチャネルを作成します。</summary>
+        <returns>指定したエンドポイント アドレスへの <paramref name="TChannel" /> 型のチャネル。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Use the <xref:System.ServiceModel.Channels.IChannelFactory%601.CreateChannel%28System.ServiceModel.EndpointAddress%2CSystem.Uri%29> overload to distinguish the address to which the message is initially sent from the ultimate destination when you want to do manual routing. Note that any channels created by this channel factory are closed when the channel factory is closed.  
   
  ]]></format>
@@ -94,15 +94,19 @@
         <Parameter Name="via" Type="System.Uri" />
       </Parameters>
       <Docs>
-        <param name="to">The <see cref="T:System.ServiceModel.EndpointAddress" /> that provides the location of the service.</param>
-        <param name="via">The <see cref="T:System.Uri" /> that contains the transport address to which the message is sent.</param>
-        <summary>Creates a channel of a specified type to a specified endpoint address and transport address to which messages are sent.</summary>
-        <returns>A channel of type <paramref name="TChannel" /> to the specified endpoint address and transport address.</returns>
+        <param name="to">サービスの場所を提供する <see cref="T:System.ServiceModel.EndpointAddress" />。</param>
+        <param name="via">メッセージの送信先のトランスポート アドレスを格納している <see cref="T:System.Uri" />。</param>
+        <summary>チャネルの種類と、メッセージの送信先のエンドポイント アドレスとトランスポート アドレスを指定して、チャネルを作成します。</summary>
+        <returns>指定したエンドポイント アドレスとトランスポート アドレスへの <paramref name="TChannel" /> 型のチャネル。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The transport address specified by the `via` is the location to which a message should initially be sent on its way to some other remote address specified by the `to` at which the service is located. In most Internet scenarios, the `via` URI is the same as the <xref:System.ServiceModel.EndpointAddress.Uri%2A> of the final `to` address of the service. You only distinguish between these two addresses when you want to do some kind of manual routing. Note that any channels created by this channel factory are closed when the channel factory is closed. For a discussion of addressing, see the [Addresses](~/docs/framework/wcf/feature-details/endpoint-addresses.md) topic.  
+## 解説  
+ The transport address specified by the **parameterReference tag is not supported!!!!**  
+ is the location to which a message should initially be sent on its way to some other remote address specified by the **parameterReference tag is not supported!!!!**  
+ at which the service is located. In most Internet scenarios, the **parameterReference tag is not supported!!!!**  
+ URI is the same as the <xref:System.ServiceModel.EndpointAddress.Uri%2A> of the final **parameterReference tag is not supported!!!!**  
+ address of the service. You only distinguish between these two addresses when you want to do some kind of manual routing. Note that any channels created by this channel factory are closed when the channel factory is closed. For a discussion of addressing, see the [Addresses](http://msdn.microsoft.com/ja-jp/13f269e3-ebb1-433c-86cf-54fbd866a627) topic.  
   
  ]]></format>
         </remarks>

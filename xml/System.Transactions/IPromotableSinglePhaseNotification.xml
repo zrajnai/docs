@@ -21,23 +21,24 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Describes an object that acts as a commit delegate for a non-distributed transaction internal to a resource manager.</summary>
+    <summary>リソース マネージャーの内部非分散トランザクションのコミットの代理として機能するオブジェクトについて説明します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Promotable Enlistments (PSPE) allow a resource, such as a database, to take ownership of the transaction if it is the only entity participating in the transaction. Later, if needed, the <xref:System.Transactions> infrastructure can still escalate the transaction to MSDTC. For more information, see [Optimization Using Single Phase Commit and Promotable Single Phase Notification](http://msdn.microsoft.com/en-us/653d51d1-b4bf-4e34-9a6f-aec073f0f5bb).  
+## 解説  
+ 昇格可能参加リスト \(PSPE\) トランザクションに参加している唯一のエンティティである場合、トランザクションの所有権を取得、データベースなどのリソースを使用できます。 その後、必要な場合は、 <xref:System.Transactions> インフラストラクチャは、MSDTC トランザクションをエスカレートまだことができます。 詳細については、「[Optimization Using Single Phase Commit and Promotable Single Phase Notification](http://msdn.microsoft.com/ja-jp/653d51d1-b4bf-4e34-9a6f-aec073f0f5bb)」を参照してください。  
   
- A resource manager that implements this interface delegates control of the commit of it's internal non-distributed transaction to an enlistment on a <xref:System.Transactions> transaction through the <xref:System.Transactions.Transaction.EnlistPromotableSinglePhase%2A> method on the <xref:System.Transactions.Transaction> class.  
+ このインターフェイスを実装するリソース マネージャーで内部の非分散トランザクションに参加リストのコミットの制御の委任、 <xref:System.Transactions> を介してトランザクション、 <xref:System.Transactions.Transaction.EnlistPromotableSinglePhase%2A> メソッドを <xref:System.Transactions.Transaction> クラスです。  
   
- If the <xref:System.Transactions.ITransactionPromoter.Promote%2A?displayProperty=fullName> method is called, your implementation of this interface must produce a distributed transaction in the form of a propagation token, and return it to <xref:System.Transactions>.  
+ 場合、 <xref:System.Transactions.ITransactionPromoter.Promote%2A?displayProperty=fullName> メソッドが呼び出される、このインターフェイスの実装必要があります伝達トークンの形式で分散トランザクションを生成して返す <xref:System.Transactions>します。  
   
- After you enlist an object that implements this interface as a participant of a transaction using the <xref:System.Transactions.Transaction.EnlistPromotableSinglePhase%2A> method, the transaction manager then notifies the participant when the transaction is promoted, committed, or rolled back by invoking the <xref:System.Transactions.ITransactionPromoter.Promote%2A> method, the <xref:System.Transactions.IPromotableSinglePhaseNotification.SinglePhaseCommit%2A> method, or the <xref:System.Transactions.IPromotableSinglePhaseNotification.Rollback%2A> method of the object.  
+ 使用して、トランザクションの参加要素として、このインターフェイスを実装するオブジェクトを登録したら、 <xref:System.Transactions.Transaction.EnlistPromotableSinglePhase%2A> メソッドでは、トランザクション マネージャー、通知、参加要素、トランザクションの昇格、コミット、またはを呼び出してロールバック、 <xref:System.Transactions.ITransactionPromoter.Promote%2A> メソッドを <xref:System.Transactions.IPromotableSinglePhaseNotification.SinglePhaseCommit%2A> メソッド、または <xref:System.Transactions.IPromotableSinglePhaseNotification.Rollback%2A> オブジェクトのメソッドです。  
   
- For more information, see [Optimization Using Single Phase Commit and Promotable Single Phase Notification](http://msdn.microsoft.com/en-us/653d51d1-b4bf-4e34-9a6f-aec073f0f5bb).  
+ 詳細については、「[Optimization Using Single Phase Commit and Promotable Single Phase Notification](http://msdn.microsoft.com/ja-jp/653d51d1-b4bf-4e34-9a6f-aec073f0f5bb)」を参照してください。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Transactions.Transaction" />
   </Docs>
   <Members>
     <Member MemberName="Initialize">
@@ -63,16 +64,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Notifies a transaction participant that enlistment has completed successfully.</summary>
+        <summary>トランザクションの参加要素登録リストが正常に完了したことを通知します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If initialization logic is required to prepare an enlisted object to participate in a transaction, it is preferable to implement that logic in this method instead of in a constructor. In this way, the initialization occurs only if the object is successfully enlisted as a transaction participant.  
+## 解説  
+ 初期化ロジックのトランザクションに参加する参加しているオブジェクトの準備が必要な場合は、コンス トラクターではなく、このメソッドのロジックを実装することをお勧めします。 この方法では、初期化は、トランザクションの一部として、オブジェクトが正常に参加している場合にのみに発生します。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Transactions.TransactionException">An attempt to enlist or serialize a transaction.</exception>
+        <exception cref="T:System.Transactions.TransactionException">参加させる、またはトランザクションをシリアル化しようとしました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Rollback">
@@ -101,12 +102,12 @@
       </Parameters>
       <Docs>
         <param name="enlistment">To be added.</param>
-        <summary>Notifies an enlisted object that the transaction is being rolled back.</summary>
+        <summary>トランザクションのロールバックを参加しているオブジェクトに通知します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- On receiving this notification, the PSPE should always rollback it's internal transaction and then reply with the <xref:System.Transactions.SinglePhaseEnlistment.Aborted%2A> callback method on the `singlePhaseEnlistment` parameter.  If the PSPE replies with  <xref:System.Transactions.SinglePhaseEnlistment.Committed%2A> or <xref:System.Transactions.SinglePhaseEnlistment.InDoubt%2A>, an <xref:System.InvalidOperationException> is thrown from the callback.  
+## 解説  
+ この通知を受け取るは常に内部トランザクションと、応答であるロールバックに、PSPE、 <xref:System.Transactions.SinglePhaseEnlistment.Aborted%2A> コールバック メソッドを `singlePhaseEnlistment` パラメーター。  PSPE に返信する場合  <xref:System.Transactions.SinglePhaseEnlistment.Committed%2A> または <xref:System.Transactions.SinglePhaseEnlistment.InDoubt%2A>, 、 <xref:System.InvalidOperationException> コールバックからがスローされます。  
   
  ]]></format>
         </remarks>
@@ -138,16 +139,16 @@
       </Parameters>
       <Docs>
         <param name="enlistment">To be added.</param>
-        <summary>Notifies an enlisted object that the transaction is being committed.</summary>
+        <summary>参加していることを通知オブジェクトのトランザクションがコミットされていること。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method notifies an enlisted object that the transaction is to be committed.  
+## 解説  
+ このメソッドでは、トランザクションをコミットする必要が参加しているオブジェクトに通知します。  
   
- The `singlePhaseEnlistment` parameters contain callbacks that allow the implementation of this interface to notify the transaction manager of the outcome of the transaction, since the transaction manager has delegated control of the transaction. In the case of a promoted transaction, the transaction manager listens to the transaction outcome and overrides the response being sent.  
+ `singlePhaseEnlistment` パラメーターには、トランザクション マネージャーがトランザクションの制御を委任するために、トランザクションを通知するには、このインターフェイスの実装、トランザクションの結果のマネージャーを許可するコールバックが含まれています。 昇格されたトランザクションの場合は、トランザクション マネージャーは、トランザクションの結果をリッスンし、送信される応答をオーバーライドします。  
   
- On receiving this notification, the resource manager should attempt to commit it's internal transaction (or the distributed transaction if it has been escalated), and invoke one of the callback methods on the `singlePhaseEnlistment` parameter based on the outcome of committing it's transaction.  
+ この通知を受信するには、リソース マネージャーが内部のトランザクション \(またはそれが重大になった場合は、分散トランザクション\) をコミットし、に対して呼び出すコールバック メソッドのいずれかを試行、 `singlePhaseEnlistment` パラメーター トランザクションのコミットの結果に基づいています。  
   
  ]]></format>
         </remarks>

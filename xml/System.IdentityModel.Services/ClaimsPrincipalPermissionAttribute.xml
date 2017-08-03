@@ -16,26 +16,26 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents a security attribute used to declaratively assign access checks based on the logic provided by the <see cref="T:System.Security.Claims.ClaimsAuthorizationManager" /> instance in the current application context. This class cannot be inherited.</summary>
+    <summary>宣言で割り当てるによって提供されるロジックに基づいてアクセス確認をするためのセキュリティ属性を表す、 <see cref="T:System.Security.Claims.ClaimsAuthorizationManager" /> アプリケーションの現在のコンテキストでのインスタンス。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> is used to declaratively request an access check using the configured <xref:System.Security.Claims.ClaimsAuthorizationManager>.  
+## 解説  
+ <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> は宣言によって、構成を使用してアクセス確認を要求に使用 <xref:System.Security.Claims.ClaimsAuthorizationManager>します。  
   
- You must specify one of the <xref:System.Security.Permissions.SecurityAction> values, a `Resource` and an `Operation` in your <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> declaration. The `Resource` and `Operation` properties specify the resource and action for which the current principal (<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName>) must be authorized for execution to proceed. If the current principal is not authorized to perform the specified action (operation) on the specified resource, a <xref:System.Security.SecurityException> is thrown.  
+ いずれかを指定する必要があります、 <xref:System.Security.Permissions.SecurityAction> 値、 `Resource` と `Operation` で、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> 宣言します。`Resource` と `Operation` プロパティ リソースとこれに対するアクションを指定、現在のプリンシパル \(<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=fullName>\) に実行を承認する必要があります。 現在のプリンシパルが指定したリソースに対して指定されたアクション \(操作\) を実行する権限がない場合、 <xref:System.Security.SecurityException> がスローされます。  
   
 > [!IMPORTANT]
->  The <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> class uses the claims authorization manager configured by the <xref:System.IdentityModel.Configuration.IdentityConfiguration> that is set under the <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfiguration%2A?displayProperty=fullName> property. This is true in all cases, even in scenarios where WS-Federation is not used; for example, active (WCF) Web applications and Console applications. You can specify the claims authorization manager either in configuration or programmatically. To specify the claims authorization manager in a configuration file, set the [\&lt;claimsAuthorizationManager\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/claimsauthorizationmanager.md) element under an [\&lt;identityConfiguration\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/identityconfiguration.md) element and ensure that this identity configuration is referenced by the [\&lt;federationConfiguration\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/federationconfiguration.md) element that is loaded by the runtime (for example, by setting the `identityConfigurationName` attribute). To set the claims authorization manager programmatically, provide a handler for the <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfigurationCreated?displayProperty=fullName> event.  
+>  <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> クラスで構成されている要求の承認マネージャーを使用して、 <xref:System.IdentityModel.Configuration.IdentityConfiguration> で設定されている、 <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfiguration%2A?displayProperty=fullName> プロパティです。 これは、常に、シナリオ、Ws\-federation が使用されていない; であっても当てはまりますたとえば、アクティブな \(WCF\) Web アプリケーションやコンソール アプリケーションです。 構成で、またはプログラムを使用して、要求の承認マネージャーを指定できます。 構成ファイルで要求承認マネージャーを指定する、 [\<claimsAuthorizationManager\>](http://msdn.microsoft.com/ja-jp/9354eee3-f692-4ad6-8427-3169686b8bcc) の下の要素、 [\<identityConfiguration\>](http://msdn.microsoft.com/ja-jp/1db76253-07da-447b-9e7a-3705c7228cf4) 要素でこの id の構成が参照されていることを確認し、 [\<federationConfiguration\>](http://msdn.microsoft.com/ja-jp/8b14054c-6d07-46ab-ab58-03f14beac0f2) 、ランタイムによって読み込まれている要素 \(を設定して、たとえば、 `identityConfigurationName` 属性\)。 要求の承認マネージャーをコードから設定するには、ハンドラーを提供して、 <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfigurationCreated?displayProperty=fullName> イベントです。  
   
    
   
-## Examples  
- The following example shows how to protect a method by decorating it with the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> attribute. The attribute will evaluate whether access should be granted to the current principal by leveraging the logic provided by the <xref:System.Security.Claims.ClaimsAuthorizationManager> instance in the application context. If the current principal is not authorized for the specified action on the specified resource, a <xref:System.Security.SecurityException> is thrown; otherwise, execution proceeds.  
+## 例  
+ 次の例で修飾してメソッドを保護する方法を示しています、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> 属性です。 によって提供されるロジックを活用することで、アクセスを現在のプリンシパルに許可するかどうかを評価は、属性、 <xref:System.Security.Claims.ClaimsAuthorizationManager> アプリケーションのコンテキストでのインスタンス。 現在のプリンシパルが指定したリソースに対して指定されたアクションの権限がない場合、 <xref:System.Security.SecurityException> がスローされた場合、それ以外の場合に実行されます。  
   
- [!code-csharp[WifCppWithCam#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifcppwithcam/cs/wifcppwithcam/program.cs#4)]  
+ [!code-csharp[WifCppWithCam\#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifcppwithcam/cs/wifcppwithcam/program.cs#4)]  
   
- The following XML shows the minimum configuration required to use a custom claims authorization manager with the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> class. You must, at a minimum, declare both the `system.identityModel` and the `system.identityModel.services` sections in the `<configSection>` element and then specify your authorization manager in a [\&lt;claimsAuthorizationManager\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/claimsauthorizationmanager.md) element under the default identity configuration. This will ensure that your authorization manager is referenced from the default federation configuration. Alternatively, you can specify the name of the identity configuration under which your authorization manager is specified in the `identityConfigurationName` attribute of the [\&lt;federationConfiguration\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/federationconfiguration.md) element.  
+ 次の XML は、カスタム クレーム承認を使用するために必要な最小構成マネージャーに、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> クラスです。 必要があるには、少なくともを宣言する両方、 `system.identityModel` と `system.identityModel.services` セクション、 `<configSection>` 要素で、承認マネージャーを指定し、 [\<claimsAuthorizationManager\>](http://msdn.microsoft.com/ja-jp/9354eee3-f692-4ad6-8427-3169686b8bcc) \[既定の id の構成要素。 承認マネージャーが既定のフェデレーションの構成から参照されているようになります。 またはで承認マネージャーを指定する id の構成の名前を指定することができます、 `identityConfigurationName` の属性、 [\<federationConfiguration\>](http://msdn.microsoft.com/ja-jp/8b14054c-6d07-46ab-ab58-03f14beac0f2) 要素。  
   
 ```xml  
 <?xml version="1.0" encoding="utf-8" ?>  
@@ -61,6 +61,9 @@
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.IdentityModel.Services.ClaimsPrincipalPermission" />
+    <altmember cref="P:System.IdentityModel.Services.FederatedAuthentication.FederationConfiguration" />
+    <altmember cref="T:System.Security.Claims.ClaimsAuthorizationManager" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -76,13 +79,14 @@
         <Parameter Name="action" Type="System.Security.Permissions.SecurityAction" />
       </Parameters>
       <Docs>
-        <param name="action">One of the values that specifies the security actions that can be performed when using declarative security.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute" /> class.</summary>
+        <param name="action">宣言型セキュリティを使用するときに実行できるセキュリティ操作を指定する値のいずれかです。</param>
+        <summary>
+          <see cref="T:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You must also specify the `Operation` and `Resource` properties in your <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> declaration or an exception will be thrown when the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> method is invoked to create the permission.  
+## 解説  
+ 指定する必要があります、 `Operation` と `Resource` でプロパティ、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> 宣言、または例外がある場合にスローされる、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> メソッドは、アクセス許可を作成します。  
   
  ]]></format>
         </remarks>
@@ -107,13 +111,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates new instance of the <see cref="T:System.IdentityModel.Services.ClaimsPrincipalPermission" /> class that is based on the current instance.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Services.ClaimsPrincipalPermission" /> with the operation and resource associated with this instance.</returns>
+        <summary>新しいインスタンスを作成、 <see cref="T:System.IdentityModel.Services.ClaimsPrincipalPermission" /> クラスの現在のインスタンスに基づいています。</summary>
+        <returns>A <see cref="T:System.IdentityModel.Services.ClaimsPrincipalPermission" /> 操作とこのインスタンスに関連付けられているリソースを使用します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.Services.ClaimsPrincipalPermission> object is created by using the value of the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.Operation%2A> property and the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.Resource%2A> property. You must specify the `Operation` and `Resource` properties in your <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> declaration or an exception will be thrown when the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> method is invoked to create the permission.  
+## 解説  
+ <xref:System.IdentityModel.Services.ClaimsPrincipalPermission> の値を使用してオブジェクトを作成、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.Operation%2A> プロパティおよび <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.Resource%2A> プロパティです。 指定する必要があります、 `Operation` と `Resource` でプロパティ、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> 宣言、または例外がある場合にスローされる、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> メソッドは、アクセス許可を作成します。  
   
  ]]></format>
         </remarks>
@@ -132,13 +136,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the operation for which the current principal should be authorized on the specified resource.</summary>
-        <value>The action for which the current principal should be authorized.</value>
+        <summary>取得または現在のプリンシパルの権限を操作を指定されたリソースに設定します。</summary>
+        <value>現在のプリンシパルの権限を操作します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The operation is the action for which the current principal should be authorized on the specified resource. You must set the `Operation` property in your <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> declaration or an exception will be thrown when the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> method is called to create the permission.  
+## 解説  
+ この操作は、アクションの指定したリソースに対して現在のプリンシパルを承認する必要があります。 設定する必要があります、 `Operation` プロパティに、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> 宣言、または例外がスローされるときに、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> メソッドを呼び出して、アクセス許可を作成します。  
   
  ]]></format>
         </remarks>
@@ -157,13 +161,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the resource on which the principal should be authorized to perform the specified action (operation).</summary>
-        <value>The resource on which the current principal should be authorized.</value>
+        <summary>取得または指定のアクション \(操作\) を実行するプリンシパルを承認するか、リソースを設定します。</summary>
+        <value>リソースが現在のプリンシパルを承認が必要です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The resource on which the current principal should be authorized to perform the specified action. You must set the `Resource` property in your <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> declaration or an exception will be thrown when the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> method is called to create the permission.  
+## 解説  
+ リソースを現在のプリンシパルを指定したアクションを実行する承認が必要です。 設定する必要があります、 `Resource` プロパティに、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> 宣言、または例外がスローされるときに、 <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute.CreatePermission%2A> メソッドを呼び出して、アクセス許可を作成します。  
   
  ]]></format>
         </remarks>

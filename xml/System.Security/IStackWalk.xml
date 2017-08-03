@@ -18,14 +18,14 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Manages the stack walk that determines whether all callers in the call stack have the required permissions to access a protected resource.</summary>
+    <summary>呼び出し履歴内のすべての呼び出し元に、保護されたリソースへのアクセスに必要なアクセス許可を設定するかどうかを判断するスタック ウォークを管理します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Partially trusted code always presents a security risk. It can sometimes be manipulated to perform actions on behalf of malicious code that does not have permission to access a resource. In this way, malicious code can achieve higher security access than it should be allowed.  
+## 解説  
+ 部分的に信頼されたコードは、セキュリティ上のリスクを常に表示します。 リソースにアクセスする権限がない、悪意のあるコードの代理としてアクションを実行することもあります操作できます。 これにより、悪意のあるコードが許可するかよりも上位のセキュリティ アクセスを実現できます。  
   
- The common language runtime helps protect managed code from these attacks by running a stack walk on all calls. The stack walk requires that all code in the call stack has permission to access a protected resource. Because the code attempting the attack will always be somewhere in the call stack, it will be unable to exceed its own security permissions.  
+ 共通言語ランタイムにより、これらの攻撃からのすべての呼び出しでスタック ウォークを実行して、マネージ コードを保護します。 スタック ウォークは、コール スタック内のすべてのコードが保護されたリソースにアクセスする権限を持っている必要があります。 なので、攻撃を行おうとするコードは常にどこかにコール スタックに、そのことはできませんを独自のセキュリティ権限を超えます。  
   
  ]]></format>
     </remarks>
@@ -50,23 +50,23 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Asserts that the calling code can access the resource identified by the current permission object, even if callers higher in the stack have not been granted permission to access the resource.</summary>
+        <summary>スタック内の上位の呼び出し元がリソースへのアクセス許可を付与されていない場合であっても、呼び出し元のコードが現在のアクセス許可で識別されるリソースにアクセスできることをアサートします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling <xref:System.Security.IStackWalk.Assert%2A> stops the permission check on callers higher in the call stack. Therefore, even if these callers do not have the requisite permissions, they can still access resources. An assertion is effective only if the code that calls <xref:System.Security.IStackWalk.Assert%2A> passes the security check for the permission that it is asserting.  
+## 解説  
+ 呼び出す <xref:System.Security.IStackWalk.Assert%2A> コール スタックの上位の呼び出し元のアクセス許可のチェックを停止します。 そのため、これらの呼び出し元は必要なアクセス許可を持っていない場合でもリソースもアクセスできます。 アサーションは、コードを呼び出す場合にのみ <xref:System.Security.IStackWalk.Assert%2A> をアサートしている、アクセス許可のセキュリティ チェックに合格します。  
   
- A call to <xref:System.Security.IStackWalk.Assert%2A> is effective until the calling code returns to its caller or until a subsequent call to <xref:System.Security.IStackWalk.Assert%2A> renders the previous assertion ineffective. Also, <xref:System.Security.CodeAccessPermission.RevertAssert%2A> or <xref:System.Security.CodeAccessPermission.RevertAll%2A> removes a pending <xref:System.Security.IStackWalk.Assert%2A>.  
+ 呼び出し <xref:System.Security.IStackWalk.Assert%2A> または後続の呼び出しになるまで、呼び出し元に呼び出し元のコードが返されるまでは、効果的な <xref:System.Security.IStackWalk.Assert%2A> 薄い前のアサーションをレンダリングします。 また、 <xref:System.Security.CodeAccessPermission.RevertAssert%2A> または <xref:System.Security.CodeAccessPermission.RevertAll%2A> 削除の保留中 <xref:System.Security.IStackWalk.Assert%2A>します。  
   
- <xref:System.Security.IStackWalk.Assert%2A> is ignored for a permission not granted because a demand for that permission will not succeed. However, if code lower on the call stack calls <xref:System.Security.IStackWalk.Demand%2A> for that permission, a <xref:System.Security.SecurityException> is thrown when the stack walk reaches the code that tried to call <xref:System.Security.IStackWalk.Assert%2A>. This happens because the code that called <xref:System.Security.IStackWalk.Assert%2A> has not been granted the permission, even though it tried to <xref:System.Security.IStackWalk.Assert%2A> it.  
+ <xref:System.Security.IStackWalk.Assert%2A> アクセス許可をその要求は成功しませんのでは与えないでアクセス許可は無視されます。 ただし、コール スタックの下部のコードから呼び出す場合 <xref:System.Security.IStackWalk.Demand%2A> そのアクセス許可、 <xref:System.Security.SecurityException> スタック ウォークが呼び出しを試行していたコードに達した場合にスローされる <xref:System.Security.IStackWalk.Assert%2A>します。 これは、コードを呼び出すため <xref:System.Security.IStackWalk.Assert%2A> が与えられていない、アクセス許可、しようとした場合でも <xref:System.Security.IStackWalk.Assert%2A> ことです。  
   
 > [!CAUTION]
->  Because calling <xref:System.Security.IStackWalk.Assert%2A> removes the requirement that all code in the call chain must be granted permission to access the specified resource, it can open up security vulnerabilities if used incorrectly or inappropriately. Therefore, it should be used with great caution.  
+>  呼び出すため <xref:System.Security.IStackWalk.Assert%2A> 削除呼び出しチェーンにコードのすべての要件は、指定されたリソースにアクセスする権限を付与する必要がある、誤ってまたは不適切な使用されている場合はセキュリティの脆弱性を開くことができます。 したがって、注意して使用する必要があります。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">The calling code does not have <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Assertion" />.</exception>
+        <exception cref="T:System.Security.SecurityException">呼び出し元のコードに <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Assertion" /> がありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="Demand">
@@ -88,22 +88,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Determines at run time whether all callers in the call stack have been granted the permission specified by the current permission object.</summary>
+        <summary>呼び出し履歴のすべての呼び出し元に、現在のアクセス許可オブジェクトで指定されたアクセス許可が付与されているかどうかを判断します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This method is typically used by secure libraries to ensure that callers have permission to access a resource. For example, a file class in a secure class library calls <xref:System.Security.IStackWalk.Demand%2A> for the necessary <xref:System.Security.Permissions.FileIOPermission> before performing a file operation requested by the caller.  
   
  The permissions of the code that calls this method are not examined; the check begins from the immediate caller of that code and proceeds up the stack. <xref:System.Security.IStackWalk.Demand%2A> succeeds only if no <xref:System.Security.SecurityException> is raised.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have the permission specified by the current permission object.  
+        <exception cref="T:System.Security.SecurityException">呼び出し履歴の上位にある呼び出し元には、現在のアクセス許可オブジェクトで指定されたアクセス許可がありません。  
   
- -or-  
+ または  
   
- A caller in the call stack has called <see cref="M:System.Security.IStackWalk.Deny" /> on the current permission object.</exception>
+ 呼び出し履歴内の呼び出し元は、現在のアクセス許可オブジェクトで <see cref="M:System.Security.IStackWalk.Deny" /> を呼び出しました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Deny">
@@ -125,11 +125,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Causes every <see cref="M:System.Security.IStackWalk.Demand" /> for the current object that passes through the calling code to fail.</summary>
+        <summary>呼び出し元のコードを通過する現在のオブジェクトのすべての <see cref="M:System.Security.IStackWalk.Demand" /> が失敗します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This method prevents callers higher in the call stack from accessing the protected resource through the code that calls this method, even if those callers have been granted permission to access it. The call stack is typically represented as growing down, so that methods higher in the call stack call methods lower in the call stack.  
   
  <xref:System.Security.IStackWalk.Deny%2A> can limit the liability of the programmer or help prevent accidental security vulnerabilities because it helps prevent the method that calls <xref:System.Security.IStackWalk.Deny%2A> from being used to access the resource protected by the denied permission. If a method calls <xref:System.Security.IStackWalk.Deny%2A> on a permission, and if a <xref:System.Security.IStackWalk.Demand%2A> for that permission is invoked by a caller lower in the call stack, that security check will fail when it reaches the <xref:System.Security.IStackWalk.Deny%2A>.  
@@ -162,14 +162,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Causes every <see cref="M:System.Security.IStackWalk.Demand" /> for all objects except the current one that passes through the calling code to fail, even if code higher in the call stack has been granted permission to access other resources.</summary>
+        <summary>呼び出し側コードによってパススルーされる現在のものを除き、全オブジェクトのあらゆる <see cref="M:System.Security.IStackWalk.Demand" /> を失敗させます。これは、呼び出しスタックの上位にあるコードに対して他のリソースにアクセスするためのアクセス権限が付与されている場合にも当てはまります。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Security.IStackWalk.PermitOnly%2A> is similar to <xref:System.Security.IStackWalk.Deny%2A>, in that both cause stack walks to fail when they would otherwise succeed. The difference is that <xref:System.Security.IStackWalk.Deny%2A> specifies permissions that will cause the stack walk to fail, but <xref:System.Security.IStackWalk.PermitOnly%2A> specifies the only permissions that do not cause the stack walk to fail. Call this method to ensure that your code can be used to access only the specified resources.  
+## 解説  
+ <xref:System.Security.IStackWalk.PermitOnly%2A> ような <xref:System.Security.IStackWalk.Deny%2A>, 両方が発生するスタック ウォークをそれ以外の場合操作が成功したときに失敗することで、します。 その違いは <xref:System.Security.IStackWalk.Deny%2A> が失敗し、スタック ウォークを原因となるアクセス許可を指定が、 <xref:System.Security.IStackWalk.PermitOnly%2A> が失敗するスタック ウォークが発生しない唯一のアクセス許可を指定します。 指定されたリソースのみにアクセスするコードを使用できることを確認するには、このメソッドを呼び出します。  
   
- <xref:System.Security.IStackWalk.PermitOnly%2A> is ignored for a permission not granted because a demand for that permission will not succeed. However, if code lower on the call stack later calls <xref:System.Security.IStackWalk.Demand%2A> for that permission, a <xref:System.Security.SecurityException> is thrown when the stack walk reaches the code that tried to call <xref:System.Security.IStackWalk.PermitOnly%2A>. This is because the code that called <xref:System.Security.IStackWalk.PermitOnly%2A> has not been granted the permission, even though it called <xref:System.Security.IStackWalk.PermitOnly%2A> for that permission. The call stack is typically represented as growing down, so that methods higher in the call stack call methods lower in the call stack.  
+ <xref:System.Security.IStackWalk.PermitOnly%2A> アクセス許可をその要求は成功しませんのでは与えないでアクセス許可は無視されます。 ただし場合は、コードのコール スタックを後で呼び出し <xref:System.Security.IStackWalk.Demand%2A> そのアクセス許可、 <xref:System.Security.SecurityException> スタック ウォークが呼び出しを試行していたコードに達した場合にスローされる <xref:System.Security.IStackWalk.PermitOnly%2A>します。 これは、コードを呼び出すため <xref:System.Security.IStackWalk.PermitOnly%2A> が与えられていない、アクセス許可、これと呼ばれる場合でも <xref:System.Security.IStackWalk.PermitOnly%2A> そのアクセス許可。 通常、呼び出し履歴は、コール スタックのコール スタックの上位にあるメソッドが下にあるメソッドを呼び出すように、拡張として表されます。  
   
  ]]></format>
         </remarks>

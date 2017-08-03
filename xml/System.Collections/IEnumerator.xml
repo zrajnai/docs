@@ -29,43 +29,46 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Supports a simple iteration over a non-generic collection.</summary>
+    <summary>非ジェネリック コレクションに対する単純な反復処理をサポートします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Collections.IEnumerator> is the base interface for all non-generic enumerators.  
+## 解説  
+ <xref:System.Collections.IEnumerator>すべての非ジェネリック列挙子は、基本インターフェイスです。  
   
- For the generic version of this interface see <xref:System.Collections.Generic.IEnumerator%601>.  
+ このインターフェイスのジェネリック バージョンを参照してください。<xref:System.Collections.Generic.IEnumerator%601>です。  
   
- The `foreach` statement of the C# language (`for each` in Visual Basic) hides the complexity of the enumerators.  Therefore, using `foreach` is recommended instead of directly manipulating the enumerator.  
+ C\# 言語の `foreach` ステートメント \(Visual Basic の場合は `for each`\) を使用することで列挙子の複雑さを回避できます。  したがってを使用して`foreach`列挙子を直接操作するのではなくをお勧めします。  
   
- Enumerators can be used to read the data in the collection, but they cannot be used to modify the underlying collection.  
+ 列挙子を使用すると、コレクション内のデータを読み取ることができますが、基になるコレクションを変更することはできません。  
   
- The <xref:System.Collections.IEnumerator.Reset%2A> method is provided for COM interoperability and does not need to be fully implemented; instead, the implementer can throw a <xref:System.NotSupportedException>.  
+ <xref:System.Collections.IEnumerator.Reset%2A>メソッドは、COM 相互運用性が提供され、完全に実装する必要はありません以外の場合は、実装者が代わりに、スローすることが、<xref:System.NotSupportedException>です。  
   
- Initially, the enumerator is positioned before the first element in the collection. You must call the <xref:System.Collections.IEnumerator.MoveNext%2A> method to advance the enumerator to the first element of the collection before reading the value of <xref:System.Collections.IEnumerator.Current%2A>; otherwise, <xref:System.Collections.IEnumerator.Current%2A> is undefined.  
+ 最初に、列挙子はコレクション内の 1 番目の要素の前に位置付けられます。 呼び出す必要があります、<xref:System.Collections.IEnumerator.MoveNext%2A>メソッドの値を読み取る前に、コレクションの最初の要素に列挙子を進める<xref:System.Collections.IEnumerator.Current%2A>、それ以外の<xref:System.Collections.IEnumerator.Current%2A>が定義されていません。  
   
- <xref:System.Collections.IEnumerator.Current%2A> returns the same object until either <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> is called. <xref:System.Collections.IEnumerator.MoveNext%2A> sets <xref:System.Collections.IEnumerator.Current%2A> to the next element.  
+ <xref:System.Collections.IEnumerator.Current%2A> は、<xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> が呼び出されるまでは同じオブジェクトを返します。<xref:System.Collections.IEnumerator.MoveNext%2A> は、<xref:System.Collections.IEnumerator.Current%2A> を次の要素に設定します。  
   
- If <xref:System.Collections.IEnumerator.MoveNext%2A> passes the end of the collection, the enumerator is positioned after the last element in the collection and <xref:System.Collections.IEnumerator.MoveNext%2A> returns `false`. When the enumerator is at this position, subsequent calls to <xref:System.Collections.IEnumerator.MoveNext%2A> also return `false`. If the last call to <xref:System.Collections.IEnumerator.MoveNext%2A> returned `false`, calling <xref:System.Collections.IEnumerator.Current%2A> throws an exception.  
+ 場合<xref:System.Collections.IEnumerator.MoveNext%2A>列挙子をコレクションの末尾が、コレクション内の最後の要素の後に配置されているパスおよび<xref:System.Collections.IEnumerator.MoveNext%2A>を返します`false`です。 列挙子がこの位置、後続の呼び出しと<xref:System.Collections.IEnumerator.MoveNext%2A>も返す`false`です。 場合は、最後の呼び出し<xref:System.Collections.IEnumerator.MoveNext%2A>返される`false`、呼び出し元<xref:System.Collections.IEnumerator.Current%2A>例外をスローします。  
   
- To set <xref:System.Collections.IEnumerator.Current%2A> to the first element of the collection again, you can call <xref:System.Collections.IEnumerator.Reset%2A>, if it’s implemented, followed by <xref:System.Collections.IEnumerator.MoveNext%2A>. If <xref:System.Collections.IEnumerator.Reset%2A> is not implemented, you must create a new enumerator instance to return to the first element of the collection.  
+ 設定する<xref:System.Collections.IEnumerator.Current%2A>再度、コレクションの最初の要素を呼び出すことができます<xref:System.Collections.IEnumerator.Reset%2A>それを実装している場合は、続いて<xref:System.Collections.IEnumerator.MoveNext%2A>です。 場合<xref:System.Collections.IEnumerator.Reset%2A>を実装していないコレクションの最初の要素に戻るには列挙子の新しいインスタンスを作成する必要があります。  
   
- An enumerator remains valid as long as the collection remains unchanged. If changes are made to the collection, such as adding, modifying, or deleting elements, the enumerator is irrecoverably invalidated and the next call to <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> throws an <xref:System.InvalidOperationException>. If the collection is modified between <xref:System.Collections.IEnumerator.MoveNext%2A> and <xref:System.Collections.IEnumerator.Current%2A>, <xref:System.Collections.IEnumerator.Current%2A> returns the element that it is set to, even if the enumerator is already invalidated.  
+ コレクションが変更されない限り、列挙子は有効です。 無効になり、次の呼び出しに変更を追加するなど、コレクションを変更、または要素を削除するには、列挙子は回復不可能<xref:System.Collections.IEnumerator.MoveNext%2A>または<xref:System.Collections.IEnumerator.Reset%2A>スロー、<xref:System.InvalidOperationException>です。 間で、コレクションが変更された場合<xref:System.Collections.IEnumerator.MoveNext%2A>と<xref:System.Collections.IEnumerator.Current%2A>、<xref:System.Collections.IEnumerator.Current%2A>列挙子が既に無効になっている場合でもに設定されている要素を返します。  
   
- The enumerator does not have exclusive access to the collection; therefore, enumerating through a collection is intrinsically not a thread-safe procedure. Even when a collection is synchronized, other threads can still modify the collection, which causes the enumerator to throw an exception. To guarantee thread safety during enumeration, you can either lock the collection during the entire enumeration or catch the exceptions resulting from changes made by other threads.  
+ 列挙子にはコレクションへの排他アクセス権限はないため、コレクションの列挙処理は本質的にスレッド セーフな処理ではありません。 コレクションの同期がとられている場合でも、別のスレッドによってそのコレクションを変更できるため、変更の結果として列挙子は例外をスローします。 列挙処理を確実にスレッド セーフに行うには、列挙中にコレクションをロックするか、他のスレッドによって行われた変更によってスローされる例外をキャッチします。  
   
    
   
-## Examples  
- The following code example demonstrates the implementation of the <xref:System.Collections.IEnumerable> and <xref:System.Collections.IEnumerator> interfaces for a custom collection. In this example, members of these interfaces are not explicitly called, but they are implemented to support the use of `foreach` (`for each` in Visual Basic) to iterate through the collection.  
+## 例  
+ 実装を次のコード例に示します、<xref:System.Collections.IEnumerable>と<xref:System.Collections.IEnumerator>カスタム コレクション用インターフェイスです。 この例ではこれらのインターフェイスのメンバーは明示的に呼び出されないの使用をサポートするために実装されて`foreach`\(`for each` Visual Basic で\) コレクションを反復処理します。  
   
- [!code-csharp[System.Collections_EnumeratorInterfaces#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#1)]
- [!code-vb[System.Collections_EnumeratorInterfaces#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#1)]  
+ [!code-csharp[System.Collections\_EnumeratorInterfaces\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#1)]
+ [!code-vb[System.Collections\_EnumeratorInterfaces\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Collections.IEnumerable" />
+    <altmember cref="T:System.Collections.ICollection" />
+    <altmember cref="T:System.Collections.Generic.IEnumerator`1" />
   </Docs>
   <Members>
     <Member MemberName="Current">
@@ -94,32 +97,34 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the element in the collection at the current position of the enumerator.</summary>
-        <value>The element in the collection at the current position of the enumerator.</value>
+        <summary>列挙子の現在位置にあるコレクション内の要素を取得します。</summary>
+        <value>コレクション内の、列挙子の現在位置にある要素。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Collections.IEnumerator.Current%2A> is undefined under any of the following conditions:  
+## 解説  
+ <xref:System.Collections.IEnumerator.Current%2A>次の条件のいずれかで定義されていません。  
   
--   The enumerator is positioned before the first element in the collection, immediately after the enumerator is created.   <xref:System.Collections.IEnumerator.MoveNext%2A> must be called to advance the enumerator to the first element of the collection before reading the value of <xref:System.Collections.IEnumerator.Current%2A>.  
+-   列挙子の作成後すぐには、列挙子は、コレクション内の最初の要素の前に位置付けられます。<xref:System.Collections.IEnumerator.MoveNext%2A>値を読み取る前に、コレクションの最初の要素に列挙子を進めるに呼び出す必要があります<xref:System.Collections.IEnumerator.Current%2A>です。  
   
--   The last call to <xref:System.Collections.IEnumerator.MoveNext%2A> returned `false`, which indicates the end of the collection.  
+-   最後に呼び出した<xref:System.Collections.IEnumerator.MoveNext%2A>返される`false`コレクションの末尾を示します。  
   
--   The enumerator is invalidated due to changes made in the collection, such as adding, modifying, or deleting elements.  
+-   列挙子は、追加、変更、または削除する要素など、コレクションで行われた変更により無効になりました。  
   
- <xref:System.Collections.IEnumerator.Current%2A> returns the same object until <xref:System.Collections.IEnumerator.MoveNext%2A> is called. <xref:System.Collections.IEnumerator.MoveNext%2A> sets <xref:System.Collections.IEnumerator.Current%2A> to the next element.  
+ <xref:System.Collections.IEnumerator.Current%2A> は、<xref:System.Collections.IEnumerator.MoveNext%2A> が呼び出されるまでは同じオブジェクトを返します。<xref:System.Collections.IEnumerator.MoveNext%2A> は、<xref:System.Collections.IEnumerator.Current%2A> を次の要素に設定します。  
   
    
   
-## Examples  
- The following code example demonstrates the implementation of the <xref:System.Collections.IEnumerator> interfaces for a custom collection. In this example, <xref:System.Collections.IEnumerator.Current%2A> is not explicitly called, but it is implemented to support the use of `foreach` (`for each` in Visual Basic). This code example is part of a larger example for the <xref:System.Collections.IEnumerator> interface.  
+## 例  
+ 次のコード例に示しますの実装、<xref:System.Collections.IEnumerator>カスタム コレクション用インターフェイスです。 この例では<xref:System.Collections.IEnumerator.Current%2A>明示的に呼び出されないの使用をサポートするために実装されているが、 `foreach` \(`for each` Visual Basic で\)。 このコード例の例の一部である、<xref:System.Collections.IEnumerator>インターフェイスです。  
   
- [!code-csharp[System.Collections_EnumeratorInterfaces#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#2)]
- [!code-vb[System.Collections_EnumeratorInterfaces#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#2)]  
+ [!code-csharp[System.Collections\_EnumeratorInterfaces\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#2)]
+ [!code-vb[System.Collections\_EnumeratorInterfaces\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Collections.IEnumerator.MoveNext" />
+        <altmember cref="M:System.Collections.IEnumerator.Reset" />
       </Docs>
     </Member>
     <Member MemberName="MoveNext">
@@ -149,30 +154,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Advances the enumerator to the next element of the collection.</summary>
-        <returns>
-          <see langword="true" /> if the enumerator was successfully advanced to the next element; <see langword="false" /> if the enumerator has passed the end of the collection.</returns>
+        <summary>列挙子をコレクションの次の要素に進めます。</summary>
+        <returns>列挙子が次の要素に正常に進んだ場合は <see langword="true" />。列挙子がコレクションの末尾を越えた場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- After an enumerator is created or after the <xref:System.Collections.IEnumerator.Reset%2A> method is called, an enumerator is positioned before the first element of the collection, and the first call to the <xref:System.Collections.IEnumerator.MoveNext%2A> method moves the enumerator over the first element of the collection.  
+## 解説  
+ 列挙子を作成した後、または後に、 <xref:System.Collections.IEnumerator.Reset%2A> メソッドが呼び出されると、列挙子がコレクション、および最初の呼び出しの最初の要素の前に配置されている、 <xref:System.Collections.IEnumerator.MoveNext%2A> メソッドが、列挙子をコレクションの最初の要素の上に移動します。  
   
- If <xref:System.Collections.IEnumerator.MoveNext%2A> passes the end of the collection, the enumerator is positioned after the last element in the collection and <xref:System.Collections.IEnumerator.MoveNext%2A> returns `false`. When the enumerator is at this position, subsequent calls to <xref:System.Collections.IEnumerator.MoveNext%2A> also return `false` until <xref:System.Collections.IEnumerator.Reset%2A> is called.  
+ 場合 <xref:System.Collections.IEnumerator.MoveNext%2A> コレクション、列挙子の末尾が、コレクション内の最後の要素の後に配置されているパスと <xref:System.Collections.IEnumerator.MoveNext%2A> 返します `false`します。 列挙子があるときはこの位置にある場合、それ以降の呼び出しは、 <xref:System.Collections.IEnumerator.MoveNext%2A> を返すことも `false` まで <xref:System.Collections.IEnumerator.Reset%2A> が呼び出されます。  
   
- An enumerator remains valid as long as the collection remains unchanged. If changes are made to the collection, such as adding, modifying, or deleting elements, the enumerator is irrecoverably invalidated and the next call to <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> throws an <xref:System.InvalidOperationException>.  
+ コレクションが変更されない限り、列挙子は有効です。 無効になり、次の呼び出しの変更が加えられた場合を追加するなど、コレクションを変更すると、要素を削除するには、列挙子は回復不可能 <xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> スロー、 <xref:System.InvalidOperationException>です。  
   
    
   
-## Examples  
- The following code example demonstrates the implementation of the <xref:System.Collections.IEnumerator> interfaces for a custom collection. In this example, <xref:System.Collections.IEnumerator.MoveNext%2A> is not explicitly called, but it is implemented to support the use of `foreach` (`for each` in Visual Basic). This code example is part of a larger example for the <xref:System.Collections.IEnumerator> interface.  
+## 例  
+ 次のコード例に示しますの実装、 <xref:System.Collections.IEnumerator> カスタム コレクション用のインターフェイスです。 この例では <xref:System.Collections.IEnumerator.MoveNext%2A> 明示的に呼び出されないの使用をサポートするために実装されているが、 `foreach` \(`for each` Visual Basic で\)。 このコード例のサンプルが大きく、 <xref:System.Collections.IEnumerator> インターフェイスです。  
   
- [!code-csharp[System.Collections_EnumeratorInterfaces#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#2)]
- [!code-vb[System.Collections_EnumeratorInterfaces#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#2)]  
+ [!code-csharp[System.Collections\_EnumeratorInterfaces\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#2)]
+ [!code-vb[System.Collections\_EnumeratorInterfaces\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created.</exception>
+        <exception cref="T:System.InvalidOperationException">コレクションは、列挙子の作成後に変更されました。</exception>
+        <altmember cref="P:System.Collections.IEnumerator.Current" />
+        <altmember cref="M:System.Collections.IEnumerator.Reset" />
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -202,29 +208,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
+        <summary>列挙子を初期位置、つまりコレクションの最初の要素の前に設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An enumerator remains valid as long as the collection remains unchanged. If changes are made to the collection, such as adding, modifying, or deleting elements, the enumerator is irrecoverably invalidated and the next call to the <xref:System.Collections.IEnumerator.MoveNext%2A> or <xref:System.Collections.IEnumerator.Reset%2A> method throws an <xref:System.InvalidOperationException>.  
+## 解説  
+ コレクションが変更されない限り、列挙子は有効です。 変更が加えられた場合に追加するなど、コレクションに変更すると、要素を削除するには、列挙子がなり回復できなくなります無効になり、次に、 <xref:System.Collections.IEnumerator.MoveNext%2A> または <xref:System.Collections.IEnumerator.Reset%2A> メソッドでのスロー、 <xref:System.InvalidOperationException>です。  
   
- The <xref:System.Collections.IEnumerator.Reset%2A> method is provided for COM interoperability. It does not necessarily need to be implemented; instead, the implementer can simply throw a <xref:System.NotSupportedException>.  
+ <xref:System.Collections.IEnumerator.Reset%2A> メソッドは、COM 相互運用性を提供します。 限りません。 実装する必要はありません。代わりに、実行者が、単にスロー、 <xref:System.NotSupportedException>です。  
   
    
   
-## Examples  
- The following code example demonstrates the implementation of the <xref:System.Collections.IEnumerator> interfaces for a custom collection. In this example, <xref:System.Collections.IEnumerator.Reset%2A> is not explicitly called, but it is implemented to support the use of `foreach` (`for each` in Visual Basic). This code example is part of a larger example for the <xref:System.Collections.IEnumerator> interface.  
+## 例  
+ 次のコード例に示しますの実装、 <xref:System.Collections.IEnumerator> カスタム コレクション用のインターフェイスです。 この例では <xref:System.Collections.IEnumerator.Reset%2A> 明示的に呼び出されないの使用をサポートするために実装されているが、 `foreach` \(`for each` Visual Basic で\)。 このコード例のサンプルが大きく、 <xref:System.Collections.IEnumerator> インターフェイスです。  
   
- [!code-csharp[System.Collections_EnumeratorInterfaces#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#2)]
- [!code-vb[System.Collections_EnumeratorInterfaces#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#2)]  
+ [!code-csharp[System.Collections\_EnumeratorInterfaces\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/cs/ienumerator.cs#2)]
+ [!code-vb[System.Collections\_EnumeratorInterfaces\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Collections_EnumeratorInterfaces/vb/ienumerator.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created.</exception>
+        <exception cref="T:System.InvalidOperationException">コレクションは、列挙子の作成後に変更されました。</exception>
         <block subset="none" type="overrides">
           <para>All calls to <see cref="M:System.Collections.IEnumerator.Reset" /> must result in the same state for the enumerator. The preferred implementation is to move the enumerator to the beginning of the collection, before the first element. This invalidates the enumerator if the collection has been modified since the enumerator was created, which is consistent with <see cref="M:System.Collections.IEnumerator.MoveNext" /> and <see cref="P:System.Collections.IEnumerator.Current" />.</para>
         </block>
+        <altmember cref="M:System.Collections.IEnumerator.MoveNext" />
+        <altmember cref="P:System.Collections.IEnumerator.Current" />
       </Docs>
     </Member>
   </Members>

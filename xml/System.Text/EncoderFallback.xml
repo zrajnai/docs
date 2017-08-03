@@ -24,35 +24,38 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides a failure-handling mechanism, called a fallback, for an input character that cannot be converted to an encoded output byte sequence.</summary>
+    <summary>入力文字をエンコードされた出力バイト シーケンスに変換できないため、フォールバックと呼ばれるエラー処理機構を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An encoding maps a Unicode character to an encoded sequence of bytes. A particular encoding is represented by a type that is derived from the <xref:System.Text.Encoding> class. Specifically, a character is encoded to a byte sequence by calling the encoding type's <xref:System.Text.Encoding.GetBytes%2A?displayProperty=fullName> method, and the byte sequence is decoded to a character array or a string by calling the <xref:System.Text.Encoding.GetChars%2A?displayProperty=fullName> or <xref:System.Text.Encoding.GetString%2A?displayProperty=fullName> method.  
+## 解説  
+ エンコーディングされた Unicode 文字をエンコード済みバイト シーケンスにマップします。 派生した型によって表される特定のエンコーディング、 <xref:System.Text.Encoding> クラスです。 エンコードの種類を呼び出すことにより、文字をバイト シーケンスにエンコードが具体的には、 <xref:System.Text.Encoding.GetBytes%2A?displayProperty=fullName> を呼び出して、メソッド、および、バイト シーケンスを文字配列または文字列にデコードされたが、 <xref:System.Text.Encoding.GetChars%2A?displayProperty=fullName> または <xref:System.Text.Encoding.GetString%2A?displayProperty=fullName> メソッドです。  
   
- An encoding operation can fail if the input character cannot be represented by the encoding. For example, an <xref:System.Text.ASCIIEncoding> object cannot encode a character whose Unicode code point value is outside the range U+0000 to U+007F.  
+ エンコード操作は、エンコーディングが、入力文字を表すことができない場合に失敗します。 たとえば、 <xref:System.Text.ASCIIEncoding> オブジェクトは、Unicode コード ポイント値が範囲外 u\+0000 ~ 007F U \+ 文字をエンコードできません。  
   
- When an encoding conversion cannot be performed, the .NET Framework provides a failure-handling mechanism called a fallback. Your application can use predefined .NET Framework encoder fallbacks, or it can create a custom encoder fallback derived from the <xref:System.Text.EncoderFallback> and <xref:System.Text.EncoderFallbackBuffer> classes.  
+ エンコーディングの変換を実行できない場合、.NET Framework は、フォールバックと呼ばれるエラー処理機構を提供します。 アプリケーションで使用できる定義済みの .NET Framework のエンコーダー フォールバック、またはから派生したカスタムのエンコーダー フォールバックを作成できる、 <xref:System.Text.EncoderFallback> と <xref:System.Text.EncoderFallbackBuffer> クラスです。  
   
- <xref:System.Text.EncoderFallback> and <xref:System.Text.EncoderFallbackBuffer> are the base classes for all encoding fallback handlers in the .NET Framework. They support the following three kinds of fallback handling mechanisms:  
+ <xref:System.Text.EncoderFallback> <xref:System.Text.EncoderFallbackBuffer> すべての基本クラスは、.NET Framework でのフォールバックのハンドラーをエンコードします。 次の 3 種類フォールバック処理のメカニズムのサポートします。  
   
--   Best-fit fallback, which maps valid Unicode characters that cannot be encoded to an approximate equivalent. For example, a best-fit fallback handler for the <xref:System.Text.ASCIIEncoding> class might map Æ (U+00C6) to AE (U+0041 + U+0045). A best-fit fallback handler might also be implemented to transliterate one alphabet (such as Cyrillic) to another (such as Latin or Roman). The .NET Framework does not provide any public best-fit fallback implementations.  
+-   最適フォールバック、エンコードできない有効な Unicode 文字をほぼ同等のものにマップします。 たとえば、最適フォールバックのハンドラーを <xref:System.Text.ASCIIEncoding> クラスは、AE \(u\+0041 \+ u\+0045\) に Æ \(U \+\) を対応付けられます。 最適フォールバック ハンドラー可能性がありますもを実装する 1 つの文字 \(キリル文字\) などのある別 \(ラテン、ローマなど\)。 .NET Framework では、すべてのパブリック最適フォールバック実装は提供されません。  
   
--   Replacement fallback, which replaces each character that cannot be encoded with a predefined string. The .NET Framework provides a predefined replacement fallback handler. The <xref:System.Text.EncoderReplacementFallback> class replaces each byte sequence that cannot be decoded with a question mark character ("?", or U+003F) or a REPLACEMENT CHARACTER (U+FFFD). You can customize the replacement string by specifying a substitute in the call to the <xref:System.Text.EncoderReplacementFallback.%23ctor%28System.String%29?displayProperty=fullName> constructor. After the substitute string is emitted, the encoding operation continues converting the remainder of the input.  
+-   置換フォールバック、どの置換は各文字に対しては、定義済みの文字列でエンコードされることはできません。 .NET Framework では、定義済みの置換フォールバック ハンドラーを提供します。<xref:System.Text.EncoderReplacementFallback> クラスは、疑問符 \(\) 文字で各デコードできないバイト シーケンスを置き換えます \("?"、または U \+ 003F\) または REPLACEMENT CHARACTER \(U\+FFFD\)。 置換文字列をカスタマイズするには、呼び出しでは、代替を指定する、 <xref:System.Text.EncoderReplacementFallback.%23ctor%28System.String%29?displayProperty=fullName> コンス トラクターです。 代替文字列が生成されると、残りの入力を変換する、エンコード処理が続行されます。  
   
--   Exception fallback, which throws an exception when a character cannot be encoded. The .NET Framework provides a predefined exception fallback handler. The <xref:System.Text.EncoderExceptionFallback> class throws an <xref:System.Text.EncoderFallbackException> when an invalid character is encountered, and the encoding operation terminates.  
+-   例外フォールバックにおいて、文字をエンコードできないときに例外をスローします。 .NET Framework では、事前定義の例外フォールバック ハンドラーを提供します。<xref:System.Text.EncoderExceptionFallback> クラスをスロー、 <xref:System.Text.EncoderFallbackException> に無効な文字が検出され、エンコードの処理を終了します。  
   
- If you choose to implement a custom solution, you must override the following abstract members of the <xref:System.Text.EncoderFallback> class:  
+ カスタム ソリューションを実装することを選択した場合は、抽象メンバーをオーバーライドする必要があります、 <xref:System.Text.EncoderFallback> クラス。  
   
--   The <xref:System.Text.EncoderFallback.CreateFallbackBuffer%2A> method, which returns a class instance derived from <xref:System.Text.EncoderFallbackBuffer>. Depending on the type of fallback handler that you are developing, the <xref:System.Text.EncoderFallbackBuffer> implementation is responsible for performing the mapping or replacement, or for throwing the exception.  
+-   <xref:System.Text.EncoderFallback.CreateFallbackBuffer%2A> から派生したクラスのインスタンスを返すメソッドを <xref:System.Text.EncoderFallbackBuffer>します。 開発すると、フォールバックのハンドラーの種類に応じて、 <xref:System.Text.EncoderFallbackBuffer> 実装はマッピングや置換を実行するため、または例外をスローするためです。  
   
--   The <xref:System.Text.EncoderFallback.MaxCharCount%2A> property, which returns the maximum number of characters that the fallback implementation can return. For an exception fallback handler, its value should be zero.  
+-   <xref:System.Text.EncoderFallback.MaxCharCount%2A> プロパティで、フォールバックの実装を返すことができる文字の最大数を返します。 例外フォールバック ハンドラーでその値は 0 にする必要があります。  
   
- For more information about encoding, decoding, and fallback strategies, see [Character Encoding in the .NET Framework](~/docs/standard/base-types/character-encoding.md).  
+ エンコード、デコード、およびフォールバック ストラテジの詳細については、次を参照してください。 [Character Encoding in the .NET Framework](http://msdn.microsoft.com/ja-jp/bf6d9823-4c2d-48af-b280-919c5af66ae9)します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Text.EncoderFallbackBuffer" />
+    <altmember cref="T:System.Text.EncoderReplacementFallback" />
+    <altmember cref="T:System.Text.EncoderExceptionFallback" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -79,7 +82,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Text.EncoderFallback" /> class.</summary>
+        <summary>
+          <see cref="T:System.Text.EncoderFallback" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -110,18 +114,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When overridden in a derived class, initializes a new instance of the <see cref="T:System.Text.EncoderFallbackBuffer" /> class.</summary>
-        <returns>An object that provides a fallback buffer for an encoder.</returns>
+        <summary>派生クラスでオーバーライドされた場合の新しいインスタンスを初期化、 <see cref="T:System.Text.EncoderFallbackBuffer" /> クラスです。</summary>
+        <returns>エンコーダー フォールバック バッファーを提供するオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method returns an object derived from <xref:System.Text.EncoderFallbackBuffer> that is responsible for performing the fallback operation. For example, of the predefined <xref:System.Text.EncoderFallback> implementations in the .NET Framework, the <xref:System.Text.EncoderReplacementFallback.CreateFallbackBuffer%2A?displayProperty=fullName> method returns an <xref:System.Text.EncoderReplacementFallbackBuffer> object, and the <xref:System.Text.EncoderExceptionFallback.CreateFallbackBuffer%2A?displayProperty=fullName> method returns an <xref:System.Text.EncoderExceptionFallbackBuffer> object.  
+## 解説  
+ このメソッドから派生したオブジェクトを返します <xref:System.Text.EncoderFallbackBuffer> はフォールバック操作を実行します。 たとえば、定義済みの <xref:System.Text.EncoderFallback> で .NET Framework の実装、 <xref:System.Text.EncoderReplacementFallback.CreateFallbackBuffer%2A?displayProperty=fullName> メソッドを返します。、 <xref:System.Text.EncoderReplacementFallbackBuffer> オブジェクト、および <xref:System.Text.EncoderExceptionFallback.CreateFallbackBuffer%2A?displayProperty=fullName> メソッドを返します。、 <xref:System.Text.EncoderExceptionFallbackBuffer> オブジェクトです。  
   
- The<xref:System.Text.EncoderFallback.CreateFallbackBuffer%2A> method is called by an encoder when it encounters the first character that it is unable to encode. The <xref:System.Text.EncoderFallbackBuffer> object returned by this method provides the fallback implementation and is responsible for returning the byte array that replaces the character or characters that could not be encoded.  
+ <xref:System.Text.EncoderFallback.CreateFallbackBuffer%2A> エンコードできない最初の文字に到達したときに、エンコーダーでメソッドが呼び出されます。<xref:System.Text.EncoderFallbackBuffer> このメソッドによって返されるオブジェクト フォールバックの実装を提供し、文字またはエンコードできない文字を置き換えるバイト配列を返します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Text.DecoderFallbackBuffer" />
       </Docs>
     </Member>
     <Member MemberName="ExceptionFallback">
@@ -150,8 +155,8 @@
         <ReturnType>System.Text.EncoderFallback</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an object that throws an exception when an input character cannot be encoded.</summary>
-        <value>A type derived from the <see cref="T:System.Text.EncoderFallback" /> class. The default value is a <see cref="T:System.Text.EncoderExceptionFallback" /> object.</value>
+        <summary>入力文字をエンコードできないときに例外をスローするオブジェクトを取得します。</summary>
+        <value>派生した種類の <see cref="T:System.Text.EncoderFallback" /> クラスです。 既定値は、 <see cref="T:System.Text.EncoderExceptionFallback" /> オブジェクトです。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -181,13 +186,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>When overridden in a derived class, gets the maximum number of characters the current <see cref="T:System.Text.EncoderFallback" /> object can return.</summary>
-        <value>The maximum number of characters the current <see cref="T:System.Text.EncoderFallback" /> object can return.</value>
+        <summary>派生クラスでオーバーライドされると、最大文字数を取得現在 <see cref="T:System.Text.EncoderFallback" /> オブジェクトを返すことができます。</summary>
+        <value>現在の文字の最大数 <see cref="T:System.Text.EncoderFallback" /> オブジェクトを返すことができます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For an exception fallback handler, this property should return zero.  
+## 解説  
+ 例外フォールバック ハンドラーの場合、このプロパティは 0 を返すはずです。  
   
  ]]></format>
         </remarks>
@@ -219,9 +224,14 @@
         <ReturnType>System.Text.EncoderFallback</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an object that outputs a substitute string in place of an input character that cannot be encoded.</summary>
-        <value>A type derived from the <see cref="T:System.Text.EncoderFallback" /> class. The default value is a <see cref="T:System.Text.EncoderReplacementFallback" /> object that replaces unknown input characters with the QUESTION MARK character ("?", U+003F).</value>
-        <remarks>To be added.</remarks>
+        <summary>エンコードできない入力文字の代わりに、代替文字列を出力するオブジェクトを取得します。</summary>
+        <value>派生した種類の <see cref="T:System.Text.EncoderFallback" /> クラスです。 既定値は、 <see cref="T:System.Text.EncoderReplacementFallback" /> を疑問符 \(\) 文字で不明な入力文字を置き換えるオブジェクト \("?"、U \+ 003F\)。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

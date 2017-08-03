@@ -27,49 +27,51 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>The exception that is thrown if the main assembly does not contain the resources for the neutral culture, and an appropriate satellite assembly is missing.</summary>
+    <summary>メインのアセンブリにニュートラル カルチャのリソースが含まれていないと、適切なサテライト アセンブリが見つからない場合にスローされる例外。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
-## Desktop Apps  
- In desktop apps, <xref:System.Resources.MissingManifestResourceException> is thrown when the attempt to retrieve a resource fails because the resource set for the neutral culture could not be loaded from a particular assembly. Although the exception is thrown when you try to retrieve a particular resource, it is caused by the failure to load the resource set rather than the failure to find the resource.  
-  
-> [!NOTE]
->  For additional information, see the "Handling a MissingManifestResourceException Exception" section in the <xref:System.Resources.ResourceManager> class topic.  
-  
- The main causes of the exception include the following:  
-  
--   The resource set is not identified by its fully qualified name. For example, if the `baseName` parameter in the call to the <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29?displayProperty=fullName> method specifies the root name of the resource set without a namespace, but the resource set is assigned a namespace when it is stored in its assembly, the call to the <xref:System.Resources.ResourceManager.GetString%2A?displayProperty=fullName> method throws this exception.  
-  
-     If you have embedded the .resources file that contains the default culture's resources in your executable and your app is throwing a <xref:System.Resources.MissingManifestResourceException>, you can use a reflection tool such as  to determine the fully qualified name of the resource. In ILDasm, double click the executable's **MANIFEST** label to open the **MANIFEST** window. Resources appear as `.mresource` items and are listed after external assembly references and custom assembly-level attributes. You can also compile the following simple utility, which lists the fully qualified names of embedded resources in the assembly whose name is passed to it as a command-line parameter.  
-  
-     [!code-csharp[System.Resources.ResourceManager.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/resourcenames.cs#4)]
-     [!code-vb[System.Resources.ResourceManager.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/resourcenames.vb#4)]  
-  
--   You identify the resource set by its resource file name (along with its optional namespace) and its file extension rather than by its namespace and root file name alone. For example, this exception is thrown if the neutral culture's resource set is named `GlobalResources` and you supply a value of `GlobalResources.resources` (instead of `GlobalResources`) to the `baseName` parameter of the <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29?displayProperty=fullName> constructor.  
-  
--   The culture-specific resource set that is identified in a method call cannot be found, and the fallback resource set cannot be loaded. For example, if you create satellite assemblies for the English (United States) and Russia (Russian) cultures but you fail to provide a resource set for the neutral culture, this exception is thrown if your app's current culture is English (Great Britain).  
-  
- <xref:System.Resources.MissingManifestResourceException> uses the HRESULT COR_E_MISSINGMANIFESTRESOURCE, which has the value 0x80131532.  
-  
- <xref:System.Resources.MissingManifestResourceException> uses the default <xref:System.Object.Equals%2A> implementation, which supports reference equality.  
-  
- For a list of initial property values for an instance of <xref:System.Resources.MissingManifestResourceException>, see the <xref:System.Resources.MissingManifestResourceException.%23ctor%2A> constructors.  
+## デスクトップ アプリ  
+ デスクトップ アプリで <xref:System.Resources.MissingManifestResourceException> ニュートラル カルチャのリソース セットは、特定のアセンブリから読み込まれませんだったためにリソースを取得する試行が失敗した場合にスローされます。 特定のリソースを取得しようとすると、例外がスローされたことが原因で発生、リソースを検索エラーではなく、リソース セットの読み込みが失敗しました。  
   
 > [!NOTE]
->  We recommend that you include a neutral set of resources in your main assembly, so your app won't fail if a satellite assembly is unavailable.  
+>  詳細については、「MissingManifestResourceException 例外を処理」」セクションを参照してください、 <xref:System.Resources.ResourceManager> クラスに関するトピック。  
   
-## [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] Apps  
- Unlike desktop apps, which deploy localized resources in satellite assemblies and typically store the resources of the neutral culture in the main assembly, [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] apps deploy resources for multiple cultures, including the neutral culture, in a single package resource index (.pri) file. As a result, in a [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] app, if resources for the preferred culture cannot be found, the <xref:System.Resources.MissingManifestResourceException> is thrown under either of the following conditions:  
+ 例外の主な原因を以下に示します。  
   
--   The app does not include a .pri file or the .pri file could not be opened.  
+-   リソース セットは、完全修飾名で識別されません。 たとえば場合、 `baseName` への呼び出しでパラメーター、 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29?displayProperty=fullName> メソッドは、名前空間のない設定、リソースのルート名を指定するが、リソース セットは、そのアセンブリへの呼び出しに格納されているときに、名前空間に割り当てられる、 <xref:System.Resources.ResourceManager.GetString%2A?displayProperty=fullName> メソッドは、この例外をスローします。  
   
--   The app's .pri file does not contain a resource set for the given root name.  
+     実行可能ファイルに既定のカルチャのリソースを含む .resources ファイルが埋め込まれているし、アプリをスローしている場合、 <xref:System.Resources.MissingManifestResourceException>, 、リソースの完全修飾名を確認するようにリフレクション ツールを使用することができます。 ILDasm でダブルクリックしてで実行可能ファイルの **マニフェスト** を開くにはラベル、 **マニフェスト** ウィンドウです。 リソースとして表示されます `.mresource` 項目とは、外部のアセンブリ参照とアセンブリ レベルのカスタム属性の後に表示します。 名前が渡されるコマンド ライン パラメーターとしてアセンブリに埋め込まれたリソースの完全修飾名を一覧表示する次の単純なユーティリティをコンパイルすることもできます。  
+  
+     [!code-csharp[System.Resources.ResourceManager.Class\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/resourcenames.cs#4)]
+     [!code-vb[System.Resources.ResourceManager.Class\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/resourcenames.vb#4)]  
+  
+-   リソースの名前空間とルート ファイル名ではなく、\(省略可能な名前空間\) に加え、リソース ファイルの名前とそのファイルの拡張子によってを単独でセットを特定します。 ニュートラル カルチャのリソース セットがという名前の場合、この例外がスローされます `GlobalResources` の値を指定して `GlobalResources.resources` \(の代わりに `GlobalResources`\) に、 `baseName` のパラメーター、 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29?displayProperty=fullName> コンス トラクターです。  
+  
+-   メソッドの呼び出しで指定されているカルチャに固有のリソース セットが見つからないし、フォールバック リソース セットを読み込むことができません。 たとえば、英語 \(米国\) とロシア \(ロシア語\) のカルチャのサテライト アセンブリを作成したにニュートラル カルチャのリソース セットを提供できない場合は、この例外がスローされます、アプリの現在のカルチャが英語 \(英国\) の場合。  
+  
+ <xref:System.Resources.MissingManifestResourceException> 値は 0x80131532 HRESULT COR\_E\_MISSINGMANIFESTRESOURCE を使用します。  
+  
+ <xref:System.Resources.MissingManifestResourceException> 既定値を使用して <xref:System.Object.Equals%2A> 実装で、参照の等価性をサポートしています。  
+  
+ インスタンスの初期プロパティ値の一覧については <xref:System.Resources.MissingManifestResourceException>, を参照してください、 <xref:System.Resources.MissingManifestResourceException.%23ctor%2A> コンス トラクターです。  
+  
+> [!NOTE]
+>  サテライト アセンブリが使用できない場合、アプリが失敗しないように、中立的な一連のリソースをメイン アセンブリに含めることをお勧めします。  
+  
+## [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] アプリ  
+ ローカライズされたリソースのサテライト アセンブリを展開して、通常はメイン アセンブリにニュートラル カルチャのリソースを保存、デスクトップ アプリとは異なり [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] アプリが 1 つのパッケージ リソース インデックス \(.pri\) ファイルに、ニュートラル カルチャを含む複数のカルチャのリソースを展開します。 この結果、 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 優先のカルチャのリソースが見つからない場合、アプリ、 <xref:System.Resources.MissingManifestResourceException> が次の条件のいずれかでスローされます。  
+  
+-   アプリが .pri ファイルを含んでいないか、.pri ファイルを開けませんでした。  
+  
+-   アプリの .pri ファイルでは、指定したルート名のリソース セットは含まれません。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Exception" />
+    <altmember cref="T:System.Resources.ResourceManager" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -93,17 +95,18 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Resources.MissingManifestResourceException" /> class with default properties.</summary>
+        <summary>
+          <see cref="T:System.Resources.MissingManifestResourceException" /> クラスの新しいインスタンスを、既定のプロパティを使用して初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The following table shows the initial property values for an instance of <xref:System.Resources.MissingManifestResourceException>.  
+## 解説  
+ <xref:System.Resources.MissingManifestResourceException> のインスタンスの初期プロパティ値を次の表に示します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|The localized error message for <xref:System.Resources.MissingManifestResourceException>.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|ローカライズされたエラー メッセージ <xref:System.Resources.MissingManifestResourceException>します。|  
   
  ]]></format>
         </remarks>
@@ -132,18 +135,18 @@
         <Parameter Name="message" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="message">The error message that explains the reason for the exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Resources.MissingManifestResourceException" /> class with the specified error message.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <summary>指定されたエラー メッセージで <see cref="T:System.Resources.MissingManifestResourceException" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The following table shows the initial property values for an instance of <xref:System.Resources.MissingManifestResourceException>.  
+## 解説  
+ <xref:System.Resources.MissingManifestResourceException> のインスタンスの初期プロパティ値を次の表に示します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|`null`.|  
-|<xref:System.Exception.Message%2A>|The `message` string.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|`null`。|  
+|<xref:System.Exception.Message%2A>|`message` 文字列。|  
   
  ]]></format>
         </remarks>
@@ -172,14 +175,14 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="info">The object that holds the serialized object data.</param>
-        <param name="context">The contextual information about the source or destination of the exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Resources.MissingManifestResourceException" /> class from serialized data.</summary>
+        <param name="info">シリアル化されたオブジェクト データを保持するオブジェクト。</param>
+        <param name="context">ソースまたは例外の転送先に関する文脈情報。</param>
+        <summary>シリアル化したデータから、<see cref="T:System.Resources.MissingManifestResourceException" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor is called during deserialization to reconstitute the exception object transmitted over a stream.  
+## 解説  
+ このコンストラクターは、逆シリアル化中に、ストリームで送信された例外オブジェクトを再構築するために呼び出されます。  
   
  ]]></format>
         </remarks>
@@ -209,25 +212,37 @@
         <Parameter Name="inner" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="message">The error message that explains the reason for the exception.</param>
-        <param name="inner">The exception that is the cause of the current exception. If the <c>inner</c> parameter is not <see langword="null" />, the current exception is raised in a <see langword="catch" /> block that handles the inner exception.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Resources.MissingManifestResourceException" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+        <param name="message">例外の原因を説明するエラー メッセージ。</param>
+        <param name="inner">現在の例外の原因となった例外。<c>inner</c> パラメーターが <see langword="null" /> でない場合は、内部例外を処理する <see langword="catch" /> ブロックで現在の例外が発生します。</param>
+        <summary>指定したエラー メッセージおよびこの例外の原因となった内部例外への参照を使用して、<see cref="T:System.Resources.MissingManifestResourceException" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An exception that is thrown as a direct result of a previous exception should include a reference to the previous exception in the <xref:System.Exception.InnerException%2A> property. The <xref:System.Exception.InnerException%2A> property returns the same value that is passed into the constructor, or `null` if the <xref:System.Exception.InnerException%2A> property does not supply the inner exception value to the constructor.  
+## 解説  
+ 前の例外の直接の結果としてスローされる例外については、<xref:System.Exception.InnerException%2A> プロパティに、前の例外への参照が格納されます。<xref:System.Exception.InnerException%2A> プロパティは、コンストラクターに渡されたものと同じ値を返します。`null` プロパティによって内部例外値がコンストラクターに渡されなかった場合は、<xref:System.Exception.InnerException%2A> を返します。  
   
- The following table shows the initial property values for an instance of <xref:System.Resources.MissingManifestResourceException>.  
+ <xref:System.Resources.MissingManifestResourceException> のインスタンスの初期プロパティ値を次の表に示します。  
   
-|Property|Value|  
-|--------------|-----------|  
-|<xref:System.Exception.InnerException%2A>|The inner exception reference.|  
-|<xref:System.Exception.Message%2A>|The error message string.|  
+|プロパティ|値|  
+|-----------|-------|  
+|<xref:System.Exception.InnerException%2A>|内部例外の参照。|  
+|<xref:System.Exception.Message%2A>|エラー メッセージ文字列。|  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Exception" />
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Resources.MissingManifestResourceException" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

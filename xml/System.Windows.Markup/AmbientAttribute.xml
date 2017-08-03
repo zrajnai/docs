@@ -19,43 +19,46 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Specifies that a property or type should be treated as ambient. The ambient concept relates to how XAML processors determine type owners of members.</summary>
+    <summary>プロパティまたは型をアンビエントとして扱うように指定しています。 アンビエントの概念は XAML プロセッサがメンバーの型の所有者を確認する方法と関連します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An ambient property is a property where the value is expected to be available in the parser context when creating an object graph, but where typical type-member lookup is suspended for purposes of the immediate XAML node set being created. There are two main scenarios for the ambient concept:  
+## 解説  
+ アンビエント プロパティは、値は要求の即時の XAML ノードが作成されている設定の目的で一般的な型メンバーの参照が中断され、オブジェクト グラフを作成するときに、パーサーのコンテキストで使用するプロパティです。 アンビエントの概念を次の 2 つの主な方法があります。  
   
--   Some other property of the same object influences and qualifies how that object-property lookup should work.  
+-   同じオブジェクトの他のいくつかのプロパティは、影響し、そのオブジェクトとプロパティ検索の動作を修飾します。  
   
--   The property represents a larger deferral mechanism and the ambient capabilities for looking up a member value extend to all objects contained within the current object.  
+-   プロパティは大規模な遅延メカニズムを表し、現在のオブジェクトに含まれるすべてのオブジェクトにメンバーの値を検索するためのアンビエント機能を拡張します。  
   
- This attribute can be applied to specific properties that have expected containers that enable an ambient property lookup behavior, or can be applied to a class to enable the ambient property behavior in all cases of that value type for a property.  
+ この属性は、アンビエント プロパティ検索の動作を有効にするコンテナーを必要とする特定のプロパティに適用できるか、常にそのプロパティの値の型のアンビエント プロパティの動作を有効にするクラスに適用できます。  
   
- <xref:System.Windows.Markup.AmbientAttribute> can also be applied to a CLR method, to support attributing a XAML attachable property as ambient. This is potentially necessary because in a CLR implementation a XAML attached property is implemented/represented to reflection as an accessor pattern with `get` and `set` methods. No actual CLR property to attribute exists, so restricting usage for <xref:System.AttributeTargets> to `Property` would not have enabled specifying an attachable member as ambient. For an attachable member that you want to report as ambient, attribute the `get` accessor. You should not attempt to attribute methods that are not specifically support methods of attachable members.  
+ <xref:System.Windows.Markup.AmbientAttribute> アンビエントとして XAML 添付可能なプロパティに属性を適用をサポートするために、CLR メソッドにも適用できます。 これは、CLR 実装、XAML で接続されているプロパティは実装されている\/表現でアクセサー パターンとしてリフレクションのため必要な可能性のある `get` と `set` メソッドです。 属性に実際の CLR プロパティが存在しないの使用量を制限するため <xref:System.AttributeTargets> に `Property` は有効にしていないアンビエントとしてアタッチ可能なメンバーを指定します。 レポートを作成するアンビエントとしてアタッチ可能なメンバー、属性、 `get` アクセサー。 アタッチ可能なメンバーのメソッドを特にサポートしていない属性メソッドには必ずください。  
   
- In previous versions of the .NET Framework, this class existed in the WPF-specific assembly WindowsBase. In [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], <xref:System.Windows.Markup.AmbientAttribute> is in the System.Xaml assembly. For more information, see [Types Migrated from WPF to System.Xaml](~/docs/framework/xaml-services/types-migrated-from-wpf-to-system-xaml.md).  
+ .NET Framework の以前のバージョンでは、このクラスは WPF 固有の WindowsBase アセンブリに存在しています。[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], 、<xref:System.Windows.Markup.AmbientAttribute> System.Xaml アセンブリ内します。 詳細については、「[Types Migrated From WPF to System.Xaml](http://msdn.microsoft.com/ja-jp/d79dabf5-a2ec-4e8d-a37a-67c4ba8a2b91)」を参照してください。  
   
- Ambient types (types where <xref:System.Windows.Markup.AmbientAttribute> is applied at type level) can be used for certain XAML processing situations where the type of a property needs to be resolved out of order.  
+ アンビエント型 \(型 where <xref:System.Windows.Markup.AmbientAttribute> 型レベルで適用されます\) プロパティの型する必要がある解決順不同の特定の XAML の処理状況のために使用できます。  
   
-## Object Writer Scenarios  
- If you are defining a XAML object writer, and you encounter a property, method or type where <xref:System.Windows.Markup.AmbientAttribute> is applied, you typically must access a service to determine the intended ambient property lookup behavior that is needed for writing out objects. For more information, see <xref:System.Xaml.IAmbientProvider>.  
+## オブジェクト ライターのシナリオ  
+ XAML オブジェクト ライターを定義して、プロパティ、メソッドまたは型が発生した場合、 <xref:System.Windows.Markup.AmbientAttribute> が適用すると、通常必要がありますサービスにアクセスする、オブジェクトを作成するために必要な目的のアンビエント プロパティ検索の動作を決定します。 詳細については、「<xref:System.Xaml.IAmbientProvider>」を参照してください。  
   
-## Value Converters  
- Type converters or markup extensions might need to know the ambient information in order to process properties that represent indirect type mappings, such as properties that specify members or types by string names with or without qualification. In this scenario, <xref:System.Windows.Markup.AmbientAttribute> is not intended to be used directly for value converter code logic. Rather, the value converter should rely on the XAML writer processing behavior, which will pass <xref:System.Xaml.IAmbientProvider> in its service contexts to your value converter methods when called.  
+## 値コンバーター  
+ 型コンバーターまたはマークアップ拡張機能は、文字列名または修飾なしで使用してメンバーまたは型を指定するプロパティなどの間接的な型マッピングを表すプロパティを処理するために、アンビエント情報を把握する必要があります。 このシナリオで <xref:System.Windows.Markup.AmbientAttribute> 値コンバーターのコードのロジックに直接使用するものではありません。 値コンバーターが XAML ライターの処理動作が合格するリダイレクトに依存する代わりに、 <xref:System.Xaml.IAmbientProvider> 、値コンバーターのメソッドが呼び出されたときにそのサービスのコンテキストにします。  
   
-## WPF Scenarios for AmbientAttribute  
+## AmbientAttribute の WPF のシナリオ  
   
--   A property of a <xref:System.Windows.Style> (<xref:System.Windows.Style.TargetType%2A>) can qualify the necessary property name lookups that are needed to find the backing references for property names in <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> values.  
+-   プロパティ、 <xref:System.Windows.Style> \(<xref:System.Windows.Style.TargetType%2A>\) のプロパティ名のバックアップの参照を検索するために必要なために必要なプロパティ名の参照を修飾 <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> 値。  
   
--   All content within a `Resources` property (items of a <xref:System.Windows.ResourceDictionary>) as well as template content, should be able to access other peers as values. Declaring the entire `Resources` property as ambient invokes logic that enables this in the WPF XAML parser.  
+-   内ですべてのコンテンツ、 `Resources` プロパティ \(の項目、 <xref:System.Windows.ResourceDictionary>\) だけでなく、テンプレートのコンテンツを値として他のピアにアクセスすることにする必要があります。 全体を宣言する `Resources` アンビエント プロパティは WPF XAML パーサーでこれをできるようにするロジックを呼び出します。  
   
- See <xref:System.Windows.ResourceDictionary> for an example of a scenario for setting <xref:System.Windows.Markup.AmbientAttribute> at type level.  
+ 参照してください <xref:System.Windows.ResourceDictionary> 設定用のシナリオ例については <xref:System.Windows.Markup.AmbientAttribute> 型レベルでします。  
   
 <a name="xamlTextUsage_AmbientAttribute"></a>   
-## XAML Text Usage  
+## XAML テキストの使用方法  
  ]]></format>
     </remarks>
+    <altmember cref="P:System.Xaml.XamlMember.IsAmbient" />
+    <altmember cref="T:System.Xaml.XamlMember" />
+    <altmember cref="T:System.Xaml.IAmbientProvider" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -69,7 +72,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Markup.AmbientAttribute" /> class.</summary>
+        <summary>
+          <see cref="T:System.Windows.Markup.AmbientAttribute" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

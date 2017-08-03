@@ -11,39 +11,39 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>This class allows both <see cref="T:System.Activities.WorkflowApplication" /> and <see cref="T:System.ServiceModel.WorkflowServiceHost" /> to participate in persistence process. A persistence participant derives from the <see cref="T:System.Activities.Persistence.PersistenceParticipant" /> class or the <see cref="T:System.Activities.Persistence.PersistenceIOParticipant" /> class (derived class of the <see cref="T:System.Activities.Persistence.PersistenceParticipant" /> class), implements abstract methods, and then add an instance of the class as a workflow instance extension. The <see cref="T:System.Activities.WorkflowApplication" /> and <see cref="T:System.ServiceModel.WorkflowServiceHost" /> look for such extensions when persisting an instance and invoke appropriate methods at appropriate times.</summary>
+    <summary>このクラスでは、<see cref="T:System.Activities.WorkflowApplication" /> と <see cref="T:System.ServiceModel.WorkflowServiceHost" /> の両方が永続化プロセスに参加できます。 永続参加要素は、<see cref="T:System.Activities.Persistence.PersistenceParticipant" /> クラスまたは <see cref="T:System.Activities.Persistence.PersistenceIOParticipant" /> クラス \(<see cref="T:System.Activities.Persistence.PersistenceParticipant" /> クラスの派生クラス\) から派生し、抽象メソッドを実装して、クラスのインスタンスをワークフロー インスタンス拡張機能として追加します。<see cref="T:System.Activities.WorkflowApplication" /> および <see cref="T:System.ServiceModel.WorkflowServiceHost" /> は、インスタンスの永続化時にこのような拡張機能を探し、適切なときに適切なメソッドを起動します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A host executes the following steps (or stages) when persisting an instance:  
+## 解説  
+ ホストは、インスタンスの永続化時に次の手順 \(または段階\) を実行します。  
   
-1.  Collects values to be persisted.  
+1.  永続化する値を収集します。  
   
-2.  Maps fields of monolithic structured values to individual values.  
+2.  モノリシック構造値のフィールドを個々の値にマップします。  
   
-3.  Issues the <xref:System.Activities.DurableInstancing.SaveWorkflowCommand> to the persistence provider.  
+3.  <xref:System.Activities.DurableInstancing.SaveWorkflowCommand> を永続化プロバイダーに発行します。  
   
-4.  Performs I/O under the persistence transaction.  
+4.  永続性トランザクションの下で I\/O を実行します。  
   
- A host completes a stage before beginning the next stage. For example when persisting, the host collects values from all the persistence participants before moving to the second stage. In the second stage, the host provides all the values collected in the first stage to all persistence participants in the second stage for mapping. In the third stage, the host provides all the collected values in the first and second stages to the persistence provider when invoking the <xref:System.Activities.DurableInstancing.SaveWorkflowCommand>. Then in the fourth stage, the host provides all the collected values to all the persistence IO participants under the persistence transaction.  
+ ホストは、段階を完了してから次の段階を開始します。 たとえば永続化時は、ホストは、2 番目の段階に進む前に、すべての永続参加要素から値を収集します。 2 番目の段階では、ホストは、マップを行うために、最初の段階で収集したすべての値を 2 番目の段階のすべての永続参加要素に提供します。 3 番目の段階では、ホストは、<xref:System.Activities.DurableInstancing.SaveWorkflowCommand> の起動時に、最初の段階および 2 番目の段階で収集したすべての値を永続化プロバイダーに提供します。 次に、4 番目の段階では、ホストは、収集したすべての値を永続性トランザクションの下で永続 IO 参加要素に提供します。  
   
- A host executes the following stages when loading a persistence instance:  
+ ホストは、永続化インスタンスの読み込み時に次の段階を実行します。  
   
-1.  Issues the <xref:System.Activities.DurableInstancing.LoadWorkflowCommand> and <xref:System.Activities.DurableInstancing.LoadWorkflowByInstanceKeyCommand> to the persistence provider.  
+1.  <xref:System.Activities.DurableInstancing.LoadWorkflowCommand> および <xref:System.Activities.DurableInstancing.LoadWorkflowByInstanceKeyCommand> を永続化プロバイダーに発行します。  
   
-2.  Performs I/O under the persistence transaction.  
+2.  永続性トランザクションの下で I\/O を実行します。  
   
-3.  Publishes the loaded values.  
+3.  読み込まれた値を発行します。  
   
- At the highest level, workflow instance extensions that derive from the <xref:System.Activities.Persistence.PersistenceParticipant> class can participate in the first (Collect) and second (Map) stages of persisting process and the third stage (Publish) of loading process.  Workflow instance extensions deriving from the PersistenceIOParticipant class can additionally participate in the fourth stage of the persisting process and the second stage of the loading process (I/O).  
+ 最上位レベルでは、<xref:System.Activities.Persistence.PersistenceParticipant> クラスから派生するワークフロー インスタンス拡張機能は、永続化プロセスの最初の段階 \(Collect\) および 2 番目の段階 \(Map\) と、読み込みプロセスの 3 番目の段階 \(Publish\) に参加できます。  PersistenceIOParticipant クラスから派生するワークフロー インスタンス拡張機能は、さらに、永続化プロセスの 4 番目の段階と、読み込みプロセス \(I\/O\) の 2 番目の段階に参加できます。  
   
    
   
-## Examples  
- The following code sample demonstrates creating a class that derives from <xref:System.Activities.Persistence.PersistenceParticipant>. This example is from the [Hiring Process](~/docs/framework/windows-workflow-foundation/samples/hiring-process.md) sample.  
+## 例  
+ <xref:System.Activities.Persistence.PersistenceParticipant> から派生したクラスの作成方法を次のコード サンプルに示します。 この例は、 [雇用プロセス](http://msdn.microsoft.com/ja-jp/d5fcacbb-c884-4b37-a5d6-02b1b8eec7b4) サンプルです。  
   
- [!code-csharp[wfs_HiringRequestProcess#1](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_hiringrequestprocess/cs/hiringrequestpersistenceparticipant.cs#1)]  
+ [!code-csharp[wfs\_HiringRequestProcess\#1](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_hiringrequestprocess/cs/hiringrequestpersistenceparticipant.cs#1)]  
   
  ]]></format>
     </remarks>
@@ -60,14 +60,18 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes an instance of the <see cref="T:System.Activities.Persistence.PersistenceParticipant" /> class.</summary>
+        <summary>
+          <see cref="T:System.Activities.Persistence.PersistenceParticipant" /> クラスのインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code sample demonstrates creating a class that derives from <xref:System.Activities.Persistence.PersistenceParticipant>. This example is from the [Hiring Process](~/docs/framework/windows-workflow-foundation/samples/hiring-process.md) sample.  
+## 解説  
+   
   
- [!code-csharp[wfs_HiringRequestProcess#1](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_hiringrequestprocess/cs/hiringrequestpersistenceparticipant.cs#1)]  
+## 例  
+ <xref:System.Activities.Persistence.PersistenceParticipant> から派生したクラスの作成方法を次のコード サンプルに示します。 この例は、 [雇用プロセス](http://msdn.microsoft.com/ja-jp/d5fcacbb-c884-4b37-a5d6-02b1b8eec7b4) サンプルです。  
+  
+ [!code-csharp[wfs\_HiringRequestProcess\#1](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_hiringrequestprocess/cs/hiringrequestpersistenceparticipant.cs#1)]  
   
  ]]></format>
         </remarks>
@@ -90,24 +94,24 @@
         <Parameter Name="writeOnlyValues" Type="System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Object&gt;&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="readWriteValues">The read-write values to be persisted.</param>
-        <param name="writeOnlyValues">The write-only values to be persisted.</param>
-        <summary>A host invokes this method on a custom persistence participant to collect read-write values and write-only values, to be persisted.</summary>
+        <param name="readWriteValues">永続化される読み取り\/書き込み値。</param>
+        <param name="writeOnlyValues">永続化される書き込み専用値。</param>
+        <summary>ホストはカスタムの永続化参加要素に対してこのメソッドを呼び出して、永続化される読み取り\/書き込み値および書き込み専用値を収集します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The host packages read-write values in the first dictionary as <xref:System.Runtime.DurableInstancing.InstanceValue> objects of an <xref:System.Activities.DurableInstancing.SaveWorkflowCommand.InstanceData*> collection, and packages write-only values in the second dictionary as <xref:System.Runtime.DurableInstancing.InstanceValue> objects with <xref:System.Runtime.DurableInstancing.InstanceValueOptions.Optional> and <xref:System.Runtime.DurableInstancing.InstanceValueOptions.WriteOnly> flags set. [!INCLUDE[crdefault](~/includes/crdefault-md.md)] <xref:System.Runtime.DurableInstancing.InstanceValueOptions>.  
+## 解説  
+ ホストは、<xref:System.Runtime.Persistence.InstanceValue> コレクションの <xref:System.Activities.Persistence.SaveWorkflowCommand.InstanceData%2A> オブジェクトとして、読み取り\/書き込み値を最初のディクショナリにパッケージ化し、<xref:System.Runtime.Persistence.InstanceValue> および <xref:System.Runtime.Persistence.InstanceValueOptions.Optional> フラグが設定された <xref:System.Runtime.Persistence.InstanceValueOptions.WriteOnly> オブジェクトとして、書き込み専用値を 2 番目のディクショナリにパッケージ化します。[!INCLUDE[crdefault](~/includes/crdefault-md.md)]<xref:System.Runtime.Persistence.InstanceValueOptions>.  
   
 > [!IMPORTANT]
->  Each value provided by implementations of <xref:System.Activities.Persistence.PersistenceParticipant.CollectValues%2A> across all persistence participants within one persistence episode must have a unique XName.  
+>  1 つの永続化内のすべての永続参加要素について <xref:System.Activities.Persistence.PersistenceParticipant.CollectValues%2A> の実装によって形成される各値は、一意の Xname を持つ必要があります。  
   
    
   
-## Examples  
- The following code sample demonstrates using CollectValues in a class that derives from <xref:System.Activities.Persistence.PersistenceParticipant>. This example is from the [Persistence Participants](~/docs/framework/windows-workflow-foundation/persistence-participants.md) sample.  
+## 例  
+ <xref:System.Activities.Persistence.PersistenceParticipant> から派生したクラスでの CollectValues の使用方法を次のコード サンプルに示します。 この例は、[永続参加要素](http://msdn.microsoft.com/ja-jp/f84d2d5d-1c1b-4f19-be45-65b552d3e9e3)サンプルです。  
   
- [!code-csharp[wfs_PersistenceParticipants#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_persistenceparticipants/cs/stepcountextension.cs#2)]  
+ [!code-csharp[wfs\_PersistenceParticipants\#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_persistenceparticipants/cs/stepcountextension.cs#2)]  
   
  ]]></format>
         </remarks>
@@ -130,22 +134,22 @@
         <Parameter Name="writeOnlyValues" Type="System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Object&gt;" />
       </Parameters>
       <Docs>
-        <param name="readWriteValues">The read-write values to be persisted.</param>
-        <param name="writeOnlyValues">The write-only values to be persisted.</param>
-        <summary>A host invokes this method after it is done with collecting the values in the first stage. The host forwards two read-only dictionaries of values it collected from all persistence participants during the first stage (CollectValues stage) to this method for mapping. The host adds values in the dictionary returned by this method to the collection of write-only values.</summary>
-        <returns>A dictionary containing additional write-only values to be persisted.</returns>
+        <param name="readWriteValues">永続化される読み取り\/書き込み値。</param>
+        <param name="writeOnlyValues">永続化される書き込み専用値。</param>
+        <summary>最初の段階での値の収集が終了した後に、ホストはこのメソッドを起動します。 ホストは、最初の段階 \(CollectValues 段階\) ですべての永続参加要素から収集した値の 2 つの読み取り専用ディクショナリを、マップのためにこのメソッドに転送します。 ホストは、このメソッドから返されたディクショナリの値を、書き込み専用値のコレクションに追加します。</summary>
+        <returns>永続化される追加の書き込み専用値を含むディクショナリ。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Each value provided by implementations of all the <xref:System.Activities.Persistence.PersistenceParticipant.MapValues%2A> methods across all persistence participants including all the values collected in the first stage (CollectValues stage) must have a unique XName.  
+## 解説  
+ 最初の段階 \(CollectValues 段階\) で収集されたすべての値を含む、すべての永続参加要素についてすべての <xref:System.Activities.Persistence.PersistenceParticipant.MapValues%2A> メソッドの実装によって形成される各値は一意の XName を持つ必要があります。  
   
    
   
-## Examples  
- The following code sample demonstrates using MapValues in a class that derives from <xref:System.Activities.Persistence.PersistenceParticipant>. This example is from the [Corporate Purchase Process](~/docs/framework/windows-workflow-foundation/samples/corporate-purchase-process.md) sample.  
+## 例  
+ <xref:System.Activities.Persistence.PersistenceParticipant> から派生したクラスでの MapValues の使用方法を次のコード サンプルに示します。 この例は、 [企業の購買プロセス](http://msdn.microsoft.com/ja-jp/a5e57336-4290-41ea-936d-435593d97055) サンプルです。  
   
- [!code-csharp[wfs_PurchaseProcess#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_purchaseprocess/cs/xmlpersistenceparticipant.cs#2)]  
+ [!code-csharp[wfs\_PurchaseProcess\#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_purchaseprocess/cs/xmlpersistenceparticipant.cs#2)]  
   
  ]]></format>
         </remarks>
@@ -167,15 +171,18 @@
         <Parameter Name="readWriteValues" Type="System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Object&gt;" />
       </Parameters>
       <Docs>
-        <param name="readWriteValues">The read-write values that were loaded from the persistence store. This dictionary corresponds to the dictionary of read-write values persisted in the most recent persistence episode.</param>
-        <summary>The host invokes this method and passes all the loaded values in the <see cref="P:System.Activities.Persistence.SaveWorkflowCommand.InstanceData" /> collection (filled by the <see cref="T:System.Activities.Persistence.LoadWorkflowCommand" /> or <see cref="T:System.Activities.Persistence.LoadWorkflowByInstanceKeyCommand" />) as a dictionary parameter.</summary>
+        <param name="readWriteValues">永続ストアから読み込まれた読み取り\/書き込み値。 このディクショナリは、最新の永続化で永続化された読み取り\/書き込み値のディクショナリに対応します。</param>
+        <summary>ホストは、このメソッドを起動し、<see cref="P:System.Activities.Persistence.SaveWorkflowCommand.InstanceData" /> コレクション \(<see cref="T:System.Activities.Persistence.LoadWorkflowCommand" /> または <see cref="T:System.Activities.Persistence.LoadWorkflowByInstanceKeyCommand" /> で埋められた\) 内の読み込まれたすべての値をディクショナリ パラメーターとして渡します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code sample demonstrates using PublishValues in a class that derives from <xref:System.Activities.Persistence.PersistenceParticipant>. This example is from the [Persistence Participants](~/docs/framework/windows-workflow-foundation/persistence-participants.md) sample.  
+## 解説  
+   
   
- [!code-csharp[wfs_PersistenceParticipants#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_persistenceparticipants/cs/stepcountextension.cs#2)]  
+## 例  
+ <xref:System.Activities.Persistence.PersistenceParticipant> から派生したクラスでの PublishValues の使用方法を次のコード サンプルに示します。 この例は、 [永続参加要素](http://msdn.microsoft.com/ja-jp/f84d2d5d-1c1b-4f19-be45-65b552d3e9e3) サンプルです。  
+  
+ [!code-csharp[wfs\_PersistenceParticipants\#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_persistenceparticipants/cs/stepcountextension.cs#2)]  
   
  ]]></format>
         </remarks>

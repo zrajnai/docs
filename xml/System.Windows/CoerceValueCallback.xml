@@ -17,41 +17,42 @@
     <ReturnType>System.Object</ReturnType>
   </ReturnValue>
   <Docs>
-    <param name="d">The object that the property exists on. When the callback is invoked, the property system will pass this value.</param>
-    <param name="baseValue">The new value of the property, prior to any coercion attempt.</param>
-    <summary>Provides a template for a method that is called whenever a dependency property value is being re-evaluated, or coercion is specifically requested.</summary>
-    <returns>The coerced value (with appropriate type).</returns>
+    <param name="d">プロパティが存在するオブジェクト。 コールバックが呼び出されたときに、プロパティ システムはこの値を渡します。</param>
+    <param name="baseValue">強制が試行する前に、プロパティの新しい値。</param>
+    <summary>強制型変換が明確に要求された依存関係プロパティの値が再評価されるたびに呼び出されるメソッドのテンプレートを提供します。</summary>
+    <returns>\(適切な型\) の資格情報を持つ値です。</returns>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Callbacks based on <xref:System.Windows.CoerceValueCallback> can be assigned to a dependency property through several different techniques. Each of these techniques requires that you first create a new property metadata object (<xref:System.Windows.PropertyMetadata>, or a derived class such as <xref:System.Windows.FrameworkPropertyMetadata>). Create the metadata object using a constructor signature that takes the `coerceValueCallback` parameter, and assign that parameter to your callback handler. Or construct the metadata by any signature and set the <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A> property prior to putting the metadata in use.  
+## 解説  
+ コールバックがに基づいて <xref:System.Windows.CoerceValueCallback> 、複数の手法を使用して依存関係プロパティに割り当てることができます。 これらの手法は、最初に新しいプロパティのメタデータ オブジェクトを作成することが必要です \(<xref:System.Windows.PropertyMetadata>, 、やなどの派生クラス <xref:System.Windows.FrameworkPropertyMetadata>\)。 受け取るコンス トラクターのシグネチャを使用してメタデータ オブジェクトを作成、 `coerceValueCallback` パラメーター、コールバック ハンドラーにそのパラメーターを割り当てます。 または、署名およびメタデータを作成するとき、 <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A> プロパティを使用してメタデータを配置する前にします。  
   
- When you have this metadata, you can:  
+ このメタデータを使用する場合は、次のことができます。  
   
--   Define a new dependency property on a new class, using either signature of  <xref:System.Windows.DependencyProperty.Register%2A>, giving the metadata as the `typeMetadata` value.  
+-   いずれかの署名を使用して、新しいクラスで新しい依存関係プロパティを定義する  <xref:System.Windows.DependencyProperty.Register%2A>, 、としてのメタデータを与える、 `typeMetadata` 値。  
   
--   Override the metadata (call <xref:System.Windows.DependencyProperty.OverrideMetadata%28System.Type%2CSystem.Windows.PropertyMetadata%29>) for an existing dependency property, when you derive from the class that owns the dependency property.  
+-   メタデータをオーバーライド \(呼び出し <xref:System.Windows.DependencyProperty.OverrideMetadata%28System.Type%2CSystem.Windows.PropertyMetadata%29>\) の既存の依存関係プロパティを依存関係プロパティを所有するクラスから派生したとき。  
   
--   Add an existing dependency property to a new <xref:System.Windows.DependencyObject> class, using new metadata, by calling <xref:System.Windows.DependencyProperty.AddOwner%28System.Type%2CSystem.Windows.PropertyMetadata%29>.  
+-   既存の依存関係プロパティを新規に追加 <xref:System.Windows.DependencyObject> クラスの新しいメタデータを使用して呼び出すことによって <xref:System.Windows.DependencyProperty.AddOwner%28System.Type%2CSystem.Windows.PropertyMetadata%29>します。  
   
- Implementations of this callback should check the value in `baseValue` and determine based on either the value or the type whether this is a value that needs to be further coerced.  
+ このコールバックの実装は、値を確認する必要があります `baseValue` を決定し、これは、さらに強制的に変換する必要がある値かどうか、値または型のいずれかに基づいています。  
   
- The <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A> for a dependency property is invoked any time that the property system or any other caller calls <xref:System.Windows.DependencyObject.CoerceValue%2A> on a <xref:System.Windows.DependencyObject> instance, specifying that property's identifier as the `dp`.  
+ <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A> プロパティには依存関係のプロパティのシステムまたはその他の任意の呼び出し元がいつでもが呼び出される <xref:System.Windows.DependencyObject.CoerceValue%2A> 上、 <xref:System.Windows.DependencyObject> とそのプロパティの識別子を指定するインスタンス、 `dp`です。  
   
- Changes to the property value may have come from any possible participant in the property system. This includes styles, generic invalidation, triggers, property value inheritance, and local value setting.  
+ プロパティ値を変更は、プロパティ システムに関係するあらゆる原因由来が場合があります。 これには、スタイル、ジェネリックの無効化、トリガー、プロパティ値の継承、およびローカルの値の設定が含まれます。  
   
- Generally you should avoid specifying more than one <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A> for any given dependency property (overriding or adding with new metadata for a dependency property that already had a <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A>). Only one of the callbacks will be able to act. The acting callback will be the one that was applied to the most derived class in the inheritance as compared to the <xref:System.Windows.DependencyObject> caller. Other callbacks as assigned to metadata for the dependency property as it existed higher in the owner hierarchy are replaced when the metadata is overridden.  
+ 1 つ以上を指定することを避ける必要があります通常 <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A> いずれかの依存関係プロパティを指定します \(既にが依存関係プロパティの新しいメタデータを追加またはオーバーライド、 <xref:System.Windows.PropertyMetadata.CoerceValueCallback%2A>\)。 コールバックの 1 つだけは、機能することができます。 コールバックと比較して継承の最派生クラスに適用されている人であるが、 <xref:System.Windows.DependencyObject> 呼び出し元です。 メタデータがオーバーライドされると、所有者階層内の高い状態に依存関係プロパティのメタデータに割り当てられたその他のコールバックが置き換えられます。  
   
    
   
-## Examples  
- The following example includes an implementation of this callback to coerce the stored value of a dependency property based on other inputs, such as another property's value. In this case, the callback checks to see whether the `ShirtType` property corresponds to a type of shirt that has buttons; if so it establishes a starting default color for the `ButtonColor`, if the shirt type has no buttons, it coerces the `ButtonColor` value back to a starting value, which causes the [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] (not shown) to remove that dropdown from the effective choices.  
+## 例  
+ 次の例には、別のプロパティの値などの他の入力値に基づく依存関係プロパティの格納されている値を強制するこのコールバックの実装が含まれます。 コールバックを確認する場合は、かどうか、 `ShirtType` プロパティは、ボタンを持つシャツの型に対応しています。 その場合の既定の開始色を確立します、 `ButtonColor`, 、強制的に変換ボタン シャツ型がない場合は、、 `ButtonColor` 値を、開始値に戻します、 [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] \(非表示\) を有効な選択肢の中からそのドロップダウン リストを削除します。  
   
- [!code-csharp[DPCustom#CoerceValueCallback](~/samples/snippets/csharp/VS_Snippets_Wpf/DPCustom/CSharp/default.xaml.cs#coercevaluecallback)]
- [!code-vb[DPCustom#CoerceValueCallback](~/samples/snippets/visualbasic/VS_Snippets_Wpf/DPCustom/visualbasic/default.xaml.vb#coercevaluecallback)]  
+ [!code-csharp[DPCustom\#CoerceValueCallback](~/samples/snippets/csharp/VS_Snippets_Wpf/DPCustom/CSharp/default.xaml.cs#coercevaluecallback)]
+ [!code-vb[DPCustom\#CoerceValueCallback](~/samples/snippets/visualbasic/VS_Snippets_Wpf/DPCustom/visualbasic/default.xaml.vb#coercevaluecallback)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Windows.DependencyProperty" />
   </Docs>
 </Type>

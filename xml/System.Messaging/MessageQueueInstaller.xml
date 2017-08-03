@@ -11,24 +11,24 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Allows you to install and configure a queue that your application needs in order to run. This class is called by the installation utility, for example, InstallUtil.exe, when installing a <see cref="T:System.Messaging.MessageQueue" />.</summary>
+    <summary>使用すると、インストールし、アプリケーションで実行するために必要なキューを構成できます。 このクラスは、インストール ユーティリティによってなど InstallUtil.exe という、インストールするときに、 <see cref="T:System.Messaging.MessageQueue" />です。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Messaging.MessageQueueInstaller> is used by the installation utility to write registry values that are associated with the queue. For more information about installation utilities, see [Installutil.exe (Installer Tool)](~/docs/framework/tools/installutil-exe-installer-tool.md).  
+## 解説  
+ <xref:System.Messaging.MessageQueueInstaller> インストール ユーティリティによって、キューに関連付けられているレジストリ値の書き込みに使用します。 インストール ユーティリティの詳細については、次を参照してください。 [&#91;\<topic:\/\/cpconInstallerUtilityInstallutilexe\>&#93;](http://msdn.microsoft.com/ja-jp/3f9d0533-f895-4897-b4ea-528284e0241d)します。  
   
- To install a queue, create a project installer class that inherits from the <xref:System.Configuration.Install.Installer>, and set the <xref:System.ComponentModel.RunInstallerAttribute> for the class to `true`. Within your project, create a <xref:System.Messaging.MessageQueueInstaller> instance for each queue in the installation and add the instance to your project installer class.  
+ キューをインストールするから継承されるプロジェクト インストーラー クラスを作成、 <xref:System.Configuration.Install.Installer>, 、設定と、 <xref:System.ComponentModel.RunInstallerAttribute> 、クラスに対する `true`します。 プロジェクト内に作成、 <xref:System.Messaging.MessageQueueInstaller> のインストールでは、各キューのインスタンスし、プロジェクト インストーラー クラスにインスタンスを追加します。  
   
- When creating a <xref:System.Messaging.MessageQueueInstaller> instance, you can optionally pass an existing <xref:System.Messaging.MessageQueue> (for example, from a test server) to the <xref:System.Messaging.MessageQueueInstaller.%23ctor%2A> constructor. This approach automatically provides the configuration settings for the new queue by mirroring the settings of the queue passed in. Alternatively, you can manually set the properties in the <xref:System.Messaging.MessageQueueInstaller> instance to the states you want and call the default constructor.  
+ 作成するときに、 <xref:System.Messaging.MessageQueueInstaller> インスタンスを渡すことができます必要に応じて、既存 <xref:System.Messaging.MessageQueue> \(たとえばからテスト サーバー\) に、 <xref:System.Messaging.MessageQueueInstaller.%23ctor%2A> コンス トラクターです。 この方法は、渡されたキューの設定をミラーリングすることで自動的に新しいキューの構成設定を提供します。 プロパティを手動で設定する代わりに、 <xref:System.Messaging.MessageQueueInstaller> インスタンスを選択して、既定のコンス トラクターの呼び出しの状態にします。  
   
- When the install utility is called, it looks for the <xref:System.ComponentModel.RunInstallerAttribute>. If it is `true`, the utility installs all the queues in the <xref:System.Configuration.Install.Installer.Installers%2A> collection associated with your project installer. If <xref:System.ComponentModel.RunInstallerAttribute> is `false`, the utility ignores the project installer.  
+ インストール ユーティリティが呼び出されると、検索、 <xref:System.ComponentModel.RunInstallerAttribute>です。 ある場合 `true`, 、内のすべてのキューをインストールする、ユーティリティ、 <xref:System.Configuration.Install.Installer.Installers%2A> プロジェクト インストーラーに関連付けられているコレクション。 場合 <xref:System.ComponentModel.RunInstallerAttribute> は `false`, 、プロジェクト インストーラーには無視されます。  
   
- You modify other properties of a <xref:System.Messaging.MessageQueueInstaller> instance either before or after adding the instance to the <xref:System.Configuration.Install.Installer.Installers%2A> collection of your project installer. For example, a queue's <xref:System.Messaging.MessageQueue.Path%2A> must be set before the install utility executes.  
+ その他のプロパティを変更する、 <xref:System.Messaging.MessageQueueInstaller> インスタンスの前に、または後にインスタンスを追加する、 <xref:System.Configuration.Install.Installer.Installers%2A> プロジェクト インストーラーのコレクション。 たとえば、キューの <xref:System.Messaging.MessageQueue.Path%2A> インストール ユーティリティが実行される前に設定する必要があります。  
   
- Typically, you do not call the methods of the <xref:System.Messaging.MessageQueueInstaller> from within your code; they are generally called only by the installutil.exe installation utility. The utility automatically calls the <xref:System.Messaging.MessageQueueInstaller.Install%2A> method during the installation process and calls <xref:System.Messaging.MessageQueueInstaller.Commit%2A> if the installation did not throw an exception. It backs out failures, if necessary, by calling <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> for the object that generated the exception.  
+ 通常、呼び出さないのメソッド、 <xref:System.Messaging.MessageQueueInstaller> から、コード内では一般的に呼び出すことが installutil.exe インストール ユーティリティによってのみです。 ユーティリティは、 <xref:System.Messaging.MessageQueueInstaller.Install%2A> メソッドを呼び出し、インストール プロセス中に <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 場合は、インストールは、例外をスローしませんでした。 バックアップ実行の障害を必要に応じてを呼び出して <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 例外を生成したオブジェクト。  
   
- An application's install routine uses the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> to automatically maintain information about the components that have already been installed. This state information is continuously updated as each <xref:System.Messaging.MessageQueueInstaller> instance is installed by the utility. It is not usually necessary for your code to explicitly modify the state information.  
+ アプリケーションのインストールに使用してプロジェクト インストーラーの <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> 既にインストールされているコンポーネントに関する情報を自動的に維持します。 この状態情報が各として継続的に更新 <xref:System.Messaging.MessageQueueInstaller> ユーティリティによってインスタンスがインストールされています。 場合によっては、通常、状態情報を明示的に変更するコードの必要はありません。  
   
  ]]></format>
     </remarks>
@@ -45,7 +45,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Messaging.MessageQueueInstaller" /> class. Does not set any instance properties.</summary>
+        <summary>
+          <see cref="T:System.Messaging.MessageQueueInstaller" /> クラスの新しいインスタンスを初期化します。 すべてのインスタンスのプロパティを設定しません。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -62,9 +63,15 @@
         <Parameter Name="componentToCopy" Type="System.Messaging.MessageQueue" />
       </Parameters>
       <Docs>
-        <param name="componentToCopy">The <see cref="T:System.Messaging.MessageQueue" /> component whose settings determine the property settings of the new queue installed.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Messaging.MessageQueueInstaller" /> class, initializing the installation settings to those of an existing <see cref="T:System.Messaging.MessageQueue" /> instance.</summary>
-        <remarks>To be added.</remarks>
+        <param name="componentToCopy">
+          <see cref="T:System.Messaging.MessageQueue" /> コンポーネントがインストールされている新しいキューのプロパティの設定を決定します。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Messaging.MessageQueueInstaller" /> クラスで、既存のインストール設定を初期化して <see cref="T:System.Messaging.MessageQueue" /> インスタンス。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Authenticate">
@@ -85,14 +92,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the queue to be installed accepts only authenticated messages.</summary>
+        <summary>取得またはインストールされているキューが認証されたメッセージのみを受け入れるかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if the queue accepts only authenticated messages; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+          <see langword="true" /> キューが受け入れる場合は、認証済みメッセージのみです。それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a non-authenticated message is sent to a queue that accepts only authenticated messages, the message is rejected. The sending application can request notification of a message rejection by setting the <xref:System.Messaging.Message.AcknowledgeType%2A> for the message. Otherwise, there is no indication that the message was rejected, so the message can be lost unless you send it to the dead-letter queue.  
+## 解説  
+ 認証されていないメッセージが認証されたメッセージのみを受け取るキューに送信されると、メッセージは拒否されます。 送信元アプリケーションは、設定して、メッセージが拒否通知を要求する、 <xref:System.Messaging.Message.AcknowledgeType%2A> メッセージにします。 それ以外の場合がないメッセージが拒否されたことを示す値ため、配信不能キューに送信する場合を除き、メッセージが失われることができます。  
   
  ]]></format>
         </remarks>
@@ -116,15 +123,15 @@
         <ReturnType>System.Int16</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the base priority that is used to route a public queue's messages over the network.</summary>
-        <value>The single base priority for all messages sent to the public queue. The default is zero (0).</value>
+        <summary>取得またはパブリック キューのメッセージをネットワーク経由でルーティングに使用される基本優先順位を設定します。</summary>
+        <value>パブリック キューに送信されるすべてのメッセージの 1 つの基本優先順位。 既定値は 0 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> is used for routing the queue's messages over the network. Use the <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> to give the messages sent to the queue a higher or lower priority than that for messages sent to other queues. When a queue's base priority is set, all the messages sent to it are given a higher priority than that of the messages sent to queues with a lower base priority. The queue's base priority has no effect on the order of the messages in the queue or on how messages are read from the queue.  
+## 解説  
+ <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> ネットワーク経由でキューのメッセージをルーティングのために使用します。 使用して、 <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> 、高いキューまたはその他のキューに送信されたメッセージよりも優先順位の低いにメッセージを送信するためです。 キューの基本優先順位が設定されている場合に送信されたすべてのメッセージには、基本優先度の低いキューに送信されるメッセージの場合よりも高い優先順位が与えられます。 キューまたはキューからメッセージを読み取る方法では、キューの基本優先順位を指定してもメッセージの順序の効果はありません。  
   
- The <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> applies only to public queues that are accessed through the domain controller (in other words, using the public format name). The base priority of private queues and of directly accessed public queues is always zero.  
+ <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> ドメイン コント ローラーを使用してアクセスされるだけをパブリック キューが適用されます \(つまり、public 形式名を使用します\)。 直接アクセスされるパブリック キューとプライベート キューの基本優先順位は、常に 0 です。  
   
  ]]></format>
         </remarks>
@@ -148,15 +155,15 @@
         <ReturnType>System.Guid</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets an implementation-specific queue type.</summary>
-        <value>A <see cref="T:System.Guid" /> that represents the queue category (or Message Queuing type identifier), which allows applications to categorize their queues according to how they are used. The default is <see langword="Guid.empty" />.</value>
+        <summary>取得または実装固有のキューの種類を設定します。</summary>
+        <value>A <see cref="T:System.Guid" /> キュー カテゴリ \(またはメッセージ キューの種類の識別子\) を表すアプリケーションの使用方法に応じて、キューを分類できるようにします。 既定値は、<see langword="Guid.empty" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The queue category enables an application to categorize associated queues according to the way they are used. The <xref:System.Messaging.MessageQueue.Category%2A> can be a null reference. You can also define a new category.  
+## 解説  
+ キューのカテゴリにより、アプリケーションを使用することによって関連付けられているキューを分類します。<xref:System.Messaging.MessageQueue.Category%2A> Null 参照でもかまいません。 新しいカテゴリを定義することもできます。  
   
- The <xref:System.Messaging.MessageQueue.Category%2A> property provides access to the Message Queuing type identifier property, which is associated with a particular queue and is read/write. You can use the <xref:System.Guid.NewGuid%2A> method to create a category value that is guaranteed to be unique across all <xref:System.Guid> values. However, it is necessary only for the category value to be distinct from other categories, not from all other <xref:System.Guid> values. For example, you can set the <xref:System.Messaging.MessageQueue.Category%2A> for one group of queues to {00000000-0000-0000-0000-000000000001} and the <xref:System.Messaging.MessageQueue.Category%2A> for another group to {00000000-0000-0000-0000-000000000002}.  
+ <xref:System.Messaging.MessageQueue.Category%2A> プロパティは、メッセージ キューの種類の識別子プロパティを特定のキューに関連付けられ、読み取り\/書き込みへのアクセスを提供します。 使用することができます、 <xref:System.Guid.NewGuid%2A> すべてにわたって一意であることが保証されているカテゴリの値を作成する方法 <xref:System.Guid> 値。 ただし、必要があるからではなく他のすべての他のカテゴリを異なるカテゴリの値に対してのみ <xref:System.Guid> 値。 たとえば、設定、 <xref:System.Messaging.MessageQueue.Category%2A> キュー} の 1 つのグループと <xref:System.Messaging.MessageQueue.Category%2A> {00000000\-0000\-0000\-0000\-000000000002} を別のグループのです。  
   
  ]]></format>
         </remarks>
@@ -178,20 +185,23 @@
         <Parameter Name="savedState" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="savedState">A <see cref="T:System.Collections.IDictionary" /> that contains the post-installation state of the computer.</param>
-        <summary>Completes the installation process by committing the <see cref="T:System.Messaging.MessageQueue" /> installation information that the <see cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" /> method wrote to the registry. This method is meant to be used by installation tools, which automatically call the appropriate methods.</summary>
+        <param name="savedState">A <see cref="T:System.Collections.IDictionary" /> コンピューターのインストール後の状態を格納します。</param>
+        <summary>コミットすることによって、インストール プロセスが完了すると、 <see cref="T:System.Messaging.MessageQueue" /> インストール情報を <see cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" /> メソッドは、レジストリに記述します。 このメソッドは、自動的に適切なメソッドを呼び出したセットアップ ツールで使用することはできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Typically, you do not call the methods of the <xref:System.Messaging.MessageQueueInstaller> from within your code; they are generally called only by the installutil.exe installation utility. The utility automatically calls the <xref:System.Messaging.MessageQueueInstaller.Install%2A> method during the installation process. Installation is transactional, so if there is a failure of any installation project component during the installation, all the previously installed components are rolled back to their pre-installation states. This is accomplished by calling each component's <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> method.  
+## 解説  
+ 通常、呼び出さないのメソッド、 <xref:System.Messaging.MessageQueueInstaller> から、コード内では一般的に呼び出すことが installutil.exe インストール ユーティリティによってのみです。 ユーティリティは、 <xref:System.Messaging.MessageQueueInstaller.Install%2A> インストール プロセス中にメソッドです。 インストールは、障害が発生したインストール プロジェクト コンポーネントのインストール中に、以前にインストールされたすべてのコンポーネントがロールバックをインストール前の状態に、トランザクション、です。 これは、各コンポーネントを呼び出すことによって実現 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> メソッドです。  
   
- After a successful installation of all the components that are associated with the installation project has occurred, the installation utility commits the installations. <xref:System.Messaging.MessageQueueInstaller.Commit%2A> completes the installation of the <xref:System.Messaging.MessageQueue> by setting the queue to the appropriate initial state. If the queue specified by the <xref:System.Messaging.MessageQueueInstaller.Path%2A> property already exists and contains messages, <xref:System.Messaging.MessageQueueInstaller.Commit%2A> clears the messages. <xref:System.Messaging.MessageQueueInstaller.Commit%2A>, rather than <xref:System.Messaging.MessageQueueInstaller.Install%2A>, clears the messages because the act of purging the messages cannot be rolled back.  
+ インストールのプロジェクトに関連付けられているすべてのコンポーネントが正常にインストール後が発生したインストール ユーティリティがインストールをコミットします。<xref:System.Messaging.MessageQueueInstaller.Commit%2A> インストールが完了したら、 <xref:System.Messaging.MessageQueue> キューを適切な初期状態に設定します。 によって、キューが指定されている場合、 <xref:System.Messaging.MessageQueueInstaller.Path%2A> プロパティは既に存在し、メッセージが表示されて <xref:System.Messaging.MessageQueueInstaller.Commit%2A> メッセージをクリアします。<xref:System.Messaging.MessageQueueInstaller.Commit%2A>, 、ではなく <xref:System.Messaging.MessageQueueInstaller.Install%2A>, 、、メッセージを削除する操作をロールバックできないため、メッセージを消去します。  
   
- An application's install routine uses the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> to automatically maintain information about the components that have already been installed. This state information, which is passed to <xref:System.Messaging.MessageQueueInstaller.Commit%2A> as the `savedState` parameter, is continuously updated as the utility commits each <xref:System.Messaging.MessageQueueInstaller> instance. Usually, it is not necessary for your code to explicitly modify this state information. When the queue has been cleared, <xref:System.Messaging.MessageQueueInstaller.Commit%2A> posts a log entry to the `savedState` that is associated with the installation.  
+ アプリケーションのインストールに使用してプロジェクト インストーラーの <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> 既にインストールされているコンポーネントに関する情報を自動的に維持します。 渡される、この状態情報 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> として、 `savedState` ユーティリティがコミットされるごとに、パラメーターは引き続き更新 <xref:System.Messaging.MessageQueueInstaller> インスタンス。 通常、この状態情報を明示的に変更するコードの必要はありません。 キューがオフの場合は、 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> にログ エントリの投稿、 `savedState` インストールに関連付けられています。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Rollback(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
       </Docs>
     </Member>
     <Member MemberName="CopyFromComponent">
@@ -210,19 +220,19 @@
         <Parameter Name="component" Type="System.ComponentModel.IComponent" />
       </Parameters>
       <Docs>
-        <param name="component">A <see cref="T:System.ComponentModel.IComponent" /> to use as a template for the <see cref="T:System.Messaging.MessageQueueInstaller" />.</param>
-        <summary>Copies the property values of a <see cref="T:System.Messaging.MessageQueue" /> component that are required at install time for a message queue.</summary>
+        <param name="component">A <see cref="T:System.ComponentModel.IComponent" /> 用のテンプレートとして使用する、 <see cref="T:System.Messaging.MessageQueueInstaller" />です。</param>
+        <summary>プロパティ値をコピー、 <see cref="T:System.Messaging.MessageQueue" /> メッセージ キューのインストール時に必要なコンポーネントです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Typically, you do not call the methods of the <xref:System.Messaging.MessageQueueInstaller> from within your code; they are generally called only by the installutil.exe installation utility. <xref:System.Messaging.MessageQueueInstaller.CopyFromComponent%2A> is used by the installation utility to set the property values for the <xref:System.Messaging.MessageQueueInstaller> to the values of an existing <xref:System.Messaging.MessageQueue>.  
+## 解説  
+ 通常、呼び出さないのメソッド、 <xref:System.Messaging.MessageQueueInstaller> から、コード内では一般的に呼び出すことが installutil.exe インストール ユーティリティによってのみです。<xref:System.Messaging.MessageQueueInstaller.CopyFromComponent%2A> インストール ユーティリティでのプロパティの値を設定するため、 <xref:System.Messaging.MessageQueueInstaller> 、既存の値に <xref:System.Messaging.MessageQueue>します。  
   
- If the <xref:System.Messaging.MessageQueue.Path%2A> of the <xref:System.Messaging.MessageQueue> that is passed in is an empty string (""), you must set the <xref:System.Messaging.MessageQueue.Path%2A> property to a non-empty value before the installer executes.  
+ 場合、 <xref:System.Messaging.MessageQueue.Path%2A> の <xref:System.Messaging.MessageQueue> は空の文字列は、渡された \(""\) を設定する必要があります、 <xref:System.Messaging.MessageQueue.Path%2A> プロパティをインストーラーが実行される前に、空でない値にします。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The component associated with this <see cref="T:System.Messaging.MessageQueueInstaller" /> is not a <see cref="T:System.Messaging.MessageQueue" />.</exception>
+        <exception cref="T:System.ArgumentException">これに関連付けられたコンポーネント <see cref="T:System.Messaging.MessageQueueInstaller" /> は、 <see cref="T:System.Messaging.MessageQueue" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="EncryptionRequired">
@@ -243,13 +253,13 @@
         <ReturnType>System.Messaging.EncryptionRequired</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the queue accepts only private, or encrypted, messages.</summary>
-        <value>One of the <see cref="T:System.Messaging.EncryptionRequired" /> values that indicates the encryption level required on messages sent to the queue. The default is <see langword="Optional" />.</value>
+        <summary>取得またはキューでのみ、プライベート、または暗号化された、メッセージを受け入れるかどうかを示す値を設定します。</summary>
+        <value>いずれか、 <see cref="T:System.Messaging.EncryptionRequired" /> をキューに送信されるメッセージのために必要なレベルの暗号化を示す値。 既定値は、<see langword="Optional" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When encryption is specified, only the <xref:System.Messaging.Message.Body%2A> of a message is encrypted. Other properties, such as the <xref:System.Messaging.Message.Label%2A>, are not encrypted.  
+## 解説  
+ 暗号化を指定すると、のみ、 <xref:System.Messaging.Message.Body%2A> メッセージの暗号化されています。 その他のプロパティなど、 <xref:System.Messaging.Message.Label%2A>, は暗号化されません。  
   
  ]]></format>
         </remarks>
@@ -271,25 +281,29 @@
         <Parameter Name="stateSaver" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="stateSaver">A <see cref="T:System.Collections.IDictionary" /> used to save information needed to perform a commit, rollback, or uninstall operation.</param>
-        <summary>Performs the installation and writes message queue information to the registry. This method is meant to be used by installation tools, which automatically call the appropriate methods.</summary>
+        <param name="stateSaver">A <see cref="T:System.Collections.IDictionary" /> 、コミットを実行するために必要な情報を保存するために使用ロールバック、またはアンインストール操作します。</param>
+        <summary>インストールを実行し、メッセージ キューの情報をレジストリに書き込みます。 このメソッドは、自動的に適切なメソッドを呼び出したセットアップ ツールで使用することはできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Messaging.MessageQueueInstaller.Install%2A> method writes message queue information to the registry, and associates the <xref:System.Messaging.MessageQueue> instance with a queue that is located at the path specified by the <xref:System.Messaging.MessageQueueInstaller.Path%2A> property. If the queue does not already exist, <xref:System.Messaging.MessageQueueInstaller.Install%2A> creates a transactional queue. <xref:System.Messaging.MessageQueueInstaller.Install%2A> sets the new or existing queue properties to those that you have specified in the <xref:System.Messaging.MessageQueueInstaller>. If the queue already exists, its properties are reset to those of the <xref:System.Messaging.MessageQueueInstaller>. If the existing queue is not transactional, it is deleted and then recreated as a transactional queue.  
+## 解説  
+ <xref:System.Messaging.MessageQueueInstaller.Install%2A> メソッドを選択し、メッセージ キューの情報をレジストリに書き込みます関連付けます、 <xref:System.Messaging.MessageQueue> によって指定されたパスに配置されているキューのインスタンス、 <xref:System.Messaging.MessageQueueInstaller.Path%2A> プロパティです。 キューの存在しない場合 <xref:System.Messaging.MessageQueueInstaller.Install%2A> トランザクション キューを作成します。<xref:System.Messaging.MessageQueueInstaller.Install%2A> 指定したものに新規または既存のキューのプロパティを設定、 <xref:System.Messaging.MessageQueueInstaller>です。 プロパティをリセットするキューが既に存在する場合、 <xref:System.Messaging.MessageQueueInstaller>です。 既存のキューがトランザクションではありませんが削除され、トランザクション キューとして再作成します。  
   
 > [!CAUTION]
->  If it is necessary to recreate the queue, messages in the queue will be lost.  
+>  キューを再作成する必要がある場合は、キュー内のメッセージが失われます。  
   
- Typically, you do not call the methods of the <xref:System.Messaging.MessageQueueInstaller> from within your code; they are generally called only by the installutil.exe installation utility. The utility automatically calls the <xref:System.Messaging.MessageQueueInstaller.Install%2A> method during the installation process to write registry information that is associated with the message queue being installed. Installation is transactional, so if there is a failure of any installation project component during the installation, all the previously installed components are rolled back to their pre-installation states. This is accomplished by calling each component's <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> method.  
+ 通常、呼び出さないのメソッド、 <xref:System.Messaging.MessageQueueInstaller> から、コード内では一般的に呼び出すことが installutil.exe インストール ユーティリティによってのみです。 ユーティリティは、 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 、インストール時にインストールされているメッセージ キューに関連付けられているレジストリ情報を書き込むためのメソッドです。 インストールは、障害が発生したインストール プロジェクト コンポーネントのインストール中に、以前にインストールされたすべてのコンポーネントがロールバックをインストール前の状態に、トランザクション、です。 これは、各コンポーネントを呼び出すことによって実現 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> メソッドです。  
   
- After a successful installation of all the components that are associated with the installation project has occurred, the installation utility commits the installations. <xref:System.Messaging.MessageQueueInstaller.Commit%2A> completes the installation of the <xref:System.Messaging.MessageQueue> by setting the queue to the appropriate initial state. If the queue specified by the <xref:System.Messaging.MessageQueueInstaller.Path%2A> property already exists and contains messages, <xref:System.Messaging.MessageQueueInstaller.Commit%2A> clears the messages. <xref:System.Messaging.MessageQueueInstaller.Commit%2A>, rather than <xref:System.Messaging.MessageQueueInstaller.Install%2A>, clears the messages because the act of purging the messages cannot be rolled back.  
+ インストールのプロジェクトに関連付けられているすべてのコンポーネントが正常にインストール後が発生したインストール ユーティリティがインストールをコミットします。<xref:System.Messaging.MessageQueueInstaller.Commit%2A> インストールが完了したら、 <xref:System.Messaging.MessageQueue> キューを適切な初期状態に設定します。 によって、キューが指定されている場合、 <xref:System.Messaging.MessageQueueInstaller.Path%2A> プロパティは既に存在し、メッセージが表示されて <xref:System.Messaging.MessageQueueInstaller.Commit%2A> メッセージをクリアします。<xref:System.Messaging.MessageQueueInstaller.Commit%2A>, 、ではなく <xref:System.Messaging.MessageQueueInstaller.Install%2A>, 、、メッセージを削除する操作をロールバックできないため、メッセージを消去します。  
   
- An application's install routine uses the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> to automatically maintain information about the components that have already been installed. This state information, which is passed to <xref:System.Messaging.MessageQueueInstaller.Install%2A> as the `stateSaver` parameter, is continuously updated as the utility installs each <xref:System.Messaging.MessageQueueInstaller> instance. Usually, it is not necessary for your code to explicitly modify this state information.  
+ アプリケーションのインストールに使用してプロジェクト インストーラーの <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> 既にインストールされているコンポーネントに関する情報を自動的に維持します。 渡される、この状態情報 <xref:System.Messaging.MessageQueueInstaller.Install%2A> として、 `stateSaver` パラメーターが絶えず更新されるように、ユーティリティでは、それぞれがインストールされます <xref:System.Messaging.MessageQueueInstaller> インスタンス。 通常、この状態情報を明示的に変更するコードの必要はありません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Rollback(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Collections.IDictionary" />
       </Docs>
     </Member>
     <Member MemberName="IsEquivalentInstaller">
@@ -308,15 +322,15 @@
         <Parameter Name="otherInstaller" Type="System.Configuration.Install.ComponentInstaller" />
       </Parameters>
       <Docs>
-        <param name="otherInstaller">The installer to compare.</param>
-        <summary>Determines whether the specified installer can handle the same kind of installation as this installer.</summary>
+        <param name="otherInstaller">比較対象のインストーラーです。</param>
+        <summary>指定したインストーラーが同じ種類のインストーラーとのインストールを処理できるかどうかを決定します。</summary>
         <returns>
-          <see langword="true" /> if this installer and the installer specified by the <paramref name="otherInstaller" /> parameter can handle the same kind of installation; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> このインストーラーと、インストーラーによって指定された場合、 <paramref name="otherInstaller" /> パラメーターには、同じ処理できるインストールの種類以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Typically, <xref:System.Configuration.Install.ComponentInstaller.IsEquivalentInstaller%2A> returns `true` only if this installer and the installer specified by the `otherInstaller` parameter are of the same type.  
+## 解説  
+ 通常、 <xref:System.Configuration.Install.ComponentInstaller.IsEquivalentInstaller%2A> 返します `true` このインストーラーと、インストーラーによって指定された場合にのみ、 `otherInstaller` パラメーターが同じ型です。  
   
  ]]></format>
         </remarks>
@@ -340,17 +354,18 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a description of the queue.</summary>
-        <value>The label that describes the message queue. The default is an empty string ("").</value>
+        <summary>取得またはキューの説明を設定します。</summary>
+        <value>メッセージ キューを説明するラベル。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Messaging.MessageQueue.Label%2A> property does not need to be unique across queues.  
+## 解説  
+ <xref:System.Messaging.MessageQueue.Label%2A> プロパティはキューで一意である必要はありません。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <see cref="P:System.Messaging.MessageQueueInstaller.Label" /> is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException">
+          <see cref="P:System.Messaging.MessageQueueInstaller.Label" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="MaximumJournalSize">
@@ -366,17 +381,17 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the maximum size of the journal that is associated with the queue.</summary>
-        <value>The maximum size, in kilobytes, of the journal queue, which records messages that are removed from the queue. The Message Queuing default is no limit.</value>
+        <summary>取得またはキューに関連付けられているジャーナルの最大サイズを設定します。</summary>
+        <value>キューから削除されたメッセージを記録するジャーナル キューの最大サイズ。 メッセージ キューの既定値に制限はありません。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When a queue is created, Message Queuing automatically creates a queue journal in the same location as the new queue. The queue journal is used to track the messages that are removed from the queue.  
+## 解説  
+ キューの作成時にでは、新しいキューと同じ場所にキューのジャーナルを作成メッセージ キューに自動的にします。 キューのジャーナルを使用して、キューから削除されたメッセージを追跡します。  
   
- Two types of messages remain untracked: those that are removed from the queue because their time-to-be-received timer expired, and those that are purged from the queue.  
+ 2 種類のメッセージは追跡されません。 その時間に\-受信タイマーが経過したため、キューから削除されると、キューから削除されます。  
   
- Applications cannot send messages to the journal queue. However, you must periodically clear the queue to remove the messages that are no longer needed. Messages stored in journal queues count toward the quota for the computer where the queues reside. (The computer quota is set by the administrator.)  
+ アプリケーションは、ジャーナル キューにメッセージを送信することはできません。 ただし、不要になったメッセージを削除するキューを定期的に消去する必要があります。 キューが存在するコンピューターのクォータ ジャーナル キューに格納されているメッセージです。 \(コンピューター クォータは、管理者によって設定されます。\)  
   
  ]]></format>
         </remarks>
@@ -395,13 +410,13 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the maximum size of the queue.</summary>
-        <value>The maximum size, in kilobytes, of the queue. The Message Queuing default is no limit.</value>
+        <summary>取得またはキューの最大サイズを設定します。</summary>
+        <value>キューの最大サイズ。 メッセージ キューの既定値に制限はありません。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The maximum queue size is typically set at the time of queue creation, although it can be reset later.  
+## 解説  
+ 通常、キューの最大サイズはキューの作成時に設定されますが、後でリセットすることができます。  
   
  ]]></format>
         </remarks>
@@ -425,14 +440,15 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Introduced in MSMQ 3.0. Gets or sets the multicast address associated with the queue.</summary>
-        <value>A <see cref="T:System.String" /> that contains a valid multicast address (in the form shown below) or <see langword="null" />, which indicates that the queue is not associated with a multicast address.  
+        <summary>MSMQ 3.0 で導入されました。 取得またはキューに関連付けられているマルチキャスト アドレスを設定します。</summary>
+        <value>A <see cref="T:System.String" /> \(以下に示す形式\) で有効なマルチキャスト アドレスを格納するか、 <see langword="null" />, 、キューのマルチキャスト アドレスに関連付けられていないことを示します。  
   
 ```  
 &lt;address&gt;:&lt;port&gt;  
 ```</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.PlatformNotSupportedException">MSMQ 3.0 is not installed.</exception>
+        <exception cref="T:System.PlatformNotSupportedException">MSMQ 3.0 がインストールされていません。</exception>
+        <altmember cref="P:System.Messaging.MessageQueue.MulticastAddress" />
       </Docs>
     </Member>
     <Member MemberName="Path">
@@ -459,41 +475,42 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the location of the queue that is referenced by this object.</summary>
-        <value>The path that represents the location of the queue in the network.</value>
+        <summary>取得またはこのオブジェクトによって参照されているキューの場所を設定します。</summary>
+        <value>ネットワーク上でのキューの場所を表すパス。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The syntax for the <xref:System.Messaging.MessageQueue.Path%2A> property depends on the type of queue it references. The following table shows the syntax you should use for queues of various types.  
+## 解説  
+ 構文、 <xref:System.Messaging.MessageQueue.Path%2A> プロパティに依存するキューの種類に参照します。 さまざまな種類のキューを使用する構文を次の表に示します。  
   
-|Queue type|Syntax|  
-|----------------|------------|  
-|Public queue|`machineName`\\`queueName`|  
-|Private queue|`machineName`\\`Private$`\\`queueName`|  
-|Journal queue|`machineName`\\`queueName`\\`Journal$`|  
-|Machine journal queue|`machineName`\\`Journal$`|  
-|Machine dead-letter queue|`machineName`\\`Deadletter$`|  
-|Machine transactional dead-letter queue|`machineName`\\`XactDeadletter$`|  
+|キューの種類|構文|  
+|------------|--------|  
+|パブリック キュー|`machineName`\\`queueName`|  
+|専用キュー|`machineName`\\`Private$`\\`queueName`|  
+|ジャーナル キュー|`machineName`\\`queueName`\\`Journal$`|  
+|コンピューター ジャーナル キュー|`machineName`\\`Journal$`|  
+|コンピューターの配信不能キュー|`machineName`\\`Deadletter$`|  
+|コンピューター トランザクション配信不能キュー|`machineName`\\`XactDeadletter$`|  
   
- Use "." for the local computer.  
+ 使用する"です。"ローカル コンピューターのです。  
   
- You can also use the <xref:System.Messaging.MessageQueue.FormatName%2A> or <xref:System.Messaging.MessageQueue.Label%2A> of a Message Queuing application object to describe the queue path. The following table shows the proper syntax for each type of reference.  
+ 使用することも、 <xref:System.Messaging.MessageQueue.FormatName%2A> または <xref:System.Messaging.MessageQueue.Label%2A> 、メッセージ キュー アプリケーション オブジェクトのキューのパスを記述します。 次の表は、参照の種類ごとに適切な構文を示します。  
   
-|Reference|Syntax|  
-|---------------|------------|  
-|Format name|FormatName:[ *format name* ]|  
-|Label|Label:[ *label* ]|  
+|参照|構文|  
+|--------|--------|  
+|形式名|形式名: \[ *形式名* \]|  
+|ラベル|ラベル: \[ *ラベル* \]|  
   
- If you are working offline, you must use the format name to define the queue <xref:System.Messaging.MessageQueue.Path%2A>. If you do not, the application will throw an exception, because the primary domain controller is unavailable to resolve the <xref:System.Messaging.MessageQueue.Path%2A> into the <xref:System.Messaging.MessageQueue.FormatName%2A>.  
+ オフラインで作業する場合は、キューを定義する形式名を使用する必要があります <xref:System.Messaging.MessageQueue.Path%2A>します。 プライマリ ドメイン コント ローラーが解決するのには使用できないために、アプリケーションは、例外をスローしない場合、 <xref:System.Messaging.MessageQueue.Path%2A> に、 <xref:System.Messaging.MessageQueue.FormatName%2A>です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <see cref="P:System.Messaging.MessageQueueInstaller.Path" /> was set to an invalid value, possibly because the syntax is not valid.  
+        <exception cref="T:System.ArgumentException">
+          <see cref="P:System.Messaging.MessageQueueInstaller.Path" /> 設定された無効な値に場合によって、構文が無効であるためです。  
   
- -or-  
+ または  
   
- The <see cref="P:System.Messaging.MessageQueueInstaller.Path" /> is <see langword="null" />.</exception>
+ <see cref="P:System.Messaging.MessageQueueInstaller.Path" /> が <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Permissions">
@@ -517,64 +534,65 @@
         <ReturnType>System.Messaging.AccessControlList</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets permissions associated with the queue.</summary>
-        <value>A <see cref="T:System.Messaging.AccessControlList" /> that contains one or more access control entries that specify the trustees and permissions to grant for the queue.</value>
+        <summary>取得またはキューに関連付けられているアクセス許可を設定します。</summary>
+        <value>A <see cref="T:System.Messaging.AccessControlList" /> トラスティおよびキューに付与するアクセス許可を指定する 1 つまたは複数のアクセス制御エントリを格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- By default, the creator of a public or private queue has full control, and the domain group Everyone has permission to get queue properties, get permissions, and write to the queue. Message Queuing accesses each permission list entry in turn until it finds one that applies to the current user and the current attempted action. As with the operating system permissions, the rights that you specifically deny to a user take precedence over those you allow.  
+## 解説  
+ 既定では、パブリックまたはプライベート キューの作成者がフル コントロールに備え、キューのプロパティを取得し、アクセス許可を取得して、キューへの書き込みアクセス許可を持つすべてのユーザー、ドメイン グループです。 メッセージ キューの現在のユーザーと現在しようとした操作に適用されるプロファイルが見つかるまで、さらにアクセス許可リストの各エントリにアクセスします。 許可するようにオペレーティング システムのアクセス許可をユーザーに明示的に拒否する権限より優先されます。  
   
- When you construct the <xref:System.Messaging.MessageQueueInstaller.Permissions%2A> property, add <xref:System.Messaging.AccessControlEntry> instances to your <xref:System.Messaging.AccessControlList> collection. When you construct each access control entry, you can specify generic or standard access rights. The rights to a queue can be any combination of the following:  
+ 構築する場合、 <xref:System.Messaging.MessageQueueInstaller.Permissions%2A> プロパティには、追加 <xref:System.Messaging.AccessControlEntry> インスタンスを <xref:System.Messaging.AccessControlList> コレクションです。 各アクセス制御エントリを作成するときは、ジェネリック、または標準のアクセス権を指定できます。 キューの権限は、次の任意の組み合わせになります。  
   
--   Delete  
+-   削除  
   
--   Read Security  
+-   セキュリティの読み取り  
   
--   Write Security  
+-   セキュリティを書き込み  
   
--   Synchronize  
+-   同期  
   
--   Modify Owner  
+-   所有者を変更します。  
   
--   Read  
+-   読み取り  
   
 -   Write  
   
--   Execute  
+-   実行  
   
--   Required  
+-   必須  
   
--   All  
+-   すべて  
   
--   None  
+-   なし  
   
- These rights are a set of bit flags that you can combine using the bitwise OR:  
+ この権限は、一連のビット フラグ ビットごとの OR を使用して組み合わせることができます。  
   
--   Full Control  
+-   フル コントロール  
   
--   Delete Message  
+-   メッセージを削除します。  
   
--   Receive Message  
+-   メッセージが表示されます。  
   
--   Peek Message  
+-   メッセージをピークします。  
   
--   Receive Journal Message  
+-   ジャーナル メッセージを受信します。  
   
--   Get Queue Properties  
+-   キューのプロパティを取得します。  
   
--   Set Queue Properties  
+-   キューのプロパティを設定します。  
   
--   Get Permissions  
+-   アクセス許可を取得します。  
   
--   Set Permissions  
+-   アクセス許可を設定  
   
--   Take Queue Ownership  
+-   キューの所有権を取得します。  
   
--   Write Message  
+-   メッセージを作成します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageQueue.SetPermissions(System.String,System.Messaging.MessageQueueAccessRights)" />
       </Docs>
     </Member>
     <Member MemberName="Rollback">
@@ -593,20 +611,24 @@
         <Parameter Name="savedState" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="savedState">A <see cref="T:System.Collections.IDictionary" /> that contains the pre-installation state of the computer.</param>
-        <summary>Restores the computer to the state it was in before the installation, by rolling back the queue information that the installation procedure wrote to the registry. This method is meant to be used by installation tools, which automatically call the appropriate methods.</summary>
+        <param name="savedState">A <see cref="T:System.Collections.IDictionary" /> コンピューターのインストール前の状態を格納します。</param>
+        <summary>状態になっていた、インストールする前に、インストール手順は、レジストリに書き込まれたキューの情報をロールバックして、コンピューターを復元します。 このメソッドは、自動的に適切なメソッドを呼び出したセットアップ ツールで使用することはできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> method undoes the effects of the <xref:System.Messaging.MessageQueueInstaller.Install%2A> method. <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> is called if the installation of any component in the installation project fails. The <xref:System.Messaging.MessageQueueInstaller.Install%2A> method creates or sets the properties for a queue. <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> either deletes the queue or resets the properties of a pre-existing queue to their pre-installation values.  
+## 解説  
+ <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> メソッドの効果を元に戻し、 <xref:System.Messaging.MessageQueueInstaller.Install%2A> メソッドです。<xref:System.Messaging.MessageQueueInstaller.Rollback%2A> インストールのプロジェクトに任意のコンポーネントのインストールが失敗した場合と呼びます。<xref:System.Messaging.MessageQueueInstaller.Install%2A> メソッド作成するか、キューのプロパティを設定します。<xref:System.Messaging.MessageQueueInstaller.Rollback%2A> キューを削除するか、またはインストール前の値を既存のキューのプロパティをリセットします。  
   
- Typically, you do not call the methods of the <xref:System.Messaging.MessageQueueInstaller> from within your code; they are generally called only by the InstallUtil.exe installation utility. The utility automatically calls the <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> method after an installation failure to undo any changes that the installation process has already made.  
+ 通常、呼び出さないのメソッド、 <xref:System.Messaging.MessageQueueInstaller> から、コード内で一般的にして呼び出されただけ InstallUtil.exe のインストール ユーティリティです。 ユーティリティは、 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> メソッドの変更を取り消すには、インストールに失敗した後、インストール プロセスが行った既にします。  
   
- An application's install routine uses the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> to automatically maintain information about the components that have already been installed. This state information, which is passed to <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> as the `savedState` parameter, is continuously updated as the utility rolls back each <xref:System.Messaging.MessageQueueInstaller> instance. Usually, it is not necessary for your code to explicitly modify this state information.  
+ アプリケーションのインストールに使用してプロジェクト インストーラーの <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> 既にインストールされているコンポーネントに関する情報を自動的に維持します。 渡される、この状態情報 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> として、 `savedState` ユーティリティをロールに、パラメーターは引き続き更新の各バックアップ <xref:System.Messaging.MessageQueueInstaller> インスタンス。 通常、この状態情報を明示的に変更するコードの必要はありません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Collections.IDictionary" />
       </Docs>
     </Member>
     <Member MemberName="Transactional">
@@ -627,14 +649,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the queue accepts only messages sent as part of a transaction.</summary>
+        <summary>取得またはキューがトランザクションの一部として送信されたメッセージだけを受け入れるかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if the queue can only accept messages sent as part of a transaction; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+          <see langword="true" /> キューはトランザクションの一部として送信されたメッセージだけを受け入れる場合それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Messages can be retrieved from a local transaction queue with or without using a transaction. If you do not specify a transaction context, Message Queuing creates a single internal transaction for you.  
+## 解説  
+ メッセージは、トランザクションを使用せずに、ローカル トランザクション キューから取得できます。 トランザクション コンテキストを指定しない場合は、メッセージ キューの単一の内部トランザクションを作成します。  
   
  ]]></format>
         </remarks>
@@ -656,20 +678,22 @@
         <Parameter Name="savedState" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="savedState">A <see cref="T:System.Collections.IDictionary" /> that contains the post-installation state of the computer.</param>
-        <summary>Removes an installation by removing queue information from the registry. This method is meant to be used by uninstallation tools, which automatically call the appropriate methods.</summary>
+        <param name="savedState">A <see cref="T:System.Collections.IDictionary" /> コンピューターのインストール後の状態を格納します。</param>
+        <summary>キューの情報をレジストリから削除して、インストールを削除します。 このメソッドは、自動的に適切なメソッドを呼び出した、アンインストール ツールで使用することはできます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Messaging.MessageQueueInstaller.UninstallAction%2A> is `Remove`, <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> also deletes the queue associated with the <xref:System.Messaging.MessageQueue>.  
+## 解説  
+ 場合、 <xref:System.Messaging.MessageQueueInstaller.UninstallAction%2A> は `Remove`, 、<xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> もに関連付けられたキューを削除、 <xref:System.Messaging.MessageQueue>です。  
   
- Typically, you do not call the methods of the <xref:System.Messaging.MessageQueueInstaller> from within your code; they are generally called only by the InstallUtil.exe installation utility (in uninstall mode). The utility automatically calls the <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> method to restore the parts of the system that were affected by the installation to their pre-installation states. This includes deleting registry information that is associated with the MessageQueue being uninstalled.  
+ 通常、呼び出さないのメソッド、 <xref:System.Messaging.MessageQueueInstaller> から、コード内で一般的にして呼び出されただけ InstallUtil.exe インストール ユーティリティ \(アンインストール モード\)。 ユーティリティは、 <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> をインストールをインストール前の状態に影響を受けていた、システムの部分を復元します。 これをアンインストールして MessageQueue に関連付けられているレジストリ情報の削除が含まれます。  
   
- An application's uninstall routine uses the project installer's <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> to automatically maintain information about the components that have already been uninstalled. This state information, which is passed to <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> as the `savedState` parameter, is continuously updated as the utility uninstalls each <xref:System.Messaging.MessageQueueInstaller> instance. Usually, it is not necessary for your code to explicitly modify this state information.  
+ アプリケーションのアンインストール ルーチン プロジェクト インストーラーの <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=fullName> 既にアンインストールされているコンポーネントに関する情報を自動的に維持します。 渡される、この状態情報 <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> として、 `savedState` ユーティリティをアンインストールの各パラメーターが絶えず更新される <xref:System.Messaging.MessageQueueInstaller> インスタンス。 通常、この状態情報を明示的に変更するコードの必要はありません。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Collections.IDictionary" />
       </Docs>
     </Member>
     <Member MemberName="UninstallAction">
@@ -690,16 +714,17 @@
         <ReturnType>System.Configuration.Install.UninstallAction</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates what the installer does with the queue at uninstall time: remove it, restore it to its pre-installation state, or leave it in its current installed state.</summary>
-        <value>One of the <see cref="T:System.Configuration.Install.UninstallAction" /> values that indicates what state to leave the queue in when the <see cref="T:System.Messaging.MessageQueue" /> is uninstalled. The default is <see langword="Remove" />.</value>
+        <summary>取得またはどのようなインストーラーはキューをアンインストールするときを示す値を設定します。 削除して、インストール前の状態に復元またはインストールされている現在の状態のままにします。</summary>
+        <value>いずれか、 <see cref="T:System.Configuration.Install.UninstallAction" /> にした場合に、キューのままの状態を示す値、 <see cref="T:System.Messaging.MessageQueue" /> をアンインストールします。 既定値は、<see langword="Remove" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you install a queue, you can optionally use an existing queue. If you do so, you must decide whether the queue should return to its pre-installation state, or remain in its current, post-installation state. If you elect to return the queue to its pre-installation state, messages that were deleted from the queue at install time are not restored. You can reset only queue properties that are associated with the <xref:System.Messaging.MessageQueueInstaller> to their pre-installation values.  
+## 解説  
+ キューをインストールするときに、必要に応じて既存のキューを使用することができます。 その場合は、キューがインストール前の状態に戻る必要があるかどうか、または、現在のインストール後の状態のままかどうかを決定する必要があります。 キューをインストール前の状態に戻す場合は、インストール時に、キューから削除されたメッセージは復元されません。 関連付けられているキューのプロパティのみをリセットすることができます、 <xref:System.Messaging.MessageQueueInstaller> インストール前の値にします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Configuration.Install.UninstallAction" />
       </Docs>
     </Member>
     <Member MemberName="UseJournalQueue">
@@ -720,20 +745,30 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether messages that are retrieved from the queue are also copied to the associated journal queue.</summary>
+        <summary>取得またはキューから取得されるメッセージが関連付けられているジャーナル キューにもコピーするかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> to copy messages that are retrieved from the queue to the journal queue; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+          <see langword="true" /> ジャーナル キューにキューから取得されるメッセージをコピーするにはそれ以外の場合、 <see langword="false" />です。 既定値は、<see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A journal queue lets you keep track of messages even after they have been retrieved from the queue. However, two types of messages remain untracked: those that are removed from the queue when their time-to-be-received timer expires, and those that are purged from the queue.  
+## 解説  
+ ジャーナル キューには、追跡するメッセージ キューから取得した後でもことができます。 ただし、2 種類のメッセージは追跡されません。 その時間に\-受信タイマーの期限が切れると、キューから削除されると、キューから削除されます。  
   
- A journal queue should be cleared periodically to remove messages that are no longer needed. Messages stored in the journal queue count toward the quota for the computer on which the journal is located.  
+ もう必要ないメッセージを削除するジャーナル キューを定期的に消去する必要があります。 メッセージは、ジャーナルが配置されているコンピューターのクォータ ジャーナル キューに格納されています。  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Messaging.MessageQueueInstaller" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

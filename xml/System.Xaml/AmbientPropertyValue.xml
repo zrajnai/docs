@@ -11,29 +11,30 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Reports information about an ambient property, as part of an <see cref="T:System.Xaml.IAmbientProvider" /> implementation.</summary>
+    <summary>レポートの一部として、アンビエント プロパティに関する情報、 <see cref="T:System.Xaml.IAmbientProvider" /> 実装します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Xaml.AmbientPropertyValue> represents an information item that is returned by calling an <xref:System.Xaml.IAmbientProvider> service method. The `GetAll` methods return enumerations or arrays of <xref:System.Xaml.AmbientPropertyValue> items; the `GetFirst` methods return a single <xref:System.Xaml.AmbientPropertyValue>.  
+## 解説  
+ <xref:System.Xaml.AmbientPropertyValue> 呼び出しによって返される情報項目を表す、 <xref:System.Xaml.IAmbientProvider> サービス メソッドです。`GetAll` メソッドは、列挙型または配列を返す <xref:System.Xaml.AmbientPropertyValue> 項目;、 `GetFirst` メソッドは、1 つを返します <xref:System.Xaml.AmbientPropertyValue>します。  
   
-## About Ambient Properties  
- An ambient property is a property whose property value should be available to value converter usage in the XAML node structure and to the object graph underneath it. The ambient concept  is relevant for a XAML processor during the object-writing phase of the load path or the serialization phase of a save path.  
+## アンビエント プロパティについて  
+ アンビエント プロパティとは、プロパティのプロパティの値は、XAML ノードの構造の値コンバーターの使用法とその下にあるオブジェクト グラフで使用する必要があります。 アンビエントの概念は、保存、読み込みパスのオブジェクトの記述フェーズまたは、シリアル化中に、XAML プロセッサに関連するパス。  
   
- A type can also be attributed as ambient. In this case, all properties that use the attributed type are reported as ambient.  
+ 型も原因と考えられるアンビエントとして。 この場合は、属性付きの型を使用するすべてのプロパティは、アンビエントとして報告されます。  
   
- In the load path case, the ambient property value might influence the object graph produced value of other properties that exist underneath it in a XAML node structure. When processed as a XAML node stream, the ambient concept implies that the ambient property value must be available to type converters and markup extensions from `StartObject` to `EndObject`. Similarly, a type converter or markup extension that is used for the save path can look up the ambient property and its value. Therefore, the XAML that is produced is a better round-trip representation.  
+ 読み込みパスの場合、アンビエント プロパティの値に影響を与えるその下にある XAML ノードの構造内に存在する他のプロパティのオブジェクトのグラフが生成される値。 型コンバーターおよびマークアップ拡張機能を利用可能なアンビエント プロパティの値である必要があります、XAML ノード ストリームとして処理されるときにアンビエントの概念が意味 `StartObject` に `EndObject`します。 同様に、型コンバーターまたはマークアップ拡張機能として使用される保存先のパスは、アンビエント プロパティとその値を検索できます。 そのため、生成される XAML より優れたラウンドト リップ表現です。  
   
- By its language definition, XAML does not specify the order in which members of an object must be processed. However, any ambient property value must be processed first by the XAML reader so that the type converter and markup extension usage that are contained in other properties can access it through the <xref:System.Xaml.IAmbientProvider> service.  
+ その言語の定義が XAML ではオブジェクトのメンバーを処理する順序は指定しません。 ただしのアンビエント プロパティの値が処理しなければならない最初に、XAML リーダー、型コンバーターおよびマークアップ拡張機能を使用するその他のプロパティに含まれるには、使用してアクセスできるように、 <xref:System.Xaml.IAmbientProvider> サービスです。  
   
- <xref:System.Xaml.XamlMember.DependsOn%2A> is a similar concept that also influences XAML node-processing order. However, <xref:System.Xaml.XamlMember.DependsOn%2A> can only be used for peer member and node relationships; it cannot influence all descendants. Also, <xref:System.Xaml.XamlMember.DependsOn%2A> directly influences object graph property setting, whereas the ambient technique relies on type converters or markup extensions. In the ambient technique, there must also be a specific type converter or markup extension definition. It is up to each type converter or markup extension to determine how the ambient property value should be interpreted and applied to the object graph location where the type converter or markup extension is used.  
+ <xref:System.Xaml.XamlMember.DependsOn%2A> XAML ノード処理順序にも影響を与えるような概念です。 ただし、 <xref:System.Xaml.XamlMember.DependsOn%2A> は、ピア メンバーとノード リレーションシップに対してのみ使用するすべての子孫の影響を与えることはできません。 また、 <xref:System.Xaml.XamlMember.DependsOn%2A> 直接影響オブジェクト グラフ プロパティを設定する対しアンビエント手法は、型コンバーターまたはマークアップ拡張機能に依存します。 アンビエント手法でがもある特定の型コンバーターまたはマークアップ拡張機能の定義。 各型コンバーターまたはアンビエント プロパティの値を解釈され、型コンバーターまたはマークアップ拡張機能が使用されているオブジェクト グラフの場所に適用する方法を決定するマークアップ拡張機能の責任です。  
   
-## WPF Usage Notes  
- An ambient property scenario that is illustrated in the [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] feature set is <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName>, which can qualify the necessary property name lookups for other values. In this case, the <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> value qualifies the <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> values in the XAML nodes underneath it. <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> uses the type converter behavior for a <xref:System.Windows.DependencyProperty>. This behavior accesses the ambient <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> value by querying <xref:System.Xaml.IAmbientProvider.GetFirstAmbientValue%2A> from a service context that is available to type converters and markup extensions.  
+## WPF の使用上の注意  
+ 説明しているアンビエント プロパティ シナリオ、 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 機能セットは <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName>, 、以外の値を必要なプロパティ名の参照を修飾することができます。 ここで、 <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> 値は修飾、 <xref:System.Windows.Setter.Property%2A?displayProperty=fullName> その下にある XAML ノードの値。<xref:System.Windows.Setter.Property%2A?displayProperty=fullName> 型コンバーターの動作を使用して、 <xref:System.Windows.DependencyProperty>です。 この動作は、アンビエントにアクセスする <xref:System.Windows.Style.TargetType%2A?displayProperty=fullName> クエリを実行して値 <xref:System.Xaml.IAmbientProvider.GetFirstAmbientValue%2A> 型コンバーターおよびマークアップ拡張機能に利用できるサービス コンテキストからです。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Xaml.IAmbientProvider" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -50,10 +51,16 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="property">The identifier that represents the ambient property.</param>
-        <param name="value">The value to report.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xaml.AmbientPropertyValue" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <param name="property">アンビエント プロパティを表す識別子。</param>
+        <param name="value">報告される値。</param>
+        <summary>
+          <see cref="T:System.Xaml.AmbientPropertyValue" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RetrievedProperty">
@@ -69,9 +76,15 @@
         <ReturnType>System.Xaml.XamlMember</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the XAML type system identifier (<see cref="T:System.Xaml.XamlMember" />) that represents the ambient property.</summary>
-        <value>The identifier that represents the ambient property.</value>
-        <remarks>To be added.</remarks>
+        <summary>XAML 型システム識別子を取得 \(<see cref="T:System.Xaml.XamlMember" />\) アンビエント プロパティを表します。</summary>
+        <value>アンビエント プロパティを表す識別子。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Markup.AmbientAttribute" />
       </Docs>
     </Member>
     <Member MemberName="Value">
@@ -87,9 +100,14 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the value of the ambient property.</summary>
-        <value>The value of the ambient property.</value>
-        <remarks>To be added.</remarks>
+        <summary>アンビエント プロパティの値を取得します。</summary>
+        <value>アンビエント プロパティの値。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

@@ -15,36 +15,43 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Provides a low-level encapsulation of a window handle and a window procedure.</summary>
+    <summary>ウィンドウ ハンドルとウィンドウ プロシージャの低レベルのカプセル化を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This class automatically manages window class creation and registration.  
+## 解説  
+ このクラスは、ウィンドウ クラスの作成と登録を自動的に管理します。  
   
- A window is not eligible for garbage collection when it is associated with a window handle. To ensure proper garbage collection, handles must either be destroyed manually using <xref:System.Windows.Forms.NativeWindow.DestroyHandle%2A> or released using <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A>.  
+ ウィンドウ ハンドルに関連付けられている場合、ウィンドウはガベージ コレクションの対象ではできません。 適切なガベージ コレクションのために、ハンドルする必要がありますか、破棄を使用して手動で <xref:System.Windows.Forms.NativeWindow.DestroyHandle%2A> を使用して解放または <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A>です。  
   
 > [!NOTE]
->  The <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> method is called when the WM_NCDESTROY message is processed. This means there are cases in which when you do not need to manually call <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A>, but it is good practice to do so.  
+>  <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> へのメッセージが処理されるときに、メソッドが呼び出されます。 つまり、される場合にを手動で呼び出す必要はありませんが <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A>, が、これを行うことをお勧めします。  
   
- The <xref:System.Windows.Forms.NativeWindow> class provides the following properties and methods to manage handles: <xref:System.Windows.Forms.NativeWindow.Handle%2A>, <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A>, <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A>, <xref:System.Windows.Forms.NativeWindow.DestroyHandle%2A>, and <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A>.  
+ <xref:System.Windows.Forms.NativeWindow> クラスには、次のプロパティと処理を管理するメソッドが用意されています: <xref:System.Windows.Forms.NativeWindow.Handle%2A>, 、<xref:System.Windows.Forms.NativeWindow.CreateHandle%2A>, 、<xref:System.Windows.Forms.NativeWindow.AssignHandle%2A>, 、<xref:System.Windows.Forms.NativeWindow.DestroyHandle%2A>, 、および <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A>です。  
   
    
   
-## Examples  
- The following code example demonstrates intercepting operating system window messages in a window procedure, and creating a window with a specific operating system window class name. The example creates two classes that inherit from <xref:System.Windows.Forms.NativeWindow> that accomplish this.  
+## 例  
+ 次のコード例では、ウィンドウ プロシージャ、および特定のオペレーティング システムのウィンドウ クラス名でウィンドウを作成するオペレーティング システムのウィンドウ メッセージを受け取る方法を示します。 継承する 2 つのクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。  
   
- The `MyNativeWindowListener` class hooks into the window procedure of the form passed into the constructor, and overrides the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercept the `WM_ACTIVATEAPP` window message. The class demonstrates the usage of the <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> and <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> methods to identify the window handle the <xref:System.Windows.Forms.NativeWindow> will use. The handle is assign based upon the <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> and <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> events. When the `WM_ACTIVATEAPP` window message is received, the class calls the `form1.ApplicationActivated` method.  
+ `MyNativeWindowListener` クラスは、コンス トラクターに渡されたフォームのウィンドウ プロシージャにフックし、上書き、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> をインターセプトするメソッド、 `WM_ACTIVATEAPP` ウィンドウ メッセージです。 クラスは、の使用法を示しています、 <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> と <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> ウィンドウ ハンドルを識別する方法、 <xref:System.Windows.Forms.NativeWindow> を使用します。 ハンドルが割り当てに基づいて、 <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> と <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> イベントです。 ときに、 `WM_ACTIVATEAPP` ウィンドウ メッセージを受信すると、クラスの呼び出し、 `form1``ApplicationActivated` メソッドです。  
   
- The `MyNativeWindow` class creates a new window with the <xref:System.Windows.Forms.CreateParams.ClassName%2A> set to `BUTTON`. The class demonstrates using the <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> method and overriding the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercept window messages that are received.  
+ `MyNativeWindow` クラスは、新しいウィンドウを作成、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> 設定 `BUTTON`します。 クラスの使用方法を示します、 <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> メソッドをオーバーライドする、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> メソッドを受信するウィンドウ メッセージをインターセプトします。  
   
- [!code-cpp[NativeWindow#1](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#1)]
- [!code-csharp[NativeWindow#1](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#1)]
- [!code-vb[NativeWindow#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#1)]  
+ [!code-cpp[NativeWindow\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#1)]
+ [!code-csharp[NativeWindow\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#1)]
+ [!code-vb[NativeWindow\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#1)]  
   
  ]]></format>
     </remarks>
     <permission cref="T:System.Security.Permissions.SecurityPermission">for the immediate caller to call unmanaged code. Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+    <altmember cref="T:System.IntPtr" />
+    <altmember cref="T:System.Windows.Forms.Application" />
+    <altmember cref="T:System.Windows.Forms.AxHost" />
+    <altmember cref="T:System.Windows.Forms.Control" />
+    <altmember cref="T:System.Windows.Forms.Form" />
+    <altmember cref="T:System.Windows.Forms.IWin32Window" />
+    <altmember cref="T:System.Windows.Forms.Message" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -58,15 +65,18 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes an instance of the <see cref="T:System.Windows.Forms.NativeWindow" /> class.</summary>
+        <summary>
+          <see cref="T:System.Windows.Forms.NativeWindow" /> クラスのインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This is the default <xref:System.Windows.Forms.NativeWindow.%23ctor%2A> constructor provided by the compiler. The <xref:System.Windows.Forms.NativeWindow> class also has a static constructor that initializes application domain-wide message handlers and hash tables.  
+## 解説  
+ これは、既定値 <xref:System.Windows.Forms.NativeWindow.%23ctor%2A> コンス トラクターがコンパイラによって指定します。<xref:System.Windows.Forms.NativeWindow> クラスにもアプリケーション ドメイン全体のメッセージ ハンドラーとハッシュ テーブルを初期化する静的コンス トラクターがあります。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Forms.NativeWindow.Finalize" />
+        <altmember cref="T:System.AppDomain" />
       </Docs>
     </Member>
     <Member MemberName="AssignHandle">
@@ -85,36 +95,42 @@
         <Parameter Name="handle" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="handle">The handle to assign to this window.</param>
-        <summary>Assigns a handle to this window.</summary>
+        <param name="handle">このウィンドウに割り当てるへのハンドル。</param>
+        <summary>このウィンドウを識別するハンドルを割り当てます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Windows.Forms.NativeWindow.WndProc%2A> intercepts window messages sent to the `handle` parameter. Use <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> to reset the handle's window procedure to the default window procedure.  
+## 解説  
+ <xref:System.Windows.Forms.NativeWindow.WndProc%2A> 送信されたウィンドウ メッセージを途中受信、 `handle` パラメーター。 使用 <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> ハンドルのウィンドウ プロシージャを既定のウィンドウ プロシージャにリセットします。  
   
- The <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> method calls the <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> method to indicate that the value of the <xref:System.Windows.Forms.NativeWindow.Handle%2A> property has changed.  
+ <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> メソッドの呼び出し、 <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> ことを示すメソッドの値、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> プロパティが変更されました。  
   
 > [!NOTE]
->  The handle to assign cannot be in a different application process.  
+>  ハンドルを割り当てるには、別のアプリケーション プロセスですることはできません。  
   
    
   
-## Examples  
- The following code example demonstrates intercepting operating system window messages in a window procedure. The example creates a class that inherits from <xref:System.Windows.Forms.NativeWindow> to accomplish this.  
+## 例  
+ 次のコード例では、ウィンドウ プロシージャでオペレーティング システムのウィンドウ メッセージを受け取る方法を示します。 継承するクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。  
   
- The `MyNativeWindowListener` class hooks into the window procedure of the form passed into the constructor, and overrides the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercepts the `WM_ACTIVATEAPP` window message. The class demonstrates the use of the <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> and <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> methods to identify which window handle the <xref:System.Windows.Forms.NativeWindow> will use. The handle is assigned based upon the <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> and <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> events. When the `WM_ACTIVATEAPP` window message is received, the class calls the `form1.ApplicationActivated` method.  
+ `MyNativeWindowListener` クラスは、コンス トラクターに渡されたフォームのウィンドウ プロシージャにフックし、上書き、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> をインターセプトする方法、 `WM_ACTIVATEAPP` ウィンドウ メッセージです。 クラスの使用方法を示します、 <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> と <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> いるウィンドウを識別するためにメソッドを処理、 <xref:System.Windows.Forms.NativeWindow> を使用します。 基に、ハンドルを割り当て、 <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> と <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> イベントです。 ときに、 `WM_ACTIVATEAPP` ウィンドウ メッセージを受信すると、クラスの呼び出し、 `form1``ApplicationActivated` メソッドです。  
   
- This code is an excerpt from the example shown in the <xref:System.Windows.Forms.NativeWindow> class overview. Some code is not shown for the purpose of brevity. See <xref:System.Windows.Forms.NativeWindow> for the whole code listing.  
+ このコードは、例からの抜粋、 <xref:System.Windows.Forms.NativeWindow> クラスの概要です。 いくつかのコードは簡潔さを優先するためには表示されません。 参照してください <xref:System.Windows.Forms.NativeWindow> コード全体の一覧です。  
   
- [!code-cpp[NativeWindow#2](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#2)]
- [!code-csharp[NativeWindow#2](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#2)]
- [!code-vb[NativeWindow#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#2)]  
+ [!code-cpp[NativeWindow\#2](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#2)]
+ [!code-csharp[NativeWindow\#2](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#2)]
+ [!code-vb[NativeWindow\#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Exception">This window already has a handle.</exception>
-        <exception cref="T:System.ComponentModel.Win32Exception">The windows procedure for the associated native window could not be retrieved.</exception>
+        <exception cref="T:System.Exception">このウィンドウは、ハンドルを既に持っています。</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">関連するネイティブ ウィンドウのウィンドウ プロシージャを取得できませんでした。</exception>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.Finalize" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.OnHandleChange" />
       </Docs>
     </Member>
     <Member MemberName="CreateHandle">
@@ -133,41 +149,47 @@
         <Parameter Name="cp" Type="System.Windows.Forms.CreateParams" />
       </Parameters>
       <Docs>
-        <param name="cp">A <see cref="T:System.Windows.Forms.CreateParams" /> that specifies the creation parameters for this window.</param>
-        <summary>Creates a window and its handle with the specified creation parameters.</summary>
+        <param name="cp">A <see cref="T:System.Windows.Forms.CreateParams" /> このウィンドウの作成パラメーターを指定します。</param>
+        <summary>指定された作成パラメーターを使用して、ウィンドウとそのハンドルを作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The `cp` parameter specifies the values that are passed to the native Win32 `CreateWindowEx` method to create a window and its handle.  
+## 解説  
+ `cp` ネイティブ Win32 に渡される値を指定します。 `CreateWindowEx` ウィンドウとそのハンドルを作成します。  
   
- When the <xref:System.Windows.Forms.CreateParams.ClassName%2A> field is not `null`, the newly created window handle inherits from the specified class. For example, if <xref:System.Windows.Forms.CreateParams.ClassName%2A> is set to `BUTTON`, the newly created window is based on the Win32 `BUTTON` window class. The <xref:System.Windows.Forms.CreateParams.Param%2A> property of the <xref:System.Windows.Forms.CreateParams.ClassName%2A> object must either be `null` or reference an instance of a class that was declared as a structure.  
+ ときに、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> フィールドではありません `null`, 、新しく作成したウィンドウ ハンドルを指定したクラスから継承します。 たとえば場合、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> に設定されている `BUTTON`, 、新しく作成されたウィンドウは、Win32 に基づいて `BUTTON` ウィンドウ クラスです。<xref:System.Windows.Forms.CreateParams.Param%2A> のプロパティ、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> オブジェクトでなければなりません `null` または構造体として宣言されたクラスのインスタンスを参照します。  
   
- This code is an excerpt from the example shown in the <xref:System.Windows.Forms.NativeWindow> class overview. Some code is not shown for the purpose of brevity. See <xref:System.Windows.Forms.NativeWindow> for the whole code listing.  
+ このコードは、例からの抜粋、 <xref:System.Windows.Forms.NativeWindow> クラスの概要です。 いくつかのコードは簡潔さを優先するためには表示されません。 参照してください <xref:System.Windows.Forms.NativeWindow> コード全体の一覧です。  
   
 > [!NOTE]
->  The class name provided is registered with the operating system.  
+>  指定されたクラス名には、オペレーティング システムが登録されます。  
   
    
   
-## Examples  
- The following code example demonstrates creating a window with a specific operating system window class name. The example creates a class that inherits from <xref:System.Windows.Forms.NativeWindow> to accomplish this.  
+## 例  
+ 次のコード例では、特定のオペレーティング システムのウィンドウ クラス名と共にウィンドウの作成を示します。 継承するクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。  
   
- The `MyNativeWindow` class creates a new window with the <xref:System.Windows.Forms.CreateParams.ClassName%2A> set to `BUTTON`. This creates a Win32 button window. The location and size of the button is set, along with specifying additional window styles. The class demonstrates how to use the <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> method and override the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercept window messages that are received. Although the example looks for the WM_ACTIVATEAPP message, this can be replaced in a real program with window messages specific to the type created.  
+ `MyNativeWindow` クラスは、新しいウィンドウを作成、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> 設定 `BUTTON`します。 これには、Win32 ボタン ウィンドウが作成されます。 ボタンのサイズと場所は、追加のウィンドウ スタイルを指定すると設定がします。 クラスを使用する方法を示しています、 <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> メソッドをオーバーライドして、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> メソッドを受信するウィンドウ メッセージをインターセプトします。 WM\_ACTIVATEAPP メッセージをこの例は、これで作成した型に対応するウィンドウ メッセージに実際のプログラムでに置き換えられますことができます。  
   
 > [!NOTE]
->  Some control types send their window messages to the window parent instead of the window. See the Windows Platform SDK for more information.  
+>  コントロールの種類によっては、ウィンドウではなく、ウィンドウの親をウィンドウ メッセージを送信します。 詳細については、Windows プラットフォーム SDK を参照してください。  
   
- [!code-cpp[NativeWindow#3](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#3)]
- [!code-csharp[NativeWindow#3](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#3)]
- [!code-vb[NativeWindow#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#3)]  
+ [!code-cpp[NativeWindow\#3](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#3)]
+ [!code-csharp[NativeWindow\#3](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#3)]
+ [!code-vb[NativeWindow\#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OutOfMemoryException">The operating system ran out of resources when trying to create the native window.</exception>
-        <exception cref="T:System.ComponentModel.Win32Exception">The native Win32 API could not create the specified window.</exception>
-        <exception cref="T:System.InvalidOperationException">The handle of the current native window is already assigned; in explanation, the <see cref="P:System.Windows.Forms.NativeWindow.Handle" /> property is not equal to <see cref="F:System.IntPtr.Zero" />.</exception>
-        <permission cref="T:System.Security.Permissions.UIPermission">to create a top-level window. This permission is only demanded if the window style is not a child or if the window does not have a parent. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.SafeTopLevelWindows" /></permission>
+        <exception cref="T:System.OutOfMemoryException">オペレーティング システムは、ネイティブのウィンドウを作成しようとするときのリソース不足になりました。</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">ネイティブの Win32 API は、指定されたウィンドウを作成できませんでした。</exception>
+        <exception cref="T:System.InvalidOperationException">現在のネイティブ ウィンドウのハンドルが既に割り当てられています。詳細についてで、 <see cref="P:System.Windows.Forms.NativeWindow.Handle" /> プロパティと等しくない <see cref="F:System.IntPtr.Zero" />します。</exception>
+        <permission cref="T:System.Security.Permissions.UIPermission">to create a top\-level window. This permission is only demanded if the window style is not a child or if the window does not have a parent. Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.SafeTopLevelWindows" /></permission>
+        <altmember cref="T:System.Windows.Forms.CreateParams" />
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.Finalize" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
       </Docs>
     </Member>
     <Member MemberName="DefWndProc">
@@ -186,15 +208,15 @@
         <Parameter Name="m" Type="System.Windows.Forms.Message&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="m">The message that is currently being processed.</param>
-        <summary>Invokes the default window procedure associated with this window.</summary>
+        <param name="m">現在処理されているメッセージです。</param>
+        <summary>このウィンドウに関連付けられている既定のウィンドウ プロシージャを呼び出します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Typically, you only call the <xref:System.Windows.Forms.NativeWindow.DefWndProc%2A> method when you are intercepting window messages and would like the default window procedure to handle the message. <xref:System.Windows.Forms.NativeWindow.DefWndProc%2A> should not be called to send a window message to the window; call the Win32 `SendMessage` function instead.  
+## 解説  
+ 通常、のみを呼び出す、 <xref:System.Windows.Forms.NativeWindow.DefWndProc%2A> メソッド ウィンドウ メッセージを受け取り、メッセージを処理する既定のウィンドウ プロシージャを希望するとします。<xref:System.Windows.Forms.NativeWindow.DefWndProc%2A> ウィンドウをウィンドウ メッセージを送信する呼び出すことはできません。Win32 を呼び出す `SendMessage` 関数を使用します。  
   
- It is an error to call <xref:System.Windows.Forms.NativeWindow.DefWndProc%2A> when the <xref:System.Windows.Forms.NativeWindow.Handle%2A> property is 0.  
+ 呼び出すとエラーが <xref:System.Windows.Forms.NativeWindow.DefWndProc%2A> ときに、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> プロパティは 0 です。  
   
  ]]></format>
         </remarks>
@@ -203,6 +225,9 @@
   
  In contrast, adding customized message handling for an application can be accomplished through the <see cref="M:System.Windows.Forms.Application.AddMessageFilter(System.Windows.Forms.IMessageFilter)" /> method of the <see cref="T:System.Windows.Forms.Application" /> class.</para>
         </block>
+        <altmember cref="T:System.Windows.Forms.Message" />
+        <altmember cref="M:System.Windows.Forms.Application.SetUnhandledExceptionMode(System.Windows.Forms.UnhandledExceptionMode)" />
+        <altmember cref="M:System.Windows.Forms.Application.AddMessageFilter(System.Windows.Forms.IMessageFilter)" />
       </Docs>
     </Member>
     <Member MemberName="DestroyHandle">
@@ -219,18 +244,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Destroys the window and its handle.</summary>
+        <summary>ウィンドウとそのハンドルを破棄します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method destroys the window associated with the <xref:System.Windows.Forms.NativeWindow.Handle%2A>, sets the <xref:System.Windows.Forms.NativeWindow.Handle%2A> property to 0, and calls the <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> method to reflect the change. Typically, you only call <xref:System.Windows.Forms.NativeWindow.DestroyHandle%2A> when you are done with the native window.  
+## 解説  
+ このメソッドに関連付けられているウィンドウの破棄、 <xref:System.Windows.Forms.NativeWindow.Handle%2A>, 、設定、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> プロパティを 0 であり、呼び出し、 <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> の変更を反映する方法です。 通常、のみを呼び出す <xref:System.Windows.Forms.NativeWindow.DestroyHandle%2A> したらネイティブ ウィンドウとします。  
   
 > [!NOTE]
->  The <xref:System.Windows.Forms.NativeWindow> class automatically will destroy the associated window and release its resources in response to a WM_DESTROY message.  
+>  <xref:System.Windows.Forms.NativeWindow> クラスに自動的には関連付けられているウィンドウを破棄し、WM\_DESTROY メッセージへの応答で、リソースを解放します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.Finalize" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.OnHandleChange" />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -247,15 +278,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the resources associated with this window.</summary>
+        <summary>このウィンドウに関連付けられているリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Forms.NativeWindow.Finalize%2A> method removes the Win32 derived class associated with the current <xref:System.Windows.Forms.NativeWindow> instance, releases the handle, and posts a WM_CLOSE message to the associated window.  
+## 解説  
+ <xref:System.Windows.Forms.NativeWindow.Finalize%2A> メソッドに現在関連付けられている Win32 の派生クラスを削除する <xref:System.Windows.Forms.NativeWindow> インスタンスが、ハンドルを解放し、関連するウィンドウに WM\_CLOSE メッセージをポストします。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Forms.NativeWindow.#ctor" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
       </Docs>
     </Member>
     <Member MemberName="FromHandle">
@@ -274,17 +308,23 @@
         <Parameter Name="handle" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="handle">A handle to a window.</param>
-        <summary>Retrieves the window associated with the specified handle.</summary>
-        <returns>The <see cref="T:System.Windows.Forms.NativeWindow" /> associated with the specified handle. This method returns <see langword="null" /> when the handle does not have an associated window.</returns>
+        <param name="handle">ウィンドウのハンドル。</param>
+        <summary>指定したハンドルに関連付けられているウィンドウを取得します。</summary>
+        <returns>
+          <see cref="T:System.Windows.Forms.NativeWindow" /> 指定したハンドルに関連付けられています。 このメソッドが戻る <see langword="null" /> ハンドルがない場合、関連するウィンドウです。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If you receive a handle from another method, use this method to retrieve the window associated with the handle. The handle must already be owned by another <xref:System.Windows.Forms.NativeWindow> in the current process; otherwise, `null` is returned.  
+## 解説  
+ 別のメソッドからのハンドルを受信する場合は、ハンドルに関連付けられているウィンドウを取得するこのメソッドを使用します。 別のハンドルを所有既に必要があります <xref:System.Windows.Forms.NativeWindow> 、現在のプロセス以外の場合、 `null` が返されます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
       </Docs>
     </Member>
     <Member MemberName="Handle">
@@ -300,30 +340,35 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the handle for this window.</summary>
-        <value>If successful, an <see cref="T:System.IntPtr" /> representing the handle to the associated native Win32 window; otherwise, 0 if no handle is associated with the window.</value>
+        <summary>このウィンドウのハンドルを取得します。</summary>
+        <value>成功した場合、 <see cref="T:System.IntPtr" /> に関連したネイティブな Win32 ウィンドウへのハンドルを表す、ウィンドウに関連付けられたハンドルがない場合は 0 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method when calling Windows API methods that require a handle for a window or control.  
+## 解説  
+ ウィンドウまたはコントロールのハンドルを必要とする Windows API メソッドを呼び出すときは、このメソッドを使用します。  
   
    
   
-## Examples  
- The following code example demonstrates creating a window with a specific operating system window class name. The example creates a class that inherits from <xref:System.Windows.Forms.NativeWindow> to accomplish this. The example also demonstrates overriding the <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> method to be notified when the <xref:System.Windows.Forms.NativeWindow.Handle%2A> changes.  
+## 例  
+ 次のコード例では、特定のオペレーティング システムのウィンドウ クラス名と共にウィンドウの作成を示します。 継承するクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。 この例をオーバーライドする、 <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> ときに通知を受け取るメソッド、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> 変更します。  
   
- The `MyNativeWindow` class creates a new window with the <xref:System.Windows.Forms.CreateParams.ClassName%2A> set to BUTTON. This creates a Win32 button window. The location and size of the button is set, along with specifying additional window styles. The class demonstrates how to use the <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> method and override the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercept window messages that are received. Although the example looks for the WM_ACTIVATEAPP message, this could be replaced in a real program with window messages specific to the type created.  
+ `MyNativeWindow` クラスは、新しいウィンドウを作成、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> ボタンに設定します。 これには、Win32 ボタン ウィンドウが作成されます。 ボタンのサイズと場所は、追加のウィンドウ スタイルを指定すると設定がします。 クラスを使用する方法を示しています、 <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> メソッドをオーバーライドして、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> メソッドを受信するウィンドウ メッセージをインターセプトします。 WM\_ACTIVATEAPP メッセージをこの例は、これで作成した型に対応するウィンドウ メッセージで実際のプログラムでに置き換えられる可能性があります。  
   
 > [!NOTE]
->  Some control types send their window messages to the window parent instead of the window. See the Windows Platform SDK for more information.  
+>  コントロールの種類によっては、ウィンドウではなく、ウィンドウの親をウィンドウ メッセージを送信します。 詳細については、Windows プラットフォーム SDK を参照してください。  
   
- [!code-cpp[NativeWindow#3](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#3)]
- [!code-csharp[NativeWindow#3](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#3)]
- [!code-vb[NativeWindow#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#3)]  
+ [!code-cpp[NativeWindow\#3](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#3)]
+ [!code-csharp[NativeWindow\#3](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#3)]
+ [!code-vb[NativeWindow\#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.OnHandleChange" />
       </Docs>
     </Member>
     <Member MemberName="OnHandleChange">
@@ -340,34 +385,40 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Specifies a notification method that is called when the handle for a window is changed.</summary>
+        <summary>ウィンドウのハンドルが変更されたときに呼び出される通知方法を指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is invoked when the value of the <xref:System.Windows.Forms.NativeWindow.Handle%2A> property has changed.  
+## 解説  
+ このメソッドが呼び出されるときの値、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> プロパティが変更されました。  
   
    
   
-## Examples  
- The following code example demonstrates creating a window with a specific operating system window class name. The example creates a class that inherits from <xref:System.Windows.Forms.NativeWindow> to accomplish this. The example also demonstrates overriding the <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> method to be notified when the <xref:System.Windows.Forms.NativeWindow.Handle%2A> changes.  
+## 例  
+ 次のコード例では、特定のオペレーティング システムのウィンドウ クラス名と共にウィンドウの作成を示します。 継承するクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。 この例をオーバーライドする、 <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> ときに通知を受け取るメソッド、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> 変更します。  
   
- The `MyNativeWindow` class creates a new window with the <xref:System.Windows.Forms.CreateParams.ClassName%2A> set to `BUTTON`. This creates a Win32 button window. The location and size of the button is set, along with specifying additional window styles. The class demonstrates how to use the <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> method and override the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercept window messages that are received. Although the example looks for the WM_ACTIVATEAPP message, this can be replaced in a real program with window messages specific to the type created.  
+ `MyNativeWindow` クラスは、新しいウィンドウを作成、 <xref:System.Windows.Forms.CreateParams.ClassName%2A> 設定 `BUTTON`します。 これには、Win32 ボタン ウィンドウが作成されます。 ボタンのサイズと場所は、追加のウィンドウ スタイルを指定すると設定がします。 クラスを使用する方法を示しています、 <xref:System.Windows.Forms.NativeWindow.CreateHandle%2A> メソッドをオーバーライドして、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> メソッドを受信するウィンドウ メッセージをインターセプトします。 WM\_ACTIVATEAPP メッセージをこの例は、これで作成した型に対応するウィンドウ メッセージに実際のプログラムでに置き換えられますことができます。  
   
- This code is an excerpt from the example shown in the <xref:System.Windows.Forms.NativeWindow> class overview. Some code is not shown for the purpose of brevity. See <xref:System.Windows.Forms.NativeWindow> for the whole code listing.  
+ このコードは、例からの抜粋、 <xref:System.Windows.Forms.NativeWindow> クラスの概要です。 いくつかのコードは簡潔さを優先するためには表示されません。 参照してください <xref:System.Windows.Forms.NativeWindow> コード全体の一覧です。  
   
 > [!NOTE]
->  Some control types send their window messages to the window parent instead of the window. See the Windows Platform SDK for more information.  
+>  コントロールの種類によっては、ウィンドウではなく、ウィンドウの親をウィンドウ メッセージを送信します。 詳細については、Windows プラットフォーム SDK を参照してください。  
   
- [!code-cpp[NativeWindow#3](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#3)]
- [!code-csharp[NativeWindow#3](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#3)]
- [!code-vb[NativeWindow#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#3)]  
+ [!code-cpp[NativeWindow\#3](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#3)]
+ [!code-csharp[NativeWindow\#3](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#3)]
+ [!code-vb[NativeWindow\#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#3)]  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>Override this method to track changes that are made to the window handle.</para>
         </block>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.WndProc(System.Windows.Forms.Message@)" />
       </Docs>
     </Member>
     <Member MemberName="OnThreadException">
@@ -386,16 +437,24 @@
         <Parameter Name="e" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="e">An <see cref="T:System.Exception" /> that specifies the unhandled thread exception.</param>
-        <summary>When overridden in a derived class, manages an unhandled thread exception.</summary>
+        <param name="e">
+          <see cref="T:System.Exception" /> スレッドのハンドルされない例外を指定します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、スレッドのハンドルされない例外を管理します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Typically, <xref:System.Windows.Forms.Application.OnThreadException%2A> handles thread exceptions.  
+## 解説  
+ 通常、 <xref:System.Windows.Forms.Application.OnThreadException%2A> スレッドの例外を処理します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.ReleaseHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.WndProc(System.Windows.Forms.Message@)" />
+        <altmember cref="T:System.Windows.Forms.Application" />
       </Docs>
     </Member>
     <Member MemberName="ReleaseHandle">
@@ -412,30 +471,37 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the handle associated with this window.</summary>
+        <summary>このウィンドウに関連付けられたハンドルを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method does not destroy the window handle. Instead, it sets the handle's window procedure to the default window procedure. It sets the <xref:System.Windows.Forms.NativeWindow.Handle%2A> property to 0 and calls <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> to reflect the change.  
+## 解説  
+ このメソッドは、ウィンドウ ハンドルを破棄しません。 代わりに、既定のウィンドウ プロシージャ ハンドルのウィンドウ プロシージャに設定します。 設定、 <xref:System.Windows.Forms.NativeWindow.Handle%2A> プロパティを 0 と呼び出し <xref:System.Windows.Forms.NativeWindow.OnHandleChange%2A> の変更が反映されます。  
   
- A window automatically calls this method if it receives a native Win32 WM_NCDESTROY message, indicating that Windows has destroyed the handle.  
+ Windows がハンドルを破棄されることを示すネイティブの Win32 へメッセージを受信した場合、ウィンドウは自動的にこのメソッドを呼び出します。  
   
    
   
-## Examples  
- The following code example demonstrates intercepting operating system window messages in a window procedure. The example creates a class that inherits from <xref:System.Windows.Forms.NativeWindow> to accomplish this.  
+## 例  
+ 次のコード例では、ウィンドウ プロシージャでオペレーティング システムのウィンドウ メッセージを受け取る方法を示します。 継承するクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。  
   
- The `MyNativeWindowListener` class hooks into the window procedure of the form passed into the constructor, and overrides the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercepts the `WM_ACTIVATEAPP` window message. The class demonstrates the use of the <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> and <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> methods to identify the window handle the <xref:System.Windows.Forms.NativeWindow> will use. The handle is assign based upon the <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> and <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> events. When the `WM_ACTIVATEAPP` window message is received, the class calls the `form1.ApplicationActivated` method.  
+ `MyNativeWindowListener` クラスは、コンス トラクターに渡されたフォームのウィンドウ プロシージャにフックし、上書き、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> をインターセプトする方法、 `WM_ACTIVATEAPP` ウィンドウ メッセージです。 クラスの使用方法を示します、 <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> と <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> ウィンドウ ハンドルを識別する方法、 <xref:System.Windows.Forms.NativeWindow> を使用します。 ハンドルが割り当てに基づいて、 <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> と <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> イベントです。 ときに、 `WM_ACTIVATEAPP` ウィンドウ メッセージを受信すると、クラスの呼び出し、 `form1``ApplicationActivated` メソッドです。  
   
- This code is an excerpt from the example shown in the <xref:System.Windows.Forms.NativeWindow> class overview. Some code is not shown for the purpose of brevity. See <xref:System.Windows.Forms.NativeWindow> for the whole code listing.  
+ このコードは、例からの抜粋、 <xref:System.Windows.Forms.NativeWindow> クラスの概要です。 いくつかのコードは簡潔さを優先するためには表示されません。 参照してください <xref:System.Windows.Forms.NativeWindow> コード全体の一覧です。  
   
- [!code-cpp[NativeWindow#2](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#2)]
- [!code-csharp[NativeWindow#2](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#2)]
- [!code-vb[NativeWindow#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#2)]  
+ [!code-cpp[NativeWindow\#2](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#2)]
+ [!code-csharp[NativeWindow\#2](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#2)]
+ [!code-vb[NativeWindow\#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#2)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.AssignHandle(System.IntPtr)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.CreateHandle(System.Windows.Forms.CreateParams)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.DestroyHandle" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.WndProc(System.Windows.Forms.Message@)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.OnHandleChange" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.Finalize" />
       </Docs>
     </Member>
     <Member MemberName="WndProc">
@@ -454,32 +520,36 @@
         <Parameter Name="m" Type="System.Windows.Forms.Message&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="m">A <see cref="T:System.Windows.Forms.Message" /> that is associated with the current Windows message.</param>
-        <summary>Invokes the default window procedure associated with this window.</summary>
+        <param name="m">A <see cref="T:System.Windows.Forms.Message" /> 現在の Windows メッセージに関連付けられています。</param>
+        <summary>このウィンドウに関連付けられている既定のウィンドウ プロシージャを呼び出します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called when a window message is sent to the handle of the window.  
+## 解説  
+ ウィンドウのハンドルをウィンドウ メッセージを送信するときに、このメソッドが呼び出されます。  
   
    
   
-## Examples  
- The following code example demonstrates intercepting operating system window messages in a window procedure. The example creates a class that inherits from <xref:System.Windows.Forms.NativeWindow> to accomplish this.  
+## 例  
+ 次のコード例では、ウィンドウ プロシージャでオペレーティング システムのウィンドウ メッセージを受け取る方法を示します。 継承するクラスを作成する例では、 <xref:System.Windows.Forms.NativeWindow> これを実現します。  
   
- The `MyNativeWindowListener` class hooks into the window procedure of the form passed into the constructor, and overrides the <xref:System.Windows.Forms.NativeWindow.WndProc%2A> method to intercept the `WM_ACTIVATEAPP` window message. The class demonstrates the use of the <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> and <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> methods to identify the window handle the <xref:System.Windows.Forms.NativeWindow> will use. The handle is assigned based upon the <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> and <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> events. When the `WM_ACTIVATEAPP` window message is received, the class calls the `form1.ApplicationActivated` method.  
+ `MyNativeWindowListener` クラスは、コンス トラクターに渡されたフォームのウィンドウ プロシージャにフックし、上書き、 <xref:System.Windows.Forms.NativeWindow.WndProc%2A> をインターセプトするメソッド、 `WM_ACTIVATEAPP` ウィンドウ メッセージです。 クラスの使用方法を示します、 <xref:System.Windows.Forms.NativeWindow.AssignHandle%2A> と <xref:System.Windows.Forms.NativeWindow.ReleaseHandle%2A> ウィンドウ ハンドルを識別する方法、 <xref:System.Windows.Forms.NativeWindow> を使用します。 基に、ハンドルを割り当て、 <xref:System.Windows.Forms.Control.HandleCreated?displayProperty=fullName> と <xref:System.Windows.Forms.Control.HandleDestroyed?displayProperty=fullName> イベントです。 ときに、 `WM_ACTIVATEAPP` ウィンドウ メッセージを受信すると、クラスの呼び出し、 `form1``ApplicationActivated` メソッドです。  
   
- This code is an excerpt from the example shown in the <xref:System.Windows.Forms.NativeWindow> class overview. Some code is not shown for the purpose of brevity. See <xref:System.Windows.Forms.NativeWindow> for the whole code listing.  
+ このコードは、例からの抜粋、 <xref:System.Windows.Forms.NativeWindow> クラスの概要です。 いくつかのコードは簡潔さを優先するためには表示されません。 参照してください <xref:System.Windows.Forms.NativeWindow> コード全体の一覧です。  
   
- [!code-cpp[NativeWindow#2](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#2)]
- [!code-csharp[NativeWindow#2](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#2)]
- [!code-vb[NativeWindow#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#2)]  
+ [!code-cpp[NativeWindow\#2](~/samples/snippets/cpp/VS_Snippets_Winforms/NativeWindow/CPP/form1.cpp#2)]
+ [!code-csharp[NativeWindow\#2](~/samples/snippets/csharp/VS_Snippets_Winforms/NativeWindow/CS/form1.cs#2)]
+ [!code-vb[NativeWindow\#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/NativeWindow/VB/form1.vb#2)]  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>Override this method to implement specific message processing. Call <c>base.WndProc</c> for unhandled messages.</para>
         </block>
+        <altmember cref="P:System.Windows.Forms.NativeWindow.Handle" />
+        <altmember cref="T:System.Windows.Forms.Message" />
+        <altmember cref="M:System.Windows.Forms.Application.SetUnhandledExceptionMode(System.Windows.Forms.UnhandledExceptionMode)" />
+        <altmember cref="M:System.Windows.Forms.NativeWindow.OnThreadException(System.Exception)" />
       </Docs>
     </Member>
   </Members>

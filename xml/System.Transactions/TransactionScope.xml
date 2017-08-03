@@ -24,37 +24,37 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Makes a code block transactional. This class cannot be inherited.</summary>
+    <summary>トランザクションのコード ブロックになります。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Transactions> infrastructure provides both an explicit programming model based on the <xref:System.Transactions.Transaction> class, as well as an implicit programming model using the <xref:System.Transactions.TransactionScope> class, in which transactions are automatically managed by the infrastructure.  
+## 解説  
+ <xref:System.Transactions> インフラストラクチャは、両方明示的なプログラミング モデルに基づいて、 <xref:System.Transactions.Transaction> クラスだけでなく、暗黙的なプログラミング モデルを使用して、 <xref:System.Transactions.TransactionScope> トランザクションを自動的にインフラストラクチャを管理するクラス。  
   
 > [!IMPORTANT]
->  It is recommended that you create implicit transactions using the <xref:System.Transactions.TransactionScope> class, so that the ambient transaction context is automatically managed for you. You should also use the <xref:System.Transactions.TransactionScope> and <xref:System.Transactions.DependentTransaction> class for applications that require the use of the same transaction across multiple function calls or multiple thread calls. For more information on this model, see the [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/en-us/1ddba95e-7587-48b2-8838-708c275e7199) topic. For more information on writing a transactional application, see [Writing A Transactional Application](http://msdn.microsoft.com/en-us/4a7cc4d1-0891-4605-941f-a933b9ce5bc8).  
+>  使用して暗黙のトランザクションを作成することをお勧めしますが、 <xref:System.Transactions.TransactionScope> クラスのアンビエント トランザクション コンテキストが自動的に管理できるようにします。 使用することも必要があります、 <xref:System.Transactions.TransactionScope> と <xref:System.Transactions.DependentTransaction> の複数の関数呼び出しまたは複数のスレッド呼び出し間で同じトランザクションの使用を必要とするアプリケーションのクラスです。 このモデルの詳細については、次を参照してください。、 [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/ja-jp/1ddba95e-7587-48b2-8838-708c275e7199) トピックです。 トランザクション アプリケーションの作成の詳細については、次を参照してください。 [Writing A Transactional Application](http://msdn.microsoft.com/ja-jp/4a7cc4d1-0891-4605-941f-a933b9ce5bc8)します。  
   
- Upon instantiating a <xref:System.Transactions.TransactionScope> by the `new` statement, the transaction manager determines which transaction to participate in. Once determined, the scope always participates in that transaction. The decision is based on two factors: whether an ambient transaction is present and the value of the `TransactionScopeOption` parameter in the constructor.  The ambient transaction is the transaction your code executes in. You can obtain a reference to the ambient transaction by calling the static <xref:System.Transactions.Transaction.Current%2A> property of the <xref:System.Transactions.Transaction> class. For more information on how this parameter is used, please see the "Transaction Flow Management" section of the [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/en-us/1ddba95e-7587-48b2-8838-708c275e7199) topic.  
+ インスタンス化時に、 <xref:System.Transactions.TransactionScope> によって、 `new` ステートメント、トランザクション マネージャーの決定に参加するトランザクションができます。 いったん決定されると、このスコープは常にそのトランザクションに参加します。 この決定は 2 つの要因に基づいて行われます。1 つはアンビエント トランザクションが存在するかどうか、もう 1 つはコンストラクターの `TransactionScopeOption` パラメーターの値です。  アンビエント トランザクションとは、トランザクションでコードを実行します。<xref:System.Transactions.Transaction.Current%2A> クラスの静的 <xref:System.Transactions.Transaction> プロパティを呼び出すことによってアンビエント トランザクションへの参照を取得できます。 このパラメーターを使用する方法の詳細については、の「トランザクション フローの管理」セクションを参照してください、 [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/ja-jp/1ddba95e-7587-48b2-8838-708c275e7199) トピックです。  
   
- If no exception occurs within the transaction scope (that is, between the initialization of the <xref:System.Transactions.TransactionScope> object and the calling of its <xref:System.Transactions.TransactionScope.Dispose%2A> method), then the transaction in which the scope participates is allowed to proceed. If an exception does occur within the transaction scope, the transaction in which it participates will be rolled back.  
+ トランザクション スコープ内で例外が発生しない場合 \(つまりの初期化の間、 <xref:System.Transactions.TransactionScope> オブジェクトとの呼び出し、 <xref:System.Transactions.TransactionScope.Dispose%2A> メソッド\)、スコープが参加するトランザクションの実行を許可し、します。 トランザクション スコープ内で例外が発生が参加するトランザクションはロールバックされます。  
   
- When your application completes all work it wants to perform in a transaction, you should call the <xref:System.Transactions.TransactionScope.Complete%2A> method only once to inform that transaction manager that it is acceptable to commit the transaction. Failing to call this method aborts the transaction.  
+ アプリケーションがすべての作業を完了すると、トランザクション内で実行する、呼び出す必要があります、 <xref:System.Transactions.TransactionScope.Complete%2A> には、トランザクションをコミットできることをそのトランザクション マネージャに通知するメソッドを一度だけです。 このメソッドの呼び出しに失敗すると、トランザクションが中止されます。  
   
- A call to the <xref:System.Transactions.TransactionScope.Dispose%2A> method marks the end of the transaction scope. Exceptions that occur after calling this method may not affect the transaction.  
+ 呼び出し、 <xref:System.Transactions.TransactionScope.Dispose%2A> メソッドは、トランザクション スコープの終了を示します。 このメソッドの呼び出し後に発生した例外は、トランザクションに影響しない場合があります。  
   
- If you modify the value of <xref:System.Transactions.Transaction.Current%2A> inside a scope, an exception is thrown when <xref:System.Transactions.TransactionScope.Dispose%2A> is called. However, at the end of the scope, the previous value is restored. In addition, if you call <xref:System.Transactions.TransactionScope.Dispose%2A> on <xref:System.Transactions.Transaction.Current%2A> inside a transaction scope that created the transaction, the transaction aborts at the end of the scope.  
+ 値を変更する場合は、 <xref:System.Transactions.Transaction.Current%2A> 、スコープ内で、例外がスロー <xref:System.Transactions.TransactionScope.Dispose%2A> が呼び出されます。 ただし、スコープの最後に、以前の値が復元されます。 さらを呼び出す場合 <xref:System.Transactions.TransactionScope.Dispose%2A> に <xref:System.Transactions.Transaction.Current%2A> スコープの最後に、トランザクションを作成したトランザクション スコープ内部トランザクションが中止されました。  
   
    
   
-## Examples  
- The following example demonstrates how to use the <xref:System.Transactions.TransactionScope> class to define a block of code to participate in a transaction.  
+## 例  
+ 次の例では、使用して、 <xref:System.Transactions.TransactionScope> トランザクションに参加するためのコードのブロックを定義するクラス。  
   
- [!code-csharp[TransactionScope#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
- [!code-vb[TransactionScope#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
+ [!code-csharp[TransactionScope\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
+ [!code-vb[TransactionScope\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>This type is thread safe.</threadsafe>
+    <threadsafe>この型はスレッド セーフです。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -77,12 +77,13 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class.</summary>
+        <summary>
+          <see cref="T:System.Transactions.TransactionScope" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor creates a new transaction scope with the transaction scope option equal to <xref:System.Transactions.TransactionScopeOption.Required>. This means that a transaction is required by the new scope and the ambient transaction is used if one already exists. Otherwise, it creates a new transaction before entering the scope.  
+## 解説  
+ このコンス トラクターを作成、新しいトランザクション スコープのトランザクションのスコープ オプションを使用してに等しい <xref:System.Transactions.TransactionScopeOption.Required>します。 これは、トランザクションは新しいスコープに必要であり、既に存在する場合に、アンビエント トランザクションが使用されることを意味します。 それ以外の場合、スコープに入る前に新しいトランザクションを作成します。  
   
  ]]></format>
         </remarks>
@@ -111,7 +112,7 @@
       </Parameters>
       <Docs>
         <param name="transaction">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class and sets the specified transaction as the ambient transaction, so that transactional work done inside the scope uses this transaction.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスし、アンビエント トランザクションとして指定されたトランザクションを設定して、このトランザクションが、スコープ内でトランザクションの処理に使用するようにします。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -138,9 +139,9 @@
       </Parameters>
       <Docs>
         <param name="asyncFlow">To be added.</param>
-        <summary>[Supported in the .NET Framework 4.5.1 and later versions]  
+        <summary>\[.NET Framework 4.5.1 以降のバージョンでサポート\]  
   
- Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified asynchronous flow option.</summary>
+ 新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスを指定した非同期フロー オプションを使用します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -167,7 +168,7 @@
       </Parameters>
       <Docs>
         <param name="option">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified requirements.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラス要件を指定しています。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -196,7 +197,7 @@
       <Docs>
         <param name="transaction">To be added.</param>
         <param name="timeout">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified timeout value, and sets the specified transaction as the ambient transaction, so that transactional work done inside the scope uses this transaction.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> 指定されたタイムアウト値を持つクラスされ、スコープ内でトランザクションの処理は、このトランザクションを使用するように、指定されたトランザクションをアンビエント トランザクションとして設定します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -223,11 +224,11 @@
         <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" />
       </Parameters>
       <Docs>
-        <param name="transactionToUse">The transaction to be set as the ambient transaction, so that transactional work done inside the scope uses this transaction.</param>
-        <param name="asyncFlowOption">An instance of the <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> enumeration that describes whether the ambient transaction associated with the transaction scope will flow across thread continuations when using Task or async/await .NET async programming patterns.</param>
-        <summary>[Supported in the .NET Framework 4.5.1 and later versions]  
+        <param name="transactionToUse">このトランザクションが、スコープ内でトランザクションの処理に使用されるように、アンビエント トランザクションとして設定するトランザクションです。</param>
+        <param name="asyncFlowOption">インスタンス、 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> タスクまたは非同期\/待機の .NET 非同期プログラミング パターンを使用する場合スレッド継続間トランザクションのスコープに関連付けられているアンビエント トランザクションをフローするかどうかを表す列挙体です。</param>
+        <summary>\[.NET Framework 4.5.1 以降のバージョンでサポート\]  
   
- Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class and sets the specified transaction as the ambient transaction, so that transactional work done inside the scope uses this transaction.</summary>
+ 新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスし、アンビエント トランザクションとして指定されたトランザクションを設定して、このトランザクションが、スコープ内でトランザクションの処理に使用するようにします。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -256,7 +257,7 @@
       <Docs>
         <param name="option">To be added.</param>
         <param name="timeout">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified timeout value and requirements.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> 、指定したタイムアウト値と要件を持つクラス。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -283,14 +284,14 @@
         <Parameter Name="transactionOptions" Type="System.Transactions.TransactionOptions" />
       </Parameters>
       <Docs>
-        <param name="scopeOption">An instance of the <see cref="T:System.Transactions.TransactionScopeOption" /> enumeration that describes the transaction requirements associated with this transaction scope.</param>
+        <param name="scopeOption">インスタンス、 <see cref="T:System.Transactions.TransactionScopeOption" /> このトランザクション スコープに関連付けられているトランザクションの要件を表す列挙体です。</param>
         <param name="options">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified requirements.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラス要件を指定しています。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you use the `transactionOptions` parameter to specify an <xref:System.Transactions.IsolationLevel>, and the scope creates a transaction later, the new transaction is associated with the specified isolation level. If an isolation level is passed in together with a transaction, the transaction must have an identical isolation level, or an exception is thrown.  
+## 解説  
+ 使用すると、 `transactionOptions` を指定するパラメーター、 <xref:System.Transactions.IsolationLevel>, 、スコープ後でトランザクションを作成して、新しいトランザクションが指定された分離レベルに関連付けられています。 分離レベルがトランザクションと共に渡された場合は、トランザクションは、同一の分離レベルが必要または、例外がスローされます。  
   
  ]]></format>
         </remarks>
@@ -321,9 +322,9 @@
       <Docs>
         <param name="option">To be added.</param>
         <param name="asyncFlow">To be added.</param>
-        <summary>[Supported in the .NET Framework 4.5.1 and later versions]  
+        <summary>\[.NET Framework 4.5.1 以降のバージョンでサポート\]  
   
- Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified requirements and asynchronous flow option.</summary>
+ 新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスの指定した要件と非同期のフロー オプション。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -354,12 +355,12 @@
         <param name="transaction">To be added.</param>
         <param name="timeout">To be added.</param>
         <param name="opt">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified timeout value and COM+ interoperability requirements, and sets the specified transaction as the ambient transaction, so that transactional work done inside the scope uses this transaction.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスは、指定したタイムアウト値と COM \+ 相互運用性要件にされ、スコープ内でトランザクションの処理は、このトランザクションを使用するように、指定されたトランザクションをアンビエント トランザクションとして設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- **Note** This method uses <xref:System.Security.Permissions.SecurityAction.LinkDemand> to prevent it from being called from untrusted code; however, only the immediate caller is required to possess the `FullTrust` permission set.  
+## 解説  
+ **注** このメソッドを使用して <xref:System.Security.Permissions.SecurityAction.LinkDemand> されないようにすることには、信頼できないコードからと呼ばれます。 ただし、直前の呼び出し元だけが所有する必要が、 `FullTrust` アクセス許可セットです。  
   
  ]]></format>
         </remarks>
@@ -389,12 +390,13 @@
         <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" />
       </Parameters>
       <Docs>
-        <param name="transactionToUse">The transaction to be set as the ambient transaction, so that transactional work done inside the scope uses this transaction.</param>
-        <param name="scopeTimeout">The <see cref="T:System.TimeSpan" /> after which the transaction scope times out and aborts the transaction.</param>
-        <param name="asyncFlowOption">An instance of the <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> enumeration that describes whether the ambient transaction associated with the transaction scope will flow across thread continuations when using Task or async/await .NET async programming patterns.</param>
-        <summary>[Supported in the .NET Framework 4.5.1 and later versions]  
+        <param name="transactionToUse">このトランザクションが、スコープ内でトランザクションの処理に使用されるように、アンビエント トランザクションとして設定するトランザクションです。</param>
+        <param name="scopeTimeout">
+          <see cref="T:System.TimeSpan" /> するまで、トランザクション スコープがタイムアウトになると、トランザクションを中止します。</param>
+        <param name="asyncFlowOption">インスタンス、 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> タスクまたは非同期\/待機の .NET 非同期プログラミング パターンを使用する場合スレッド継続間トランザクションのスコープに関連付けられているアンビエント トランザクションをフローするかどうかを表す列挙体です。</param>
+        <summary>\[.NET Framework 4.5.1 以降のバージョンでサポート\]  
   
- Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified timeout value, and sets the specified transaction as the ambient transaction, so that transactional work done inside the scope uses this transaction.</summary>
+ 新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> 指定されたタイムアウト値を持つクラスされ、スコープ内でトランザクションの処理は、このトランザクションを使用するように、指定されたトランザクションをアンビエント トランザクションとして設定します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -425,9 +427,9 @@
         <param name="option">To be added.</param>
         <param name="timeout">To be added.</param>
         <param name="asyncFlow">To be added.</param>
-        <summary>[Supported in the .NET Framework 4.5.1 and later versions]  
+        <summary>\[.NET Framework 4.5.1 以降のバージョンでサポート\]  
   
- Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified timeout value, requirements, and asynchronous flow option.</summary>
+ 新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスで指定したタイムアウト値、要件、および非同期のフロー オプション。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -455,17 +457,17 @@
         <Parameter Name="interopOption" Type="System.Transactions.EnterpriseServicesInteropOption" />
       </Parameters>
       <Docs>
-        <param name="scopeOption">An instance of the <see cref="T:System.Transactions.TransactionScopeOption" /> enumeration that describes the transaction requirements associated with this transaction scope.</param>
+        <param name="scopeOption">インスタンス、 <see cref="T:System.Transactions.TransactionScopeOption" /> このトランザクション スコープに関連付けられているトランザクションの要件を表す列挙体です。</param>
         <param name="options">To be added.</param>
         <param name="opt">To be added.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified scope and COM+ interoperability requirements, and transaction options.</summary>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> 指定されたスコープと COM \+ 相互運用性の要件、トランザクション オプションを使用してクラスです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you use the `transactionOptions` parameter to specify an <xref:System.Transactions.IsolationLevel>, and the scope creates a transaction later, the new transaction is associated with the specified isolation level. If an isolation level is passed in together with a transaction, the transaction must have an identical isolation level, or an exception is thrown.  
+## 解説  
+ 使用すると、 `transactionOptions` を指定するパラメーター、 <xref:System.Transactions.IsolationLevel>, 、スコープ後でトランザクションを作成して、新しいトランザクションが指定された分離レベルに関連付けられています。 分離レベルがトランザクションと共に渡された場合は、トランザクションは、同一の分離レベルが必要または、例外がスローされます。  
   
- **Note** This method uses <xref:System.Security.Permissions.SecurityAction.LinkDemand> to prevent it from being called from untrusted code; however, only the immediate caller is required to possess the `FullTrust` permission set.  
+ **注** このメソッドを使用して <xref:System.Security.Permissions.SecurityAction.LinkDemand> されないようにすることには、信頼できないコードからと呼ばれます。 ただし、直前の呼び出し元だけが所有する必要が、 `FullTrust` アクセス許可セットです。  
   
  ]]></format>
         </remarks>
@@ -495,12 +497,12 @@
         <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" />
       </Parameters>
       <Docs>
-        <param name="scopeOption">An instance of the <see cref="T:System.Transactions.TransactionScopeOption" /> enumeration that describes the transaction requirements associated with this transaction scope.</param>
-        <param name="transactionOptions">A <see cref="T:System.Transactions.TransactionOptions" /> structure that describes the transaction options to use if a new transaction is created. If an existing transaction is used, the timeout value in this parameter applies to the transaction scope. If that time expires before the scope is disposed, the transaction is aborted.</param>
-        <param name="asyncFlowOption">An instance of the <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> enumeration that describes whether the ambient transaction associated with the transaction scope will flow across thread continuations when using Task or async/await .NET async programming patterns.</param>
-        <summary>[Supported in the .NET Framework 4.5.1 and later versions]  
+        <param name="scopeOption">インスタンス、 <see cref="T:System.Transactions.TransactionScopeOption" /> このトランザクション スコープに関連付けられているトランザクションの要件を表す列挙体です。</param>
+        <param name="transactionOptions">A <see cref="T:System.Transactions.TransactionOptions" /> 構造体の新しいトランザクションが作成された場合に使用するトランザクションのオプションについて説明します。 既存のトランザクションを使用すると、このパラメーターのタイムアウト値は、トランザクション スコープに適用されます。 スコープが破棄される前に、その時点に達すると、トランザクションは中止されます。</param>
+        <param name="asyncFlowOption">インスタンス、 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> タスクまたは非同期\/待機の .NET 非同期プログラミング パターンを使用する場合スレッド継続間トランザクションのスコープに関連付けられているアンビエント トランザクションをフローするかどうかを表す列挙体です。</param>
+        <summary>\[.NET Framework 4.5.1 以降のバージョンでサポート\]  
   
- Initializes a new instance of the <see cref="T:System.Transactions.TransactionScope" /> class with the specified requirements and asynchronous flow option.</summary>
+ 新しいインスタンスを初期化、 <see cref="T:System.Transactions.TransactionScope" /> クラスの指定した要件と非同期のフロー オプション。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -527,30 +529,30 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Indicates that all operations within the scope are completed successfully.</summary>
+        <summary>スコープ内のすべての操作が正常に完了したことを示します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you are satisfied that all operations within the scope are completed successfully, you should call this method only once to inform that transaction manager that the state across all resources is consistent, and the transaction can be committed. It is very good practice to put the call as the last statement in the `using` block.  
+## 解説  
+ 問題がなければ、スコープ内のすべての操作が正常に完了、すべてのリソースの状態に整合性があることと、トランザクションをコミットすることができます、トランザクション マネージャーに通知する、1 回だけ、このメソッドを呼び出す必要があります。 最後のステートメントとしての呼び出しを配置することを非常にお勧めします `using` ブロックします。  
   
- For more information on how this method is used, see the [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/en-us/1ddba95e-7587-48b2-8838-708c275e7199) topic.  
+ このメソッドを使用する方法の詳細については、次を参照してください。、 [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/ja-jp/1ddba95e-7587-48b2-8838-708c275e7199) トピックです。  
   
- Failing to call this method aborts the transaction, because the transaction manager interprets this as a system failure, or exceptions thrown within the scope of transaction. However, you should also note that calling this method does not guarantee a commit of the transaction. It is merely a way of informing the transaction manager of your status. After calling this method, you can no longer access the ambient transaction via the <xref:System.Transactions.Transaction.Current%2A> property, and trying to do so results in an exception being thrown.  
+ このメソッドの呼び出しに失敗すると、トランザクション マネージャーは、システム障害と解釈するため、またはトランザクションのスコープ内でスローされた例外に、トランザクションが中止されます。 ただし、このメソッドを呼び出すことが保証しないこと、トランザクションのコミットを注意する必要があります。 これはトランザクション マネージャーにステータスを通知する手段にすぎません。 このメソッドを呼び出した後、アンビエント トランザクションを使用してを不要になったにアクセスできる、 <xref:System.Transactions.Transaction.Current%2A> プロパティ、およびしようとしてスローされる例外になります。  
   
- The actual work of commit between the resources manager happens at the `End Using` statement if the <xref:System.Transactions.TransactionScope> object created the transaction. If it did not create the transaction, the commit occurs whenever <xref:System.Transactions.CommittableTransaction.Commit%2A> is called by the owner of the <xref:System.Transactions.CommittableTransaction> object. At that point the Transaction Manager calls the resource managers and informs them to either commit or rollback, based on whether this method was called on the <xref:System.Transactions.TransactionScope> object.  
+ リソース マネージャー間のコミットの実際の作業するとき、 `End Using` ステートメント場合、 <xref:System.Transactions.TransactionScope> オブジェクトは、トランザクションを作成します。 このオブジェクトによってトランザクションが作成されていない場合、<xref:System.Transactions.CommittableTransaction.Commit%2A> オブジェクトの所有者によって <xref:System.Transactions.CommittableTransaction> が呼び出されるたびにコミットが発生します。 その時点でトランザクション マネージャーはリソース マネージャーを呼び出して、コミットまたはロールバックにこのメソッドが呼び出されたかどうかに基づいてのいずれかを知らせる、 <xref:System.Transactions.TransactionScope> オブジェクトです。  
   
    
   
-## Examples  
- The following example demonstrates how to use the <xref:System.Transactions.TransactionScope> class to define a block of code to participate in a transaction.  
+## 例  
+ 次の例では、使用して、 <xref:System.Transactions.TransactionScope> トランザクションに参加するためのコードのブロックを定義するクラス。  
   
- [!code-csharp[TransactionScope#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
- [!code-vb[TransactionScope#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
+ [!code-csharp[TransactionScope\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
+ [!code-vb[TransactionScope\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">This method has already been called once.</exception>
+        <exception cref="T:System.InvalidOperationException">このメソッドは既に 1 回呼び出されています。</exception>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -576,30 +578,41 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ends the transaction scope.</summary>
+        <summary>トランザクション スコープを終了します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Calling this method marks the end of the transaction scope. If the <xref:System.Transactions.TransactionScope> object created the transaction and <xref:System.Transactions.TransactionScope.Complete%2A> was called on the scope, the <xref:System.Transactions.TransactionScope> object attempts to commit the transaction when this method is called.  
+## 解説  
+ このメソッドを呼び出すことは、トランザクション スコープの終了を示します。 場合、 <xref:System.Transactions.TransactionScope> オブジェクトは、トランザクションを作成し、 <xref:System.Transactions.TransactionScope.Complete%2A> 、スコープで呼び出されましたが、 <xref:System.Transactions.TransactionScope> オブジェクトが、このメソッドが呼び出されると、トランザクションをコミットしようとしています。 します。  
   
- The use of the C# `using` construction ensures that this method is called even if an exception occurs. Exceptions that occur after calling this method may not affect the transaction. This method also restores the ambient transaction to it original state. A <xref:System.Transactions.TransactionAbortedException> is thrown if the transaction is not actually committed.  
+ C\# での使用 `using` 構築により、例外が発生した場合でも、このメソッドが呼び出されます。 このメソッドの呼び出し後に発生した例外は、トランザクションに影響しない場合があります。 このメソッドも、アンビエント トランザクションを元の状態を復元します。 A <xref:System.Transactions.TransactionAbortedException> が、実際にコミットされたトランザクションがない場合にスローされます。  
   
- This method is synchronous and blocks until the transaction has been committed or aborted. Because of this, you should be extremely careful when using this method in a Windows Form (WinForm) application, or a deadlock can occur. If you call this method inside one WinForm Control event (for example, clicking a button), and use the synchronous <xref:System.Windows.Forms.Control.Invoke%2A> method to direct the control to perform some UI tasks (for example, changing colors) in the middle of processing the transaction, a deadlock will happen. This is because the <xref:System.Windows.Forms.Control.Invoke%2A> method is synchronous and blocks the worker thread until the UI thread finishes its job. However, in our scenario, the UI thread is also waiting for the worker thread to commit the transaction. The result is that none is able to proceed and the scope waits indefinitely for the Commit to finish. You should use <xref:System.Windows.Forms.Control.BeginInvoke%2A> rather than <xref:System.Windows.Forms.Control.Invoke%2A> wherever possible, because it is asynchronous and thus less prone to deadlock.  
+ このメソッドは同期で、トランザクションのコミットまたは中止するまでブロックします。 このため、Windows フォーム \(WinForm\) アプリケーションでこのメソッドを使用する場合、注意する必要がありますか、デッドロックが発生することができます。 \(ボタンのクリックしてなど\) の 1 つの WinForm コントロール イベント内にこのメソッドを呼び出して、同期を使用した場合 <xref:System.Windows.Forms.Control.Invoke%2A> メソッドをデッドロックが発生する、トランザクションの処理中に一部の UI タスク \(たとえば、変化する色\) を実行するコントロールに指示します。 これは、 <xref:System.Windows.Forms.Control.Invoke%2A> メソッドは同期であり、UI スレッドには、そのジョブが完了するまでは、ワーカー スレッドをブロックします。 ただし、このシナリオでは、UI スレッドも待機しているワーカー スレッドが、トランザクションをコミットします。 どのもを続行できませんされず、スコープを無期限に待機コミットが完了することになります。 使用する必要があります <xref:System.Windows.Forms.Control.BeginInvoke%2A> なく <xref:System.Windows.Forms.Control.Invoke%2A> 可能な限り、非同期およびため、デッドロックに陥りやすい未満であるためです。  
   
- For more information on how this method is used, see the [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/en-us/1ddba95e-7587-48b2-8838-708c275e7199) topic.  
+ このメソッドを使用する方法の詳細については、次を参照してください。、 [Implementing An Implicit Transaction Using Transaction Scope](http://msdn.microsoft.com/ja-jp/1ddba95e-7587-48b2-8838-708c275e7199) トピックです。  
   
    
   
-## Examples  
- The following example demonstrates how to use the <xref:System.Transactions.TransactionScope> class to define a block of code to participate in a transaction.  
+## 例  
+ 次の例では、使用して、 <xref:System.Transactions.TransactionScope> トランザクションに参加するためのコードのブロックを定義するクラス。  
   
- [!code-csharp[TransactionScope#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
- [!code-vb[TransactionScope#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
+ [!code-csharp[TransactionScope\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
+ [!code-vb[TransactionScope\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
   
  ]]></format>
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Transactions.TransactionScope" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

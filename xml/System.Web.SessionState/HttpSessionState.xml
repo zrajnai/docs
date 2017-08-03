@@ -15,38 +15,40 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Provides access to session-state values as well as session-level settings and lifetime management methods.</summary>
+    <summary>セッション状態の値だけでなくセッション レベルの設定と有効期間管理メソッドへのアクセスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- ASP.NET provides session-state management to enable you to store information associated with a unique browser session across multiple requests. You can store a collection of values referenced by a key name or by numerical index. Access to session values and functionality is available using the <xref:System.Web.SessionState.HttpSessionState> class, which is accessible through the <xref:System.Web.HttpContext.Session%2A> property of the current <xref:System.Web.HttpContext>, or the <xref:System.Web.UI.Page.Session%2A> property of the <xref:System.Web.UI.Page>.  
+## 解説  
+ ASP.NET では、複数の要求で一意のブラウザー セッションに関連付けられている情報を格納するためにセッション状態管理を提供します。 キーの名前または数値インデックスで参照されている値のコレクションを格納することができます。 セッションの値と機能へのアクセスが利用可能なを使用して、 <xref:System.Web.SessionState.HttpSessionState> を通じてアクセス可能なクラス、 <xref:System.Web.HttpContext.Session%2A> 、現在のプロパティ <xref:System.Web.HttpContext>, 、または <xref:System.Web.UI.Page.Session%2A> のプロパティ、 <xref:System.Web.UI.Page>です。  
   
- Session data is associated with a specific browser session using a unique identifier. By default, this identifier is stored in a non-expiring session cookie in the browser, but you can also configure your application to store the session identifier in the URL by setting the `cookieless` attribute to `true` or <xref:System.Web.HttpCookieMode.UseUri> in the  element of your application configuration. You can have ASP.NET determine whether cookies are supported by the browser by specifying a value of <xref:System.Web.HttpCookieMode.UseDeviceProfile> for the `cookieless` attribute. You can also have ASP.NET determine whether cookies are enabled for the browser by specifying a value of <xref:System.Web.HttpCookieMode.AutoDetect> for the `cookieless` attribute. If cookies are supported when <xref:System.Web.HttpCookieMode.UseDeviceProfile> is specified, or enabled when <xref:System.Web.HttpCookieMode.AutoDetect> is specified, then the session identifier will be stored in a cookie; otherwise the session identifier will be stored in the URL.  
+ セッション データは、一意の識別子を使用して特定のブラウザー セッションに関連付けられます。 ブラウザーで、有効期限のないセッションの cookie で既定では、この識別子が格納されているが、URL に設定してセッション識別子を格納するアプリケーションを構成することも、 `cookieless` 属性を `true` または <xref:System.Web.HttpCookieMode.UseUri> 、アプリケーション構成の要素にします。 ASP.NET の値を指定することによって、ブラウザーでクッキーがサポートされているかどうかを判断することが <xref:System.Web.HttpCookieMode.UseDeviceProfile> の `cookieless` 属性です。 ASP.NET の値を指定することによって、ブラウザーの cookie を有効にするかどうかを判断することもできます <xref:System.Web.HttpCookieMode.AutoDetect> の `cookieless` 属性です。 クッキーがサポートされている場合と <xref:System.Web.HttpCookieMode.UseDeviceProfile> が指定すると、またはいつ有効になっている <xref:System.Web.HttpCookieMode.AutoDetect> が指定されている場合は、セッション cookie に格納されている以外の場合に、識別子になりますセッション識別子は、URL に格納されます。  
   
- Sessions are started during the first request and session values will persist as long as a new request is made by the browser before the number of minutes specified in the <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property pass. When a new session begins, the session <xref:System.Web.SessionState.SessionStateModule.Start> event is raised. You can use this event to perform any additional work at the start of a session, such as setting default session values. When a session times out, the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method is called, or the ASP.NET application is shut down, the session <xref:System.Web.SessionState.SessionStateModule.End> event is raised. You can use this event to perform any necessary cleanup. The <xref:System.Web.SessionState.SessionStateModule.End> event is raised only when the session state `mode` is set to <xref:System.Web.SessionState.SessionStateMode.InProc>.  
+ 最初の要求時にセッションが開始されるで指定された時間を分単位の前に、ブラウザーで新しい要求が行われた場合に限り、セッションの値は保持されます、 <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> プロパティのパス。 新しいセッションを開始する、セッション <xref:System.Web.SessionState.SessionStateModule.Start> イベントが発生します。 このイベントを使用して、既定のセッションの値の設定など、セッションの開始時に追加の作業を行うことができます。 セッションがタイムアウトしたときに、 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> メソッドが呼び出された、または ASP.NET アプリケーションがセッションをシャット ダウン <xref:System.Web.SessionState.SessionStateModule.End> イベントが発生します。 このイベントを使用して、必要なクリーンアップを実行することができます。<xref:System.Web.SessionState.SessionStateModule.End> イベントが発生した場合にのみ、セッション状態 `mode` に設定されている <xref:System.Web.SessionState.SessionStateMode.InProc>します。  
   
- To improve performance, sessions that use cookies do not allocate session storage until data is actually stored in the <xref:System.Web.UI.Page.Session%2A> object. For more information, see the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> property.  
+ パフォーマンスを向上させるには、クッキーを使用するセッションを割り当てないセッションの記憶域のデータが格納されるまで実際には、 <xref:System.Web.UI.Page.Session%2A> オブジェクトです。 詳細については、<xref:System.Web.SessionState.HttpSessionState.SessionID%2A> プロパティを参照してください。  
   
- Session state does not persist across ASP.NET application boundaries. If a browser navigates to another application, the session information is not available to the new application.  
+ セッション状態は、ASP.NET アプリケーションの境界を越えては保持されません。 別のアプリケーションに移動する、ブラウザー場合、は、\[セッション情報は新しいアプリケーションを使用できません。  
   
- Session values are stored in memory on the Web server, by default. You can also store session values in a SQL Server database, an ASP.NET state server, or a custom server. This enables you to preserve session values in cases where the ASP.NET or IIS process or the ASP.NET application restarts and to make session values available across all the servers in a Web farm. This behavior is configured by setting the `mode` attribute to a valid <xref:System.Web.SessionState.SessionStateMode> value in the  element of your application configuration. For more information, see [Session-State Modes](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4).  
+ セッションの値は、既定では、Web サーバー上のメモリに格納されます。 SQL Server データベース、ASP.NET 状態サーバー、またはカスタムのサーバーでセッションの値を格納することもできます。 これにより、ASP.NET、IIS プロセスまたは ASP.NET アプリケーションを再起動する場合のセッション値を保持し、Web ファーム内のすべてのサーバー間でセッションの値を使用できるようにすることができます。 設定してこの動作が構成されている、 `mode` 属性を有効な <xref:System.Web.SessionState.SessionStateMode> アプリケーション構成の要素の値。 詳細については、「[Session State Modes](http://msdn.microsoft.com/ja-jp/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)」を参照してください。  
   
- Alternatives to session state include application state (see the <xref:System.Web.HttpApplication.Application%2A> property) and the ASP.NET cache (see the <xref:System.Web.Caching> namespace), which store variables that can be accessed by all users of an ASP.NET application; the ASP.NET profile (see the <xref:System.Web.Profile> namespace), which persists user values in a data store without expiring them using a time-out; ASP.NET <xref:System.Web.UI.WebControls?displayProperty=fullName>, which persist control values in the <xref:System.Web.UI.Control.ViewState%2A>; <xref:System.Web.HttpResponse.Cookies%2A>; the <xref:System.Web.HttpRequest.QueryString%2A> property; and fields on an HTML form that are available from an HTTP `POST` using the <xref:System.Web.HttpRequest.Form%2A> collection. For more details on the differences between session state and other state-management alternatives, see [ASP.NET State Management Recommendations](http://msdn.microsoft.com/library/af79fa0d-4bc8-47a6-9915-d8e355bfb732).  
+ セッション状態の代替としては、アプリケーションの状態を \(を参照してください、 <xref:System.Web.HttpApplication.Application%2A> プロパティ\) と ASP.NET のキャッシュ \(を参照してください、 <xref:System.Web.Caching> 名前空間\)、ASP.NET アプリケーションのすべてのユーザーがアクセスできるどのストア変数; ASP.NET プロファイル \(を参照してください、 <xref:System.Web.Profile> 名前空間\)、期限切れにならないことがなくデータ ストア内のユーザーの値を永続化するタイムアウトを使用してASP.NET <xref:System.Web.UI.WebControls?displayProperty=fullName>, でコントロールの値を保持する、 <xref:System.Web.UI.Control.ViewState%2A>; <xref:System.Web.HttpResponse.Cookies%2A>;、 <xref:System.Web.HttpRequest.QueryString%2A> プロパティとフィールドを HTML フォーム HTTP から提供される `POST` を使用して、 <xref:System.Web.HttpRequest.Form%2A> コレクションです。 セッション状態とその他の状態管理の代替手段の違いの詳細については、次を参照してください。 [ASP.NET State\-Management Recommendations](http://msdn.microsoft.com/ja-jp/af79fa0d-4bc8-47a6-9915-d8e355bfb732)します。  
   
    
   
-## Examples  
- The following code example sets and retrieves values from session state.  
+## 例  
+ 次のコード例では、設定し、セッション状態から値を取得します。  
   
 > [!IMPORTANT]
->  This example has a text box that accepts user input, which is a potential security threat. By default, ASP.NET Web pages validate that user input does not include script or HTML elements. For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).  
+>  この例には、ユーザー入力を受け付けるテキスト ボックスがあります。これにより、セキュリティが脆弱になる可能性があります。 既定では、ASP.NET Web ページによって、ユーザー入力にスクリプトまたは HTML 要素が含まれていないかどうかが検証されます。 詳細については、「[Script Exploits Overview](http://msdn.microsoft.com/ja-jp/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)」を参照してください。  
   
- <!-- TODO: review snippet reference [!code-csharp[HttpSessionState#30](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/session2cs.aspx#30)]  -->
- <!-- TODO: review snippet reference [!code-vb[HttpSessionState#30](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/session2vb.aspx#30)]  -->  
+ [!code-csharp[HttpSessionState\#30](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/session2cs.aspx#30)]
+ [!code-vb[HttpSessionState\#30](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/session2vb.aspx#30)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="N:System.Web.Profile" />
+    <altmember cref="N:System.Web.Caching" />
   </Docs>
   <Members>
     <Member MemberName="Abandon">
@@ -63,17 +65,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Cancels the current session.</summary>
+        <summary>現在のセッションをキャンセルします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Once the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method is called, the current session is no longer valid and a new session can be started. <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> causes the <xref:System.Web.SessionState.SessionStateModule.End> event to be raised. A new <xref:System.Web.SessionState.SessionStateModule.Start> event will be raised on the next request.  
   
- Session identifiers for abandoned or expired sessions are recycled by default. That is, if a request is made that includes the session identifier for an expired or abandoned session, a new session is started using the same session identifier. You can disable this by setting `regenerateExpiredSessionId` attribute of the  configuration element to `true`. For more information, see [Session Identifiers](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb).  
+ Session identifiers for abandoned or expired sessions are recycled by default. That is, if a request is made that includes the session identifier for an expired or abandoned session, a new session is started using the same session identifier. You can disable this by setting **languageKeyword tag is not supported!!!!**  
+ attribute of the  configuration element to **languageKeyword tag is not supported!!!!**  
+. For more information, see [Session Identifiers](http://msdn.microsoft.com/ja-jp/146ca206-d151-4f2e-a548-bcca05ccf0cb).  
   
  The <xref:System.Web.SessionState.SessionStateModule.End> event is supported only when the <xref:System.Web.SessionState.HttpSessionState.Mode%2A> property is set to <xref:System.Web.SessionState.SessionStateMode.InProc>.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -95,25 +102,25 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the item to add to the session-state collection.</param>
-        <param name="value">The value of the item to add to the session-state collection.</param>
-        <summary>Adds a new item to the session-state collection.</summary>
+        <param name="name">セッション状態コレクションに追加する項目の名前。</param>
+        <param name="value">セッション状態コレクションに追加する項目の値。</param>
+        <summary>セッション状態のコレクションに新しい項目を追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the `name` parameter refers to an existing session state item, the existing item is overwritten with the specified `value`.  
+## 解説  
+ 場合、 `name` パラメーターは既存のセッション状態の項目を参照、既存の項目に指定された上書き `value`します。  
   
    
   
-## Examples  
- The following example shows how to store values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Add%2A> method. It also shows how to remove values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Remove%2A> method. A <xref:System.Web.UI.WebControls.Repeater> control is used to display the contents session state on the Web page. The <xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> method is used to iterate through the session-state collection and populate the <xref:System.Web.UI.WebControls.Repeater> control.  
+## 例  
+ 次の例を使用してセッション状態に値を格納する方法を示しています、 <xref:System.Web.SessionState.HttpSessionState.Add%2A> メソッドです。 使用してセッション状態に値を削除する方法も示します、 <xref:System.Web.SessionState.HttpSessionState.Remove%2A> メソッドです。 A <xref:System.Web.UI.WebControls.Repeater> コントロールを使用して、Web ページの内容のセッション状態を表示します。<xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> メソッドの使用をセッション状態のコレクションを反復処理し、 <xref:System.Web.UI.WebControls.Repeater> コントロールです。  
   
 > [!IMPORTANT]
->  This example has a text box that accepts user input, which is a potential security threat. By default, ASP.NET Web pages validate that user input does not include script or HTML elements. For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).  
+>  この例には、ユーザー入力を受け付けるテキスト ボックスがあります。これにより、セキュリティが脆弱になる可能性があります。 既定では、ASP.NET Web ページによって、ユーザー入力にスクリプトまたは HTML 要素が含まれていないかどうかが検証されます。 詳細については、「[Script Exploits Overview](http://msdn.microsoft.com/ja-jp/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)」を参照してください。  
   
- <!-- TODO: review snippet reference [!code-csharp[HttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]  -->
- <!-- TODO: review snippet reference [!code-vb[HttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  -->  
+ [!code-csharp[HttpSessionState\#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]
+ [!code-vb[HttpSessionState\#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  
   
  ]]></format>
         </remarks>
@@ -133,8 +140,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Removes all keys and values from the session-state collection.</summary>
-        <remarks>To be added.</remarks>
+        <summary>セッション状態のコレクションからすべてのキーと値を削除します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CodePage">
@@ -150,16 +162,19 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the character-set identifier for the current session.</summary>
-        <value>The character-set identifier for the current session.</value>
+        <summary>現在のセッションの文字セットの識別子を取得または設定します。</summary>
+        <value>現在のセッションの文字セットの識別子。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A character set (code page) is used to interpret multi-byte character data, determining character value, and therefore sort order. Code-page settings apply only to multi-byte character data, not to Unicode character data.  
+## 解説  
+ A character set \(code page\) is used to interpret multi\-byte character data, determining character value, and therefore sort order. Code\-page settings apply only to multi\-byte character data, not to Unicode character data.  
   
  This <xref:System.Web.SessionState.IHttpSessionState.CodePage%2A> property is provided for compatibility with earlier versions of ASP only. If you do not need to maintain backward compatibility with ASP pages, use the <xref:System.Web.HttpResponse.ContentEncoding%2A> property instead.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -177,21 +192,21 @@
         <ReturnType>System.Web.SessionState.HttpSessionState</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a reference to the current session-state object.</summary>
-        <value>The current <see cref="T:System.Web.SessionState.HttpSessionState" />.</value>
+        <summary>現在のセッション状態オブジェクトへの参照を取得します。</summary>
+        <value>現在の <see cref="T:System.Web.SessionState.HttpSessionState" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.HttpSessionState.Contents%2A> property is provided for compatibility with earlier versions of ASP.  
+## 解説  
+ <xref:System.Web.SessionState.HttpSessionState.Contents%2A> プロパティは、ASP の旧バージョンとの互換性を提供します。  
   
    
   
-## Examples  
- The following code example lists the item names and values in the <xref:System.Web.SessionState.HttpSessionState.Contents%2A> property.  
+## 例  
+ 項目名の一覧し、値を次のコード例、 <xref:System.Web.SessionState.HttpSessionState.Contents%2A> プロパティです。  
   
- [!code-csharp[HttpSessionState#9](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/snippetscs.aspx#9)]
- [!code-vb[HttpSessionState#9](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/snippetsvb.aspx#9)]  
+ [!code-csharp[HttpSessionState\#9](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/snippetscs.aspx#9)]
+ [!code-vb[HttpSessionState\#9](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/snippetsvb.aspx#9)]  
   
  ]]></format>
         </remarks>
@@ -210,18 +225,18 @@
         <ReturnType>System.Web.HttpCookieMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the application is configured for cookieless sessions.</summary>
-        <value>One of the <see cref="T:System.Web.HttpCookieMode" /> values that indicate whether the application is configured for cookieless sessions. The default is <see cref="F:System.Web.HttpCookieMode.UseCookies" />.</value>
+        <summary>アプリケーションが Cookie なしのセッション用に構成されているかどうかを示す値を取得します。</summary>
+        <value>いずれか、 <see cref="T:System.Web.HttpCookieMode" /> cookieless セッション用にアプリケーションが構成されているかどうかを示す値。 既定値は、<see cref="F:System.Web.HttpCookieMode.UseCookies" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> is `true`, the <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> property returns <xref:System.Web.HttpCookieMode.UseUri>; otherwise the <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> property returns <xref:System.Web.HttpCookieMode.UseCookies>.  
+## 解説  
+ <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> は `true`, 、 <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> プロパティを返します。 <xref:System.Web.HttpCookieMode.UseUri>以外の場合、 <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> プロパティを返します。 <xref:System.Web.HttpCookieMode.UseCookies>します。  
   
    
   
-## Examples  
- The following code example sets the `cookieless` session attribute to `true` in the Web.config file. For this sample application configuration, the <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> property would return <xref:System.Web.HttpCookieMode.UseUri>.  
+## 例  
+ 次のコード例、 `cookieless` セッション属性を `true` Web.config ファイルにします。 このサンプル アプリケーションの構成には、 <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> は <xref:System.Web.HttpCookieMode.UseUri>です。  
   
 ```  
 <configuration>  
@@ -255,10 +270,16 @@
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="array">The <see cref="T:System.Array" /> that receives the session values.</param>
-        <param name="index">The zero-based index in <c>array</c> from which copying starts.</param>
-        <summary>Copies the collection of session-state values to a one-dimensional array, starting at the specified index in the array.</summary>
-        <remarks>To be added.</remarks>
+        <param name="array">
+          <see cref="T:System.Array" /> セッション値を受け取る。</param>
+        <param name="index">内の 0 から始まるインデックス <c>array</c> からコピーを開始します。</param>
+        <summary>セッション状態の値のコレクションを 1 次元配列にコピーします。コピー操作は、指定した配列内のインデックスから始まります。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -274,8 +295,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of items in the session-state collection.</summary>
-        <value>The number of items in the collection.</value>
+        <summary>セッション状態コレクション内の項目の数を取得します。</summary>
+        <value>コレクション内の項目数。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -293,16 +314,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an enumerator that can be used to read all the session-state variable names in the current session.</summary>
-        <returns>An <see cref="T:System.Collections.IEnumerator" /> that can iterate through the variable names in the session-state collection.</returns>
+        <summary>現在のセッションですべてのセッション状態変数名を読み取るために使用できる列挙子を返します。</summary>
+        <returns>
+          <see cref="T:System.Collections.IEnumerator" /> セッション状態のコレクション内の変数名を反復処理することができます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example shows how to store values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Add%2A> method. It also shows how to remove values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Remove%2A> method. A <xref:System.Web.UI.WebControls.Repeater> control is used to display the contents of session state on the Web page. The <xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> method is used to iterate through the session-state collection and populate the <xref:System.Web.UI.WebControls.Repeater> control.  
+## 例  
+ 次の例を使用してセッション状態に値を格納する方法を示しています、 <xref:System.Web.SessionState.HttpSessionState.Add%2A> メソッドです。 使用してセッション状態に値を削除する方法も示します、 <xref:System.Web.SessionState.HttpSessionState.Remove%2A> メソッドです。 A <xref:System.Web.UI.WebControls.Repeater> コントロールを使用して、Web ページ上のセッション状態の内容を表示します。<xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> メソッドの使用をセッション状態のコレクションを反復処理し、 <xref:System.Web.UI.WebControls.Repeater> コントロールです。  
   
- <!-- TODO: review snippet reference [!code-csharp[HttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]  -->
- <!-- TODO: review snippet reference [!code-vb[HttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  -->  
+ [!code-csharp[HttpSessionState\#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]
+ [!code-vb[HttpSessionState\#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  
   
  ]]></format>
         </remarks>
@@ -321,37 +343,37 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.</summary>
+        <summary>セッション ID が URL に埋め込むか、HTTP クッキーに格納されているかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the session is embedded in the URL; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> セッションが URL に埋め込まれている場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- ASP.NET identifies sessions uniquely with each browser. By default, the unique identifier for a session is stored in a non-expiring session cookie in the browser. You can specify that session identifiers not be stored in a cookie by setting the `cookieless` attribute to `true` in the  configuration element.  
+## 解説  
+ ASP.NET では、各ブラウザーで、セッションを一意に識別します。 既定では、セッションの一意の識別子は、ブラウザーでは、有効期限のないセッション cookie に格納されます。 セッション id 格納されないように cookie の設定を指定する、 `cookieless` 属性を `true` 構成要素にします。  
   
 > [!NOTE]
->  To improve the security of your application, your application should allow users to log out, at which point it should call the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method. This reduces the potential for an unwanted source using the unique identifier in the URL to retrieve private data stored in the session for a user.  
+>  アプリケーションのセキュリティを向上させるのには、アプリケーションがこの時点で呼び出す必要があります、ログアウトするユーザーを許可しないで、 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> メソッドです。 これにより、URL の一意識別子を使用して、ユーザーのセッションに格納されているプライベート データを取得する必要のないソースが発生する可能性が減少します。  
   
- ASP.NET maintains cookieless session state by automatically inserting a unique session ID into the page's URL. For example, the following URL has been modified by ASP.NET to include the unique session ID lit3py55t21z5v55vlm25s55:  
+ ASP.NET では、自動的に一意のセッション ID をページの URL に挿入すると、クッキーなしのセッション状態を保持します。 たとえば、一意のセッション ID lit3py55t21z5v55vlm25s55 を含めるように ASP.NET によって、次の URL を変更しています。  
   
 ```  
 http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx  
 ```  
   
- ASP.NET modifies the links contained in all requested pages by embedding a session-ID value in the links just before sending each page to the browser. Session state is maintained as long as the user follows the path of links that the site provides. However, if the user agent rewrites a URL, the session-state instance will be lost.  
+ ASP.NET では、リンクの各ページをブラウザーに送信する前にセッション ID 値を埋め込むことによって、すべての要求されたページに含まれるリンクを変更します。 ユーザーが、サイトが提供するリンクのパスをたどっている限り、セッション状態が維持されます。 ただし、ユーザー エージェントは、URL をリライト、セッション状態のインスタンスが失われます。  
   
- The session ID is embedded in the URL after the slash that follows the application name and before any remaining file or virtual-directory identifier. This allows ASP.NET to resolve the application name before involving the <xref:System.Web.SessionState.SessionStateModule> in the request.  
+ セッション ID は、アプリケーション名に続く、スラッシュの後と、残りのファイルまたは仮想ディレクトリの識別子の前に、URL に埋め込まれます。 これにより、ASP.NET に関連する前に、アプリケーション名を解決するのには、 <xref:System.Web.SessionState.SessionStateModule> 要求にします。  
   
- By default, session identifiers used in cookieless sessions are recycled. That is, if a request is made with a session ID that has expired, a new session is started using the session ID supplied with the request. This behavior can result in the unwanted sharing of session data when a link that contains a cookieless session ID is shared with multiple browsers, perhaps through a search engine or other program. You can reduce the possibility of session data being shared by multiple clients by disabling the recycling of session identifiers. To do this, set the `regenerateExpiredSessionId` attribute of the  configuration element to `true`. This will result in a new session ID being generated when a cookieless session request is made with an expired session ID. Note that if the request made with the expired session ID uses the HTTP `POST` method, then any posted data will be lost when `regenerateExpiredSessionId` is `true`, as ASP.NET performs a redirect to ensure that the browser has the new session identifier in the URL.  
+ 既定では、cookie なしのセッションで使用されるセッション識別子は、再利用します。 つまり、有効期限が切れたセッション ID を持つ要求が行われた場合、新しいセッションが開始、要求で指定されたセッション ID を使用します。 この動作は、検索エンジンまたは他のプログラムを複数のブラウザー クッキーなしのセッション ID を含むリンクは、共有される場合に、セッション データが不適切に共有されることができます。 セッション id のリサイクルを無効にして、複数のクライアントによって共有されているセッション データの可能性を減らすことができます。 これを行うには、設定、 `regenerateExpiredSessionId` する構成要素の属性 `true`します。 新しいセッション ID が期限切れのセッション ID を持つ cookieless セッション要求が行われたときに生成されるようになります。 この 有効期限が切れたセッション id が行われた要求が HTTP を使用している場合を注意してください。 `POST` メソッドをから投稿されたデータが失われる場合 `regenerateExpiredSessionId` は `true`, ASP.NET がブラウザーにが URL に新しいセッション id に確実にリダイレクトを実行してください。  
   
 > [!NOTE]
->  While setting the `regenerateExpiredSessionId` attribute to `true` reduces the possibility of unwanted sharing of session data, it does not protect against an unwanted source gaining access to the session of another user by obtaining the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value and including it in requests to the server. If you are storing private or sensitive information in session state, it is recommended that you use SSL to encrypt any communication between the browser and server that includes the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>.  
+>  設定中に、 `regenerateExpiredSessionId` 属性を `true` 可能性を低減セッション データが共有の不要なは保護されない、望ましくないソースを取得することで別のユーザーのセッションへのアクセスに対して、 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値と、サーバーへの要求に含めます。 セッション状態で、個人情報または機密情報を保存する場合は、ブラウザーとを含むサーバー間の通信の暗号化に SSL を使用することをお勧めしますが、 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>です。  
   
    
   
-## Examples  
- The following code example sets the `cookieless` session attribute to true in the Web.config file.  
+## 例  
+ 次のコード例、 `cookieless` セッション属性を Web.config ファイルで true です。  
   
 ```  
 <configuration>  
@@ -382,9 +404,9 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the session was created with the current request.</summary>
+        <summary>セッションが現在の要求が作成されたかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the session was created with the current request; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 現在の要求で、セッションが作成された場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -401,10 +423,14 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether the session is read-only.</summary>
-        <value>
-          <see langword="true" /> if the session is read-only; otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>セッションは読み取り専用であるかどうかを示す値を取得します。</summary>
+        <value>セッションが読み取り専用の場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsSynchronized">
@@ -420,10 +446,14 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).</summary>
-        <value>
-          <see langword="true" /> if access to the collection is synchronized (thread safe); otherwise, <see langword="false" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>セッション状態の値のコレクションへのアクセスが同期されているかどうかを示す値 \(スレッド セーフである\) を取得します。</summary>
+        <value>コレクションへのアクセスが同期されている \(スレッド セーフである\) 場合は <see langword="true" />、それ以外の場合は <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -442,10 +472,15 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">The numerical index of the session value.</param>
-        <summary>Gets or sets a session value by numerical index.</summary>
-        <value>The session-state value stored at the specified index, or <see langword="null" /> if the item does not exist.</value>
-        <remarks>To be added.</remarks>
+        <param name="index">セッションの値の数値インデックス。</param>
+        <summary>取得または数字のインデックスでのセッション値を設定します。</summary>
+        <value>指定したインデックスに格納されているセッション状態の値または <see langword="null" /> アイテムが存在しない場合。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -464,10 +499,15 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The key name of the session value.</param>
-        <summary>Gets or sets a session value by name.</summary>
-        <value>The session-state value with the specified name, or <see langword="null" /> if the item does not exist.</value>
-        <remarks>To be added.</remarks>
+        <param name="name">セッションの値のキー名。</param>
+        <summary>取得または名前でセッション値を設定します。</summary>
+        <value>指定した名前のセッション状態の値または <see langword="null" /> アイテムが存在しない場合。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Keys">
@@ -483,9 +523,15 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Collections.Specialized.NameObjectCollectionBase+KeysCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of the keys for all values stored in the session-state collection.</summary>
-        <value>The <see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /> that contains all the session keys.</value>
-        <remarks>To be added.</remarks>
+        <summary>セッション状態のコレクションに格納されているすべての値のキーのコレクションを取得します。</summary>
+        <value>
+          <see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /> すべてのセッション キーを格納します。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LCID">
@@ -501,16 +547,19 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the locale identifier (LCID) of the current session.</summary>
-        <value>A <see cref="T:System.Globalization.CultureInfo" /> instance that specifies the culture of the current session.</value>
+        <summary>現在のセッションのロケール識別子 \(LCID\) を取得または設定します。</summary>
+        <value>A <see cref="T:System.Globalization.CultureInfo" /> インスタンスを現在のセッションのカルチャを指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.HttpSessionState.LCID%2A> property is provided for compatibility with earlier versions of ASP only. If you do not need to maintain backward compatibility with ASP pages, use the <xref:System.Globalization.CultureInfo.LCID%2A> property instead.  
+## 解説  
+ <xref:System.Web.SessionState.HttpSessionState.LCID%2A> プロパティは、ASP の旧バージョンのみと互換性のために提供します。 ASP ページとの下位互換性を維持する必要がない場合、 <xref:System.Globalization.CultureInfo.LCID%2A> プロパティ代わりにします。  
   
- ASP.NET does not store the locale identifier in session state. The <xref:System.Web.SessionState.HttpSessionState.LCID%2A> property accesses the <xref:System.Globalization.CultureInfo.LCID%2A> property to get and set the identifier.  
+ ASP.NET では、セッション状態にロケール識別子は保存されません。<xref:System.Web.SessionState.HttpSessionState.LCID%2A> プロパティへのアクセス、 <xref:System.Globalization.CultureInfo.LCID%2A> プロパティを取得し、識別子を設定します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -528,18 +577,19 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Web.SessionState.SessionStateMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the current session-state mode.</summary>
-        <value>One of the <see cref="T:System.Web.SessionState.SessionStateMode" /> values.</value>
+        <summary>現在のセッション状態モードを取得します。</summary>
+        <value>
+          <see cref="T:System.Web.SessionState.SessionStateMode" /> 値のいずれか。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For information about how to configure your server for <xref:System.Web.SessionState.SessionStateMode.StateServer> or <xref:System.Web.SessionState.SessionStateMode.SQLServer> session-state storage, see [ASP.NET Session State Overview](http://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc).  
+## 解説  
+ サーバーを構成する方法については <xref:System.Web.SessionState.SessionStateMode.StateServer> または <xref:System.Web.SessionState.SessionStateMode.SQLServer> セッション状態の記憶域を参照してください [ASP.NET Session State Overview](http://msdn.microsoft.com/ja-jp/6d60d381-6521-4e1d-9089-da6464f2a9bc)します。  
   
    
   
-## Examples  
- The following code example sets the `mode` session attribute to <xref:System.Web.SessionState.SessionStateMode.SQLServer> in the Web.config file. For SQL Server session mode, the `sqlConnectionString` attribute is also required.  
+## 例  
+ 次のコード例、 `mode` セッション属性を <xref:System.Web.SessionState.SessionStateMode.SQLServer> Web.config ファイルにします。 SQL Server セッション モードの場合、 `sqlConnectionString` 属性も必要です。  
   
 ```  
 <configuration>  
@@ -573,21 +623,21 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the item to delete from the session-state collection.</param>
-        <summary>Deletes an item from the session-state collection.</summary>
+        <param name="name">セッション状態コレクションから削除する項目の名前。</param>
+        <summary>セッション状態のコレクションから項目を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the session-state collection does not contain an element with the specified `name`, the collection remains unchanged. No exception is thrown.  
+## 解説  
+ セッション状態のコレクションに指定した要素が含まれていないかどうかは `name`, 、コレクションは変更されません。 例外をスローすることはありません。  
   
    
   
-## Examples  
- The following example shows how to store values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Add%2A> method. It also shows how to remove values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Remove%2A> method. A <xref:System.Web.UI.WebControls.Repeater> control is used to display the contents of session state on the Web page. The <xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> method is used to iterate through the session-state collection and populate the <xref:System.Web.UI.WebControls.Repeater> control.  
+## 例  
+ 次の例を使用してセッション状態に値を格納する方法を示しています、 <xref:System.Web.SessionState.HttpSessionState.Add%2A> メソッドです。 使用してセッション状態に値を削除する方法も示します、 <xref:System.Web.SessionState.HttpSessionState.Remove%2A> メソッドです。 A <xref:System.Web.UI.WebControls.Repeater> コントロールを使用して、Web ページ上のセッション状態の内容を表示します。<xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> メソッドの使用をセッション状態のコレクションを反復処理し、 <xref:System.Web.UI.WebControls.Repeater> コントロールです。  
   
- <!-- TODO: review snippet reference [!code-csharp[HttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]  -->
- <!-- TODO: review snippet reference [!code-vb[HttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  -->  
+ [!code-csharp[HttpSessionState\#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]
+ [!code-vb[HttpSessionState\#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  
   
  ]]></format>
         </remarks>
@@ -607,13 +657,16 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Removes all keys and values from the session-state collection.</summary>
+        <summary>セッション状態のコレクションからすべてのキーと値を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Web.SessionState.HttpSessionState.RemoveAll%2A> performs the same function as <xref:System.Web.SessionState.HttpSessionState.Clear%2A>.  
+## 解説  
+ <xref:System.Web.SessionState.HttpSessionState.RemoveAll%2A> 同じ機能を実行 <xref:System.Web.SessionState.HttpSessionState.Clear%2A>します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -634,15 +687,20 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">The index of the item to remove from the session-state collection.</param>
-        <summary>Deletes an item at a specified index from the session-state collection.</summary>
-        <remarks>To be added.</remarks>
+        <param name="index">セッション状態コレクションから削除する項目のインデックス。</param>
+        <summary>セッション状態のコレクションから指定したインデックス位置にある項目を削除します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="index" /> is less than zero.  
+          <paramref name="index" /> が 0 未満です。  
   
- \- or -  
+ または  
   
- <paramref name="index" /> is equal to or greater than <see cref="P:System.Web.SessionState.HttpSessionState.Count" />.</exception>
+ <paramref name="index" /> が <see cref="P:System.Web.SessionState.HttpSessionState.Count" /> 以上になっています。</exception>
       </Docs>
     </Member>
     <Member MemberName="SessionID">
@@ -658,26 +716,26 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the unique identifier for the session.</summary>
-        <value>The unique session identifier.</value>
+        <summary>セッションの一意の識別子を取得します。</summary>
+        <value>一意のセッション識別子。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> property is used to uniquely identify a browser with session data on the server. The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value is randomly generated by ASP.NET and stored in a non-expiring session cookie in the browser. The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value is then sent in a cookie with each request to the ASP.NET application.  
+## 解説  
+ <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> プロパティは、サーバー上のセッション データと、ブラウザーを一意に識別するために使用します。<xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値がランダムに ASP.NET によって生成され、ブラウザーで有効期限のないセッション cookie に保存します。<xref:System.Web.SessionState.HttpSessionState.SessionID%2A> ASP.NET アプリケーションに要求のたびに、cookie の値が送信されます。  
   
- If you want to disable the use of cookies in your ASP.NET application and still make use of session state, you can configure your application to store the session identifier in the URL instead of a cookie by setting the `cookieless` attribute of the  configuration element to `true`, or to <xref:System.Web.HttpCookieMode.UseUri>, in the Web.config file for your application. You can have ASP.NET determine whether cookies are supported by the browser by specifying a value of <xref:System.Web.HttpCookieMode.UseDeviceProfile> for the `cookieless` attribute. You can also have ASP.NET determine whether cookies are enabled for the browser by specifying a value of <xref:System.Web.HttpCookieMode.AutoDetect> for the `cookieless` attribute. If cookies are supported when <xref:System.Web.HttpCookieMode.UseDeviceProfile> is specified, or enabled when <xref:System.Web.HttpCookieMode.AutoDetect> is specified, then the session identifier will be stored in a cookie; otherwise the session identifier will be stored in the URL. For more information, see the <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> property.  
+ でも行うことを ASP.NET アプリケーションで cookie の使用を無効にする場合のセッション状態を使用して、クッキーではなく URL に設定してセッション識別子を格納するアプリケーションを構成することができます、 `cookieless` する構成要素の属性 `true`, 、または <xref:System.Web.HttpCookieMode.UseUri>, 、アプリケーションの Web.config ファイルにします。 ASP.NET の値を指定することによって、ブラウザーでクッキーがサポートされているかどうかを判断することが <xref:System.Web.HttpCookieMode.UseDeviceProfile> の `cookieless` 属性です。 ASP.NET の値を指定することによって、ブラウザーの cookie を有効にするかどうかを判断することもできます <xref:System.Web.HttpCookieMode.AutoDetect> の `cookieless` 属性です。 クッキーがサポートされている場合と <xref:System.Web.HttpCookieMode.UseDeviceProfile> が指定すると、またはいつ有効になっている <xref:System.Web.HttpCookieMode.AutoDetect> が指定されている場合は、セッション cookie に格納されている以外の場合に、識別子になりますセッション識別子は、URL に格納されます。 詳細については、<xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> プロパティを参照してください。  
   
- The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> is sent between the server and the browser in clear text, either in a cookie or in the URL. As a result, an unwanted source could gain access to the session of another user by obtaining the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value and including it in requests to the server. If you are storing private or sensitive information in session state, it is recommended that you use SSL to encrypt any communication between the browser and server that includes the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>.  
+ <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> クッキーまたは URL でクリア テキストで、サーバーとブラウザー間で送信します。 その結果、望ましくないソース アクセスされてしまう別のユーザーのセッションに取得することによって、 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 値と、サーバーへの要求に含めます。 セッション状態で、個人情報または機密情報を保存する場合は、ブラウザーとを含むサーバー間の通信の暗号化に SSL を使用することをお勧めしますが、 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>です。  
   
- When using cookie-based session state, ASP.NET does not allocate storage for session data until the <xref:System.Web.UI.Page.Session%2A> object is used. As a result, a new session ID is generated for each page request until the session object is accessed. If your application requires a static session ID for the entire session, you can either implement the `Session_Start` method in the application's Global.asax file and store data in the <xref:System.Web.UI.Page.Session%2A> object to fix the session ID, or you can use code in another part of your application to explicitly store data in the <xref:System.Web.UI.Page.Session%2A> object.  
+ ASP.NET はまでセッション データのストレージを割り当てられません cookie ベースのセッション状態を使用する場合、 <xref:System.Web.UI.Page.Session%2A> オブジェクトを使用します。 このため、セッション オブジェクトがアクセスされるまでページ要求ごとに、新しいセッション ID が生成されます。 実装するか、アプリケーションでは、セッション全体で静的なセッション ID が必要とする場合は、 `Session_Start` メソッドで、アプリケーションの Global.asax ファイルにデータを保存、 <xref:System.Web.UI.Page.Session%2A> セッション ID を解決するオブジェクトまたはアプリケーションの別の部分でコードを使用するには明示的にデータを格納する、 <xref:System.Web.UI.Page.Session%2A> オブジェクトです。  
   
- If your application uses cookieless session state, the session ID is generated on the first page view and is maintained for the entire session.  
+ アプリケーションでは、クッキーなしのセッション状態を使用する場合、セッション ID は最初のページ ビューの生成され、セッション全体で保持されます。  
   
    
   
-## Examples  
- The following code example shows a Web.config file that configures session state to use cookieless session identifiers. For more information, see the <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> property.  
+## 例  
+ 次のコード例では、クッキーなしのセッション識別子を使用するセッション状態を構成する Web.config ファイルを示します。 詳細については、<xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> プロパティを参照してください。  
   
 ```  
 <configuration>  
@@ -707,23 +765,24 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Web.HttpStaticObjectsCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of objects declared by <see langword="&lt;object Runat=&quot;Server&quot; Scope=&quot;Session&quot;/&gt;" /> tags within the ASP.NET application file Global.asax.</summary>
-        <value>An <see cref="T:System.Web.HttpStaticObjectsCollection" /> containing objects declared in the Global.asax file.</value>
+        <summary>宣言されたオブジェクトのコレクションを取得 <see langword="&lt;object Runat=&quot;Server&quot; Scope=&quot;Session&quot;/&gt;" /> ASP.NET アプリケーション ファイル Global.asax 内のタグ。</summary>
+        <value>
+          <see cref="T:System.Web.HttpStaticObjectsCollection" /> Global.asax ファイルで宣言されているオブジェクトを含みます。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If an object on a page does not support serialization and <xref:System.Web.SessionState.HttpSessionState.Mode%2A> is out-of-process (<xref:System.Web.SessionState.SessionStateMode.SQLServer> or <xref:System.Web.SessionState.SessionStateMode.StateServer>), the object will not be created and will not be added to this collection.  
+## 解説  
+ ページ上のオブジェクトがシリアル化をサポートしていないかどうか、 <xref:System.Web.SessionState.HttpSessionState.Mode%2A> はアウト プロセス \(<xref:System.Web.SessionState.SessionStateMode.SQLServer> または <xref:System.Web.SessionState.SessionStateMode.StateServer>\)、オブジェクトは作成されませんし、このコレクションには追加されません。  
   
- The <xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A> property is provided for compatibility with earlier versions of ASP.  
+ <xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A> プロパティは、ASP の旧バージョンとの互換性を提供します。  
   
    
   
-## Examples  
- The following code example lists the `id` and object type of the objects in the <xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A> collection.  
+## 例  
+ 次のコード例の一覧、 `id` され内のオブジェクトのオブジェクトの種類、 <xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A> コレクションです。  
   
- [!code-csharp[HttpSessionState#10](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/snippetscs.aspx#10)]
- [!code-vb[HttpSessionState#10](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/snippetsvb.aspx#10)]  
+ [!code-csharp[HttpSessionState\#10](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/snippetscs.aspx#10)]
+ [!code-vb[HttpSessionState\#10](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/snippetsvb.aspx#10)]  
   
  ]]></format>
         </remarks>
@@ -742,9 +801,14 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets an object that can be used to synchronize access to the collection of session-state values.</summary>
-        <value>An object that can be used to synchronize access to the collection.</value>
-        <remarks>To be added.</remarks>
+        <summary>セッション状態値のコレクションへのアクセスを同期するために使用できるオブジェクトを取得します。</summary>
+        <value>コレクションへのアクセスを同期するために使用できるオブジェクト。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Timeout">
@@ -760,20 +824,20 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets and sets the amount of time, in minutes, allowed between requests before the session-state provider terminates the session.</summary>
-        <value>The time-out period, in minutes.</value>
+        <summary>取得し、セッション状態プロバイダーは、セッションを終了する前に要求間で許可される分単位で、時間を設定します。</summary>
+        <value>タイムアウト期間 \(分\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property can be set in the Web.config file for an application using the `timeout` attribute of the  configuration element, or you can set the <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property value directly using application code.  
+## 解説  
+ <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> を使用して、アプリケーションの Web.config ファイルでプロパティを設定できます、 `timeout` 構成要素の属性を設定できる、 <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> アプリケーション コードを使用して直接プロパティ値です。  
   
- The <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property cannot be set to a value greater than 525,600 minutes (1 year). The default value is 20 minutes.  
+ <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> プロパティに設定できません値 525,600 分 \(1 年\) を超えています。 既定値は、20 分です。  
   
    
   
-## Examples  
- The following code example sets the `timeout` session attribute to 30 minutes in the Web.config file.  
+## 例  
+ 次のコード例、 `timeout` を 30 分に、Web.config ファイルでのセッションの属性です。  
   
 ```  
 <configuration>  
@@ -790,5 +854,14 @@ http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx
         </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Item">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>取得または個別のセッション値を設定します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

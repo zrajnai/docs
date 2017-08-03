@@ -15,26 +15,26 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Represents a log-structured storage.</summary>
+    <summary>ログ構造化ストレージを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IO.Log.LogRecordSequence> class provides an implementation of the record sequence interface on top of a Common Log File System (CLFS) log. It works with the <xref:System.IO.Log.LogStore> class, which provides an interface for directly manipulating and managing a CLFS log file. A log store provides append-only storage across a set of disk extents. The <xref:System.IO.Log.LogStore> class represents this storage, and provides methods for adding and removing containers, setting policy, and creating archives. It does not provide methods for reading from and writing to the storage; these methods are provided by the <xref:System.IO.Log.LogRecordSequence> class.  
+## 解説  
+ <xref:System.IO.Log.LogRecordSequence> クラスは、Common Log File System \(CLFS\) ログ上でレコード シーケンス インターフェイスの実装を提供します。 CLFS ログ ファイルを直接操作および管理するためのインターフェイスを提供する <xref:System.IO.Log.LogStore> クラスと共に動作します。 ログ ストアは、一連のディスク エクステントで使用される追加専用ストレージです。<xref:System.IO.Log.LogStore> クラスはこのストレージを表し、コンテナーの追加および削除、ポリシーの追加、アーカイブの作成を行うメソッドを提供します。 記憶域の読み書き用のメソッドは提供しません。これらのメソッドは、<xref:System.IO.Log.LogRecordSequence> クラスで提供されます。  
   
- The relationship between the <xref:System.IO.Log.LogStore> class and the <xref:System.IO.Log.LogRecordSequence> class is similar to the relationship between a disk file and a <xref:System.IO.FileStream> object. The disk file provides the actual storage and has attributes such as length and last access time, while the <xref:System.IO.FileStream> object provides a view on the file that can be used to read from it and write to it. Similarly, the <xref:System.IO.Log.LogStore> class has attributes like a policy and a collection of disk extents, and the <xref:System.IO.Log.LogRecordSequence> class provides a record-oriented mechanism for reading and writing data.  
+ <xref:System.IO.Log.LogStore> クラスと <xref:System.IO.Log.LogRecordSequence> クラスの関係は、ディスク ファイルと <xref:System.IO.FileStream> オブジェクトの関係に似ています。 ディスク ファイルは記憶域を提供し、長さや最終アクセス日時などの属性を持つのに対して、<xref:System.IO.FileStream> オブジェクトはファイルに対する読み書きで使用できるファイルに関するビューを提供します。 同様に、<xref:System.IO.Log.LogStore> クラスはポリシーやディスク エクステントのコレクションなどの属性を持つのに対して、<xref:System.IO.Log.LogRecordSequence> クラスはデータを読み書きするためのレコード指向の機構を提供します。  
   
- Unlike the file record sequence represented by the <xref:System.IO.Log.FileRecordSequence> class, a <xref:System.IO.Log.LogStore> instance stores its data in a collection of disk extents, represented by <xref:System.IO.Log.LogExtent> instances. The extents in a given <xref:System.IO.Log.LogStore> instance are all of uniform size, and space is added to and removed from a <xref:System.IO.Log.LogStore> instance in extent increments. To add and remove log extents, use the <xref:System.IO.Log.LogExtentCollection.Add%2A> and <xref:System.IO.Log.LogExtentCollection.Remove%2A> methods of the <xref:System.IO.Log.LogExtentCollection> object, which can be returned by the <xref:System.IO.Log.LogStore.Extents%2A> property.  
+ <xref:System.IO.Log.FileRecordSequence> クラスにより表されるファイル レコード シーケンスとは異なり、<xref:System.IO.Log.LogStore> インスタンスは <xref:System.IO.Log.LogExtent> インスタンスにより表されるディスク エクステントのコレクションにデータを保存します。 指定の <xref:System.IO.Log.LogStore> インスタンス内のエクステントはすべて、均一のサイズを持ちます。また、エクステントの増加分について、<xref:System.IO.Log.LogStore> インスタンスに対して領域の追加と削除が行われます。 ログ エクステントを追加および削除するには、<xref:System.IO.Log.LogExtentCollection.Add%2A> プロパティで返される <xref:System.IO.Log.LogExtentCollection.Remove%2A> オブジェクトの <xref:System.IO.Log.LogExtentCollection> メソッドおよび <xref:System.IO.Log.LogStore.Extents%2A> メソッドを使用します。  
   
- A <xref:System.IO.Log.LogStore> instance can have policies associated with it. These are represented by <xref:System.IO.Log.LogPolicy> instances that can be returned by the <xref:System.IO.Log.LogStore.Policy%2A> property. A policy dictates rules that the log will attempt to follow, such as maximum number of extents and minimum size, and instructions on growing or shrinking the <xref:System.IO.Log.LogStore> under certain conditions. In addition, you can specify whether a <xref:System.IO.Log.LogStore> instance can be archived. Policies are set per log and are volatile, which means that once every handle to the log is closed, the policy no longer exists.  
+ <xref:System.IO.Log.LogStore> インスタンスには、ポリシーを関連付けることができます。 これらのポリシーは、<xref:System.IO.Log.LogPolicy> プロパティで返される <xref:System.IO.Log.LogStore.Policy%2A> インスタンスで表されます。 ポリシーは、エクステントの最大数と最小サイズなど、ログで準拠を試みる規則と、一定条件下での <xref:System.IO.Log.LogStore> の拡大および縮小の手順を決定します。 また、<xref:System.IO.Log.LogStore> インスタンスをアーカイブ可能にするかどうかを指定することもできます。 ポリシーはログごとに設定され、揮発性を有します。つまり、ログへの各ハンドルを閉じると、ポリシーは存在しなくなります。  
   
    
   
-## Examples  
- The following example shows how to archive a <xref:System.IO.Log.LogStore> to an XML document.  
+## 例  
+ 次の例では、<xref:System.IO.Log.LogStore> を XML ドキュメントにアーカイブする方法を示します。  
   
- [!code-csharp[logarchievesnapshot#0](~/samples/snippets/csharp/VS_Snippets_CFX/logarchievesnapshot/cs/logarchievesnapshot.cs#0)]
- [!code-vb[logarchievesnapshot#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/logarchievesnapshot/vb/logarchievesnapshot.vb#0)]  
+ [!code-csharp[logarchievesnapshot\#0](~/samples/snippets/csharp/VS_Snippets_CFX/logarchievesnapshot/cs/logarchievesnapshot.cs#0)]
+ [!code-vb[logarchievesnapshot\#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/logarchievesnapshot/vb/logarchievesnapshot.vb#0)]  
   
  ]]></format>
     </remarks>
@@ -53,15 +53,15 @@
         <Parameter Name="handle" Type="Microsoft.Win32.SafeHandles.SafeFileHandle" />
       </Parameters>
       <Docs>
-        <param name="handle">A file handle for the log file that the current <see cref="T:System.IO.Log.LogStore" /> object encapsulates.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IO.Log.LogStore" /> class for the specified handle.</summary>
+        <param name="handle">現在の <see cref="T:System.IO.Log.LogStore" /> オブジェクトによってカプセル化されるログ ファイルのファイル ハンドル。</param>
+        <summary>ハンドルを指定して <see cref="T:System.IO.Log.LogStore" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="handle" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The log handle could not be bound to the thread pool.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
-        <exception cref="T:System.ObjectDisposedException">The method was called after the sequence has been disposed of.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
+          <paramref name="handle" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">ログ ハンドルをスレッド プールにバインドできませんでした。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にメソッドが呼び出されました。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -78,45 +78,44 @@
         <Parameter Name="mode" Type="System.IO.FileMode" />
       </Parameters>
       <Docs>
-        <param name="path">A relative or absolute path for the base file of the log store to open.</param>
-        <param name="mode">One of the <see cref="T:System.IO.FileMode" /> values that determines how to open or create the store.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IO.Log.LogStore" /> class with the specified path and mode.</summary>
+        <param name="path">開くログ ストアの基本ファイルの相対パスまたは絶対パス。</param>
+        <param name="mode">ストアを開くか作成する方法を決定する <see cref="T:System.IO.FileMode" /> 値の 1 つ。</param>
+        <summary>パスとモードを指定して、<see cref="T:System.IO.Log.LogStore" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this constructor to open a log store with the specified path and mode. The store is opened with read/write access, and shares read access.  
+## 解説  
+ このコンストラクターを使用して、指定されたパスおよびモードでログ ストアを開きます。 ストアは読み取り\/書き込みアクセスで開かれ、読み取りアクセスを共有します。  
   
- The `path` parameter should use the following syntax:  
+ `path` パラメーターでは、次の構文を使用する必要があります。  
   
  `log:<physical log name>[::<log client name>]`  
   
- where `<physical log name>` is a valid path to a log file, and `<log client name>` is a unique client identifier. A log store should be either a physical log store or a virtual log store, but not both. Once a log store has been created physically or virtually, it remains so for its lifetime. A physical log store is created by specifying only the physical log name. A virtual log store is created by specifying both the physical log name and the log client name.  
+ `<physical log name>` はログ ファイルへの有効なパス、`<log client name>` は一意のクライアント識別子です。 ログ ストアは、物理ログ ストアまたは仮想ログ ストアであることが必要です。ただし、両方である必要はありません。 ログ ストアが物理的または仮想的に作成されると、有効期間にわたり維持されます。 物理ログ ストアは、物理ログ名を指定することでのみ作成されます。 仮想ログ ストアは、物理ログの名前とログ クライアントの名前の両方を指定することにより作成されます。  
   
- Clients that share the same physical log name share the same extents collection and policy.  
+ 同じ物理ログ名を共有するクライアントは、同じエクステント コレクションとポリシーを共有します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is <see langword="null" />.</exception>
+          <paramref name="path" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="path" /> is an empty string ("").  
+          <paramref name="path" /> が空の文字列 \(""\) です。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains only white space.  
+ <paramref name="path" /> には、空白のみが含まれます。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains one or more invalid characters.</exception>
+ <paramref name="path" /> には 1 つ以上の無効な文字が含まれます。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="mode" /> contains an invalid value.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when opening the log store.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
-        <exception cref="T:System.PlatformNotSupportedException">
-          <see cref="T:System.IO.Log.LogStore" /> cannot be used because the required Common Log File System (CLFS) component is not installed. Install the CLFS component if it is available for your platform or use the <see cref="T:System.IO.Log.FileRecordSequence" /> class instead.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
+          <paramref name="mode" /> に無効な値が含まれています。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">ログ ストアを開くときに、I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">必要な Common Log File System \(CLFS\) コンポーネントがインストールされていないため、<see cref="T:System.IO.Log.LogStore" /> を使用できません。 使用しているプラットフォームで CLFS コンポーネントを使用可能な場合はインストールしてください。または、代わりに <see cref="T:System.IO.Log.FileRecordSequence" /> クラスを使用してください。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -134,50 +133,50 @@
         <Parameter Name="access" Type="System.IO.FileAccess" />
       </Parameters>
       <Docs>
-        <param name="path">A relative or absolute path for the base file of the log store to open.</param>
-        <param name="mode">One of the <see cref="T:System.IO.FileMode" /> values that determines how to open or create the store.</param>
-        <param name="access">One of the <see cref="T:System.IO.FileAccess" /> values that determines how the file can be accessed by the <see cref="T:System.IO.Log.LogStore" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IO.Log.LogStore" /> class with the specified path, mode, and access.</summary>
+        <param name="path">開くログ ストアの基本ファイルの相対パスまたは絶対パス。</param>
+        <param name="mode">ストアを開くか作成する方法を決定する <see cref="T:System.IO.FileMode" /> 値の 1 つ。</param>
+        <param name="access">
+          <see cref="T:System.IO.FileAccess" /> によりこのファイルにアクセスできる方法を決定する <see cref="T:System.IO.Log.LogStore" /> 値の 1 つ。</param>
+        <summary>パス、モード、およびアクセスを指定して、<see cref="T:System.IO.Log.LogStore" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this constructor to open a new log store with the specified path, mode, and access. The store is opened sharing read access.  
+## 解説  
+ このコンストラクターを使用して、指定されたパス、モード、およびアクセスで新しいログ ストアを開きます。 このストアが開き、アクセスを共有します。  
   
- The `path` parameter should use the following syntax:  
+ `path` パラメーターでは、次の構文を使用する必要があります。  
   
  `log:<physical log name>[::<log client name>]`  
   
- where `<physical log name>` is a valid path to a log file, and `<log client name>` is a unique client identifier. A log store should be either a physical log store or a virtual log store, but not both. Once a log store has been created physically or virtually, it remains so for its lifetime. A physical log store is created by specifying only the physical log name. A virtual log store is created by specifying both the physical log name and the log client name.  
+ `<physical log name>` はログ ファイルへの有効なパス、`<log client name>` は一意のクライアント識別子です。 ログ ストアは、物理ログ ストアまたは仮想ログ ストアであることが必要です。ただし、両方である必要はありません。 ログ ストアが物理的または仮想的に作成されると、有効期間にわたり維持されます。 物理ログ ストアは、物理ログ名を指定することでのみ作成されます。 仮想ログ ストアは、物理ログの名前とログ クライアントの名前の両方を指定することにより作成されます。  
   
- Clients that share the same physical log name share the same extents collection and policy.  
+ 同じ物理ログ名を共有するクライアントは、同じエクステント コレクションとポリシーを共有します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is <see langword="null" />.</exception>
+          <paramref name="path" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="path" /> is an empty string ("").  
+          <paramref name="path" /> が空の文字列 \(""\) です。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains only white space.  
+ <paramref name="path" /> には、空白のみが含まれます。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains one or more invalid characters.</exception>
+ <paramref name="path" /> には 1 つ以上の無効な文字が含まれます。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="mode" /> contains an invalid value.  
+          <paramref name="mode" /> に無効な値が含まれています。  
   
- -or  
+ または  
   
- <paramref name="access" /> contains an invalid value.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when opening the log store.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
-        <exception cref="T:System.PlatformNotSupportedException">
-          <see cref="T:System.IO.Log.LogStore" /> cannot be used because the required Common Log File System (CLFS) component is not installed. Install the CLFS component if it is available for your platform or use the <see cref="T:System.IO.Log.FileRecordSequence" /> class instead.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
+ <paramref name="access" /> に無効な値が含まれています。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">ログ ストアを開くときに、I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">必要な Common Log File System \(CLFS\) コンポーネントがインストールされていないため、<see cref="T:System.IO.Log.LogStore" /> を使用できません。 使用しているプラットフォームで CLFS コンポーネントを使用可能な場合はインストールしてください。または、代わりに <see cref="T:System.IO.Log.FileRecordSequence" /> クラスを使用してください。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -196,55 +195,56 @@
         <Parameter Name="share" Type="System.IO.FileShare" />
       </Parameters>
       <Docs>
-        <param name="path">A relative or absolute path for the base file of the log store to open.</param>
-        <param name="mode">One of the <see cref="T:System.IO.FileMode" /> values that determines how to open or create the store.</param>
-        <param name="access">One of the <see cref="T:System.IO.FileAccess" /> values that determines how the file can be accessed by the <see cref="T:System.IO.Log.LogStore" />.</param>
-        <param name="share">One of the <see cref="T:System.IO.FileShare" /> values that determines how the log store will be shared among processes.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IO.Log.LogStore" /> class.</summary>
+        <param name="path">開くログ ストアの基本ファイルの相対パスまたは絶対パス。</param>
+        <param name="mode">ストアを開くか作成する方法を決定する <see cref="T:System.IO.FileMode" /> 値の 1 つ。</param>
+        <param name="access">
+          <see cref="T:System.IO.FileAccess" /> によりこのファイルにアクセスできる方法を決定する <see cref="T:System.IO.Log.LogStore" /> 値の 1 つ。</param>
+        <param name="share">ログ ストアが処理中に共有される方法を指定する <see cref="T:System.IO.FileShare" /> 値の 1 つ。</param>
+        <summary>
+          <see cref="T:System.IO.Log.LogStore" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor initializes a new <xref:System.IO.Log.LogStore> object that it opens with the specified path, mode, and access. The store is opened sharing the specified access.  
+## 解説  
+ このコンストラクターは、新しい <xref:System.IO.Log.LogStore> オブジェクトを初期化し、指定のパス、モード、およびアクセスと共に開きます。 このストアが開き、指定のアクセスを共有します。  
   
- The `path` parameter should use the following syntax:  
+ `path` パラメーターでは、次の構文を使用する必要があります。  
   
  `log:<physical log name>[::<log client name>]`  
   
- where `<physical log name>` is a valid path to a log file, and `<log client name>` is a unique client identifier. A log store should be either a physical log store or a virtual log store, but not both. Once a log store has been created physically or virtually, it remains so for its lifetime. A physical log store is created by specifying only the physical log name. A virtual log store is created by specifying both the physical log name and the log client name.  
+ `<physical log name>` はログ ファイルへの有効なパス、`<log client name>` は一意のクライアント識別子です。 ログ ストアは、物理ログ ストアまたは仮想ログ ストアであることが必要です。ただし、両方である必要はありません。 ログ ストアが物理的または仮想的に作成されると、有効期間にわたり維持されます。 物理ログ ストアは、物理ログ名を指定することでのみ作成されます。 仮想ログ ストアは、物理ログの名前とログ クライアントの名前の両方を指定することにより作成されます。  
   
- Clients that share the same physical log name share the same extents collection and policy.  
+ 同じ物理ログ名を共有するクライアントは、同じエクステント コレクションとポリシーを共有します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is <see langword="null" />.</exception>
+          <paramref name="path" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="path" /> is an empty string ("").  
+          <paramref name="path" /> が空の文字列 \(""\) です。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains only white space.  
+ <paramref name="path" /> には、空白のみが含まれます。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains one or more invalid characters.</exception>
+ <paramref name="path" /> には 1 つ以上の無効な文字が含まれます。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="mode" /> contains an invalid value.  
+          <paramref name="mode" /> に無効な値が含まれています。  
   
- -or  
+ または  
   
- <paramref name="access" /> contains an invalid value.  
+ <paramref name="access" /> に無効な値が含まれています。  
   
- -or-  
+ または  
   
- <paramref name="share" /> contains an invalid value.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when opening the log store.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
-        <exception cref="T:System.PlatformNotSupportedException">
-          <see cref="T:System.IO.Log.LogStore" /> cannot be used because the required Common Log File System (CLFS) component is not installed. Install the CLFS component if it is available for your platform or use the <see cref="T:System.IO.Log.FileRecordSequence" /> class instead.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
+ <paramref name="share" /> に無効な値が含まれています。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">ログ ストアを開くときに、I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">必要な Common Log File System \(CLFS\) コンポーネントがインストールされていないため、<see cref="T:System.IO.Log.LogStore" /> を使用できません。 使用しているプラットフォームで CLFS コンポーネントを使用可能な場合はインストールしてください。または、代わりに <see cref="T:System.IO.Log.FileRecordSequence" /> クラスを使用してください。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -264,69 +264,71 @@
         <Parameter Name="fileSecurity" Type="System.Security.AccessControl.FileSecurity" />
       </Parameters>
       <Docs>
-        <param name="path">A relative or absolute path for the base file of the log store to open.</param>
-        <param name="mode">One of the <see cref="T:System.IO.FileMode" /> values that determines how to open or create the store.</param>
-        <param name="access">One of the <see cref="T:System.IO.FileAccess" /> values that determines how the file can be accessed by the <see cref="T:System.IO.Log.LogStore" />.</param>
-        <param name="share">One of the <see cref="T:System.IO.FileShare" /> values that determines how the log store will be shared among processes.</param>
-        <param name="fileSecurity">One of the <see cref="T:System.Security.AccessControl.FileSecurity" /> value that specifies the security to set on the newly created store if the store must be created.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.IO.Log.LogStore" /> class.</summary>
+        <param name="path">開くログ ストアの基本ファイルの相対パスまたは絶対パス。</param>
+        <param name="mode">ストアを開くか作成する方法を決定する <see cref="T:System.IO.FileMode" /> 値の 1 つ。</param>
+        <param name="access">
+          <see cref="T:System.IO.FileAccess" /> によりこのファイルにアクセスできる方法を決定する <see cref="T:System.IO.Log.LogStore" /> 値の 1 つ。</param>
+        <param name="share">ログ ストアが処理中に共有される方法を指定する <see cref="T:System.IO.FileShare" /> 値の 1 つ。</param>
+        <param name="fileSecurity">ストアを作成する必要がある場合に、新しく作成したストアに設定するセキュリティを指定する <see cref="T:System.Security.AccessControl.FileSecurity" /> の値の 1 つ。</param>
+        <summary>
+          <see cref="T:System.IO.Log.LogStore" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This constructor initializes a new <xref:System.IO.Log.LogStore> object that it opens with the specified path, mode, and access. The store is opened sharing the specified access. The `path` parameter should follow the following syntax:  
+## 解説  
+ このコンストラクターは、新しい <xref:System.IO.Log.LogStore> オブジェクトを初期化し、指定のパス、モード、およびアクセスと共に開きます。 このストアが開き、指定のアクセスを共有します。`path` パラメーターでは、次の構文を使用する必要があります。  
   
  `log:<physical log name>[::<log client name>]`  
   
- where `<physical log name>` is a valid path to a log file, and `<log client name>` is a unique client identifier. A log store should be either a physical log store or a virtual log store, but not both. Once a log store has been created physically or virtually, it remains so for its lifetime. A physical log store is created by specifying only the physical log name. A virtual log store is created by specifying both the physical log name and the log client name.  
+ `<physical log name>` はログ ファイルへの有効なパス、`<log client name>` は一意のクライアント識別子です。 ログ ストアは、物理ログ ストアまたは仮想ログ ストアであることが必要です。ただし、両方である必要はありません。 ログ ストアが物理的または仮想的に作成されると、有効期間にわたり維持されます。 物理ログ ストアは、物理ログ名を指定することでのみ作成されます。 仮想ログ ストアは、物理ログの名前とログ クライアントの名前の両方を指定することにより作成されます。  
   
- Clients that share the same physical log name share the same extents collection and policy.  
+ 同じ物理ログ名を共有するクライアントは、同じエクステント コレクションとポリシーを共有します。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The log store file name specified by <paramref name="path" /> is not valid.  
+          <paramref name="path" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="path" /> で指定されたログ ストア ファイル名が無効です。  
   
- -or-  
+ または  
   
- <paramref name="Mode" /> is <see langword="CreateNew" />, which cannot be used without write access.  
+ <paramref name="Mode" /> が <see langword="CreateNew" /> であるため、書き込みアクセスがなければ使用できません。  
   
- -or-  
+ または  
   
- <paramref name="Mode" /> is <see langword="OpenOrCreate" />, which cannot be used without write access.</exception>
+ <paramref name="Mode" /> が <see langword="OpenOrCreate" /> であるため、書き込みアクセスがなければ使用できません。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="mode" /> contains an invalid value.  
+          <paramref name="mode" /> に無効な値が含まれています。  
   
- -or  
+ または  
   
- <paramref name="access" /> contains an invalid value.  
+ <paramref name="access" /> に無効な値が含まれています。  
   
- -or-  
+ または  
   
- <paramref name="share" /> contains an invalid value.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when opening the log store.  
+ <paramref name="share" /> に無効な値が含まれています。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">ログ ストアを開くときに、I\/O エラーが発生しました。  
   
- The file specified by <paramref name="path" /> cannot be accessed because it is in use by another process.  
+ <paramref name="path" /> で指定されたファイルは他のプロセスで使用中のため、アクセスできません。  
   
- -or-  
+ または  
   
- The file specified by <paramref name="path" /> cannot be created because the file or directory already exists.  
+ ファイルまたはディレクトリが既に存在するため、<paramref name="path" /> で指定されたファイルを作成できません。  
   
- -or-  
+ または  
   
- The log handle could not be bound to the thread pool.  
+ ログ ハンドルをスレッド プールにバインドできませんでした。  
   
- -or-  
+ または  
   
- The specified log file format or version is invalid.</exception>
-        <exception cref="T:System.PlatformNotSupportedException">
-          <see cref="T:System.IO.Log.LogStore" /> cannot be used because the required Common Log File System (CLFS) component is not installed. Install the CLFS component if it is available for your platform or use the <see cref="T:System.IO.Log.FileRecordSequence" /> class instead.</exception>
-        <exception cref="T:System.ObjectDisposedException">The method was called after the sequence has been disposed of.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
-        <exception cref="T:System.IO.Log.SequenceFullException">The record sequence is full.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
+ 指定されたログ ファイルの形式またはバージョンが無効です。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">必要な Common Log File System \(CLFS\) コンポーネントがインストールされていないため、<see cref="T:System.IO.Log.LogStore" /> を使用できません。 使用しているプラットフォームで CLFS コンポーネントを使用可能な場合はインストールしてください。または、代わりに <see cref="T:System.IO.Log.FileRecordSequence" /> クラスを使用してください。</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にメソッドが呼び出されました。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
+        <exception cref="T:System.IO.Log.SequenceFullException">レコード シーケンスがいっぱいです。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Archivable">
@@ -342,18 +344,17 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating whether this <see cref="T:System.IO.Log.LogStore" /> instance can be archived.</summary>
-        <value>
-          <see langword="true" /> if this <see cref="T:System.IO.Log.LogStore" /> instance can be archived; otherwise, <see langword="false" />.</value>
+        <summary>この <see cref="T:System.IO.Log.LogStore" /> インスタンスがアーカイブ可能であるかどうかを示す値を取得します。</summary>
+        <value>この <see langword="true" /> インスタンスがアーカイブ可能である場合は <see cref="T:System.IO.Log.LogStore" />。それ以外の場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  If a <xref:System.IO.Log.LogStore> is not archivable, calls to the <xref:System.IO.Log.LogStore.CreateLogArchiveSnapshot%2A> and <xref:System.IO.Log.LogStore.SetArchiveTail%2A> methods result in a <xref:System.NotSupportedException> being thrown.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The property was accessed after the sequence has been disposed of.</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にプロパティがアクセスされました。</exception>
       </Docs>
     </Member>
     <Member MemberName="BaseSequenceNumber">
@@ -369,17 +370,17 @@
         <ReturnType>System.IO.Log.SequenceNumber</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the lowest sequence number that corresponds to a valid record in this <see cref="T:System.IO.Log.LogStore" /> instance.</summary>
-        <value>The lowest sequence number that corresponds to a valid record in this <see cref="T:System.IO.Log.LogStore" /> instance.</value>
+        <summary>この <see cref="T:System.IO.Log.LogStore" /> インスタンス内の有効なレコードに対応する下限のシーケンス番号を取得します。</summary>
+        <value>この <see cref="T:System.IO.Log.LogStore" /> インスタンス内の有効なレコードに対応する下限のシーケンス番号。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Valid sequence numbers are greater than or equal to <xref:System.IO.Log.LogStore.BaseSequenceNumber%2A> and less than <xref:System.IO.Log.LogStore.LastSequenceNumber%2A>.  
+## 解説  
+ 有効なシーケンス番号は、<xref:System.IO.Log.LogStore.BaseSequenceNumber%2A> 以上、<xref:System.IO.Log.LogStore.LastSequenceNumber%2A> 未満です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The property was accessed after the sequence has been disposed of.</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にプロパティがアクセスされました。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateLogArchiveSnapshot">
@@ -396,27 +397,27 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Takes a snapshot of the log store state for making a backup.</summary>
-        <returns>A <see cref="T:System.IO.Log.LogArchiveSnapshot" /> object that contains the state necessary to make an archive.</returns>
+        <summary>バックアップを作成するために、ログ ストア状態のスナップショットを取得します。</summary>
+        <returns>アーカイブを作成するのに必要な状態を格納する <see cref="T:System.IO.Log.LogArchiveSnapshot" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example shows how to archive a <xref:System.IO.Log.LogStore> to an XML document.  
+## 例  
+ 次の例では、<xref:System.IO.Log.LogStore> を XML ドキュメントにアーカイブする方法を示します。  
   
- [!code-csharp[logarchievesnapshot#0](~/samples/snippets/csharp/VS_Snippets_CFX/logarchievesnapshot/cs/logarchievesnapshot.cs#0)]
- [!code-vb[logarchievesnapshot#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/logarchievesnapshot/vb/logarchievesnapshot.vb#0)]  
+ [!code-csharp[logarchievesnapshot\#0](~/samples/snippets/csharp/VS_Snippets_CFX/logarchievesnapshot/cs/logarchievesnapshot.cs#0)]
+ [!code-vb[logarchievesnapshot\#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/logarchievesnapshot/vb/logarchievesnapshot.vb#0)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">The log store is not archivable.</exception>
-        <exception cref="T:System.ObjectDisposedException">The method was called after the sequence has been disposed of.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when creating the archive snapshot.</exception>
-        <exception cref="T:System.ArgumentException">An argument is not valid.</exception>
-        <exception cref="T:System.InvalidOperationException">An invalid operation has been executed.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
-        <exception cref="T:System.IO.Log.SequenceFullException">The record sequence is full.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
+        <exception cref="T:System.NotSupportedException">ログ ストアはアーカイブできません。</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にメソッドが呼び出されました。</exception>
+        <exception cref="T:System.IO.IOException">アーカイブ スナップショットの作成時に I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.ArgumentException">引数が有効ではありません。</exception>
+        <exception cref="T:System.InvalidOperationException">無効な操作が実行されました。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
+        <exception cref="T:System.IO.Log.SequenceFullException">レコード シーケンスがいっぱいです。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateLogArchiveSnapshot">
@@ -436,29 +437,29 @@
         <Parameter Name="last" Type="System.IO.Log.SequenceNumber" />
       </Parameters>
       <Docs>
-        <param name="first">The starting sequence number in the range to archive.</param>
-        <param name="last">The ending sequence number in the range to archive.</param>
-        <summary>Takes a snapshot of the log store state between the specified sequence numbers for making a backup.</summary>
-        <returns>A <see cref="T:System.IO.Log.LogArchiveSnapshot" /> object that contains the state necessary to make an archive.</returns>
+        <param name="first">アーカイブする範囲の開始シーケンス番号。</param>
+        <param name="last">アーカイブする範囲の終了シーケンス番号。</param>
+        <summary>バックアップを作成するために、指定されたシーケンス番号範囲のログ ストア状態のスナップショットを取得します。</summary>
+        <returns>アーカイブを作成するのに必要な状態を格納する <see cref="T:System.IO.Log.LogArchiveSnapshot" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The archive snapshot returned from this method encompasses information from either the base sequence number or the archive sequence number, whichever is lower, to the last sequence number. It is not inclusive for the last sequence number, which means that the archive only includes records up to but not including last. In addition, when using this method, the start SequenceNumber must be equal to the BaseSequenceNumber in order for the archive to be consistent.  
+## 解説  
+ このメソッドから返されるアーカイブ スナップショットには、基本シーケンス番号またはアーカイブ シーケンス番号のどちらか小さい方から最後のシーケンス番号までの情報が含まれます。 ただし、アーカイブのレコードには、最後のシーケンス番号は含まれません。 また、このメソッドを使用する場合、アーカイブの一貫性を保つには、開始 SequenceNumber を BaseSequenceNumber と同じ値にする必要があります。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="first" /> or <paramref name="last" /> is not between the base and last sequence numbers of this sequence.</exception>
+          <paramref name="first" /> または <paramref name="last" /> が、このシーケンスの基本シーケンス番号と最後のシーケンス番号との間にありません。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="first" /> is larger than <paramref name="last" />.</exception>
-        <exception cref="T:System.InvalidOperationException">An invalid operation has been executed.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when creating the archive snapshot.</exception>
-        <exception cref="T:System.NotSupportedException">The log store is not archivable.</exception>
-        <exception cref="T:System.ObjectDisposedException">The method was called after the sequence has been disposed of.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
-        <exception cref="T:System.IO.Log.SequenceFullException">The record sequence is full.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
+          <paramref name="first" /> が <paramref name="last" /> を超えています。</exception>
+        <exception cref="T:System.InvalidOperationException">無効な操作が実行されました。</exception>
+        <exception cref="T:System.IO.IOException">アーカイブ スナップショットの作成時に I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.NotSupportedException">ログ ストアはアーカイブできません。</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にメソッドが呼び出されました。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
+        <exception cref="T:System.IO.Log.SequenceFullException">レコード シーケンスがいっぱいです。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Delete">
@@ -477,24 +478,24 @@
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="path">A relative or absolute path for the base file of the log store to remove.</param>
-        <summary>Removes the log store.</summary>
+        <param name="path">削除するログ ストアの基本ファイルの相対パスまたは絶対パス。</param>
+        <summary>ログ ストアを削除します。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="path" /> is <see langword="null" />.</exception>
+          <paramref name="path" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="path" /> is an empty string ("").  
+          <paramref name="path" /> が空の文字列 \(""\) です。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains only white space.  
+ <paramref name="path" /> には、空白のみが含まれます。  
   
- -or-  
+ または  
   
- <paramref name="path" /> contains one or more invalid characters.</exception>
-        <exception cref="T:System.IO.FileNotFoundException">The file cannot be found.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when opening the log store.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
+ <paramref name="path" /> には 1 つ以上の無効な文字が含まれます。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">ファイルが見つかりません。</exception>
+        <exception cref="T:System.IO.IOException">ログ ストアを開くときに、I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -511,19 +512,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.IO.Log.LogStore" />.</summary>
+        <summary>
+          <see cref="T:System.IO.Log.LogStore" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Call <xref:System.IO.Log.LogStore.Dispose%2A> when you have finished using the <xref:System.IO.Log.LogStore>. The <xref:System.IO.Log.LogStore.Dispose%2A> method leaves the <xref:System.IO.Log.LogStore> in an unusable state. After calling <xref:System.IO.Log.LogStore.Dispose%2A> , you must release all references to the <xref:System.IO.Log.LogStore> so the garbage collector can reclaim the memory that the <xref:System.IO.Log.LogStore> was occupying.  
   
 > [!NOTE]
->  Always call <xref:System.IO.Log.LogStore.Dispose%2A> before you release your last reference to the <xref:System.IO.Log.LogStore>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.IO.Log.LogStore> object's `Finalize` method.  
+>  Always call <xref:System.IO.Log.LogStore.Dispose%2A> before you release your last reference to the <xref:System.IO.Log.LogStore>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.IO.Log.LogStore> object's **languageKeyword tag is not supported!!!!**  
+>  method.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The method was called after the sequence has been disposed of.</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にメソッドが呼び出されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Extents">
@@ -539,12 +542,12 @@
         <ReturnType>System.IO.Log.LogExtentCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the collection of log extents that contain the data for this log store.</summary>
-        <value>A <see cref="T:System.IO.Log.LogExtentCollection" /> instance containing the collection of log extents that encapsulates data for this log store.</value>
+        <summary>このログ ストアのデータを格納しているログ エクステントのコレクションを取得します。</summary>
+        <value>このログ ストアのデータをカプセル化したログ エクステントのコレクションを格納している <see cref="T:System.IO.Log.LogExtentCollection" /> インスタンス。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  A <xref:System.IO.Log.LogStore> instance stores its data in a collection of disk extents, represented by <xref:System.IO.Log.LogExtent> instances. The extents in a given <xref:System.IO.Log.LogStore> instance are all of uniform size, and space is added to and removed from a <xref:System.IO.Log.LogStore> instance in extent increments. To add and remove log extents, use the <xref:System.IO.Log.LogExtentCollection.Add%2A>and<xref:System.IO.Log.LogExtentCollection.Remove%2A> methods of the <xref:System.IO.Log.LogExtentCollection> object, which is returned by this property.  
   
  ]]></format>
@@ -564,10 +567,10 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of bytes available in the log store.</summary>
-        <value>The number of bytes available in the log store.</value>
+        <summary>ログ ストアで使用可能なバイト数を取得します。</summary>
+        <value>ログ ストアで使用可能なバイト数。</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">The property was accessed after the sequence has been disposed of.</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にプロパティがアクセスされました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Handle">
@@ -583,8 +586,8 @@
         <ReturnType>Microsoft.Win32.SafeHandles.SafeFileHandle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the operating system file handle for the log file that the current <see cref="T:System.IO.Log.LogStore" /> instance encapsulates.</summary>
-        <value>The operating system file handle for the log file that the current <see cref="T:System.IO.Log.LogStore" /> instance encapsulates.</value>
+        <summary>現在の <see cref="T:System.IO.Log.LogStore" /> インスタンスによってカプセル化されるログ ファイルのオペレーティング システム ファイル ハンドルを取得します。</summary>
+        <value>現在の <see cref="T:System.IO.Log.LogStore" /> インスタンスによってカプセル化されるログ ファイルのオペレーティング システム ファイル ハンドル。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -601,17 +604,17 @@
         <ReturnType>System.IO.Log.SequenceNumber</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>When overridden in a derived class, gets the sequence number of the next record to be appended to the log store.</summary>
-        <value>The sequence number of the next record to be appended to the log store.</value>
+        <summary>派生クラスでオーバーライドされると、ログ ストアに追加される次のレコードのシーケンス番号を取得します。</summary>
+        <value>ログ ストアに追加される次のレコードのシーケンス番号。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Valid sequence numbers are greater than or equal to <xref:System.IO.Log.LogStore.BaseSequenceNumber%2A> and less than <xref:System.IO.Log.LogStore.LastSequenceNumber%2A>.  
+## 解説  
+ 有効なシーケンス番号は、<xref:System.IO.Log.LogStore.BaseSequenceNumber%2A> 以上、<xref:System.IO.Log.LogStore.LastSequenceNumber%2A> 未満です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The property was accessed after the sequence has been disposed of.</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にプロパティがアクセスされました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Length">
@@ -627,17 +630,17 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the size of the log store, in bytes.</summary>
-        <value>The size of the log store, in bytes.</value>
+        <summary>ログ ストアのサイズをバイト単位で取得します。</summary>
+        <value>ログ ストアのサイズ \(バイト単位\)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The size of the log store is the sum of the sizes of the log extents.  
+## 解説  
+ ログ ストアのサイズは、ログ エクステントのサイズの合計です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The property was accessed after the sequence has been disposed of.</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にプロパティがアクセスされました。</exception>
       </Docs>
     </Member>
     <Member MemberName="Policy">
@@ -653,13 +656,13 @@
         <ReturnType>System.IO.Log.LogPolicy</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the policy associated with this log store.</summary>
-        <value>A <see cref="T:System.IO.Log.LogPolicy" /> instance representing the policy associated with this log store.</value>
+        <summary>このログ ストアに関連付けられたポリシーを取得します。</summary>
+        <value>このログ ストアに関連付けられたポリシーを表す <see cref="T:System.IO.Log.LogPolicy" /> インスタンス。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use the <xref:System.IO.Log.LogPolicy> instance returned by this property to examine and manipulate the log policy associated with this <xref:System.IO.Log.LogStore>.  
+## 解説  
+ このプロパティによって返される <xref:System.IO.Log.LogPolicy> インスタンスを使用して、<xref:System.IO.Log.LogStore> に関連付けられたログ ポリシーを確認および操作できます。  
   
  ]]></format>
         </remarks>
@@ -681,34 +684,33 @@
         <Parameter Name="archiveTail" Type="System.IO.Log.SequenceNumber" />
       </Parameters>
       <Docs>
-        <param name="archiveTail">The sequence number of the archive tail.</param>
-        <summary>Sets the sequence number of the archive tail.</summary>
+        <param name="archiveTail">アーカイブ末尾のシーケンス番号。</param>
+        <summary>アーカイブ末尾のシーケンス番号を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The smaller of the base sequence number and the archive tail determines the tail of the log.  
+## 解説  
+ 基本シーケンス番号とアーカイブ末尾のどちらか小さい方によってログの末尾が決まります。  
   
    
   
-## Examples  
- The following example shows how to archive a <xref:System.IO.Log.LogStore> to an XML document.  
+## 例  
+ 次の例では、<xref:System.IO.Log.LogStore> を XML ドキュメントにアーカイブする方法を示します。  
   
- [!code-csharp[logarchievesnapshot#0](~/samples/snippets/csharp/VS_Snippets_CFX/logarchievesnapshot/cs/logarchievesnapshot.cs#0)]
- [!code-vb[logarchievesnapshot#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/logarchievesnapshot/vb/logarchievesnapshot.vb#0)]  
+ [!code-csharp[logarchievesnapshot\#0](~/samples/snippets/csharp/VS_Snippets_CFX/logarchievesnapshot/cs/logarchievesnapshot.cs#0)]
+ [!code-vb[logarchievesnapshot\#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/logarchievesnapshot/vb/logarchievesnapshot.vb#0)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="archiveTail" /> is not between the base and last sequence numbers of this sequence.</exception>
-        <exception cref="T:System.ArgumentException">
-          <paramref name="archiveTail" /> is not valid for this sequence.</exception>
-        <exception cref="T:System.InvalidOperationException">An invalid operation has been executed.</exception>
-        <exception cref="T:System.IO.IOException">An I/O error occurs when creating the archive snapshot.</exception>
-        <exception cref="T:System.NotSupportedException">The log store is not archivable.</exception>
-        <exception cref="T:System.ObjectDisposedException">The method was called after the sequence has been disposed of.</exception>
-        <exception cref="T:System.OutOfMemoryException">There is not enough memory to continue the execution of a program.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Access for the specified log store is denied by the operating system.</exception>
+          <paramref name="archiveTail" /> が、このシーケンスの基本シーケンス番号と最後のシーケンス番号との間にありません。</exception>
+        <exception cref="T:System.ArgumentException">このシーケンスの <paramref name="archiveTail" /> が有効ではありません。</exception>
+        <exception cref="T:System.InvalidOperationException">無効な操作が実行されました。</exception>
+        <exception cref="T:System.IO.IOException">アーカイブ スナップショットの作成時に I\/O エラーが発生しました。</exception>
+        <exception cref="T:System.NotSupportedException">ログ ストアはアーカイブできません。</exception>
+        <exception cref="T:System.ObjectDisposedException">シーケンスが破棄された後にメソッドが呼び出されました。</exception>
+        <exception cref="T:System.OutOfMemoryException">プログラムの実行を継続する十分なメモリがありません。</exception>
+        <exception cref="T:System.UnauthorizedAccessException">指定のログ ストアへのアクセスは、オペレーティング システムにより拒否されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="StreamCount">
@@ -724,10 +726,43 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of log streams in this log store.</summary>
-        <value>The number of log streams in this log store.</value>
-        <remarks>To be added.</remarks>
+        <summary>このログ ストアのログ ストリームの数を取得します。</summary>
+        <value>このログ ストアのログ ストリームの数。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="CreateLogArchiveSnapshot">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Log</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>バックアップの作成に必要なログ ストア状態のスナップショットを取得します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Log</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.IO.Log.LogStore" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

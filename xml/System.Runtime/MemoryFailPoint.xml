@@ -24,36 +24,36 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Checks for sufficient memory resources before executing an operation. This class cannot be inherited.</summary>
+    <summary>操作の実行前に十分なメモリ リソースがあることを確認します。 このクラスは継承できません。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!NOTE]
->  This class is intended for use in advanced development.  
+>  このクラスは、高度な開発で使用するものです。  
   
- Creating an instance of the <xref:System.Runtime.MemoryFailPoint> class creates a memory gate. A memory gate checks for sufficient resources before initiating an activity that requires a large amount of memory. Failing the check results in an <xref:System.InsufficientMemoryException> exception being thrown. This exception prevents an operation from being started and reduces the possibility of failure due to lack of resources. This enables you decrease performance to avoid an <xref:System.OutOfMemoryException> exception and any state corruption that may result from improper handling of the exception in arbitrary locations in your code.  
+ インスタンスを作成、 <xref:System.Runtime.MemoryFailPoint> クラスは、メモリ ゲートを作成します。 メモリ ゲートは、大量のメモリを必要とするアクティビティを開始する前に、十分なリソースを確認します。 チェックに失敗した結果、 <xref:System.InsufficientMemoryException> 例外がスローされます。 この例外は、開始してから、操作できませんし、リソースが不足しているため失敗の可能性を削減できます。 これによりを避けるためのパフォーマンスが低下する、 <xref:System.OutOfMemoryException> 例外と、状態の破損、コード内の任意の場所に例外の不適切な処理から作成される場合があります。  
   
 > [!IMPORTANT]
->  This type implements the <xref:System.IDisposable> interface. When you have finished using the type, you should dispose of it either directly or indirectly. To dispose of the type directly, call its <xref:System.IDisposable.Dispose%2A> method in a `try`/`catch` block. To dispose of it indirectly, use a language construct such as `using` (in C#) or `Using` (in Visual Basic). For more information, see the "Using an Object that Implements IDisposable" section in the <xref:System.IDisposable> interface topic.  
+>  この型は、 <xref:System.IDisposable> インターフェイスです。 型の使用が完了したらを直接または間接的にその破棄する必要があります。 型の直接 dispose を呼び出してその <xref:System.IDisposable.Dispose%2A> メソッドで、 `try`\/`catch` ブロックします。 直接ことのない破棄する場合など言語構成要素を使用して `using` \(c\#\) のまたは `Using` \(Visual Basic で\)。 詳細については、"を使用して、オブジェクトを実装して IDisposable"」セクションを参照してください、 <xref:System.IDisposable> インターフェイスに関するトピック。  
   
- By throwing an <xref:System.InsufficientMemoryException> exception, an application can distinguish between an estimate that an operation will not be able to complete and  a partially completed operation that may have corrupted the application state. This allows an application to reduce the frequency of a pessimistic escalation policy, which may require unloading the current <xref:System.AppDomain> or recycling the process.  
+ スローすることによって、 <xref:System.InsufficientMemoryException> 例外、アプリケーションは、操作が完了できない推定値と、アプリケーションの状態が破損した可能性のある部分的に完了した操作の間区別できます。 これにより、アプリケーションが現在をアンロードする必要があるペシミスティックのエスカレーション ポリシーの頻度を減らす <xref:System.AppDomain> やプロセスのリサイクルします。  
   
- <xref:System.Runtime.MemoryFailPoint> checks to see whether sufficient memory and consecutive virtual address space are available in all garbage collection heaps, and may increase the size of the swap file.  <xref:System.Runtime.MemoryFailPoint> makes no guarantees regarding the long-term availability of the memory during the lifetime of the gate, but callers should always use the <xref:System.Runtime.MemoryFailPoint.Dispose%2A> method to ensure that resources associated with <xref:System.Runtime.MemoryFailPoint> are released.  
+ <xref:System.Runtime.MemoryFailPoint> 十分なメモリと連続するいくつかの仮想アドレス空間がヒープですべてのガベージ コレクションで使用できるはであり、スワップ ファイルのサイズを増やすことがあるかどうかを確認します。<xref:System.Runtime.MemoryFailPoint> ゲート、呼び出し元の有効期間中にメモリの長期的な可用性に関する保証は常に使用しない、 <xref:System.Runtime.MemoryFailPoint.Dispose%2A> リソースに関連付けられていることを確認するメソッド <xref:System.Runtime.MemoryFailPoint> 解放されます。  
   
- To use a memory gate, you must create a <xref:System.Runtime.MemoryFailPoint> object and specify the number of megabytes (MB) of memory that the next operation is expected to use. If enough memory is not available, an <xref:System.InsufficientMemoryException> exception is thrown.  
+ メモリ ゲートを使用するには、作成する必要があります、 <xref:System.Runtime.MemoryFailPoint> オブジェクトし、メモリのメガバイト \(MB\) の数を指定して次の操作が使用すると予想されます。 十分なメモリが使用できない場合、 <xref:System.InsufficientMemoryException> 例外がスローされます。  
   
- The parameter of the constructor must be a positive integer. A negative value raises an <xref:System.ArgumentOutOfRangeException> exception.  
+ コンス トラクターのパラメーターは、正の整数である必要があります。 負の値を生成、 <xref:System.ArgumentOutOfRangeException> 例外です。  
   
- <xref:System.Runtime.MemoryFailPoint> operates at a granularity of 16 MB. Any values smaller than 16 MB are treated as 16 MB, and other values are treated as the next largest multiple of 16 MB.  
+ <xref:System.Runtime.MemoryFailPoint> 16 MB の粒度で動作します。 16 MB 未満の値は 16 MB として扱われ、その他の値は、次に最大 16 MB の倍数として扱われます。  
   
    
   
-## Examples  
- <xref:System.Runtime.MemoryFailPoint> enables an application to slow itself to avoid running out of memory in a corrupting manner.  It should be used within a lexical scope.  The following example launches threads to process items in a work queue.  Before each thread is launched, the available memory resources are checked using <xref:System.Runtime.MemoryFailPoint>.  If an exception is thrown, the main method waits until memory is available before launching the next thread.  
+## 例  
+ <xref:System.Runtime.MemoryFailPoint> アプリケーションは動作の速度を自体と、破損の方法でメモリの不足を回避できます。  構文のスコープ内で使用する必要があります。  次の例では、ワーク キュー内の項目を処理するスレッドが起動します。  使用して、使用可能なメモリ リソースをチェックする各スレッドが起動される前に <xref:System.Runtime.MemoryFailPoint>します。  例外がスローされた場合、メインのメソッドは、次のスレッドを起動する前にメモリがあるまでを待ちます。  
   
- [!code-csharp[MemoryFailPoint#1](~/samples/snippets/csharp/VS_Snippets_CLR/MemoryFailPoint/CS/program.cs#1)]  
+ [!code-csharp[MemoryFailPoint\#1](~/samples/snippets/csharp/VS_Snippets_CLR/MemoryFailPoint/CS/program.cs#1)]  
   
  ]]></format>
     </remarks>
@@ -82,25 +82,25 @@
         <Parameter Name="sizeInMegabytes" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeInMegabytes">The required memory size, in megabytes. This must be a positive value.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.MemoryFailPoint" /> class, specifying the amount of memory required for successful execution.</summary>
+        <param name="sizeInMegabytes">必要なメモリ サイズ \(単位は MB\)。 必ず正の値を指定します。</param>
+        <summary>正常に実行するために必要なメモリの量を指定して、<see cref="T:System.Runtime.MemoryFailPoint" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The amount of memory used by your application to process a work item can be determined empirically.  To estimate the amount of memory your application needs to process a request, consider using the <xref:System.GC.GetTotalMemory%2A?displayProperty=fullName> method to determine the amount of memory available before and after calling the method that processes the work item. See the <xref:System.Runtime.MemoryFailPoint> class for a code example that dynamically determines the value for the `sizeInMegabytes` parameter.  
+## 解説  
+ 作業項目を処理するアプリケーションで使用されるメモリ量を経験的に決定できます。  要求を処理するアプリケーションに必要なメモリの量を推定するには、使用を検討して、 <xref:System.GC.GetTotalMemory%2A?displayProperty=fullName> と作業項目を処理するメソッドを呼び出した後でする前に使用可能なメモリの量を決定する方法です。 参照してください、 <xref:System.Runtime.MemoryFailPoint> クラスの値を動的に決定するコード例については、 `sizeInMegabytes` パラメーター。  
   
    
   
-## Examples  
- The following example demonstrates how to determine the amount of memory a method requires when executing. This code example is part of a larger example provided for the <xref:System.Runtime.MemoryFailPoint> class.  
+## 例  
+ 次の例では、実行時に、メソッドが必要とするメモリの量を決定する方法を示します。 このコード例が示されている例の一部は、 <xref:System.Runtime.MemoryFailPoint> クラスです。  
   
- [!code-csharp[MemoryFailPoint#2](~/samples/snippets/csharp/VS_Snippets_CLR/MemoryFailPoint/CS/program.cs#2)]  
+ [!code-csharp[MemoryFailPoint\#2](~/samples/snippets/csharp/VS_Snippets_CLR/MemoryFailPoint/CS/program.cs#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The specified memory size is negative.</exception>
-        <exception cref="T:System.InsufficientMemoryException">There is insufficient memory to begin execution of the code protected by the gate.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">指定されたメモリ サイズは、負の値。</exception>
+        <exception cref="T:System.InsufficientMemoryException">メモリが不足して、ゲートで保護されているコードの実行を開始します。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -127,15 +127,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.Runtime.MemoryFailPoint" />.</summary>
+        <summary>
+          <see cref="T:System.Runtime.MemoryFailPoint" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Call <xref:System.Runtime.MemoryFailPoint.Dispose%2A> when you are finished using the <xref:System.Runtime.MemoryFailPoint>. The <xref:System.Runtime.MemoryFailPoint.Dispose%2A> method leaves the <xref:System.Runtime.MemoryFailPoint> in an unusable state. After calling <xref:System.Runtime.MemoryFailPoint>, you must release all references to the <xref:System.Runtime.MemoryFailPoint> so the garbage collector can reclaim the memory that the <xref:System.Runtime.MemoryFailPoint> was occupying. For more information, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+## 解説  
+ Call <xref:System.Runtime.MemoryFailPoint.Dispose%2A> when you are finished using the <xref:System.Runtime.MemoryFailPoint>. The <xref:System.Runtime.MemoryFailPoint.Dispose%2A> method leaves the <xref:System.Runtime.MemoryFailPoint> in an unusable state. After calling <xref:System.Runtime.MemoryFailPoint>, you must release all references to the <xref:System.Runtime.MemoryFailPoint> so the garbage collector can reclaim the memory that the <xref:System.Runtime.MemoryFailPoint> was occupying. For more information, see [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213) and [Implementing a Dispose Method](http://msdn.microsoft.com/ja-jp/eb4e1af0-3b48-4fbc-ad4e-fc2f64138bf9).  
   
 > [!NOTE]
->  Always call <xref:System.Runtime.MemoryFailPoint.Dispose%2A> before you release your last reference to the <xref:System.Runtime.MemoryFailPoint>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.Runtime.MemoryFailPoint> object's `Finalize` method.  
+>  Always call <xref:System.Runtime.MemoryFailPoint.Dispose%2A> before you release your last reference to the <xref:System.Runtime.MemoryFailPoint>. Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.Runtime.MemoryFailPoint> object's **languageKeyword tag is not supported!!!!**  
+>  method.  
   
  ]]></format>
         </remarks>
@@ -160,15 +162,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ensures that resources are freed and other cleanup operations are performed when the garbage collector reclaims the <see cref="T:System.Runtime.MemoryFailPoint" /> object.</summary>
+        <summary>ガベージ コレクターが <see cref="T:System.Runtime.MemoryFailPoint" /> を再利用しているときに、リソースが解放され、他のクリーンアップ操作が確実に実行されるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The garbage collector calls the <xref:System.Runtime.MemoryFailPoint.Finalize%2A> method when the current object is ready to be finalized.  
+## 解説  
+ ガベージ コレクターの呼び出し、 <xref:System.Runtime.MemoryFailPoint.Finalize%2A> メソッド、現在のオブジェクトが完了する準備ができたとき。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Object.Finalize" />
       </Docs>
     </Member>
   </Members>

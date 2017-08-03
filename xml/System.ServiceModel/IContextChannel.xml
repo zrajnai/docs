@@ -16,13 +16,16 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Defines the interface for the context control of a channel.</summary>
+    <summary>チャネルのコンテキスト コントロールのインターフェイスを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ServiceModel.IContextChannel> defines the controls for the context of a channel. This includes the <xref:System.ServiceModel.IContextChannel.SessionId%2A>, <xref:System.ServiceModel.IContextChannel.InputSession%2A>, <xref:System.ServiceModel.IContextChannel.OutputSession%2A>, and <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> for the channel, and the <xref:System.ServiceModel.IContextChannel.LocalAddress%2A> and <xref:System.ServiceModel.IContextChannel.RemoteAddress%2A> for the endpoints participating in the session. The <xref:System.ServiceModel.IContextChannel> interface forms part of the <xref:System.ServiceModel.IServiceChannel> and <xref:System.ServiceModel.IClientChannel> interfaces and of the <xref:System.ServiceModel.IDuplexContextChannel> interface.  
+## 解説  
+ <xref:System.ServiceModel.IContextChannel> は、チャネルのコンテキストのコントロールを定義します。 この中には、チャネルの <xref:System.ServiceModel.IContextChannel.SessionId%2A>、<xref:System.ServiceModel.IContextChannel.InputSession%2A>、<xref:System.ServiceModel.IContextChannel.OutputSession%2A>、および <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> と、セッションに参加するエンドポイントの <xref:System.ServiceModel.IContextChannel.LocalAddress%2A> と <xref:System.ServiceModel.IContextChannel.RemoteAddress%2A> が含まれます。<xref:System.ServiceModel.IContextChannel> インターフェイスは、<xref:System.ServiceModel.IServiceChannel>、<xref:System.ServiceModel.IClientChannel>、および <xref:System.ServiceModel.IDuplexContextChannel> の各インターフェイスの一部を形成します。  
   
+   
+  
+## 例  
  ]]></format>
     </remarks>
   </Docs>
@@ -41,20 +44,22 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that instructs [!INCLUDE[indigo1](~/includes/indigo1-md.md)] to store a set of messages before giving the messages to the transport.</summary>
-        <value>
-          <see langword="true" /> if the batching of outgoing messages is allowed; otherwise, <see langword="false" />.</value>
+        <summary>メッセージをトランスポートに与える前にメッセージ セットを保存するように Windows Communication Foundation (WCF) に指示する値を取得または設定します。</summary>
+        <value>送信メッセージのバッチが許される場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The level of batching affects the performance of the system. When you set the value to `true`, you are instructing the system to hold on to this message in a local buffer to send out with other serialized messages if possible. Set the <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> property to `true` if message throughput is important; set it to `false` if reducing latency is important. There are other knobs used to manage the batching of messages that are accessible from the binding elements used to configure a service. Properties common to connection-oriented transports such as TCP and named pipes that are used to tune performance are located, for example, on the <xref:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement>. The <xref:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement.MaxOutputDelay%2A> is used to set the maximum interval of time that a chunk of a message or a full message can remain buffered in memory before being sent out and the <xref:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement.ConnectionBufferSize%2A> determines the size of this local buffer, as well as the buffer sizes used by the underlying network objects.  
+## 解説  
+ バッチ処理のレベルは、システムのパフォーマンスに影響します。 この値を `true` に設定することは、可能であればメッセージをローカル バッファーに保持し、他のシリアル化されたメッセージと一緒に送信するようにシステムに指示することです。 メッセージのスループットが重要な場合は、<xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> プロパティを `true` に、待ち時間の短縮が重要な場合は `false` に設定します。 サービスを構成するために使用されるバイディング要素からアクセスできるメッセージのバッチ処理を管理する方法は他にもあります。 パフォーマンスを調整するために使用される TCP や名前付きパイプなどの接続指向トランスポートに共通するプロパティは、たとえば <xref:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement> に配置されます。<xref:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement.MaxOutputDelay%2A> は、メッセージのチャンクまたは完全なメッセージを、送信前にメモリ内のバッファーに残したままにできる最長期間を設定するために使用し、<xref:System.ServiceModel.Channels.ConnectionOrientedTransportBindingElement.ConnectionBufferSize%2A> は、このローカル バッファーのサイズと、基になるネットワーク オブジェクトによって使用されるバッファー サイズを決定します。  
   
- The value of <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> does not override the value of the <xref:System.ServiceModel.Channels.MessageProperties.AllowOutputBatching%2A> property that is set at the channel level. For example, if <xref:System.ServiceModel.Channels.MessageProperties.AllowOutputBatching%2A> is set to `true` for a particular message, that message is sent immediately regardless of the value of <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A>.  
+ <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> の値は、チャネル レベルで設定される <xref:System.ServiceModel.Channels.MessageProperties.AllowOutputBatching%2A> プロパティの値を上書きしません。 たとえば、特定のメッセージに対して <xref:System.ServiceModel.Channels.MessageProperties.AllowOutputBatching%2A> を `true` に設定した場合、そのメッセージは、<xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> の値とは無関係に直ちに送信されます。  
   
 > [!NOTE]
->  All request/reply messages are sent immediately regardless of the value of <xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A>.  
+>  すべての要求\/応答メッセージは、<xref:System.ServiceModel.IContextChannel.AllowOutputBatching%2A> の値に関係なく、直ちに送信されます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -73,9 +78,17 @@
         <ReturnType>System.ServiceModel.Channels.IInputSession</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the input session for the channel.</summary>
-        <value>The <see cref="T:System.ServiceModel.Channels.IInputSession" /> for the channel.</value>
-        <remarks>To be added.</remarks>
+        <summary>チャネルの入力セッションを取得します。</summary>
+        <value>チャネルの <see cref="T:System.ServiceModel.Channels.IInputSession" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LocalAddress">
@@ -92,9 +105,17 @@
         <ReturnType>System.ServiceModel.EndpointAddress</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the local endpoint for the channel.</summary>
-        <value>The local <see cref="T:System.ServiceModel.EndpointAddress" /> for the channel.</value>
-        <remarks>To be added.</remarks>
+        <summary>チャネルのローカル エンドポイントを取得します。</summary>
+        <value>チャネルのローカルな <see cref="T:System.ServiceModel.EndpointAddress" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OperationTimeout">
@@ -111,14 +132,17 @@
         <ReturnType>System.TimeSpan</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the time period within which an operation must complete or an exception is thrown.</summary>
-        <value>The <see cref="T:System.TimeSpan" /> that specifies the time period within which an operation must complete.</value>
+        <summary>その時間内に操作を完了するか例外をスローする時間を取得または設定します。</summary>
+        <value>操作完了の制限時間を指定する <see cref="T:System.TimeSpan" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If transaction flow is enabled on the binding or the channel, the operation may take longer to execute than the specified timeout.  In these circumstances the operation will fail due to the expired timeout and the transaction will abort appropriately.  
+## 解説  
+ バインドまたはチャネルでトランザクション フローが有効になっている場合は、指定したタイムアウト時間より操作の実行が長くかかる可能性があります。  このような場合は、タイムアウトの時間が経過し、そのためにトランザクションが中止されるため、操作は失敗します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -137,9 +161,17 @@
         <ReturnType>System.ServiceModel.Channels.IOutputSession</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the output session associated with the channel, if any.</summary>
-        <value>A <see cref="T:System.ServiceModel.Channels.IOutputSession" /> implementation if an input session exists; otherwise, <see langword="null" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>チャネルに関連付けられている出力セッションがあれば、それを取得します。</summary>
+        <value>出力セッションが存在する場合は、<see cref="T:System.ServiceModel.Channels.IOutputSession" /> の実装。それ以外の場合は <see langword="null" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoteAddress">
@@ -156,9 +188,17 @@
         <ReturnType>System.ServiceModel.EndpointAddress</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the remote address associated with the channel.</summary>
-        <value>The remote <see cref="T:System.ServiceModel.EndpointAddress" /> for the channel.</value>
-        <remarks>To be added.</remarks>
+        <summary>チャネルに関連付けられているリモート アドレスを取得します。</summary>
+        <value>チャネルのリモート <see cref="T:System.ServiceModel.EndpointAddress" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SessionId">
@@ -175,9 +215,17 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns an identifier for the current session, if any.</summary>
-        <value>The current session identifier, if any.</value>
-        <remarks>To be added.</remarks>
+        <summary>現在のセッションの識別子があれば、それを返します。</summary>
+        <value>現在のセッション識別子 \(存在する場合\)。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

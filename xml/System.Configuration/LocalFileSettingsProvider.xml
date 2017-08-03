@@ -19,23 +19,29 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Provides persistence for application settings classes.</summary>
+    <summary>アプリケーション設定クラスの持続性を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Setting providers define a mechanism for storing configuration data used in the application settings architecture. The [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] contains a single default settings provider, <xref:System.Configuration.LocalFileSettingsProvider>, which stores configuration data to the local file system. An application settings property or group of properties are associated to a specific settings provider through the use of the <xref:System.Configuration.SettingsProviderAttribute>.  
+## 解説  
+ 設定プロバイダーは、アプリケーション設定アーキテクチャで使用される構成データを格納するためのメカニズムを定義します。[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] 、1 つの既定の設定プロバイダーを含む <xref:System.Configuration.LocalFileSettingsProvider>, 、ローカル ファイル システムに構成データを格納します。 アプリケーション設定のプロパティまたはプロパティのグループを使用すると、特定の設定プロバイダーに関連付けられている、 <xref:System.Configuration.SettingsProviderAttribute>です。  
   
- Typically, the client program does not explicitly access this class; rather, the application settings architecture automatically invokes the appropriate settings provider when its services are required. For example, many of the members of <xref:System.Configuration.ApplicationSettingsBase> delegate their work to the associated settings provider.  
+ 通常、クライアント プログラムに明示的にアクセスしません。 このクラス代わりに、アプリケーション設定アーキテクチャでは自動的に適切な設定プロバイダーを起動して、そのサービスが必要な場合です。 たとえば、多くのメンバーの <xref:System.Configuration.ApplicationSettingsBase> メソッドに関連する設定プロバイダーへの作業を委任します。  
   
- <xref:System.Configuration.LocalFileSettingsProvider> persists settings to configuration files that have the extension `.config`. The contents of configuration files are structured as XML documents. Depending on whether the setting is scoped at either the application-level or user-level, the configuration data is stored as elements within an `<applicationSettings>` or a `<userSettings>` section group, respectively. Each of these section groups is represented by a corresponding <xref:System.Configuration.AppSettingsSection> or <xref:System.Configuration.ClientSettingsSection>, respectively. Each section object is owned and administered by a configuration section handler, which is an object of type <xref:System.Configuration.IConfigurationSectionHandler>.  
+ <xref:System.Configuration.LocalFileSettingsProvider> 拡張子を持つ構成ファイルの設定が引き続き発生する `.config`です。 構成ファイルの内容は、XML ドキュメントとして構成されています。 内の要素として、構成データを格納するかどうか、設定は、アプリケーション レベルまたはユーザー レベルでスコープ、によって、 `<applicationSettings>` または `<userSettings>` グループをそれぞれセクションです。 これらの各セクション グループが、対応するによって表される <xref:System.Configuration.AppSettingsSection> または <xref:System.Configuration.ClientSettingsSection>, 、それぞれします。 セクションの各オブジェクトが所有しており、型のオブジェクトでは、構成セクション ハンドラーによって管理されて <xref:System.Configuration.IConfigurationSectionHandler>します。  
   
- Application-scoped settings and the default user-scoped settings are stored in a file named `application.exe.config`, which is created in the same directory as the executable file. Application configuration settings are read-only. Specific user data is stored in a file named `user.config`, stored under the user's home directory. If roaming profiles are enabled, two versions of the user configuration file could exist. In such a case, the entries in the roaming version take precedence over duplicated entries in the local user configuration file.  
+ アプリケーション スコープ設定と既定のユーザー スコープ設定はという名前のファイルに格納 `application.exe.config`, 、実行可能ファイルと同じディレクトリに作成されます。 アプリケーションの構成設定とは、読み取り専用です。 特定のユーザー データはという名前のファイルに格納 `user.config`, ユーザーのホーム ディレクトリの下に格納します。 移動プロファイルが有効になっている場合、ユーザー構成ファイルの 2 つのバージョンが存在する場合。 このような場合は、移動のバージョンのエントリは、ローカルのユーザー構成ファイルに重複するエントリに優先します。  
   
- For more information about application settings, see [Application Settings for Windows Forms](~/docs/framework/winforms/advanced/application-settings-for-windows-forms.md).  
+ アプリケーション設定の詳細については、次を参照してください。 [Application Settings for Windows Forms](http://msdn.microsoft.com/ja-jp/64090a34-8556-4904-8ea0-20efe9f8c886)します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Configuration.SettingsProviderAttribute" />
+    <altmember cref="T:System.Configuration.ApplicationScopedSettingAttribute" />
+    <altmember cref="T:System.Configuration.UserScopedSettingAttribute" />
+    <altmember cref="T:System.Configuration.ApplicationSettingsBase" />
+    <altmember cref="T:System.Configuration.ClientSettingsSection" />
+    <altmember cref="T:System.Configuration.IConfigurationSectionHandler" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -53,15 +59,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Configuration.LocalFileSettingsProvider" /> class.</summary>
+        <summary>
+          <see cref="T:System.Configuration.LocalFileSettingsProvider" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The default constructor sets the <xref:System.Configuration.LocalFileSettingsProvider.ApplicationName%2A> property to <xref:System.String.Empty>.  
+## 解説  
+ 既定のコンス トラクターは、設定、 <xref:System.Configuration.LocalFileSettingsProvider.ApplicationName%2A> プロパティを <xref:System.String.Empty>します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Configuration.LocalFileSettingsProvider.ApplicationName" />
       </Docs>
     </Member>
     <Member MemberName="ApplicationName">
@@ -81,16 +89,17 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of the currently running application.</summary>
-        <value>A string that contains the application's display name.</value>
+        <summary>取得または現在実行中のアプリケーションの名前を設定します。</summary>
+        <value>アプリケーションの表示名を含む文字列です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Configuration.LocalFileSettingsProvider.ApplicationName%2A> and <xref:System.Configuration.Provider.ProviderBase.Name%2A> properties help to disambiguate similarly named setting properties in different applications.  
+## 解説  
+ <xref:System.Configuration.LocalFileSettingsProvider.ApplicationName%2A> と <xref:System.Configuration.Provider.ProviderBase.Name%2A> プロパティは、同様にさまざまなアプリケーションのプロパティの名前付きの設定を区別するために役立ちます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Configuration.Provider.ProviderBase.Name" />
       </Docs>
     </Member>
     <Member MemberName="GetPreviousVersion">
@@ -119,18 +128,23 @@
         <Parameter Name="property" Type="System.Configuration.SettingsProperty" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> that describes where the application settings property is used.</param>
-        <param name="property">The <see cref="T:System.Configuration.SettingsProperty" /> whose value is to be returned.</param>
-        <summary>Returns the value of the named settings property for the previous version of the same application.</summary>
-        <returns>A <see cref="T:System.Configuration.SettingsPropertyValue" /> representing the application setting if found; otherwise, <see langword="null" />.</returns>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> アプリケーション設定のプロパティが使用されていることについて説明します。</param>
+        <param name="property">
+          <see cref="T:System.Configuration.SettingsProperty" /> 値が返されます。</param>
+        <summary>同じアプリケーションの以前のバージョンの名前付きの設定のプロパティの値を返します。</summary>
+        <returns>A <see cref="T:System.Configuration.SettingsPropertyValue" /> が見つからない場合は、それ以外の場合は、アプリケーションの設定を表す <see langword="null" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Configuration.LocalFileSettingsProvider.GetPreviousVersion%2A> method is often used in conjunction with the <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> method when migrating application settings during the installation of a new version of an application. For more information, see the <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> method.  
+## 解説  
+ <xref:System.Configuration.LocalFileSettingsProvider.GetPreviousVersion%2A> と共にメソッドが使用される多くの場合、 <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> メソッドは、アプリケーションの新しいバージョンのインストール中にアプリケーションの設定を移行するとします。 詳細については、<xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> メソッドを参照してください。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.GetPropertyValues(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyCollection)" />
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.Upgrade(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyCollection)" />
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.Reset(System.Configuration.SettingsContext)" />
+        <altmember cref="T:System.Configuration.IApplicationSettingsProvider" />
       </Docs>
     </Member>
     <Member MemberName="GetPropertyValues">
@@ -159,22 +173,25 @@
         <Parameter Name="properties" Type="System.Configuration.SettingsPropertyCollection" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection" /> containing the settings property group whose values are to be retrieved.</param>
-        <summary>Returns the collection of setting property values for the specified application instance and settings property group.</summary>
-        <returns>A <see cref="T:System.Configuration.SettingsPropertyValueCollection" /> containing the values for the specified settings property group.</returns>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection" /> を取得するのには、値が設定のプロパティ グループを格納しています。</param>
+        <summary>指定したアプリケーション インスタンスと設定のプロパティ グループのプロパティの値の設定のコレクションを返します。</summary>
+        <returns>A <see cref="T:System.Configuration.SettingsPropertyValueCollection" /> 指定した設定のプロパティ グループの値を格納します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Configuration.LocalFileSettingsProvider.GetPropertyValues%2A> method also manages the special application settings type <xref:System.Configuration.SpecialSetting.ConnectionString>. Connection strings are stored in a special section of the configuration file delimited by the element `<connectionstrings>`.  
+## 解説  
+ <xref:System.Configuration.LocalFileSettingsProvider.GetPropertyValues%2A> メソッドは、特別なアプリケーションの設定の種類も管理 <xref:System.Configuration.SpecialSetting.ConnectionString>します。 接続文字列が要素で区切られた構成ファイルの特別なセクションに格納されている `<connectionstrings>`します。  
   
 > [!CAUTION]
->  <xref:System.Configuration.LocalFileSettingsProvider> does not use encryption to persist any settings. Therefore, do not store plain text passwords or other sensitive information using this provider without taking additional precautions, such as separately encrypting the information within the configuration file. For more information, see [Encrypting Configuration Information Using Protected Configuration](http://msdn.microsoft.com/library/51cdfe5b-9d82-458c-94ff-c551c4f38ed1).  
+>  <xref:System.Configuration.LocalFileSettingsProvider> すべての設定を保存するのに暗号化を使用しません。 したがって、プレーン テキストのパスワードや、構成ファイル内の情報を個別に暗号化などの他の対策を講じることがなくこのプロバイダーを使用して他の機密情報を格納しないでいます。 詳細については、「[Encrypting Configuration Information using Protected Configuration](http://msdn.microsoft.com/ja-jp/51cdfe5b-9d82-458c-94ff-c551c4f38ed1)」を参照してください。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Configuration.ConfigurationErrorsException">A user-scoped setting was encountered but the current configuration only supports application-scoped settings.</exception>
+        <exception cref="T:System.Configuration.ConfigurationErrorsException">ユーザー スコープ設定が発生しましたが、現在の構成では、アプリケーション スコープの設定のみがサポートされます。</exception>
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.SetPropertyValues(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyValueCollection)" />
+        <altmember cref="T:System.Configuration.SpecialSettingAttribute" />
+        <altmember cref="P:System.Configuration.SettingsPropertyValue.IsDirty" />
       </Docs>
     </Member>
     <Member MemberName="Initialize">
@@ -198,10 +215,11 @@
         <Parameter Name="values" Type="System.Collections.Specialized.NameValueCollection" />
       </Parameters>
       <Docs>
-        <param name="name">The friendly name of the provider.</param>
-        <param name="values">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
-        <summary>Initializes the provider.</summary>
+        <param name="name">プロバイダーのフレンドリ名。</param>
+        <param name="values">このプロバイダーの構成で指定された、プロバイダー固有の属性を表す名前と値のペアのコレクション。</param>
+        <summary>プロバイダーを初期化します。</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -229,23 +247,28 @@
         <Parameter Name="context" Type="System.Configuration.SettingsContext" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <summary>Resets all application settings properties associated with the specified application to their default values.</summary>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <summary>既定値に指定されたアプリケーションに関連付けられているすべてのアプリケーション設定のプロパティをリセットします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Configuration.LocalFileSettingsProvider.Reset%2A> method restores the stored values of the specified application settings group. The action of <xref:System.Configuration.LocalFileSettingsProvider.Reset%2A> depends on the scope of the application settings property:  
+## 解説  
+ <xref:System.Configuration.LocalFileSettingsProvider.Reset%2A> メソッドが格納される値の指定したアプリケーション設定\] グループを復元します。 アクション <xref:System.Configuration.LocalFileSettingsProvider.Reset%2A> アプリケーション設定のプロパティのスコープによって異なります。  
   
--   Application-scoped settings are not affected.  
+-   アプリケーション スコープ設定は影響しません。  
   
--   User-scoped settings are reset to the default values that are stored as read-only entries in the application configuration file, `application.exe.config`. If roaming profiles are being used, any application settings values in the roaming profile take precedence over duplicates found in the local profile.  
+-   ユーザー スコープ設定は、アプリケーション構成ファイルの読み取り専用のエントリとして格納されている既定値にリセットされます `application.exe.config`します。 移動プロファイルを使用している場合は、移動プロファイル内の任意のアプリケーションの設定値が、ローカルのプロファイルで検出された重複部分よりも優先されます。  
   
- Notice that if roaming profiles are used, there can be two `user.config` files, one for the local settings and one for the roaming profile.  
+ 移動プロファイルを使用している場合がある 2 つに注目してください。 `user.config` ファイルのローカル設定のいずれか、および移動プロファイルのいずれかです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Configuration.ConfigurationErrorsException">A user-scoped setting was encountered but the current configuration only supports application-scoped settings.</exception>
+        <exception cref="T:System.Configuration.ConfigurationErrorsException">ユーザー スコープ設定が発生しましたが、現在の構成では、アプリケーション スコープの設定のみがサポートされます。</exception>
+        <altmember cref="T:System.Configuration.IApplicationSettingsProvider" />
+        <altmember cref="T:System.Configuration.DefaultSettingValueAttribute" />
+        <altmember cref="T:System.Configuration.SettingsManageability" />
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.Upgrade(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyCollection)" />
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.GetPreviousVersion(System.Configuration.SettingsContext,System.Configuration.SettingsProperty)" />
       </Docs>
     </Member>
     <Member MemberName="SetPropertyValues">
@@ -274,37 +297,41 @@
         <Parameter Name="values" Type="System.Configuration.SettingsPropertyValueCollection" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <param name="values">A <see cref="T:System.Configuration.SettingsPropertyValueCollection" /> representing the group of property settings to set.</param>
-        <summary>Sets the values of the specified group of property settings.</summary>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <param name="values">A <see cref="T:System.Configuration.SettingsPropertyValueCollection" /> を設定するプロパティの設定のグループを表します。</param>
+        <summary>指定したプロパティの設定のグループの値を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A settings wrapper class, derived from <xref:System.Configuration.ApplicationSettingsBase>, contains the <xref:System.Configuration.ApplicationSettingsBase.Save%2A> method, which is called to persist the values of all of its settings properties. This method enumerates through all the settings providers associated with its settings properties, and calls the <xref:System.Configuration.SettingsProvider.SetPropertyValues%2A> method for each <xref:System.Configuration.SettingsProvider> to perform the actual serialization operation.  
+## 解説  
+ 設定のラッパー クラスから派生した <xref:System.Configuration.ApplicationSettingsBase>, を含む、 <xref:System.Configuration.ApplicationSettingsBase.Save%2A> すべてその設定のプロパティの値を保持するために呼び出されるメソッド。 このメソッドは、すべての設定を列挙、設定のプロパティの呼び出しと関連付けられているプロバイダー、 <xref:System.Configuration.SettingsProvider.SetPropertyValues%2A> メソッドごとに <xref:System.Configuration.SettingsProvider> 、実際のシリアル化操作を実行します。  
   
- <xref:System.Configuration.LocalFileSettingsProvider.SetPropertyValues%2A> individually serializes each user-scoped application settings property to its corresponding application setting in the appropriate `user.config` configuration file.  
+ <xref:System.Configuration.LocalFileSettingsProvider.SetPropertyValues%2A> 適切な設定の対応するアプリケーションに各アプリケーションのユーザー スコープ設定のプロパティを個別にシリアル化 `user.config` 構成ファイル。  
   
- By default, the <xref:System.Configuration.LocalFileSettingsProvider.SetPropertyValues%2A> method uses the following logical sequence to determine the serialization scheme, depending on type of the settings property:  
+ 既定では、 <xref:System.Configuration.LocalFileSettingsProvider.SetPropertyValues%2A> メソッドは、次の論理シーケンスを使用して設定プロパティの種類によっては、シリアル化方式を決定します。  
   
-1.  If the type has an associated <xref:System.ComponentModel.TypeConverter> with a <xref:System.ComponentModel.TypeConverter.ConvertToString%2A> method implementation, this conversion is used.  
+1.  型が関連付けられている <xref:System.ComponentModel.TypeConverter> で、 <xref:System.ComponentModel.TypeConverter.ConvertToString%2A> メソッドの実装、この変換を使用します。  
   
-2.  XML serialization is used.  
+2.  XML シリアル化が使用されます。  
   
- However, you can specify a preferred serialization mechanism by using the <xref:System.Configuration.SettingsSerializeAsAttribute>. <xref:System.Configuration.LocalFileSettingsProvider> does not support binary serialization in [!INCLUDE[vsprvslong](~/includes/vsprvslong-md.md)].  
+ ただし、推奨されるシリアル化メカニズムを指定を使用して、 <xref:System.Configuration.SettingsSerializeAsAttribute>です。<xref:System.Configuration.LocalFileSettingsProvider> バイナリ シリアル化をサポートしていません [!INCLUDE[vsprvslong](~/includes/vsprvslong-md.md)]します。  
   
- If a user-scoped settings property is set back to its default value explicitly, then the local file settings provider will remove the entry for the associated setting from the user configuration file. The next read access for this property will simply use the default value.  
+ ユーザー スコープ設定のプロパティは、バックアップを既定値に明示的に設定する場合、ローカル ファイルの設定プロバイダーはユーザー構成ファイルから関連付けられている設定のエントリが削除されます。 このプロパティの次の読み取りアクセス権は、既定値を使用して単純にします。  
   
 > [!CAUTION]
->  <xref:System.Configuration.LocalFileSettingsProvider> does not use encryption to persist any settings. Therefore, do not store plain text passwords or other sensitive information using this provider without taking additional precautions, such as separately encrypting the information within the configuration file. For more information, see [Encrypting Configuration Information Using Protected Configuration](http://msdn.microsoft.com/library/51cdfe5b-9d82-458c-94ff-c551c4f38ed1).  
+>  <xref:System.Configuration.LocalFileSettingsProvider> すべての設定を保存するのに暗号化を使用しません。 したがって、プレーン テキストのパスワードや、構成ファイル内の情報を個別に暗号化などの他の対策を講じることがなくこのプロバイダーを使用して他の機密情報を格納しないでいます。 詳細については、「[Encrypting Configuration Information using Protected Configuration](http://msdn.microsoft.com/ja-jp/51cdfe5b-9d82-458c-94ff-c551c4f38ed1)」を参照してください。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Configuration.ConfigurationErrorsException">A user-scoped setting was encountered but the current configuration only supports application-scoped settings.  
+        <exception cref="T:System.Configuration.ConfigurationErrorsException">ユーザー スコープ設定が発生しましたが、現在の構成では、アプリケーション スコープの設定のみがサポートされます。  
   
- -or-  
+ または  
   
- There was a general failure saving the settings to the configuration file.</exception>
+ 設定を構成ファイルに保存する一般的なエラーが発生しました。</exception>
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.GetPropertyValues(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyCollection)" />
+        <altmember cref="M:System.Configuration.ApplicationSettingsBase.Save" />
+        <altmember cref="T:System.ComponentModel.TypeConverter" />
+        <altmember cref="T:System.Configuration.SettingsSerializeAsAttribute" />
       </Docs>
     </Member>
     <Member MemberName="Upgrade">
@@ -333,32 +360,36 @@
         <Parameter Name="properties" Type="System.Configuration.SettingsPropertyCollection" />
       </Parameters>
       <Docs>
-        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> describing the current application usage.</param>
-        <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection" /> containing the settings property group whose values are to be retrieved.</param>
-        <summary>Attempts to migrate previous user-scoped settings from a previous version of the same application.</summary>
+        <param name="context">A <see cref="T:System.Configuration.SettingsContext" /> 現在のアプリケーションの使用状況を説明します。</param>
+        <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection" /> を取得するのには、値が設定のプロパティ グループを格納しています。</param>
+        <summary>同じアプリケーションの以前のバージョンから以前のユーザー スコープ設定を移行しようとします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Configuration.LocalFileSettingsProvider> migrates the local and roaming settings in separate operations.  
+## 解説  
+ <xref:System.Configuration.LocalFileSettingsProvider> 別の操作でローカルおよびローミングの設定を移行します。  
   
- The <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> method is suppressed for every application setting that has the <xref:System.Configuration.NoSettingsVersionUpgradeAttribute> applied to it, or to the entire settings wrapper class, derived from <xref:System.Configuration.ApplicationSettingsBase>.  
+ <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> に設定するすべてのアプリケーションがあるメソッドを非表示に、 <xref:System.Configuration.NoSettingsVersionUpgradeAttribute> 、またはから派生した、全体の設定ラッパー クラスに適用 <xref:System.Configuration.ApplicationSettingsBase>します。  
   
- This way this method is called depends on the type of application that is being upgraded:  
+ このメソッドはこの方法は、アップグレードされるアプリケーションの種類によって異なります。  
   
--   Each version of a [!INCLUDE[ndptecclick](~/includes/ndptecclick-md.md)] application is stored in its own isolated installation directory. After a new version of a [!INCLUDE[ndptecclick](~/includes/ndptecclick-md.md)] application is installed, and when the new version is first run, internal logic will automatically call <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> to migrate all common application settings to the new version. For more information, see [ClickOnce and Application Settings](http://msdn.microsoft.com/library/891caba6-faef-4a3c-8f71-60e6fadb60eb).  
+-   各バージョン、 [!INCLUDE[ndptecclick](~/includes/ndptecclick-md.md)] アプリケーションを自分の別のインストール ディレクトリに保存します。 新しいバージョンの後に、 [!INCLUDE[ndptecclick](~/includes/ndptecclick-md.md)] アプリケーションがインストールされているし、新しいバージョンが最初に実行時に内部ロジックが自動的に呼び出さ <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A> 新しいバージョンに共通のすべてのアプリケーション設定を移行します。 詳細については、「[ClickOnce and Application Settings](http://msdn.microsoft.com/ja-jp/891caba6-faef-4a3c-8f71-60e6fadb60eb)」を参照してください。  
   
--   Standard Windows Forms and console applications must manually call <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A>, because there is not a general, automatic way to determine when such an application is first run. The two common ways to do this are either from the installation program or using from the application itself, using a persisted property, often named something like `IsFirstRun`.  
+-   標準の Windows フォームおよびコンソール アプリケーションを呼び出す必要があります手動で <xref:System.Configuration.LocalFileSettingsProvider.Upgrade%2A>, であるため、このようなアプリケーションを初めて実行場合を判断する、自動の一般的な方法はありません。 2 つの一般的な方法は、インストール プログラムまたは永続化されたプロパティを使用して、アプリケーション自体を使用してから多くの場合のような名前 `IsFirstRun`します。  
   
- Note that for the newer version to migrate application settings, it must be able to also load and read the older version of the application settings. Therefore, it must contain wrapper classes compatible with both the new and previous versions of the application.  
+ いるバージョンについては、新しいアプリケーション設定を移行する、する必要があります可能になって、アプリケーション設定の古いバージョンの読み込みと読み取りに注意してください。 そのため、アプリケーションの新しいおよび以前のバージョンと互換性のあるラッパー クラスを含んでいます。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Configuration.ConfigurationErrorsException">A user-scoped setting was encountered but the current configuration only supports application-scoped settings.  
+        <exception cref="T:System.Configuration.ConfigurationErrorsException">ユーザー スコープ設定が発生しましたが、現在の構成では、アプリケーション スコープの設定のみがサポートされます。  
   
- -or-  
+ または  
   
- The previous version of the configuration file could not be accessed.</exception>
+ 構成ファイルの以前のバージョンにアクセスできませんでした。</exception>
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.GetPreviousVersion(System.Configuration.SettingsContext,System.Configuration.SettingsProperty)" />
+        <altmember cref="M:System.Configuration.LocalFileSettingsProvider.Reset(System.Configuration.SettingsContext)" />
+        <altmember cref="T:System.Configuration.IApplicationSettingsProvider" />
+        <altmember cref="T:System.Configuration.NoSettingsVersionUpgradeAttribute" />
       </Docs>
     </Member>
   </Members>

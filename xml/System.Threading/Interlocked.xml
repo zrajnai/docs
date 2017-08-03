@@ -22,37 +22,37 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides atomic operations for variables that are shared by multiple threads.</summary>
+    <summary>複数のスレッドで共有される変数に分割不可能な操作を提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The methods of this class help protect against errors that can occur when the scheduler switches contexts while a thread is updating a variable that can be accessed by other threads, or when two threads are executing concurrently on separate processors. The members of this class do not throw exceptions.  
+## 解説  
+ このクラスのメソッドは、スケジューラが、スレッドが他のスレッドからアクセスできる変数を更新中に、コンテキストを切り替えたときに、または 2 つのスレッドが別々 のプロセッサで同時に実行するときに発生する可能性があるエラーから保護します。 このクラスのメンバーでは、例外はスローされません。  
   
- The <xref:System.Threading.Interlocked.Increment%2A> and <xref:System.Threading.Interlocked.Decrement%2A> methods increment or decrement a variable and store the resulting value in a single operation. On most computers, incrementing a variable is not an atomic operation, requiring the following steps:  
+ <xref:System.Threading.Interlocked.Increment%2A> と <xref:System.Threading.Interlocked.Decrement%2A> メソッドの変数を増減して、単一の操作で、結果の値を格納します。 ほとんどのコンピューターで、変数をインクリメントする、次の手順を必要とする、分割不可能な操作ではありません。  
   
-1.  Load a value from an instance variable into a register.  
+1.  レジスタにインスタンス変数から値を読み込みます。  
   
-2.  Increment or decrement the value.  
+2.  インクリメントまたはデクリメント値。  
   
-3.  Store the value in the instance variable.  
+3.  インスタンスの変数に値を格納します。  
   
- If you do not use <xref:System.Threading.Interlocked.Increment%2A> and <xref:System.Threading.Interlocked.Decrement%2A>, a thread can be preempted after executing the first two steps. Another thread can then execute all three steps. When the first thread resumes execution, it overwrites the value in the instance variable, and the effect of the increment or decrement performed by the second thread is lost.  
+ 使用しない場合 <xref:System.Threading.Interlocked.Increment%2A> と <xref:System.Threading.Interlocked.Decrement%2A>, 、最初の 2 つの手順を実行した後、スレッドを横取りことができます。 別のスレッドは、3 つすべての手順を実行できます。 最初のスレッドが実行を再開インスタンス変数の値を上書きし、インクリメントまたはデクリメントが 2 番目のスレッドによって実行されるの効果が失われます。  
   
- The <xref:System.Threading.Interlocked.Exchange%2A> method atomically exchanges the values of the specified variables. The <xref:System.Threading.Interlocked.CompareExchange%2A> method combines two operations: comparing two values and storing a third value in one of the variables, based on the outcome of the comparison. The compare and exchange operations are performed as an atomic operation.  
+ <xref:System.Threading.Interlocked.Exchange%2A> メソッドは、指定された変数の値をアトミックに交換します。<xref:System.Threading.Interlocked.CompareExchange%2A> メソッドで、次の 2 つの操作を組み合わせて: 2 つの値を比較して、3 つ目を格納する値が比較の結果に基づいて、変数のいずれかでします。 比較および交換操作は、分割不可能な操作として実行されます。  
   
    
   
-## Examples  
- The following code example shows a thread-safe resource locking mechanism.  
+## 例  
+ 次のコード例では、スレッド セーフであるリソースのロック機構を示します。  
   
- [!code-cpp[System.Threading.Interlocked.Exchange Int32 Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Interlocked.Exchange Int32 Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Interlocked.Exchange Int32 Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Interlocked.Exchange Int32 Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Interlocked.Exchange Int32 Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Interlocked.Exchange Int32 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/VB/class1.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>This type is thread safe.</threadsafe>
+    <threadsafe>この型はスレッド セーフです。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName="Add">
@@ -88,19 +88,23 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="location1">A variable containing the first value to be added. The sum of the two values is stored in <c>location1</c>.</param>
-        <param name="value">The value to be added to the integer at <c>location1</c>.</param>
-        <summary>Adds two 32-bit integers and replaces the first integer with the sum, as an atomic operation.</summary>
-        <returns>The new value stored at <paramref name="location1" />.</returns>
+        <param name="location1">加算する最初の値を含む変数。 2 つの値の合計が格納されている <c>location1</c>します。</param>
+        <param name="value">整数に加算する値 <c>location1</c>です。</param>
+        <summary>分割不可能な操作として、2 つの 32 ビット整数を加算し、最初の整数を合計で置き換えます。</summary>
+        <returns>格納された新しい値 <paramref name="location1" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method handles an overflow condition by wrapping: if the value at `location1` is <xref:System.Int32?displayProperty=fullName> and `value` is 1, the result is <xref:System.Int32?displayProperty=fullName>; if `value` is 2, the result is (<xref:System.Int32?displayProperty=fullName> + 1); and so on. No exception is thrown.  
+## 解説  
+ このメソッドは、ラップすることによって、オーバーフローを処理: 場合位置にある値 `location1` は <xref:System.Int32.MaxValue?displayProperty=fullName> と `value` 1 に設定されて、結果は <xref:System.Int32.MinValue?displayProperty=fullName>場合 `value` が 2 の場合、結果は \(<xref:System.Int32.MinValue?displayProperty=fullName> \+ 1\); にします。 例外をスローすることはありません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -136,21 +140,28 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="location1">A variable containing the first value to be added. The sum of the two values is stored in <c>location1</c>.</param>
-        <param name="value">The value to be added to the integer at <c>location1</c>.</param>
-        <summary>Adds two 64-bit integers and replaces the first integer with the sum, as an atomic operation.</summary>
-        <returns>The new value stored at <paramref name="location1" />.</returns>
+        <param name="location1">加算する最初の値を含む変数。 2 つの値の合計が格納されている <c>location1</c>します。</param>
+        <param name="value">整数に加算する値 <c>location1</c>です。</param>
+        <summary>分割不可能な操作として、2 つの 64 ビット整数を加算し、最初の整数を合計で置き換えます。</summary>
+        <returns>格納された新しい値 <paramref name="location1" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method handles an overflow condition by wrapping: if the value at `location1` is <xref:System.Int64?displayProperty=fullName> and `value` is 1, the result is <xref:System.Int64?displayProperty=fullName>; if `value` is 2, the result is (<xref:System.Int64?displayProperty=fullName> + 1); and so on. No exception is thrown.  
+## 解説  
+ このメソッドは、ラップすることによって、オーバーフローを処理: 場合位置にある値 `location1` は <xref:System.Int64.MaxValue?displayProperty=fullName> と `value` 1 に設定されて、結果は <xref:System.Int64.MinValue?displayProperty=fullName>場合 `value` が 2 の場合、結果は \(<xref:System.Int64.MinValue?displayProperty=fullName> \+ 1\); にします。 例外をスローすることはありません。  
   
- The <xref:System.Threading.Interlocked.Read%2A> method and the 64-bit overloads of the <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, and <xref:System.Threading.Interlocked.Add%2A> methods are truly atomic only on systems where a <xref:System.IntPtr?displayProperty=fullName> is 64 bits long. On other systems, these methods are atomic with respect to each other, but not with respect to other means of accessing the data. Thus, to be thread safe on 32-bit systems, any access to a 64-bit value must be made through the members of the <xref:System.Threading.Interlocked> class.  
+ <xref:System.Threading.Interlocked.Read%2A> メソッドとの 64 ビットのオーバー ロード、 <xref:System.Threading.Interlocked.Increment%2A>, 、<xref:System.Threading.Interlocked.Decrement%2A>, と <xref:System.Threading.Interlocked.Add%2A> メソッドは、システムでのみアトミック本当にここで、 <xref:System.IntPtr?displayProperty=fullName> 64 ビット長。 他のシステムでは、これらのメソッドは、貴社とデータにアクセスするが、相互にアトミックです。 したがって、32 ビット システムでスレッド セーフにするには、64 ビット値へのアクセスできる必要のメンバーを <xref:System.Threading.Interlocked> クラスです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
+        <altmember cref="Overload:System.Threading.Interlocked.Increment" />
+        <altmember cref="Overload:System.Threading.Interlocked.Decrement" />
+        <altmember cref="M:System.Threading.Interlocked.Read(System.Int64@)" />
       </Docs>
     </Member>
     <Member MemberName="CompareExchange">
@@ -182,30 +193,33 @@
         <Parameter Name="comparand" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="location1">The destination, whose value is compared with <c>comparand</c> and possibly replaced.</param>
-        <param name="value">The value that replaces the destination value if the comparison results in equality.</param>
-        <param name="comparand">The value that is compared to the value at <c>location1</c>.</param>
-        <summary>Compares two double-precision floating point numbers for equality and, if they are equal, replaces the first value.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <param name="location1">値を <c>comparand</c> と比較し、場合によっては置き換える比較先。</param>
+        <param name="value">比較した結果が等しい場合に比較先の値を置き換える値。</param>
+        <param name="comparand">
+          <c>location1</c> にある値と比較する値。</param>
+        <summary>2 つの倍精度浮動小数点数が等しいかどうかを比較します。等しい場合は、最初の値を置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the value in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ 場合 `comparand` 値と `location1` しが等しいか、 `value` に格納されて `location1`します。 それ以外の場合は演算が実行されません。 比較および交換操作は、分割不可能な操作として実行されます。 戻り値 <xref:System.Threading.Interlocked.CompareExchange%2A> の元の値は、 `location1`, 、交換が行われているかどうかを示す、します。  
   
    
   
-## Examples  
- The following code example demonstrates a thread-safe method that accumulates a running total of <xref:System.Double> values. Two threads add a series of <xref:System.Double> values using the thread-safe method and ordinary addition, and when the threads complete the totals are compared. On a dual-processor computer, there is a significant difference in the totals.  
+## 例  
+ 次のコード例は、累計を実行中のスレッド セーフであるメソッドを示しています <xref:System.Double> 値。 2 つのスレッドの系列を追加する <xref:System.Double> 、スレッド セーフであるメソッドと通常の加算を使用して値を合計を比較する、スレッドが完了します。 デュアル プロセッサ コンピューターでは、合計に大きな違いです。  
   
- In the thread-safe method, the initial value of the running total is saved, and then the <xref:System.Threading.Interlocked.CompareExchange%2A> method is used to exchange the newly computed total with the old total. If the return value is not equal to the saved value of the running total, then another thread has updated the total in the meantime. In that case, the attempt to update the running total must be repeated.  
+ スレッド セーフな方法では、実行中の合計の初期値が保存、し、 <xref:System.Threading.Interlocked.CompareExchange%2A> メソッドを使用して、古い合計の新しく計算された合計を交換します。 戻り値が実行中の合計の保存されている値と等しくない場合は、\[別のスレッドが更新合計当面の間。 その場合は、実行中の合計を更新しようとするを繰り返す必要があります。  
   
- [!code-csharp[System.Threading.Interlocked CompareExchange Double#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Double/cs/source.cs#1)]
- [!code-vb[System.Threading.Interlocked CompareExchange Double#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Double/vb/source.vb#1)]  
+ [!code-csharp[System.Threading.Interlocked CompareExchange Double\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Double/cs/source.cs#1)]
+ [!code-vb[System.Threading.Interlocked CompareExchange Double\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Double/vb/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompareExchange">
@@ -242,32 +256,40 @@
         <Parameter Name="comparand" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="location1">The destination, whose value is compared with <c>comparand</c> and possibly replaced.</param>
-        <param name="value">The value that replaces the destination value if the comparison results in equality.</param>
-        <param name="comparand">The value that is compared to the value at <c>location1</c>.</param>
-        <summary>Compares two 32-bit signed integers for equality and, if they are equal, replaces the first value.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <param name="location1">値を <c>comparand</c> と比較し、場合によっては置き換える比較先。</param>
+        <param name="value">比較した結果が等しい場合に比較先の値を置き換える値。</param>
+        <param name="comparand">
+          <c>location1</c> にある値と比較する値。</param>
+        <summary>2 つの 32 ビット符号付き整数が等しいかどうかを比較します。等しい場合は、最初の値を置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the value in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ and the value in **parameterReference tag is not supported!!!!**  
+ are equal, then **parameterReference tag is not supported!!!!**  
+ is stored in **parameterReference tag is not supported!!!!**  
+. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in **parameterReference tag is not supported!!!!**  
+, whether or not the exchange takes place.  
   
    
   
-## Examples  
- The following code example demonstrates a thread-safe method that accumulates a running total. The initial value of the running total is saved, and then the <xref:System.Threading.Interlocked.CompareExchange%2A> method is used to exchange the newly computed total with the old total. If the return value is not equal to the saved value of the running total, then another thread has updated the total in the meantime. In that case, the attempt to update the running total must be repeated.  
+## 例  
+ The following code example demonstrates a thread\-safe method that accumulates a running total. The initial value of the running total is saved, and then the <xref:System.Threading.Interlocked.CompareExchange%2A> method is used to exchange the newly computed total with the old total. If the return value is not equal to the saved value of the running total, then another thread has updated the total in the meantime. In that case, the attempt to update the running total must be repeated.  
   
 > [!NOTE]
->  The <xref:System.Threading.Interlocked.Add%2A> method, introduced in version 2.0 of the .NET Framework, provides a more convenient way to accumulate thread-safe running totals for integers.  
+>  The <xref:System.Threading.Interlocked.Add%2A> method, introduced in version 2.0 of the .NET Framework, provides a more convenient way to accumulate thread\-safe running totals for integers.  
   
- [!code-cpp[System.Threading.Interlocked CompareExchange0#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange0/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Interlocked CompareExchange0#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange0/CS/source.cs#1)]
- [!code-vb[System.Threading.Interlocked CompareExchange0#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange0/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Interlocked CompareExchange0\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange0/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Interlocked CompareExchange0\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange0/CS/source.cs#1)]
+ [!code-vb[System.Threading.Interlocked CompareExchange0\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange0/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompareExchange">
@@ -299,20 +321,31 @@
         <Parameter Name="comparand" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="location1">The destination, whose value is compared with <c>comparand</c> and possibly replaced.</param>
-        <param name="value">The value that replaces the destination value if the comparison results in equality.</param>
-        <param name="comparand">The value that is compared to the value at <c>location1</c>.</param>
-        <summary>Compares two 64-bit signed integers for equality and, if they are equal, replaces the first value.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <param name="location1">値を <c>comparand</c> と比較し、場合によっては置き換える比較先。</param>
+        <param name="value">比較した結果が等しい場合に比較先の値を置き換える値。</param>
+        <param name="comparand">
+          <c>location1</c> にある値と比較する値。</param>
+        <summary>2 つの 64 ビット符号付き整数が等しいかどうかを比較します。等しい場合は、最初の値を置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the value in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ and the value in **parameterReference tag is not supported!!!!**  
+ are equal, then **parameterReference tag is not supported!!!!**  
+ is stored in **parameterReference tag is not supported!!!!**  
+. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in **parameterReference tag is not supported!!!!**  
+, whether or not the exchange takes place.  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompareExchange">
@@ -349,23 +382,27 @@
         <Parameter Name="comparand" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="location1">The destination <see cref="T:System.IntPtr" />, whose value is compared with the value of <c>comparand</c> and possibly replaced by <c>value</c>.</param>
-        <param name="value">The <see cref="T:System.IntPtr" /> that replaces the destination value if the comparison results in equality.</param>
-        <param name="comparand">The <see cref="T:System.IntPtr" /> that is compared to the value at <c>location1</c>.</param>
-        <summary>Compares two platform-specific handles or pointers for equality and, if they are equal, replaces the first one.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <param name="location1">宛先 <see cref="T:System.IntPtr" />, の値と比較値を持つ <c>comparand</c> し、場合によって置き換え <c>value</c>します。</param>
+        <param name="value">
+          <see cref="T:System.IntPtr" /> 、比較結果が等しい場合は、送信先の値を置き換えます。</param>
+        <param name="comparand">
+          <see cref="T:System.IntPtr" /> 位置にある値と比較する <c>location1</c>です。</param>
+        <summary>2 つのプラットフォーム固有のハンドルまたはポインターが等しいかどうかを比較します。等しい場合は、最初の 1 つを置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the value in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of this method is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ 場合 `comparand` 値と `location1` しが等しいか、 `value` に格納されて `location1`します。 それ以外の場合は演算が実行されません。 比較および交換操作は、分割不可能な操作として実行されます。 このメソッドの戻り値の元の値は、 `location1`, 、交換が行われているかどうかを示す、します。  
   
 > [!NOTE]
->  <xref:System.IntPtr> is a platform-specific type.  
+>  <xref:System.IntPtr> プラットフォーム固有の型。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompareExchange">
@@ -402,25 +439,27 @@
         <Parameter Name="comparand" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="location1">The destination object that is compared with <c>comparand</c> and possibly replaced.</param>
-        <param name="value">The object that replaces the destination object if the comparison results in equality.</param>
-        <param name="comparand">The object that is compared to the object at <c>location1</c>.</param>
-        <summary>Compares two objects for reference equality and, if they are equal, replaces the first object.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <param name="location1">対象オブジェクトと比較される <c>comparand</c> され、場合によって置き換えられます。</param>
+        <param name="value">比較結果が等しい場合は、先のオブジェクトを置き換えるオブジェクト。</param>
+        <param name="comparand">位置にあるオブジェクトと比較されるオブジェクト <c>location1</c>します。</param>
+        <summary>2 つのオブジェクトの参照が等値であるかどうかを比較します。等しい場合は、最初のオブジェクトを置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the object in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ 場合 `comparand` 内のオブジェクトと `location1` しが等しいか、 `value` に格納されて `location1`します。 それ以外の場合は演算が実行されません。 比較および交換操作は、分割不可能な操作として実行されます。 戻り値 <xref:System.Threading.Interlocked.CompareExchange%2A> の元の値は、 `location1`, 、交換が行われているかどうかを示す、します。  
   
- Beginning with .NET Framework version 2.0, the <xref:System.Threading.Interlocked.CompareExchange%60%601%28%60%600%40%2C%60%600%2C%60%600%29> method overload provides a type-safe alternative for reference types.  
+ .NET Framework version 2.0 以降、 <xref:System.Threading.Interlocked.CompareExchange%60%601%28%60%600%40%2C%60%600%2C%60%600%29> メソッドのオーバー ロードは、参照型のタイプ セーフな代替手段を提供します。  
   
 > [!NOTE]
->  The objects are compared for reference equality, rather than <xref:System.Object.Equals%2A?displayProperty=fullName>. As a result, two boxed instances of the same value type (for example, the integer 3) always appear to be unequal, and no operation is performed. Do not use this overload with value types.  
+>  オブジェクトの参照の等価性はなく <xref:System.Object.Equals%2A?displayProperty=fullName>です。 その結果、同じ 2 つのボックス化されたインスタンス値の型 \(たとえば、整数 3\) 常に等しくない場合に表示され、操作は実行されません。 値の型は、このオーバー ロードを使用しないでください。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompareExchange">
@@ -452,30 +491,33 @@
         <Parameter Name="comparand" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="location1">The destination, whose value is compared with <c>comparand</c> and possibly replaced.</param>
-        <param name="value">The value that replaces the destination value if the comparison results in equality.</param>
-        <param name="comparand">The value that is compared to the value at <c>location1</c>.</param>
-        <summary>Compares two single-precision floating point numbers for equality and, if they are equal, replaces the first value.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <param name="location1">値を <c>comparand</c> と比較し、場合によっては置き換える比較先。</param>
+        <param name="value">比較した結果が等しい場合に比較先の値を置き換える値。</param>
+        <param name="comparand">
+          <c>location1</c> にある値と比較する値。</param>
+        <summary>2 つの単精度浮動小数点数が等しいかどうかを比較します。等しい場合は、最初の値を置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the value in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The compare and exchange operations are performed as an atomic operation. The return value of <xref:System.Threading.Interlocked.CompareExchange%2A> is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ 場合 `comparand` 値と `location1` しが等しいか、 `value` に格納されて `location1`します。 それ以外の場合は演算が実行されません。 比較および交換操作は、分割不可能な操作として実行されます。 戻り値 <xref:System.Threading.Interlocked.CompareExchange%2A> の元の値は、 `location1`, 、交換が行われているかどうかを示す、します。  
   
    
   
-## Examples  
- The following code example demonstrates a thread-safe method that accumulates a running total of <xref:System.Single> values. Two threads add a series of <xref:System.Single> values using the thread-safe method and ordinary addition, and when the threads complete the totals are compared. On a dual-processor computer, there is a significant difference in the totals.  
+## 例  
+ 次のコード例は、累計を実行中のスレッド セーフであるメソッドを示しています <xref:System.Single> 値。 2 つのスレッドの系列を追加する <xref:System.Single> 、スレッド セーフであるメソッドと通常の加算を使用して値を合計を比較する、スレッドが完了します。 デュアル プロセッサ コンピューターでは、合計に大きな違いです。  
   
- In the thread-safe method, the initial value of the running total is saved, and then the <xref:System.Threading.Interlocked.CompareExchange%2A> method is used to exchange the newly computed total with the old total. If the return value is not equal to the saved value of the running total, then another thread has updated the total in the meantime. In that case, the attempt to update the running total must be repeated.  
+ スレッド セーフな方法では、実行中の合計の初期値が保存、し、 <xref:System.Threading.Interlocked.CompareExchange%2A> メソッドを使用して、古い合計の新しく計算された合計を交換します。 戻り値が実行中の合計の保存されている値と等しくない場合は、\[別のスレッドが更新合計当面の間。 その場合は、実行中の合計を更新しようとするを繰り返す必要があります。  
   
- [!code-csharp[System.Threading.Interlocked CompareExchange Single#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Single/cs/source.cs#1)]
- [!code-vb[System.Threading.Interlocked CompareExchange Single#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Single/vb/source.vb#1)]  
+ [!code-csharp[System.Threading.Interlocked CompareExchange Single\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Single/cs/source.cs#1)]
+ [!code-vb[System.Threading.Interlocked CompareExchange Single\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked CompareExchange Single/vb/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompareExchange&lt;T&gt;">
@@ -522,26 +564,32 @@
         <Parameter Name="comparand" Type="T" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The type to be used for <c>location1</c>, <c>value</c>, and <c>comparand</c>. This type must be a reference type.</typeparam>
-        <param name="location1">The destination, whose value is compared with <c>comparand</c> and possibly replaced. This is a reference parameter (<see langword="ref" /> in C#, <see langword="ByRef" /> in Visual Basic).</param>
-        <param name="value">The value that replaces the destination value if the comparison results in equality.</param>
-        <param name="comparand">The value that is compared to the value at <c>location1</c>.</param>
-        <summary>Compares two instances of the specified reference type <paramref name="T" /> for equality and, if they are equal, replaces the first one.</summary>
-        <returns>The original value in <paramref name="location1" />.</returns>
+        <typeparam name="T">使用する種類 <c>location1</c>, 、<c>value</c>, 、および <c>comparand</c>です。 この型は、参照型である必要があります。</typeparam>
+        <param name="location1">値を <c>comparand</c> と比較し、場合によっては置き換える比較先。 これは参照パラメーターです \(C\# では <see langword="ref" />、Visual Basic では <see langword="ByRef" />\)。</param>
+        <param name="value">比較した結果が等しい場合に比較先の値を置き換える値。</param>
+        <param name="comparand">
+          <c>location1</c> にある値と比較する値。</param>
+        <summary>指定した参照型の 2 つのインスタンスを比較 <paramref name="T" /> 等しいかどうかが等しい場合は、最初の 1 つを置き換えます。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `comparand` and the value in `location1` are equal, then `value` is stored in `location1`. Otherwise, no operation is performed. The comparison and the exchange are performed as an atomic operation. The return value of this method is the original value in `location1`, whether or not the exchange takes place.  
+## 解説  
+ 場合 `comparand` 値と `location1` しが等しいか、 `value` に格納されて `location1`します。 それ以外の場合は演算が実行されません。 比較および交換は、分割不可能な操作として実行されます。 このメソッドの戻り値の元の値は、 `location1`, 、交換が行われているかどうかを示す、します。  
   
- This method only supports reference types. There are overloads of the <xref:System.Threading.Interlocked.CompareExchange%2A> method for the value types <xref:System.Int32>, <xref:System.Int64>, <xref:System.IntPtr>, <xref:System.Single>, and <xref:System.Double>, but there is no support for other value types.  
+ このメソッドは、参照型のみをサポートします。 オーバー ロードがあり、 <xref:System.Threading.Interlocked.CompareExchange%2A> 値型のメソッド <xref:System.Int32>, 、<xref:System.Int64>, 、<xref:System.IntPtr>, 、<xref:System.Single>, 、および <xref:System.Double>, 、他の値型はサポートされていませんが、します。  
   
 > [!NOTE]
->  This method overload is preferable to the <xref:System.Threading.Interlocked.CompareExchange%28System.Object%40%2CSystem.Object%2CSystem.Object%29> method overload, because the latter requires the destination object to be accessed late-bound.  
+>  このメソッドのオーバー ロードをお勧めします <xref:System.Threading.Interlocked.CompareExchange%28System.Object%40%2CSystem.Object%2CSystem.Object%29> 、後者に遅延バインディング アクセス先となるオブジェクトを必要とするためのメソッドがオーバー ロードします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Decrement">
@@ -576,31 +624,34 @@
         <Parameter Name="location" Type="System.Int32&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="location">The variable whose value is to be decremented.</param>
-        <summary>Decrements a specified variable and stores the result, as an atomic operation.</summary>
-        <returns>The decremented value.</returns>
+        <param name="location">値がデクリメントされる変数。</param>
+        <summary>分割不可能な操作として、指定した変数をデクリメントし、結果を格納します。</summary>
+        <returns>デクリメントされた値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method handles an overflow condition by wrapping: If `location` = <xref:System.Int32?displayProperty=fullName>, `location` - 1 = <xref:System.Int32?displayProperty=fullName>. No exception is thrown.  
+## 解説  
+ This method handles an overflow condition by wrapping: If **parameterReference tag is not supported!!!!**  
+ \= <xref:System.Int32.MinValue?displayProperty=fullName>, **parameterReference tag is not supported!!!!**  
+ \- 1 \= <xref:System.Int32.MaxValue?displayProperty=fullName>. No exception is thrown.  
   
    
   
-## Examples  
+## 例  
  The following example determines how many random numbers that range from 0 to 1,000 are required to generate 1,000 random numbers with a midpoint value. To keep track of the number of midpoint values, a variable, `midpointCount`, is set equal to 1,000 and decremented each time the random number generator returns a midpoint value. Because three threads generate the random numbers, the <xref:System.Threading.Interlocked.Decrement%28System.Int32%40%29> method is called to ensure that multiple threads don't update `midpointCount` concurrently. Note that a lock is also used to protect the random number generator, and that a <xref:System.Threading.CountdownEvent> object is used to ensure that the `Main` method doesn't finish execution before the three threads.  
   
- [!code-csharp[System.Threading.Interlocked.Decrement#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.decrement/cs/decrement1.cs#1)]
- [!code-vb[System.Threading.Interlocked.Decrement#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.decrement/vb/decrement1.vb#1)]  
+ [!code-csharp[System.Threading.Interlocked.Decrement\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.decrement/cs/decrement1.cs#1)]
+ [!code-vb[System.Threading.Interlocked.Decrement\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.decrement/vb/decrement1.vb#1)]  
   
  The following example is similar to the previous one, except that it uses the  instead of a thread procedure to generate 50,000 random midpoint integers. In this example, a lambda expression replaces the `GenerateNumbers` thread procedure, and the call to the <xref:System.Threading.Tasks.Task.WaitAll%2A?displayProperty=fullName> method eliminates the need for the <xref:System.Threading.CountdownEvent> object.  
   
- [!code-csharp[System.Threading.Interlocked.Decrement#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.decrement/cs/decrement2.cs#2)]
- [!code-vb[System.Threading.Interlocked.Decrement#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.decrement/vb/decrement2.vb#2)]  
+ [!code-csharp[System.Threading.Interlocked.Decrement\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.decrement/cs/decrement2.cs#2)]
+ [!code-vb[System.Threading.Interlocked.Decrement\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.decrement/vb/decrement2.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The address of <paramref name="location" /> is a null pointer.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="location" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Decrement">
@@ -630,20 +681,26 @@
         <Parameter Name="location" Type="System.Int64&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="location">The variable whose value is to be decremented.</param>
-        <summary>Decrements the specified variable and stores the result, as an atomic operation.</summary>
-        <returns>The decremented value.</returns>
+        <param name="location">値がデクリメントされる変数。</param>
+        <summary>分割不可能な操作として、指定した変数をデクリメントしてその結果を格納します。</summary>
+        <returns>デクリメントされた値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method handles an overflow condition by wrapping: if `location` = <xref:System.Int64?displayProperty=fullName>, `location` - 1 = <xref:System.Int64?displayProperty=fullName>. No exception is thrown.  
+## 解説  
+ This method handles an overflow condition by wrapping: if **parameterReference tag is not supported!!!!**  
+ \= <xref:System.Int64.MinValue?displayProperty=fullName>, **parameterReference tag is not supported!!!!**  
+ \- 1 \= <xref:System.Int64.MaxValue?displayProperty=fullName>. No exception is thrown.  
   
- The <xref:System.Threading.Interlocked.Read%2A> method and the 64-bit overloads of the <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, and <xref:System.Threading.Interlocked.Add%2A> methods are truly atomic only on systems where a <xref:System.IntPtr?displayProperty=fullName> is 64 bits long. On other systems, these methods are atomic with respect to each other, but not with respect to other means of accessing the data. Thus, to be thread safe on 32-bit systems, any access to a 64-bit value must be made through the members of the <xref:System.Threading.Interlocked> class.  
+ The <xref:System.Threading.Interlocked.Read%2A> method and the 64\-bit overloads of the <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, and <xref:System.Threading.Interlocked.Add%2A> methods are truly atomic only on systems where a <xref:System.IntPtr?displayProperty=fullName> is 64 bits long. On other systems, these methods are atomic with respect to each other, but not with respect to other means of accessing the data. Thus, to be thread safe on 32\-bit systems, any access to a 64\-bit value must be made through the members of the <xref:System.Threading.Interlocked> class.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The address of <paramref name="location" /> is a null pointer.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="location" /> のアドレスは null ポインターです。</exception>
+        <altmember cref="Overload:System.Threading.Interlocked.Increment" />
+        <altmember cref="Overload:System.Threading.Interlocked.Add" />
+        <altmember cref="M:System.Threading.Interlocked.Read(System.Int64@)" />
       </Docs>
     </Member>
     <Member MemberName="Exchange">
@@ -674,12 +731,15 @@
         <Parameter Name="value" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="location1">The variable to set to the specified value.</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets a double-precision floating point number to a specified value and returns the original value, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
+        <param name="location1">指定した値に設定する変数。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、指定した値を倍精度浮動小数点数として設定し、元の値を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Exchange">
@@ -715,23 +775,26 @@
         <Parameter Name="value" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="location1">The variable to set to the specified value.</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets a 32-bit signed integer to a specified value and returns the original value, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
+        <param name="location1">指定した値に設定する変数。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、指定した値を 32 ビット符号付き整数として設定し、元の値を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following code example shows a thread-safe resource locking mechanism.  
+## 例  
+ The following code example shows a thread\-safe resource locking mechanism.  
   
- [!code-cpp[System.Threading.Interlocked.Exchange Int32 Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CPP/class1.cpp#1)]
- [!code-csharp[System.Threading.Interlocked.Exchange Int32 Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CS/class1.cs#1)]
- [!code-vb[System.Threading.Interlocked.Exchange Int32 Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/VB/class1.vb#1)]  
+ [!code-cpp[System.Threading.Interlocked.Exchange Int32 Example\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CPP/class1.cpp#1)]
+ [!code-csharp[System.Threading.Interlocked.Exchange Int32 Example\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/CS/class1.cs#1)]
+ [!code-vb[System.Threading.Interlocked.Exchange Int32 Example\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange Int32 Example/VB/class1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Exchange">
@@ -762,12 +825,20 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="location1">The variable to set to the specified value.</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets a 64-bit signed integer to a specified value and returns the original value, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <param name="location1">指定した値に設定する変数。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、指定した値を 64 ビット符号付き整数として設定し、元の値を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Exchange">
@@ -803,12 +874,20 @@
         <Parameter Name="value" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="location1">The variable to set to the specified value.</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets a platform-specific handle or pointer to a specified value and returns the original value, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <param name="location1">指定した値に設定する変数。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、プラットフォーム固有のハンドルまたはポインターに指定した値を設定し、元の値を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Exchange">
@@ -844,28 +923,32 @@
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="location1">The variable to set to the specified value.</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets an object to a specified value and returns a reference to the original object, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
+        <param name="location1">指定した値に設定する変数。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、指定した値をオブジェクトとして設定し、元のオブジェクトへの参照を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Beginning with .NET Framework version 2.0, the <xref:System.Threading.Interlocked.Exchange%60%601%28%60%600%40%2C%60%600%29> method overload provides a type-safe alternative for reference types.  
+## 解説  
+ Beginning with .NET Framework version 2.0, the <xref:System.Threading.Interlocked.Exchange%60%601%28%60%600%40%2C%60%600%29> method overload provides a type\-safe alternative for reference types.  
   
    
   
-## Examples  
- The following code example shows the syntax for using `Exchange` with any reference type object.  
+## 例  
+ The following code example shows the syntax for using **languageKeyword tag is not supported!!!!**  
+ with any reference type object.  
   
- [!code-cpp[System.Threading.Interlocked.Exchange#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/CPP/source.cpp#1)]
- [!code-csharp[System.Threading.Interlocked.Exchange#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/CS/source.cs#1)]
- [!code-vb[System.Threading.Interlocked.Exchange#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/VB/source.vb#1)]  
+ [!code-cpp[System.Threading.Interlocked.Exchange\#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.Interlocked.Exchange\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/CS/source.cs#1)]
+ [!code-vb[System.Threading.Interlocked.Exchange\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Exchange">
@@ -896,12 +979,15 @@
         <Parameter Name="value" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="location1">The variable to set to the specified value.</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets a single-precision floating point number to a specified value and returns the original value, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
+        <param name="location1">指定した値に設定する変数。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、指定した値を単精度浮動小数点数として設定し、元の値を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Exchange&lt;T&gt;">
@@ -947,33 +1033,37 @@
         <Parameter Name="value" Type="T" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The type to be used for <c>location1</c> and <c>value</c>. This type must be a reference type.</typeparam>
-        <param name="location1">The variable to set to the specified value. This is a reference parameter (<see langword="ref" /> in C#, <see langword="ByRef" /> in Visual Basic).</param>
-        <param name="value">The value to which the <c>location1</c> parameter is set.</param>
-        <summary>Sets a variable of the specified type <paramref name="T" /> to a specified value and returns the original value, as an atomic operation.</summary>
-        <returns>The original value of <paramref name="location1" />.</returns>
+        <typeparam name="T">
+          <c>location1</c> および <c>value</c> に使用する型。 この型は、参照型である必要があります。</typeparam>
+        <param name="location1">指定した値に設定する変数。 これは参照パラメーターです \(C\# では <see langword="ref" />、Visual Basic では <see langword="ByRef" />\)。</param>
+        <param name="value">
+          <c>location1</c> パラメーターに設定される値。</param>
+        <summary>分割不可能な操作として、指定した型 <paramref name="T" /> の変数に指定した値を設定し、元の値を返します。</summary>
+        <returns>
+          <paramref name="location1" /> の元の値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This method only supports reference types. There are overloads of the <xref:System.Threading.Interlocked.Exchange%2A> method for the <xref:System.Int32>, <xref:System.Int64>, <xref:System.IntPtr>, <xref:System.Single>, and <xref:System.Double> value types, but there is no support for other value types.  
   
 > [!NOTE]
->  This method overload is preferable to the <xref:System.Threading.Interlocked.Exchange%28System.Object%40%2CSystem.Object%29> method overload, because the latter requires late-bound access to the destination object .  
+>  This method overload is preferable to the <xref:System.Threading.Interlocked.Exchange%28System.Object%40%2CSystem.Object%29> method overload, because the latter requires late\-bound access to the destination object .  
   
    
   
-## Examples  
- The following example launches ten tasks, each of which generates  100 ten-character part numbers. It then the part number that is first alphabetically.  
+## 例  
+ The following example launches ten tasks, each of which generates  100 ten\-character part numbers. It then the part number that is first alphabetically.  
   
- [!code-csharp[System.Threading.Interlocked.Exchange#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/CS/Exchange5.cs#2)]
- [!code-vb[System.Threading.Interlocked.Exchange#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/VB/Exchange5.vb#2)]  
+ [!code-csharp[System.Threading.Interlocked.Exchange\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/CS/Exchange5.cs#2)]
+ [!code-vb[System.Threading.Interlocked.Exchange\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.Interlocked.Exchange/VB/Exchange5.vb#2)]  
   
  The example uses the `firstWidget` variable to store the ID that occurs first in the sort order. It compares each ID that it generates with the `firstWidget` value.  If the new value precedes the current value of `firstWidget` in the sort order, the example calls the <xref:System.Threading.Interlocked.Exchange%2A> method to assign the new value to `firstWidget`.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location1" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Increment">
@@ -1008,31 +1098,32 @@
         <Parameter Name="location" Type="System.Int32&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="location">The variable whose value is to be incremented.</param>
-        <summary>Increments a specified variable and stores the result, as an atomic operation.</summary>
-        <returns>The incremented value.</returns>
+        <param name="location">値がインクリメントされる変数。</param>
+        <summary>分割不可能な操作として、指定した変数をインクリメントし、結果を格納します。</summary>
+        <returns>インクリメントされた値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method handles an overflow condition by wrapping: if `location` = <xref:System.Int32?displayProperty=fullName>, `location` + 1 = <xref:System.Int32?displayProperty=fullName>. No exception is thrown.  
+## 解説  
+ このメソッドは、ラップすることによって、オーバーフローを処理します。 場合 `location` \= <xref:System.Int32.MaxValue?displayProperty=fullName>, 、`location` \+ 1 \= <xref:System.Int32.MinValue?displayProperty=fullName>です。 例外をスローすることはありません。  
   
    
   
-## Examples  
- The following example determines how many random numbers that range from 0 to 1,000 are required to generate 1,000 random numbers with a midpoint value. To keep track of the number of midpoint values, a variable, `midpointCount`, is set equal to 0 and incremented each time the random number generator returns a midpoint value until it reaches 10,000. Because three threads generate the random numbers, the <xref:System.Threading.Interlocked.Increment%28System.Int32%40%29> method is called to ensure that multiple threads don't update `midpointCount` concurrently. Note that a lock is also used to protect the random number generator, and that a <xref:System.Threading.CountdownEvent> object is used to ensure that the `Main` method doesn't finish execution before the three threads.  
+## 例  
+ 次の例では、中間値と 1,000 の乱数を生成する必要な範囲は 0 から 1,000 にランダムな番号の数を決定します。 中間値、変数の数を追跡するために `midpointCount`, を 0 に設定し、乱数ジェネレーターを 10,000 に達するまでに中間値を返しますたびに増分されます。 3 つのスレッド、乱数を生成するため、 <xref:System.Threading.Interlocked.Increment%28System.Int32%40%29> メソッドを呼び出して複数のスレッドが更新されないことを確認する `midpointCount` 同時にします。 乱数ジェネレーターとを保護するためのロックは使用も、 <xref:System.Threading.CountdownEvent> オブジェクトを使用していることを確認、 `Main` メソッドが 3 つのスレッドの前に実行を完了します。  
   
- [!code-csharp[System.Threading.Interlocked.Increment2#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.increment2/cs/increment3.cs#3)]
- [!code-vb[System.Threading.Interlocked.Increment2#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.increment2/vb/Increment3.vb#3)]  
+ [!code-csharp[System.Threading.Interlocked.Increment2\#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.increment2/cs/increment3.cs#3)]
+ [!code-vb[System.Threading.Interlocked.Increment2\#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.increment2/vb/Increment3.vb#3)]  
   
- The following example is similar to the previous one, except that it uses the  instead of a thread procedure to generate 50,000 random midpoint integers. In this example, a lambda expression replaces the `GenerateNumbers` thread procedure, and the call to the <xref:System.Threading.Tasks.Task.WaitAll%2A?displayProperty=fullName> method eliminates the need for the <xref:System.Threading.CountdownEvent> object.  
+ 使用する点を除いて、次の例は、1 つ前のような 50,000 の中間値のランダムな整数を生成するスレッドのプロシージャではなく。 この例では、ラムダ式の代わりに使用、 `GenerateNumbers` スレッド プロシージャを呼び出すまで、 <xref:System.Threading.Tasks.Task.WaitAll%2A?displayProperty=fullName> メソッドが不要、 <xref:System.Threading.CountdownEvent> オブジェクトです。  
   
- [!code-csharp[System.Threading.Interlocked.Increment2#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.increment2/cs/increment4.cs#4)]
- [!code-vb[System.Threading.Interlocked.Increment2#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.increment2/vb/Increment4.vb#4)]  
+ [!code-csharp[System.Threading.Interlocked.Increment2\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.interlocked.increment2/cs/increment4.cs#4)]
+ [!code-vb[System.Threading.Interlocked.Increment2\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.interlocked.increment2/vb/Increment4.vb#4)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location" /> のアドレスは null ポインターです。</exception>
       </Docs>
     </Member>
     <Member MemberName="Increment">
@@ -1067,20 +1158,24 @@
         <Parameter Name="location" Type="System.Int64&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="location">The variable whose value is to be incremented.</param>
-        <summary>Increments a specified variable and stores the result, as an atomic operation.</summary>
-        <returns>The incremented value.</returns>
+        <param name="location">値がインクリメントされる変数。</param>
+        <summary>分割不可能な操作として、指定した変数をインクリメントし、結果を格納します。</summary>
+        <returns>インクリメントされた値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method handles an overflow condition by wrapping: if `location` = <xref:System.Int64?displayProperty=fullName>, `location` + 1 = <xref:System.Int64?displayProperty=fullName>. No exception is thrown.  
+## 解説  
+ このメソッドは、ラップすることによって、オーバーフローを処理します。 場合 `location` \= <xref:System.Int64.MaxValue?displayProperty=fullName>, 、`location` \+ 1 \= <xref:System.Int64.MinValue?displayProperty=fullName>です。 例外をスローすることはありません。  
   
- The <xref:System.Threading.Interlocked.Read%2A> method and the 64-bit overloads of the <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, and <xref:System.Threading.Interlocked.Add%2A> methods are truly atomic only on systems where a <xref:System.IntPtr?displayProperty=fullName> is 64 bits long. On other systems, these methods are atomic with respect to each other, but not with respect to other means of accessing the data. Thus, to be thread safe on 32-bit systems, any access to a 64-bit value must be made through the members of the <xref:System.Threading.Interlocked> class.  
+ <xref:System.Threading.Interlocked.Read%2A> メソッドとの 64 ビットのオーバー ロード、 <xref:System.Threading.Interlocked.Increment%2A>, 、<xref:System.Threading.Interlocked.Decrement%2A>, と <xref:System.Threading.Interlocked.Add%2A> メソッドは、システムでのみアトミック本当にここで、 <xref:System.IntPtr?displayProperty=fullName> 64 ビット長。 他のシステムでは、これらのメソッドは、貴社とデータにアクセスするが、相互にアトミックです。 したがって、32 ビット システムでスレッド セーフにするには、64 ビット値へのアクセスできる必要のメンバーを <xref:System.Threading.Interlocked> クラスです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NullReferenceException">The address of <paramref name="location" /> is a null pointer.</exception>
+        <exception cref="T:System.NullReferenceException">
+          <paramref name="location" /> のアドレスは null ポインターです。</exception>
+        <altmember cref="Overload:System.Threading.Interlocked.Decrement" />
+        <altmember cref="Overload:System.Threading.Interlocked.Add" />
+        <altmember cref="M:System.Threading.Interlocked.Read(System.Int64@)" />
       </Docs>
     </Member>
     <Member MemberName="MemoryBarrier">
@@ -1108,16 +1203,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Synchronizes memory access as follows: The processor that executes the current thread cannot reorder instructions in such a way that memory accesses before the call to <see cref="M:System.Threading.Interlocked.MemoryBarrier" /> execute after memory accesses that follow the call to <see cref="M:System.Threading.Interlocked.MemoryBarrier" />.</summary>
+        <summary>次のようにメモリ アクセスを同期: 現在のスレッドを実行するプロセッサが命令を並べ替えることはできませんを呼び出す前にこのような方法でそのメモリにアクセスする <see cref="M:System.Threading.Interlocked.MemoryBarrier" /> への呼び出しの後のメモリ アクセスより後に実行 <see cref="M:System.Threading.Interlocked.MemoryBarrier" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method was added to the <xref:System.Threading.Interlocked> class in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] as a convenience; it's a wrapper for the <xref:System.Threading.Thread.MemoryBarrier%2A?displayProperty=fullName> method.  
+## 解説  
+ このメソッドに追加された、 <xref:System.Threading.Interlocked> クラス、 [!INCLUDE[net_v45](~/includes/net-v45-md.md)] ; しやすくするためのラッパーである、 <xref:System.Threading.Thread.MemoryBarrier%2A?displayProperty=fullName> メソッドです。  
   
- <xref:System.Threading.Interlocked.MemoryBarrier%2A> is required only on multiprocessor systems that have weak memory ordering (for example, a system that employs multiple Intel Itanium processors).  
+ <xref:System.Threading.Interlocked.MemoryBarrier%2A> 順序付け \(たとえば、複数の Intel Itanium プロセッサを採用しているシステム\) と脆弱なメモリ型マルチプロセッサ システムでのみ必要です。  
   
- For most purposes, the C# `lock` statement, the Visual Basic `SyncLock` statement, or the <xref:System.Threading.Monitor> class provide easier ways to synchronize data.  
+ ほとんどの場合、c\#、 `lock` ステートメント、Visual Basic `SyncLock` ステートメント、または <xref:System.Threading.Monitor> クラスは、簡単にデータを同期する方法を提供します。  
   
  ]]></format>
         </remarks>
@@ -1168,23 +1263,90 @@
         <Parameter Name="location" Type="System.Int64&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="location">The 64-bit value to be loaded.</param>
-        <summary>Returns a 64-bit value, loaded as an atomic operation.</summary>
-        <returns>The loaded value.</returns>
+        <param name="location">読み込む 64 ビット値。</param>
+        <summary>分割不可能な操作として 64 ビット値を読み込んで返します。</summary>
+        <returns>読み込まれた値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Threading.Interlocked.Read%2A> method is unnecessary on 64-bit systems, because 64-bit read operations are already atomic. On 32-bit systems, 64-bit read operations are not atomic unless performed using <xref:System.Threading.Interlocked.Read%2A>.  
+## 解説  
+ <xref:System.Threading.Interlocked.Read%2A> メソッドは、64 ビットの読み取り操作がアトミックでは既にあるために、64 ビット システムで必要です。 32 ビット システムで 64 ビット読み取り操作を使用して実行しない限り、アトミック <xref:System.Threading.Interlocked.Read%2A>します。  
   
- The <xref:System.Threading.Interlocked.Read%2A> method and the 64-bit overloads of the <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, and <xref:System.Threading.Interlocked.Add%2A> methods are truly atomic only on systems where a <xref:System.IntPtr?displayProperty=fullName> is 64 bits long. On other systems, these methods are atomic with respect to each other, but not with respect to other means of accessing the data. Thus, to be thread safe on 32-bit systems, any access to a 64-bit value must be made through the members of the <xref:System.Threading.Interlocked> class.  
+ <xref:System.Threading.Interlocked.Read%2A> メソッドとの 64 ビットのオーバー ロード、 <xref:System.Threading.Interlocked.Increment%2A>, 、<xref:System.Threading.Interlocked.Decrement%2A>, と <xref:System.Threading.Interlocked.Add%2A> メソッドは、システムでのみアトミック本当にここで、 <xref:System.IntPtr?displayProperty=fullName> 64 ビット長。 他のシステムでは、これらのメソッドは、貴社とデータにアクセスするが、相互にアトミックです。 したがって、32 ビット システムでスレッド セーフにするには、64 ビット値へのアクセスできる必要のメンバーを <xref:System.Threading.Interlocked> クラスです。  
   
 > [!NOTE]
->  <xref:System.IntPtr> is a platform-specific type.  
+>  <xref:System.IntPtr> プラットフォーム固有の型。  
   
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="Overload:System.Threading.Interlocked.Increment" />
+        <altmember cref="Overload:System.Threading.Interlocked.Decrement" />
+        <altmember cref="Overload:System.Threading.Interlocked.Add" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Increment">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>分割不可能な操作として、指定した変数をインクリメントし、結果を格納します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="CompareExchange">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>2 つの値が等しいかどうかを比較します。等しい場合は、最初の値を置き換えます。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Decrement">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>分割不可能な操作として、指定した変数をデクリメントし、結果を格納します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Add">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>分割不可能な操作として、2 つの整数を加算し、最初の整数を合計で置き換えます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
  ]]></format>
         </remarks>
       </Docs>
-    </Member>
+    </MemberGroup>
+    <MemberGroup MemberName="Exchange">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>分割不可能な操作として指定した値を変数として設定します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

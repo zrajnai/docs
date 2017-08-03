@@ -20,100 +20,101 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Helps to secure another implementation of <see cref="T:System.Xml.XmlResolver" /> by wrapping the <see cref="T:System.Xml.XmlResolver" /> object and restricting the resources that the underlying <see cref="T:System.Xml.XmlResolver" /> has access to.</summary>
+    <summary>
+      <see cref="T:System.Xml.XmlResolver" /> オブジェクトをラップし、基になっている <see cref="T:System.Xml.XmlResolver" /> がアクセスできるリソースを制限することによって、<see cref="T:System.Xml.XmlResolver" /> の別の実装のセキュリティ保護を支援します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Xml.XmlUrlResolver> class is the default resolver for all classes in the <xref:System.Xml> namespace. It is used to load XML documents and to resolve external resources such as entities, DTDs or schemas, and import or include directives.  
+## 解説  
+ <xref:System.Xml.XmlUrlResolver> クラスは、<xref:System.Xml> 名前空間内のクラスすべての既定のリゾルバーです。 XML ドキュメントを読み込むと、エンティティ、Dtd またはスキーマなどの外部リソースを解決するには、import または include ディレクティブに使用されます。  
   
- You can override this default by specifying the <xref:System.Xml.XmlResolver> object to use. For example, if you want to restrict the resources that the underlying <xref:System.Xml.XmlResolver> can access, you can use an <xref:System.Xml.XmlSecureResolver> object.  
+ この既定の設定をオーバーライドするには指定することによって、 <xref:System.Xml.XmlResolver> を使用するオブジェクト。 リソースを制限する場合などを基になる <xref:System.Xml.XmlResolver> 使用すると、アクセスできる、 <xref:System.Xml.XmlSecureResolver> オブジェクトです。  
   
- <xref:System.Xml.XmlSecureResolver> wraps around a concrete implementation of <xref:System.Xml.XmlResolver> and restricts the resources that the underlying <xref:System.Xml.XmlResolver> has access to. For example, <xref:System.Xml.XmlSecureResolver> has the ability to prohibit cross-domain redirection, which occurs from an embedded Uniform Resource Identifier (URI) reference.  
+ <xref:System.Xml.XmlSecureResolver> 具象実装をラップ <xref:System.Xml.XmlResolver> し、リソースを制限する、基になる <xref:System.Xml.XmlResolver> にアクセスします。 たとえば、 <xref:System.Xml.XmlSecureResolver> クロス ドメインのリダイレクトは、埋め込みの Uniform Resource Identifier \(URI\) の参照が行われるを禁止する機能が用意されています。  
   
- When you construct an <xref:System.Xml.XmlSecureResolver> object, you provide a valid <xref:System.Xml.XmlResolver> implementation along with a URL, an instance of an evidence object, or a permission set, which is used by the <xref:System.Xml.XmlSecureResolver> to determine security. Either a <xref:System.Security.PermissionSet?displayProperty=fullName> is generated or the existing one is used and <xref:System.Security.PermissionSet.PermitOnly%2A?displayProperty=fullName> is called on it to help secure the underlying <xref:System.Xml.XmlResolver>.  
-  
-> [!IMPORTANT]
->  <xref:System.Xml.XmlSecureResolver> objects can contain sensitive information such as user credentials. You should be careful when caching <xref:System.Xml.XmlSecureResolver> objects and should not pass the <xref:System.Xml.XmlSecureResolver> object to an untrusted component.  
+ 構築する場合、 <xref:System.Xml.XmlSecureResolver> オブジェクトを入力して、有効な <xref:System.Xml.XmlResolver> 実装 URL 証拠オブジェクト、または、アクセス許可セットのインスタンスで使用されると、 <xref:System.Xml.XmlSecureResolver> セキュリティを判別します。 いずれか、 <xref:System.Security.PermissionSet?displayProperty=fullName> が生成または既存の 1 つを使用し、 <xref:System.Security.PermissionSet.PermitOnly%2A?displayProperty=fullName> 、基になるセキュリティで保護するために呼び出されます <xref:System.Xml.XmlResolver>します。  
   
 > [!IMPORTANT]
->  There are differences in the security infrastructure for code running on the .NET Framework common language runtime (CLR) and for code running on the CLR that is integrated within Microsoft SQL Server 2005. This can lead to cases where code developed for the .NET Framework CLR operates differently when used on the SQL Server integrated CLR. One of these differences affects the <xref:System.Xml.XmlSecureResolver> class when you have evidence that is based on a URL (that is, when you use the <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%28System.String%29> method or the <xref:System.Xml.XmlSecureResolver.%23ctor%2A> constructor). The policy resolution mechanism of the SQL Server integrated CLR does not use the <xref:System.Security.Policy.Url> or <xref:System.Security.Policy.Zone> information. Instead, it grants permissions based on the GUID that the server adds when assemblies are loaded. When you use the <xref:System.Xml.XmlSecureResolver> in the SQL Server integrated CLR, provide any required evidence directly by using a specified <xref:System.Security.PermissionSet>.  
+>  <xref:System.Xml.XmlSecureResolver> オブジェクトはユーザー資格情報など、重要な情報を含むことがあります。 キャッシュする場合は注意する必要があります <xref:System.Xml.XmlSecureResolver> オブジェクトおよび渡さないでください、 <xref:System.Xml.XmlSecureResolver> 信頼できないコンポーネントにオブジェクトです。  
   
-## To use a secure resolver  
+> [!IMPORTANT]
+>  .NET Framework 共通言語ランタイム \(CLR\) で実行されているコードと Microsoft SQL Server 2005 に統合されている CLR で実行されているコード用のセキュリティ インフラストラクチャで違いがあります。 これは、SQL Server で使用すると、.NET Framework CLR 動作が異なるために開発されたコードが CLR を統合する場合につながります。 次のいずれかの違いに影響を与えます、 <xref:System.Xml.XmlSecureResolver> クラスは、URL に基づいて証拠がある場合 \(つまり、使用、 <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%28System.String%29> メソッドまたは <xref:System.Xml.XmlSecureResolver.%23ctor%2A> コンス トラクター\)。 ポリシー メカニズムが SQL Server の CLR の統合の解像度が使用しない、 <xref:System.Security.Policy.Url> または <xref:System.Security.Policy.Zone> 情報。 代わりに、アセンブリが読み込まれるときに、サーバーが追加 GUID ベースのアクセス許可を付与します。 使用すると、 <xref:System.Xml.XmlSecureResolver> で SQL Server CLR を統合する、指定したを使用して直接必要な証拠を提供 <xref:System.Security.PermissionSet>します。  
   
-1.  Create an <xref:System.Xml.XmlSecureResolver> with the correct permission set.  
+## セキュリティで保護された競合回避モジュールを使用するには  
   
-2.  Create an <xref:System.Xml.XmlReaderSettings> object that uses the <xref:System.Xml.XmlSecureResolver> object.  
+1.  正しいアクセス許可セットを持つ <xref:System.Xml.XmlSecureResolver> オブジェクトを作成します。  
   
-     [!code-csharp[XmlSecureResolver_Samples#5a](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#5a)]
-     [!code-vb[XmlSecureResolver_Samples#5a](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#5a)]  
+2.  <xref:System.Xml.XmlReaderSettings> オブジェクトを使用する <xref:System.Xml.XmlSecureResolver> オブジェクトを作成します。  
   
-3.  Pass  the <xref:System.Xml.XmlReaderSettings> object to the <xref:System.Xml.XmlReader.Create%2A> method when you're creating the <xref:System.Xml.XmlReader> object.  
+     [!code-csharp[XmlSecureResolver\_Samples\#5a](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#5a)]
+     [!code-vb[XmlSecureResolver\_Samples\#5a](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#5a)]  
   
-     [!code-csharp[XmlSecureResolver_Samples#5b](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#5b)]
-     [!code-vb[XmlSecureResolver_Samples#5b](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#5b)]  
+3.  渡す、 <xref:System.Xml.XmlReaderSettings> オブジェクトを <xref:System.Xml.XmlReader.Create%2A> メソッドを作成する際、 <xref:System.Xml.XmlReader> オブジェクトです。  
   
-## To restrict access by using a URL  
- Use the <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> constructor to create an <xref:System.Xml.XmlSecureResolver> object that is allowed to access your local intranet site only.  
+     [!code-csharp[XmlSecureResolver\_Samples\#5b](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#5b)]
+     [!code-vb[XmlSecureResolver\_Samples\#5b](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#5b)]  
   
- [!code-csharp[XmlSecureResolver_Samples#3](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#3)]
- [!code-vb[XmlSecureResolver_Samples#3](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#3)]  
+## URL を使用してアクセスを制限するには  
+ 使用して、 <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> コンス トラクターを作成する、 <xref:System.Xml.XmlSecureResolver> のみ、ローカル イントラネット サイトへのアクセスが許可されているオブジェクト。  
   
-## To restrict access by using a permission set  
+ [!code-csharp[XmlSecureResolver\_Samples\#3](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#3)]
+ [!code-vb[XmlSecureResolver\_Samples\#3](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#3)]  
   
-1.  Create a <xref:System.Net.WebPermission> object.  
+## アクセス許可セットを使用してアクセスを制限するには  
   
-     [!code-csharp[XmlSecureResolver_Samples#4a](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4a)]
-     [!code-vb[XmlSecureResolver_Samples#4a](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4a)]  
+1.  <xref:System.Net.WebPermission> オブジェクトを作成します。  
   
-2.  Specify the URLs that you want to allow access to.  
+     [!code-csharp[XmlSecureResolver\_Samples\#4a](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4a)]
+     [!code-vb[XmlSecureResolver\_Samples\#4a](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4a)]  
   
-     [!code-csharp[XmlSecureResolver_Samples#4b](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4b)]
-     [!code-vb[XmlSecureResolver_Samples#4b](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4b)]  
+2.  アクセスを許可する Url を指定します。  
   
-3.  Add the web permissions to the <xref:System.Security.PermissionSet> object.  
+     [!code-csharp[XmlSecureResolver\_Samples\#4b](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4b)]
+     [!code-vb[XmlSecureResolver\_Samples\#4b](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4b)]  
   
-     [!code-csharp[XmlSecureResolver_Samples#4c](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4c)]
-     [!code-vb[XmlSecureResolver_Samples#4c](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4c)]  
+3.  <xref:System.Security.PermissionSet> オブジェクトに Web アクセス許可を追加します。  
   
-4.  Use the <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.PermissionSet%29> constructor to create an <xref:System.Xml.XmlSecureResolver> object by using the permission set.  
+     [!code-csharp[XmlSecureResolver\_Samples\#4c](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4c)]
+     [!code-vb[XmlSecureResolver\_Samples\#4c](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4c)]  
   
-     [!code-csharp[XmlSecureResolver_Samples#4d](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4d)]
-     [!code-vb[XmlSecureResolver_Samples#4d](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4d)]  
+4.  使用して、 <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.PermissionSet%29> コンス トラクターを作成する、 <xref:System.Xml.XmlSecureResolver> オブジェクト権限のセットを使用しています。  
   
-     See the <xref:System.Xml.XmlSecureResolver.%23ctor%2A> reference page for another example.  
+     [!code-csharp[XmlSecureResolver\_Samples\#4d](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#4d)]
+     [!code-vb[XmlSecureResolver\_Samples\#4d](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#4d)]  
   
-## To restrict access by using evidence  
- You can restrict access by using the <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.Policy.Evidence%29> constructor and specifying <xref:System.Security.Policy.Evidence>. The <xref:System.Security.Policy.Evidence> is used to create the <xref:System.Security.PermissionSet> that is applied to the underlying <xref:System.Xml.XmlResolver>. The <xref:System.Xml.XmlSecureResolver> calls <xref:System.Security.PermissionSet.PermitOnly%2A> on the created <xref:System.Security.PermissionSet> before opening any resources.  
+     参照してください、 <xref:System.Xml.XmlSecureResolver.%23ctor%2A> のリファレンス ページの別の例です。  
   
- Here are some common scenarios and the type of evidence to provide for each:  
+## 証拠を使用してアクセスを制限するには  
+ 使用してアクセスを制限することができます、 <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.Policy.Evidence%29> コンス トラクターと指定する <xref:System.Security.Policy.Evidence>です。 基になる <xref:System.Security.Policy.Evidence> に適用される <xref:System.Security.PermissionSet> の作成には、<xref:System.Xml.XmlResolver> を使用します。<xref:System.Xml.XmlSecureResolver> はリソースを開く前に、作成された <xref:System.Security.PermissionSet.PermitOnly%2A> の <xref:System.Security.PermissionSet> 呼び出します。  
   
--   If you are working in a fully trusted environment, use your assembly to create the evidence:  
+ 一般的なシナリオとそれぞれを指定する証拠の種類を次に示します。  
   
-     [!code-csharp[XmlSecureResolver_Samples#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#1)]
-     [!code-vb[XmlSecureResolver_Samples#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#1)]  
+-   完全に信頼された環境で作業している場合は、アセンブリを使用して、エビデンスを作成します。  
   
--   If you are working in a semi-trusted environment, you have code or data coming from an outside source, and you know the origin of the outside source and have a verifiable URI, use the URI to create the evidence:  
+     [!code-csharp[XmlSecureResolver\_Samples\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#1)]
+     [!code-vb[XmlSecureResolver\_Samples\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#1)]  
   
-     [!code-csharp[XmlSecureResolver_Samples#2](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#2)]
-     [!code-vb[XmlSecureResolver_Samples#2](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#2)]  
+-   部分的に信頼された環境で作業している場合は、コードや、外部ソースからのデータがあると、外部ソースの出所を知ってと検証可能な URI を持つ、URI を使用して、エビデンスを作成します。  
   
--   If you are working in a semi-trusted environment and you have code or data coming from an outside source, but you don't know the origin of the outside source, either:  
+     [!code-csharp[XmlSecureResolver\_Samples\#2](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#2)]
+     [!code-vb[XmlSecureResolver\_Samples\#2](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#2)]  
   
-     Set the `evidence` parameter to `null`. This allows no access to resources.  
+-   作業している場合は、コードや、外部ソースからデータを部分的に信頼された環境があるが、か、外部ソースの出所を特定できません。  
   
-     -or-  
+     `evidence` パラメーターを `null` に設定します。 これは、リソースへのアクセスを禁止します。  
   
-     If your application requires some access to resources, request evidence from the caller.  
+     または  
   
-## To use the secure resolver to load an XSLT style sheet  
+     アプリケーションでリソースへのアクセスが必要な場合は、呼び出し元に証拠を要求します。  
   
-1.  Create an <xref:System.Xml.XmlSecureResolver> with the correct permission set.  
+## セキュリティで保護された競合回避モジュールを使用して、XSLT スタイル シートを読み込む  
   
-2.  Pass the <xref:System.Xml.XmlSecureResolver> to the <xref:System.Xml.Xsl.XslCompiledTransform.Load%2A> method.  
+1.  正しいアクセス許可セットを持つ <xref:System.Xml.XmlSecureResolver> オブジェクトを作成します。  
   
-     [!code-csharp[XmlSecureResolver_Samples#6](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#6)]
-     [!code-vb[XmlSecureResolver_Samples#6](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#6)]  
+2.  <xref:System.Xml.XmlSecureResolver> を <xref:System.Xml.Xsl.XslCompiledTransform.Load%2A> メソッドに渡します。  
+  
+     [!code-csharp[XmlSecureResolver\_Samples\#6](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#6)]
+     [!code-vb[XmlSecureResolver\_Samples\#6](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#6)]  
   
  ]]></format>
     </remarks>
@@ -129,20 +130,21 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.XmlSecureResolver" /> class.</summary>
+        <summary>
+          <see cref="T:System.Xml.XmlSecureResolver" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The three constructors provide three types of access restrictions:  
+## 解説  
+ 3 つのコンス トラクターは、次の 3 つの種類のアクセス制限を提供します。  
   
--   The <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> constructor restricts access by using a URL.  
+-   <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> コンス トラクターは、URL を使用してアクセスを制限します。  
   
--   The <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.PermissionSet%29> constructor restricts access by using a permission set.  
+-   <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.PermissionSet%29> コンス トラクターは、アクセス許可セットを使用してアクセスを制限します。  
   
--   The <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.Policy.Evidence%29> constructor restricts access by using evidence.  
+-   <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.Security.Policy.Evidence%29> コンス トラクターの証拠を使用してアクセスを制限します。  
   
- See the constructor reference topics for examples of these types of restrictions.  
+ この種の制限の例については、コンス トラクター リファレンス トピックを参照してください。  
   
  ]]></format>
         </remarks>
@@ -163,21 +165,27 @@
         <Parameter Name="permissionSet" Type="System.Security.PermissionSet" />
       </Parameters>
       <Docs>
-        <param name="resolver">The XML resolver that is wrapped by the <see cref="T:System.Xml.XmlSecureResolver" />.</param>
-        <param name="permissionSet">The permission set to apply to the underlying <see cref="T:System.Xml.XmlResolver" />. The <see cref="T:System.Xml.XmlSecureResolver" /> calls the <see cref="M:System.Security.PermissionSet.PermitOnly" /> method on the permission set before calling the <see cref="M:System.Xml.XmlSecureResolver.GetEntity(System.Uri,System.String,System.Type)" /> method on the underlying XML resolver.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.XmlSecureResolver" /> class with the <see cref="T:System.Xml.XmlResolver" /> and <see cref="T:System.Security.PermissionSet" /> specified.</summary>
+        <param name="resolver">
+          <see cref="T:System.Xml.XmlSecureResolver" /> によってラップされた XML リゾルバー。</param>
+        <param name="permissionSet">基になっている <see cref="T:System.Xml.XmlResolver" /> に適用するアクセス許可セット。<see cref="T:System.Xml.XmlSecureResolver" /> は、基になっている XML リゾルバーで <see cref="M:System.Xml.XmlSecureResolver.GetEntity(System.Uri,System.String,System.Type)" /> メソッドを呼び出す前に、アクセス許可セットで <see cref="M:System.Security.PermissionSet.PermitOnly" /> メソッドを呼び出します。</param>
+        <summary>
+          <see cref="T:System.Xml.XmlResolver" /> と <see cref="T:System.Security.PermissionSet" /> を指定して、<see cref="T:System.Xml.XmlSecureResolver" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example constructs an <xref:System.Xml.XmlSecureResolver> object by using a customized permission set.  
+## 例  
+ 次の例を構築、 <xref:System.Xml.XmlSecureResolver> カスタマイズされたアクセス許可セットを使用してオブジェクトです。  
   
- [!code-cpp[XmlSecureResolver.cctor#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlSecureResolver.cctor/CPP/secresolver.cpp#1)]
- [!code-csharp[XmlSecureResolver.cctor#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver.cctor/CS/secresolver.cs#1)]
- [!code-vb[XmlSecureResolver.cctor#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver.cctor/VB/secresolver.vb#1)]  
+ [!code-cpp[XmlSecureResolver.cctor\#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlSecureResolver.cctor/CPP/secresolver.cpp#1)]
+ [!code-csharp[XmlSecureResolver.cctor\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver.cctor/CS/secresolver.cs#1)]
+ [!code-vb[XmlSecureResolver.cctor\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver.cctor/VB/secresolver.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Xml.XmlSecureResolver.CreateEvidenceForUrl(System.String)" />
+        <altmember cref="T:System.Security.Policy.Evidence" />
+        <altmember cref="T:System.Net.WebPermission" />
+        <altmember cref="T:System.Security.SecurityManager" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -195,32 +203,34 @@
         <Parameter Name="evidence" Type="System.Security.Policy.Evidence" />
       </Parameters>
       <Docs>
-        <param name="resolver">The XML resolver that is wrapped by the <see cref="T:System.Xml.XmlSecureResolver" />.</param>
-        <param name="evidence">The evidence used to create the <see cref="T:System.Security.PermissionSet" /> that will be applied to the underlying <see cref="T:System.Xml.XmlResolver" />. The <see cref="T:System.Xml.XmlSecureResolver" /> calls the <see cref="M:System.Security.PermissionSet.PermitOnly" /> method on the created <see cref="T:System.Security.PermissionSet" /> before calling <see cref="M:System.Xml.XmlSecureResolver.GetEntity(System.Uri,System.String,System.Type)" /> on the underlying <see cref="T:System.Xml.XmlResolver" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.XmlSecureResolver" /> class with the <see cref="T:System.Xml.XmlResolver" /> and <see cref="T:System.Security.Policy.Evidence" /> specified.</summary>
+        <param name="resolver">
+          <see cref="T:System.Xml.XmlSecureResolver" /> によってラップされた XML リゾルバー。</param>
+        <param name="evidence">基になる <see cref="T:System.Xml.XmlResolver" /> に適用される <see cref="T:System.Security.PermissionSet" /> の作成に使用される証拠。<see cref="T:System.Xml.XmlSecureResolver" /> は、基になる <see cref="T:System.Xml.XmlResolver" /> で <see cref="M:System.Xml.XmlSecureResolver.GetEntity(System.Uri,System.String,System.Type)" /> を呼び出す前に、作成された <see cref="T:System.Security.PermissionSet" /> で <see cref="M:System.Security.PermissionSet.PermitOnly" /> メソッドを呼び出します。</param>
+        <summary>
+          <see cref="T:System.Xml.XmlResolver" /> と <see cref="T:System.Security.Policy.Evidence" /> を指定して、<see cref="T:System.Xml.XmlSecureResolver" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Here are some possible scenarios and the type of evidence to provide for each scenario:  
+## 解説  
+ 可能なシナリオおよびシナリオごとに指定する証拠の種類を次に示します。  
   
--   If you are working in a fully trusted environment, use your assembly to create the evidence:  
+-   完全に信頼された環境で作業している場合は、アセンブリを使用して、エビデンスを作成します。  
   
-     [!code-csharp[XmlSecureResolver_Samples#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#1)]
-     [!code-vb[XmlSecureResolver_Samples#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#1)]  
+     [!code-csharp[XmlSecureResolver\_Samples\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#1)]
+     [!code-vb[XmlSecureResolver\_Samples\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#1)]  
   
--   If you are working in a semi-trusted environment, you have code or data coming from an outside source, and you know the origin of the outside source and have a verifiable URI, use the URI to create the evidence:  
+-   部分的に信頼された環境で作業している場合は、コードや、外部ソースからのデータがあると、外部ソースの出所を知ってと検証可能な URI を持つ、URI を使用して、エビデンスを作成します。  
   
-     [!code-csharp[XmlSecureResolver_Samples#2](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#2)]
-     [!code-vb[XmlSecureResolver_Samples#2](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#2)]  
+     [!code-csharp[XmlSecureResolver\_Samples\#2](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#2)]
+     [!code-vb[XmlSecureResolver\_Samples\#2](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#2)]  
   
--   If you are working in a semi-trusted environment and you have code or data coming from an outside source, but you don't know the origin of the outside source, either:  
+-   作業している場合は、コードや、外部ソースからデータを部分的に信頼された環境があるが、か、外部ソースの出所を特定できません。  
   
-     Set the `evidence` parameter to `null`. This allows no access to resources.  
+     `evidence` パラメーターを `null` に設定します。 これは、リソースへのアクセスを禁止します。  
   
-     -or-  
+     または  
   
-     If your application requires some access to resources, request evidence from the caller.  
+     アプリケーションでリソースへのアクセスが必要な場合は、呼び出し元に証拠を要求します。  
   
  ]]></format>
         </remarks>
@@ -249,24 +259,26 @@
         <Parameter Name="securityUrl" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="resolver">The XML resolver that is wrapped by the <see cref="T:System.Xml.XmlSecureResolver" />.</param>
-        <param name="securityUrl">The URL used to create the <see cref="T:System.Security.PermissionSet" /> that will be applied to the underlying <see cref="T:System.Xml.XmlResolver" />. The <see cref="T:System.Xml.XmlSecureResolver" /> calls <see cref="M:System.Security.PermissionSet.PermitOnly" /> on the created <see cref="T:System.Security.PermissionSet" /> before calling <see cref="M:System.Xml.XmlSecureResolver.GetEntity(System.Uri,System.String,System.Type)" /> on the underlying <see cref="T:System.Xml.XmlResolver" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.XmlSecureResolver" /> class with the <see cref="T:System.Xml.XmlResolver" /> and URL provided.</summary>
+        <param name="resolver">
+          <see cref="T:System.Xml.XmlSecureResolver" /> によってラップされた XML リゾルバー。</param>
+        <param name="securityUrl">基になる <see cref="T:System.Xml.XmlResolver" /> に適用される <see cref="T:System.Security.PermissionSet" /> の作成に使用される URL。<see cref="T:System.Xml.XmlSecureResolver" /> は、基になる <see cref="T:System.Xml.XmlResolver" /> で <see cref="M:System.Xml.XmlSecureResolver.GetEntity(System.Uri,System.String,System.Type)" /> を呼び出す前に、作成された <see cref="T:System.Security.PermissionSet" /> で <see cref="M:System.Security.PermissionSet.PermitOnly" /> を呼び出します。</param>
+        <summary>
+          <see cref="T:System.Xml.XmlResolver" /> と URL を指定して、<see cref="T:System.Xml.XmlSecureResolver" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  There are differences in the security infrastructure for code running on the .NET Framework common language runtime (CLR) and for code running on the CLR that is integrated within Microsoft SQL Server 2005. This can lead to cases where code developed for the .NET Framework CLR operates differently when used on the SQL Server integrated CLR. One of these differences affects the <xref:System.Xml.XmlSecureResolver> class when you have evidence that is based on a URL (that is, when you use the <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%2A> method or the <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> constructor). The policy resolution mechanism of the SQL Server integrated CLR does not use the <xref:System.Security.Policy.Url> or <xref:System.Security.Policy.Zone> information. Instead, it grants permissions based on the GUID that the server adds when assemblies are loaded. When you use the <xref:System.Xml.XmlSecureResolver> in the SQL Server integrated CLR, provide any required evidence directly by using a specified <xref:System.Security.PermissionSet>.  
+>  .NET Framework 共通言語ランタイム \(CLR\) で実行されているコードと Microsoft SQL Server 2005 に統合されている CLR で実行されているコード用のセキュリティ インフラストラクチャで違いがあります。 これは、SQL Server で使用すると、.NET Framework CLR 動作が異なるために開発されたコードが CLR を統合する場合につながります。 次のいずれかの違いに影響を与えます、 <xref:System.Xml.XmlSecureResolver> クラスは、URL に基づいて証拠がある場合 \(つまり、使用、 <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%2A> メソッドまたは <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> コンス トラクター\)。 ポリシー メカニズムが SQL Server の CLR の統合の解像度が使用しない、 <xref:System.Security.Policy.Url> または <xref:System.Security.Policy.Zone> 情報。 代わりに、アセンブリが読み込まれるときに、サーバーが追加 GUID ベースのアクセス許可を付与します。 使用すると、 <xref:System.Xml.XmlSecureResolver> で SQL Server CLR を統合する、指定したを使用して直接必要な証拠を提供 <xref:System.Security.PermissionSet>します。  
   
    
   
-## Examples  
- This example uses the <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> constructor to create an <xref:System.Xml.XmlSecureResolver> object that is allowed to access your local intranet site only.  
+## 例  
+ この例では、 <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> コンス トラクターを作成する、 <xref:System.Xml.XmlSecureResolver> のみ、ローカル イントラネット サイトへのアクセスが許可されているオブジェクト。  
   
- [!code-csharp[XmlSecureResolver_Samples#3](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#3)]
- [!code-vb[XmlSecureResolver_Samples#3](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#3)]  
+ [!code-csharp[XmlSecureResolver\_Samples\#3](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver_Samples/CS/XmlSecureResolver_ex.cs#3)]
+ [!code-vb[XmlSecureResolver\_Samples\#3](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver_Samples/VB/XmlSecureResolver_ex.vb#3)]  
   
  ]]></format>
         </remarks>
@@ -289,16 +301,16 @@
         <Parameter Name="securityUrl" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="securityUrl">The URL used to create the evidence.</param>
-        <summary>Creates evidence using the supplied URL.</summary>
-        <returns>The evidence generated from the supplied URL as defined by the default policy.</returns>
+        <param name="securityUrl">証拠の作成に使用する URL。</param>
+        <summary>指定した URL を使用して、エビデンスを作成します。</summary>
+        <returns>指定された URL から生成された証拠。これは、既定のポリシーによって定義されています。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  There are differences in the security infrastructure for code running on the .NET Framework common language runtime (CLR) and for code running on the CLR that is integrated within Microsoft SQL Server 2005. This can lead to cases where code developed for the .NET Framework CLR operates differently when used on the SQL Server integrated CLR. One of these differences affects the <xref:System.Xml.XmlSecureResolver> class when you have evidence that is based on a URL (that is, when you use the <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%2A> method or the <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> constructor). The policy resolution mechanism of the SQL Server integrated CLR doesn't use the <xref:System.Security.Policy.Url> or <xref:System.Security.Policy.Zone> information. Instead, it grants permissions based on the GUID that the server adds when assemblies are loaded. When you use the <xref:System.Xml.XmlSecureResolver> in the SQL Server integrated CLR, provide any required evidence directly by using a specified <xref:System.Security.PermissionSet>.  
+>  .NET Framework 共通言語ランタイム \(CLR\) で実行されているコードと Microsoft SQL Server 2005 に統合されている CLR で実行されているコード用のセキュリティ インフラストラクチャで違いがあります。 これは、SQL Server で使用すると、.NET Framework CLR 動作が異なるために開発されたコードが CLR を統合する場合につながります。 次のいずれかの違いに影響を与えます、 <xref:System.Xml.XmlSecureResolver> クラスは、URL に基づいて証拠がある場合 \(つまり、使用、 <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%2A> メソッドまたは <xref:System.Xml.XmlSecureResolver.%23ctor%28System.Xml.XmlResolver%2CSystem.String%29> コンス トラクター\)。 ポリシー メカニズムが SQL Server の CLR の統合の解像度を使用しない、 <xref:System.Security.Policy.Url> または <xref:System.Security.Policy.Zone> 情報。 代わりに、アセンブリが読み込まれるときに、サーバーが追加 GUID ベースのアクセス許可を付与します。 使用すると、 <xref:System.Xml.XmlSecureResolver> で SQL Server CLR を統合する、指定したを使用して直接必要な証拠を提供 <xref:System.Security.PermissionSet>します。  
   
  ]]></format>
         </remarks>
@@ -326,20 +338,23 @@
         <ReturnType>System.Net.ICredentials</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Sets credentials used to authenticate web requests.</summary>
-        <value>The credentials to be used to authenticate web requests. The <see cref="T:System.Xml.XmlSecureResolver" /> sets the given credentials on the underlying <see cref="T:System.Xml.XmlResolver" />. If this property is not set, the value defaults to <see langword="null" />; that is, the <see cref="T:System.Xml.XmlSecureResolver" /> has no user credentials.</value>
+        <summary>Web 要求を認証するために使用する資格情報を設定します。</summary>
+        <value>Web 要求を認証するために使用する資格情報。<see cref="T:System.Xml.XmlSecureResolver" /> は、基になる <see cref="T:System.Xml.XmlResolver" /> で、指定した資格情報を設定します。 このプロパティが設定されていない場合、既定値は <see langword="null" /> です。つまり、<see cref="T:System.Xml.XmlSecureResolver" /> にはユーザーの資格情報がありません。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example uses an <xref:System.Xml.XmlSecureResolver> with default credentials to resolve and open network resources needed by the <xref:System.Xml.XmlTextReader>.  
+## 例  
+ 次の例では、 <xref:System.Xml.XmlSecureResolver> を解決し必要なネットワーク リソースを開く既定の資格情報を持つ、 <xref:System.Xml.XmlTextReader>です。  
   
- [!code-cpp[XmlSecureResolver.Credentials#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlSecureResolver.Credentials/CPP/secresolver2.cpp#1)]
- [!code-csharp[XmlSecureResolver.Credentials#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver.Credentials/CS/secresolver2.cs#1)]
- [!code-vb[XmlSecureResolver.Credentials#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver.Credentials/VB/secresolver2.vb#1)]  
+ [!code-cpp[XmlSecureResolver.Credentials\#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlSecureResolver.Credentials/CPP/secresolver2.cpp#1)]
+ [!code-csharp[XmlSecureResolver.Credentials\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSecureResolver.Credentials/CS/secresolver2.cs#1)]
+ [!code-vb[XmlSecureResolver.Credentials\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSecureResolver.Credentials/VB/secresolver2.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Net.NetworkCredential" />
+        <altmember cref="T:System.Net.CredentialCache" />
+        <altmember cref="P:System.Net.CredentialCache.DefaultCredentials" />
       </Docs>
     </Member>
     <Member MemberName="GetEntity">
@@ -369,27 +384,28 @@
         <Parameter Name="ofObjectToReturn" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="absoluteUri">The URI that is returned from <see cref="M:System.Xml.XmlSecureResolver.ResolveUri(System.Uri,System.String)" />.</param>
-        <param name="role">Currently not used.</param>
-        <param name="ofObjectToReturn">The type of object to return. The current version only returns <see cref="T:System.IO.Stream" /> objects.</param>
-        <summary>Maps a URI to an object that contains the actual resource. This method temporarily sets the <see cref="T:System.Security.PermissionSet" /> created in the constructor by calling <see cref="M:System.Security.PermissionSet.PermitOnly" /> before calling <see langword="GetEntity" /> on the underlying <see cref="T:System.Xml.XmlResolver" /> to open the resource.</summary>
-        <returns>The stream returned by calling <see langword="GetEntity" /> on the underlying <see cref="T:System.Xml.XmlResolver" />. If a type other than <see cref="T:System.IO.Stream" /> is specified, the method returns <see langword="null" />.</returns>
+        <param name="absoluteUri">
+          <see cref="M:System.Xml.XmlSecureResolver.ResolveUri(System.Uri,System.String)" /> から返された URI。</param>
+        <param name="role">現在は使用されていません。</param>
+        <param name="ofObjectToReturn">返すオブジェクトの型。 現在のバージョンだけが、<see cref="T:System.IO.Stream" /> オブジェクトを返します。</param>
+        <summary>URI を実際のリソースを格納しているオブジェクトにマップします。 このメソッドは、基になる <see cref="T:System.Xml.XmlResolver" /> で <see langword="GetEntity" /> を呼び出す前に <see cref="M:System.Security.PermissionSet.PermitOnly" /> を呼び出すことで、コンストラクターで作成された <see cref="T:System.Security.PermissionSet" /> を一時的に設定してリソースを開きます。</summary>
+        <returns>基になる <see cref="T:System.Xml.XmlResolver" /> で <see langword="GetEntity" /> を呼び出すことによって返されるストリーム。<see cref="T:System.IO.Stream" /> 以外の型が指定された場合、このメソッドは <see langword="null" /> を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  Your application can mitigate memory denial of service threats to the <xref:System.Xml.XmlSecureResolver.GetEntity%2A> method by implementing an <xref:System.Runtime.InteropServices.ComTypes.IStream> that limits the number of bytes read. This helps guard against situations where malicious code attempts to pass an infinite stream of bytes to the <xref:System.Xml.XmlSecureResolver.GetEntity%2A> method.  
+>  アプリケーションをメモリ サービス拒否の脅威を軽減することができます、 <xref:System.Xml.XmlSecureResolver.GetEntity%2A> メソッドを実装することによって、 <xref:System.Runtime.InteropServices.ComTypes.IStream> 読み取ったバイト数を制限します。 これにより、悪意のあるコードが、無限のバイト ストリームを渡すしよう状況を防ぐ、 <xref:System.Xml.XmlSecureResolver.GetEntity%2A> メソッドです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.Xml.XmlException">
-          <paramref name="ofObjectToReturn" /> is neither <see langword="null" /> nor a <see cref="T:System.IO.Stream" /> type.</exception>
-        <exception cref="T:System.UriFormatException">The specified URI is not an absolute URI.</exception>
+          <paramref name="ofObjectToReturn" /> <see langword="null" /> も <see cref="T:System.IO.Stream" /> 型です。</exception>
+        <exception cref="T:System.UriFormatException">指定された URI が絶対 URI ではありません。</exception>
         <exception cref="T:System.NullReferenceException">
-          <paramref name="absoluteUri" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.Exception">There is a runtime error (for example, an interrupted server connection).</exception>
+          <paramref name="absoluteUri" /> は <see langword="null" /> です。</exception>
+        <exception cref="T:System.Exception">ランタイム エラー \(中断されたサーバー接続など\) があります。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetEntityAsync">
@@ -419,12 +435,18 @@
         <Parameter Name="ofObjectToReturn" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="absoluteUri">The URI returned from <see cref="M:System.Xml.XmlSecureResolver.ResolveUri(System.Uri,System.String)" />.</param>
-        <param name="role">Currently not used.</param>
-        <param name="ofObjectToReturn">The type of object to return. The current version only returns <see cref="T:System.IO.Stream" /> objects.</param>
-        <summary>Asynchronously maps a URI to an object that contains the actual resource.</summary>
-        <returns>The stream returned by calling <see langword="GetEntity" /> on the underlying <see cref="T:System.Xml.XmlResolver" />. If a type other than <see cref="T:System.IO.Stream" /> is specified, the method returns <see langword="null" />.</returns>
-        <remarks>To be added.</remarks>
+        <param name="absoluteUri">
+          <see cref="M:System.Xml.XmlSecureResolver.ResolveUri(System.Uri,System.String)" /> から返された URI。</param>
+        <param name="role">現在は使用されていません。</param>
+        <param name="ofObjectToReturn">返すオブジェクトの型。 現在のバージョンだけが、<see cref="T:System.IO.Stream" /> オブジェクトを返します。</param>
+        <summary>URI を実際のリソースを格納しているオブジェクトに非同期にマップします。</summary>
+        <returns>基になる <see cref="T:System.Xml.XmlResolver" /> で <see langword="GetEntity" /> を呼び出すことによって返されるストリーム。<see cref="T:System.IO.Stream" /> 以外の型が指定された場合、このメソッドは <see langword="null" /> を返します。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ResolveUri">
@@ -453,13 +475,13 @@
         <Parameter Name="relativeUri" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="baseUri">The base URI used to resolve the relative URI.</param>
-        <param name="relativeUri">The URI to resolve. The URI can be absolute or relative. If absolute, this value effectively replaces the <c>baseUri</c> value. If relative, it combines with the <c>baseUri</c> to make an absolute URI.</param>
-        <summary>Resolves the absolute URI from the base and relative URIs by calling <see langword="ResolveUri" /> on the underlying <see cref="T:System.Xml.XmlResolver" />.</summary>
-        <returns>The absolute URI or <see langword="null" /> if the relative URI cannot be resolved (returned by calling <see langword="ResolveUri" /> on the underlying <see cref="T:System.Xml.XmlResolver" />).</returns>
+        <param name="baseUri">相対 URI の解決に使用するベース URI。</param>
+        <param name="relativeUri">解決対象の URI。 URI は絶対 URI でも相対 URI でもかまいません。 絶対 URI の場合は、この値が <c>baseUri</c> 値を効率的に置き換えます。 相対 URI の場合、この値は <c>baseUri</c> と結合して絶対 URI を作成します。</param>
+        <summary>基になる <see cref="T:System.Xml.XmlResolver" /> で <see langword="ResolveUri" /> を呼び出して、ベース URI と相対 URI から絶対 URI を解決します。</summary>
+        <returns>絶対 URI。相対 URI を解決できない場合は <see langword="null" /> \(基になる <see cref="T:System.Xml.XmlResolver" /> で <see langword="ResolveUri" /> を呼び出すことによって返されます\)。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="relativeUri" /> is <see langword="null" />.</exception>
+          <paramref name="relativeUri" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
   </Members>

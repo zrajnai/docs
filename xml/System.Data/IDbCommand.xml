@@ -22,24 +22,24 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Represents an SQL statement that is executed while connected to a data source, and is implemented by .NET Framework data providers that access relational databases.</summary>
+    <summary>データ ソースに接続しながら実行される SQL ステートメントを表し、リレーショナル データベースにアクセスする .NET Framework データ プロバイダーにより実装されます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Data.IDbCommand> interface enables an inheriting class to implement a Command class, which represents an SQL statement that is executed at a data source. For more information about Command classes, see [Executing a Command](~/docs/framework/data/adonet/executing-a-command.md).  
+## 解説  
+ <xref:System.Data.IDbCommand>インターフェイス、継承したクラスは、データ ソースで実行する SQL ステートメントを表すコマンド クラスを実装するのには有効にします。 コマンド クラスの詳細については、次を参照してください。[&#91;\<topic:\/\/cpconadonetcommands\>&#93;](http://msdn.microsoft.com/ja-jp/40494916-c25a-4cb8-8f7c-fcb8d378464e)です。  
   
- An application does not create an instance of the <xref:System.Data.IDbCommand> interface directly, but creates an instance of a class that inherits <xref:System.Data.IDbCommand>.  
+ アプリケーションがのインスタンスを作成していない、<xref:System.Data.IDbCommand>インターフェイスを直接が継承するクラスのインスタンスを作成、<xref:System.Data.IDbCommand>です。  
   
- Classes that inherit <xref:System.Data.IDbCommand> must implement all inherited members, and typically define additional members to add provider-specific functionality. For example, the <xref:System.Data.IDbCommand> interface defines the <xref:System.Data.IDbCommand.ExecuteNonQuery%2A> method. In turn, the <xref:System.Data.SqlClient.SqlCommand> class inherits this method, and also defines the <xref:System.Data.SqlClient.SqlCommand.ExecuteXmlReader%2A> method.  
+ 継承するクラス<xref:System.Data.IDbCommand>継承されたすべてのメンバーを実装して、通常プロバイダー固有の機能を追加するその他のメンバーを定義する必要があります。 たとえば、<xref:System.Data.IDbCommand>インターフェイスを定義、<xref:System.Data.IDbCommand.ExecuteNonQuery%2A>メソッドです。 さらに、<xref:System.Data.SqlClient.SqlCommand>クラスは、このメソッドを継承しも定義、<xref:System.Data.SqlClient.SqlCommand.ExecuteXmlReader%2A>メソッドです。  
   
    
   
-## Examples  
- The following example creates instances of the derived classes, <xref:System.Data.SqlClient.SqlConnection>, <xref:System.Data.SqlClient.SqlCommand>, and <xref:System.Data.SqlClient.SqlDataReader>. The example reads through the data, writing it to the console. Finally, the example closes the <xref:System.Data.SqlClient.SqlDataReader>, then the <xref:System.Data.SqlClient.SqlConnection>.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.SqlClient.SqlConnection>、 <xref:System.Data.SqlClient.SqlCommand>、および<xref:System.Data.SqlClient.SqlDataReader>です。 例は、コンソールに書き込み、データを読み取ります。 最後に、例、 <xref:System.Data.SqlClient.SqlDataReader>、続いて、<xref:System.Data.SqlClient.SqlConnection>です。  
   
- [!code-csharp[Classic WebData SqlCommand Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlCommand Example/CS/source.cs#1)]
- [!code-vb[Classic WebData SqlCommand Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlCommand Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData SqlCommand Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlCommand Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData SqlCommand Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlCommand Example/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -70,6 +70,10 @@
   
  </description></item></list></para>
     </block>
+    <altmember cref="T:System.Data.Common.DbDataAdapter" />
+    <altmember cref="T:System.Data.IDbConnection" />
+    <altmember cref="T:System.Data.OleDb.OleDbCommand" />
+    <altmember cref="T:System.Data.SqlClient.SqlCommand" />
   </Docs>
   <Members>
     <Member MemberName="Cancel">
@@ -96,12 +100,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Attempts to cancels the execution of an <see cref="T:System.Data.IDbCommand" />.</summary>
+        <summary>
+          <see cref="T:System.Data.IDbCommand" /> の実行のキャンセルを試行します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If there is nothing to cancel, nothing happens. However, if there is a command in process, and the attempt to cancel fails, no exception is generated.  
+## 解説  
+ \[キャンセル\] を何も行われませんが、何も起こりません。 ただし、処理中のコマンドが存在し、キャンセルの試行が失敗した場合でも、例外は生成されません。  
   
  ]]></format>
         </remarks>
@@ -130,24 +135,26 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the text command to run against the data source.</summary>
-        <value>The text command to execute. The default value is an empty string ("").</value>
+        <summary>データ ソースに対して実行するテキスト コマンドを取得または設定します。</summary>
+        <value>実行するテキスト コマンド。 既定値は、空の文字列 \(""\) です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When the <xref:System.Data.IDbCommand.CommandType%2A> property is set to `StoredProcedure`, set the <xref:System.Data.IDbCommand.CommandText%2A> property to the name of the stored procedure. The user may be required to use escape character syntax if the stored procedure name contains any special characters. The command will call this stored procedure when you call one of the Execute methods.  
+## 解説  
+ ときに、<xref:System.Data.IDbCommand.CommandType%2A>プロパティに設定されている`StoredProcedure`、設定、<xref:System.Data.IDbCommand.CommandText%2A>プロパティをストアド プロシージャの名前にします。 ユーザーが、ストアド プロシージャ名に特殊文字が含まれている場合は、エスケープ文字構文を使用する必要あります。 コマンドは、Execute メソッドの 1 つを呼び出すときに、このストアド プロシージャを呼び出します。  
   
    
   
-## Examples  
- The following example creates an instance of a derived class, <xref:System.Data.OleDb.OleDbCommand> and sets some of its properties.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.OleDb.OleDbCommand>し、一部のプロパティを設定します。  
   
- [!code-csharp[Classic WebData IDbCommand.CommandText Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandText Example/CS/source.cs#1)]
- [!code-vb[Classic WebData IDbCommand.CommandText Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandText Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData IDbCommand.CommandText Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandText Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData IDbCommand.CommandText Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandText Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Data.IDbCommand.CommandType" />
+        <altmember cref="P:System.Data.IDbCommand.UpdatedRowSource" />
       </Docs>
     </Member>
     <Member MemberName="CommandTimeout">
@@ -173,20 +180,23 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the wait time before terminating the attempt to execute a command and generating an error.</summary>
-        <value>The time (in seconds) to wait for the command to execute. The default value is 30 seconds.</value>
+        <summary>コマンドを実行する試みを終了してエラーが生成されるまでの待機時間を取得または設定します。</summary>
+        <value>コマンドの実行を待機する時間 \(秒単位\)。 既定値は 30 秒です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example creates an instance of a derived class, <xref:System.Data.SqlClient.SqlCommand> and sets some of its properties.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.SqlClient.SqlCommand>し、一部のプロパティを設定します。  
   
- [!code-csharp[Classic WebData IDbCommand.CommandTimeout Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandTimeout Example/CS/source.cs#1)]
- [!code-vb[Classic WebData IDbCommand.CommandTimeout Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandTimeout Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData IDbCommand.CommandTimeout Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandTimeout Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData IDbCommand.CommandTimeout Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData IDbCommand.CommandTimeout Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The property value assigned is less than 0.</exception>
+        <exception cref="T:System.ArgumentException">割り当てられたプロパティ値が 0 未満です。</exception>
+        <altmember cref="P:System.Data.IDbCommand.CommandText" />
+        <altmember cref="P:System.Data.IDbCommand.Connection" />
+        <altmember cref="P:System.Data.IDbCommand.CommandType" />
       </Docs>
     </Member>
     <Member MemberName="CommandType">
@@ -212,13 +222,15 @@
         <ReturnType>System.Data.CommandType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates or specifies how the <see cref="P:System.Data.IDbCommand.CommandText" /> property is interpreted.</summary>
-        <value>One of the <see cref="T:System.Data.CommandType" /> values. The default is <see langword="Text" />.</value>
+        <summary>
+          <see cref="P:System.Data.IDbCommand.CommandText" /> プロパティをどのように解釈するかを表示または指定します。</summary>
+        <value>
+          <see cref="T:System.Data.CommandType" /> 値のいずれか。 既定値は、<see langword="Text" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When you set the <xref:System.Data.IDbCommand.CommandType%2A> property to `StoredProcedure`, you should set the <xref:System.Data.IDbCommand.CommandText%2A> property to the name of the stored procedure. The command executes this stored procedure when you call one of the Execute methods.  
+## 解説  
+ 設定すると、<xref:System.Data.IDbCommand.CommandType%2A>プロパティを`StoredProcedure`、設定する必要があります、<xref:System.Data.IDbCommand.CommandText%2A>プロパティをストアド プロシージャの名前にします。 コマンドは、Execute メソッドの 1 つを呼び出すときに、このストアド プロシージャを実行します。  
   
  ]]></format>
         </remarks>
@@ -247,8 +259,8 @@
         <ReturnType>System.Data.IDbConnection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Data.IDbConnection" /> used by this instance of the <see cref="T:System.Data.IDbCommand" />.</summary>
-        <value>The connection to the data source.</value>
+        <summary>この <see cref="T:System.Data.IDbCommand" /> のインスタンスで使用する <see cref="T:System.Data.IDbConnection" /> を取得または設定します。</summary>
+        <value>データ ソースへの接続。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -276,13 +288,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new instance of an <see cref="T:System.Data.IDbDataParameter" /> object.</summary>
-        <returns>An <see langword="IDbDataParameter" /> object.</returns>
+        <summary>
+          <see cref="T:System.Data.IDbDataParameter" /> オブジェクトの新しいインスタンスを作成します。</summary>
+        <returns>
+          <see langword="IDbDataParameter" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When inheriting from <xref:System.Data.IDbCommand>, a .NET Framework data provider implements a strongly-typed version of <xref:System.Data.IDbCommand.CreateParameter%2A>.  
+## 解説  
+ 継承する場合<xref:System.Data.IDbCommand>、.NET Framework データ プロバイダーの厳密に型指定されたバージョンを実装して<xref:System.Data.IDbCommand.CreateParameter%2A>です。  
   
  ]]></format>
         </remarks>
@@ -312,33 +326,33 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Executes an SQL statement against the <see langword="Connection" /> object of a .NET Framework data provider, and returns the number of rows affected.</summary>
-        <returns>The number of rows affected.</returns>
+        <summary>.NET Framework データ プロバイダーの <see langword="Connection" /> オブジェクトに対して SQL ステートメントを実行し、影響を受ける行の数を返します。</summary>
+        <returns>影響を受けた行の数。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can use the <xref:System.Data.IDbCommand.ExecuteNonQuery%2A> to perform catalog operations (for example, querying the structure of a database or creating database objects such as tables), or to change the data in a database without using a <xref:System.Data.DataSet> by executing UPDATE, INSERT, or DELETE statements.  
+## 解説  
+ 使用することができます、<xref:System.Data.IDbCommand.ExecuteNonQuery%2A>カタログ操作 \(データベースの構造をクエリやテーブルなどのデータベース オブジェクトを作成するなど\) を実行するかを使用せず、データベース内のデータを変更する、 <xref:System.Data.DataSet> UPDATE、INSERT、または DELETE ステートメントを実行することによってです。  
   
- Although the <xref:System.Data.IDbCommand.ExecuteNonQuery%2A> does not return any rows, any output parameters or return values mapped to parameters are populated with data.  
+ ただし、<xref:System.Data.IDbCommand.ExecuteNonQuery%2A>戻り値の任意の行、すべての出力パラメーターまたはパラメーターにマップされている値には、データが挿入されますを返すしていません。  
   
- For UPDATE, INSERT, and DELETE statements, the return value is the number of rows affected by the command. For all other types of statements, the return value is -1.  
+ UPDATE、INSERT、および DELETE ステートメントでは、戻り値はコマンドは、影響を受ける行の数にします。 その他のすべての種類のステートメントは、戻り値は\-1 です。  
   
    
   
-## Examples  
- The following example creates an instance of the derived class, <xref:System.Data.OleDb.OleDbCommand>, and then executes it. To accomplish this, the method is passed a string that is a SQL SELECT statement and a string to use to connect to the data source.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.OleDb.OleDbCommand>、し、それを実行します。 これを実現するには、SQL SELECT ステートメントを表す文字列と、データ ソースへの接続に使用する文字列、メソッドに渡します。  
   
- [!code-csharp[Classic WebData OleDbCommand.ExecuteNonQuery Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.ExecuteNonQuery Example/CS/source.cs#1)]
- [!code-vb[Classic WebData OleDbCommand.ExecuteNonQuery Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.ExecuteNonQuery Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData OleDbCommand.ExecuteNonQuery Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.ExecuteNonQuery Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData OleDbCommand.ExecuteNonQuery Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.ExecuteNonQuery Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The connection does not exist.  
+        <exception cref="T:System.InvalidOperationException">接続が存在しません。  
   
- -or-  
+ または  
   
- The connection is not open.</exception>
+ 接続が開かれていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="ExecuteReader">
@@ -365,8 +379,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Executes the <see cref="P:System.Data.IDbCommand.CommandText" /> against the <see cref="P:System.Data.IDbCommand.Connection" /> and builds an <see cref="T:System.Data.IDataReader" />.</summary>
-        <returns>An <see cref="T:System.Data.IDataReader" /> object.</returns>
+        <summary>
+          <see cref="P:System.Data.IDbCommand.Connection" /> に対して <see cref="P:System.Data.IDbCommand.CommandText" /> を実行し、<see cref="T:System.Data.IDataReader" /> をビルドします。</summary>
+        <returns>
+          <see cref="T:System.Data.IDataReader" /> オブジェクト。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -396,21 +412,24 @@
         <Parameter Name="behavior" Type="System.Data.CommandBehavior" />
       </Parameters>
       <Docs>
-        <param name="behavior">One of the <see cref="T:System.Data.CommandBehavior" /> values.</param>
-        <summary>Executes the <see cref="P:System.Data.IDbCommand.CommandText" /> against the <see cref="P:System.Data.IDbCommand.Connection" />, and builds an <see cref="T:System.Data.IDataReader" /> using one of the <see cref="T:System.Data.CommandBehavior" /> values.</summary>
-        <returns>An <see cref="T:System.Data.IDataReader" /> object.</returns>
+        <param name="behavior">
+          <see cref="T:System.Data.CommandBehavior" /> 値のいずれか。</param>
+        <summary>
+          <see cref="P:System.Data.IDbCommand.Connection" /> に対して <see cref="P:System.Data.IDbCommand.CommandText" /> を実行し、<see cref="T:System.Data.CommandBehavior" /> の値のいずれかを使用して <see cref="T:System.Data.IDataReader" /> をビルドします。</summary>
+        <returns>
+          <see cref="T:System.Data.IDataReader" /> オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The caller must call the <xref:System.Data.IDbConnection.Open%2A> method of the <xref:System.Data.IDbCommand.Connection%2A> property.  
+## 解説  
+ 呼び出し元が呼び出す必要があります、<xref:System.Data.IDbConnection.Open%2A>のメソッドの<xref:System.Data.IDbCommand.Connection%2A>プロパティです。  
   
- When the <xref:System.Data.IDbCommand.CommandType%2A> property is set to `StoredProcedure`, the <xref:System.Data.IDbCommand.CommandText%2A> property should be set to the name of the stored procedure. The command executes this stored procedure when you call <xref:System.Data.IDbCommand.ExecuteReader%2A>.  
+ ときに、<xref:System.Data.IDbCommand.CommandType%2A>プロパティに設定されている`StoredProcedure`、<xref:System.Data.IDbCommand.CommandText%2A>プロパティは、ストアド プロシージャの名前に設定する必要があります。 コマンドを呼び出すときにこのストアド プロシージャが実行される<xref:System.Data.IDbCommand.ExecuteReader%2A>です。  
   
 > [!NOTE]
->  Use <xref:System.Data.CommandBehavior.SequentialAccess> to retrieve large values and binary data. Otherwise, an <xref:System.OutOfMemoryException> might occur and the connection will be closed.  
+>  使用して<xref:System.Data.CommandBehavior.SequentialAccess>大きな値やバイナリ データを取得します。 それ以外の場合、<xref:System.OutOfMemoryException>が発生して、接続は閉じられます。  
   
- While the <xref:System.Data.IDataReader> is in use, the associated <xref:System.Data.IDbConnection> is busy serving the <xref:System.Data.IDataReader>. While in this state, no other operations can be performed on the <xref:System.Data.IDbConnection> other than closing it. This is the case until the <xref:System.Data.IDataReader.Close%2A> method of the DataReader is called. If the DataReader is created with <xref:System.Data.CommandBehavior> set to `CloseConnection`, closing the DataReader closes the connection automatically.  
+ 中に、<xref:System.Data.IDataReader>使用されている、関連付けられている<xref:System.Data.IDbConnection>ビジー状態のサービスには、<xref:System.Data.IDataReader>です。 中にこの状態で、その他の操作はありません、<xref:System.Data.IDbConnection>閉じる以外です。 これは、まで続きます、 <xref:System.Data.IDataReader.Close%2A> DataReader のメソッドが呼び出されます。 DataReader が作成された場合<xref:System.Data.CommandBehavior>に設定`CloseConnection`DataReader の終了の接続を自動的に閉じます。  
   
  ]]></format>
         </remarks>
@@ -440,30 +459,30 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Executes the query, and returns the first column of the first row in the resultset returned by the query. Extra columns or rows are ignored.</summary>
-        <returns>The first column of the first row in the resultset.</returns>
+        <summary>クエリを実行し、そのクエリが返す結果セットの最初の行にある最初の列を返します。 追加の列または行は無視されます。</summary>
+        <returns>結果セットの最初の行の最初の列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Data.IDbCommand.ExecuteScalar%2A> method to retrieve a single value (for example, an aggregate value) from a database. This requires less code than using the <xref:System.Data.IDbCommand.ExecuteReader%2A> method, and then performing the operations necessary to generate the single value using the data returned by an <xref:System.Data.IDataReader>.  
+## 解説  
+ 使用して、<xref:System.Data.IDbCommand.ExecuteScalar%2A>データベースから 1 つの値 \(たとえば、集計値\) を取得します。 使用するよりも少ないコードが必要です、<xref:System.Data.IDbCommand.ExecuteReader%2A>メソッド、およびによって返されるデータを使用して 1 つの値を生成するために必要な操作を実行すること、<xref:System.Data.IDataReader>です。  
   
- A typical <xref:System.Data.IDbCommand.ExecuteScalar%2A> query can be formatted as in the following C# example:  
+ 一般的な<xref:System.Data.IDbCommand.ExecuteScalar%2A>クエリは、次の c\# の例のようにフォーマットされていることができます。  
   
 ```  
 CommandText = "select count(*) as NumberOfRegions from region";  
 Int32 count = (int) ExecuteScalar();  
 ```  
   
- If the first column of the first row in the result set is not found, a null reference (`Nothing` in Visual Basic) is returned. If the value in the database is `null`, the query returns `DBNull.Value`.  
+ 結果セットの最初の行の最初の列が見つからない場合、null 参照 \(`Nothing` Visual Basic で\) が返されます。 データベース内の値が場合`null`、クエリを返します`DBNull.Value`です。  
   
    
   
-## Examples  
- The following example creates an instance of the derived class, <xref:System.Data.SqlClient.SqlCommand>, and then executes it using <xref:System.Data.SqlClient.SqlCommand.ExecuteScalar%2A>. The example is passed a string that is a Transact-SQL statement that returns an aggregate result, and a string to use to connect to the data source.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.SqlClient.SqlCommand>をし、実行を使用して<xref:System.Data.SqlClient.SqlCommand.ExecuteScalar%2A>です。 例には、集計の結果を返す TRANSACT\-SQL ステートメントを表す文字列と、データ ソースへの接続に使用する文字列が渡されます。  
   
- [!code-csharp[Classic WebData SqlCommand.ExecuteScalar#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlCommand.ExecuteScalar/CS/mysample.cs#1)]
- [!code-vb[Classic WebData SqlCommand.ExecuteScalar#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlCommand.ExecuteScalar/VB/mysample.vb#1)]  
+ [!code-csharp[Classic WebData SqlCommand.ExecuteScalar\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlCommand.ExecuteScalar/CS/mysample.cs#1)]
+ [!code-vb[Classic WebData SqlCommand.ExecuteScalar\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlCommand.ExecuteScalar/VB/mysample.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -492,19 +511,21 @@ Int32 count = (int) ExecuteScalar();
         <ReturnType>System.Data.IDataParameterCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the <see cref="T:System.Data.IDataParameterCollection" />.</summary>
-        <value>The parameters of the SQL statement or stored procedure.</value>
+        <summary>
+          <see cref="T:System.Data.IDataParameterCollection" /> を取得します。</summary>
+        <value>SQL ステートメントまたはストアド プロシージャのパラメーター。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example creates an instance of the derived class, <xref:System.Data.SqlClient.SqlCommand>, and displays its parameters. In the example, the application passes a <xref:System.Data.SqlClient.SqlConnection>, a query string that is a Transact-SQL SELECT statement, and an array of <xref:System.Data.SqlClient.SqlParameter> objects.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.SqlClient.SqlCommand>、し、そのパラメーターを表示します。 例では、アプリケーションに渡す、 <xref:System.Data.SqlClient.SqlConnection>、TRANSACT\-SQL SELECT ステートメントでは、およびの配列をあるクエリ文字列<xref:System.Data.SqlClient.SqlParameter>オブジェクト。  
   
- [!code-csharp[Classic WebData IDbCommand.Parameters Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData IDbCommand.Parameters Example/CS/source.cs#1)]
- [!code-vb[Classic WebData IDbCommand.Parameters Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData IDbCommand.Parameters Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData IDbCommand.Parameters Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData IDbCommand.Parameters Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData IDbCommand.Parameters Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData IDbCommand.Parameters Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Data.IDataParameter" />
       </Docs>
     </Member>
     <Member MemberName="Prepare">
@@ -531,28 +552,29 @@ Int32 count = (int) ExecuteScalar();
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a prepared (or compiled) version of the command on the data source.</summary>
+        <summary>コマンドの準備済み \(またはコンパイル済み\) のバージョンをデータ ソースに作成します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Data.IDbCommand.CommandType%2A> property is set to `TableDirect`, <xref:System.Data.IDbCommand.Prepare%2A> does nothing. If <xref:System.Data.IDbCommand.CommandType%2A> is set to `StoredProcedure`, the call to <xref:System.Data.IDbCommand.Prepare%2A> should succeed, although it may result in a no-op. The server automatically caches plans for reuse as necessary; therefore, there is no need to call this method directly in your client application.  
+## 解説  
+ 場合、<xref:System.Data.IDbCommand.CommandType%2A>プロパティに設定されている`TableDirect`、<xref:System.Data.IDbCommand.Prepare%2A>何も行われません。 場合<xref:System.Data.IDbCommand.CommandType%2A>に設定されている`StoredProcedure`への呼び出し<xref:System.Data.IDbCommand.Prepare%2A>no\-op する可能性がありますが、成功する必要があります。 サーバーは、必要に応じて; 再利用するための計画を自動的にキャッシュします。そのため、クライアント アプリケーションで直接このメソッドを呼び出す必要はありません。  
   
    
   
-## Examples  
- The following example creates an instance of the derived class, <xref:System.Data.OleDb.OleDbCommand>, and opens the connection. The example then prepares a stored procedure on the data source by passing a string that is a SQL Select statement and a string to use to connect to the data source.  
+## 例  
+ 次の例は、派生クラスのインスタンスを作成<xref:System.Data.OleDb.OleDbCommand>をし、接続を開きます。 例は、SQL Select ステートメントを表す文字列と、データ ソースへの接続に使用する文字列を渡すことによって、データ ソース上のストアド プロシージャを準備します。  
   
- [!code-csharp[Classic WebData OleDbCommand.Prepare Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.Prepare Example/CS/source.cs#1)]
- [!code-vb[Classic WebData OleDbCommand.Prepare Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.Prepare Example/VB/source.vb#1)]  
+ [!code-csharp[Classic WebData OleDbCommand.Prepare Example\#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.Prepare Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData OleDbCommand.Prepare Example\#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbCommand.Prepare Example/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Data.OleDb.OleDbCommand.Connection" /> is not set.  
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Data.OleDb.OleDbCommand.Connection" /> が設定されていません。  
   
- -or-  
+ または  
   
- The <see cref="P:System.Data.OleDb.OleDbCommand.Connection" /> is not <see cref="M:System.Data.OleDb.OleDbConnection.Open" />.</exception>
+ <see cref="P:System.Data.OleDb.OleDbCommand.Connection" /> が <see cref="M:System.Data.OleDb.OleDbConnection.Open" /> ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="Transaction">
@@ -578,8 +600,8 @@ Int32 count = (int) ExecuteScalar();
         <ReturnType>System.Data.IDbTransaction</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the transaction within which the <see langword="Command" /> object of a .NET Framework data provider executes.</summary>
-        <value>the <see langword="Command" /> object of a .NET Framework data provider executes. The default value is <see langword="null" />.</value>
+        <summary>.NET Framework データ プロバイダーの <see langword="Command" /> オブジェクトが実行されるトランザクションを取得または設定します。</summary>
+        <value>.NET Framework データ プロバイダーが実行する <see langword="Command" /> オブジェクト。 既定値は <see langword="null" /> です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -606,11 +628,23 @@ Int32 count = (int) ExecuteScalar();
         <ReturnType>System.Data.UpdateRowSource</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets how command results are applied to the <see cref="T:System.Data.DataRow" /> when used by the <see cref="M:System.Data.IDataAdapter.Update(System.Data.DataSet)" /> method of a <see cref="T:System.Data.Common.DbDataAdapter" />.</summary>
-        <value>One of the <see cref="T:System.Data.UpdateRowSource" /> values. The default is <see langword="Both" /> unless the command is automatically generated. Then the default is <see langword="None" />.</value>
+        <summary>
+          <see cref="T:System.Data.Common.DbDataAdapter" /> の <see cref="M:System.Data.IDataAdapter.Update(System.Data.DataSet)" /> メソッドで使用するときに、コマンドの結果を <see cref="T:System.Data.DataRow" /> に適用する方法を取得または設定します。</summary>
+        <value>
+          <see cref="T:System.Data.UpdateRowSource" /> 値のいずれか。 既定は、コマンドが自動的に生成されない限り <see langword="Both" /> です。 既定は <see langword="None" /> です。</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">The value entered was not one of the <see cref="T:System.Data.UpdateRowSource" /> values.</exception>
+        <exception cref="T:System.ArgumentException">入力された値が、<see cref="T:System.Data.UpdateRowSource" /> 値ではありませんでした。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName="ExecuteReader">
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Common</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>実行、 <see cref="P:System.Data.IDbCommand.CommandText" /> に対して、 <see cref="P:System.Data.IDbCommand.Connection" /> をビルドし、 <see cref="T:System.Data.IDataReader" />です。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

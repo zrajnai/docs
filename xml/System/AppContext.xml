@@ -25,59 +25,59 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides members for setting and retrieving data about an application's context.</summary>
+    <summary>アプリケーションのコンテキストについてのデータを設定したり取得したりするためのメンバーを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.AppContext> class enables library writers to provide a uniform opt-out mechanism for new functionality for their users. It establishes a loosely-coupled contract between components in order to communicate an opt-out request. This capability is typically important when a change is made to existing functionality. Conversely, there is already an implicit opt-in for new functionality.  
+## 解説  
+ <xref:System.AppContext>クラスには、そのユーザーに新機能の uniform オプトアウト メカニズムを提供するライブラリの作成者ができるようにします。 これは、オプトアウト要求を伝達するために、コンポーネント間に疎結合のコントラクトを確立します。 通常、この機能は既存の機能が変更されるときに重要となります。 それに対して、新しい機能には暗黙のオプトインが既に存在しています。  
   
-## AppContext for library developers  
- Libraries use  the <xref:System.AppContext> class to define and expose compatibility switches, while library users can set those switches to affect the library behavior. By default, libraries provide the new functionality, and they only alter it (that is, they provide the previous functionality) if the switch is set.  This allows libraries to provide new behavior for an existing API while continuing to support callers who depend on the previous behavior.  
+## ライブラリ開発者 AppContext  
+ ライブラリを使用して、<xref:System.AppContext>ライブラリ ユーザーがライブラリの動作に影響を与えるそれらのスイッチを設定中に、定義し、の互換性を公開するクラスが切り替わります。 ライブラリは、既定では新しい機能を提供し、スイッチが設定されている場合のみそれを変更する \(つまり以前の機能を提供する\) ことができます。  これにより、以前の動作に依存している呼び出し元をサポートしながら既存の API の新しい動作を提供するライブラリです。  
   
-### Defining the switch name  
- The most common way to allow consumers of your library to opt out of a change of behavior is to define a named switch.  Its `value` element is a name/value pair that consists of the name of a switch and its <xref:System.Boolean> value.  By default, the switch is always implicitly `false`, which provides the new behavior (and makes the new behavior opt-in by default). Setting the switch to `true` enables it, which provides the legacy behavior. Explicitly setting the switch to `false` also provides the new behavior.  
+### スイッチの名前を定義します。  
+ 動作の変更から除外するライブラリのコンシューマーを許可する最も一般的な方法では、名前付きのスイッチを定義します。  その`value`要素は、スイッチの名前で構成される名前と値のペアと、その<xref:System.Boolean>値。  既定では、スイッチは常に暗黙的に`false`する、新しい動作 \(なり、新しい動作オプトイン既定で\)。 スイッチに設定`true`により従来の動作を提供します。 明示的に設定スイッチ`false`も、新しい動作を提供します。  
   
- It's beneficial to use a consistent format for switch names, since they are a formal contract exposed by a library. The following are two obvious formats.  
+ ライブラリによって公開される正式なコントラクトであるために、スイッチ名に一貫性のある形式を使用することをお勧めします。 2 つの明確な形式を次に示します。  
   
--   *Switch*.*namespace*.*switchname*  
+-   *Switch*.*名前空間*.*switchname*  
   
 -   *Switch*.*library*.*switchname*  
   
- Once you define and document the switch, callers can use it by using the registry, by adding an  `AppContextSwitchOverrides` element to their application configuration file, or by calling the  <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=fullName> method programmatically. See the [AppContext for library consumers](#ForConsumers) section for more information about how callers use and set the value of <xref:System.AppContext> configuration switches.  
+ 後定義して、スイッチを文書化して、呼び出し元を使用できますを追加して、レジストリを使用して、`AppContextSwitchOverrides`要素に、アプリケーション構成ファイルまたは呼び出すことによって、<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=fullName>メソッド プログラムでします。 参照してください、[ライブラリのコンシューマーにとって AppContext](#ForConsumers)呼び出し元の使用方法およびの値の設定方法の詳細については、セクション<xref:System.AppContext>構成スイッチ。  
   
- When the common language runtime runs an application, it automatically reads the registry's compatibility settings and loads the application configuration file in order to populate the application's <xref:System.AppContext> instance. Because the <xref:System.AppContext> instance is populated either programmatically by the caller or by the runtime, you do not have to take any action, such as calling the <xref:System.AppContext.SetSwitch%2A> method,  to configure the <xref:System.AppContext> instance.  
+ 共通言語ランタイムは、アプリケーションを実行するときに自動的にレジストリの互換性設定を読み取り、アプリケーションを作成するために、アプリケーション構成ファイルを読み込みます<xref:System.AppContext>インスタンス。<xref:System.AppContext> 、呼び出し元のプログラムによって、またはランタイムによって、インスタンスが設定されると、呼び出しなど、任意のアクションを実行する必要はありません、<xref:System.AppContext.SetSwitch%2A>構成する方法、<xref:System.AppContext>インスタンス。  
   
-### Checking the setting  
- You can then check if a consumer has declared the value of the switch and act appropriately by calling the <xref:System.AppContext.TryGetSwitch%2A?displayProperty=fullName> method. The method returns `true` if the `switchName` argument is found, and when the method returns, its `isEnabled` argument indicates the value of the switch.  Otherwise, the method returns `false`.  
+### 設定を確認しています  
+ チェックして、コンシューマーがスイッチと適切に呼び出して act の値を宣言したかどうか、<xref:System.AppContext.TryGetSwitch%2A?displayProperty=fullName>メソッドです。 このメソッドを返します`true`場合、`switchName`引数が検出され、メソッドを返す場合、その`isEnabled`引数は、スイッチの値を示します。  それ以外の場合、メソッドは `false` を返します。  
   
-### An example  
- The following example illustrates the use of the <xref:System.AppContext> class to allow the customer to choose the original behavior of a library method.   The following is version 1.0 of a library named `StringLibrary`. It defines a `SubstringStartsAt` method that performs an ordinal comparison to determine the starting index of a substring within a larger string.  
+### 例  
+ 次の例では、使用、<xref:System.AppContext>顧客がライブラリのメソッドの動作を元の選択を許可するクラス。   次は、という名前のライブラリのバージョン 1.0`StringLibrary`です。 定義する、`SubstringStartsAt`大きな文字列内の部分文字列の開始インデックスを決定する序数に基づく比較を実行するメソッド。  
   
- [!code-csharp[System.AppContext.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#4)]
- [!code-vb[System.AppContext.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#4)]  
+ [!code-csharp[System.AppContext.Class\#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#4)]
+ [!code-vb[System.AppContext.Class\#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#4)]  
   
- The following example then uses the library to find the starting index of the substring "archæ" in "The archaeologist". Because the method performs an ordinal comparison, the substring cannot be found.  
+ 次の例は、このライブラリを使用して「考古」で"archæ"の部分文字列の開始インデックスを検索します。 メソッドは、序数に基づく比較を実行するための部分文字列が見つかりません。  
   
- [!code-csharp[System.AppContext.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#5)]
- [!code-vb[System.AppContext.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#5)]  
+ [!code-csharp[System.AppContext.Class\#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#5)]
+ [!code-vb[System.AppContext.Class\#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#5)]  
   
- Version 2 of the library, however, changes the `SubstringStartsAt` method to use culture-sensitive comparison.  
+ ただし、変更は、ライブラリのバージョン 2、`SubstringStartsAt`カルチャに依存した比較を使用する方法です。  
   
- [!code-csharp[System.AppContext.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#6)]
- [!code-vb[System.AppContext.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#6)]  
+ [!code-csharp[System.AppContext.Class\#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#6)]
+ [!code-vb[System.AppContext.Class\#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#6)]  
   
- When the app is recompiled to run against the new version of the library, it now reports that the substring "archæ" is found at index 4 in "The archaeologist".  
+ 新しいバージョンのライブラリに対して実行する、アプリが再コンパイルすると、インデックス 4「考古」で"archæ"部分文字列が見つかったことを今すぐ報告します。  
   
- [!code-csharp[System.AppContext.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#7)]
- [!code-vb[System.AppContext.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#7)]  
+ [!code-csharp[System.AppContext.Class\#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#7)]
+ [!code-vb[System.AppContext.Class\#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#7)]  
   
- This change can be prevented from breaking the applications that depend on the original behavior by defining an `AppContextSwitchOverrides` switch. In this case, the switch is named `StringLibrary.DoNotUseCultureSensitiveComparison`. Its default value, `false`, indicates that the library should perform its version 2.0 culture-sensitive comparison. `true` indicates that the library should perform its version 1.0 ordinal comparison.  A slight modification of the previous code allows the library consumer to set the switch to determine the kind of comparison the method performs.  
+ この変更を定義することによって、元の動作に依存するアプリケーションが破損を防止できる、`AppContextSwitchOverrides`スイッチします。 この場合、スイッチが名前付き`StringLibrary.DoNotUseCultureSensitiveComparison`します。 既定値、`false`ライブラリのバージョン 2.0 のカルチャに依存した比較を実行することを示します。`true`ライブラリのバージョン 1.0 の序数に基づく比較を実行することを示します。  前のコードのわずかな変更は、ライブラリのコンシューマーがメソッドを実行する比較の種類を決定するスイッチを設定できます。  
   
- [!code-csharp[System.AppContext.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example8.cs#8)]
- [!code-vb[System.AppContext.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example8.vb#8)]  
+ [!code-csharp[System.AppContext.Class\#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example8.cs#8)]
+ [!code-vb[System.AppContext.Class\#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example8.vb#8)]  
   
- If application can then use the following configuration file to restore the version 1.0 behavior.  
+ アプリケーション、次の構成ファイルを使用して、バージョン 1.0 の動作を復元することができます。 場合、  
   
 ```xml  
   
@@ -89,50 +89,50 @@
   
 ```  
   
- When the application is run with the configuration file present, it produces the following output:  
+ 実行時に、アプリケーションが存在する構成ファイルで、次の出力が生成されます。  
   
 ```  
 'archæ' not found in 'The archaeologist'  
 ```  
   
 <a name="ForConsumers"></a>   
-## AppContext for library consumers  
- If you are the consumer of a library, the <xref:System.AppContext> class  allows you to take advantage of a library or library method's opt-out mechanism for new functionality.   Individual methods of the class library that you are calling define particular switches that enable or disable a new behavior. The value of the switch  is a Boolean. If it is `false`, which is typically the default value, the new behavior is enabled; if it is `true`, the new behavior is disabled, and the member behaves as it did previously.  
+## ライブラリのコンシューマーにとって AppContext  
+ ライブラリのコンシューマーをする場合は、<xref:System.AppContext>クラスでは、ライブラリの新機能のライブラリのメソッドのオプトアウト メカニズムを利用することができます。   呼び出しにはクラス ライブラリの個々 のメソッドは、有効にするにまたは新しい動作を無効にする特定のスイッチを定義します。 スイッチの値は、ブール値です。 場合は`false`、これは、既定値では通常、新しい動作が有効である場合は`true`、新しい動作を無効にすると、およびメンバーは以前と同じように動作します。  
   
- You can set the value of a switch in one of three ways:  
+ 3 つの方法のいずれかでは、スイッチの値を設定できます。  
   
--   By calling the <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=fullName> method in your code.  The `switchName` argument defines the switch name, and the `isEnabled` property defines the value of the switch. Because <xref:System.AppContext> is a static class, it is available on a per-application domain basis.  
+-   呼び出して、<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=fullName>コード内のメソッドです。`switchName`引数、スイッチ名を定義して、`isEnabled`プロパティは、スイッチの値を定義します。<xref:System.AppContext>静的クラスでは、アプリケーション ドメインごとに使用します。  
   
-     Calling the <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=fullName> has application scope; that is, it affects only the application.  
+     呼び出す、<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=fullName>がアプリケーションのスコープです。 つまり、その影響を受けるアプリケーションのみです。  
   
--   By adding an `<AppContextSwitchOverrides>` element to the [\<runtime>](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) section of your app.config file. The switch has a single attribute, `value`, whose value is a string that represents a key/value pair containing both the switch name and its value.  
+-   追加することによって、`<AppContextSwitchOverrides>`要素を[\<runtime\>](http://msdn.microsoft.com/ja-jp/1eb2fae3-de4b-45b6-852f-517c39b751bd) app.config ファイルのセクション\<\/runtime\>。 スイッチが 1 つの属性を持つ`value`値があるスイッチの名前とその値の両方を含むキーと値のペアを表す文字列です。  
   
-     To define multiple switches, separate each switch's key/value pair in the `<AppContextSwitchOverrides>` element's `value` attribute with a semicolon. In that case, the :`<AppContextSwitchOverrides>` element has the following format:  
+     複数のスイッチを定義するスイッチはそれぞれのキー\/値のペアを区切る、`<AppContextSwitchOverrides>`要素の`value`属性をセミコロンで区切ります。 その場合は、:`<AppContextSwitchOverrides>`要素には、次の形式。  
   
     ```xml  
-    <AppContextSwitchOverrides value="switchName1=value1;switchName2=value2" />  
+    <AppContextSwitchOverrides value=”switchName1=value1;switchName2=value2” />  
     ```  
   
-     Using the `<AppContextSwitchOverrides>` element to define a configuration setting has application scope; that is, it affects only the application.  
+     使用して、`<AppContextSwitchOverrides>`構成設定を定義する要素がアプリケーションのスコープです。 つまり、その影響を受けるアプリケーションのみです。  
   
--   By adding a string value whose name is the name of the switch to the `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` key in the registry. Its value must be the string representation of a <xref:System.Boolean> that can be parsed by the <xref:System.Boolean.Parse%2A?displayProperty=fullName> method; that is, it must be "True", "true", "False", or "false". If the runtime encounters any other value, it ignores the switch.  
+-   名前を持つスイッチの名前は、文字列値を追加してに、`HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext`レジストリのキー。 その値がの文字列形式にする必要があります、<xref:System.Boolean>によって解析される、<xref:System.Boolean.Parse%2A?displayProperty=fullName>メソッドです。 つまり、その必要があります"True"、"true"、"False"または"false"です。 ランタイムには、その他の値が検出されると、スイッチは無視されます。  
   
-     Using the registry to define an <xref:System.AppContext> switch has machine scope; that is, it affects every application running on the machine.  
+     レジストリを使用して定義する、<xref:System.AppContext>スイッチは必要なコンピューターのスコープです。 つまり、その影響を受けるマシンで実行されているすべてのアプリケーションです。  
   
- If you set the same switch in more than one way, the order of precedence for determining which setting overrides the others is:  
+ どの設定では、他のユーザーを決定するための優先順位の順序は、複数の方法で、同じスイッチを設定する場合。  
   
-1.  The programmatic setting.  
+1.  プログラムで設定します。  
   
-2.  The setting in the app config file.  
+2.  アプリケーション構成ファイルで設定します。  
   
-3.  The registry setting.  
+3.  レジストリ設定です。  
   
- The following is a simple application that passes a file URI to the <xref:System.IO.Path.GetDirectoryName%2A?displayProperty=fullName> method.  When run under the .NET Framework 4.6, it throws an <xref:System.ArgumentException> because `file://` is no longer a valid part of a file path.  
+ 次に、ファイルの URI を通過する簡単なアプリケーションを<xref:System.IO.Path.GetDirectoryName%2A?displayProperty=fullName>メソッドです。  実行すると、.NET Framework 4.6 の下にあるがスロー、<xref:System.ArgumentException>ため`file://`ファイル パスの有効な部分ではなくなりました。  
   
- [!code-csharp[System.AppContext.Class#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/ForConsumers1.cs#10)]
- [!code-vb[System.AppContext.Class#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/ForConsumers1.vb#10)]  
+ [!code-csharp[System.AppContext.Class\#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/ForConsumers1.cs#10)]
+ [!code-vb[System.AppContext.Class\#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/ForConsumers1.vb#10)]  
   
- To restore the method's previous behavior and prevent the exception, you can add the `Switch.System.IO.UseLegacyPathHandling` switch to the application configuration file for the example:  
+ メソッドの以前の動作を復元して、例外を防ぐためするには追加、`Switch.System.IO.UseLegacyPathHandling`の例では、アプリケーション構成ファイルに切り替えます。  
   
 ```xml  
   
@@ -175,13 +175,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the pathname of the base directory that the assembly resolver uses to probe for assemblies.</summary>
-        <value>the pathname of the base directory that the assembly resolver uses to probe for assemblies.</value>
+        <summary>アセンブリを探すためにアセンブリ リゾルバーが使用するベース ディレクトリのパス名を取得します。</summary>
+        <value>アセンブリを探すためにアセンブリ リゾルバーが使用するベース ディレクトリのパス名。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This is a per application domain property. Its value corresponds to the <xref:System.AppDomain.BaseDirectory%2A?displayProperty=fullName> property of the current application domain.  
+## 解説  
+ これは、アプリケーション ドメイン プロパティごとです。 その値に対応して、<xref:System.AppDomain.BaseDirectory%2A?displayProperty=fullName>現在のアプリケーション ドメインのプロパティです。  
   
  ]]></format>
         </remarks>
@@ -216,9 +216,10 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the data element.</param>
-        <summary>Returns the value of the named data element assigned to the current application domain.</summary>
-        <returns>The value of <paramref name="name" />, if <paramref name="name" /> identifies a named value; otherwise, <see langword="null" />.</returns>
+        <param name="name">データ要素の名前。</param>
+        <summary>現在のアプリケーション ドメインに割り当てられている名前付きデータ要素の値を返します。</summary>
+        <returns>
+          <paramref name="name" /> が名前付きの値を識別する場合は <paramref name="name" /> の値。それ以外の場合は <see langword="null" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -253,16 +254,19 @@
         <Parameter Name="isEnabled" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="switchName">The name of the switch.</param>
-        <param name="isEnabled">The value of the switch.</param>
-        <summary>Sets the value of a switch.</summary>
+        <param name="switchName">スイッチの名前です。</param>
+        <param name="isEnabled">スイッチの値です。</param>
+        <summary>スイッチの値を設定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.AppContext> class enables library writers to provide a uniform opt-out mechanism for new functionality for their users. It establishes a loosely-coupled contract between components in order to communicate an opt-out request. This capability is typically important when a change is made to existing functionality. Conversely, there is already an implicit opt-in for new functionality.  
+## 解説  
+ The <xref:System.AppContext> class enables library writers to provide a uniform opt\-out mechanism for new functionality for their users. It establishes a loosely\-coupled contract between components in order to communicate an opt\-out request. This capability is typically important when a change is made to existing functionality. Conversely, there is already an implicit opt\-in for new functionality.  
   
- The <xref:System.AppContext.SetSwitch%2A> method is called by an application (or a library) to declare the value of a switch (which is always a <xref:System.Boolean> value) that a dependent library defines. The switch is always implicitly `false`, which provides the new behavior. Setting the switch to `true` enables it, which provides the legacy behavior. Explicitly setting the switch to `false` also provides the new behavior. The dependent library can then check the value of the switch by calling the <xref:System.AppContext.TryGetSwitch%2A> method.  
+ The <xref:System.AppContext.SetSwitch%2A> method is called by an application \(or a library\) to declare the value of a switch \(which is always a <xref:System.Boolean> value\) that a dependent library defines. The switch is always implicitly **languageKeyword tag is not supported!!!!**  
+, which provides the new behavior. Setting the switch to **languageKeyword tag is not supported!!!!**  
+ enables it, which provides the legacy behavior. Explicitly setting the switch to **languageKeyword tag is not supported!!!!**  
+ also provides the new behavior. The dependent library can then check the value of the switch by calling the <xref:System.AppContext.TryGetSwitch%2A> method.  
   
 > [!NOTE]
 >  It's beneficial to use a consistent format for switch names, since they are a formal contract exposed by a library. The following are two obvious formats.  
@@ -272,7 +276,10 @@
   
  In addition to setting the value of a switch programmatically, it can also be set:  
   
--   by adding the switch name and value to the `<AppContextSwitchOverrides>` element in the [\<runtime>](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) section of an application configuration file. For example, the following defines a switch named `Libraries.FPLibrary.UseExactFloatingPointComparison` whose value is `False`.  
+-   by adding the switch name and value to the **languageKeyword tag is not supported!!!!**  
+     element in the [\<runtime\>](http://msdn.microsoft.com/ja-jp/1eb2fae3-de4b-45b6-852f-517c39b751bd) section of an application configuration file. For example, the following defines a switch named **languageKeyword tag is not supported!!!!**  
+     whose value is **languageKeyword tag is not supported!!!!**  
+    .  
   
     ```xml  
   
@@ -284,24 +291,30 @@
   
     ```  
   
--   by adding a string value whose name is the name of the switch to the `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` key in the registry. Its value must be the string representation of a <xref:System.Boolean> that can be parsed by the <xref:System.Boolean.Parse%2A?displayProperty=fullName> method; that is, it must be "True", "true", "False", or "false".  
+-   by adding a string value whose name is the name of the switch to the **languageKeyword tag is not supported!!!!**  
+     key in the registry. Its value must be the string representation of a <xref:System.Boolean> that can be parsed by the <xref:System.Boolean.Parse%2A?displayProperty=fullName> method; that is, it must be "True", "true", "False", or "false".  
   
- If `switchName` already exists, its value is overwritten by the `isEnabled` argument.  That is, the most recent call to the <xref:System.AppContext.SetSwitch%2A> method overrides the value defined in the registry, in an app configuration file, or by previous calls to the <xref:System.AppContext.SetSwitch%2A> method.  
+ If **parameterReference tag is not supported!!!!**  
+ already exists, its value is overwritten by the **parameterReference tag is not supported!!!!**  
+ argument.  That is, the most recent call to the <xref:System.AppContext.SetSwitch%2A> method overrides the value defined in the registry, in an app configuration file, or by previous calls to the <xref:System.AppContext.SetSwitch%2A> method.  
   
    
   
-## Examples  
- The following line of code sets a switch named `Switch.AmazingLib.ThrowOnException` to `true`, which enables a legacy behavior. The library can then check whether a library consumer has set the value of the switch by calling the <xref:System.AppContext.TryGetSwitch%2A> method.  
+## 例  
+ The following line of code sets a switch named **languageKeyword tag is not supported!!!!**  
+ to **languageKeyword tag is not supported!!!!**  
+, which enables a legacy behavior. The library can then check whether a library consumer has set the value of the switch by calling the <xref:System.AppContext.TryGetSwitch%2A> method.  
   
- [!code-csharp[System.AppContext.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#1)]
- [!code-vb[System.AppContext.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#1)]  
+ [!code-csharp[System.AppContext.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#1)]
+ [!code-vb[System.AppContext.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="switchName" /> is <see langword="null" />.</exception>
+          <paramref name="switchName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="switchName" /> is <see cref="F:System.String.Empty" />.</exception>
+          <paramref name="switchName" /> は <see cref="F:System.String.Empty" /> です。</exception>
+        <altmember cref="M:System.AppContext.TryGetSwitch(System.String,System.Boolean@)" />
       </Docs>
     </Member>
     <Member MemberName="TargetFrameworkName">
@@ -330,16 +343,18 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the name of the framework version targeted by the current application.</summary>
-        <value>The name of the framework version targeted by the current application.</value>
+        <summary>現在のアプリケーションの対象となるフレームワークのバージョンの名前を取得します。</summary>
+        <value>現在のアプリケーションの対象となるフレームワークのバージョンの名前。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The name of the target framework version corresponds to the value of the <xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=fullName> property. For a list of target framework names for the .NET Framework, see the [\&lt;supportedRuntime\&gt; Element](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md) element.  
+## 解説  
+ ターゲット フレームワークのバージョンの名前の値に対応、<xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=fullName>プロパティです。 .NET Framework のターゲット フレームワーク名の一覧は、次を参照してください。、[\<supportedRuntime\> Element](http://msdn.microsoft.com/ja-jp/1ae16e23-afbe-4de4-b413-bc457f37b69f)要素。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Runtime.Versioning.TargetFrameworkAttribute" />
+        <altmember cref="P:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName" />
       </Docs>
     </Member>
     <Member MemberName="TryGetSwitch">
@@ -373,35 +388,39 @@
         <Parameter Name="isEnabled" Type="System.Boolean&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="switchName">The name of the switch.</param>
-        <param name="isEnabled">When this method returns, contains the value of <c>switchName</c> if <c>switchName</c> was found, or <see langword="false" /> if <c>switchName</c> was not found. This parameter is passed uninitialized.</param>
-        <summary>Tries to get the value of a switch.</summary>
+        <param name="switchName">スイッチの名前。</param>
+        <param name="isEnabled">このメソッドが返されるときに <c>switchName</c> が見つかった場合、<c>switchName</c> の値が含まれます。<c>switchName</c> が見つからなかった場合は <see langword="false" />。 このパラメーターは初期化せずに渡されます。</param>
+        <summary>スイッチの値の取得を試みます。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="switchName" /> was set and the <paramref name="isEnabled" /> argument contains the value of the switch; otherwise, <see langword="false" />.</returns>
+          <paramref name="switchName" /> が設定され、<paramref name="isEnabled" /> の引数にスイッチの値が含まれている場合は <see langword="true" />。それ以外の場合は <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.AppContext> class enables library writers to provide a uniform opt-out mechanism for new functionality for their users. It establishes a loosely-coupled contract between components in order to communicate an opt-out request. This capability is typically important when a change is made to existing functionality. Conversely, there is already an implicit opt-in for new functionality.  
+## 解説  
+ The <xref:System.AppContext> class enables library writers to provide a uniform opt\-out mechanism for new functionality for their users. It establishes a loosely\-coupled contract between components in order to communicate an opt\-out request. This capability is typically important when a change is made to existing functionality. Conversely, there is already an implicit opt\-in for new functionality.  
   
  The common language runtime automatically populates the switches assigned to an <xref:System.AppContext> instance by reading the registry and the application's configuration file. The value of these switches can then be overridden, and new switches added, by calling the <xref:System.AppContext.SetSwitch%2A> method.  
   
- A library calls the <xref:System.AppContext.TryGetSwitch%2A> method to check whether its consumers have declared the value of the switch and then act appropriately on it.  By default, if the switch is not defined, the new functionality is enabled.. If the switch is defined and its value is `false`, the new functionality is also enabled. If its value is `true`, the legacy behavior is enabled.  
+ A library calls the <xref:System.AppContext.TryGetSwitch%2A> method to check whether its consumers have declared the value of the switch and then act appropriately on it.  By default, if the switch is not defined, the new functionality is enabled.. If the switch is defined and its value is **languageKeyword tag is not supported!!!!**  
+, the new functionality is also enabled. If its value is **languageKeyword tag is not supported!!!!**  
+, the legacy behavior is enabled.  
   
    
   
-## Examples  
- The following example determines whether a library consumer has set a switch named `Switch.AmazingLib.ThrowOnException`.  
+## 例  
+ The following example determines whether a library consumer has set a switch named **languageKeyword tag is not supported!!!!**  
+.  
   
- [!code-csharp[System.AppContext.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#2)]
- [!code-vb[System.AppContext.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#2)]  
+ [!code-csharp[System.AppContext.Class\#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#2)]
+ [!code-vb[System.AppContext.Class\#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#2)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="switchName" /> is <see langword="null" />.</exception>
+          <paramref name="switchName" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="switchName" /> is <see cref="F:System.String.Empty" />.</exception>
+          <paramref name="switchName" /> は <see cref="F:System.String.Empty" /> です。</exception>
+        <altmember cref="M:System.AppContext.SetSwitch(System.String,System.Boolean)" />
       </Docs>
     </Member>
   </Members>

@@ -35,41 +35,41 @@
   <Interfaces>
   </Interfaces>
   <Docs>
-    <typeparam name="TKey">The reference type to which the field is attached.</typeparam>
-    <typeparam name="TValue">The field's type. This must be a reference type.</typeparam>
-    <summary>Enables compilers to dynamically attach object fields to managed objects.</summary>
+    <typeparam name="TKey">フィールドがアタッチされる参照型。</typeparam>
+    <typeparam name="TValue">フィールドの種類。 参照型である必要があります。</typeparam>
+    <summary>コンパイラがマネージ オブジェクトに動的にオブジェクト フィールドをアタッチできるようにします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class enables language compilers to attach arbitrary properties to managed objects at run time. A <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> object is a dictionary that binds a managed object, which is represented by a key, to its attached property, which is represented by a value. The object's keys are the individual instances of the `TKey` class to which the property is attached, and its values are the property values that are assigned to the corresponding objects.  
+## 解説  
+ <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>クラスには、実行時に任意のプロパティを管理対象オブジェクトにアタッチする言語コンパイラができるようにします。 A<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>オブジェクトは、添付プロパティの値によって表される、キーによって表される、管理対象オブジェクトをバインドするディクショナリ。 オブジェクトのキーの個別のインスタンスである、`TKey`クラスをプロパティのアタッチし、その値は、対応するオブジェクトに割り当てられているプロパティの値。  
   
- Keys must be unique; in other words, the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class supports one attached value per managed object. Two keys are equal if passing them to the <xref:System.Object.ReferenceEquals%2A?displayProperty=fullName> method returns `true`.  
+ キーを一意にする必要があります。つまり、他の<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>クラスはマネージ オブジェクトごとに 1 つのアタッチされた値をサポートします。 2 つのキーが等しくに渡す場合、<xref:System.Object.ReferenceEquals%2A?displayProperty=fullName>メソッドを返します。`true`です。  
   
 > [!NOTE]
->  You cannot control equality comparisons by overriding <xref:System.Object.GetHashCode%2A?displayProperty=fullName> to explicitly set the hash code for a key. The <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class does not use the <xref:System.Object.GetHashCode%2A?displayProperty=fullName> method to compute hash codes, and therefore does not invoke <xref:System.Object.GetHashCode%2A?displayProperty=fullName> overrides.  
+>  オーバーライドすることで等値比較を制御することはできません<xref:System.Object.GetHashCode%2A?displayProperty=fullName>キーのハッシュ コードを明示的に設定します。<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>クラスは使用しない、<xref:System.Object.GetHashCode%2A?displayProperty=fullName>するコンピューティングのハッシュ コードが、メソッドしたがっては呼び出されません<xref:System.Object.GetHashCode%2A?displayProperty=fullName>よりも優先します。  
   
- Although the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class holds a collection of key/value pairs, it is best thought of as a table rather than a dictionary object. The <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class differs from a dictionary in several ways:  
+ ただし、<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>クラスは、キー\/値ペアのコレクションを保持していることが最適と考える辞書オブジェクトではなくテーブル。<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>クラスといくつかの方法で辞書は異なります。  
   
--   It does not persist keys. That is, a key is not kept alive only because it is a member of the collection.  
+-   キーは保持されません。 つまり、キー保持しないコレクションのメンバーであるためにのみです。  
   
--   It does not include all the methods (such as `GetEnumerator` or `Contains`) that a dictionary typically has.  
+-   すべてのメソッドは含まれません \(など `GetEnumerator`または`Contains`\) で、辞書が通常はします。  
   
--   It does not implement the <xref:System.Collections.Generic.IDictionary%602> interface.  
+-   実装していない、<xref:System.Collections.Generic.IDictionary%602>インターフェイスです。  
   
- The <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class differs from other collection objects in its management of the object lifetime of keys stored in the collection. Ordinarily, when an object is stored in a collection, its lifetime lasts until it is removed (and there are no additional references to the object) or until the collection object itself is destroyed. However, in the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> class, adding a key/value pair to the table does not ensure that the key will persist, even if it can be reached directly from a value stored in the table (for example, if the table contains one key, A, with a value V1, and a second key, B, with a value P2 that contains a reference to A). Instead, <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> automatically removes the key/value entry as soon as no other references to a key exist outside the table. The example provides an illustration.  
+ <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>クラスとその他のコレクション オブジェクトのコレクションに格納されたキー オブジェクトの有効期間の管理では異なります。 通常、オブジェクトがコレクションに格納されている場合、有効期間が削除された \(およびオブジェクトへの他の参照がない\) か、コレクション オブジェクト自体が破棄されるまで継続します。 ただしでは、<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>テーブルにキー\/値のペアとは限りませんこと、キーは維持され、\(たとえば、1 つのキー、A、V1、値を持つと 2 番目のキー、B、A への参照を含む P2 の値を持つテーブルが含まれます\) 場合は、テーブルに格納されている値から直接に到達できる場合でも追加するクラス。 代わりに、<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>テーブルの外部キーには、他の参照が存在しないと、すぐにキー\/値のエントリが自動的に削除します。 具体的な例を次に示します。  
   
    
   
-## Examples  
- The following example illustrates that a key stored in the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table does not persist after references to it outside the table are destroyed. The example defines two classes: `ManagedClass`, which represents the key in the table, and `ClassData`, which represents the key's value. The example instantiates three objects of each type. It also instantiates a <xref:System.WeakReference> object that represents the second `ManagedClass`, and then destroys the second `ManagedClass` instance. The attempt to retrieve the second `ManagedClass` object from the <xref:System.WeakReference.Target%2A> property indicates that no references to the object remain.  
+## 例  
+ 次の例で保存されるキーの<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602>テーブルの外側への参照が破棄された後、テーブルが保持されません。 2 つのクラスが定義されています: `ManagedClass`、テーブル内のキーを表すと`ClassData`キーの値を表します。 この例は、各型の 3 つのオブジェクトをインスタンス化します。 インスタンス化も、<xref:System.WeakReference>秒を表すオブジェクト`ManagedClass`、し、2 つ目を破棄`ManagedClass`インスタンス。 2 つ目を取得しようとすると、`ManagedClass`オブジェクトから、<xref:System.WeakReference.Target%2A>プロパティは、オブジェクトへの参照が残っていないことを示します。  
   
- [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.class/cs/example1.cs#1)]
- [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.class/vb/example1.vb#1)]  
+ [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.Class\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.class/cs/example1.cs#1)]
+ [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.Class\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.class/vb/example1.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>Instances of the <see cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2" /> class are thread safe. They do not require callers to do any additional locking.</threadsafe>
+    <threadsafe>インスタンス、<see cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2" />クラスはスレッド セーフであります。 呼び出し元を追加のロックを行うには不要です。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -94,14 +94,16 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2" /> class.</summary>
+        <summary>
+          <see cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.%23ctor%2A> constructor instantiates an empty <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table; that is, the table contains no key/value pairs. You can add key/value pairs by calling the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A>, <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A>, or <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> method.  
+## 解説  
+ The <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.%23ctor%2A> constructor instantiates an empty <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table; that is, the table contains no key\/value pairs. You can add key\/value pairs by calling the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A>, <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A>, or <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> method.  
   
- Every key in a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> object must be unique. Keys are not unique if they refer to the same object (that is, if passing them as arguments to the <xref:System.Object.ReferenceEquals%2A?displayProperty=fullName> method returns `true`).  
+ Every key in a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> object must be unique. Keys are not unique if they refer to the same object \(that is, if passing them as arguments to the <xref:System.Object.ReferenceEquals%2A?displayProperty=fullName> method returns **languageKeyword tag is not supported!!!!**  
+\).  
   
  ]]></format>
         </remarks>
@@ -135,32 +137,33 @@
         <Parameter Name="value" Type="TValue" />
       </Parameters>
       <Docs>
-        <param name="key">The key to add. <c>key</c> represents the object to which the property is attached.</param>
-        <param name="value">The key's property value.</param>
-        <summary>Adds a key to the table.</summary>
+        <param name="key">追加するキー。<c>key</c> は、プロパティのアタッチ先となるオブジェクトを表します。</param>
+        <param name="value">キーのプロパティ値。</param>
+        <summary>テーブルにキーを追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Every key in a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> object must be unique. Keys are not unique if they refer to the same object (that is, if passing them as arguments to the <xref:System.Object.ReferenceEquals%2A?displayProperty=fullName> method returns `true`).  
+## 解説  
+ 内のすべてのキー、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> オブジェクトを一意にする必要があります。 キーは、同じオブジェクトを参照している場合は、一意ではありません \(への引数として渡す場合に、 <xref:System.Object.ReferenceEquals%2A?displayProperty=fullName> メソッドが返す `true`\)。  
   
- If the key is garbage-collected during the addition operation, the existing key/value pair is removed and the new key/value pair is added without an exception being thrown.  
+ ガベージ コレクション中にキーが加算演算、既存のキー\/値ペアを削除し、例外がスローしないで新しいキー\/値ペアを追加します。  
   
    
   
-## Examples  
- The following example defines a `MainClass` class and a `MainInfo` class, which provides information about the `MainClass` instance. The example then calls the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A> method to add a `MainClass` object and its attached `MainInfo` object to a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table. The example also illustrates calls to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> and <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> methods to add key/value pairs to the table, and to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method to retrieve the value of an existing key.  
+## 例  
+ 次の例、 `MainClass` クラスおよび `MainInfo` に関する情報を提供するクラス、 `MainClass` インスタンス。 次、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A> を追加するメソッド、 `MainClass` オブジェクトと、アタッチされた `MainInfo` オブジェクトを <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> テーブルです。 呼び出しも例、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> と <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> 、テーブルおよびにキー\/値ペアを追加するメソッドを <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> 既存のキーの値を取得します。  
   
- [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
- [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
+ [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
+ [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="key" /> is <see langword="null" />.</exception>
+          <paramref name="key" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="key" /> already exists.</exception>
+          <paramref name="key" /> が既に存在します。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.GetOrCreateValue(`0)" />
       </Docs>
     </Member>
     <Member MemberName="AddOrUpdate">
@@ -225,15 +228,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ensures that resources are freed and other cleanup operations are performed when the garbage collector reclaims the <see cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2" /> object.</summary>
+        <summary>ガベージ コレクターが <see cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2" /> を再利用しているときに、リソースが解放され、他のクリーンアップ操作が確実に実行されるようにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The garbage collector calls <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Finalize%2A> when the current object is ready to be finalized.  
+## 解説  
+ ガベージ コレクター <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Finalize%2A> と現在のオブジェクトが完了する準備ができています。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Object.Finalize" />
       </Docs>
     </Member>
     <Member MemberName="GetOrCreateValue">
@@ -263,40 +267,46 @@
         <Parameter Name="key" Type="TKey" />
       </Parameters>
       <Docs>
-        <param name="key">The key to search for. <c>key</c> represents the object to which the property is attached.</param>
-        <summary>Atomically searches for a specified key in the table and returns the corresponding value. If the key does not exist in the table, the method invokes the default constructor of the class that represents the table's value to create a value that is bound to the specified key.</summary>
-        <returns>The value that corresponds to <paramref name="key" />, if <paramref name="key" /> already exists in the table; otherwise, a new value created by the default constructor of the class defined by the <paramref name="TValue" /> generic type parameter.</returns>
+        <param name="key">検索対象のキー。<c>key</c> は、プロパティのアタッチ先となるオブジェクトを表します。</param>
+        <summary>テーブルで指定されたキーをアトミックに検索し、対応する値を返します。 キーがテーブルに存在しない場合は、メソッドが、テーブルの値を表すクラスの既定のコンストラクターを呼び出して、指定されたキーにバインドされる値を作成します。</summary>
+        <returns>
+          <paramref name="key" /> がテーブル内に既に存在する場合には、<paramref name="key" /> に対応する値。それ以外の場合には、<paramref name="TValue" /> ジェネリック型パラメーターによって定義されるクラスの既定コンストラクターによって作成された新しい値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `key` does not exist in the table, the method adds it, along with the object that is instantiated by calling the default constructor of the class defined by the `TValue` generic type parameter. If the `TValue` class has no default constructor, a <xref:System.MissingMethodException> is thrown.  
+## 解説  
+ If **parameterReference tag is not supported!!!!**  
+ does not exist in the table, the method adds it, along with the object that is instantiated by calling the default constructor of the class defined by the **parameterReference tag is not supported!!!!**  
+ generic type parameter. If the **parameterReference tag is not supported!!!!**  
+ class has no default constructor, a <xref:System.MissingMethodException> is thrown.  
   
- This is the recommended method of retrieving an existing value or adding a new value to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table if the class of the table's value defines a default constructor. If it does not define a default constructor, you can instead call the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> method, which relies on a callback-provided method to instantiate the object representing the table's value  
+ This is the recommended method of retrieving an existing value or adding a new value to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table if the class of the table's value defines a default constructor. If it does not define a default constructor, you can instead call the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> method, which relies on a callback\-provided method to instantiate the object representing the table's value  
   
- To retrieve the value of an existing key without adding the key/value pair if the key is not found in the table, call the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method.  
+ To retrieve the value of an existing key without adding the key\/value pair if the key is not found in the table, call the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method.  
   
    
   
-## Examples  
- The following example defines a `MainClass` class and a `MainInfo` class, which provides information about the `MainClass` instance. The example calls the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> method to add a `MainClass` object and its attached `MainInfo` object to a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table. The example also illustrates calls to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A> and <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> methods to add key/value pairs to the table, and to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method to retrieve the value of an existing key.  
+## 例  
+ The following example defines a `MainClass` class and a `MainInfo` class, which provides information about the `MainClass` instance. The example calls the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> method to add a `MainClass` object and its attached `MainInfo` object to a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table. The example also illustrates calls to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A> and <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> methods to add key\/value pairs to the table, and to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method to retrieve the value of an existing key.  
   
- [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
- [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
+ [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
+ [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="key" /> is <see langword="null" />.</exception>
+          <paramref name="key" /> は <see langword="null" /> です。</exception>
         <exception cref="T:System.MissingMethodException">
-          <block subset="none" type="note">
-            <para>  
- In the [.NET for Windows Store apps](http://go.microsoft.com/fwlink/?LinkID=247912) or the [Portable Class Library](~/docs/standard/cross-platform/cross-platform-development-with-the-portable-class-library.md), catch the base class exception, <see cref="T:System.MissingMemberException" />, instead.  
+          <block subset="none" type="note">  
+<para>  
+ [Windows ストア アプリ用 .NET](http://go.microsoft.com/fwlink/?LinkID=247912) または [ポータブル クラス ライブラリ](http://msdn.microsoft.com/ja-jp/c31e1663-c164-4e65-b66d-d3aa8750a154)では、基本クラスの例外である <see cref="T:System.MissingMemberException" /> を代わりにキャッチします。  
   
-</para>
-          </block>  
+</para>  
+</block>  
   
- The class that represents the table's value does not define a default constructor.</exception>
+ テーブルの値を表すクラスは、既定のコンストラクターを定義しません。</exception>
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.GetValue(`0,System.Runtime.CompilerServices.ConditionalWeakTable{`0,`1}.CreateValueCallback)" />
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.TryGetValue(`0,`1@)" />
       </Docs>
     </Member>
     <Member MemberName="GetValue">
@@ -327,33 +337,37 @@
         <Parameter Name="createValueCallback" Type="System.Runtime.CompilerServices.ConditionalWeakTable&lt;TKey,TValue&gt;+CreateValueCallback" />
       </Parameters>
       <Docs>
-        <param name="key">The key to search for. <c>key</c> represents the object to which the property is attached.</param>
-        <param name="createValueCallback">A delegate to a method that can create a value for the given <c>key</c>. It has a single parameter of type <c>TKey</c>, and returns a value of type <c>TValue</c>.</param>
-        <summary>Atomically searches for a specified key in the table and returns the corresponding value. If the key does not exist in the table, the method invokes a callback method to create a value that is bound to the specified key.</summary>
-        <returns>The value attached to <paramref name="key" />, if <paramref name="key" /> already exists in the table; otherwise, the new value returned by the <paramref name="createValueCallback" /> delegate.</returns>
+        <param name="key">検索対象のキー。<c>key</c> は、プロパティのアタッチ先となるオブジェクトを表します。</param>
+        <param name="createValueCallback">指定の <c>key</c> の値を作成可能なメソッドへのデリゲート。<c>TKey</c> 型の 1 つのパラメーターを持ち、<c>TValue</c> 型の値を戻します。</param>
+        <summary>テーブルで指定されたキーをアトミックに検索し、対応する値を返します。 キーがテーブルに存在しない場合は、メソッドがコールバック メソッドを呼び出して、指定されたキーにバインドされる値を作成します。</summary>
+        <returns>
+          <paramref name="key" /> がテーブル内に既に存在する場合には、<paramref name="key" /> にアタッチされた値。それ以外の場合には、<paramref name="createValueCallback" /> デリゲートによって戻される新しい値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If `key` does not exist in the table, <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> invokes the method that is defined by the `createValueCallback` parameter and passes it the key. A new value is bound to the key in the table and returned as a result.  
+## 解説  
+ 場合 `key` 、テーブルに存在しません <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> で定義されているメソッドを呼び出し、 `createValueCallback` パラメーター キーを渡します。 新しい値は、テーブル内のキーにバインドされ、その結果が返されます。  
   
- Use this method only when the class that represents the table's value does not define a default constructor. If it does define a default constructor, use the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> method instead. To retrieve the value of an existing key without adding the key/value pair if the key is not found in the table, call the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method.  
+ テーブルの値を表すクラスが既定のコンス トラクターを定義していない場合にのみ、このメソッドを使用します。 これが既定のコンス トラクターを定義して場合に、使用して、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> メソッド代わりにします。 呼び出しの表に、キーが見つからない場合、キー\/値ペアを追加することがなく既存のキーの値を取得する、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> メソッドです。  
   
- If multiple threads try to create the same key, `createValueCallback` may be invoked multiple times with the same key. Only one of these calls will succeed, and its returned value will be added to the table. Which thread succeeds in creating the value is indeterminate. This rule permits the table to invoke `createValueCallback` outside the internal table lock to prevent deadlocks.  
+ 複数のスレッドが、同じキーを作成しようとしています。 場合 `createValueCallback` 同じキーで複数回を呼び出すことができます。 これらの呼び出しの 1 つのみが正常に終了し、その戻り値は、テーブルに追加されます。 値の作成に成功したスレッドは予測できません。 このルールによりを呼び出すテーブル `createValueCallback` デッドロックを防ぐために内部テーブル ロック外です。  
   
    
   
-## Examples  
- The following example defines a `MainClass` class and a `MainInfo` class, which provides information about the `MainClass` instance. It also defines a static (`Shared` in Visual Basic) `CreateAttachedValue` method that can be assigned to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.CreateValueCallback> delegate and passed to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> method. The example calls the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> method to add a `MainClass` object and its attached `MainInfo` object to a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table. The example also illustrates calls to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A> and <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> methods to add key/value pairs to the table, and to the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method to retrieve the value of an existing key.  
+## 例  
+ 次の例、 `MainClass` クラスおよび `MainInfo` に関する情報を提供するクラス、 `MainClass` インスタンス。 静的なも定義 \(`Shared` Visual Basic で\) `CreateAttachedValue` に割り当てることのできるメソッド、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.CreateValueCallback> を委任しに渡される、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> メソッドです。 呼び出しの例、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> を追加するメソッド、 `MainClass` オブジェクトと、アタッチされた `MainInfo` オブジェクトを <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> テーブルです。 呼び出しも例、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A> と <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A> 、テーブルおよびにキー\/値ペアを追加するメソッドを <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> 既存のキーの値を取得します。  
   
- [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
- [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
+ [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
+ [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="key" /> or <paramref name="createValueCallback" /> is <see langword="null" />.</exception>
+          <paramref name="key" /> または <paramref name="createValueCallback" /> が <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.GetOrCreateValue(`0)" />
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.TryGetValue(`0,`1@)" />
+        <altmember cref="T:System.Runtime.CompilerServices.ConditionalWeakTable`2.CreateValueCallback" />
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -383,20 +397,19 @@
         <Parameter Name="key" Type="TKey" />
       </Parameters>
       <Docs>
-        <param name="key">The key to remove.</param>
-        <summary>Removes a key and its value from the table.</summary>
-        <returns>
-          <see langword="true" /> if the key is found and removed; otherwise, <see langword="false" />.</returns>
+        <param name="key">削除するキー。</param>
+        <summary>テーブルから、キーとその値を削除します。</summary>
+        <returns>キーが見つかり削除された場合には <see langword="true" />。それ以外の場合には <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the key is garbage-collected during this operation, the method does not raise an exception and the return value is undefined.  
+## 解説  
+ キーは、ガベージ コレクションをこの操作中に、メソッドが例外を発生させないし、戻り値は未定義です。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="key" /> is <see langword="null" />.</exception>
+          <paramref name="key" /> は <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
       </Docs>
     </Member>
@@ -466,30 +479,32 @@
         <Parameter Name="value" Type="TValue&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="key">The key that represents an object with an attached property.</param>
-        <param name="value">When this method returns, contains the attached property value. If <c>key</c> is not found, <c>value</c> contains the default value.</param>
-        <summary>Gets the value of the specified key.</summary>
+        <param name="key">添付プロパティのオブジェクトを表すキー。</param>
+        <param name="value">このメソッドから戻るときに、添付プロパティの値が格納されています。<c>key</c> が見つからない場合、<c>value</c> には既定値が入ります。</param>
+        <summary>指定したキーの値を取得します。</summary>
         <returns>
-          <see langword="true" /> if <paramref name="key" /> is found; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> が見つかる場合には <paramref name="key" />。それ以外の場合には <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the key is garbage-collected during this operation, the method may return `false` and set `value` to the default value (as if the key were not present).  
+## 解説  
+ かどうか、キーはこの操作中にガベージ コレクションは、このメソッドが返す可能性があります `false` 設定と `value` に既定値 \(キーが存在しない場合、値します。  
   
    
   
-## Examples  
- The following example defines a `MainClass` class and a `MainInfo` class, which provides information about the `MainClass` instance. The example calls the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A>, <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A>, and <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> methods to add key/value pairs to a <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> table. In each case, the example calls the <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> method to confirm that the key/value pair has been added to the table.  
+## 例  
+ 次の例、 `MainClass` クラスおよび `MainInfo` に関する情報を提供するクラス、 `MainClass` インスタンス。 呼び出しの例、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.Add%2A>, 、<xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetOrCreateValue%2A>, 、および <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.GetValue%2A> キー\/値のペアを追加する方法、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602> テーブルです。 いずれの場合、例では、 <xref:System.Runtime.CompilerServices.ConditionalWeakTable%602.TryGetValue%2A> テーブルにキー\/値ペアが追加されていることを確認します。  
   
- [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
- [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
+ [!code-csharp[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/cs/getvalue1.cs#1)]
+ [!code-vb[System.Runtime.CompilerServices.ConditionalWeakTable.GetValue\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.compilerservices.conditionalweaktable.getvalue/vb/getvalue1.vb#1)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="key" /> is <see langword="null" />.</exception>
+          <paramref name="key" /> は <see langword="null" /> です。</exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">requires full trust for the immediate caller. This member cannot be used by partially trusted or transparent code.</permission>
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.GetOrCreateValue(`0)" />
+        <altmember cref="M:System.Runtime.CompilerServices.ConditionalWeakTable`2.GetValue(`0,System.Runtime.CompilerServices.ConditionalWeakTable{`0,`1}.CreateValueCallback)" />
       </Docs>
     </Member>
   </Members>

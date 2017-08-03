@@ -11,24 +11,24 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Improves the startup performance of application domains in applications that require the just-in-time (JIT) compiler by performing background compilation of methods that are likely to be executed, based on profiles created during previous compilations.</summary>
+    <summary>以前のコンパイル中に作成されたプロファイルに基づいて実行されると思われるメソッドのバック グラウンド コンパイルを実行することによって、ジャストイン タイム \(JIT\) コンパイラを必要とするアプリケーションでのアプリケーション ドメインの起動時のパフォーマンスが向上します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  Profile optimization requires a multicore computer. The methods are ignored on other computers.  
+>  最適化のプロファイルには、マルチコア コンピューターが必要です。 メソッドは、他のコンピューターで無視されます。  
   
- Each time you initiate profile optimization in an application domain, the profile that was created during the previous use is read. The information in the profile is used to guide background compilation by identifying the methods that are most likely to be executed during startup. On multicore computers, this increases the chances that a method is already compiled by the time it is needed so that the main application thread does not have to call the JIT compiler.  
+ アプリケーション ドメインでの最適化のプロファイルを開始するたびに、前回の使用時に作成したプロファイルが読み取られます。 プロファイルの情報は、スタートアップ時に実行される可能性が最も高いメソッドを特定することによってバック グラウンド コンパイルの指針として使用されます。 マルチコア コンピューターでは、このメソッドは、既に可能性は増加が必要になるまで、メイン アプリケーション スレッドは JIT コンパイラを呼び出す必要があるないようにしてコンパイルされます。  
   
- The profile file is overwritten on each use, so it always contains the most recent information about which methods are used during startup.  
+ 起動時のメソッドの使用に関する最新の情報を常に含まれるように、使用するたびに、\[発行プロファイル ファイルが上書きされます。  
   
- Optimization profiles are not restricted to application domain startup. They can be used for any activity that will require heavy use of the JIT compiler. You can maintain multiple profiles for an application domain so that each such activity has its own profile.  
+ 最適化のプロファイルでは、アプリケーション ドメインの起動に限定されません。 頻繁に使用する、JIT コンパイラが必要となるアクティビティがある場合は、それらを使用できます。 このようなそれぞれのアクティビティがある、独自のプロファイルを持つように、アプリケーション ドメインに対して複数のプロファイルを維持できます。  
   
- To use optimization profiles in an application domain, you must call the <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> method and specify the folder where profiles are stored. The folder must already exist. To begin using a profile, call the <xref:System.Runtime.ProfileOptimization.StartProfile%2A> method and specify the file name of the profile. If the file was not recorded previously, it is created on first use. There is no performance benefit the first time a profile is created.  
+ 最適化のプロファイルをアプリケーション ドメインを使用するを呼び出す必要があります、 <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> メソッド プロファイルが格納先フォルダーを指定します。 フォルダーが既に存在する必要があります。 プロファイルの使用を開始する、 <xref:System.Runtime.ProfileOptimization.StartProfile%2A> メソッドと、プロファイルのファイル名を指定します。 ファイルが以前に記録されませんは初回使用時に作成されます。 パフォーマンス メリットの 1 つ目の時間が、プロファイルを作成することはありません。  
   
- Profile optimization does not change the order in which methods are executed. Methods are not executed on the background thread; if a method is compiled but never called, it is simply not used. If a profile file is corrupt or cannot be written to the specified folder (for example, because the folder does not exist), program execution continues without optimization profiling.  
+ 最適化のプロファイルには、メソッドの実行順序は変わりません。 メソッドは、バック グラウンド スレッドでは実行されません。メソッドはコンパイルも呼び出されない、これは単に使用されません。 プロファイル ファイルが壊れているか \(たとえば、フォルダーが存在しない\) ために、指定したフォルダーに書き込めない場合、プログラムの実行は最適化のプロファイルせずに続行します。  
   
  ]]></format>
     </remarks>
@@ -55,17 +55,17 @@
         <Parameter Name="directoryPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="directoryPath">The full path to the folder where profile files are stored for the current application domain.</param>
-        <summary>Enables optimization profiling for the current application domain, and sets the folder where the optimization profile files are stored. On a single-core computer, the method is ignored.</summary>
+        <param name="directoryPath">現在のアプリケーション ドメインのプロファイルのファイルが格納されているフォルダーの完全パス。</param>
+        <summary>現在のアプリケーション ドメインに対するプロファイル最適化を有効にし、最適化のプロファイル ファイルが格納されているフォルダーを設定します。 シングルコア コンピューターでは、メソッドは無視されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You must call this method before you call the <xref:System.Runtime.ProfileOptimization.StartProfile%2A> method for the first time in the current application domain. If you call <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> more than once in the same application domain, all calls after the first are ignored.  
+## 解説  
+ 呼び出す前に、このメソッドを呼び出す必要があります、 <xref:System.Runtime.ProfileOptimization.StartProfile%2A> を最初に現在のアプリケーション ドメイン内のメソッドです。 呼び出した場合 <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> 、同じアプリケーション ドメインで複数回に 1 つ目後のすべての呼び出しは無視されます。  
   
- The specified folder must already exist. If it does not exist, calling this method does not create it, and no profiling occurs.  
+ 指定したフォルダーが既に存在する必要があります。 存在しない場合は、このメソッドの呼び出しでは作成されない、され、プロファイリングは発生しません。  
   
- On computers that do not have multiple cores, this method is ignored.  
+ 複数のコアがないコンピューターでこのメソッドは無視されます。  
   
  ]]></format>
         </remarks>
@@ -93,19 +93,19 @@
         <Parameter Name="profile" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="profile">The file name of the profile to use.</param>
-        <summary>Starts just-in-time (JIT) compilation of the methods that were previously recorded in the specified profile file, on a background thread. Starts the process of recording current method use, which later overwrites the specified profile file.</summary>
+        <param name="profile">使用するプロファイルのファイル名。</param>
+        <summary>バック グラウンド スレッドで、指定したプロファイル ファイルに記録された以前の方法のジャストイン タイム \(JIT\) コンパイルを開始します。 現在メソッド使用では、後で指定されたプロファイル ファイルを上書きを記録するプロセスを開始します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the specified profile exists in the folder specified by the <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> method, the information it contains is used to determine the order in which methods are compiled on the background thread. The <xref:System.Runtime.ProfileOptimization.StartProfile%2A> method creates the profile if it does not already exist, and initiates the recording of method use.  
+## 解説  
+ によって指定されたフォルダーに指定されたプロファイルが存在する場合、 <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> メソッドが含まれている情報はバック グラウンド スレッドでメソッドがコンパイルされる順序を決定するために使用します。<xref:System.Runtime.ProfileOptimization.StartProfile%2A> メソッドは、メソッドの使用の記録を開始し、既に存在しない場合は、プロファイルを作成します。  
   
- Only methods that are actually called are recorded, regardless of whether they were compiled on the background thread or on the main application thread. A method is compiled on the main application thread if the application needs to call it before the background thread has compiled it.  
+ かどうか、バック グラウンド スレッドまたはメイン アプリケーション スレッド上にコンパイルされているに関係なく、実際に呼び出されるメソッドのみが記録されます。 アプリケーションは、バック グラウンド スレッドがコンパイルされる前に、それを呼び出す必要がある場合、アプリケーションのメイン スレッドでメソッドがコンパイルされます。  
   
- The code that performs the recording tracks the rate at which methods are compiled, including methods that are compiled on both the background thread and on the main thread. When the rate falls below a predetermined level, recording stops. Recording also stops if the rate of JIT compilation exceeds a predetermined upper limit.  
+ 記録を実行するコードはあるメソッドはコンパイル、メイン スレッドとバック グラウンド スレッドでコンパイルされるメソッドを含む速度を追跡します。 ときに、速度レベルを下回ったあらかじめ決められた、録音を停止します。 記録は、JIT コンパイルの比率が事前に定義された上限を超えた場合にも停止します。  
   
- If the <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> method has not been called for the current application domain, or if the computer does not have multiple cores, the <xref:System.Runtime.ProfileOptimization.StartProfile%2A> method has no effect.  
+ 場合、 <xref:System.Runtime.ProfileOptimization.SetProfileRoot%2A> 現在のアプリケーション ドメインのメソッドが呼び出されていないまたはコンピューターに複数のコアがあるない場合、 <xref:System.Runtime.ProfileOptimization.StartProfile%2A> メソッドには影響を及ぼしません。  
   
  ]]></format>
         </remarks>

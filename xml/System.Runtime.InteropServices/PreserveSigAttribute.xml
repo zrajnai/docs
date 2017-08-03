@@ -33,48 +33,48 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Indicates that the HRESULT or <see langword="retval" /> signature transformation that takes place during COM interop calls should be suppressed.</summary>
+    <summary>示します HRESULT または<see langword="retval" />COM 相互運用機能の呼び出し中に行われるシグネチャ変換を中止する必要があります。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You can apply this attribute to methods.  
+## 解説  
+ メソッドには、この属性を適用することができます。  
   
- By default, the [Tlbexp.exe (Type Library Exporter)](~/docs/framework/tools/tlbexp-exe-type-library-exporter.md) ensures that a call that returns an HRESULT of S_OK is transformed such that the [out, retval] parameter is used as the function return value. The S_OK HRESULT is discarded. For HRESULTs other than S_OK, the runtime throws an exception and discards the [out, retval] parameter. When you apply the <xref:System.Runtime.InteropServices.PreserveSigAttribute> to a managed method signature, the managed and unmanaged signatures of the attributed method are identical.  
+ 既定では、[&#91;\<topic:\/\/cpgrfTypeLibraryExporterTlbexpexe\>&#93;](http://msdn.microsoft.com/ja-jp/a487d61b-d166-467b-a7ca-d8b52fbff42d)を HRESULT の S\_OK を返す呼び出しが変換されることを確認するよう \[out, retval\] パラメーターは、関数の戻り値として使用します。 S\_OK HRESULT は破棄されます。 S\_OK 以外の Hresult をランタイムが例外をスローし、破棄 \[out, retval\] パラメーターです。 適用すると、<xref:System.Runtime.InteropServices.PreserveSigAttribute>マネージ メソッドのシグネチャには、属性付きメソッドのマネージ コードとアンマネージ シグネチャが同じです。  
   
- Preserving the original method signature is necessary if the member returns more than one success HRESULT value and you want to detect the different values. Since most COM member return an HRESULT, by applying the <xref:System.Runtime.InteropServices.PreserveSigAttribute>, you can retrieve an integer representing the success or failure HRESULT. Tlbexp.exe preserves any [out, retavl] parameters as out parameters in the managed signature.  
+ 元のメソッド シグネチャを保持すると、メンバーが 1 つ以上の成功 HRESULT 値を返すし、別の値を検出する必要があります。 COM メンバーのほとんどには、適用することによって、HRESULT が返されるので、 <xref:System.Runtime.InteropServices.PreserveSigAttribute>、成功または失敗を示す HRESULT を表す整数を取得することができます。 Tlbexp.exe 保持 \[out, retavl\] out がマネージ シグネチャでのパラメーターとして使用されるパラメーター。  
   
- The [Tlbimp.exe (Type Library Importer)](~/docs/framework/tools/tlbimp-exe-type-library-importer.md) also applies this attribute; it applies the attribute to dispinterfaces when it imports a type library.  
+ [&#91;\<topic:\/\/cpgrfTypeLibraryImporterTlbimpexe\>&#93;](http://msdn.microsoft.com/ja-jp/ec0a8d63-11b3-4acd-b398-da1e37e97382)でも、この属性に適用される属性ディスパッチ インターフェイス タイプ ライブラリをインポートするとき。  
   
 > [!NOTE]
->  Return types of <xref:System.Runtime.InteropServices.UnmanagedType.Currency>, <xref:System.Guid>, and <xref:System.Object> are not supported by the <xref:System.Runtime.InteropServices.PreserveSigAttribute> class when interoperation occurs from COM to managed code and the managed code is marked with the <xref:System.Runtime.InteropServices.PreserveSigAttribute> class.  When you attempt to use one of these return types with the <xref:System.Runtime.InteropServices.PreserveSigAttribute> class during these conditions, a <xref:System.TypeLoadException> is thrown.  
+>  型を返す<xref:System.Runtime.InteropServices.UnmanagedType.Currency>、 <xref:System.Guid>、および<xref:System.Object>でサポートされていない、<xref:System.Runtime.InteropServices.PreserveSigAttribute>クラスの相互運用が COM からマネージ コードとマネージ コードが付いて、<xref:System.Runtime.InteropServices.PreserveSigAttribute>クラスです。  これらの戻り値の型のいずれかを使用しようとする、<xref:System.Runtime.InteropServices.PreserveSigAttribute>これらの条件の中にクラス、<xref:System.TypeLoadException>がスローされます。  
   
    
   
-## Examples  
- The following example shows how Tlbexp.exe converts a C# method without <xref:System.Runtime.InteropServices.PreserveSigAttribute> when exporting an assembly to a COM type library.  
+## 例  
+ 次の例は、Tlbexp.exe が c\# メソッドをなしに変換する方法を示します<xref:System.Runtime.InteropServices.PreserveSigAttribute>COM タイプ ライブラリにアセンブリをエクスポートする場合。  
   
- Managed signature:  
+ 管理対象の署名:  
   
 ```  
 int DoSomething (long l);  
 ```  
   
- Unmanaged signature:  
+ アンマネージ シグネチャは:  
   
 ```  
 HRESULT DoSomething ([in] long l, [out, retval] int * i);  
 ```  
   
- When you apply <xref:System.Runtime.InteropServices.PreserveSigAttribute> to the same C# method and export the assembly, the method conversion differs from the previous example. Notice that Tlbexp.exe removes the HRESULT and the [out, retval] parameter modifier.  
+ 適用するときに<xref:System.Runtime.InteropServices.PreserveSigAttribute>に同じの c\# のメソッドとアセンブリのエクスポート メソッドの変換とは異なります、前の例です。 Tlbexp.exe を HRESULT と、\[out, retval\] 削除ことに注意してくださいパラメーター修飾子。  
   
- Managed signature:  
+ 管理対象の署名:  
   
 ```  
 [PreserveSig] int DoSomething (long l);  
 ```  
   
- Unmanaged signature:  
+ アンマネージ シグネチャは:  
   
 ```  
 int DoSomething ([in] long l);  
@@ -109,7 +109,8 @@ int DoSomething ([in] long l);
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.PreserveSigAttribute" /> class.</summary>
+        <summary>
+          <see cref="T:System.Runtime.InteropServices.PreserveSigAttribute" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

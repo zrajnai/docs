@@ -16,25 +16,25 @@
     <ReturnType>System.Boolean</ReturnType>
   </ReturnValue>
   <Docs>
-    <param name="callbackdata">Internal pointer that specifies data for the callback method. This parameter is not passed by all <see cref="Overload:System.Drawing.Graphics.DrawImage" /> overloads. You can test for its absence by checking for the value <see cref="F:System.IntPtr.Zero" />.</param>
-    <summary>Provides a callback method for deciding when the <see cref="Overload:System.Drawing.Graphics.DrawImage" /> method should prematurely cancel execution and stop drawing an image.</summary>
-    <returns>This method returns <see langword="true" /> if it decides that the <see cref="Overload:System.Drawing.Graphics.DrawImage" /> method should prematurely stop execution. Otherwise it returns <see langword="false" /> to indicate that the <see cref="Overload:System.Drawing.Graphics.DrawImage" /> method should continue execution.</returns>
+    <param name="callbackdata">コールバック メソッドのデータを指定する内部ポインター。 このパラメーターはすべてが渡されない <see cref="Overload:System.Drawing.Graphics.DrawImage" /> オーバー ロードします。 ない場合は、値のチェックをテストする <see cref="F:System.IntPtr.Zero" />です。</param>
+    <summary>タイミングを決定するコールバック メソッドを提供、 <see cref="Overload:System.Drawing.Graphics.DrawImage" /> メソッドが実行のキャンセル処理の途中で、およびのイメージの描画を停止する必要があります。</summary>
+    <returns>このメソッドが戻る <see langword="true" /> されることに決めた場合、 <see cref="Overload:System.Drawing.Graphics.DrawImage" /> メソッドは、実行を停止処理の途中でする必要があります。 返された <see langword="false" /> ことを示すために、 <see cref="Overload:System.Drawing.Graphics.DrawImage" /> メソッドが実行を継続する必要があります。</returns>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is used in conjunction with the <xref:System.Drawing.Graphics.DrawImage%2A> method of the <xref:System.Drawing.Graphics> class. Certain overloads of the <xref:System.Drawing.Graphics.DrawImage%2A> method call an application-defined callback method of this type to find out if the overloads should stop or continue execution.  
+## 解説  
+ このメソッドと組み合わせて使用、 <xref:System.Drawing.Graphics.DrawImage%2A> のメソッド、 <xref:System.Drawing.Graphics> クラスです。 特定のオーバー ロード、 <xref:System.Drawing.Graphics.DrawImage%2A> メソッドはオーバー ロードが停止するか実行を続けるかどうかを確認するには、この種類のアプリケーション定義のコールバック メソッドを呼び出します。  
   
- During execution, the relevant <xref:System.Drawing.Graphics.DrawImage%2A> overloads frequently call this callback method to find out if they should stop drawing the specified image or if they should continue drawing the image. The <xref:System.Drawing.Graphics.DrawImageAbort> callback method can determine whether to continue or not based on a chosen algorithm included in it, optionally using the data passed to it by the callbackdata parameter. For example, an algorithm might determine if the image has scrolled off the screen and signal a cancellation to the <xref:System.Drawing.Graphics.DrawImage%2A> method to stop drawing.  
+ 実行中に、関連する <xref:System.Drawing.Graphics.DrawImage%2A> オーバー ロードは、指定したイメージの描画が終了する場合、またはイメージを描画する必要がありますがマインを確認するには、このコールバック メソッドを頻繁に呼び出します。<xref:System.Drawing.Graphics.DrawImageAbort> コールバック メソッドで、続行するかどうかを判断できますか、それに含まれる選択したアルゴリズムに基づかない、必要に応じて、データを使用して渡しここパラメーター。 アルゴリズム可能性がありますイメージは、画面に表示されていないかを確認してにキャンセルの信号など、 <xref:System.Drawing.Graphics.DrawImage%2A> 描画を終了するメソッドです。  
   
- A user declaration of this event-handling method must have the same parameters as the <xref:System.Drawing.Graphics.DrawImageAbort> delegate declaration.  
+ このイベント処理メソッドのユーザーの宣言と同じパラメーターが必要、 <xref:System.Drawing.Graphics.DrawImageAbort> 宣言を委任します。  
   
    
   
-## Examples  
- This example is a simplistic implementation of the <xref:System.Drawing.Graphics.DrawImageAbort> delegate. It merely checks to see if the <xref:System.Drawing.Graphics.DrawImage%2A> method has passed it data using the callbackdata parameter. (Some <xref:System.Drawing.Graphics.DrawImage%2A> overloads have only a `DrawImageAbort` parameter and pass no data; some overloads have both `DrawImageAbort` and `callbackdata` parameters and can pass data.) If no data was passed, it returns `true` to signal to the calling <xref:System.Drawing.Graphics.DrawImage%2A> method that it should cancel the drawing. If data was passed, it returns `false` to signal that drawing should continue.  
+## 例  
+ この例は単純な実装の <xref:System.Drawing.Graphics.DrawImageAbort> を委任します。 単なるかどうかを確認、 <xref:System.Drawing.Graphics.DrawImage%2A> メソッドに成功しましたここパラメーターを使用するデータ。 \(いくつか <xref:System.Drawing.Graphics.DrawImage%2A> オーバー ロードがのみが、 `DrawImageAbort` パラメーターとデータが渡されない; 一部のオーバー ロードがある両方 `DrawImageAbort` と `callbackdata` パラメーターとデータを渡すことができます\)。 かどうかはデータが渡されなかったが返されます `true` 、呼び出し元に通知する <xref:System.Drawing.Graphics.DrawImage%2A> メソッド図面を取り消す必要があります。 返すかどうかは、データが渡された、 `false` 図面を続行することを通知するためです。  
   
- A realistic implementation of this callback would involve the actual scrutiny of some criteria to cancel or continue the execution.  
+ このコールバックを実際に実装には、取り消すか、実行を継続するいくつかの条件の実際の調査が含まれます。  
   
 ```vb  
 Private Function DrawImageCallback(callBackData As IntPtr) As Boolean  

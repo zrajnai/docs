@@ -20,16 +20,16 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Inserted into a Web page as a placeholder when the attempt to load or create a new instance of a dynamic <see cref="T:System.Web.UI.WebControls.WebParts.WebPart" /> control has failed.</summary>
+    <summary>動的な <see cref="T:System.Web.UI.WebControls.WebParts.WebPart" /> コントロールの新しいインスタンスの読み込みまたは作成に失敗したときに、プレースホルダとして Web ページに挿入されます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> class is used by the Web Parts control set as a placeholder for a <xref:System.Web.UI.WebControls.WebParts.WebPart> control that could not be added to the page. If the <xref:System.Web.UI.WebControls.WebParts.WebPartManager> control attempts to load or create a new instance of a dynamic <xref:System.Web.UI.WebControls.WebParts.WebPart> control in a zone, and the attempt fails for some reason, the <xref:System.Web.UI.WebControls.WebParts.WebPartManager> then calls the <xref:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart%2A> method, and inserts an <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control in place of the control that failed.  
   
  The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control is inserted to preserve previously existing personalization state information that might have existed on a control for users. For example, suppose there is a <xref:System.Web.UI.WebControls.WebParts.WebPart> control that has a personalizable property, so that users can save their own ZIP Code, and then the control can automatically display weather information for that ZIP Code each time the user visits the page. If at some point a problem occurs with the weather control so that it cannot be loaded during a specific request, and yet the rest of the page does load successfully, the custom personalization data that a user has saved for that control would be lost the next time the personalization data for the page is saved. By inserting the <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control in place of the failed control, you can notify the user that a problem has occurred, and also provide a mechanism for the Web Parts control set to preserve the user's personalization data on the failed control until the problem can be corrected.  
   
- The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> class derives from the <xref:System.Web.UI.WebControls.WebParts.ProxyWebPart> class, as one of several types designed to be temporary placeholders for other types. To create an instance of the class, the <xref:System.Web.UI.WebControls.WebParts.WebPartManager> control uses its public <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.%23ctor%2A> constructor. The constructor requires several details of the failed control to be passed to it, such as the ID, the original type of the control (if the failed control is a server or user control wrapped in a <xref:System.Web.UI.WebControls.WebParts.GenericWebPart> object), the original path to the source file for the control (if the failed control is a user control), and the ID of a <xref:System.Web.UI.WebControls.WebParts.GenericWebPart> object if present.  
+ The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> class derives from the <xref:System.Web.UI.WebControls.WebParts.ProxyWebPart> class, as one of several types designed to be temporary placeholders for other types. To create an instance of the class, the <xref:System.Web.UI.WebControls.WebParts.WebPartManager> control uses its public <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.%23ctor%2A> constructor. The constructor requires several details of the failed control to be passed to it, such as the ID, the original type of the control \(if the failed control is a server or user control wrapped in a <xref:System.Web.UI.WebControls.WebParts.GenericWebPart> object\), the original path to the source file for the control \(if the failed control is a user control\), and the ID of a <xref:System.Web.UI.WebControls.WebParts.GenericWebPart> object if present.  
   
  The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> class has a single public property called <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage%2A>. Developers can assign a value to this property that will be displayed in a Web page when the control is inserted.  
   
@@ -42,6 +42,8 @@
   
  To require the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control to use a custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, you must also inherit from the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> class and override its <see cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" /> method. In that method, you should assign the value of the method's <paramref name="errorMessage" /> parameter to the <see cref="P:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage" /> property of your custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, because the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control calls this method from several other places, and often passes in a different error message value.</para>
     </block>
+    <altmember cref="T:System.Web.UI.WebControls.WebParts.UnauthorizedWebPart" />
+    <altmember cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -60,21 +62,22 @@
         <Parameter Name="genericWebPartID" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="originalID">A string that is the control ID (not the unique ID) of the failing control. If a <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> control is involved in the failure, the ID is the ID of its child server control.</param>
-        <param name="originalTypeName">A string that is the name of the <see cref="T:System.Type" /> of the failed control. If a <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> control is involved in the failure, the type name is the type of its child server control.</param>
-        <param name="originalPath">A string that contains the path to a user control, if a <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> control that contains a child user control is involved in the failure.</param>
-        <param name="genericWebPartID">A string that returns the ID of a <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> control, if that type of control was involved in the failure to load or create a control. This is needed for controls that do not inherit from the <see cref="T:System.Web.UI.WebControls.WebParts.WebPart" /> base class.</param>
-        <summary>Initializes a new instance of the control.</summary>
+        <param name="originalID">障害が発生したコントロールのコントロール ID \(一意の ID ではない\) を示す文字列。 場合、 <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> コントロールは、エラーに関係する、ID は、子サーバー コントロールの ID。</param>
+        <param name="originalTypeName">名前を文字列は、 <see cref="T:System.Type" /> 失敗したコントロールです。 場合、 <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> コントロールは、エラーに関係する、型の名前は、子サーバー コントロールの型。</param>
+        <param name="originalPath">場合に、ユーザー コントロールへのパスを格納する文字列、 <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> 失敗に関係する子ユーザー コントロールを格納しているコントロール。</param>
+        <param name="genericWebPartID">ID を表す文字列、 <see cref="T:System.Web.UI.WebControls.WebParts.GenericWebPart" /> その種類のコントロールが読み込みまたは、コントロールの作成に失敗に関係する場合を制御します。 これを継承しないコントロールに必要な <see cref="T:System.Web.UI.WebControls.WebParts.WebPart" /> 基本クラスです。</param>
+        <summary>コントロールの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.WebParts.WebPartManager> control creates a new instance of the <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control when it fails in an attempt to load or create an instance of a dynamic <xref:System.Web.UI.WebControls.WebParts.WebPart> control. Dynamic controls are controls that are added to a page programmatically, or by a user who adds the control from a catalog of controls, as opposed to static controls that are declared in the markup of a Web page.  
+## 解説  
+ <xref:System.Web.UI.WebControls.WebParts.WebPartManager> コントロールの新しいインスタンスを作成する、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> をロードするか、動的インスタンスを作成するために失敗したときの制御 <xref:System.Web.UI.WebControls.WebParts.WebPart> コントロールです。 ダイナミック コントロールは、プログラムを使用して、ページに追加されるコントロールまたはコントロールのカタログからコントロールを追加するユーザー、静的コントロールではなくは宣言 Web ページのマークアップにします。  
   
- The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.%23ctor%2A> method simply creates an instance of the base class, passing to it the four parameters that contain information about the failed control.  
+ <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.%23ctor%2A> メソッドは単に障害が発生したコントロールに関する情報を含む 4 つのパラメーターを渡す、基本クラスのインスタンスを作成します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" />
       </Docs>
     </Member>
     <Member MemberName="AddAttributesToRender">
@@ -93,13 +96,14 @@
         <Parameter Name="writer" Type="System.Web.UI.HtmlTextWriter" />
       </Parameters>
       <Docs>
-        <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter" /> that contains the HTML output to be rendered.</param>
-        <summary>Applies special error style attributes to an <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> object that is inserted into a page in place of another control.</summary>
+        <param name="writer">
+          <see cref="T:System.Web.UI.HtmlTextWriter" /> HTML をレンダリングする出力を格納しています。</param>
+        <summary>特殊なエラーのスタイル属性を適用、 <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> 別のコントロールの代わりに、ページに挿入するオブジェクト。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.AddAttributesToRender%2A> method takes the style characteristics (if any) that are defined in the <xref:System.Web.UI.WebControls.WebParts.WebZone.ErrorStyle%2A> object for the <xref:System.Web.UI.WebControls.WebParts.WebZone> zone that contains an <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control. The styles are applied to the <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control prior to rendering.  
+## 解説  
+ <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.AddAttributesToRender%2A> メソッドはスタイルの特性 \(存在する場合\) で定義されている、 <xref:System.Web.UI.WebControls.WebParts.WebZone.ErrorStyle%2A> のオブジェクト、 <xref:System.Web.UI.WebControls.WebParts.WebZone> を含んでいるゾーン、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> コントロールです。 適用されて、スタイル、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> コントロールを表示する前にします。  
   
  ]]></format>
         </remarks>
@@ -108,6 +112,7 @@
   
  To require the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control to use a custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, you must also inherit from the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> class and override its <see cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" /> method. In that method, you should assign the value of the method's <paramref name="errorMessage" /> parameter to the <see cref="P:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage" /> property of your custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, because the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control calls this method from several other places, and usually passes in a specific error message.</para>
         </block>
+        <altmember cref="P:System.Web.UI.WebControls.WebParts.WebZone.ErrorStyle" />
       </Docs>
     </Member>
     <Member MemberName="EndLoadPersonalization">
@@ -124,12 +129,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Sets several important properties on the <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control prior to rendering, to prevent users from being able to personalize the control.</summary>
+        <summary>いくつかの重要なプロパティを設定、 <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> をユーザーがコントロールをパーソナル化されていることを防ぐために、表示する前に制御します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.EndLoadPersonalization%2A> method sets properties on an <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control before it is rendered. These properties prevent users from hiding, minimizing, editing, or exporting the control, or changing its <xref:System.Web.UI.WebControls.WebParts.Part.ChromeState%2A> value. However, users can close or delete an <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control instance.  
+## 解説  
+ <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.EndLoadPersonalization%2A> メソッドのプロパティを設定、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> が表示される前に制御します。 これらのプロパティには、ユーザーが非表示にするを最小限に抑え、編集、または、コントロールをエクスポートする、または変更ができないように、 <xref:System.Web.UI.WebControls.WebParts.Part.ChromeState%2A> 値。 ただし、ユーザーが終了または削除、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> コントロールのインスタンス。  
   
  ]]></format>
         </remarks>
@@ -138,6 +143,7 @@
   
  To require the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control to use a custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, you must also inherit from the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> class and override its <see cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" /> method. In that method, you should assign the value of the method's <paramref name="errorMessage" /> parameter to the <see cref="P:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage" /> property of your custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, because the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control calls this method from several other places, and usually passes in a specific error message.</para>
         </block>
+        <altmember cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.LoadCustomPersonalizationState(System.Web.UI.WebControls.WebParts.PersonalizationDictionary)" />
       </Docs>
     </Member>
     <Member MemberName="ErrorMessage">
@@ -153,13 +159,13 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the error message that is displayed in a Web page in place of a control that could not be successfully added to the page.</summary>
-        <value>A string that contains the text of the error message. The default value is a culture-specific error message.</value>
+        <summary>取得または追加できませんでしたが正常にページにコントロールの代わりに、Web ページに表示されるエラー メッセージを設定します。</summary>
+        <value>エラー メッセージのテキストを含む文字列です。 既定値は、カルチャに固有のエラー メッセージです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage%2A> property can be assigned a value by a developer, so that a custom error message is displayed at the point where the <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> control is inserted into a page.  
+## 解説  
+ <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage%2A> プロパティする値を代入できます、開発者で、ポイントにあるカスタム エラー メッセージが表示されるように、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart> 、ページにコントロールを挿入します。  
   
  ]]></format>
         </remarks>
@@ -168,6 +174,7 @@
   
  To require the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control to use a custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, you must also inherit from the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> class and override its <see cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" /> method. In that method, you should assign the value of the method's <paramref name="errorMessage" /> parameter to the <see cref="P:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage" /> property of your custom <see cref="T:System.Web.UI.WebControls.WebParts.ErrorWebPart" /> control, because the <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> control calls this method from several other places, and usually passes in a specific error message.</para>
         </block>
+        <altmember cref="M:System.Web.UI.WebControls.WebParts.WebPartManager.CreateErrorWebPart(System.String,System.String,System.String,System.String,System.String)" />
       </Docs>
     </Member>
     <Member MemberName="RenderContents">
@@ -186,16 +193,18 @@
         <Parameter Name="writer" Type="System.Web.UI.HtmlTextWriter" />
       </Parameters>
       <Docs>
-        <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter" /> that encodes the error message.</param>
-        <summary>Encodes the string value of the <see cref="P:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage" /> property.</summary>
+        <param name="writer">
+          <see cref="T:System.Web.UI.HtmlTextWriter" /> エラー メッセージをエンコードします。</param>
+        <summary>文字列値をエンコード、 <see cref="P:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage" /> プロパティです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.RenderContents%2A> method encodes the string assigned to the <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage%2A> property to ensure that it renders properly, and to protect against script injection attacks.  
+## 解説  
+ <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.RenderContents%2A> メソッドは、文字列に割り当てられている、 <xref:System.Web.UI.WebControls.WebParts.ErrorWebPart.ErrorMessage%2A> プロパティを適切が表示されることを確認し、スクリプト インジェクション攻撃を防止します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Web.UI.WebControls.WebControl.RenderContents(System.Web.UI.HtmlTextWriter)" />
       </Docs>
     </Member>
     <Member MemberName="System.Web.UI.WebControls.WebParts.ITrackingPersonalizable.BeginLoad">
@@ -212,7 +221,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>This method is added only to implement the <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> interface.</summary>
+        <summary>このメソッドが実装にのみ追加、 <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> インターフェイスです。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -230,7 +239,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>This method is added only to implement the <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> interface.</summary>
+        <summary>このメソッドが実装にのみ追加、 <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> インターフェイスです。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -248,7 +257,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Implements the <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> interface and calls the <see cref="M:System.Web.UI.WebControls.WebParts.ErrorWebPart.EndLoadPersonalization" /> method.</summary>
+        <summary>実装して、 <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> インターフェイスと呼び出し、 <see cref="M:System.Web.UI.WebControls.WebParts.ErrorWebPart.EndLoadPersonalization" /> メソッドです。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -266,7 +275,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>This method is added only to implement the <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> interface.</summary>
+        <summary>このメソッドが実装にのみ追加、 <see cref="T:System.Web.UI.WebControls.WebParts.ITrackingPersonalizable" /> インターフェイスです。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -283,9 +292,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the control tracks the status of its changes.</summary>
+        <summary>コントロールがその変更の状態を追跡するかどうかを示す値を取得します。</summary>
         <value>
-          <see langword="true" /> if the Web Parts control is responsible for determining when the control is considered changed; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> Web パーツ コントロールがコントロールを考慮する場合を判断する場合に変更されています。それ以外の場合、 <see langword="false" />です。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

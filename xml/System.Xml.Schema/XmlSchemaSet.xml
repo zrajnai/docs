@@ -20,52 +20,52 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Contains a cache of XML Schema definition language (XSD) schemas.</summary>
+    <summary>XML スキーマ定義言語 \(XSD: XML Schema Definition Language\) スキーマのキャッシュを格納します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
   
 > [!IMPORTANT]
->  -   Do not use schemas from unknown or untrusted sources or locations. Doing so will compromise the security of your code.  
-> -   XML schemas (including inline schemas) are inherently vulnerable to denial of service attacks; do not accept them in untrusted scenarios.  
-> -   Schema validation error messages and exceptions may expose sensitive information about the content model or URI paths to the schema file. Be careful not to expose this information to untrusted callers.  
-> -   Additional security considerations are covered in the "Security Considerations" section.  
+>  -   場所や不明または信頼できないソースからスキーマを使用しないでください。 これは、コードのセキュリティが低下します。  
+> -   XML スキーマ \(インライン スキーマを含む\) がサービス拒否攻撃; に対して本質的に脆弱であります。信頼されていないシナリオでに同意しません。  
+> -   スキーマ検証エラー メッセージと例外は、コンテンツ モデルやスキーマ ファイルへの URI のパスに関する機密情報を公開できます。 信頼されていない呼び出し元にこの情報を公開しないように注意します。  
+> -   追加のセキュリティに関する考慮事項については、「セキュリティの考慮事項」セクションで説明します。  
   
- <xref:System.Xml.Schema.XmlSchemaSet> is a cache or library where you can store XML Schema definition language (XSD) schemas. <xref:System.Xml.Schema.XmlSchemaSet> improves performance by caching schemas in memory instead of accessing them from a file or a URL. Each schema is identified by the namespace URI and location that was specified when the schema was added to the set. You use the <xref:System.Xml.XmlReaderSettings.Schemas%2A?displayProperty=fullName> property to assign the <xref:System.Xml.Schema.XmlSchemaSet> object an XML reader should use for data validation.  
+ <xref:System.Xml.Schema.XmlSchemaSet> キャッシュまたはライブラリの XML スキーマ定義言語 \(XSD\) スキーマを格納することができます。<xref:System.Xml.Schema.XmlSchemaSet> は、ファイルまたは URL のスキーマにアクセスするのではなく、スキーマをメモリにキャッシュして、パフォーマンスを向上させます。 各スキーマは名前空間 URI で識別され、スキーマ セットに追加されたされた位置を指定します。 使用する、 <xref:System.Xml.XmlReaderSettings.Schemas%2A?displayProperty=fullName> 割り当てるプロパティを <xref:System.Xml.Schema.XmlSchemaSet> オブジェクトの XML リーダーがデータ検証に使用する必要があります。  
   
-## Security Considerations  
+## セキュリティの考慮事項  
   
--   Do not use schemas from unknown or untrusted sources. Doing so will compromise the security of your code. External namespaces or locations referenced in include, import, and redefine elements of a schema are resolved with respect to the base URI of the schema that includes or imports them. For example, if the base URI of the including or importing schema is empty or `null`, the external locations are resolved with respect to the current directory. The <xref:System.Xml.XmlUrlResolver> class is used to resolve external schemas by default. To disable resolution of include, import, and redefine elements of a schema, set the <xref:System.Xml.Schema.XmlSchemaSet.XmlResolver%2A?displayProperty=fullName> property to `null`.  
+-   不明または信頼できないソースからスキーマを使用しません。 これは、コードのセキュリティが低下します。 外部の名前空間または場所で参照されている含めるには、インポート、およびスキーマの再定義要素が基準にして解決インクルードまたはインポートするスキーマのベース URI。 たとえば、ベース URI を含むまたはスキーマをインポートするは、空または `null`, 、外部の場所は、現在のディレクトリを基準に解決します。<xref:System.Xml.XmlUrlResolver> クラスは、外部スキーマを解決するのには既定で使用します。 インクルード、インポートの解像度を無効にして、スキーマの要素を再定義、設定、 <xref:System.Xml.Schema.XmlSchemaSet.XmlResolver%2A?displayProperty=fullName> プロパティを `null`します。  
   
--   The <xref:System.Xml.Schema.XmlSchemaSet> class uses the <xref:System.Text.RegularExpressions.Regex?displayProperty=fullName> class to parse and match regular expressions in an XML schema. Validation of pattern facets with regular expressions in an XML schema may involve increased CPU usage and should be avoided in high availability scenarios.  
+-   <xref:System.Xml.Schema.XmlSchemaSet> クラスは、 <xref:System.Text.RegularExpressions.Regex?displayProperty=fullName> クラスを解析および XML スキーマの正規表現に一致します。 XML スキーマの正規表現によるパターン ファセットの検証は、CPU 使用量の増加を伴う場合があり、高可用性のシナリオでは避ける必要があります。  
   
--   Exceptions raised as a result of using the <xref:System.Xml.Schema.XmlSchemaSet> class, such as the <xref:System.Xml.Schema.XmlSchemaException> class may contain sensitive information that should not be exposed in untrusted scenarios. For example, the <xref:System.Xml.Schema.XmlSchemaException.SourceUri%2A> property of an <xref:System.Xml.Schema.XmlSchemaException> returns the URI path to the schema file that caused the exception. The <xref:System.Xml.Schema.XmlSchemaException.SourceUri%2A> property should not be exposed in untrusted scenarios. Exceptions should be properly handled so that this sensitive information is not exposed in untrusted scenarios.  
+-   使用した結果として発生した例外、 <xref:System.Xml.Schema.XmlSchemaSet> クラスなど、 <xref:System.Xml.Schema.XmlSchemaException> クラスは、信頼されていないシナリオで公開してはなりません機密情報を含めることができます。 たとえば、 <xref:System.Xml.Schema.XmlSchemaException.SourceUri%2A> のプロパティ、 <xref:System.Xml.Schema.XmlSchemaException> 例外が発生したスキーマ ファイルへの URI のパスを返します。<xref:System.Xml.Schema.XmlSchemaException.SourceUri%2A> 信頼されていないシナリオでプロパティを公開する必要があります。 例外は、この機密情報は、信頼されていないシナリオでは公開されませんように正しく処理する必要があります。  
   
    
   
-## Examples  
- The following example validates an XML file using schemas stored in the <xref:System.Xml.Schema.XmlSchemaSet>. The namespace in the XML file, `urn:bookstore-schema`, identifies which schema in the <xref:System.Xml.Schema.XmlSchemaSet> to use for validation.  
+## 例  
+ <xref:System.Xml.Schema.XmlSchemaSet> に格納されているスキーマを使用して XML ファイルを検証する例を次に示します。 XML ファイル内の名前空間 `urn:bookstore-schema` は、検証に使用する <xref:System.Xml.Schema.XmlSchemaSet> 内のスキーマを特定します。  
   
- [!code-cpp[XmlReader_Validate_SchemaSet#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlReader_Validate_SchemaSet/CPP/XmlReader_Validate_SchemaSet.cpp#1)]
- [!code-csharp[XmlReader_Validate_SchemaSet#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlReader_Validate_SchemaSet/CS/validschemaset.cs#1)]
- [!code-vb[XmlReader_Validate_SchemaSet#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlReader_Validate_SchemaSet/VB/validschemaset.vb#1)]  
+ [!code-cpp[XmlReader\_Validate\_SchemaSet\#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlReader_Validate_SchemaSet/CPP/XmlReader_Validate_SchemaSet.cpp#1)]
+ [!code-csharp[XmlReader\_Validate\_SchemaSet\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlReader_Validate_SchemaSet/CS/validschemaset.cs#1)]
+ [!code-vb[XmlReader\_Validate\_SchemaSet\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlReader_Validate_SchemaSet/VB/validschemaset.vb#1)]  
   
-## Input  
- The sample uses the following two input files.  
+## 入力  
+ このサンプルは、次の 2 つの入力ファイルを使用します。  
   
  **booksSchemaFail.xml:**  
   
- [!code-xml[XmlReader_Validate_SchemaSet#2](~/samples/snippets/xml/VS_Snippets_Data/XmlReader_Validate_SchemaSet/XML/booksschemafail.xml#2)]  
+ [!code-xml[XmlReader\_Validate\_SchemaSet\#2](~/samples/snippets/xml/VS_Snippets_Data/XmlReader_Validate_SchemaSet/XML/booksschemafail.xml#2)]  
   
  **books.xsd:**  
   
- [!code-xml[XmlReader_Validate_SchemaSet#3](~/samples/snippets/xml/VS_Snippets_Data/XmlReader_Validate_SchemaSet/XML/books.xsd#3)]  
+ [!code-xml[XmlReader\_Validate\_SchemaSet\#3](~/samples/snippets/xml/VS_Snippets_Data/XmlReader_Validate_SchemaSet/XML/books.xsd#3)]  
   
-## Output  
- Validation Error: The element 'book' in namespace 'urn:bookstore-schema' has invalid child element 'author' in namespace 'urn:bookstore-schema'. Expected 'title' in namespace 'urn:bookstore-schema'.  
+## 出力  
+ 検証エラー : 名前空間 'urn:bookstore\-schema' 内の要素 'book' に、名前空間 'urn:bookstore\-schema' 内で無効な子要素 'author' があります。 名前空間 'urn:bookstore\-schema' の 'title' が期待されています。  
   
- Validation Error: The element 'author' in namespace 'urn:bookstore-schema' has invalid child element 'name' in namespace 'urn:bookstore-schema'. Expected 'first-name' in namespace 'urn:bookstore-schema'.  
+ 検証エラー : 名前空間 'urn:bookstore\-schema' 内の要素 'author' に、名前空間 'urn:bookstore\-schema' 内で無効な子要素 'name' があります。 名前空間 'urn:bookstore\-schema' の 'first\-name' が期待されています。  
   
  ]]></format>
     </remarks>
@@ -91,7 +91,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> class.</summary>
+        <summary>
+          <see cref="T:System.Xml.Schema.XmlSchemaSet" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -117,10 +118,12 @@
         <Parameter Name="nameTable" Type="System.Xml.XmlNameTable" />
       </Parameters>
       <Docs>
-        <param name="nameTable">The <see cref="T:System.Xml.XmlNameTable" /> object to use.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> class with the specified <see cref="T:System.Xml.XmlNameTable" />.</summary>
+        <param name="nameTable">使用する <see cref="T:System.Xml.XmlNameTable" /> オブジェクト。</param>
+        <summary>指定した <see cref="T:System.Xml.Schema.XmlSchemaSet" /> を使用して、<see cref="T:System.Xml.XmlNameTable" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.XmlNameTable" /> object passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.XmlNameTable" /> パラメーターとして渡されたオブジェクト <see langword="null" />します。</exception>
+        <altmember cref="T:System.Xml.XmlNameTable" />
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -148,21 +151,24 @@
         <Parameter Name="schema" Type="System.Xml.Schema.XmlSchema" />
       </Parameters>
       <Docs>
-        <param name="schema">The <see cref="T:System.Xml.Schema.XmlSchema" /> object to add to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</param>
-        <summary>Adds the given <see cref="T:System.Xml.Schema.XmlSchema" /> to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <returns>An <see cref="T:System.Xml.Schema.XmlSchema" /> object if the schema is valid. If the schema is not valid and a <see cref="T:System.Xml.Schema.ValidationEventHandler" /> is specified, then <see langword="null" /> is returned and the appropriate validation event is raised. Otherwise, an <see cref="T:System.Xml.Schema.XmlSchemaException" /> is thrown.</returns>
+        <param name="schema">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> に追加するオブジェクト、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</param>
+        <summary>追加、指定された <see cref="T:System.Xml.Schema.XmlSchema" /> に、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <returns>
+          <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトのかどうかは、スキーマが無効です。 スキーマが有効でない場合、 <see cref="T:System.Xml.Schema.ValidationEventHandler" /> が指定されると、 <see langword="null" /> が返され、該当する検証イベントが発生します。 それ以外の場合、 <see cref="T:System.Xml.Schema.XmlSchemaException" /> がスローされます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Xml.Schema.XmlSchema> object already exists in the <xref:System.Xml.Schema.XmlSchemaSet>, the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method does nothing.  
+## 解説  
+ 場合、 <xref:System.Xml.Schema.XmlSchema> オブジェクトは既に、 <xref:System.Xml.Schema.XmlSchemaSet>, 、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドは何です。  
   
- The functionality of this method is identical to that of the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method.  
+ このメソッドの機能のと同じですが、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">The schema is not valid.</exception>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.Schema.XmlSchema" /> object passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">スキーマが正しくありません。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> パラメーターとして渡されたオブジェクト <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -190,19 +196,20 @@
         <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
       </Parameters>
       <Docs>
-        <param name="schemas">The <see cref="T:System.Xml.Schema.XmlSchemaSet" /> object.</param>
-        <summary>Adds all the XML Schema definition language (XSD) schemas in the given <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
+        <param name="schemas">
+          <see cref="T:System.Xml.Schema.XmlSchemaSet" /> オブジェクト。</param>
+        <summary>追加のすべての XML スキーマ定義言語 \(XSD\) スキーマで、指定された <see cref="T:System.Xml.Schema.XmlSchemaSet" /> に、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Before a schema can be added to an <xref:System.Xml.Schema.XmlSchemaSet>, it has to be successfully preprocessed. Preprocessing performs the following basic tasks.  
+## 解説  
+ スキーマに追加する前に、 <xref:System.Xml.Schema.XmlSchemaSet>, 、前処理が正常があります。 前処理は、次の基本的なタスクを実行します。  
   
-1.  The schema is checked for structural validity according to the rules of W3C XML Schema, but the schema is not fully validated.  
+1.  W3C XML スキーマの規則に従って構造上の有効性がチェック、スキーマが、スキーマは完全に検証されません。  
   
-2.  References to internal and external schema components are resolved. Any imported or included schemas that are successfully retrieved are also added to the <xref:System.Xml.Schema.XmlSchemaSet>. Imported schemas are added as separate <xref:System.Xml.Schema.XmlSchema> objects, and included schemas are made a part of the including <xref:System.Xml.Schema.XmlSchema>.  
+2.  内部および外部のスキーマ コンポーネントへの参照は解決されます。 正常に取得されるインポートまたはインクルード対象のスキーマが追加も、 <xref:System.Xml.Schema.XmlSchemaSet>です。 インポートされたスキーマは、個別として追加 <xref:System.Xml.Schema.XmlSchema> オブジェクト、および含まれているスキーマなどの一部となる <xref:System.Xml.Schema.XmlSchema>します。  
   
- If the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property of the <xref:System.Xml.Schema.XmlSchemaSet> to add is `true`, all schemas in the <xref:System.Xml.Schema.XmlSchemaSet> to add are added to the <xref:System.Xml.Schema.XmlSchemaSet>. If the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property of the <xref:System.Xml.Schema.XmlSchemaSet> to add is `false`, each schema added is preprocessed before being added. If any of the schemas in the newly added <xref:System.Xml.Schema.XmlSchemaSet> fails to be preprocessed, no schemas are added; instead, an <xref:System.Xml.Schema.XmlSchemaException> is thrown. As a result, the following two code example are not equivalent.  
+ 場合、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> のプロパティ、 <xref:System.Xml.Schema.XmlSchemaSet> を追加する、 `true`, 、すべてのスキーマ、 <xref:System.Xml.Schema.XmlSchemaSet> を追加するに追加、 <xref:System.Xml.Schema.XmlSchemaSet>です。 場合、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> のプロパティ、 <xref:System.Xml.Schema.XmlSchemaSet> を追加する、 `false`, 、追加される前に追加された各スキーマを前処理します。 場合は、新しく追加したスキーマのいずれかの <xref:System.Xml.Schema.XmlSchemaSet> 、前処理が必要に失敗したスキーマは追加されません。 代わりに、 <xref:System.Xml.Schema.XmlSchemaException> がスローされます。 その結果、次の 2 つのコード例は同じではありません。  
   
 ```vb  
 ' First example  
@@ -229,12 +236,12 @@ foreach(XmlSchema schema in schemaSet.Schemas())
 }  
 ```  
   
- The previous two code examples are not equivalent. In the first example, if an invalid schema exists in `schemaSet1` and its <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property is set to `false`, no schemas are added to `schemaSet`. In the second example, a number of schemas can be added to `schemaSet` before an invalid schema is encountered and an exception is thrown.  
+ 前の 2 つのコード例は同じではありません。 無効なスキーマが存在する場合、最初の例では `schemaSet1` とその <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> にプロパティが設定されている `false`, にスキーマが追加されない `schemaSet`します。 2 番目の例では、多くのスキーマを追加してに `schemaSet` 前に、無効なスキーマが検出され、例外がスローされます。  
   
    
   
-## Examples  
- The following code example illustrates adding schemas to an <xref:System.Xml.Schema.XmlSchemaSet>, then adding the <xref:System.Xml.Schema.XmlSchemaSet> to a new <xref:System.Xml.Schema.XmlSchemaSet> using the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method.  
+## 例  
+ 次のコード例へのスキーマの追加を示しています、 <xref:System.Xml.Schema.XmlSchemaSet>, 、追加し、 <xref:System.Xml.Schema.XmlSchemaSet> を新しい <xref:System.Xml.Schema.XmlSchemaSet> を使用して、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。  
   
 ```vb  
 Dim schemaSet1 As XmlSchemaSet = New XmlSchemaSet  
@@ -258,8 +265,9 @@ schemaSet2.Add(schemaSet1);
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">A schema in the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> is not valid.</exception>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.Schema.XmlSchemaSet" /> object passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">内のスキーマ、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> が無効です。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.Schema.XmlSchemaSet" /> パラメーターとして渡されたオブジェクト <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -288,34 +296,35 @@ schemaSet2.Add(schemaSet1);
         <Parameter Name="schemaUri" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="targetNamespace">The schema <c>targetNamespace</c> property, or <see langword="null" /> to use the <c>targetNamespace</c> specified in the schema.</param>
-        <param name="schemaUri">The URL that specifies the schema to load.</param>
-        <summary>Adds the XML Schema definition language (XSD) schema at the URL specified to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <returns>An <see cref="T:System.Xml.Schema.XmlSchema" /> object if the schema is valid. If the schema is not valid and a <see cref="T:System.Xml.Schema.ValidationEventHandler" /> is specified, then <see langword="null" /> is returned and the appropriate validation event is raised. Otherwise, an <see cref="T:System.Xml.Schema.XmlSchemaException" /> is thrown.</returns>
+        <param name="targetNamespace">スキーマ <c>targetNamespace</c> プロパティ、または <see langword="null" /> を使用する、 <c>targetNamespace</c> スキーマで指定します。</param>
+        <param name="schemaUri">読み込むスキーマを指定する URL。</param>
+        <summary>指定した URL に XML スキーマ定義言語 \(XSD\) スキーマを追加、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <returns>
+          <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトのかどうかは、スキーマが無効です。 スキーマが有効でない場合、 <see cref="T:System.Xml.Schema.ValidationEventHandler" /> が指定されると、 <see langword="null" /> が返され、該当する検証イベントが発生します。 それ以外の場合、 <see cref="T:System.Xml.Schema.XmlSchemaException" /> がスローされます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Before a schema can be added to an <xref:System.Xml.Schema.XmlSchemaSet>, it has to be successfully preprocessed. Preprocessing performs the following basic tasks.  
+## 解説  
+ スキーマに追加する前に、 <xref:System.Xml.Schema.XmlSchemaSet>, 、前処理が正常があります。 前処理は、次の基本的なタスクを実行します。  
   
-1.  The schema is checked for structural validity according to the rules of W3C XML Schema, but the schema is not fully validated.  
+1.  W3C XML スキーマの規則に従って構造上の有効性がチェック、スキーマが、スキーマは完全に検証されません。  
   
-2.  References to internal and external schema components are resolved. Any imported or included schemas that are successfully retrieved are also added to the <xref:System.Xml.Schema.XmlSchemaSet>. Imported schemas are added as separate <xref:System.Xml.Schema.XmlSchema> objects, and included schemas are made a part of the including <xref:System.Xml.Schema.XmlSchema>.  
+2.  内部および外部のスキーマ コンポーネントへの参照は解決されます。 正常に取得されるインポートまたはインクルード対象のスキーマが追加も、 <xref:System.Xml.Schema.XmlSchemaSet>です。 インポートされたスキーマは、個別として追加 <xref:System.Xml.Schema.XmlSchema> オブジェクト、および含まれているスキーマなどの一部となる <xref:System.Xml.Schema.XmlSchema>します。  
   
- The following are important notes to consider when using the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method.  
+ 次に、重要な注意事項を使用する場合、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。  
   
--   Adding a schema to the <xref:System.Xml.Schema.XmlSchemaSet> with the same target namespace and schema location URL as a schema already contained within the <xref:System.Xml.Schema.XmlSchemaSet> will return the original schema object.  
+-   スキーマの追加、 <xref:System.Xml.Schema.XmlSchemaSet> では、同じ名前空間とスキーマの場所の URL をターゲットに既に含まれているスキーマとして、 <xref:System.Xml.Schema.XmlSchemaSet> は元のスキーマ オブジェクトを返します。  
   
--   When a new schema is successfully added to an <xref:System.Xml.Schema.XmlSchemaSet>, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property of the <xref:System.Xml.Schema.XmlSchemaSet> is set to `false`.  
+-   新しいスキーマが正常に追加された場合に、 <xref:System.Xml.Schema.XmlSchemaSet>, 、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> のプロパティ、 <xref:System.Xml.Schema.XmlSchemaSet> に設定されている `false`します。  
   
--   Any include or import elements encountered in an XML schema are resolved when the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method is called. Failure to resolve include and import elements results in a schema validation warning and if no <xref:System.Xml.Schema.XmlSchemaSet.ValidationEventHandler> has been specified for the <xref:System.Xml.Schema.XmlSchemaSet> object, these warning will not be reported.  
+-   XML スキーマ内でインクルードまたはインポートの要素は解決する場合、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドが呼び出されます。 エラーを解決するのを含めるし、スキーマ検証の警告でインポート要素いない場合、 <xref:System.Xml.Schema.XmlSchemaSet.ValidationEventHandler> が指定されている、 <xref:System.Xml.Schema.XmlSchemaSet> オブジェクトは、この警告は報告されません。  
   
--   If a schema with the same target namespace as a schema that already exists in the <xref:System.Xml.Schema.XmlSchemaSet> is added to the <xref:System.Xml.Schema.XmlSchemaSet>, both schemas are added.  
+-   既に存在するスキーマと同じ対象名前空間を持つスキーマ、 <xref:System.Xml.Schema.XmlSchemaSet> に追加、 <xref:System.Xml.Schema.XmlSchemaSet>, 、両方のスキーマを追加します。  
   
     > [!NOTE]
-    >  This behavior differs from the obsolete <xref:System.Xml.Schema.XmlSchemaCollection> object.  
+    >  この動作は、廃止された <xref:System.Xml.Schema.XmlSchemaCollection> オブジェクトです。  
   
--   The <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method of the <xref:System.Xml.Schema.XmlSchemaSet> has the ability to use the target namespace defined in a schema, rather than requiring the target namespace be specified as a parameter when the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method is called. Specifying `null` in the `targetNamespace` parameter of the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method instructs the <xref:System.Xml.Schema.XmlSchemaSet> to use the target namespace defined in the schema, as illustrated in the following code example.  
+-   <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> のメソッド、 <xref:System.Xml.Schema.XmlSchemaSet> をパラメーターとして指定するターゲットの名前空間を必要とするのではなく、スキーマで定義されているターゲットの名前空間を使用する機能を持つ場合、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドが呼び出されます。 指定する `null` で、 `targetNamespace` のパラメーター、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドに指示、 <xref:System.Xml.Schema.XmlSchemaSet> 次のコード例に示すように、スキーマで定義されているターゲットの名前空間を使用します。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -337,9 +346,9 @@ foreach(XmlSchema schema in schemaSet.Schemas("http://www.contoso.com/books"))
 }  
 ```  
   
- In the code example above, `null` is specified as the `targetNamespace` parameter to the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method. As a result, the `targetNamespace` defined in the books.xml file is used. In this case, the result of calling the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method would be identical if http://www.contoso.com/books had been specified as the `targetNamespace` parameter.  
+ 上記のコード例で `null` として指定された、 `targetNamespace` パラメーターを <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。 結果として、 `targetNamespace` 定義、books.xml ファイルを使用します。 この場合、呼び出しの結果、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドは http:\/\/www.contoso.com\/books として指定した場合と同じになる、 `targetNamespace` パラメーター。  
   
--   W3C XML Schema allows schemas without a target namespace to be included in schemas with a target namespace defined. In this case, the schema without a target namespace defined is coerced into the target namespace of the including schema. The included schema is treated as if it had that target namespace defined. Similarly, schemas without a target namespace can be added to the <xref:System.Xml.Schema.XmlSchemaSet> and coerced into the target namespace specified by the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method, as illustrated in the following example.  
+-   W3C XML スキーマでは、ターゲット名前空間が定義されているスキーマに含まれるターゲット名前空間を持たないスキーマを使用します。 この場合は、定義されているターゲット名前空間を持たないスキーマは、インクルードするスキーマのターゲット名前空間に強制変換されます。 インクルードされるスキーマは、定義されているそのターゲット名前空間に存在していたように扱われます。 ターゲット名前空間を持たないスキーマを追加してを同様に、 <xref:System.Xml.Schema.XmlSchemaSet> で指定されたターゲット名前空間に資格情報を持つと、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドを次の例に示すようにします。  
   
 ```  
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">  
@@ -347,7 +356,7 @@ foreach(XmlSchema schema in schemaSet.Schemas("http://www.contoso.com/books"))
 </xs:schema>  
 ```  
   
- If the schema above is added to the <xref:System.Xml.Schema.XmlSchemaSet> with the target namespace http://www.contoso.com/new/targetnamespace (as shown in the code below), it is treated as if the target namespace declared in the schema was `http://www.contoso.com/new/targetnamespace`.  
+ 上記のスキーマに追加された場合、 <xref:System.Xml.Schema.XmlSchemaSet> \(として次のコードを参照\) のターゲット名前空間 http:\/\/www.contoso.com\/new\/targetnamespace、扱われますがのターゲットの名前空間がスキーマで宣言されている場合と `http://www.contoso.com/new/targetnamespace`です。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -373,8 +382,8 @@ foreach(XmlSchema schema in schemaSet.Schemas())
   
    
   
-## Examples  
- The following code example adds the http://www.contoso.com/books.xsd schema with a target namespace of http://www.contoso.com/books to the <xref:System.Xml.Schema.XmlSchemaSet>.  
+## 例  
+ 次のコード例に http:\/\/www.contoso.com\/books のターゲット名前空間を持つ http:\/\/www.contoso.com\/books.xsd スキーマを追加、 <xref:System.Xml.Schema.XmlSchemaSet>です。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -386,14 +395,14 @@ XmlSchemaSet schemaSet = new XmlSchemaSet();
 schemaSet.Add("http://www.contoso.com/books", "http://www.contoso.com/books.xsd");  
 ```  
   
- The example uses the `books.xsd` file as input.  
+ この例は、`books.xsd` ファイルを入力として使用します。  
   
- [!code-xml[XmlSchemaSetOverall Example#3](~/samples/snippets/xml/VS_Snippets_Data/XmlSchemaSetOverall Example/XML/books.xsd#3)]  
+ [!code-xml[XmlSchemaSetOverall Example\#3](~/samples/snippets/xml/VS_Snippets_Data/XmlSchemaSetOverall Example/XML/books.xsd#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">The schema is not valid.</exception>
-        <exception cref="T:System.ArgumentNullException">The URL passed as a parameter is <see langword="null" /> or <see cref="F:System.String.Empty" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">スキーマが正しくありません。</exception>
+        <exception cref="T:System.ArgumentNullException">パラメーターとして渡す URL は <see langword="null" /> または <see cref="F:System.String.Empty" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -422,40 +431,42 @@ schemaSet.Add("http://www.contoso.com/books", "http://www.contoso.com/books.xsd"
         <Parameter Name="schemaDocument" Type="System.Xml.XmlReader" />
       </Parameters>
       <Docs>
-        <param name="targetNamespace">The schema <c>targetNamespace</c> property, or <see langword="null" /> to use the <c>targetNamespace</c> specified in the schema.</param>
-        <param name="schemaDocument">The <see cref="T:System.Xml.XmlReader" /> object.</param>
-        <summary>Adds the XML Schema definition language (XSD) schema contained in the <see cref="T:System.Xml.XmlReader" /> to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <returns>An <see cref="T:System.Xml.Schema.XmlSchema" /> object if the schema is valid. If the schema is not valid and a <see cref="T:System.Xml.Schema.ValidationEventHandler" /> is specified, then <see langword="null" /> is returned and the appropriate validation event is raised. Otherwise, an <see cref="T:System.Xml.Schema.XmlSchemaException" /> is thrown.</returns>
+        <param name="targetNamespace">スキーマ <c>targetNamespace</c> プロパティ、または <see langword="null" /> を使用する、 <c>targetNamespace</c> スキーマで指定します。</param>
+        <param name="schemaDocument">
+          <see cref="T:System.Xml.XmlReader" /> オブジェクト。</param>
+        <summary>含まれている XML スキーマ定義言語 \(XSD\) スキーマを追加、 <see cref="T:System.Xml.XmlReader" /> に、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <returns>
+          <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトのかどうかは、スキーマが無効です。 スキーマが有効でない場合、 <see cref="T:System.Xml.Schema.ValidationEventHandler" /> が指定されると、 <see langword="null" /> が返され、該当する検証イベントが発生します。 それ以外の場合、 <see cref="T:System.Xml.Schema.XmlSchemaException" /> がスローされます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Before a schema can be added to an <xref:System.Xml.Schema.XmlSchemaSet>, it has to be successfully preprocessed. Preprocessing performs the following basic tasks.  
+## 解説  
+ スキーマに追加する前に、 <xref:System.Xml.Schema.XmlSchemaSet>, 、前処理が正常があります。 前処理は、次の基本的なタスクを実行します。  
   
-1.  The schema is checked for structural validity according to the rules of W3C XML Schema, but the schema is not fully validated.  
+1.  W3C XML スキーマの規則に従って構造上の有効性がチェック、スキーマが、スキーマは完全に検証されません。  
   
-2.  References to internal and external schema components are resolved. Any imported or included schemas that are successfully retrieved are also added to the <xref:System.Xml.Schema.XmlSchemaSet>. Imported schemas are added as separate <xref:System.Xml.Schema.XmlSchema> objects, and included schemas are made a part of the including <xref:System.Xml.Schema.XmlSchema>.  
+2.  内部および外部のスキーマ コンポーネントへの参照は解決されます。 正常に取得されるインポートまたはインクルード対象のスキーマが追加も、 <xref:System.Xml.Schema.XmlSchemaSet>です。 インポートされたスキーマは、個別として追加 <xref:System.Xml.Schema.XmlSchema> オブジェクト、および含まれているスキーマなどの一部となる <xref:System.Xml.Schema.XmlSchema>します。  
   
- The following are important notes to consider when using the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method.  
+ 次に、重要な注意事項を使用する場合、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。  
   
--   Successfully retrieved schemas imported or included by the schemas contained in the <xref:System.Xml.XmlReader> are also added to the <xref:System.Xml.Schema.XmlSchemaSet>.  
+-   スキーマに含まれるスキーマによってインポートまたはインクルードを正常に取得、 <xref:System.Xml.XmlReader> にも追加されて、 <xref:System.Xml.Schema.XmlSchemaSet>です。  
   
--   If the <xref:System.Xml.XmlReader> is not positioned on the root element, an <xref:System.Xml.Schema.XmlSchemaException> is thrown unless the current item is an element. If the current item is an `xs:schema` element, the schema document is read into the <xref:System.Xml.Schema.XmlSchemaSet>; otherwise, an <xref:System.Xml.Schema.XmlSchemaException> is thrown because the schema is not valid.  
+-   場合、 <xref:System.Xml.XmlReader> ルート要素に配置されていない、 <xref:System.Xml.Schema.XmlSchemaException> 、現在のアイテムが要素でない限りがスローされます。 現在の項目がある場合、 `xs:schema` 要素にスキーマ ドキュメントが読み込ま、 <xref:System.Xml.Schema.XmlSchemaSet>。 そうしないと、、 <xref:System.Xml.Schema.XmlSchemaException> スキーマが無効であるためにスローされます。  
   
--   If the <xref:System.Xml.XmlReader> is positioned over a sequence of XML nodes, only the first node in the sequence is added.  
+-   場合、 <xref:System.Xml.XmlReader> が配置されている XML ノードのシーケンス、シーケンス内の最初のノードのみを追加します。  
   
--   If the schema was created from a <xref:System.Xml.XmlReader.Create%2A?displayProperty=fullName> method call, the value of the <xref:System.Xml.Schema.XmlSchemaValidationFlags.ProcessInlineSchema> property is ignored, because inline schema processing is not applied for W3C XML Schema documents.  
+-   スキーマが作成された場合、 <xref:System.Xml.XmlReader.Create%2A?displayProperty=fullName> メソッドの呼び出し、値の <xref:System.Xml.Schema.XmlSchemaValidationFlags.ProcessInlineSchema> W3C XML スキーマ ドキュメントのインライン スキーマの処理が適用されないため、プロパティは無視されます。  
   
--   The <xref:System.Xml.XmlResolver> property of the <xref:System.Xml.XmlReader> is not used to resolve references to namespaces or schema locations in include and import elements. Instead, the <xref:System.Xml.XmlResolver> property of the <xref:System.Xml.Schema.XmlSchemaSet> is used.  
+-   <xref:System.Xml.XmlResolver> のプロパティ、 <xref:System.Xml.XmlReader> で名前空間またはスキーマの場所への参照を含める要素およびインポートを解決するのには使用されません。 代わりに、 <xref:System.Xml.XmlResolver> のプロパティ、 <xref:System.Xml.Schema.XmlSchemaSet> を使用します。  
   
--   The <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method of the <xref:System.Xml.Schema.XmlSchemaSet> has the ability to use the target namespace defined in a schema, rather than requiring the target namespace be specified as a parameter when the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method is called. Specifying `null` or <xref:System.String.Empty?displayProperty=fullName> to the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method instructs the <xref:System.Xml.Schema.XmlSchemaSet> to use the target namespace defined in the schema. For an example of this behavior, see the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method.  
+-   <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> のメソッド、 <xref:System.Xml.Schema.XmlSchemaSet> をパラメーターとして指定するターゲットの名前空間を必要とするのではなく、スキーマで定義されているターゲットの名前空間を使用する機能を持つ場合、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドが呼び出されます。 指定する `null` または <xref:System.String.Empty?displayProperty=fullName> に、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドに指示、 <xref:System.Xml.Schema.XmlSchemaSet> スキーマで定義されているターゲットの名前空間を使用します。 この動作の例は、次を参照してください。、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。  
   
- The remaining functionality of this method is identical to that of the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method.  
+ このメソッドの他の機能のと同じですが、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example adds the books.xsd schema contained in the <xref:System.Xml.XmlTextReader> with a target namespace of http://www.contoso.com/books to the <xref:System.Xml.Schema.XmlSchemaSet>.  
+## 例  
+ 次のコード例に含まれる books.xsd スキーマの追加、 <xref:System.Xml.XmlTextReader> に http:\/\/www.contoso.com\/books のターゲット名前空間を持つ、 <xref:System.Xml.Schema.XmlSchemaSet>です。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -469,8 +480,9 @@ schemaSet.Add("http://www.contoso.com/books", new XmlTextReader("books.xsd");
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">The schema is not valid.</exception>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.XmlReader" /> object passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">スキーマが正しくありません。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.XmlReader" /> パラメーターとして渡されたオブジェクト <see langword="null" />します。</exception>
       </Docs>
     </Member>
     <Member MemberName="CompilationSettings">
@@ -495,14 +507,19 @@ schemaSet.Add("http://www.contoso.com/books", new XmlTextReader("books.xsd");
         <ReturnType>System.Xml.Schema.XmlSchemaCompilationSettings</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the <see cref="T:System.Xml.Schema.XmlSchemaCompilationSettings" /> for the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <value>The <see cref="T:System.Xml.Schema.XmlSchemaCompilationSettings" /> for the <see cref="T:System.Xml.Schema.XmlSchemaSet" />. The default is an <see cref="T:System.Xml.Schema.XmlSchemaCompilationSettings" /> instance with the <see cref="P:System.Xml.Schema.XmlSchemaCompilationSettings.EnableUpaCheck" /> property set to <see langword="true" />.</value>
+        <summary>
+          <see cref="T:System.Xml.Schema.XmlSchemaCompilationSettings" /> の <see cref="T:System.Xml.Schema.XmlSchemaSet" /> を取得または設定します。</summary>
+        <value>
+          <see cref="T:System.Xml.Schema.XmlSchemaCompilationSettings" /> の <see cref="T:System.Xml.Schema.XmlSchemaSet" />。 既定値は、 <see cref="T:System.Xml.Schema.XmlSchemaCompilationSettings" /> インスタンス、 <see cref="P:System.Xml.Schema.XmlSchemaCompilationSettings.EnableUpaCheck" /> プロパティに設定 <see langword="true" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Xml.Schema.XmlSchemaCompilationSettings> class specifies Unique Particle Attribution (UPA) validation options for the <xref:System.Xml.Schema.XmlSchemaSet>. For more information about enabling UPA validation checks, see the <xref:System.Xml.Schema.XmlSchemaCompilationSettings.EnableUpaCheck%2A> property.  
+## 解説  
+ <xref:System.Xml.Schema.XmlSchemaCompilationSettings> クラス用の一意のパーティクル属性 \(UPA\) 検証オプションの指定、 <xref:System.Xml.Schema.XmlSchemaSet>です。 UPA 検証チェックを有効にする方法の詳細については、次を参照してください。、 <xref:System.Xml.Schema.XmlSchemaCompilationSettings.EnableUpaCheck%2A> プロパティです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -530,21 +547,21 @@ schemaSet.Add("http://www.contoso.com/books", new XmlTextReader("books.xsd");
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Compiles the XML Schema definition language (XSD) schemas added to the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> into one logical schema.</summary>
+        <summary>追加する XML スキーマ定義言語 \(XSD\) スキーマのコンパイル、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> 1 つの論理スキーマにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called automatically when validation is needed and the <xref:System.Xml.Schema.XmlSchemaSet> has not been previously compiled—for example, when an <xref:System.Xml.Schema.XmlSchemaSet> is used as an input to create an <xref:System.Xml.XmlReader> object in the <xref:System.Xml.Schema.XmlSchemaSet.Schemas%2A> property of an <xref:System.Xml.XmlReaderSettings> object. If the <xref:System.Xml.Schema.XmlSchemaSet> is already in the compiled state, this method will not recompile the schemas. If this method executes successfully, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property is set to `true`.  
+## 解説  
+ このメソッドは、検証が必要なときに自動的に呼び出されます。 および <xref:System.Xml.Schema.XmlSchemaSet> 以前コンパイルされていない — たとえばときに、、 <xref:System.Xml.Schema.XmlSchemaSet> を作成する入力として使用、 <xref:System.Xml.XmlReader> 内のオブジェクト、 <xref:System.Xml.Schema.XmlSchemaSet.Schemas%2A> のプロパティ、 <xref:System.Xml.XmlReaderSettings> オブジェクトです。 場合、 <xref:System.Xml.Schema.XmlSchemaSet> が既にコンパイル済みの状態でこのメソッドは再コンパイルのスキーマです。 このメソッドが正常に実行する場合、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> にプロパティが設定されている `true`します。  
   
- Schemas that have been previously compiled by an <xref:System.Xml.Schema.XmlSchemaSet> are not recompiled. However, schemas that were compiled using the <xref:System.Xml.Schema.XmlSchemaSet.Compile%2A> method of the <xref:System.Xml.Schema.XmlSchema> will be recompiled.  
+ コンパイル済みスキーマ、 <xref:System.Xml.Schema.XmlSchemaSet> は再コンパイルされません。 ただし、スキーマを使用してコンパイルした、 <xref:System.Xml.Schema.XmlSchemaSet.Compile%2A> のメソッド、 <xref:System.Xml.Schema.XmlSchema> に再コンパイルされます。  
   
 > [!NOTE]
->  You need to call the <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> method if you have changed a schema (or one of its includes/imports) after adding it to the <xref:System.Xml.Schema.XmlSchemaSet>. The <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> method will check the schema for structural validity according to the rules of W3C XML Schema. However, it will not perform a full validation check. It will also resolve references to internal and external schema components. Any imported or included schemas that are successfully retrieved are also added to the <xref:System.Xml.Schema.XmlSchemaSet>. Imported schemas are added as separate <xref:System.Xml.Schema.XmlSchema> objects while included schemas are made part of the including <xref:System.Xml.Schema.XmlSchema>. If the call to reprocess is successful, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property is set to false.  
+>  呼び出す必要がある、 <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドに追加した後、スキーマ \(またはそれが含まれています\/インポートのいずれか\) を変更した場合、 <xref:System.Xml.Schema.XmlSchemaSet>です。<xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドは、スキーマの W3C XML スキーマの規則に従って構造上の有効性を確認します。 ただし、完全な検証チェックは実行しません。 内部および外部のスキーマ コンポーネントへの参照も解決されます。 正常に取得されるインポートまたはインクルード対象のスキーマが追加も、 <xref:System.Xml.Schema.XmlSchemaSet>です。 インポートされたスキーマは、個別として追加 <xref:System.Xml.Schema.XmlSchema> オブジェクトに含まれているなどの一部となるスキーマ <xref:System.Xml.Schema.XmlSchema>します。 再処理する呼び出しが成功した場合、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティが false に設定します。  
   
    
   
-## Examples  
+## 例  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -560,7 +577,7 @@ schemaSet.Compile();
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">An error occurred when validating and compiling the schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">検証および内のスキーマをコンパイルするときにエラーが発生しました、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Contains">
@@ -588,15 +605,15 @@ schemaSet.Compile();
         <Parameter Name="targetNamespace" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="targetNamespace">The schema <c>targetNamespace</c> property.</param>
-        <summary>Indicates whether an XML Schema definition language (XSD) schema with the specified target namespace URI is in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
+        <param name="targetNamespace">スキーマ <c>targetNamespace</c> プロパティです。</param>
+        <summary>指定されたターゲット名前空間 URI を持つ XML スキーマ定義言語 \(XSD\) スキーマがかどうかを示す、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
         <returns>
-          <see langword="true" /> if a schema with the specified target namespace URI is in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> かどうかに指定されたターゲット名前空間 URI を持つスキーマが、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />。 そうしないと、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Schemas that are indirectly added to the <xref:System.Xml.Schema.XmlSchemaSet> are detected by the <xref:System.Xml.Schema.XmlSchemaSet.Contains%2A> method; for example, imported schemas. As a result, if a schema for the http://www.contoso.com/retail namespace which imports a schema for the http://www.contoso.com/books namespace is added to the <xref:System.Xml.Schema.XmlSchemaSet>, calling <xref:System.Xml.Schema.XmlSchemaSet.Contains%2A> with `http://www.contoso.com/books` as a parameter, it returns `true`.  
+## 解説  
+ スキーマに直接追加された、 <xref:System.Xml.Schema.XmlSchemaSet> により検出されますが、 <xref:System.Xml.Schema.XmlSchemaSet.Contains%2A> メソッド。 たとえば、インポートされたスキーマです。 その結果、http:\/\/www.contoso.com\/retail 名前空間のスキーマ http:\/\/www.contoso.com\/books 名前空間のスキーマをインポートするに追加、 <xref:System.Xml.Schema.XmlSchemaSet>, 、呼び出し元 <xref:System.Xml.Schema.XmlSchemaSet.Contains%2A> と `http://www.contoso.com/books` をパラメーターとして返します `true`します。  
   
  ]]></format>
         </remarks>
@@ -627,12 +644,14 @@ schemaSet.Compile();
         <Parameter Name="schema" Type="System.Xml.Schema.XmlSchema" />
       </Parameters>
       <Docs>
-        <param name="schema">The <see cref="T:System.Xml.Schema.XmlSchema" /> object.</param>
-        <summary>Indicates whether the specified XML Schema definition language (XSD) <see cref="T:System.Xml.Schema.XmlSchema" /> object is in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
+        <param name="schema">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクト。</param>
+        <summary>示すかどうか指定した XML スキーマ定義言語 \(XSD\) <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトは、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
         <returns>
-          <see langword="true" /> if the <see cref="T:System.Xml.Schema.XmlSchema" /> object is in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合、 <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトは、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />。 そうしないと、 <see langword="false" />です。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.Schema.XmlSchemaSet" /> passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.Schema.XmlSchemaSet" /> パラメーターとして渡された <see langword="null" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="CopyTo">
@@ -661,14 +680,14 @@ schemaSet.Compile();
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="schemas">The array to copy the objects to.</param>
-        <param name="index">The index in the array where copying will begin.</param>
-        <summary>Copies all the <see cref="T:System.Xml.Schema.XmlSchema" /> objects from the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to the given array, starting at the given index.</summary>
+        <param name="schemas">オブジェクトのコピー先の配列。</param>
+        <param name="index">配列内のコピー開始位置を示すインデックス。</param>
+        <summary>すべてをコピー、 <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトから、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> 指定したインデックスから始まる、指定した配列にします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
- The following example copies all the <xref:System.Xml.Schema.XmlSchema> objects in the <xref:System.Xml.Schema.XmlSchemaSet> to an array of <xref:System.Xml.Schema.XmlSchema> objects.  
+## 例  
+ 次の例では、すべてをコピー、 [CopyTo メソッド \(XmlSchema\<xref:System.Xml.Schema.XmlSchema> 内のオブジェクト、 [CopyTo メソッド \(XmlSchema\<xref:System.Xml.Schema.XmlSchemaSet> 型の配列を [CopyTo メソッド \(XmlSchema\<xref:System.Xml.Schema.XmlSchema> オブジェクトです。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet  
@@ -716,13 +735,13 @@ schemaSet.CopyTo(schemas, 0);
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of logical XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <value>The number of logical schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</value>
+        <summary>数を取得します論理の XML スキーマ定義言語 \(XSD\) スキーマ、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <value>論理スキーマの数、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If there are two schemas for the namespace `http://www.contoso.com` in the <xref:System.Xml.Schema.XmlSchemaSet>, the <xref:System.Xml.Schema.XmlSchemaSet.Count%2A> property would return 1 because the schemas are treated as a single logical schema for validation purposes. However, if a schema for the namespace `http://www.contoso.com/retail` imported a schema for the `http://www.contoso.com/books` namespace, the value of the <xref:System.Xml.Schema.XmlSchemaSet.Count%2A> property would be 2.  
+## 解説  
+ 名前空間の 2 つのスキーマがある場合 `http://www.contoso.com` で、 <xref:System.Xml.Schema.XmlSchemaSet>, 、 <xref:System.Xml.Schema.XmlSchemaSet.Count%2A> プロパティは、スキーマが検証の目的で 1 つの論理スキーマとして扱われるために、1 は返します。 ただし、名前空間のスキーマ `http://www.contoso.com/retail` のスキーマをインポート、 `http://www.contoso.com/books` の値の名前空間、 <xref:System.Xml.Schema.XmlSchemaSet.Count%2A> プロパティは 2 になります。  
   
  ]]></format>
         </remarks>
@@ -750,9 +769,12 @@ schemaSet.CopyTo(schemas, 0);
         <ReturnType>System.Xml.Schema.XmlSchemaObjectTable</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets all the global attributes in all the XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <value>The collection of global attributes.</value>
+        <summary>内のすべてのグローバル属性内のすべての XML スキーマ定義言語 \(XSD\) スキーマを取得、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <value>グローバル属性のコレクション。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Xml.Schema.XmlSchemaSet.GlobalElements" />
+        <altmember cref="P:System.Xml.Schema.XmlSchemaSet.GlobalTypes" />
+        <altmember cref="T:System.Xml.Schema.XmlSchemaObjectTable" />
       </Docs>
     </Member>
     <Member MemberName="GlobalElements">
@@ -777,9 +799,12 @@ schemaSet.CopyTo(schemas, 0);
         <ReturnType>System.Xml.Schema.XmlSchemaObjectTable</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets all the global elements in all the XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <value>The collection of global elements.</value>
+        <summary>内のすべてのグローバル要素内のすべての XML スキーマ定義言語 \(XSD\) スキーマを取得、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <value>グローバル要素のコレクション。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:System.Xml.Schema.XmlSchemaSet.GlobalTypes" />
+        <altmember cref="P:System.Xml.Schema.XmlSchemaSet.GlobalAttributes" />
+        <altmember cref="T:System.Xml.Schema.XmlSchemaObjectTable" />
       </Docs>
     </Member>
     <Member MemberName="GlobalTypes">
@@ -804,16 +829,19 @@ schemaSet.CopyTo(schemas, 0);
         <ReturnType>System.Xml.Schema.XmlSchemaObjectTable</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets all of the global simple and complex types in all the XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <value>The collection of global simple and complex types.</value>
+        <summary>内のすべての XML スキーマ定義言語 \(XSD\) スキーマを取得すべてのグローバル単純および複雑な型、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <value>グローバル単純型とグローバル複合型のコレクション。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Xml.Schema.XmlSchemaSet.GlobalTypes%2A> property always returns a type that represents the `xs:anyType` complex type.  
+## 解説  
+ <xref:System.Xml.Schema.XmlSchemaSet.GlobalTypes%2A> プロパティは常に型を表すを返す、 `xs:anyType` 複合型です。  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Xml.Schema.XmlSchemaSet.GlobalElements" />
+        <altmember cref="P:System.Xml.Schema.XmlSchemaSet.GlobalAttributes" />
+        <altmember cref="T:System.Xml.Schema.XmlSchemaObjectTable" />
       </Docs>
     </Member>
     <Member MemberName="IsCompiled">
@@ -838,22 +866,24 @@ schemaSet.CopyTo(schemas, 0);
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> have been compiled.</summary>
+        <summary>示す値を取得するかどうかの XML スキーマ定義言語 \(XSD\) スキーマ、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> がコンパイルされています。</summary>
         <value>
-          <see langword="true" /> if the schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> have been compiled since the last time a schema was added or removed from the <see cref="T:System.Xml.Schema.XmlSchemaSet" />; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 場合にスキーマ、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> 最後に、スキーマが追加または削除からコンパイルされている、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />。 そうしないと、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property is not affected if schemas are edited while in the <xref:System.Xml.Schema.XmlSchemaSet>. Updates of the individual schemas in the <xref:System.Xml.Schema.XmlSchemaSet> are not tracked. As a result, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property can be `true` even though one of the schemas contained in the <xref:System.Xml.Schema.XmlSchemaSet> has been altered, as long as no schemas were added or removed from the <xref:System.Xml.Schema.XmlSchemaSet>.  
+## 解説  
+ <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティは、スキーマが <xref:System.Xml.Schema.XmlSchemaSet> 内にあるときに編集されても、影響を受けません。<xref:System.Xml.Schema.XmlSchemaSet> 内の個別のスキーマの更新は追跡されません。 その結果、<xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティは、`true` のスキーマが追加または削除されない限り、<xref:System.Xml.Schema.XmlSchemaSet> に含まれるスキーマの 1 つが変更されていても、<xref:System.Xml.Schema.XmlSchemaSet> になる可能性があります。  
   
    
   
-## Examples  
- For an example of the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property, see the <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> method.  
+## 例  
+ 例については、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティを参照してください、 <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Xml.Schema.XmlSchemaSet.Compile" />
+        <altmember cref="M:System.Xml.Schema.XmlSchemaSet.Reprocess(System.Xml.Schema.XmlSchema)" />
       </Docs>
     </Member>
     <Member MemberName="NameTable">
@@ -878,9 +908,10 @@ schemaSet.CopyTo(schemas, 0);
         <ReturnType>System.Xml.XmlNameTable</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the default <see cref="T:System.Xml.XmlNameTable" /> used by the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> when loading new XML Schema definition language (XSD) schemas.</summary>
-        <value>A table of atomized string objects.</value>
+        <summary>既定値を取得 <see cref="T:System.Xml.XmlNameTable" /> で使用される、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> 新しい XML スキーマ定義言語 \(XSD\) スキーマを読み込むときにします。</summary>
+        <value>最小単位に分割された文字列オブジェクトのテーブル。</value>
         <remarks>To be added.</remarks>
+        <altmember cref="T:System.Xml.XmlNameTable" />
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -908,19 +939,21 @@ schemaSet.CopyTo(schemas, 0);
         <Parameter Name="schema" Type="System.Xml.Schema.XmlSchema" />
       </Parameters>
       <Docs>
-        <param name="schema">The <see cref="T:System.Xml.Schema.XmlSchema" /> object to remove from the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</param>
-        <summary>Removes the specified XML Schema definition language (XSD) schema from the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <returns>The <see cref="T:System.Xml.Schema.XmlSchema" /> object removed from the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> or <see langword="null" /> if the schema was not found in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</returns>
+        <param name="schema">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> から削除するオブジェクト、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</param>
+        <summary>指定した XML スキーマ定義言語 \(XSD\) スキーマからの削除、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <returns>
+          <see cref="T:System.Xml.Schema.XmlSchema" /> から削除されたオブジェクト、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> または <see langword="null" /> にスキーマが見つからなかった場合、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Removing a schema from the <xref:System.Xml.Schema.XmlSchemaSet> sets the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property to `false`.  
+## 解説  
+ スキーマを削除する、 <xref:System.Xml.Schema.XmlSchemaSet> 設定、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティを `false`します。  
   
    
   
-## Examples  
- The following example illustrates adding multiple schemas to an <xref:System.Xml.Schema.XmlSchemaSet>, then removing one of the schemas using the <xref:System.Xml.Schema.XmlSchemaSet.Remove%2A> method.  
+## 例  
+ 次の例を複数のスキーマを追加する、 <xref:System.Xml.Schema.XmlSchemaSet>, を使用してスキーマの 1 つを削除し、 <xref:System.Xml.Schema.XmlSchemaSet.Remove%2A> メソッドです。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -956,8 +989,9 @@ foreach (XmlSchema schema in schemaSet.Schemas())
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">The schema is not a valid schema.</exception>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.Schema.XmlSchema" /> passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">スキーマは、有効なスキーマではありません。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> パラメーターとして渡された <see langword="null" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveRecursive">
@@ -985,17 +1019,18 @@ foreach (XmlSchema schema in schemaSet.Schemas())
         <Parameter Name="schemaToRemove" Type="System.Xml.Schema.XmlSchema" />
       </Parameters>
       <Docs>
-        <param name="schemaToRemove">The <see cref="T:System.Xml.Schema.XmlSchema" /> object to remove from the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</param>
-        <summary>Removes the specified XML Schema definition language (XSD) schema and all the schemas it imports from the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
+        <param name="schemaToRemove">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> から削除するオブジェクト、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</param>
+        <summary>指定した XML スキーマ定義言語 \(XSD\) スキーマとそれがインポートされたすべてのスキーマを削除、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
         <returns>
-          <see langword="true" /> if the <see cref="T:System.Xml.Schema.XmlSchema" /> object and all its imports were successfully removed; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 場合、 <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトとすべてのインポートが正常に削除された場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> method removes the specified schema and all the schemas it imports from the <xref:System.Xml.Schema.XmlSchemaSet>, as long as there are no dependencies on the schema or its imported schemas. If there are dependencies on the schema or its imported schemas in the <xref:System.Xml.Schema.XmlSchemaSet>, nothing is removed and <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> returns `false`. If `false` is returned and a <xref:System.Xml.Schema.XmlSchemaSet.ValidationEventHandler> is defined, a warning is sent to the event handler describing the dependencies.  
+## 解説  
+ <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> メソッドは、指定されたスキーマとそれがインポートされたすべてのスキーマを削除、 <xref:System.Xml.Schema.XmlSchemaSet>, 、スキーマや、インポートされたスキーマに依存関係がない限り、します。 スキーマで、インポートされたスキーマに依存関係があるかどうか、 <xref:System.Xml.Schema.XmlSchemaSet>, 、何が削除されると <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> を返します `false`します。 場合 `false` が返されますと <xref:System.Xml.Schema.XmlSchemaSet.ValidationEventHandler> が定義されている場合、警告が依存関係を記述するイベント ハンドラーに送信します。  
   
- If the specified schema imports other schemas and the specified schema was previously removed with the <xref:System.Xml.Schema.XmlSchemaSet.Remove%2A> method, the <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> method will not remove the imported schemas and will return `false`. For example, if `parentSchema` imports `childSchema1` and `childSchema2` the following code will only remove `parentSchema`, but not the imported `childSchema1` and `childSchema2` schemas:  
+ 指定したスキーマは、その他のスキーマをインポートし、指定されたスキーマが以前に削除されなかった場合、 <xref:System.Xml.Schema.XmlSchemaSet.Remove%2A> メソッド、 <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> メソッドがインポートされたスキーマは削除されませんし、戻ります `false`します。 たとえば場合、 `parentSchema` インポート `childSchema1` と `childSchema2` 次のコードはのみを削除 `parentSchema`, がインポートされていない、 `childSchema1` と `childSchema2` スキーマ。  
   
 ```  
 XmlSchemaSet ss = new XmlSchemaSet();  
@@ -1008,7 +1043,7 @@ ss.RemoveRecursive(xs);
 ss.Compile();  
 ```  
   
- The following code will remove the `parentSchema` and the imported schemas:  
+ 次のコードが削除されます、 `parentSchema` とスキーマをインポートします。  
   
 ```  
 XmlSchemaSet ss = new XmlSchemaSet();  
@@ -1019,12 +1054,12 @@ ss.RemoveRecursive(xs);
 ss.Compile();  
 ```  
   
- The <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> method has no effect on the state of the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property.  
+ <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> メソッドの状態に影響がない、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティです。  
   
    
   
-## Examples  
- The following code example illustrates adding multiple schemas to an <xref:System.Xml.Schema.XmlSchemaSet>, then removing one of the schemas and all the schemas it imports using the <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> method.  
+## 例  
+ 複数のスキーマを追加する次のコード例を示しています、 <xref:System.Xml.Schema.XmlSchemaSet>, 、スキーマのいずれかと、インポートを使用してすべてのスキーマを削除し、 <xref:System.Xml.Schema.XmlSchemaSet.RemoveRecursive%2A> メソッドです。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -1060,7 +1095,8 @@ foreach (XmlSchema schema in schemaSet.Schemas())
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.Schema.XmlSchema" /> passed as a parameter is <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> パラメーターとして渡された <see langword="null" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Reprocess">
@@ -1088,24 +1124,25 @@ foreach (XmlSchema schema in schemaSet.Schemas())
         <Parameter Name="schema" Type="System.Xml.Schema.XmlSchema" />
       </Parameters>
       <Docs>
-        <param name="schema">The schema to reprocess.</param>
-        <summary>Reprocesses an XML Schema definition language (XSD) schema that already exists in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <returns>An <see cref="T:System.Xml.Schema.XmlSchema" /> object if the schema is a valid schema. If the schema is not valid and a <see cref="T:System.Xml.Schema.ValidationEventHandler" /> is specified, <see langword="null" /> is returned and the appropriate validation event is raised. Otherwise, an <see cref="T:System.Xml.Schema.XmlSchemaException" /> is thrown.</returns>
+        <param name="schema">再処理するスキーマ。</param>
+        <summary>既に存在する XML スキーマ定義言語 \(XSD\) スキーマを再処理、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <returns>
+          <see cref="T:System.Xml.Schema.XmlSchema" /> オブジェクトのかどうか、スキーマは、有効なスキーマです。 スキーマが有効でない場合、 <see cref="T:System.Xml.Schema.ValidationEventHandler" /> が指定されている <see langword="null" /> が返され、該当する検証イベントが発生します。 それ以外の場合、 <see cref="T:System.Xml.Schema.XmlSchemaException" /> がスローされます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Reprocessing a schema performs all the preprocessing steps performed on a schema when the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method is called. If the call to <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> is successful, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property is set to `false`.  
+## 解説  
+ スキーマに対して実行されるすべての前処理手順を実行するスキーマの再処理時に、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドが呼び出されます。 場合への呼び出し <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> が成功すると、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> にプロパティが設定されている `false`します。  
   
- The Reprocess method should be used after a schema in the <xref:System.Xml.Schema.XmlSchemaSet> has been modified, after the <xref:System.Xml.Schema.XmlSchemaSet> has performed compilation.  
+ 内のスキーマの後に再処理メソッドを使用する必要があります、 <xref:System.Xml.Schema.XmlSchemaSet> が変更された後、 <xref:System.Xml.Schema.XmlSchemaSet> コンパイルを実行します。  
   
 > [!NOTE]
->  You need to call the <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> method if you have changed a schema (or one of its includes/imports) after adding it to the <xref:System.Xml.Schema.XmlSchemaSet>. The <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> method will check the schema for structural validity according to the rules of W3C XML Schema. However, it will not perform a full validation check. It will also resolve references to internal and external schema components. Any imported or included schemas that are successfully retrieved are also added to the <xref:System.Xml.Schema.XmlSchemaSet>. Imported schemas are added as separate <xref:System.Xml.Schema.XmlSchema> objects while included schemas are made part of the including <xref:System.Xml.Schema.XmlSchema>. If the call to reprocess is successful, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property is set to false.  
+>  呼び出す必要がある、 <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドに追加した後、スキーマ \(またはそれが含まれています\/インポートのいずれか\) を変更した場合、 <xref:System.Xml.Schema.XmlSchemaSet>です。<xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドは、スキーマの W3C XML スキーマの規則に従って構造上の有効性を確認します。 ただし、完全な検証チェックは実行しません。 内部および外部のスキーマ コンポーネントへの参照も解決されます。 正常に取得されるインポートまたはインクルード対象のスキーマが追加も、 <xref:System.Xml.Schema.XmlSchemaSet>です。 インポートされたスキーマは、個別として追加 <xref:System.Xml.Schema.XmlSchema> オブジェクトに含まれているなどの一部となるスキーマ <xref:System.Xml.Schema.XmlSchema>します。 再処理する呼び出しが成功した場合、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティが false に設定します。  
   
    
   
-## Examples  
- The following example illustrates reprocessing a schema added to the <xref:System.Xml.Schema.XmlSchemaSet>. After the <xref:System.Xml.Schema.XmlSchemaSet> is compiled using the <xref:System.Xml.Schema.XmlSchemaSet.Compile%2A> method, and the schema added to the <xref:System.Xml.Schema.XmlSchemaSet> is modified, the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property will be set to `true`, even though a schema in the <xref:System.Xml.Schema.XmlSchemaSet> has been modified. Calling the <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> method performs all the preprocessing performed by the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> method and sets the <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> property to `false`.  
+## 例  
+ 次の例に追加されたスキーマを再処理、 <xref:System.Xml.Schema.XmlSchemaSet>です。 後に、 <xref:System.Xml.Schema.XmlSchemaSet> を使用してコンパイルされて、 <xref:System.Xml.Schema.XmlSchemaSet.Compile%2A> メソッド、およびに追加されたスキーマ、 <xref:System.Xml.Schema.XmlSchemaSet> を変更すると、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティに設定されます `true`, 内のスキーマ場合でも、 <xref:System.Xml.Schema.XmlSchemaSet> が変更されました。 呼び出す、 <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドはすべての前処理を実行して、実行、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> メソッドとセット、 <xref:System.Xml.Schema.XmlSchemaSet.IsCompiled%2A> プロパティを `false`します。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet()  
@@ -1135,9 +1172,11 @@ schemaSet.Reprocess(schema);
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Xml.Schema.XmlSchemaException">The schema is not valid.</exception>
-        <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Xml.Schema.XmlSchema" /> object passed as a parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">The <see cref="T:System.Xml.Schema.XmlSchema" /> object passed as a parameter does not already exist in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</exception>
+        <exception cref="T:System.Xml.Schema.XmlSchemaException">スキーマが正しくありません。</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> パラメーターとして渡されたオブジェクト <see langword="null" />します。</exception>
+        <exception cref="T:System.ArgumentException">
+          <see cref="T:System.Xml.Schema.XmlSchema" /> でパラメーターが既に存在しないために、オブジェクトが渡される、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Schemas">
@@ -1163,21 +1202,22 @@ schemaSet.Reprocess(schema);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns a collection of all the XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</summary>
-        <returns>An <see cref="T:System.Collections.ICollection" /> object containing all the schemas that have been added to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />. If no schemas have been added to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />, an empty <see cref="T:System.Collections.ICollection" /> object is returned.</returns>
+        <summary>内の言語 \(XSD\) スキーマのすべての XML スキーマ定義のコレクションを返す、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+        <returns>
+          <see cref="T:System.Collections.ICollection" /> オブジェクトに追加されているすべてのスキーマを含む、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。 スキーマが追加されていない場合、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />, 、空 <see cref="T:System.Collections.ICollection" /> オブジェクトが返されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method returns schemas that were added indirectly to the <xref:System.Xml.Schema.XmlSchemaSet> because they were imported.  
+## 解説  
+ このメソッドを間接的に追加されたスキーマを返します、 <xref:System.Xml.Schema.XmlSchemaSet> インポートしたためです。  
   
 > [!NOTE]
->  The <xref:System.Xml.Schema.XmlSchemaSet.Schemas%2A> method is the equivalent of the <xref:System.Xml.Schema.XmlSchemaCollection.GetEnumerator%2A> method of the obsolete <xref:System.Xml.Schema.XmlSchemaCollection>.  
+>  <xref:System.Xml.Schema.XmlSchemaSet.Schemas%2A> メソッドと同等は、 <xref:System.Xml.Schema.XmlSchemaCollection.GetEnumerator%2A> メソッドの廃止された <xref:System.Xml.Schema.XmlSchemaCollection>します。  
   
    
   
-## Examples  
- The following example illustrates how to iterate over all the schemas in the <xref:System.Xml.Schema.XmlSchemaSet>.  
+## 例  
+ 次の例では、すべてのスキーマを反復処理する方法、 <xref:System.Xml.Schema.XmlSchemaSet>です。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet  
@@ -1231,24 +1271,25 @@ foreach (XmlSchema schema in schemaSet.Schemas())
         <Parameter Name="targetNamespace" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="targetNamespace">The schema <c>targetNamespace</c> property.</param>
-        <summary>Returns a collection of all the XML Schema definition language (XSD) schemas in the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> that belong to the given namespace.</summary>
-        <returns>An <see cref="T:System.Collections.ICollection" /> object containing all the schemas that have been added to the <see cref="T:System.Xml.Schema.XmlSchemaSet" /> that belong to the given namespace. If no schemas have been added to the <see cref="T:System.Xml.Schema.XmlSchemaSet" />, an empty <see cref="T:System.Collections.ICollection" /> object is returned.</returns>
+        <param name="targetNamespace">スキーマ <c>targetNamespace</c> プロパティです。</param>
+        <summary>内の言語 \(XSD\) スキーマのすべての XML スキーマ定義のコレクションを返す、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> 指定した名前空間に属しています。</summary>
+        <returns>
+          <see cref="T:System.Collections.ICollection" /> オブジェクトに追加されているすべてのスキーマを含む、 <see cref="T:System.Xml.Schema.XmlSchemaSet" /> 指定した名前空間に属しています。 スキーマが追加されていない場合、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />, 、空 <see cref="T:System.Collections.ICollection" /> オブジェクトが返されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the `targetNamespace` parameter is `null` or <xref:System.String.Empty>, then all schemas without a namespace are returned.  
+## 解説  
+ 場合、 `targetNamespace` パラメーターは `null` または <xref:System.String.Empty>, 、名前空間を持たないすべてのスキーマが返されます。  
   
- This method returns schemas that were added indirectly to the <xref:System.Xml.Schema.XmlSchemaSet> because they were imported.  
+ このメソッドを間接的に追加されたスキーマを返します、 <xref:System.Xml.Schema.XmlSchemaSet> インポートしたためです。  
   
 > [!NOTE]
->  The <xref:System.Xml.Schema.XmlSchemaSet.Schemas%2A> method is the equivalent of the <xref:System.Xml.Schema.XmlSchemaCollection.Item%2A> method of the obsolete <xref:System.Xml.Schema.XmlSchemaCollection>.  
+>  <xref:System.Xml.Schema.XmlSchemaSet.Schemas%2A> メソッドと同等は、 <xref:System.Xml.Schema.XmlSchemaCollection.Item%2A> メソッドの廃止された <xref:System.Xml.Schema.XmlSchemaCollection>します。  
   
    
   
-## Examples  
- The following example illustrates how to iterate over all the schemas in the http://www.contoso.com/books namespace in the <xref:System.Xml.Schema.XmlSchemaSet>.  
+## 例  
+ 次の例で http:\/\/www.contoso.com\/books 名前空間内のすべてのスキーマを反復処理する方法を示しています、 <xref:System.Xml.Schema.XmlSchemaSet>です。  
   
 ```vb  
 Dim schemaSet As XmlSchemaSet = New XmlSchemaSet  
@@ -1299,31 +1340,31 @@ foreach (XmlSchema schema in schemaSet.Schemas("http://www.contoso.com/books"))
         <ReturnType>System.Xml.Schema.ValidationEventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Specifies an event handler for receiving information about XML Schema definition language (XSD) schema validation errors.</summary>
+        <summary>XML スキーマ定義言語 \(XSD\) スキーマ検証エラーに関する情報を受信するためのイベント ハンドラーを指定します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Sets an event handler for receiving information about schema validation errors when the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> or <xref:System.Xml.Schema.XmlSchemaSet.Compile%2A> methods of the <xref:System.Xml.Schema.XmlSchemaSet> are called.  
+## 解説  
+ スキーマ検証エラーに関する情報を受け取るイベント ハンドラーを設定時に、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> または <xref:System.Xml.Schema.XmlSchemaSet.Compile%2A> のメソッド、 <xref:System.Xml.Schema.XmlSchemaSet> と呼ばれます。  
   
- If an event handler is not defined, an <xref:System.Xml.Schema.XmlSchemaException> is thrown on any validation errors where the <xref:System.Xml.Schema.XmlSeverityType> is <xref:System.Xml.Schema.XmlSeverityType.Error>. Exceptions are not thrown for validation errors with an <xref:System.Xml.Schema.XmlSeverityType> of <xref:System.Xml.Schema.XmlSeverityType.Warning>.  
+ イベント ハンドラーが定義されていない場合、 <xref:System.Xml.Schema.XmlSchemaException> 検証エラーがスローされます場所、 <xref:System.Xml.Schema.XmlSeverityType> は <xref:System.Xml.Schema.XmlSeverityType.Error>です。 検証エラーの例外はスローしません、 <xref:System.Xml.Schema.XmlSeverityType> の <xref:System.Xml.Schema.XmlSeverityType.Warning>です。  
   
    
   
-## Examples  
- The following code example illustrates adding a <xref:System.Xml.Schema.XmlSchemaSet.ValidationEventHandler> to capture errors and warnings when validating an XML document against a schema.  
+## 例  
+ 次のコード例では、追加を示しています、 <xref:System.Xml.Schema.XmlSchemaSet.ValidationEventHandler> スキーマに対して XML ドキュメントを検証するときに、エラーと警告をキャプチャします。  
   
- [!code-cpp[XmlSchemaSetOverall Example#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlSchemaSetOverall Example/CPP/xmlschemasetexample.cpp#1)]
- [!code-csharp[XmlSchemaSetOverall Example#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSchemaSetOverall Example/CS/xmlschemasetexample.cs#1)]
- [!code-vb[XmlSchemaSetOverall Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSchemaSetOverall Example/VB/xmlschemasetexample.vb#1)]  
+ [!code-cpp[XmlSchemaSetOverall Example\#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlSchemaSetOverall Example/CPP/xmlschemasetexample.cpp#1)]
+ [!code-csharp[XmlSchemaSetOverall Example\#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlSchemaSetOverall Example/CS/xmlschemasetexample.cs#1)]
+ [!code-vb[XmlSchemaSetOverall Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlSchemaSetOverall Example/VB/xmlschemasetexample.vb#1)]  
   
- The example uses the books.xml file as an input.  
+ この例では、入力として books.xml ファイルを使用します。  
   
- [!code-xml[XmlSchemaSetOverall Example#2](~/samples/snippets/xml/VS_Snippets_Data/XmlSchemaSetOverall Example/XML/books.xml#2)]  
+ [!code-xml[XmlSchemaSetOverall Example\#2](~/samples/snippets/xml/VS_Snippets_Data/XmlSchemaSetOverall Example/XML/books.xml#2)]  
   
- The example uses the books.xsd file as an input.  
+ この例では、入力として books.xsd ファイルを使用します。  
   
- [!code-xml[XmlSchemaSetOverall Example#3](~/samples/snippets/xml/VS_Snippets_Data/XmlSchemaSetOverall Example/XML/books.xsd#3)]  
+ [!code-xml[XmlSchemaSetOverall Example\#3](~/samples/snippets/xml/VS_Snippets_Data/XmlSchemaSetOverall Example/XML/books.xsd#3)]  
   
  ]]></format>
         </remarks>
@@ -1351,20 +1392,63 @@ foreach (XmlSchema schema in schemaSet.Schemas("http://www.contoso.com/books"))
         <ReturnType>System.Xml.XmlResolver</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Sets the <see cref="T:System.Xml.XmlResolver" /> used to resolve namespaces or locations referenced in include and import elements of a schema.</summary>
-        <value>The <see cref="T:System.Xml.XmlResolver" /> used to resolve namespaces or locations referenced in include and import elements of a schema.</value>
+        <summary>セット、 <see cref="T:System.Xml.XmlResolver" /> 名前空間または場所で参照されるインクルード要素およびインポート、スキーマの解決に使用します。</summary>
+        <value>
+          <see cref="T:System.Xml.XmlResolver" /> 名前空間または場所で参照されるインクルード要素およびインポート、スキーマの解決に使用します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Xml.XmlResolver> of an <xref:System.Xml.Schema.XmlSchemaSet> is used to resolve namespaces or locations referenced in include and import elements of a schema, any time a schema is added using the <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> or <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> methods.  
+## 解説  
+ <xref:System.Xml.XmlResolver> の <xref:System.Xml.Schema.XmlSchemaSet> 名前空間または場所で参照を含めるし、スキーマの要素をインポートするには、いつでもを使用してスキーマを追加の解決に使用される、 <xref:System.Xml.Schema.XmlSchemaSet.Add%2A> または <xref:System.Xml.Schema.XmlSchemaSet.Reprocess%2A> メソッドです。  
   
 > [!IMPORTANT]
->  External namespaces or locations referenced in include, import, and redefine elements of a schema are resolved with respect to the base URI of the schema that includes or imports them. For example, if the base URI of the including or importing schema is empty or `null`, the external locations are resolved with respect to the current directory. The <xref:System.Xml.XmlUrlResolver> class is used to resolve external schemas by default. To disable resolution of include, import, and redefine elements of a schema, set the <xref:System.Xml.Schema.XmlSchemaSet.XmlResolver%2A> property to `null`.  
+>  外部の名前空間または場所で参照されている含めるには、インポート、およびスキーマの再定義要素が基準にして解決インクルードまたはインポートするスキーマのベース URI。 たとえば、ベース URI を含むまたはスキーマをインポートするは、空または `null`, 、外部の場所は、現在のディレクトリを基準に解決します。<xref:System.Xml.XmlUrlResolver> クラスは、外部スキーマを解決するのには既定で使用します。 インクルード、インポートの解像度を無効にして、スキーマの要素を再定義、設定、 <xref:System.Xml.Schema.XmlSchemaSet.XmlResolver%2A> プロパティを `null`します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Xml.XmlResolver" />
       </Docs>
     </Member>
+    <MemberGroup MemberName="Add">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>指定された XML スキーマ定義言語 \(XSD\) スキーマを追加、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Xml.Schema.XmlSchemaSet" /> クラスの新しいインスタンスを初期化します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Contains">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>XML スキーマ定義言語 \(XSD\) スキーマがかどうかを示す、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Schemas">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>XML スキーマ定義のコレクション内の言語 \(XSD\) スキーマを返す、 <see cref="T:System.Xml.Schema.XmlSchemaSet" />です。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

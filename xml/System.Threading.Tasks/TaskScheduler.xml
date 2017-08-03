@@ -33,85 +33,85 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Represents an object that handles the low-level work of queuing tasks onto threads.</summary>
+    <summary>スレッドのキューにタスクを置くという下位の作業を処理するオブジェクトを表します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- An instance of the <xref:System.Threading.Tasks.TaskScheduler> class represents a task scheduler. A task scheduler ensures that the work of a task is eventually executed.  
+## 解説  
+ インスタンス、<xref:System.Threading.Tasks.TaskScheduler>クラスは、タスク スケジューラを表します。 タスク スケジューラは、タスクの作業が最終的に実行されるようにします。  
   
- The default task scheduler is based on the .NET Framework 4 thread pool, which provides work-stealing for load-balancing, thread injection/retirement for maximum throughput, and overall good performance. It should be sufficient for most scenarios.  
+ 既定のタスク スケジューラは、負荷分散、スループット最大化のためのスレッドのインジェクション\/リタイヤ、および全体のパフォーマンスの向上のためのワーク スティーリングを提供する .NET Framework 4 スレッド プールに基づいています。 ほとんどのシナリオでは、既定のタスク スケジューラで十分です。  
   
- The <xref:System.Threading.Tasks.TaskScheduler> class also serves as the extension point for all customizable scheduling logic.  This includes mechanisms such as how to schedule a task for execution, and how scheduled tasks should be exposed to debuggers. If you require special functionality, you can create a custom scheduler and enable it for specific tasks or queries.  
+ <xref:System.Threading.Tasks.TaskScheduler>クラスは、すべてのカスタマイズ可能なスケジュール ロジックの拡張ポイントとしても機能します。  タスクの実行、およびスケジュールされたタスクをスケジュールする方法をデバッガーに公開するなど、このメカニズムが含まれます。 特別な機能を必要とする場合は、カスタム スケジューラを作成して、特定のタスクまたはクエリに対して有効にします。  
   
- In this topic:  
-[The default task scheduler and the thread pool](#Default)  
- [The global queue vs. local queues](#Queues)  
- [Work stealing](#Stealing)  
- [Long-running tasks](#LongRunning)  
- [Task inlining](#Inlining)  
-[Specifying a synchronization context](#Sync)  
+ このトピックの内容:  
+[既定のタスク スケジューラと、スレッド プール](#Default)  
+[とローカル キューにグローバル キュー](#Queues)  
+[ワーク スティー リング](#Stealing)  
+[実行時間の長いタスク](#LongRunning)  
+[タスクのインライン展開](#Inlining)  
+[同期コンテキストの指定](#Sync)  
   
 <a name="Default"></a>   
-## The default task scheduler and the thread pool  
- The default scheduler for the Task Parallel Library and PLINQ uses the .NET Framework thread pool, which is represented by the <xref:System.Threading.ThreadPool> class, to queue and execute work. The thread pool uses the information that is provided by the <xref:System.Threading.Tasks.Task> type to efficiently     support the fine-grained parallelism (short-lived units of work) that parallel tasks and queries often represent.  
+## 既定のタスク スケジューラと、スレッド プール  
+ タスク並列ライブラリおよび PLINQ の既定のスケジューラで表される、.NET Framework スレッド プールを使用して、<xref:System.Threading.ThreadPool>クラス、キューに置き、作業を実行します。 スレッド プールによって提供される情報を使用して、<xref:System.Threading.Tasks.Task>粒度の細かい並列化 \(有効期間が短い作業単位\) 並列タスクや並列クエリよく表すを効率的にサポートする型。  
   
 <a name="Queues"></a>   
-### The global queue vs. local queues  
- The thread pool maintains a global FIFO (first-in, first-out) work queue for threads in each application domain. Whenever a program calls the <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=fullName> (or <xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=fullName>) method, the work is put on this shared queue and eventually de-queued onto the next thread that becomes available. Starting with the .NET Framework 4, this queue has been improved to use a lock-free algorithm that resembles the <xref:System.Collections.Concurrent.ConcurrentQueue%601> class. By using this lock-free implementation, the thread pool spends less time when it queues and de-queues work items. This performance benefit is available to all programs that use the thread pool.  
+### ローカル キューとの比較にグローバル キュー  
+ スレッド プールでは、グローバル FIFO \(先入れ、先出し\) 作業の各アプリケーション ドメインのスレッドのキューを保持します。 プログラムを呼び出すたびに、 <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=fullName> \(または<xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=fullName>\)、メソッドは、この共有キューに配置、および作業最終的にキューから取り出され、次に利用可能になるスレッドにします。 .NET Framework 4 以降ではこのキューが改善されましたに似たロック制御不要のアルゴリズムを使用して、<xref:System.Collections.Concurrent.ConcurrentQueue%601>クラスです。 このロック制御不要の実装を使用するは、スレッド プールは、キューに入れ、作業項目は、キューの場合に、短時間を費やしています。 このパフォーマンスの利点は、スレッド プールを使用するすべてのプログラムで使用可能です。  
   
- Top-level tasks, which are tasks that are not created in the context of another task, are put on the global queue just like any other work item. However, nested or child tasks, which are created in the context of another task, are handled quite differently. A child or nested task is put on a local queue that is specific to the thread on which the parent task is executing. The parent task may be a top-level task or it also may be the child of another task. When this thread is ready for more work, it first looks in the local queue. If work items are waiting there, they can be accessed quickly. The local queues are accessed in last-in, first-out order (LIFO) to preserve cache locality and reduce contention. For more information about child tasks and nested tasks, see [Attached and Detached Child Tasks](~/docs/standard/parallel-programming/attached-and-detached-child-tasks.md).  
+ トップレベル タスクは、別のタスクのコンテキストで作成されないタスクのことで、他の作業項目と同様にグローバル キューに配置されます。 ただし、別のタスクのコンテキストで作成される入れ子のタスクまたは子タスクは、まったく異なる方法で処理されます。 子タスクまたは入れ子のタスクは、親タスクが実行されているスレッドに固有のローカル キューに配置されます。 親タスクはトップレベルのタスクである場合もあれば、別のタスクの子である場合もあります。 このスレッドは、追加の作業を処理する準備が整ったら、最初にローカル キューを検索します。 作業項目がローカル キューで待機している場合は、それらにすばやくアクセスできます。 ローカル キューは、後入れ先出しの順序でキャッシュの局所性を保持し、競合を減らすには、\(LIFO\) アクセスします。 子タスクと入れ子のタスクの詳細については、「[Attached and Detached Child Tasks](http://msdn.microsoft.com/ja-jp/c95788bf-90a6-4e96-b7bc-58e36a228cc5)」を参照してください。  
   
- The use of local queues not only reduces pressure on the global queue, but also takes advantage of data locality. Work items in the local queue frequently reference data structures that are physically near one another in memory. In these cases, the data is already in the cache after the first task has run and can be accessed quickly. Both [Parallel LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md) and the <xref:System.Threading.Tasks.Parallel> class use nested tasks and child tasks extensively, and achieve significant speedups by using the local work queues.  
+ ローカル キューを使用するにグローバル キューに負荷が減るだけでなく、データの局所性も活用します。 頻繁にキュー、ローカルの作業項目の物理的に近くにあるメモリ参照データ構造です。 このような場合は、データが既にキャッシュに最初のタスクが実行し、すばやくアクセスできます。 両方[Parallel LINQ \(PLINQ\)](http://msdn.microsoft.com/ja-jp/3d4d0cd3-bde4-490b-99e7-f4e41be96455)、<xref:System.Threading.Tasks.Parallel>使用する入れ子になったタスクと子タスクを広範囲に、クラスし、ローカル作業キューを使用する重要なことを実現します。  
   
 <a name="Stealing"></a>   
-### Work stealing  
- Starting with the .NET Framework 4, the thread pool also features a work-stealing algorithm to help make sure that no threads are sitting idle while others still have work in their queues. When a thread-pool thread is ready for more work, it first looks at the head of its local queue, then in the global queue, and then in the local queues of other threads. If it finds a work item in the local queue of another thread, it first applies heuristics to make sure that it can run the work efficiently. If it can, it de-queues the work item from the tail (in FIFO order). This reduces contention on each local queue and preserves data locality. This architecture helps the  thread pool load-balance work more efficiently than past versions did.  
+### ワーク スティー リング  
+ .NET Framework 4 以降では、スレッド プール機能も備えてようにするのに役立ちますスレッドがとどまっているないアイドル作業が担当するキューの中に、ワーク スティー リング アルゴリズムです。 スレッド プールのスレッドは、追加の作業を処理する準備が整ったら、最初にローカル キューの先頭を探します。次にグローバル キューを探し、最後に他のスレッドのローカル キューを探します。 別のスレッドのローカル キューで作業項目が見つかった場合、作業を効率的に実行できるように、最初にヒューリスティックを適用します。 できる場合は、キューで FIFO の順序\) の末尾から、作業項目。 これにより、各ローカル キューでの競合が減り、データの局所性が保持されます。 このアーキテクチャは、スレッド プール負荷を分散旧バージョンより効率的に作業に役立ちます。  
   
 <a name="LongRunning"></a>   
-### Long-running tasks  
- You may want to explicitly prevent a task from being put on a local queue. For example, you may know that a particular work item will run for a relatively long time and is likely to block all other work items on the local queue. In this case, you can specify the <xref:System.Threading.Tasks.TaskCreationOptions?displayProperty=fullName> option, which provides a hint to the scheduler that an additional thread might be required for the task so that it does not block the forward progress of other threads or work items on the local queue. By using this option you avoid the thread pool completely, including the global and local queues.  
+### 実行時間の長いタスク  
+ タスクがローカル キューに配置されるのを明示的に防止したい場合があります。 たとえば、特定の作業項目がかなり長い時間実行され、ローカル キューの他の作業項目をすべてブロックする可能性があることがわかっている場合などです。 このような場合は、<xref:System.Threading.Tasks.TaskCreationOptions.LongRunning?displayProperty=fullName> オプションを指定できます。このオプションは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをスケジューラに提供し、他のスレッドまたはローカル キューの作業項目の進行をスケジューラがブロックするのを防ぎます。 このオプションを使用してする回避スレッド プール完全には、グローバルとローカル キューを含みます。  
   
 <a name="Inlining"></a>   
-### Task inlining  
- In some cases when a <xref:System.Threading.Tasks.Task> is waited on, it may be executed synchronously on the thread that is performing the wait operation. This enhances performance by preventing the need for an additional thread and instead using the existing thread, which would have blocked otherwise. To prevent errors due to re-entrancy, task inlining only occurs when the wait target is found in the relevant thread's local queue.  
+### タスクのインライン展開  
+ 一部の場合に、<xref:System.Threading.Tasks.Task>待機が実行されることが同期的に、待機操作を実行しているスレッドでします。 これは、によって、追加のスレッドが不要にし、代わりにそれがブロックされている既存のスレッドを使用してパフォーマンスを向上します。 タスクのインライン展開これは再入によるエラーを防ぐためには、関連するスレッドのローカル キューで待機対象が見つかったときにのみ発生します。  
   
 <a name="Sync"></a>   
-## Specifying a synchronization context  
- You can use the <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=fullName> method to specify that a task should be scheduled to run on a particular thread. This is useful in frameworks such as Windows Forms and Windows Presentation Foundation where access to user interface objects is often restricted to code that is running on the same thread on which the UI object was created. For more information, see How to: Schedule Work on the User Interface (UI) Thread.  
+## 同期コンテキストの指定  
+ <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=fullName> メソッドを使用すると、タスクが特定のスレッドで実行されるようにスケジュールできます。 これは、Windows フォームや Windows Presentation Foundation などのフレームワークで役立ちます。これらのフレームワークでは、多くの場合、ユーザー インターフェイス オブジェクトへのアクセスが、その UI オブジェクトが作成されたスレッドで実行されているコードに制限されるからです。 詳細については、次を参照してください。 方法: ユーザー インターフェイス \(UI\) スレッドで作業をスケジュールします。  
   
- The following example uses the <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=fullName> method in a Windows Presentation Foundation (WPF) app to schedule a task on the same thread that the user interface (UI) control was created on.   The example creates a mosaic of images that are randomly selected from a specified directory. The WPF objects are used to load and resize the images. The raw pixels are then passed to a task that uses a `For` loop to write the pixel data into a large single-byte array. No synchronization is required because no two tiles occupy the same array elements. The tiles can also be written in any order because their position is calculated independently of any other tile. The large array is then passed to a task that runs on the UI thread, where the pixel data is loaded into an Image control.  
+ 次の例では、 <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=fullName> Windows Presentation Foundation \(WPF\) アプリケーションでは、ユーザー インターフェイス \(UI\) コントロールが作成された同じスレッドでタスクをスケジュールする方法です。   例では、指定したディレクトリからランダムに選択されているイメージのを作成します。 WPF オブジェクトは、読み込みし、イメージのサイズ変更に使用されます。 生のピクセルを使用するタスクに渡されて、`For`ラージ 1 バイト配列にピクセル データを書き込むループします。 同期は必要ありませんので、2 つのタイルが同じ配列の要素を占有します。 その他のいずれかのタイルとは別にそれらの位置が計算されるため、タイルを任意の順序で記述もできます。 大きな配列がイメージ コントロールにピクセル データが読み込まれる場所が UI スレッドで実行されるタスクに渡されます。  
   
- The example moves data off the UI thread, modifies it by using parallel loops and <xref:System.Threading.Tasks.Task> objects, and then passes it back to a task that runs on the UI thread. This approach is useful when you have to use the Task Parallel Library to perform operations that either are not supported by the WPF API, or are not sufficiently fast. Another way to create an image mosaic in WPF is to use a <xref:System.Windows.Controls.WrapPanel?displayProperty=fullName> control and add images to it. The <xref:System.Windows.Controls.WrapPanel> handles the work of positioning the tiles. However, this work can only be performed on the UI thread.  
+ 例では、UI スレッドからのデータを移動するには、並列ループを使用して、変更および<xref:System.Threading.Tasks.Task>オブジェクト、し、それを UI スレッドで実行されるタスクに渡します。 この方法は、タスク並列ライブラリを使用して、WPF API でサポートされていないか十分な速さを操作する必要がある場合に便利です。 WPF ではイメージ表さを作成する別の方法を使用して、<xref:System.Windows.Controls.WrapPanel?displayProperty=fullName>を制御し、イメージを追加します。<xref:System.Windows.Controls.WrapPanel>タイルの配置の作業を処理します。 ただし、この作業は、UI スレッドでのみ実行できます。  
   
- [!code-csharp[TPL_SyncContext#01](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_synccontext/cs/mainwindow.xaml.cs#01)]
- [!code-vb[TPL_SyncContext#01](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_synccontext/vb/MainWindow.xaml.vb#01)]  
+ [!code-csharp[TPL\_SyncContext\#01](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_synccontext/cs/mainwindow.xaml.cs#01)]
+ [!code-vb[TPL\_SyncContext\#01](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_synccontext/vb/MainWindow.xaml.vb#01)]  
   
- To create the example, crate a WPF application project in Visual Studio and assign it a name of your choice. Then do the following:  
+ 例を作成するには、Visual Studio での WPF アプリケーション プロジェクトを作成し、任意の名前を割り当てます。 次の操作を行います。  
   
-1.  In design view, drag an <xref:System.Windows.Controls.Image> control from the **Toolbox** to the design surface. In XAML view, specify the horizontal alignment as "Left." The size does not matter because the control is be dynamically resized at run time. Accept the default name, "image".  
+1.  デザイン ビューで、ドラッグする<xref:System.Windows.Controls.Image>から制御の**ツールボックス**デザイン画面にします。 XAML ビューで、"Left"と水平方向の配置を指定します サイズは、実行時にコントロールが動的にサイズ変更があるためには関係ありません。 「イメージ」の既定の名前をそのまま使用します。  
   
-2.  Drag a <xref:System.Windows.Controls.Button> control from the **Toolbox** to the lower left part of the application window. Double-click the button to add a <xref:System.Windows.Controls.Primitives.ButtonBase.Click> event handler. In XAML view, specify the <xref:System.Windows.Controls.ContentControl.Content%2A> property of the button as "Make a Mosaic" and specify its horizontal alignment as "Left". Accept the default name, "button".  
+2.  ドラッグ、<xref:System.Windows.Controls.Button>コントロールを**ツールボックス**アプリケーション ウィンドウの左下の部分にします。 追加ボタンをダブルクリックして、<xref:System.Windows.Controls.Primitives.ButtonBase.Click>イベント ハンドラー。 XAML ビューで、指定、 <xref:System.Windows.Controls.ContentControl.Content%2A> 「表さようにする」と"Left"としての水平方向の配置を指定して、ボタンのプロパティです。 "Button"既定の名前をそのまま使用します。  
   
-3.  Replace the entire contents of the MainWindow.xaml.cs or MainWindow.xaml.vb file with the code from this example. Make sure that the name of the workspace matches the project name.  
+3.  この例のコードを MainWindow.xaml.cs または MainWindow.xaml.vb ファイルの内容全体を置き換えます。 ワークスペースの名前がプロジェクト名と一致していることを確認してください。  
   
-4.  The example reads JPEG images from a directory named C:\Users\Public\Pictures\Sample Pictures\\. Either create the directory and place some images in it, or change the path to refer to some other directory that contains images.  
+4.  この例では、C:\\Users\\Public\\Pictures\\Sample \\ という名前のディレクトリから JPEG 画像を読み取ります。 ディレクトリを作成および、いくつかのイメージを配置またはイメージを含むその他のディレクトリを参照するパスを変更します。  
   
- This example has some limitations. For example, only 32-bits-per-pixel images are supported; images in other formats are corrupted by the <xref:System.Windows.Media.Imaging.BitmapImage> object during the resizing operation. Also, the source images must all be larger than the tile size. As a further exercise, you can add functionality to handle multiple pixel formats and file sizes.  
+ この例では、いくつかの制限があります。 など、のみ 32 ビットごとのピクセルの画像がサポートされています。によって他の形式でのイメージが破損している、<xref:System.Windows.Media.Imaging.BitmapImage>サイズ変更操作中にオブジェクト。 また、ソース イメージする必要がありますすべてタイルのサイズよりも大きいです。 これ以上の手順としては、複数のピクセル形式やファイルのサイズを処理する機能を追加できます。  
   
    
   
-## Examples  
- The following example is taken from the [Samples for Parallel Programming with the .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717) on the MSDN Code Gallery Web site.  It creates a custom task scheduler that limits the number of threads used by the app. It then launches two sets of tasks and displays information about the task and the thread on which the task is executing.  
+## 例  
+ 次の例がから取得した、 [Samples for Parallel Programming with the .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717) MSDN コード ギャラリー Web サイトです。  アプリで使用されるスレッドの数を制限するカスタムのタスク スケジューラを作成します。 2 つのタスクのセットを起動し、タスクおよびタスクが実行されているスレッドに関する情報が表示されます。  
   
- [!code-csharp[TPL_Schedulers#02](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_schedulers/cs/limitex1.cs#02)]
- [!code-vb[TPL_Schedulers#02](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_schedulers/vb/module2.vb#02)]  
+ [!code-csharp[TPL\_Schedulers\#02](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_schedulers/cs/limitex1.cs#02)]
+ [!code-vb[TPL\_Schedulers\#02](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_schedulers/vb/module2.vb#02)]  
   
  In addition, several sample task schedulers are available on Code Gallery: [Samples for Parallel Programming with the .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717).  
   
  ]]></format>
     </remarks>
-    <threadsafe>All members of the abstract <see cref="T:System.Threading.Tasks.TaskScheduler" /> type are thread-safe and may be used from multiple threads concurrently.</threadsafe>
+    <threadsafe>すべての抽象メンバー<see cref="T:System.Threading.Tasks.TaskScheduler" />型はスレッド セーフであると複数のスレッドから同時に使用することがあります。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -139,8 +139,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes the <see cref="T:System.Threading.Tasks.TaskScheduler" />.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Threading.Tasks.TaskScheduler" /> を初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Current">
@@ -170,16 +179,19 @@
         <ReturnType>System.Threading.Tasks.TaskScheduler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the <see cref="T:System.Threading.Tasks.TaskScheduler" /> associated with the currently executing task.</summary>
-        <value>Returns the <see cref="T:System.Threading.Tasks.TaskScheduler" /> associated with the currently executing task.</value>
+        <summary>取得、 <see cref="T:System.Threading.Tasks.TaskScheduler" /> 現在実行中のタスクに関連付けられています。</summary>
+        <value>返します。、 <see cref="T:System.Threading.Tasks.TaskScheduler" /> 現在実行中のタスクに関連付けられています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When not called from within a task, <xref:System.Threading.Tasks.TaskScheduler.Current%2A> will return the <xref:System.Threading.Tasks.TaskScheduler.Default%2A> scheduler.  
+## 解説  
+ タスク内から呼び出されていない場合 <xref:System.Threading.Tasks.TaskScheduler.Current%2A> 戻ります、 <xref:System.Threading.Tasks.TaskScheduler.Default%2A> スケジューラです。  
   
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -211,14 +223,17 @@
         <ReturnType>System.Threading.Tasks.TaskScheduler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the default <see cref="T:System.Threading.Tasks.TaskScheduler" /> instance that is provided by the .NET Framework.</summary>
-        <value>Returns the default <see cref="T:System.Threading.Tasks.TaskScheduler" /> instance.</value>
+        <summary>既定値を取得 <see cref="T:System.Threading.Tasks.TaskScheduler" /> は .NET Framework によって提供されるインスタンスです。</summary>
+        <value>既定値を返す <see cref="T:System.Threading.Tasks.TaskScheduler" /> インスタンス。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+## 解説  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -251,19 +266,23 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a <see cref="T:System.Threading.Tasks.TaskScheduler" /> associated with the current <see cref="T:System.Threading.SynchronizationContext" />.</summary>
-        <returns>A <see cref="T:System.Threading.Tasks.TaskScheduler" /> associated with the current <see cref="T:System.Threading.SynchronizationContext" />, as determined by <see cref="P:System.Threading.SynchronizationContext.Current" />.</returns>
+        <summary>現在の <see cref="T:System.Threading.SynchronizationContext" /> に関連付けられている <see cref="T:System.Threading.Tasks.TaskScheduler" /> を作成します。</summary>
+        <returns>
+          <see cref="P:System.Threading.SynchronizationContext.Current" />による判断として、現在の <see cref="T:System.Threading.SynchronizationContext" /> に関連付けられている <see cref="T:System.Threading.Tasks.TaskScheduler" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- All <xref:System.Threading.Tasks.Task> instances queued to the returned scheduler will be executed through a call to the <xref:System.Threading.SynchronizationContext.Post%2A> method on that context.  
+## 解説  
+ すべて<xref:System.Threading.Tasks.Task>に返されたインスタンスのキューに置かれたを呼び出すことによって実行されるスケジューラの<xref:System.Threading.SynchronizationContext.Post%2A>メソッドのコンテキストでします。  
   
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The current SynchronizationContext may not be used as a TaskScheduler.</exception>
+        <exception cref="T:System.InvalidOperationException">現在の SynchronizationContext を TaskScheduler として使用することはできません。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetScheduledTasks">
@@ -299,15 +318,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>For debugger support only, generates an enumerable of <see cref="T:System.Threading.Tasks.Task" /> instances currently queued to the scheduler waiting to be executed.</summary>
-        <returns>An enumerable that allows a debugger to traverse the tasks currently queued to this scheduler.</returns>
+        <summary>デバッガーのサポートが作成されるだけの列挙可能な <see cref="T:System.Threading.Tasks.Task" /> インスタンスが実行を待機しているスケジューラに現在キューに登録します。</summary>
+        <returns>このスケジューラにキューを使用する現在のタスクを走査するデバッガーを列挙型。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A class derived from <xref:System.Threading.Tasks.TaskScheduler> implements this method in order to support integration with debuggers. This method will only be invoked by the .NET Framework when the debugger requests access to the data. The enumerable returned will be traversed by debugging utilities to access the tasks currently queued to this scheduler, enabling the debugger to provide a representation of this information in the user interface.  
+## 解説  
+ 派生したクラス <xref:System.Threading.Tasks.TaskScheduler> デバッガーとの統合をサポートするためにこのメソッドを実装します。 デバッガーは、データへのアクセスを要求したときに、.NET Framework はこのメソッドを呼び出すだけです。 列挙型の返されたタスクにアクセスするためのユーティリティをデバッグして、走査するデバッガーを使用して、ユーザー インターフェイスでこの情報の表示を有効にすると、このスケジューラに現在キューに登録します。  
   
- It is important to note that, when this method is called, all other threads in the process will be frozen. Therefore, it's important to avoid synchronization with other threads that may lead to blocking. If synchronization is necessary, and you are unable to acquire the lock in this method, then you should throw an exception so that the debugger does not hang. The following example shows one possible approach in C#:  
+ ことが重要でこのメソッドが呼び出されると、プロセスの他のすべてのスレッドが凍結されることに注意してください。 そのため、ブロックにつながる可能性のあるその他のスレッドとの同期を避けるために重要ですが。 同期が必要に応じて、このメソッドでロックを取得できない場合、デバッガーがハングしないように例外をスローする必要があります。 次の例は、c\# での方法の 1 つを示しています。  
   
 ```  
 protected override IEnumerable<Task> GetScheduledTasks()  
@@ -328,15 +347,18 @@ protected override IEnumerable<Task> GetScheduledTasks()
     }}  
 ```  
   
- Additionally, this method and the enumerable returned must not modify any globally visible state.  
+ さらに、このメソッドは、返される列挙可能なは、任意のグローバルな表示状態を変更する必要があります。  
   
- The returned enumerable should never be null. If there are currently no queued tasks, an empty enumerable should be returned instead.  
+ 列挙可能な返される null ではありません。 現在、キューに置かれたタスクはありません、空白の列挙型が代わりに返されます。  
   
- Developers who are implementing custom debuggers shouldn't call this method directly, but should use the internal wrapper method `GetScheduledTasksForDebugger` instead: `internal Task[] GetScheduledTasksForDebugger()`. This wrapper method returns an array of tasks instead of an enumerable. To retrieve a list of active schedulers, use the internal method `internal static TaskScheduler[] GetTaskSchedulersForDebugger()`. This static method returns an array of all active <xref:System.Threading.Tasks.TaskScheduler> instances. You can then use `GetScheduledTasksForDebugger` on each scheduler instance to retrieve its list of scheduled tasks.  
+ カスタムのデバッガーを実装している開発者は、このメソッドを直接呼び出すべきではありませんが、内部のラッパー メソッドを使用する必要があります `GetScheduledTasksForDebugger` 代わりに: `internal Task[] GetScheduledTasksForDebugger()`です。 このラッパー メソッドは、列挙型ではなくタスクの配列を返します。 アクティブなスケジューラの一覧を取得するには、内部メソッドを使用して `internal static TaskScheduler[] GetTaskSchedulersForDebugger()`します。 この静的メソッドは、アクティブなすべての配列を返します <xref:System.Threading.Tasks.TaskScheduler> インスタンス。 使用することができますし、 `GetScheduledTasksForDebugger` スケジュールされたタスクの一覧を取得するには、各スケジューラ インスタンスにします。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">This scheduler is unable to generate a list of queued tasks at this time.</exception>
+        <exception cref="T:System.NotSupportedException">スケジューラは、この時点でキューに置かれたタスクの一覧を生成することができます。</exception>
       </Docs>
     </Member>
     <Member MemberName="Id">
@@ -366,14 +388,17 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the unique ID for this <see cref="T:System.Threading.Tasks.TaskScheduler" />.</summary>
-        <value>Returns the unique ID for this <see cref="T:System.Threading.Tasks.TaskScheduler" />.</value>
+        <summary>この一意の ID を取得 <see cref="T:System.Threading.Tasks.TaskScheduler" />します。</summary>
+        <value>この一意の ID を返す <see cref="T:System.Threading.Tasks.TaskScheduler" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+## 解説  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -405,14 +430,17 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates the maximum concurrency level this <see cref="T:System.Threading.Tasks.TaskScheduler" /> is able to support.</summary>
-        <value>Returns an integer that represents the maximum concurrency level. The default scheduler returns <see cref="F:System.Int32.MaxValue" />.</value>
+        <summary>これで、最大の同時実行レベルを示す <see cref="T:System.Threading.Tasks.TaskScheduler" /> をサポートすることができます。</summary>
+        <value>最大同時実行レベルを表す整数を返します。 既定のスケジューラを返します <see cref="F:System.Int32.MaxValue" />します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+## 解説  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -452,21 +480,26 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <Parameter Name="task" Type="System.Threading.Tasks.Task" />
       </Parameters>
       <Docs>
-        <param name="task">The <see cref="T:System.Threading.Tasks.Task" /> to be queued.</param>
-        <summary>Queues a <see cref="T:System.Threading.Tasks.Task" /> to the scheduler.</summary>
+        <param name="task">
+          <see cref="T:System.Threading.Tasks.Task" /> キューに置かれました。</param>
+        <summary>キュー、 <see cref="T:System.Threading.Tasks.Task" /> スケジューラにします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A class derived from <xref:System.Threading.Tasks.TaskScheduler> implements this method to accept tasks being scheduled on the scheduler.  
+## 解説  
+ 派生したクラス <xref:System.Threading.Tasks.TaskScheduler> タスク スケジューラでスケジュール設定をそのまま使用するには、このメソッドを実装します。  
   
- A typical implementation would store the task in an internal data structure, which would be serviced by threads that would execute those tasks at some time in the future.  
+ 一般的な実装は、いずれかの時点が後でそれらのタスクを実行するスレッドによる処理は、内部データ構造で、タスクを保存します。  
   
- This method is only meant to be called by the .NET Framework and should not be called directly by the derived class. This is necessary for maintaining the consistency of the system.  
+ このメソッドは、.NET Framework によって呼び出されるだけを目的とし、派生クラスが直接呼び出さない必要があります。 これは、システムの整合性を維持する必要があります。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="task" /> argument is null.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="task" /> 引数が null です。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryDequeue">
@@ -504,20 +537,25 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <Parameter Name="task" Type="System.Threading.Tasks.Task" />
       </Parameters>
       <Docs>
-        <param name="task">The <see cref="T:System.Threading.Tasks.Task" /> to be dequeued.</param>
-        <summary>Attempts to dequeue a <see cref="T:System.Threading.Tasks.Task" /> that was previously queued to this scheduler.</summary>
-        <returns>A Boolean denoting whether the <paramref name="task" /> argument was successfully dequeued.</returns>
+        <param name="task">
+          <see cref="T:System.Threading.Tasks.Task" /> デキューのためにします。</param>
+        <summary>キューから削除しようとしています、 <see cref="T:System.Threading.Tasks.Task" /> が既にキューにこのスケジューラにします。</summary>
+        <returns>ブール値を表すかどうか、 <paramref name="task" /> 引数が正常にキューから取得します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+## 解説  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
- This method may execute in a finally block; therefore it should return as quickly as possible so that any resources such as <xref:System.Threading.CancellationTokenRegistration> objects can be disposed of in a timely manner.  
+ このメソッド内で実行が、finally ブロックです。したがって返すことは可能な限り早くそのためなどのリソース <xref:System.Threading.CancellationTokenRegistration> オブジェクトは、適切なタイミングで破棄することができます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="task" /> argument is null.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="task" /> 引数が null です。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryExecuteTask">
@@ -555,20 +593,24 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <Parameter Name="task" Type="System.Threading.Tasks.Task" />
       </Parameters>
       <Docs>
-        <param name="task">A <see cref="T:System.Threading.Tasks.Task" /> object to be executed.</param>
-        <summary>Attempts to execute the provided <see cref="T:System.Threading.Tasks.Task" /> on this scheduler.</summary>
-        <returns>A Boolean that is true if <paramref name="task" /> was successfully executed, false if it was not. A common reason for execution failure is that the task had previously been executed or is in the process of being executed by another thread.</returns>
+        <param name="task">A <see cref="T:System.Threading.Tasks.Task" /> 実行されるオブジェクト。</param>
+        <summary>指定された実行を試みる <see cref="T:System.Threading.Tasks.Task" /> このスケジューラにします。</summary>
+        <returns>ブール値 true の場合は <paramref name="task" /> が正常に実行された、されていない場合は false。 実行の失敗の一般的な理由は、タスクが既に実行されていたか、または別のスレッドで実行中の処理を行っています。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Scheduler implementations are provided with <xref:System.Threading.Tasks.Task> instances to be executed through either the <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> method or the <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTaskInline%2A> method. When the scheduler deems it appropriate to run the provided task, <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> should be used to do so. TryExecuteTask handles all aspects of executing a task, including action invocation, exception handling, state management, and lifecycle control.  
+## 解説  
+ スケジューラの実装が付属して <xref:System.Threading.Tasks.Task> いずれかで実行されるインスタンス、 <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> メソッドまたは <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTaskInline%2A> メソッドです。 スケジューラと、指定されたタスクを実行する適切なときに <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> これを行うために使用する必要があります。 アクションの呼び出し、例外処理、状態管理、およびライフ サイクル管理を含め、タスクの実行のすべての側面を tryexecutetask します。  
   
- <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> must only be used for tasks provided to this scheduler by the .NET Framework infrastructure. It should not be used to execute arbitrary tasks obtained through custom mechanisms.  
+ <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> .NET Framework インフラストラクチャによってこのスケジューラに提供されるタスクにのみ使用する必要があります。 カスタム メカニズムを経由で取得した任意のタスクを実行するのには使用できません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <paramref name="task" /> is not associated with this scheduler.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <paramref name="task" /> このスケジューラに関連付けられていません。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryExecuteTaskInline">
@@ -607,26 +649,32 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <Parameter Name="taskWasPreviouslyQueued" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="task">The <see cref="T:System.Threading.Tasks.Task" /> to be executed.</param>
-        <param name="taskWasPreviouslyQueued">A Boolean denoting whether or not task has previously been queued. If this parameter is True, then the task may have been previously queued (scheduled); if False, then the task is known not to have been queued, and this call is being made in order to execute the task inline without queuing it.</param>
-        <summary>Determines whether the provided <see cref="T:System.Threading.Tasks.Task" /> can be executed synchronously in this call, and if it can, executes it.</summary>
-        <returns>A Boolean value indicating whether the task was executed inline.</returns>
+        <param name="task">
+          <see cref="T:System.Threading.Tasks.Task" /> を実行します。</param>
+        <param name="taskWasPreviouslyQueued">タスクがキューに以前かどうかを示すブール値。 このパラメーターが True の場合、タスク可能性がありますが以前キューに登録されました \(スケジュールされた\) です。False の場合、登録されたが、タスクがわかっているし、およびキューに登録せず、タスクをインラインを実行するためにこの呼び出しになっていること。</param>
+        <summary>決定するかどうか、提供された <see cref="T:System.Threading.Tasks.Task" /> この呼び出しで同期的に実行できます、できる場合は、実行します。</summary>
+        <returns>タスクがインラインで実行されるかどうかを示すブール値。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A class derived from <xref:System.Threading.Tasks.TaskScheduler> implements this function to support inline execution of a task on a thread that initiates a wait on that task object. Inline execution is optional, and the request may be rejected by returning false. However, the more tasks that can be inlined, the better the scheduler will scale. In fact, a scheduler that inlines too little may be prone to deadlocks. A proper implementation should ensure that a request executing under the policies guaranteed by the scheduler can successfully inline. For example, if a scheduler uses a dedicated thread to execute tasks, any inlining requests from that thread should succeed.  
+## 解説  
+ 派生したクラス <xref:System.Threading.Tasks.TaskScheduler> タスク オブジェクトでの待機を開始したスレッドで、タスクのインラインの実行をサポートするには、この関数を実装します。 インライン実行がオプションであり、false を返すことによって、要求が拒否されます。 ただしより多くのタスクをことがインライン化されることは、精度が高く、スケジューラはスケール アウトします。 実際には、スケジューラは、インライン展開少なすぎる可能性がありますデッドロック発生しやすい。 適切な実装では、あるスケジューラによって保証されたポリシーで要求の実行が正常がインライン展開できるようにしてください。 たとえば、スケジューラは、タスクを実行する専用のスレッドを使用している場合のインライン展開要求したスレッドからは成功します。  
   
- If a scheduler decides to perform the inline execution, it should do so by calling to the base TaskScheduler's <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> method with the provided task object, propagating the return value. It may also be appropriate for the scheduler to remove an inlined task from its internal data structures if it decides to honor the inlining request. Note, however, that under some circumstances a scheduler may be asked to inline a task that was not previously provided to it with the <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> method.  
+ 場合は、スケジューラは、インラインの実行を決定したら、その要求を実行、基本の TaskScheduler を呼び出すことによって <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> メソッドの戻り値を反映する、指定されたタスク オブジェクト。 インライン展開の要求を許可することに決めた場合、その内部データ構造体からインライン展開のタスクを削除するスケジューラの適切な場合もあります。 ただし、ある状況によってスケジューラ必要がありますをインライン展開いない以前提供されていたとしているタスク、 <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> メソッドです。  
   
- The derived scheduler is responsible for making sure that the calling thread is suitable for executing the given task as far as its own scheduling and execution policies are concerned.  
+ 派生のスケジューラは、呼び出し元のスレッドがそれ自身のスケジューリングに関して特定のタスクを実行するのに適しており、実行ポリシーが関係していることを確認します。  
   
- For more information, see [Task Schedulers](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ 詳細については、「[Task Schedulers](http://msdn.microsoft.com/ja-jp/638f8ea5-21db-47a2-a934-86e1e961bf65)」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="task" /> argument is null.</exception>
-        <exception cref="T:System.InvalidOperationException">The <paramref name="task" /> was already executed.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="task" /> 引数が null です。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <paramref name="task" /> が既に実行されました。</exception>
       </Docs>
     </Member>
     <Member MemberName="UnobservedTaskException">
@@ -664,14 +712,14 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <ReturnType>System.EventHandler&lt;System.Threading.Tasks.UnobservedTaskExceptionEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when a faulted task's unobserved exception is about to trigger exception escalation policy, which, by default, would terminate the process.</summary>
+        <summary>エラーが発生したタスクの無視された例外が例外エスカレーション ポリシーをトリガーしようとする場合に発生します。既定では、プロセスを終了します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This application domain-wide event provides a mechanism to prevent exception escalation policy (which, by default, terminates the process) from triggering.  
+## 解説  
+ このアプリケーション ドメイン全体のイベントは、トリガーから例外エスカレーション ポリシー \(既定では、プロセスを終了します\) を回避するためのメカニズムを提供します。  
   
- To make it easier for developers to write asynchronous code based on tasks, the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] changes the default exception behavior for unobserved exceptions. Although unobserved exceptions still raise the <xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException> exception, the process does not terminate by default. Instead, the exception is handled by the runtime after the event is raised, regardless of whether an event handler observes the exception. This behavior can be configured. Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can use the  configuration element to revert to the behavior of the [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)] and terminate the process:  
+ タスクに基づく非同期コードを記述する開発者向け容易にできるように、[!INCLUDE[net_v45](~/includes/net-v45-md.md)]観察されない例外の既定の例外動作を変更します。 観察されない例外が発生させる、<xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException>例外、プロセスは既定でに終了しません。 代わりに、例外は、イベント ハンドラーが例外を監視するかどうかに関係なく、イベントが発生した後、ランタイムによって処理されます。 この動作を構成することができます。 以降で、[!INCLUDE[net_v45](~/includes/net-v45-md.md)]の動作に戻すには、構成要素を使用することができます、[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]およびプロセスを終了します。  
   
 ```xml  
 <configuration>   
@@ -682,6 +730,9 @@ protected override IEnumerable<Task> GetScheduledTasks()
   
 ```  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>

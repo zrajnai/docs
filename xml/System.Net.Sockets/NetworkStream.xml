@@ -21,32 +21,33 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides the underlying stream of data for network access.</summary>
+    <summary>ネットワーク アクセスのためには、データの基になるストリームを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream> class provides methods for sending and receiving data over <xref:System.Net.Sockets.SocketType.Stream> sockets in blocking mode. For more information about blocking versus nonblocking <xref:System.Net.Sockets.Socket>s, see [Using an Asynchronous Client Socket](~/docs/framework/network-programming/using-an-asynchronous-client-socket.md). You can use the <xref:System.Net.Sockets.NetworkStream> class for both synchronous and asynchronous data transfer. For more information about synchronous and asynchronous communication, see [Sockets](~/docs/framework/network-programming/sockets.md).  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream> クラス経由でデータを送受信するためのメソッドを提供 <xref:System.Net.Sockets.SocketType.Stream> ブロッキング モード ソケットです。 ブロックの詳細については非ブロッキング <xref:System.Net.Sockets.Socket>s」を参照してください [Using an Asynchronous Client Socket](http://msdn.microsoft.com/ja-jp/fd85bc88-e06c-467d-a30d-9fd7cffcfca1)します。 使用することができます、 <xref:System.Net.Sockets.NetworkStream> の両方の同期および非同期のデータ転送クラス。 同期および非同期通信の詳細については、次を参照してください。 [Sockets](http://msdn.microsoft.com/ja-jp/10d22735-bd37-42c1-a2be-c1932f979a7d)します。  
   
- To create a <xref:System.Net.Sockets.NetworkStream>, you must provide a connected <xref:System.Net.Sockets.Socket>. You can also specify what <xref:System.IO.FileAccess> permission the <xref:System.Net.Sockets.NetworkStream> has over the provided <xref:System.Net.Sockets.Socket>. By default, closing the <xref:System.Net.Sockets.NetworkStream> does not close the provided <xref:System.Net.Sockets.Socket>. If you want the <xref:System.Net.Sockets.NetworkStream> to have permission to close the provided <xref:System.Net.Sockets.Socket>, you must specify `true` for the value of the `ownsSocket` parameter.  
+ 作成する、 <xref:System.Net.Sockets.NetworkStream>, 、接続を提供する必要があります <xref:System.Net.Sockets.Socket>します。 何を指定することも <xref:System.IO.FileAccess> アクセス許可、 <xref:System.Net.Sockets.NetworkStream> より提供された <xref:System.Net.Sockets.Socket>します。 既定では、終了、 <xref:System.Net.Sockets.NetworkStream> が提供されているを閉じない <xref:System.Net.Sockets.Socket>します。 場合は、 <xref:System.Net.Sockets.NetworkStream> を閉じる、指定した権限を持っているを <xref:System.Net.Sockets.Socket>, を指定する必要があります `true` の値を `ownsSocket` パラメーター。  
   
- Use the <xref:System.Net.Sockets.NetworkStream.Write%2A> and <xref:System.Net.Sockets.NetworkStream.Read%2A> methods for simple single thread synchronous blocking I/O. If you want to process your I/O using separate threads, consider using the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> and <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> methods, or the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> and <xref:System.Net.Sockets.NetworkStream.EndRead%2A> methods for communication.  
+ 使用して、 <xref:System.Net.Sockets.NetworkStream.Write%2A> と <xref:System.Net.Sockets.NetworkStream.Read%2A> スレッド同期のブロッキング I\/O の単純な 1 つの方法です。 個別のスレッドを使用して、I\/O を処理する場合は、使用を検討して、 <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> と <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> メソッド、または <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> と <xref:System.Net.Sockets.NetworkStream.EndRead%2A> の通信方法です。  
   
- The <xref:System.Net.Sockets.NetworkStream> does not support random access to the network data stream. The value of the <xref:System.Net.Sockets.NetworkStream.CanSeek%2A> property, which indicates whether the stream supports seeking, is always `false`; reading the <xref:System.Net.Sockets.NetworkStream.Position%2A> property, reading the <xref:System.Net.Sockets.NetworkStream.Length%2A> property, or calling the <xref:System.Net.Sockets.NetworkStream.Seek%2A> method will throw a <xref:System.NotSupportedException>.  
+ <xref:System.Net.Sockets.NetworkStream> ネットワーク データのストリームへのランダム アクセスをサポートしていません。 値、 <xref:System.Net.Sockets.NetworkStream.CanSeek%2A> 、ストリームがシークをサポートしているかどうかを示す、プロパティは常に `false`; 読み取りを行って、 <xref:System.Net.Sockets.NetworkStream.Position%2A> プロパティには、読み取り、 <xref:System.Net.Sockets.NetworkStream.Length%2A> プロパティ、または呼び出し元、 <xref:System.Net.Sockets.NetworkStream.Seek%2A> メソッドをスロー、 <xref:System.NotSupportedException>です。  
   
- Read and write operations can be performed simultaneously on an instance of the <xref:System.Net.Sockets.NetworkStream> class without the need for synchronization. As long as there is one unique thread for the write operations and one unique thread for the read operations, there will be no cross-interference between read and write threads and no synchronization is required.  
+ 読み取りし、書き込み操作のインスタンスで同時に実行できる、 <xref:System.Net.Sockets.NetworkStream> クラス同期の必要がない場合。 書き込み操作の 1 つの一意のスレッドと読み取り操作の 1 つの一意なスレッドがある、限りは行われません間のインターフェイス間での読み取りと書き込みスレッドとは同期されませんが必要です。  
   
    
   
-## Examples  
- The following code example demonstrates how to create a <xref:System.Net.Sockets.NetworkStream> from a connected <xref:System.Net.Sockets.SocketType.Stream><xref:System.Net.Sockets.Socket> and perform basic synchronous blocking I/O.  
+## 例  
+ 次のコード例では、作成、 <xref:System.Net.Sockets.NetworkStream> 、接続グループから <xref:System.Net.Sockets.SocketType.Stream><xref:System.Net.Sockets.Socket> 基本的な同期のブロッキング I\/O を実行します。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#2)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#2)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#2)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#2)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#2)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#2)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Net.Sockets.TcpClient" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -72,35 +73,39 @@
         <Parameter Name="socket" Type="System.Net.Sockets.Socket" />
       </Parameters>
       <Docs>
-        <param name="socket">The <see cref="T:System.Net.Sockets.Socket" /> that the <see cref="T:System.Net.Sockets.NetworkStream" /> will use to send and receive data.</param>
-        <summary>Creates a new instance of the <see cref="T:System.Net.Sockets.NetworkStream" /> class for the specified <see cref="T:System.Net.Sockets.Socket" />.</summary>
+        <param name="socket">
+          <see cref="T:System.Net.Sockets.Socket" /> を <see cref="T:System.Net.Sockets.NetworkStream" /> データの送受信に使用されます。</param>
+        <summary>新しいインスタンスを作成、 <see cref="T:System.Net.Sockets.NetworkStream" /> クラスは、指定された <see cref="T:System.Net.Sockets.Socket" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream> is created with read/write access to the specified <xref:System.Net.Sockets.Socket>. The <xref:System.Net.Sockets.NetworkStream> does not own the underlying <xref:System.Net.Sockets.Socket>, so calling the <xref:System.Net.Sockets.NetworkStream.Close%2A> method does not close the <xref:System.Net.Sockets.Socket>.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream> を指定された読み取り\/書き込みアクセスで作成された <xref:System.Net.Sockets.Socket>します。<xref:System.Net.Sockets.NetworkStream> が、基になるを所有していない <xref:System.Net.Sockets.Socket>, を呼び出すので、 <xref:System.Net.Sockets.NetworkStream.Close%2A> メソッドが閉じない、 <xref:System.Net.Sockets.Socket>です。  
   
    
   
-## Examples  
- The following code example illustrates how to create a <xref:System.Net.Sockets.NetworkStream> with a <xref:System.Net.Sockets.Socket>.  
+## 例  
+ 次のコード例を作成する方法を示しています、 <xref:System.Net.Sockets.NetworkStream> で、 <xref:System.Net.Sockets.Socket>です。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#2)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#2)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#2)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#2)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#2)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="socket" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The <paramref name="socket" /> parameter is not connected.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="socket" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">
+          <paramref name="socket" /> パラメーターが接続されていません。  
   
- -or-  
+ または  
   
- The <see cref="P:System.Net.Sockets.Socket.SocketType" /> property of the <paramref name="socket" /> parameter is not <see cref="F:System.Net.Sockets.SocketType.Stream" />.  
+ <see cref="P:System.Net.Sockets.Socket.SocketType" /> のプロパティ、 <paramref name="socket" /> パラメーターがない <see cref="F:System.Net.Sockets.SocketType.Stream" />します。  
   
- -or-  
+ または  
   
- The <paramref name="socket" /> parameter is in a nonblocking state.</exception>
+ <paramref name="socket" /> パラメーターは非ブロッキング状態です。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Close(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -127,36 +132,40 @@
         <Parameter Name="ownsSocket" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="socket">The <see cref="T:System.Net.Sockets.Socket" /> that the <see cref="T:System.Net.Sockets.NetworkStream" /> will use to send and receive data.</param>
-        <param name="ownsSocket">Set to <see langword="true" /> to indicate that the <see cref="T:System.Net.Sockets.NetworkStream" /> will take ownership of the <see cref="T:System.Net.Sockets.Socket" />; otherwise, <see langword="false" />.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Net.Sockets.NetworkStream" /> class for the specified <see cref="T:System.Net.Sockets.Socket" /> with the specified <see cref="T:System.Net.Sockets.Socket" /> ownership.</summary>
+        <param name="socket">
+          <see cref="T:System.Net.Sockets.Socket" /> を <see cref="T:System.Net.Sockets.NetworkStream" /> データの送受信に使用されます。</param>
+        <param name="ownsSocket">設定 <see langword="true" /> ことを示すために、 <see cref="T:System.Net.Sockets.NetworkStream" /> の所有権を取得、 <see cref="T:System.Net.Sockets.Socket" />。 そうしないと、 <see langword="false" />です。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Net.Sockets.NetworkStream" /> クラスは、指定された <see cref="T:System.Net.Sockets.Socket" /> 、指定した <see cref="T:System.Net.Sockets.Socket" /> 所有します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream> is created with read/write access to the specified <xref:System.Net.Sockets.Socket>. If the value of `ownsSocket` parameter is `true`, the <xref:System.Net.Sockets.NetworkStream> takes ownership of the underlying <xref:System.Net.Sockets.Socket>, and calling the <xref:System.Net.Sockets.NetworkStream.Close%2A> method also closes the underlying <xref:System.Net.Sockets.Socket>.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream> を指定された読み取り\/書き込みアクセスで作成された <xref:System.Net.Sockets.Socket>します。 場合の値 `ownsSocket` パラメーターは `true`, 、 <xref:System.Net.Sockets.NetworkStream> 所有権を基になる <xref:System.Net.Sockets.Socket>, を呼び出すと、 <xref:System.Net.Sockets.NetworkStream.Close%2A> もメソッドでは、基になるが閉じられます <xref:System.Net.Sockets.Socket>します。  
   
    
   
-## Examples  
- The following code example creates a <xref:System.Net.Sockets.NetworkStream> with ownership of the <xref:System.Net.Sockets.Socket>.  
+## 例  
+ 次のコード例を作成、 <xref:System.Net.Sockets.NetworkStream> の所有権を <xref:System.Net.Sockets.Socket>です。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#2)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#2)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#2)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#2)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#2)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="socket" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The <paramref name="socket" /> parameter is not connected.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="socket" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">
+          <paramref name="socket" /> パラメーターが接続されていません。  
   
- -or-  
+ または  
   
- the value of the <see cref="P:System.Net.Sockets.Socket.SocketType" /> property of the <paramref name="socket" /> parameter is not <see cref="F:System.Net.Sockets.SocketType.Stream" />.  
+ 値、 <see cref="P:System.Net.Sockets.Socket.SocketType" /> のプロパティ、 <paramref name="socket" /> パラメーターがない <see cref="F:System.Net.Sockets.SocketType.Stream" />します。  
   
- -or-  
+ または  
   
- the <paramref name="socket" /> parameter is in a nonblocking state.</exception>
+ <paramref name="socket" /> パラメーターは非ブロッキング状態です。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Close(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -182,38 +191,47 @@
         <Parameter Name="access" Type="System.IO.FileAccess" />
       </Parameters>
       <Docs>
-        <param name="socket">The <see cref="T:System.Net.Sockets.Socket" /> that the <see cref="T:System.Net.Sockets.NetworkStream" /> will use to send and receive data.</param>
-        <param name="access">A bitwise combination of the <see cref="T:System.IO.FileAccess" /> values that specify the type of access given to the <see cref="T:System.Net.Sockets.NetworkStream" /> over the provided <see cref="T:System.Net.Sockets.Socket" />.</param>
-        <summary>Creates a new instance of the <see cref="T:System.Net.Sockets.NetworkStream" /> class for the specified <see cref="T:System.Net.Sockets.Socket" /> with the specified access rights.</summary>
+        <param name="socket">
+          <see cref="T:System.Net.Sockets.Socket" /> を <see cref="T:System.Net.Sockets.NetworkStream" /> データの送受信に使用されます。</param>
+        <param name="access">ビットごとの組み合わせ、 <see cref="T:System.IO.FileAccess" /> に与えられるアクセスの種類を示す値、 <see cref="T:System.Net.Sockets.NetworkStream" /> 経由で提供されている <see cref="T:System.Net.Sockets.Socket" />します。</param>
+        <summary>新しいインスタンスを作成、 <see cref="T:System.Net.Sockets.NetworkStream" /> クラスは、指定された <see cref="T:System.Net.Sockets.Socket" /> 指定のアクセス権を使用します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream> is created with the specified access to the specified <xref:System.Net.Sockets.Socket>. With this constructor, the <xref:System.Net.Sockets.NetworkStream> does not own the underlying <xref:System.Net.Sockets.Socket>, so calling the <xref:System.Net.Sockets.NetworkStream.Close%2A> method does not close the underlying <xref:System.Net.Sockets.Socket>.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream> を指定された、指定のアクセスで作成された <xref:System.Net.Sockets.Socket>します。 このコンス トラクターで、 <xref:System.Net.Sockets.NetworkStream> が、基になるを所有していない <xref:System.Net.Sockets.Socket>, を呼び出すので、 <xref:System.Net.Sockets.NetworkStream.Close%2A> メソッドは、基になるを終了しない <xref:System.Net.Sockets.Socket>します。  
   
- The `access` parameter sets the <xref:System.Net.Sockets.NetworkStream.CanRead%2A> and <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> properties of the <xref:System.Net.Sockets.NetworkStream>. If you specify <xref:System.IO.FileAccess.Write>, then the <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Write%2A> method. If you specify <xref:System.IO.FileAccess.Read>, then the <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Read%2A> method. If you specify <xref:System.IO.FileAccess.ReadWrite>, both method calls are allowed.  
+ `access` パラメーター セット、 <xref:System.Net.Sockets.NetworkStream.CanRead%2A> と <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> のプロパティ、 <xref:System.Net.Sockets.NetworkStream>です。 指定した場合 <xref:System.IO.FileAccess.Write>, 、 <xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドです。 指定した場合 <xref:System.IO.FileAccess.Read>, 、 <xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Read%2A> メソッドです。 指定した場合 <xref:System.IO.FileAccess.ReadWrite>, 、両方のメソッド呼び出しを許可します。  
   
    
   
-## Examples  
- The following code example creates a <xref:System.Net.Sockets.NetworkStream> with the ability to read and write to the <xref:System.Net.Sockets.Socket>.  
+## 例  
+ 次のコード例を作成、 <xref:System.Net.Sockets.NetworkStream> を読み書きする機能を <xref:System.Net.Sockets.Socket>です。  
   
- [!code-cpp[NetworkStream_Async_SendAndReceive#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#1)]
- [!code-csharp[NetworkStream_Async_SendAndReceive#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#1)]
- [!code-vb[NetworkStream_Async_SendAndReceive#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#1)]  
+ [!code-cpp[NetworkStream\_Async\_SendAndReceive\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#1)]
+ [!code-csharp[NetworkStream\_Async\_SendAndReceive\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#1)]
+ [!code-vb[NetworkStream\_Async\_SendAndReceive\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="socket" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The <paramref name="socket" /> parameter is not connected.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="socket" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">
+          <paramref name="socket" /> パラメーターが接続されていません。  
   
- -or-  
+ または  
   
- the <see cref="P:System.Net.Sockets.Socket.SocketType" /> property of the <paramref name="socket" /> parameter is not <see cref="F:System.Net.Sockets.SocketType.Stream" />.  
+ <see cref="P:System.Net.Sockets.Socket.SocketType" /> のプロパティ、 <paramref name="socket" /> パラメーターがない <see cref="F:System.Net.Sockets.SocketType.Stream" />します。  
   
- -or-  
+ または  
   
- the <paramref name="socket" /> parameter is in a nonblocking state.</exception>
+ <paramref name="socket" /> パラメーターは非ブロッキング状態です。</exception>
+        <altmember cref="T:System.IO.FileAccess" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanRead" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanWrite" />
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Read(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Write(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Close(System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -240,39 +258,48 @@
         <Parameter Name="ownsSocket" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="socket">The <see cref="T:System.Net.Sockets.Socket" /> that the <see cref="T:System.Net.Sockets.NetworkStream" /> will use to send and receive data.</param>
-        <param name="access">A bitwise combination of the <see cref="T:System.IO.FileAccess" /> values that specifies the type of access given to the <see cref="T:System.Net.Sockets.NetworkStream" /> over the provided <see cref="T:System.Net.Sockets.Socket" />.</param>
-        <param name="ownsSocket">Set to <see langword="true" /> to indicate that the <see cref="T:System.Net.Sockets.NetworkStream" /> will take ownership of the <see cref="T:System.Net.Sockets.Socket" />; otherwise, <see langword="false" />.</param>
-        <summary>Creates a new instance of the <see cref="T:System.Net.Sockets.NetworkStream" /> class for the specified <see cref="T:System.Net.Sockets.Socket" /> with the specified access rights and the specified <see cref="T:System.Net.Sockets.Socket" /> ownership.</summary>
+        <param name="socket">
+          <see cref="T:System.Net.Sockets.Socket" /> を <see cref="T:System.Net.Sockets.NetworkStream" /> データの送受信に使用されます。</param>
+        <param name="access">ビットごとの組み合わせ、 <see cref="T:System.IO.FileAccess" /> に与えられるアクセスの種類を指定する値、 <see cref="T:System.Net.Sockets.NetworkStream" /> 経由で提供されている <see cref="T:System.Net.Sockets.Socket" />します。</param>
+        <param name="ownsSocket">設定 <see langword="true" /> ことを示すために、 <see cref="T:System.Net.Sockets.NetworkStream" /> の所有権を取得、 <see cref="T:System.Net.Sockets.Socket" />。 そうしないと、 <see langword="false" />です。</param>
+        <summary>新しいインスタンスを作成、 <see cref="T:System.Net.Sockets.NetworkStream" /> クラスは、指定された <see cref="T:System.Net.Sockets.Socket" /> で指定したアクセス権と、指定した <see cref="T:System.Net.Sockets.Socket" /> 所有します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream> is created with read/write access to the specified <xref:System.Net.Sockets.Socket>. If the value of the `ownsSocket` parameter is `true`, the <xref:System.Net.Sockets.NetworkStream> takes ownership of the underlying <xref:System.Net.Sockets.Socket>, and calling the <xref:System.Net.Sockets.NetworkStream.Close%2A> method also closes the underlying <xref:System.Net.Sockets.Socket>.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream> を指定された読み取り\/書き込みアクセスで作成された <xref:System.Net.Sockets.Socket>します。 場合の値、 `ownsSocket` パラメーターは `true`, 、 <xref:System.Net.Sockets.NetworkStream> 所有権を基になる <xref:System.Net.Sockets.Socket>, を呼び出すと、 <xref:System.Net.Sockets.NetworkStream.Close%2A> もメソッドでは、基になるが閉じられます <xref:System.Net.Sockets.Socket>します。  
   
- The `access` parameter sets the <xref:System.Net.Sockets.NetworkStream.CanRead%2A> and <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> properties of the <xref:System.Net.Sockets.NetworkStream>. If you specify <xref:System.IO.FileAccess.Write>, then the <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Write%2A> method. If you specify <xref:System.IO.FileAccess.Read>, then the <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Read%2A> method. If you specify <xref:System.IO.FileAccess.ReadWrite>, both method calls are allowed.  
+ `access` パラメーター セット、 <xref:System.Net.Sockets.NetworkStream.CanRead%2A> と <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> のプロパティ、 <xref:System.Net.Sockets.NetworkStream>です。 指定した場合 <xref:System.IO.FileAccess.Write>, 、 <xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドです。 指定した場合 <xref:System.IO.FileAccess.Read>, 、 <xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Read%2A> メソッドです。 指定した場合 <xref:System.IO.FileAccess.ReadWrite>, 、両方のメソッド呼び出しを許可します。  
   
    
   
-## Examples  
- The following code example creates a <xref:System.Net.Sockets.NetworkStream> with the ability to read and write to the <xref:System.Net.Sockets.Socket>. Ownership of the <xref:System.Net.Sockets.Socket> is given to this <xref:System.Net.Sockets.NetworkStream> by specifying `true` for the `ownsSocket` parameter.  
+## 例  
+ 次のコード例を作成、 <xref:System.Net.Sockets.NetworkStream> を読み書きする機能を <xref:System.Net.Sockets.Socket>です。 所有権、 <xref:System.Net.Sockets.Socket> はこれを指定した <xref:System.Net.Sockets.NetworkStream> を指定して `true` の `ownsSocket` パラメーター。  
   
- [!code-cpp[NetworkStream_Async_SendAndReceive#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#1)]
- [!code-csharp[NetworkStream_Async_SendAndReceive#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#1)]
- [!code-vb[NetworkStream_Async_SendAndReceive#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#1)]  
+ [!code-cpp[NetworkStream\_Async\_SendAndReceive\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#1)]
+ [!code-csharp[NetworkStream\_Async\_SendAndReceive\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#1)]
+ [!code-vb[NetworkStream\_Async\_SendAndReceive\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="socket" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The <paramref name="socket" /> parameter is not connected.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="socket" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">
+          <paramref name="socket" /> パラメーターが接続されていません。  
   
- -or-  
+ または  
   
- The <see cref="P:System.Net.Sockets.Socket.SocketType" /> property of the <paramref name="socket" /> parameter is not <see cref="F:System.Net.Sockets.SocketType.Stream" />.  
+ <see cref="P:System.Net.Sockets.Socket.SocketType" /> のプロパティ、 <paramref name="socket" /> パラメーターがない <see cref="F:System.Net.Sockets.SocketType.Stream" />します。  
   
- -or-  
+ または  
   
- The <paramref name="socket" /> parameter is in a nonblocking state.</exception>
+ <paramref name="socket" /> パラメーターは非ブロッキング状態です。</exception>
+        <altmember cref="T:System.IO.FileAccess" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanRead" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanWrite" />
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Close(System.Int32)" />
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Read(System.Byte[],System.Int32,System.Int32)" />
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Write(System.Byte[],System.Int32,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="BeginRead">
@@ -304,65 +331,71 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="buffer">An array of type <see cref="T:System.Byte" /> that is the location in memory to store data read from the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <param name="offset">The location in <c>buffer</c> to begin storing the data.</param>
-        <param name="size">The number of bytes to read from the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that is executed when <see cref="M:System.Net.Sockets.NetworkStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> completes.</param>
-        <param name="state">An object that contains any additional user-defined data.</param>
-        <summary>Begins an asynchronous read from the <see cref="T:System.Net.Sockets.NetworkStream" />.</summary>
-        <returns>An <see cref="T:System.IAsyncResult" /> that represents the asynchronous call.</returns>
+        <param name="buffer">型の配列 <see cref="T:System.Byte" /> から読み取られたデータを格納するメモリ内の場所は、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <param name="offset">内の場所 <c>buffer</c> データの格納を開始します。</param>
+        <param name="size">読み取るバイト数、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> 委任されているときに実行 <see cref="M:System.Net.Sockets.NetworkStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> が完了するとします。</param>
+        <param name="state">その他のユーザー定義データを格納するオブジェクト。</param>
+        <summary>非同期読み取りを開始、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</summary>
+        <returns>
+          <see cref="T:System.IAsyncResult" /> 非同期呼び出しを表します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method starts asynchronously reading data from the incoming network buffers. Calling the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method gives you the ability to receive data within a separate execution thread.  
+## 解説  
+ [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドは非同期的に受信したネットワーク バッファーからデータの読み取りを開始します。 呼び出す、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドは、個別の実行スレッド内でデータを受信する機能を提供します。  
   
- You must create a callback method that implements the <xref:System.AsyncCallback> delegate and pass its name to the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method. At the very minimum, your `state` parameter must contain the <xref:System.Net.Sockets.NetworkStream>. Because you will want to obtain the received data within your callback method, you should create a small class or structure to hold a read buffer and any other useful information. Pass the structure or class instance to the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method through the `state` parameter.  
+ 実装するコールバック メソッドを作成する必要があります、 [BeginRead メソッド \(Byte\<xref:System.AsyncCallback> を委任し、その名前を渡す、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドです。 極端に言えば、 `state` パラメーターを含める必要があります、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream>です。 コールバック メソッド内で受信したデータを取得するため、小さなクラスまたは読み取りバッファーなどの有用な情報を保持する構造体を作成する必要があります。 構造体またはクラス インスタンスを渡す、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドによって、 `state` パラメーター。  
   
- Your callback method should call the <xref:System.Net.Sockets.NetworkStream.EndRead%2A> method. When your application calls <xref:System.Net.Sockets.NetworkStream.BeginRead%2A>, the system will wait until data is received or an error occurs, and then the system will use a separate thread to execute the specified callback method, and blocks on <xref:System.Net.Sockets.NetworkStream.EndRead%2A> until the provided <xref:System.Net.Sockets.NetworkStream> reads data or throws an exception. If you want the original thread to block after you call the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method, use the <xref:System.Threading.WaitHandle.WaitOne%2A> method. Call <xref:System.Threading.EventWaitHandle.Set%2A> in the callback method when you want the original thread to continue executing. For additional information about writing callback methods, see [Marshaling a Delegate as a Callback Method](~/docs/framework/interop/marshaling-a-delegate-as-a-callback-method.md).  
+ コールバック メソッドを呼び出す必要があります、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.EndRead%2A> メソッドです。 アプリケーションを呼び出すと [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A>, 、システムが待機するまで、データの受信またはエラーが発生して、システムが指定されたコールバック メソッド、および上のメモリ ブロックを実行する別のスレッドを使用し、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.EndRead%2A> まで、提供された [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> データを読み取るか、例外をスローします。 ブロックを呼び出した後に元のスレッドが必要なかどうかは、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドを使用して、 [BeginRead メソッド \(Byte\<xref:System.Threading.WaitHandle.WaitOne%2A> メソッドです。 呼び出す [BeginRead メソッド \(Byte\<xref:System.Threading.EventWaitHandle.Set%2A> 、元のスレッド実行を継続する場合は、コールバック メソッドにします。 コールバック メソッドの記述に関する詳細については、次を参照してください。 [Callback Sample](http://msdn.microsoft.com/ja-jp/6ddd7866-9804-4571-84de-83f5cc017a5a)します。  
   
- The <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method reads as much data as is available, up to the number of bytes specified by the `size` parameter.  
+ [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドで指定したバイトの数までの使用可能な量のデータを読み取り、 `size` パラメーター。  
   
 > [!NOTE]
->  If you receive an <xref:System.IO.IOException>, check the <xref:System.Exception.InnerException%2A> property to determine if it was caused by a <xref:System.Net.Sockets.SocketException>. If so, use the <xref:System.Net.Sockets.SocketException.ErrorCode%2A> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.  
+>  表示された場合、 [BeginRead メソッド \(Byte\<xref:System.IO.IOException>, 、確認、 [BeginRead メソッド \(Byte\<xref:System.Exception.InnerException%2A> プロパティのかどうかが原因で、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.SocketException>です。 場合は、使用、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.SocketException.ErrorCode%2A> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。  
   
- Read and write operations can be performed simultaneously on an instance of the <xref:System.Net.Sockets.NetworkStream> class without the need for synchronization. As long as there is one unique thread for the write operations and one unique thread for the read operations, there will be no cross-interference between read and write threads and no synchronization is required.  
+ 読み取りし、書き込み操作のインスタンスで同時に実行できる、 [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> クラス同期の必要がない場合。 書き込み操作の 1 つの一意のスレッドと読み取り操作の 1 つの一意なスレッドがある、限りは行われません間のインターフェイス間での読み取りと書き込みスレッドとは同期されませんが必要です。  
   
    
   
-## Examples  
- The following code example uses <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> to read data asynchronously from the network stream. The `myReadCallBack` method implements the <xref:System.AsyncCallback> delegate and is called by the system when <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> returns.  
+## 例  
+ 次のコード例では [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> をネットワーク ストリームから非同期的にデータを読み取る。`myReadCallBack` メソッドを実装、 [BeginRead メソッド \(Byte\<xref:System.AsyncCallback> を委任し、システムから呼び出されるときに [BeginRead メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginRead%2A> を返します。  
   
- [!code-cpp[NetworkStream_Async_SendAndReceive#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#3)]
- [!code-csharp[NetworkStream_Async_SendAndReceive#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#3)]
- [!code-vb[NetworkStream_Async_SendAndReceive#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#3)]  
+ [!code-cpp[NetworkStream\_Async\_SendAndReceive\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#3)]
+ [!code-csharp[NetworkStream\_Async\_SendAndReceive\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#3)]
+ [!code-vb[NetworkStream\_Async\_SendAndReceive\#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="buffer" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="offset" /> parameter is less than 0.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="buffer" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="offset" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="offset" /> parameter is greater than the length of the <paramref name="buffer" /> paramater.  
+ <paramref name="offset" /> パラメーターがの長さより大きい、 <paramref name="buffer" /> パラメーター。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> is less than 0.  
+ <paramref name="size" /> が 0 未満です。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> is greater than the length of <paramref name="buffer" /> minus the value of the <paramref name="offset" /> parameter.</exception>
-        <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.  
+ <paramref name="size" /> の長さより大きい <paramref name="buffer" /> の値を差し引いて、 <paramref name="offset" /> パラメーター。</exception>
+        <exception cref="T:System.IO.IOException">基になる <see cref="T:System.Net.Sockets.Socket" /> が閉じられます。  
   
- -or-  
+ または  
   
- There was a failure while reading from the network.  
+ ネットワークからの読み取り中にエラーが発生しました。  
   
- -or-  
+ または  
   
- An error occurred when accessing the socket.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.</exception>
+ ソケットへのアクセス中にエラーが発生しました。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じられます。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.EndRead(System.IAsyncResult)" />
       </Docs>
     </Member>
     <Member MemberName="BeginWrite">
@@ -394,63 +427,69 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="buffer">An array of type <see cref="T:System.Byte" /> that contains the data to write to the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <param name="offset">The location in <c>buffer</c> to begin sending the data.</param>
-        <param name="size">The number of bytes to write to the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate that is executed when <see cref="M:System.Net.Sockets.NetworkStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> completes.</param>
-        <param name="state">An object that contains any additional user-defined data.</param>
-        <summary>Begins an asynchronous write to a stream.</summary>
-        <returns>An <see cref="T:System.IAsyncResult" /> that represents the asynchronous call.</returns>
+        <param name="buffer">型の配列 <see cref="T:System.Byte" /> に書き込むデータを格納している、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <param name="offset">内の場所 <c>buffer</c> データの送信を開始します。</param>
+        <param name="size">書き込むバイト数、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <param name="callback">
+          <see cref="T:System.AsyncCallback" /> 委任されているときに実行 <see cref="M:System.Net.Sockets.NetworkStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> が完了するとします。</param>
+        <param name="state">その他のユーザー定義データを格納するオブジェクト。</param>
+        <summary>ストリームに非同期の書き込みを開始します。</summary>
+        <returns>
+          <see cref="T:System.IAsyncResult" /> 非同期呼び出しを表します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method starts an asynchronous send operation to the remote host. Calling the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method gives you the ability to send data within a separate execution thread.  
+## 解説  
+ [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドがリモート ホストへの非同期送信操作を開始します。 呼び出す、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドは、個別の実行スレッド内でデータを送信する機能を提供します。  
   
- You must create a callback method that implements the <xref:System.AsyncCallback> delegate and pass its name to the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method. At the very minimum, your `state` parameter must contain the <xref:System.Net.Sockets.NetworkStream>. If your callback needs more information, you can create a small class or structure to hold the <xref:System.Net.Sockets.NetworkStream> and the other required information. Pass the structure or class instance to the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method through the `state` parameter.  
+ 実装するコールバック メソッドを作成する必要があります、 [BeginWrite メソッド \(Byte\<xref:System.AsyncCallback> を委任し、その名前を渡す、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドです。 極端に言えば、 `state` パラメーターを含める必要があります、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream>です。 コールバックは、詳細を必要とする場合は、小さなクラスまたは構造体を作成することができます、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> およびその他の必要な情報です。 構造体またはクラス インスタンスを渡す、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドによって、 `state` パラメーター。  
   
- Your callback method should implement the <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> method. When your application calls <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>, the system uses a separate thread to execute the specified callback method, and blocks on <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> until the <xref:System.Net.Sockets.NetworkStream> sends the number of bytes requested or throws an exception. If you want the original thread to block after you call the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method, use the <xref:System.Threading.WaitHandle.WaitOne%2A> method. Call <xref:System.Threading.EventWaitHandle.Set%2A> in the callback method when you want the original thread to continue executing. For additional information about writing callback methods, see [Marshaling a Delegate as a Callback Method](~/docs/framework/interop/marshaling-a-delegate-as-a-callback-method.md).  
+ コールバック メソッドを実装する必要があります、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.EndWrite%2A> メソッドです。 アプリケーションを呼び出すと [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>, 、システムは、別のスレッドを使用して、指定されたコールバック メソッドを実行しでブロック [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.EndWrite%2A> まで、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> 要求されたバイト数を送信するか、例外をスローします。 ブロックを呼び出した後に元のスレッドが必要なかどうかは、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドを使用して、 [BeginWrite メソッド \(Byte\<xref:System.Threading.WaitHandle.WaitOne%2A> メソッドです。 呼び出す [BeginWrite メソッド \(Byte\<xref:System.Threading.EventWaitHandle.Set%2A> 、元のスレッド実行を継続する場合は、コールバック メソッドにします。 コールバック メソッドの記述に関する詳細については、次を参照してください。 [Callback Sample](http://msdn.microsoft.com/ja-jp/6ddd7866-9804-4571-84de-83f5cc017a5a)します。  
   
 > [!NOTE]
->  If you receive an <xref:System.IO.IOException>, check the <xref:System.Exception.InnerException%2A> property to determine if it was caused by a <xref:System.Net.Sockets.SocketException>. If so, use the <xref:System.Net.Sockets.SocketException.ErrorCode%2A> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.  
+>  表示された場合、 [BeginWrite メソッド \(Byte\<xref:System.IO.IOException>, 、確認、 [BeginWrite メソッド \(Byte\<xref:System.Exception.InnerException%2A> プロパティのかどうかが原因で、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.SocketException>です。 場合は、使用、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.SocketException.ErrorCode%2A> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。  
   
- Read and write operations can be performed simultaneously on an instance of the <xref:System.Net.Sockets.NetworkStream> class without the need for synchronization. As long as there is one unique thread for the write operations and one unique thread for the read operations, there will be no cross-interference between read and write threads and no synchronization is required.  
+ 読み取りし、書き込み操作のインスタンスで同時に実行できる、 [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> クラス同期の必要がない場合。 書き込み操作の 1 つの一意のスレッドと読み取り操作の 1 つの一意なスレッドがある、限りは行われません間のインターフェイス間での読み取りと書き込みスレッドとは同期されませんが必要です。  
   
    
   
-## Examples  
- The following code example uses <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> to write data asynchronously to a network stream. The `myWriteCallBack` method implements the <xref:System.AsyncCallback> delegate and is called by the system when <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> returns.  
+## 例  
+ 次のコード例では [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> データをネットワーク ストリームを非同期的に書き込む。`myWriteCallBack` メソッドを実装、 [BeginWrite メソッド \(Byte\<xref:System.AsyncCallback> を委任し、システムから呼び出されるときに [BeginWrite メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> を返します。  
   
- [!code-cpp[NetworkStream_Async_SendAndReceive#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#2)]
- [!code-csharp[NetworkStream_Async_SendAndReceive#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#2)]
- [!code-vb[NetworkStream_Async_SendAndReceive#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#2)]  
+ [!code-cpp[NetworkStream\_Async\_SendAndReceive\#2](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#2)]
+ [!code-csharp[NetworkStream\_Async\_SendAndReceive\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#2)]
+ [!code-vb[NetworkStream\_Async\_SendAndReceive\#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="buffer" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="offset" /> parameter is less than 0.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="buffer" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="offset" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="offset" /> parameter is greater than the length of <paramref name="buffer" />.  
+ <paramref name="offset" /> パラメーターがの長さより大きい <paramref name="buffer" />します。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> parameter is less than 0.  
+ <paramref name="size" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> parameter is greater than the length of <paramref name="buffer" /> minus the value of the <paramref name="offset" /> parameter.</exception>
-        <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.  
+ <paramref name="size" /> パラメーターがの長さより大きい <paramref name="buffer" /> の値を差し引いて、 <paramref name="offset" /> パラメーター。</exception>
+        <exception cref="T:System.IO.IOException">基になる <see cref="T:System.Net.Sockets.Socket" /> が閉じられます。  
   
- -or-  
+ または  
   
- There was a failure while writing to the network.  
+ ネットワークへの書き込み中にエラーが発生しました。  
   
- -or-  
+ または  
   
- An error occurred when accessing the socket.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.</exception>
+ ソケットへのアクセス中にエラーが発生しました。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じられます。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.EndWrite(System.IAsyncResult)" />
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -476,26 +515,28 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the <see cref="T:System.Net.Sockets.NetworkStream" /> supports reading.</summary>
+        <summary>示す値を取得するかどうか、 <see cref="T:System.Net.Sockets.NetworkStream" /> が読み取りをサポートします。</summary>
         <value>
-          <see langword="true" /> if data can be read from the stream; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> ストリームからデータを読み取れる場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If <xref:System.Net.Sockets.NetworkStream.CanRead%2A> is `true`, <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Read%2A> method. Provide the appropriate <xref:System.IO.FileAccess> enumerated value in the constructor to set the readability and writability of the <xref:System.Net.Sockets.NetworkStream>. The <xref:System.Net.Sockets.NetworkStream.CanRead%2A> property is set when the <xref:System.Net.Sockets.NetworkStream> is initialized.  
+## 解説  
+ 場合 <xref:System.Net.Sockets.NetworkStream.CanRead%2A> は `true`, 、<xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Read%2A> メソッドです。 適切な提供 <xref:System.IO.FileAccess> 列挙値を読みやすさとの書き込みの許可を設定するコンス トラクターで、 <xref:System.Net.Sockets.NetworkStream>です。<xref:System.Net.Sockets.NetworkStream.CanRead%2A> 場合、プロパティが設定、 <xref:System.Net.Sockets.NetworkStream> が初期化されています。  
   
    
   
-## Examples  
- The following code example checks <xref:System.Net.Sockets.NetworkStream.CanRead%2A> to verify that the <xref:System.Net.Sockets.NetworkStream> is readable. It then performs a read operation on the <xref:System.Net.Sockets.NetworkStream>.  
+## 例  
+ 次のコード例のチェックを <xref:System.Net.Sockets.NetworkStream.CanRead%2A> ことを確認する、 <xref:System.Net.Sockets.NetworkStream> を読み取ることができます。 読み取り操作を実行し、 <xref:System.Net.Sockets.NetworkStream>です。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#4)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#4)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#4)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#4)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#4)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#4)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Net.Sockets.NetworkStream.Readable" />
+        <altmember cref="T:System.IO.FileAccess" />
       </Docs>
     </Member>
     <Member MemberName="CanSeek">
@@ -521,10 +562,15 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the stream supports seeking. This property is not currently supported.This property always returns <see langword="false" />.</summary>
+        <summary>ストリームがシークをサポートしているかどうかを示す値を取得します。 このプロパティは現在サポートされていません。このプロパティは常に返します <see langword="false" />します。</summary>
         <value>
-          <see langword="false" /> in all cases to indicate that <see cref="T:System.Net.Sockets.NetworkStream" /> cannot seek a specific location in the stream.</value>
-        <remarks>To be added.</remarks>
+          <see langword="false" /> 常にあることを示す <see cref="T:System.Net.Sockets.NetworkStream" /> ストリーム内の特定の位置をシークすることはできません。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CanTimeout">
@@ -550,14 +596,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates whether timeout properties are usable for <see cref="T:System.Net.Sockets.NetworkStream" />.</summary>
-        <value>
-          <see langword="true" /> in all cases.</value>
+        <summary>タイムアウト プロパティを使用するかどうかを示す <see cref="T:System.Net.Sockets.NetworkStream" />します。</summary>
+        <value>常に <see langword="true" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property is present because it is inherited from <xref:System.IO.Stream>.  
+## 解説  
+ 継承されているために、このプロパティがある <xref:System.IO.Stream>です。  
   
  ]]></format>
         </remarks>
@@ -586,26 +631,28 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the <see cref="T:System.Net.Sockets.NetworkStream" /> supports writing.</summary>
+        <summary>示す値を取得するかどうか、 <see cref="T:System.Net.Sockets.NetworkStream" /> が書き込みをサポートします。</summary>
         <value>
-          <see langword="true" /> if data can be written to the <see cref="T:System.Net.Sockets.NetworkStream" />; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> データを書き込む場合、 <see cref="T:System.Net.Sockets.NetworkStream" />。 そうしないと、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> is `true`, <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Write%2A> method. Provide the appropriate <xref:System.IO.FileAccess> enumerated value in the constructor to set the readability and writability of the <xref:System.Net.Sockets.NetworkStream>. The <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> property is set when the <xref:System.Net.Sockets.NetworkStream> is initialized.  
+## 解説  
+ 場合 <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> は `true`, 、<xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドです。 適切な提供 <xref:System.IO.FileAccess> 列挙値を読みやすさとの書き込みの許可を設定するコンス トラクターで、 <xref:System.Net.Sockets.NetworkStream>です。<xref:System.Net.Sockets.NetworkStream.CanWrite%2A> 場合、プロパティが設定、 <xref:System.Net.Sockets.NetworkStream> が初期化されています。  
   
    
   
-## Examples  
- The following code example checks <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> to verify that the <xref:System.Net.Sockets.NetworkStream> is writable. It then performs a write operation on the <xref:System.Net.Sockets.NetworkStream>.  
+## 例  
+ 次のコード例のチェックを <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> ことを確認する、 <xref:System.Net.Sockets.NetworkStream> が書き込み可能です。 書き込み操作を実行し、 <xref:System.Net.Sockets.NetworkStream>です。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#3)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#3)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#3)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#3)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#3)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#3)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Net.Sockets.NetworkStream.Writeable" />
+        <altmember cref="T:System.IO.FileAccess" />
       </Docs>
     </Member>
     <Member MemberName="Close">
@@ -633,19 +680,23 @@
         <Parameter Name="timeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="timeout">A 32-bit signed integer that specifies the number of milliseconds to wait to send any remaining data before closing.</param>
-        <summary>Closes the <see cref="T:System.Net.Sockets.NetworkStream" /> after waiting the specified time to allow data to be sent.</summary>
+        <param name="timeout">終了する前に、残りのデータを送信するまで待機するミリ秒数を指定する 32 ビット符号付き整数。</param>
+        <summary>閉じる、 <see cref="T:System.Net.Sockets.NetworkStream" /> データの送信を許可するように指定された時間待機した後にします。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream.Close%2A> method frees both unmanaged and managed resources associated with the <xref:System.Net.Sockets.NetworkStream>. If the <xref:System.Net.Sockets.NetworkStream> owns the underlying <xref:System.Net.Sockets.Socket>, it is closed as well.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream.Close%2A> メソッドに関連付けられている、アンマネージ コードとマネージの両方のリソースを解放、 <xref:System.Net.Sockets.NetworkStream>です。 場合、 <xref:System.Net.Sockets.NetworkStream> 、基になるを所有している <xref:System.Net.Sockets.Socket>, 、そのセッションも閉じられます。  
   
- If a <xref:System.Net.Sockets.NetworkStream> was associated with a <xref:System.Net.Sockets.TcpClient>, the <xref:System.Net.Sockets.NetworkStream.Close%2A> method will close the TCP connection, but not dispose of the associated <xref:System.Net.Sockets.TcpClient>.  
+ 場合、 <xref:System.Net.Sockets.NetworkStream> に関連付けられた、 <xref:System.Net.Sockets.TcpClient>, 、 <xref:System.Net.Sockets.NetworkStream.Close%2A> メソッドには、TCP 接続を閉じたが、関連付けられている置換は <xref:System.Net.Sockets.TcpClient>です。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="timeout" /> parameter is less than -1.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="timeout" /> パラメーターは、\-1 より小さくします。</exception>
       </Docs>
     </Member>
     <Member MemberName="DataAvailable">
@@ -671,29 +722,31 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether data is available on the <see cref="T:System.Net.Sockets.NetworkStream" /> to be read.</summary>
+        <summary>データがで使用できるかどうかを示す値を取得、 <see cref="T:System.Net.Sockets.NetworkStream" /> 読めるようにします。</summary>
         <value>
-          <see langword="true" /> if data is available on the stream to be read; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> データのストリームを読み取ることができる場合それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> property to determine if data is ready to be read. If <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> is `true`, a call to <xref:System.Net.Sockets.NetworkStream.Read%2A> returns immediately. If the remote host shuts down or closes the connection, <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> may throw a <xref:System.Net.Sockets.SocketException>.  
+## 解説  
+ 使用して、 <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> プロパティ データが読み取ることができるかを判断します。 場合 <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> は `true`, への呼び出し <xref:System.Net.Sockets.NetworkStream.Read%2A> が直ちに返されます。 リモート ホストがシャット ダウンまたは、接続を閉じる場合 <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> スローする可能性が、 <xref:System.Net.Sockets.SocketException>です。  
   
    
   
-## Examples  
- The following code example reads from the <xref:System.Net.Sockets.NetworkStream> as long as data is available.  
+## 例  
+ 次のコード例を読み取り、 <xref:System.Net.Sockets.NetworkStream> データが使用可能な限りです。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#4)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#4)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#4)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#4)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#4)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#4)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.</exception>
-        <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.</exception>
-        <exception cref="T:System.Net.Sockets.SocketException">Use the <see cref="P:System.Net.Sockets.SocketException.ErrorCode" /> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じています。</exception>
+        <exception cref="T:System.IO.IOException">基になる <see cref="T:System.Net.Sockets.Socket" /> が閉じられます。</exception>
+        <exception cref="T:System.Net.Sockets.SocketException">使用して、 <see cref="P:System.Net.Sockets.SocketException.ErrorCode" /> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.Read(System.Byte[],System.Int32,System.Int32)" />
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -722,16 +775,27 @@
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
-        <summary>Releases the unmanaged resources used by the <see cref="T:System.Net.Sockets.NetworkStream" /> and optionally releases the managed resources.</summary>
+        <param name="disposing">マネージ リソースとアンマネージ リソースの両方を解放する場合は <see langword="true" />。アンマネージ リソースだけを解放する場合は <see langword="false" />。</param>
+        <summary>
+          <see cref="T:System.Net.Sockets.NetworkStream" /> によって使用されているアンマネージ リソースを解放し、オプションでマネージ リソースも解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the public `Dispose` method and the <xref:System.Object.Finalize%2A> method. `Dispose` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`. <xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.  
+## 解説  
+ This method is called by the public **languageKeyword tag is not supported!!!!**  
+ method and the <xref:System.Object.Finalize%2A> method. **languageKeyword tag is not supported!!!!**  
+ invokes the protected **languageKeyword tag is not supported!!!!**  
+ method with the **parameterReference tag is not supported!!!!**  
+ parameter set to **languageKeyword tag is not supported!!!!**  
+. <xref:System.Object.Finalize%2A> invokes **languageKeyword tag is not supported!!!!**  
+ with **parameterReference tag is not supported!!!!**  
+ set to **languageKeyword tag is not supported!!!!**  
+.  
   
- When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.Net.Sockets.NetworkStream> references. This method invokes the `Dispose` method of each referenced object.  
+ When the **parameterReference tag is not supported!!!!**  
+ parameter is **languageKeyword tag is not supported!!!!**  
+, this method releases all resources held by any managed objects that this <xref:System.Net.Sockets.NetworkStream> references. This method invokes the **languageKeyword tag is not supported!!!!**  
+ method of each referenced object.  
   
  ]]></format>
         </remarks>
@@ -768,44 +832,48 @@
         <Parameter Name="asyncResult" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="asyncResult">An <see cref="T:System.IAsyncResult" /> that represents an asynchronous call.</param>
-        <summary>Handles the end of an asynchronous read.</summary>
-        <returns>The number of bytes read from the <see cref="T:System.Net.Sockets.NetworkStream" />.</returns>
+        <param name="asyncResult">
+          <see cref="T:System.IAsyncResult" /> 非同期呼び出しを表します。</param>
+        <summary>非同期の読み込みの終了を処理します。</summary>
+        <returns>読み取られたバイト数、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream.EndRead%2A> method completes the asynchronous read operation started in the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream.EndRead%2A> メソッド開始される非同期の読み取り操作が完了すると、 <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドです。  
   
- Before calling <xref:System.Net.Sockets.NetworkStream.BeginRead%2A>, you need to create a callback method that implements the <xref:System.AsyncCallback> delegate. This callback method executes in a separate thread and is called by the system after <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> returns. The callback method must accept the <xref:System.IAsyncResult> returned from the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method as a parameter.  
+ 呼び出しの前に <xref:System.Net.Sockets.NetworkStream.BeginRead%2A>, を実装するコールバック メソッドを作成する必要があります、 <xref:System.AsyncCallback> を委任します。 このコールバック メソッドは、個別のスレッドで実行され、後にシステムによって呼び出される <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> を返します。 コールバック メソッド、 <xref:System.IAsyncResult> から返される、 <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドをパラメーターとして。  
   
- Within the callback method, call the <xref:System.IAsyncResult.AsyncState%2A> property of the <xref:System.IAsyncResult> to obtain the state object passed to the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method. Extract the receiving <xref:System.Net.Sockets.NetworkStream> from this state object. After obtaining the <xref:System.Net.Sockets.NetworkStream>, call the <xref:System.Net.Sockets.NetworkStream.EndRead%2A> method to successfully complete the read operation and return the number of bytes read.  
+ コールバック メソッド内で、 <xref:System.IAsyncResult.AsyncState%2A> のプロパティ、 <xref:System.IAsyncResult> に渡される状態オブジェクトを取得し、 <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドです。 受信側の抽出 <xref:System.Net.Sockets.NetworkStream> この状態オブジェクトから。 取得した後、 <xref:System.Net.Sockets.NetworkStream>, を呼び出す、 <xref:System.Net.Sockets.NetworkStream.EndRead%2A> メソッドを正常に読み取り操作を完了し、読み取られたバイト数を返します。  
   
- The <xref:System.Net.Sockets.NetworkStream.EndRead%2A> method blocks until data is available. The <xref:System.Net.Sockets.NetworkStream.EndRead%2A> method reads as much data as is available up to the number of bytes specified in the `size` parameter of the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method. If the remote host shuts down the <xref:System.Net.Sockets.Socket> connection and all available data has been received, the <xref:System.Net.Sockets.NetworkStream.EndRead%2A> method completes immediately and returns zero bytes.  
+ <xref:System.Net.Sockets.NetworkStream.EndRead%2A> メソッドは、データが使用可能になるまでブロックします。<xref:System.Net.Sockets.NetworkStream.EndRead%2A> メソッドで指定されたバイトの数まで使用量のデータを読み取り、 `size` のパラメーター、 <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドです。 リモート ホストがシャット ダウンした場合、 <xref:System.Net.Sockets.Socket> 接続と使用可能なすべてのデータを受信、 <xref:System.Net.Sockets.NetworkStream.EndRead%2A> メソッドがすぐに完了して、0 バイトを返します。  
   
- To obtain the received data, call the <xref:System.IAsyncResult.AsyncState%2A> property of the <xref:System.IAsyncResult>, and extract the buffer contained in the resulting state object.  
+ 受信したデータを取得する呼び出し、 <xref:System.IAsyncResult.AsyncState%2A> のプロパティ、 <xref:System.IAsyncResult>, 、し、結果の状態オブジェクトに含まれているバッファーを抽出します。  
   
 > [!NOTE]
->  If you receive an <xref:System.IO.IOException>, check the <xref:System.Exception.InnerException%2A> property to determine if it was caused by a <xref:System.Net.Sockets.SocketException>. If so, use the <xref:System.Net.Sockets.SocketException.ErrorCode%2A> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.  
+>  表示された場合、 <xref:System.IO.IOException>, 、確認、 <xref:System.Exception.InnerException%2A> プロパティのかどうかが原因で、 <xref:System.Net.Sockets.SocketException>です。 場合は、使用、 <xref:System.Net.Sockets.SocketException.ErrorCode%2A> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。  
   
    
   
-## Examples  
- In the following code example, `myReadCallback` is provided to <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> as the callback method. <xref:System.Net.Sockets.NetworkStream.EndRead%2A> is implemented in `myReadCallback` to complete the asynchronous read call started by <xref:System.Net.Sockets.NetworkStream.BeginRead%2A>.  
+## 例  
+ 次のコード例で `myReadCallback` に提供される <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> としてコールバック メソッド。<xref:System.Net.Sockets.NetworkStream.EndRead%2A> 実装された `myReadCallback` を非同期に完了するには、呼び出しによって開始されたを読み取る <xref:System.Net.Sockets.NetworkStream.BeginRead%2A>します。  
   
- [!code-cpp[NetworkStream_Async_SendAndReceive#5](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#5)]
- [!code-csharp[NetworkStream_Async_SendAndReceive#5](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#5)]
- [!code-vb[NetworkStream_Async_SendAndReceive#5](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#5)]  
+ [!code-cpp[NetworkStream\_Async\_SendAndReceive\#5](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#5)]
+ [!code-csharp[NetworkStream\_Async\_SendAndReceive\#5](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#5)]
+ [!code-vb[NetworkStream\_Async\_SendAndReceive\#5](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#5)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <paramref name="asyncResult" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.  
+        <exception cref="T:System.ArgumentException">
+          <paramref name="asyncResult" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">基になる <see cref="T:System.Net.Sockets.Socket" /> が閉じられます。  
   
- -or-  
+ または  
   
- An error occurred when accessing the socket.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.</exception>
+ ソケットへのアクセス中にエラーが発生しました。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じています。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="EndWrite">
@@ -833,45 +901,49 @@
         <Parameter Name="asyncResult" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="asyncResult">The <see cref="T:System.IAsyncResult" /> that represents the asynchronous call.</param>
-        <summary>Handles the end of an asynchronous write.</summary>
+        <param name="asyncResult">
+          <see cref="T:System.IAsyncResult" /> 非同期呼び出しを表します。</param>
+        <summary>非同期の書き込みの終了を処理します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> completes the asynchronous send operation started in <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> 開始された非同期送信操作が完了すると <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>です。  
   
- Before calling <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>, you need to create a callback method that implements the <xref:System.AsyncCallback> delegate. This callback method executes in a separate thread and is called by the system after <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> returns. The callback method must accept the <xref:System.IAsyncResult> returned from the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method as a parameter.  
+ 呼び出しの前に <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>, を実装するコールバック メソッドを作成する必要があります、 <xref:System.AsyncCallback> を委任します。 このコールバック メソッドは、個別のスレッドで実行され、後にシステムによって呼び出される <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> を返します。 コールバック メソッド、 <xref:System.IAsyncResult> から返される、 <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドをパラメーターとして。  
   
- Within the callback method, call the <xref:System.IAsyncResult.AsyncState%2A> property of the `IAsyncResult` parameter to obtain the <xref:System.Net.Sockets.NetworkStream>. After obtaining the <xref:System.Net.Sockets.NetworkStream>, you can call the <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> method to successfully complete the send operation and return the number of bytes sent.  
+ コールバック メソッド内で、 <xref:System.IAsyncResult.AsyncState%2A> のプロパティ、 `IAsyncResult` を取得するパラメーター、 <xref:System.Net.Sockets.NetworkStream>です。 取得した後、 <xref:System.Net.Sockets.NetworkStream>, 、呼び出すことができます、 <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> を正常に送信操作を完了して送信されたバイト数を返します。  
   
- The <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> method blocks until the requested number of bytes are sent.  
+ <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> メソッドは、要求されたバイト数が送信されるまでブロックします。  
   
 > [!NOTE]
->  If you receive an <xref:System.IO.IOException>, check the <xref:System.Exception.InnerException%2A> property to determine if it was caused by a <xref:System.Net.Sockets.SocketException>. If so, use the <xref:System.Net.Sockets.SocketException.ErrorCode%2A> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.  
+>  表示された場合、 <xref:System.IO.IOException>, 、確認、 <xref:System.Exception.InnerException%2A> プロパティのかどうかが原因で、 <xref:System.Net.Sockets.SocketException>です。 場合は、使用、 <xref:System.Net.Sockets.SocketException.ErrorCode%2A> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。  
   
    
   
-## Examples  
- In the following code example, `myWriteCallback` is provided to <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> as the callback method. <xref:System.Net.Sockets.NetworkStream.EndWrite%2A> is implemented in `myWriteCallback` to complete the asynchronous write call started by <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>.  
+## 例  
+ 次のコード例で `myWriteCallback` に提供される <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> としてコールバック メソッド。<xref:System.Net.Sockets.NetworkStream.EndWrite%2A> 実装された `myWriteCallback` によって開始された非同期の書き込みの呼び出しを完了する <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A>です。  
   
- [!code-cpp[NetworkStream_Async_SendAndReceive#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#4)]
- [!code-csharp[NetworkStream_Async_SendAndReceive#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#4)]
- [!code-vb[NetworkStream_Async_SendAndReceive#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#4)]  
+ [!code-cpp[NetworkStream\_Async\_SendAndReceive\#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CPP/source.cpp#4)]
+ [!code-csharp[NetworkStream\_Async\_SendAndReceive\#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/CS/source.cs#4)]
+ [!code-vb[NetworkStream\_Async\_SendAndReceive\#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Async_SendAndReceive/VB/source.vb#4)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="asyncResult" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="asyncResult" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.IO.IOException">基になる <see cref="T:System.Net.Sockets.Socket" /> が閉じられます。  
   
- -or-  
+ または  
   
- An error occurred while writing to the network.  
+ ネットワークへの書き込み中にエラーが発生しました。  
   
- -or-  
+ または  
   
- An error occurred when accessing the socket.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.</exception>
+ ソケットへのアクセス中にエラーが発生しました。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じています。</exception>
+        <altmember cref="M:System.Net.Sockets.NetworkStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" />
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -898,14 +970,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the <see cref="T:System.Net.Sockets.NetworkStream" />.</summary>
+        <summary>
+          <see cref="T:System.Net.Sockets.NetworkStream" /> によって使用されているすべてのリソースを解放します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  This method overrides <xref:System.Object.Finalize%2A?displayProperty=fullName>. Application code should not call this method; an object's <xref:System.Object.Finalize%2A> method is automatically invoked during garbage collection, unless finalization by the garbage collector has been disabled by a call to the <xref:System.GC.SuppressFinalize%2A?displayProperty=fullName> method.  
   
- For more information about using the Finalize method, see [Finalize Methods and Destructors](http://msdn.microsoft.com/en-us/fd376774-1643-499b-869e-9546a3aeea70), [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md), and [Overriding the Finalize Method](http://msdn.microsoft.com/en-us/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).  
+ For more information about using the Finalize method, see [Finalize Methods and Destructors](http://msdn.microsoft.com/ja-jp/fd376774-1643-499b-869e-9546a3aeea70), [Cleaning Up Unmanaged Resources](http://msdn.microsoft.com/ja-jp/a17b0066-71c2-4ba4-9822-8e19332fc213), and [Overriding the Finalize Method](http://msdn.microsoft.com/ja-jp/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).  
   
  ]]></format>
         </remarks>
@@ -935,12 +1008,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Flushes data from the stream. This method is reserved for future use.</summary>
+        <summary>ストリームからのデータをフラッシュします。 このメソッドは将来使用するために予約されています。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream.Flush%2A> method implements the <xref:System.IO.Stream.Flush%2A?displayProperty=fullName> method; however, because <xref:System.Net.Sockets.NetworkStream> is not buffered, it has no affect on network streams. Calling the <xref:System.Net.Sockets.NetworkStream.Flush%2A> method does not throw an exception.  
+## 解説  
+ <xref:System.Net.Sockets.NetworkStream.Flush%2A> メソッドを実装して、 <xref:System.IO.Stream.Flush%2A?displayProperty=fullName> メソッド。 ただし、ため <xref:System.Net.Sockets.NetworkStream> はバッファリングされないに影響を与えませんネットワーク ストリームにします。 呼び出す、 <xref:System.Net.Sockets.NetworkStream.Flush%2A> メソッドが例外をスローしません。  
   
  ]]></format>
         </remarks>
@@ -972,16 +1045,17 @@
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="cancellationToken">A cancellation token used to propagate notification that this  operation should be canceled.</param>
-        <summary>Flushes data from the stream as an asynchronous operation.</summary>
-        <returns>Returns <see cref="T:System.Threading.Tasks.Task" />.  
+        <param name="cancellationToken">この操作を取り消す必要があることを示す通知を伝達するために使用するキャンセル トークン。</param>
+        <summary>非同期操作として、ストリームからのデータをフラッシュします。</summary>
+        <returns>
+          <see cref="T:System.Threading.Tasks.Task" /> を返します。  
   
- The task object representing the asynchronous operation.</returns>
+ 非同期操作を表すタスク オブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This operation will not block. The returned <xref:System.Threading.Tasks.Task> object will complete after data has been flushed from the stream for the <xref:System.Net.Sockets.NetworkStream> instance.  
+## 解説  
+ この操作はブロックされません。 返された <xref:System.Threading.Tasks.Task> オブジェクトはデータのストリームからフラッシュされた後、完了、 <xref:System.Net.Sockets.NetworkStream> インスタンス。  
   
  ]]></format>
         </remarks>
@@ -1010,10 +1084,10 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the length of the data available on the stream. This property is not currently supported and always throws a <see cref="T:System.NotSupportedException" />.</summary>
-        <value>The length of the data available on the stream.</value>
+        <summary>ストリームで使用できるデータの長さを取得します。 このプロパティは現在サポートされていない、常にスロー、 <see cref="T:System.NotSupportedException" />です。</summary>
+        <value>ストリームで使用可能なデータの長さ。</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Any use of this property.</exception>
+        <exception cref="T:System.NotSupportedException">このプロパティの使用は任意です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Position">
@@ -1039,10 +1113,10 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the current position in the stream. This property is not currently supported and always throws a <see cref="T:System.NotSupportedException" />.</summary>
-        <value>The current position in the stream.</value>
+        <summary>取得またはストリームの現在位置を設定します。 このプロパティは現在サポートされていない、常にスロー、 <see cref="T:System.NotSupportedException" />です。</summary>
+        <value>ストリームの現在の位置。</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Any use of this property.</exception>
+        <exception cref="T:System.NotSupportedException">このプロパティの使用は任意です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Read">
@@ -1073,58 +1147,64 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">An array of type <see cref="T:System.Byte" /> that is the location in memory to store data read from the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <param name="offset">The location in <c>buffer</c> to begin storing the data to.</param>
-        <param name="size">The number of bytes to read from the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <summary>Reads data from the <see cref="T:System.Net.Sockets.NetworkStream" />.</summary>
-        <returns>The number of bytes read from the <see cref="T:System.Net.Sockets.NetworkStream" />, or 0 if the socket is closed.</returns>
+        <param name="buffer">型の配列 <see cref="T:System.Byte" /> から読み取られたデータを格納するメモリ内の場所は、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <param name="offset">内の場所 <c>buffer</c> にデータの格納を開始します。</param>
+        <param name="size">読み取るバイト数、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <summary>データを読み取る、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</summary>
+        <returns>読み取られたバイト数、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method reads data into the `buffer` parameter and returns the number of bytes successfully read. If the socket is closed, the <xref:System.Net.Sockets.NetworkStream.Read%2A> method returns 0. The <xref:System.Net.Sockets.NetworkStream.Read%2A> operation reads as much data as is available, up to the number of bytes specified by the `size` parameter. If the remote host shuts down the connection, and all available data has been received, the <xref:System.Net.Sockets.NetworkStream.Read%2A> method completes immediately and return zero bytes.  
+## 解説  
+ このメソッドにデータを読み込みます、 `buffer` パラメーターと正常に読み取られたバイト数を返します。 読み取り、可能なデータがない場合、 [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.Read%2A> 0 が返されます。[Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.Read%2A> 操作で指定したバイトの数までの使用可能な量のデータを読み取り、 `size` パラメーター。 リモート ホストをシャット ダウン、接続し、すべての利用可能なデータを受信すると場合、 [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.Read%2A> メソッドはすぐに完了し、ゼロ バイトを返します。  
   
 > [!NOTE]
->  Check to see if the <xref:System.Net.Sockets.NetworkStream> is readable by calling the <xref:System.Net.Sockets.NetworkStream.CanRead%2A> property. If you attempt to read from a <xref:System.Net.Sockets.NetworkStream> that is not readable, you will get an <xref:System.IO.IOException>.  
+>  かどうかをチェック、 [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> 呼び出すことにより読み取ることが、 [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.CanRead%2A> プロパティです。 読み取りを試みると、 [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> を読み取ることができない、表示される、 [Read メソッド \(Byte\<xref:System.IO.IOException>です。  
   
 > [!NOTE]
->  If you receive an <xref:System.IO.IOException>, check the <xref:System.Exception.InnerException%2A> property to determine if it was caused by a <xref:System.Net.Sockets.SocketException>. If so, use the <xref:System.Net.Sockets.SocketException.ErrorCode%2A> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.  
+>  表示された場合、 [Read メソッド \(Byte\<xref:System.IO.IOException>, 、確認、 [Read メソッド \(Byte\<xref:System.Exception.InnerException%2A> プロパティのかどうかが原因で、 [Read メソッド \(Byte\<xref:System.Net.Sockets.SocketException>です。 場合は、使用、 [Read メソッド \(Byte\<xref:System.Net.Sockets.SocketException.ErrorCode%2A> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。  
   
    
   
-## Examples  
- The following code example uses <xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> to determine if data is available to be read. If data is available, it reads from the <xref:System.Net.Sockets.NetworkStream>.  
+## 例  
+ 次のコード例では [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.DataAvailable%2A> データが読み取り可能かを判断します。 読み取ったデータがある場合、 [Read メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream>です。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#4)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#4)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#4)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#4)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#4)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#4)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="buffer" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="offset" /> parameter is less than 0.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="buffer" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="offset" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="offset" /> parameter is greater than the length of <paramref name="buffer" />.  
+ <paramref name="offset" /> パラメーターがの長さより大きい <paramref name="buffer" />します。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> parameter is less than 0.  
+ <paramref name="size" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> parameter is greater than the length of <paramref name="buffer" /> minus the value of the <paramref name="offset" /> parameter.  
+ <paramref name="size" /> パラメーターがの長さより大きい <paramref name="buffer" /> の値を差し引いて、 <paramref name="offset" /> パラメーター。  
   
- -or-  
+ または  
   
- An error occurred when accessing the socket.</exception>
-        <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.  
+ ソケットへのアクセス中にエラーが発生しました。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.IO.IOException">基になる <see cref="T:System.Net.Sockets.Socket" /> が閉じられます。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じています。  
   
- -or-  
+ または  
   
- There is a failure reading from the network.</exception>
+ ネットワークからの読み取りエラーが発生します。</exception>
+        <altmember cref="M:System.Net.Sockets.Socket.Receive(System.Byte[],System.Int32,System.Net.Sockets.SocketFlags)" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.DataAvailable" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanRead" />
       </Docs>
     </Member>
     <Member MemberName="Readable">
@@ -1149,28 +1229,31 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the <see cref="T:System.Net.Sockets.NetworkStream" /> can be read.</summary>
+        <summary>取得またはを示す値を設定するかどうか、 <see cref="T:System.Net.Sockets.NetworkStream" /> 読み取ることができます。</summary>
         <value>
-          <see langword="true" /> to indicate that the <see cref="T:System.Net.Sockets.NetworkStream" /> can be read; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> あることを示す、 <see cref="T:System.Net.Sockets.NetworkStream" /> 読み取り。 それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You must derive from the <xref:System.Net.Sockets.NetworkStream> class to use the <xref:System.Net.Sockets.NetworkStream.Readable%2A> property. If <xref:System.Net.Sockets.NetworkStream.Readable%2A> is `true`, <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Read%2A> method. You can also determine whether a <xref:System.Net.Sockets.NetworkStream> is readable by checking the publicly accessible <xref:System.Net.Sockets.NetworkStream.CanRead%2A> property.  
+## 解説  
+ 派生する必要があります、 <xref:System.Net.Sockets.NetworkStream> クラスを使用する、 <xref:System.Net.Sockets.NetworkStream.Readable%2A> プロパティです。 場合 <xref:System.Net.Sockets.NetworkStream.Readable%2A> は `true`, 、<xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Read%2A> メソッドです。 確認することもあるかどうか、 <xref:System.Net.Sockets.NetworkStream> チェック パブリックにアクセスして読み取ることが <xref:System.Net.Sockets.NetworkStream.CanRead%2A> プロパティです。  
   
- The <xref:System.Net.Sockets.NetworkStream.Readable%2A> property is set when the <xref:System.Net.Sockets.NetworkStream> is initialized.  
+ <xref:System.Net.Sockets.NetworkStream.Readable%2A> 場合、プロパティが設定、 <xref:System.Net.Sockets.NetworkStream> が初期化されています。  
   
    
   
-## Examples  
- In the following code example, the `CanCommunicate` property checks the <xref:System.Net.Sockets.NetworkStream.Readable%2A> property to determine if the <xref:System.Net.Sockets.NetworkStream> is readable.  
+## 例  
+ 次のコード例では、 `CanCommunicate` プロパティのチェック、 <xref:System.Net.Sockets.NetworkStream.Readable%2A> プロパティかどうかを <xref:System.Net.Sockets.NetworkStream> を読み取ることができます。  
   
- [!code-cpp[NetworkStream_Protected_Members#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CPP/source.cpp#1)]
- [!code-csharp[NetworkStream_Protected_Members#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CS/source.cs#1)]
- [!code-vb[NetworkStream_Protected_Members#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Protected_Members/VB/source.vb#1)]  
+ [!code-cpp[NetworkStream\_Protected\_Members\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CPP/source.cpp#1)]
+ [!code-csharp[NetworkStream\_Protected\_Members\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CS/source.cs#1)]
+ [!code-vb[NetworkStream\_Protected\_Members\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Protected_Members/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanRead" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanWrite" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.Writeable" />
       </Docs>
     </Member>
     <Member MemberName="ReadAsync">
@@ -1225,27 +1308,27 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the amount of time that a read operation blocks waiting for data.</summary>
-        <value>A <see cref="T:System.Int32" /> that specifies the amount of time, in milliseconds, that will elapse before a read operation fails. The default value, <see cref="F:System.Threading.Timeout.Infinite" />, specifies that the read operation does not time out.</value>
+        <summary>取得または設定の時間データを読み取り操作の待機します。</summary>
+        <value>A <see cref="T:System.Int32" /> される読み取り操作が失敗するまでの経過をミリ秒単位で時間の大きさを指定します。 既定値 <see cref="F:System.Threading.Timeout.Infinite" />, 、読み取り操作がタイムアウトにないことを指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the read operation does not complete within the time specified by this property, the read operation throws an <xref:System.IO.IOException>.  
+## 解説  
+ このプロパティで指定された時間内で読み取り操作が完了しない場合、読み取り操作のスロー、 <xref:System.IO.IOException>です。  
   
 > [!NOTE]
->  This property affects only synchronous reads performed by calling the <xref:System.Net.Sockets.NetworkStream.Read%2A> method. This property does not affect asynchronous reads performed by calling the <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> method.  
+>  このプロパティは影響のみ同期読み取りを呼び出すことによって実行される、 <xref:System.Net.Sockets.NetworkStream.Read%2A> メソッドです。 このプロパティでは呼び出すことによって実行された非同期の読み取りには影響しません、 <xref:System.Net.Sockets.NetworkStream.BeginRead%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example sets the read time-out for a network stream to 10 milliseconds.  
+## 例  
+ 次のコード例では、10 ミリ秒をネットワーク ストリームの読み取りのタイムアウトを設定します。  
   
- [!code-csharp[NCLTcpClientSync#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLTcpClientSync/CS/tcpclient.cs#2)]  
+ [!code-csharp[NCLTcpClientSync\#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLTcpClientSync/CS/tcpclient.cs#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than or equal to zero and is not <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">指定された値が 0 未満とは <see cref="F:System.Threading.Timeout.Infinite" />です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Seek">
@@ -1275,12 +1358,12 @@
         <Parameter Name="origin" Type="System.IO.SeekOrigin" />
       </Parameters>
       <Docs>
-        <param name="offset">This parameter is not used.</param>
-        <param name="origin">This parameter is not used.</param>
-        <summary>Sets the current position of the stream to the given value. This method is not currently supported and always throws a <see cref="T:System.NotSupportedException" />.</summary>
-        <returns>The position in the stream.</returns>
+        <param name="offset">このパラメーターは使用されません。</param>
+        <param name="origin">このパラメーターは使用されません。</param>
+        <summary>所定の値に、ストリームの現在位置を設定します。 このメソッドは現在サポートされていませんし、常にスロー、 <see cref="T:System.NotSupportedException" />です。</summary>
+        <returns>ストリーム内の位置。</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Any use of this property.</exception>
+        <exception cref="T:System.NotSupportedException">このプロパティの使用は任意です。</exception>
       </Docs>
     </Member>
     <Member MemberName="SetLength">
@@ -1309,10 +1392,10 @@
         <Parameter Name="value" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="value">This parameter is not used.</param>
-        <summary>Sets the length of the stream. This method always throws a <see cref="T:System.NotSupportedException" />.</summary>
+        <param name="value">このパラメーターは使用されません。</param>
+        <summary>ストリームの長さを設定します。 このメソッドは常にスロー、 <see cref="T:System.NotSupportedException" />です。</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Any use of this property.</exception>
+        <exception cref="T:System.NotSupportedException">このプロパティの使用は任意です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Socket">
@@ -1337,25 +1420,25 @@
         <ReturnType>System.Net.Sockets.Socket</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the underlying <see cref="T:System.Net.Sockets.Socket" />.</summary>
-        <value>A <see cref="T:System.Net.Sockets.Socket" /> that represents the underlying network connection.</value>
+        <summary>基になる <see cref="T:System.Net.Sockets.Socket" /> を取得します。</summary>
+        <value>A <see cref="T:System.Net.Sockets.Socket" /> 基になるネットワーク接続を表します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Classes deriving from <xref:System.Net.Sockets.NetworkStream> can use this property to get the underlying <xref:System.Net.Sockets.Socket>. Use the underlying <xref:System.Net.Sockets.Socket> returned from the <xref:System.Net.Sockets.NetworkStream.Socket%2A> property if you require access beyond that which <xref:System.Net.Sockets.NetworkStream> provides.  
+## 解説  
+ 派生するクラス <xref:System.Net.Sockets.NetworkStream> 、基になるため、このプロパティを使用して <xref:System.Net.Sockets.Socket>します。 基になるを使用して <xref:System.Net.Sockets.Socket> から返される、 <xref:System.Net.Sockets.NetworkStream.Socket%2A> プロパティが必要な場合にこれ以外にもアクセス <xref:System.Net.Sockets.NetworkStream> を提供します。  
   
 > [!NOTE]
->  This property is accessible only through this class or a derived class.  
+>  このプロパティは、このクラスまたは派生クラスによってのみアクセスできます。  
   
    
   
-## Examples  
- The following code example retrieves the underlying <xref:System.Net.Sockets.Socket> to verify an active connection.  
+## 例  
+ 次のコード例では、基になるを取得 <xref:System.Net.Sockets.Socket> をアクティブな接続を確認します。  
   
- [!code-cpp[NetworkStream_Protected_Members#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CPP/source.cpp#1)]
- [!code-csharp[NetworkStream_Protected_Members#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CS/source.cs#1)]
- [!code-vb[NetworkStream_Protected_Members#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Protected_Members/VB/source.vb#1)]  
+ [!code-cpp[NetworkStream\_Protected\_Members\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CPP/source.cpp#1)]
+ [!code-csharp[NetworkStream\_Protected\_Members\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CS/source.cs#1)]
+ [!code-vb[NetworkStream\_Protected\_Members\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Protected_Members/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
@@ -1389,54 +1472,59 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="buffer">An array of type <see cref="T:System.Byte" /> that contains the data to write to the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <param name="offset">The location in <c>buffer</c> from which to start writing data.</param>
-        <param name="size">The number of bytes to write to the <see cref="T:System.Net.Sockets.NetworkStream" />.</param>
-        <summary>Writes data to the <see cref="T:System.Net.Sockets.NetworkStream" />.</summary>
+        <param name="buffer">型の配列 <see cref="T:System.Byte" /> に書き込むデータを格納している、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <param name="offset">内の場所 <c>buffer</c> 元となると、データの書き込みを開始します。</param>
+        <param name="size">書き込むバイト数、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</param>
+        <summary>データを書き込む、 <see cref="T:System.Net.Sockets.NetworkStream" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Net.Sockets.NetworkStream.Write%2A> method starts at the specified `offset` and sends `size` bytes from the contents of `buffer` to the network. The <xref:System.Net.Sockets.NetworkStream.Write%2A> method blocks until the requested number of bytes is sent or a <xref:System.Net.Sockets.SocketException> is thrown. If you receive a <xref:System.Net.Sockets.SocketException>, use the <xref:System.Net.Sockets.SocketException.ErrorCode%2A?displayProperty=fullName> property to obtain the specific error code, and refer to the Windows Sockets version 2 API error code documentation in MSDN for a detailed description of the error.  
+## 解説  
+ [Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドを指定した開始 `offset` し、送信 `size` の内容からバイト `buffer` ネットワークにします。[Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドは、要求されたバイト数が送信されるまで、ブロック [Write メソッド \(Byte\<xref:System.Net.Sockets.SocketException> がスローされます。 表示された場合、 [Write メソッド \(Byte\<xref:System.Net.Sockets.SocketException>, を使用して、 [Write メソッド \(Byte\<xref:System.Net.Sockets.SocketException.ErrorCode%2A?displayProperty=fullName> を特定のエラー コードを取得し、ドキュメントを参照して、Windows ソケット バージョン 2 API エラー コード MSDN でエラーの詳細な説明のプロパティです。  
   
 > [!NOTE]
->  Check to see if the <xref:System.Net.Sockets.NetworkStream> is writable by accessing the <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> property. If you attempt to write to a <xref:System.Net.Sockets.NetworkStream> that is not writable, you will get an <xref:System.IO.IOException>. If you receive an <xref:System.IO.IOException>, check the <xref:System.Exception.InnerException%2A> property to determine if it was caused by a <xref:System.Net.Sockets.SocketException>.  
+>  かどうかをチェック、 [Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> にアクセスして、書き込み可能、 [Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.CanWrite%2A> プロパティです。 書き込みを試みると、 [Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> が書き込み不可、表示される、 [Write メソッド \(Byte\<xref:System.IO.IOException>です。 表示された場合、 [Write メソッド \(Byte\<xref:System.IO.IOException>, 、確認、 [Write メソッド \(Byte\<xref:System.Exception.InnerException%2A> プロパティのかどうかが原因で、 [Write メソッド \(Byte\<xref:System.Net.Sockets.SocketException>です。  
   
    
   
-## Examples  
- The following code example checks to see whether the <xref:System.Net.Sockets.NetworkStream> is writable. If it is, then <xref:System.Net.Sockets.NetworkStream.Write%2A> is used to write a small message.  
+## 例  
+ 次のコード例をチェックするかどうか、 [Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream> が書き込み可能です。 である場合、 [Write メソッド \(Byte\<xref:System.Net.Sockets.NetworkStream.Write%2A> 小さいメッセージを書き込むために使用します。  
   
- [!code-cpp[NetworkStream_Synch_SendAndReceive#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#3)]
- [!code-csharp[NetworkStream_Synch_SendAndReceive#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#3)]
- [!code-vb[NetworkStream_Synch_SendAndReceive#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#3)]  
+ [!code-cpp[NetworkStream\_Synch\_SendAndReceive\#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CPP/source.cpp#3)]
+ [!code-csharp[NetworkStream\_Synch\_SendAndReceive\#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/CS/source.cs#3)]
+ [!code-vb[NetworkStream\_Synch\_SendAndReceive\#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Synch_SendAndReceive/VB/source.vb#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">The <paramref name="buffer" /> parameter is <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="offset" /> parameter is less than 0.  
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="buffer" /> パラメーターが <see langword="null" /> です。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="offset" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="offset" /> parameter is greater than the length of <paramref name="buffer" />.  
+ <paramref name="offset" /> パラメーターがの長さより大きい <paramref name="buffer" />します。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> parameter is less than 0.  
+ <paramref name="size" /> パラメーターが 0 より小さい。  
   
- -or-  
+ または  
   
- The <paramref name="size" /> parameter is greater than the length of <paramref name="buffer" /> minus the value of the <paramref name="offset" /> parameter.</exception>
-        <exception cref="T:System.IO.IOException">There was a failure while writing to the network.  
+ <paramref name="size" /> パラメーターがの長さより大きい <paramref name="buffer" /> の値を差し引いて、 <paramref name="offset" /> パラメーター。</exception>
+        <exception cref="T:System.IO.IOException">ネットワークへの書き込み中にエラーが発生しました。  
   
- -or-  
+ または  
   
- An error occurred when accessing the socket.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.  
+ ソケットへのアクセス中にエラーが発生しました。 詳細については、「解説」を参照してください。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Net.Sockets.NetworkStream" /> が閉じています。  
   
- -or-  
+ または  
   
- There was a failure reading from the network.</exception>
+ ネットワークからの読み取りでエラーが発生しました。</exception>
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanWrite" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.Writeable" />
       </Docs>
     </Member>
     <Member MemberName="Writeable">
@@ -1461,28 +1549,30 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the <see cref="T:System.Net.Sockets.NetworkStream" /> is writable.</summary>
+        <summary>示す値を取得するかどうか、 <see cref="T:System.Net.Sockets.NetworkStream" /> が書き込み可能です。</summary>
         <value>
-          <see langword="true" /> if data can be written to the stream; otherwise, <see langword="false" />. The default value is <see langword="true" />.</value>
+          <see langword="true" /> データをストリームに書き込む場合それ以外の場合、 <see langword="false" />です。 既定値は <see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- You must derive from the <xref:System.Net.Sockets.NetworkStream> class to use the <xref:System.Net.Sockets.NetworkStream.Writeable%2A> property. If <xref:System.Net.Sockets.NetworkStream.Writeable%2A> is `true`, <xref:System.Net.Sockets.NetworkStream> allows calls to the <xref:System.Net.Sockets.NetworkStream.Write%2A> method. You can also determine whether a <xref:System.Net.Sockets.NetworkStream> is writable by checking the publicly accessible <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> property.  
+## 解説  
+ 派生する必要があります、 <xref:System.Net.Sockets.NetworkStream> クラスを使用する、 <xref:System.Net.Sockets.NetworkStream.Writeable%2A> プロパティです。 場合 <xref:System.Net.Sockets.NetworkStream.Writeable%2A> は `true`, 、<xref:System.Net.Sockets.NetworkStream> への呼び出しにより、 <xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドです。 確認することもあるかどうか、 <xref:System.Net.Sockets.NetworkStream> がパブリックにアクセスできるをチェックして書き込み可能 <xref:System.Net.Sockets.NetworkStream.CanWrite%2A> プロパティです。  
   
- The <xref:System.Net.Sockets.NetworkStream.Writeable%2A> property is set when the <xref:System.Net.Sockets.NetworkStream> is initialized.  
+ <xref:System.Net.Sockets.NetworkStream.Writeable%2A> 場合、プロパティが設定、 <xref:System.Net.Sockets.NetworkStream> が初期化されています。  
   
    
   
-## Examples  
- In the following code example, the `CanCommunicate` property checks the <xref:System.Net.Sockets.NetworkStream.Writeable%2A> property to determine if the <xref:System.Net.Sockets.NetworkStream> is writable.  
+## 例  
+ 次のコード例では、 `CanCommunicate` プロパティのチェック、 <xref:System.Net.Sockets.NetworkStream.Writeable%2A> プロパティかどうかを <xref:System.Net.Sockets.NetworkStream> が書き込み可能です。  
   
- [!code-cpp[NetworkStream_Protected_Members#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CPP/source.cpp#1)]
- [!code-csharp[NetworkStream_Protected_Members#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CS/source.cs#1)]
- [!code-vb[NetworkStream_Protected_Members#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Protected_Members/VB/source.vb#1)]  
+ [!code-cpp[NetworkStream\_Protected\_Members\#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CPP/source.cpp#1)]
+ [!code-csharp[NetworkStream\_Protected\_Members\#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NetworkStream_Protected_Members/CS/source.cs#1)]
+ [!code-vb[NetworkStream\_Protected\_Members\#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NetworkStream_Protected_Members/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Net.Sockets.NetworkStream.CanWrite" />
+        <altmember cref="P:System.Net.Sockets.NetworkStream.Readable" />
       </Docs>
     </Member>
     <Member MemberName="WriteAsync">
@@ -1537,29 +1627,40 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the amount of time that a write operation blocks waiting for data.</summary>
-        <value>A <see cref="T:System.Int32" /> that specifies the amount of time, in milliseconds, that will elapse before a write operation fails. The default value, <see cref="F:System.Threading.Timeout.Infinite" />, specifies that the write operation does not time out.</value>
+        <summary>取得または設定の時間データを待って、書き込み操作がブロックされます。</summary>
+        <value>A <see cref="T:System.Int32" /> 書き込み操作が失敗するまでの経過をミリ秒単位で時間の大きさを指定します。 既定値 <see cref="F:System.Threading.Timeout.Infinite" />, 、書き込み操作がタイムアウトにないことを指定します。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the write operation does not complete within the time specified by this property, the write operation throws a <xref:System.IO.IOException>.  
+## 解説  
+ 書き込み操作をスローしてこのプロパティで指定された時間内での書き込み操作が完了しない場合、 <xref:System.IO.IOException>です。  
   
 > [!NOTE]
->  This property affects only synchronous write operations performed by calling the <xref:System.Net.Sockets.NetworkStream.Write%2A> method. This property does not affect asynchronous writes performed by calling the <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> method.  
+>  このプロパティを呼び出して実行された唯一の同期書き込み操作の影響、 <xref:System.Net.Sockets.NetworkStream.Write%2A> メソッドです。 このプロパティでは呼び出すことによって実行された非同期の書き込みには影響しません、 <xref:System.Net.Sockets.NetworkStream.BeginWrite%2A> メソッドです。  
   
    
   
-## Examples  
- The following code example sets the write time-out for a network stream to 10 milliseconds.  
+## 例  
+ 次のコード例では、10 ミリ秒をネットワーク ストリームの書き込みタイムアウトを設定します。  
   
- [!code-cpp[NCLTcpServerSync#0](~/samples/snippets/cpp/VS_Snippets_Remoting/NclTcpServerSync/cpp/tcplistener.cpp#0)]
- [!code-csharp[NCLTcpServerSync#0](~/samples/snippets/csharp/VS_Snippets_Remoting/NclTcpServerSync/CS/tcplistener.cs#0)]  
+ [!code-cpp[NCLTcpServerSync\#0](~/samples/snippets/cpp/VS_Snippets_Remoting/NclTcpServerSync/cpp/tcplistener.cpp#0)]
+ [!code-csharp[NCLTcpServerSync\#0](~/samples/snippets/csharp/VS_Snippets_Remoting/NclTcpServerSync/CS/tcplistener.cs#0)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than or equal to zero and is not <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">指定された値が 0 未満とは <see cref="F:System.Threading.Timeout.Infinite" />です。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Sockets</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Net.Sockets.NetworkStream" /> クラスの新しいインスタンスを作成します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

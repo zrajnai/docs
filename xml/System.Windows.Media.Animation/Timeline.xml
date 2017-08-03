@@ -19,42 +19,42 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Defines a segment of time.</summary>
+    <summary>時間のセグメントを定義します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A timeline represents a segment of time.  It provides properties that enable you to specify the length of that segment, when it should start, how many times it will repeat, how fast time progresses in that segment, and more.  
+## 解説  
+ タイムラインは、時間のセグメントを表します。  開始するように、何回か繰り返されますそのセグメントで時間の進行速度ときに、そのセグメントの長さを指定するためのプロパティを提供します。  
   
- Classes that inherit from the timeline class provide additional functionality, such as animation and media playback. The following are examples of some of the different types of specialized timelines available.  
+ タイムライン クラスから継承するクラスは、アニメーションやメディアの再生などの追加機能を提供します。 使用可能な特殊なタイムラインのさまざまな種類のいくつかの例を次に示します。  
   
--   **Animations**: An <xref:System.Windows.Media.Animation.AnimationTimeline> is a type of timeline that produces output values. When you associate an animation with a property, the animation updates the property's value as it plays, thereby "animating" it. For an introduction to animations, see [Animation Overview](~/docs/framework/wpf/graphics-multimedia/animation-overview.md). For information about the different ways to apply animations, see the [Property Animation Techniques Overview](~/docs/framework/wpf/graphics-multimedia/property-animation-techniques-overview.md).  
+-   **アニメーション**:<xref:System.Windows.Media.Animation.AnimationTimeline>出力値を生成するタイムラインの型です。 アニメーションをプロパティに関連付けるときに、アニメーションは、再生、それによって「してアニメーション化」プロパティの値を更新します。 アニメーションの概要については、次を参照してください。[アニメーションの概要](http://msdn.microsoft.com/ja-jp/bd9ce563-725d-4385-87c9-d7ee38cf79ea)です。 アニメーションを適用するさまざまな方法については、次を参照してください。、[プロパティ アニメーションの技術概要](http://msdn.microsoft.com/ja-jp/74f61413-f8c0-4e75-bf04-951886426c8b)です。  
   
--   **MediaTimelines**: A <xref:System.Windows.Media.MediaTimeline> is a type of timeline that controls the playback of a media file.  
+-   **MediaTimelines**: A<xref:System.Windows.Media.MediaTimeline>メディア ファイルの再生を制御するタイムラインの型です。  
   
--   **ParallelTimelines**: A <xref:System.Windows.Media.Animation.ParallelTimeline> is a type of timeline that groups other timelines.  
+-   **Paralleltimeline**: A<xref:System.Windows.Media.Animation.ParallelTimeline>他のタイムラインをグループ化するタイムラインの型です。  
   
--   **Storyboards**: A <xref:System.Windows.Media.Animation.Storyboard> is a special type of <xref:System.Windows.Media.Animation.ParallelTimeline> that provides object and property targeting information for the timelines it contains. For more information about <xref:System.Windows.Media.Animation.Storyboard> objects, see the [Storyboards Overview](~/docs/framework/wpf/graphics-multimedia/storyboards-overview.md).  
+-   **ストーリー ボード**: A<xref:System.Windows.Media.Animation.Storyboard>は特殊な種類の<xref:System.Windows.Media.Animation.ParallelTimeline>オブジェクトとが含まれているタイムラインの情報を対象とするプロパティを提供します。 詳細については<xref:System.Windows.Media.Animation.Storyboard>、オブジェクトを参照してください、[ストーリー ボードの概要](http://msdn.microsoft.com/ja-jp/1a698c3c-30f1-4b30-ae56-57e8a39811bd)です。  
   
- For more information about using timelines, see the [Animation Overview](~/docs/framework/wpf/graphics-multimedia/animation-overview.md). For an introduction to the timing features of timelines, see the [Timing Behaviors Overview](~/docs/framework/wpf/graphics-multimedia/timing-behaviors-overview.md).  
+ タイムラインの使用方法の詳細については、次を参照してください。、[アニメーションの概要](http://msdn.microsoft.com/ja-jp/bd9ce563-725d-4385-87c9-d7ee38cf79ea)です。 タイムラインのタイミング機能の紹介を参照してください、[タイミング動作の概要](http://msdn.microsoft.com/ja-jp/5b714d46-bd46-48b8-b467-b4be89ba3091)です。  
   
-## Data Binding and Animating Timelines  
- Most timeline properties can be data bound or animated; however, because of the way the timing system works, data bound or animated timelines do not behave like other data bound or animated objects. To understand their behavior, it helps to understand what it means to activate a timeline.  
+## データ バインディングとタイムラインをアニメーション化  
+ ほとんどのタイムラインのプロパティは、データ バインドまたはアニメーション化します。ただし、タイミング システムが動作するしくみ、により、他のデータと同様に動作しない場合はバインドされている、またはアニメーションのタイムライン データはバインドされているか、オブジェクトをアニメーション化します。 その動作を理解するのには、タイムラインのアクティブ化意味を理解するのに役立ちます。  
   
- When a timeline is applied, copies are made of the timeline and its child timelines. These copies are frozen (made read-only) and <xref:System.Windows.Media.Animation.Clock> objects are created from them. It's these clocks that do the actual work of animating the targeted properties. If a timeline was data bound or animated, a snapshot of its current values was made when its clock was created. Even though the original timeline might continue to change, its clock does not.  
+ タイムラインを適用すると、タイムラインとその子タイムラインのコピーが作成されます。 これらのコピーが固定されている \(読み取り専用に変更\) と<xref:System.Windows.Media.Animation.Clock>そこからオブジェクトが作成されます。 これらのクロックを対象のプロパティをアニメーション化する実際の作業を実行することをお勧めします。 タイムラインがあった場合は、データ バインドされているか、アニメーション化されている現在の値のスナップショットが行われたそのクロックの作成時にします。 元のタイムラインは可能性があります変更が続いている場合でもそのクロックされていません。  
   
- For a timeline to reflect data binding or animation changes, its clock must be regenerated. Clocks are not regenerated for you automatically. The following are several ways to apply timeline changes:  
+ データ バインディングまたはアニメーションの変更を反映するためにタイムラインは、その時計を再生成する必要があります。 クロックは再生成されませんを自動的にします。 タイムラインの変更を適用するいくつかの方法を次に示します。  
   
--   If the timeline is or belongs to a <xref:System.Windows.Media.Animation.Storyboard>, you can make it reflect changes by reapplying its storyboard using a <xref:System.Windows.Media.Animation.BeginStoryboard> or the <xref:System.Windows.Media.Animation.Storyboard.Begin%2A> method. This has the side effect of also restarting the animation. In code, you can use the <xref:System.Windows.Media.Animation.Storyboard.Seek%2A> method to advance the storyboard back to its previous position.  
+-   タイムラインがまたはに属している場合、 <xref:System.Windows.Media.Animation.Storyboard>、ストーリー ボードを使用して、再適用して変更を反映することを行うことができます、<xref:System.Windows.Media.Animation.BeginStoryboard>または<xref:System.Windows.Media.Animation.Storyboard.Begin%2A>メソッドです。 これは、アニメーションが再起動の副作用です。 コードでは、使用することができます、<xref:System.Windows.Media.Animation.Storyboard.Seek%2A>ストーリー ボードを進める方法は、前の位置にバックアップします。  
   
--   If you applied an animation directly to a property using the <xref:System.Windows.Media.Animation.Animatable.BeginAnimation%2A> method, call the <xref:System.Windows.Media.Animation.Animatable.BeginAnimation%2A> method again and pass it the animation that's been modified.  
+-   プロパティを使用して、直接には、アニメーションを適用したかどうか、<xref:System.Windows.Media.Animation.Animatable.BeginAnimation%2A>メソッドを呼び出し、<xref:System.Windows.Media.Animation.Animatable.BeginAnimation%2A>メソッドを再度が変更されたアニメーションを渡します。  
   
--   If you are working directly at the clock level, create and apply a new set of clocks and use them to replace the previous set of generated clocks.  
+-   クロック レベルで直接作業している場合は、作成し、クロックの新しいセットを適用し、使用して生成されたクロックの前のセットを置き換えます。  
   
- For an example of a data bound animation, see the [Key Spline Animation Sample](http://go.microsoft.com/fwlink/?LinkID=160011) .  
+ データの例には、アニメーションがバインドされているを参照してください、 [Key Spline Animation Sample](http://go.microsoft.com/fwlink/?LinkID=160011)です。  
   
-## Using a Timeline as a Timer  
- A timeline's clock will only progress when there's an event hander associated with it or (in the case of an <xref:System.Windows.Media.Animation.AnimationClock> object) it is associated with a property. For this reason (and others), it's not recommended that you use a <xref:System.Windows.Media.Animation.Timeline> as a timer.  
+## タイムラインをタイマーとして使用します。  
+ タイムラインの時計は、関連付けられているイベント ハンドラーがある場合にのみ実行または \(の場合、<xref:System.Windows.Media.Animation.AnimationClock>オブジェクト\) のプロパティに関連付けられています。 この理由 \(など\)、これはお勧めしませんを使用すること、<xref:System.Windows.Media.Animation.Timeline>をタイマーとして。  
   
  ]]></format>
     </remarks>
@@ -71,8 +71,17 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Animation.Timeline" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.Windows.Media.Animation.Timeline" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -88,9 +97,18 @@
         <Parameter Name="beginTime" Type="System.Nullable&lt;System.TimeSpan&gt;" />
       </Parameters>
       <Docs>
-        <param name="beginTime">The time at which this <see cref="T:System.Windows.Media.Animation.Timeline" /> should begin. See the <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> property for more information.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Animation.Timeline" /> class with the specified <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" />.</summary>
-        <remarks>To be added.</remarks>
+        <param name="beginTime">この時刻 <see cref="T:System.Windows.Media.Animation.Timeline" /> 始める必要があります。 詳細については、<see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> プロパティに関するトピックを参照してください。</param>
+        <summary>指定した <see cref="T:System.Windows.Media.Animation.Timeline" /> を使用して、<see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.BeginTime" />
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -107,13 +125,16 @@
         <Parameter Name="duration" Type="System.Windows.Duration" />
       </Parameters>
       <Docs>
-        <param name="beginTime">The time at which this <see cref="T:System.Windows.Media.Animation.Timeline" /> should begin. See the <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> property for more information.</param>
-        <param name="duration">The length of time for which this timeline plays, not counting repetitions. See the <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> property for more information.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Animation.Timeline" /> class with the specified <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> and <see cref="P:System.Windows.Media.Animation.Timeline.Duration" />.</summary>
+        <param name="beginTime">この時刻 <see cref="T:System.Windows.Media.Animation.Timeline" /> 始める必要があります。 詳細については、<see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> プロパティに関するトピックを参照してください。</param>
+        <param name="duration">繰り返しをカウントせずに、このタイムラインの再生時間の長さ。 詳細については、<see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> プロパティに関するトピックを参照してください。</param>
+        <summary>指定された <see cref="T:System.Windows.Media.Animation.Timeline" /> と <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> を使用して、<see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
+## 解説  
+   
+  
+## 例  
  <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>  
   
  <xref:System.Windows.Media.Animation.Timeline.Duration%2A>  
@@ -137,14 +158,17 @@
         <Parameter Name="repeatBehavior" Type="System.Windows.Media.Animation.RepeatBehavior" />
       </Parameters>
       <Docs>
-        <param name="beginTime">The time at which this <see cref="T:System.Windows.Media.Animation.Timeline" /> should begin. See the <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> property for more information.</param>
-        <param name="duration">The length of time for which this timeline plays, not counting repetitions. See the <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> property for more information.</param>
-        <param name="repeatBehavior">The repeating behavior of this timeline, either as an iteration <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Count" /> or a repeat <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Duration" />. See the <see cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" /> property for more information.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Animation.Timeline" /> class with the specified <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" />, <see cref="P:System.Windows.Media.Animation.Timeline.Duration" />, and <see cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" />.</summary>
+        <param name="beginTime">この時刻 <see cref="T:System.Windows.Media.Animation.Timeline" /> 始める必要があります。 詳細については、<see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> プロパティに関するトピックを参照してください。</param>
+        <param name="duration">繰り返しをカウントせずに、このタイムラインの再生時間の長さ。 詳細については、<see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> プロパティに関するトピックを参照してください。</param>
+        <param name="repeatBehavior">いずれかのイテレーションとしてこのタイムラインの繰り返し動作 <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Count" /> または繰り返し <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Duration" />します。 詳細については、<see cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" /> プロパティに関するトピックを参照してください。</param>
+        <summary>新しいインスタンスを初期化、 <see cref="T:System.Windows.Media.Animation.Timeline" /> 、指定したクラス <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" />, 、<see cref="P:System.Windows.Media.Animation.Timeline.Duration" />, 、および <see cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" />です。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Examples  
+## 解説  
+   
+  
+## 例  
  <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>  
   
  <xref:System.Windows.Media.Animation.Timeline.Duration%2A>  
@@ -166,27 +190,29 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value specifying the percentage of the timeline's <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> spent accelerating the passage of time from zero to its maximum rate.</summary>
-        <value>A value between 0 and 1, inclusive, that specifies the percentage of the timeline's <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> spent accelerating the passage of time from zero to its maximum rate. If the timeline's <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> property is also set, the sum of <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> and <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> must be less than or equal to 1. The default value is 0.</value>
+        <summary>時間の経過を 0 から最大速度に加速する場合に、費やされるタイムラインの <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> の比率を指定する値を取得または設定します。</summary>
+        <value>時間の経過を 0 から最大速度に加速する場合に、費やされるタイムラインの <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> の比率を指定する 0 から 1 の値。 タイムラインの <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> プロパティも設定されている場合、<see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> および <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> の合計は 1 以下である必要があります。 既定値は 0 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> property to create animations that start slowly and then speed up as time progresses. The <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> property is useful for creating ease-in effects or making movement seem more natural. Use the <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> and <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> properties together to create animations that that start slowly, speed up, and then slow down again before finishing.  
+## 解説  
+ 使用して、 <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> プロパティを緩やかに変化を起動し、時間の経過と共にを高速化するアニメーションを作成します。<xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> プロパティは、イーズ イン効果を作成するかより自然に見える移動を行うに便利です。 使用して、 <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> と <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> が開始されるが遅、アニメーションを作成するプロパティが速度が上がり、および終了する前に、速度が低下します。  
   
 <a name="dependencyPropertyInfo_AccelerationRatio"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.AccelerationRatioProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.AccelerationRatioProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> is less than 0 or greater than 1.</exception>
-        <exception cref="T:System.InvalidOperationException">The sum of <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> and <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> exceeds 1.</exception>
+          <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> が 0 未満であるか、または 1 を超えています。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> と <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> の合計が 1 を超えています。</exception>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" />
       </Docs>
     </Member>
     <Member MemberName="AccelerationRatioProperty">
@@ -202,8 +228,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AllocateClock">
@@ -220,14 +255,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a <see cref="T:System.Windows.Media.Animation.Clock" /> for this <see cref="T:System.Windows.Media.Animation.Timeline" />.</summary>
-        <returns>A clock for this <see cref="T:System.Windows.Media.Animation.Timeline" />.</returns>
+        <summary>作成、 <see cref="T:System.Windows.Media.Animation.Clock" /> この <see cref="T:System.Windows.Media.Animation.Timeline" />します。</summary>
+        <returns>このクロック <see cref="T:System.Windows.Media.Animation.Timeline" />します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the <xref:System.Windows.Media.Animation.Timeline.CreateClock%2A> method and should not be called directly by your code.  
+## 解説  
+ このメソッドは、 <xref:System.Windows.Media.Animation.Timeline.CreateClock%2A> メソッド、コードで直接呼び出さないでいます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -253,28 +291,28 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the timeline plays in reverse after it completes a forward iteration.</summary>
-        <value>
-          <see langword="true" /> if the timeline plays in reverse at the end of each iteration; otherwise, <see langword="false" />. The default value is <see langword="false" />.</value>
+        <summary>順方向の反復の完了後に、タイムラインを逆方向に再生するかどうかを示す値を取得または設定します。</summary>
+        <value>各反復の終了時点で、タイムラインを逆方向に再生する場合は <see langword="true" />。それ以外の場合は <see langword="false" />。 既定値は <see langword="false" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> property is set to `true`, the timeline plays for twice the length of time specified by its <xref:System.Windows.Media.Animation.Timeline.Duration%2A> property.  
+## 解説  
+ 場合、 <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> にプロパティが設定されている `true`, 、タイムラインの再生で指定した時間の長さの 2 倍の <xref:System.Windows.Media.Animation.Timeline.Duration%2A> プロパティです。  
   
-### AutoReverse and Repetitions  
- When a timeline's <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> property is set to `true` and its <xref:System.Windows.Media.Animation.Timeline.RepeatBehavior%2A> property causes it to repeat, each forward iteration is followed by a backward iteration. This makes one repetition. For example, a timeline with an <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> value of `true` with an iteration <xref:System.Windows.Media.Animation.RepeatBehavior.Count%2A> of 2 would play forward once, then backwards, then forwards again, and then backwards again.  
+### AutoReverse と繰り返し  
+ タイムラインのときに <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> にプロパティが設定されている `true` とその <xref:System.Windows.Media.Animation.Timeline.RepeatBehavior%2A> プロパティすると、繰り返すように、各転送のイテレーションの下位のイテレーションが続きます。 これにより、1 回の繰り返しです。 使用したタイムラインなど、 <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> の値 `true` イテレーションに <xref:System.Windows.Media.Animation.RepeatBehavior.Count%2A> 2 がプレイ転送 1 回、その逆の順序で、転送、し、もう一度旧バージョンとします。  
   
 <a name="dependencyPropertyInfo_AutoReverse"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.AutoReverseProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.AutoReverseProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" />
       </Docs>
     </Member>
     <Member MemberName="AutoReverseProperty">
@@ -290,8 +328,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.AutoReverse" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.AutoReverse" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTime">
@@ -307,88 +354,89 @@
         <ReturnType>System.Nullable&lt;System.TimeSpan&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the time at which this <see cref="T:System.Windows.Media.Animation.Timeline" /> should begin.</summary>
-        <value>The time at which this <see cref="T:System.Windows.Media.Animation.Timeline" /> should begin, relative to its parent's <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" />. If this timeline is a root timeline, the time is relative to its interactive begin time (the moment at which the timeline was triggered). This value may be positive, negative, or <see langword="null" />; a <see langword="null" /> value means the timeline never plays. The default value is zero.</value>
+        <summary>この <see cref="T:System.Windows.Media.Animation.Timeline" /> を開始する時間を取得または設定します。</summary>
+        <value>この <see cref="T:System.Windows.Media.Animation.Timeline" /> を開始する時間 \(親の <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> に対する相対的な時間\)。 このタイムラインがルート タイムラインの場合は、対話による開始時間 \(タイムラインがトリガーされた時間\) に対する相対的な時間になります。 この値には、正の値、負の値、または <see langword="null" /> を指定できます。値が <see langword="null" /> の場合、そのタイムラインは再生されません。 既定値は 0 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> property is useful for creating timelines that play in a sequence: by increasing the <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> of successive timelines that share the same parent, you can stagger their play times.  
+## 解説  
+ <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> プロパティは、シーケンスで再生タイムラインを作成するために役立ちます。 を増やすことで、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> 、同じ親を共有する一連のタイムラインの再生時間の時差を設定することができます。  
   
-## Negative Values  
- A negative <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> value causes a <xref:System.Windows.Media.Animation.Timeline> to behave as though it started at some time in the past. For example, a <xref:System.Windows.Media.Animation.Timeline> with a <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> of negative 2.5 seconds and a <xref:System.Windows.Media.Animation.Timeline.Duration%2A> of 5 seconds will appear to be half-way finished when it starts.  
+## 負の値  
+ ネガティブ <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> 値の原因として、 <xref:System.Windows.Media.Animation.Timeline> 過去のいずれかの時点で開始している場合と同様にします。 など、 <xref:System.Windows.Media.Animation.Timeline> で、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> 負 2.5 秒と <xref:System.Windows.Media.Animation.Timeline.Duration%2A> 5 秒間の中間に表示される開始と終了します。  
   
-## BeginTime and SpeedRatio  
- The time described by the <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> property is measured in the timeline's parent's time. For example, a timeline with a <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> of 5 whose parent has a <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> of 2 actually starts after 2.5 seconds.  
+## BeginTime、SpeedRatio  
+ 指定された期間、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> プロパティは、タイムラインの親の時間で測定します。 使用したタイムラインなど、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> の親が 5、 <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 2 の実際には、\[開始 2.5 秒後にします。  
   
- A timeline's own <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> setting does not affect its <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>. For example, a timeline with a <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> of 5 seconds, a <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> of 2, and a parent timeline with a <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> of 1 starts after 5 seconds, not 2.5.  
+ タイムライン独自の <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 設定は影響しません、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>です。 使用したタイムラインなど、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> 、5 秒間の <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 2、および親タイムラインでの <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 1 のない 2.5、5 秒後に開始します。  
   
 <a name="dependencyPropertyInfo_BeginTime"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.BeginTimeProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.BeginTimeProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
 <a name="xamlAttributeUsage_BeginTime"></a>   
-## XAML Attribute Usage  
- \<*object* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>="[-][*days*.]*hours*:*minutes*:*seconds*[.*fractionalSeconds*]"/>  
+## XAML 属性の使用方法  
+ \<*object* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>\="\[\-\]\[*days*.\]*hours*:*minutes*:*seconds*\[.*fractionalSeconds*\]"\/\>  
   
- \- or -  
+ または  
   
- \<*object* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>="[-][*days*.]*hours*:*minutes*"/>  
+ \<*object* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>\="\[\-\]\[*days*.\]*時間*:*分*"\/\>  
   
- \- or -  
+ または  
   
- \<*object* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>="[-]*days*"/>  
+ \<*オブジェクト* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>\="\[\-\]*日*"\/\>  
   
- \- or -  
+ または  
   
- \<*object* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>="{[x:Null Markup Extension](~/docs/framework/xaml-services/x-null-markup-extension.md)}"/>  
+ \<*オブジェクト* <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>\="{[x:Null](http://msdn.microsoft.com/ja-jp/2e3ccc21-4996-481d-91b5-3910d8b3bfa3)}"\/\>  
   
 <a name="xamlValues_BeginTime"></a>   
-## XAML Values  
- Items in square brackets (`[` and `]`) are optional.  
+## XAML 値  
+ 角かっこ内の項目 \(`[` と `]`\) は省略可能です。  
   
- *days*  
+ *日*  
  <xref:System.Int32?displayProperty=fullName>  
   
- A value greater than or equal to 0 that describes the number of days spanned by this begin time.  
+ これにより展開される日数を示す 0 以上の値は開始時間です。  
   
- *hours*  
+ *時間*  
  <xref:System.Int32?displayProperty=fullName>  
   
- A value between 0 and 23 that represents the number of hours spanned by this begin time.  
+ これにより展開される時間数を表す 0 ~ 23 の範囲値は開始時間です。  
   
- *minutes*  
+ *分*  
  <xref:System.Int32?displayProperty=fullName>  
   
- A value between 0 and 59 that represents the number of minutes spanned by this begin time.  
+ これにより展開される分数を表す 0 ~ 59 の間の値は開始時間です。  
   
- *seconds*  
+ *\(秒\)*  
  <xref:System.Int32?displayProperty=fullName>  
   
- A value between 0 and 59 that represents the number of seconds spanned by this begin time.  
+ これにより展開される秒数を表す、0 ~ 59 の間の値は開始時間です。  
   
  *fractionalSeconds*  
  <xref:System.Int32?displayProperty=fullName>  
   
- A value consisting of 1 to 7 digits that represents fractional seconds.  
+ 秒の小数部を表す 1 ~ 7 桁で構成される値。  
   
- For the complete <xref:System.TimeSpan> syntax, see the Remarks section of the <xref:System.TimeSpan.Parse%2A> page.  
+ 完全な <xref:System.TimeSpan> 構文の「解説」セクションを参照してください、 <xref:System.TimeSpan.Parse%2A> ページです。  
   
    
   
-## Examples  
- A timeline's <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> property determines the beginning of a timeline's active period. If the timeline has a parent timeline, the <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> property determines how long it takes the timeline to start after its parent starts. If the timeline is a root timeline (a <xref:System.Windows.Media.Animation.Storyboard>, for example), the <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> property determines how long the timeline takes to start playing after it is triggered.  
+## 例  
+ タイムラインの <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> プロパティは、タイムラインのアクティブな期間の開始を決定します。 タイムラインに親タイムラインがある場合、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> プロパティは、その親の開始後に起動するタイムラインに要する時間を決定します。 タイムラインがルート タイムラインである場合 \(、 <xref:System.Windows.Media.Animation.Storyboard>, など\)、 <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> プロパティは、タイムラインで再生がトリガーされると開始にかかる時間を決定します。  
   
- The following example shows several different timelines with different <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> settings.  
+ 次の例では、異なる複数の異なるタイムライン <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A> 設定します。  
   
- [!code-xaml[timingbehaviors_snip#_graphicsmm_BeginTimeExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_snip/CSharp/BeginTimeExample.xaml#_graphicsmm_begintimeexamplewholepage)]  
+ [!code-xml[timingbehaviors\_snip\#\_graphicsmm\_BeginTimeExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_snip/CSharp/BeginTimeExample.xaml#_graphicsmm_begintimeexamplewholepage)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.SpeedRatio" />
       </Docs>
     </Member>
     <Member MemberName="BeginTimeProperty">
@@ -404,8 +452,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.BeginTime" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -422,18 +479,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a modifiable clone of this <see cref="T:System.Windows.Media.Animation.Timeline" />, making deep copies of this object's values.</summary>
-        <returns>A modifiable clone of the current object. The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property is <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property is <see langword="true." /></returns>
+        <summary>この <see cref="T:System.Windows.Media.Animation.Timeline" /> の変更可能な複製を作成し、このオブジェクトの値の詳細コピーを作成します。</summary>
+        <returns>現在のオブジェクトの変更可能な複製。 複製されたオブジェクトの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティは、ソースの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティが <see langword="true." /> である場合でも、<see langword="false" /> になります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object). For convenience, this method shadows the inherited version with a strongly typed implementation.  
+## 解説  
+ このメソッドの使用の変更可能なコピーの作成をフリーズした <xref:System.Windows.Freezable> オブジェクト \(または任意 <xref:System.Windows.Freezable> オブジェクト\)。 便利な場合は、このメソッドは、厳密に型指定の実装と継承したバージョンをシャドウします。  
   
- For more information, see <xref:System.Windows.Freezable.Clone%2A?displayProperty=fullName>.  
+ 詳細については、「<xref:System.Windows.Freezable.Clone%2A?displayProperty=fullName>」を参照してください。  
   
- When copying dependency properties, this method copies resource references and data bindings (but they might no longer resolve) but not animations or their current values.  
+ このメソッドは、依存関係プロパティをコピーするときにリソース参照とデータ バインディングをコピーしますが \(ただし、これらは解決されなくなる場合があります\)、アニメーションやその現在の値はコピーしません。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -452,18 +512,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a modifiable clone of this <see cref="T:System.Windows.Media.Animation.Timeline" /> object, making deep copies of this object's current values.</summary>
-        <returns>A modifiable clone of the current object. The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property is <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property is <see langword="true" />.</returns>
+        <summary>この <see cref="T:System.Windows.Media.Animation.Timeline" /> オブジェクトの変更可能な複製を作成し、このオブジェクトの現在値の詳細コピーを作成します。</summary>
+        <returns>現在のオブジェクトの変更可能な複製。 複製されたオブジェクトの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティは、 <see langword="false" /> 場合でも、ソースの <see cref="P:System.Windows.Freezable.IsFrozen" /> プロパティは <see langword="true" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object). For convenience, this method shadows the inherited version with a strongly typed implementation.  
+## 解説  
+ このメソッドの使用の変更可能なコピーの作成をフリーズした <xref:System.Windows.Freezable> オブジェクト \(または任意 <xref:System.Windows.Freezable> オブジェクト\)。 便利な場合は、このメソッドは、厳密に型指定の実装と継承したバージョンをシャドウします。  
   
- For more information, see <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=fullName>.  
+ 詳細については、「<xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=fullName>」を参照してください。  
   
- Resource references, data bindings, and animations are not copied, but their current values are.  
+ リソース参照、データ バインディング、アニメーションはコピーされませんが、それらの現在値はコピーされます。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -481,25 +544,25 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when this timeline has completely finished playing: it will no longer enter its active period.</summary>
+        <summary>このタイムラインの再生が完全に終了するときに発生します。 アクティブな期間は不要になったを入力します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If this timeline is the root timeline of a timeline tree, it has completed playing after it reaches the end of its active period (which includes repeats) and all its children have reached the end of their active periods. If this timeline is a child timeline, it is considered to have completely finished playing when the root timeline of the timeline tree to which it belongs reaches the end of its active period and all its child timelines have finished playing.  
+## 解説  
+ このタイムラインがタイムライン ツリーのルートのタイムラインの場合は、アクティブな期間 \(をクラッシュの回数を含む\) の末尾に到達し、そのすべての子は、アクティブな期間の終わりに達しました、再生は完了します。 このタイムラインが子タイムラインの場合は、所属先に到達したタイムライン ツリーのルート タイムライン アクティブな期間とそのすべての子タイムラインの末尾が再生終了すると再生を完全に終了したと見なされます。  
   
- Stopping a timeline does not trigger its completed event, but skipping it to its fill period does.  
+ タイムラインを停止しても、その完了イベントは発生しませんが、保留期間をスキップします。  
   
- The <xref:System.Object> parameter of the <xref:System.EventHandler> event handler is the timeline's <xref:System.Windows.Media.Animation.Clock>.  
+ <xref:System.Object> のパラメーター、 <xref:System.EventHandler> イベント ハンドラーは、タイムラインの <xref:System.Windows.Media.Animation.Clock>です。  
   
- Although this event handler appears to be associated with a timeline, it actually registers with the <xref:System.Windows.Media.Animation.Clock> created for this timeline.  For more information, see the [Timing Events Overview](~/docs/framework/wpf/graphics-multimedia/timing-events-overview.md).  
+ このイベント ハンドラーは、タイムラインと関連付ける示されますが、実際に登録すると、 <xref:System.Windows.Media.Animation.Clock> このタイムラインのスペースを作成します。  詳細については、次を参照してください。、 [タイミング イベントの概要](http://msdn.microsoft.com/ja-jp/597e3280-0867-4359-a97b-5b2f4149e350)します。  
   
    
   
-## Examples  
- In the following example, two <xref:System.Windows.Media.Animation.Storyboard> objects are used to create an animation transition between two images, stored using <xref:System.Windows.Media.ImageSource> objects and displayed using an <xref:System.Windows.Controls.Image> control. One storyboard shrinks the image control until it disappears. After it completes, the old <xref:System.Windows.Media.ImageSource> is swapped with the other <xref:System.Windows.Media.ImageSource>, and a second storyboard that expands the image control until it is full-sized again.  
+## 例  
+ 次の例では、2 つ <xref:System.Windows.Media.Animation.Storyboard> オブジェクトが格納に使用される 2 つの画像間のアニメーション遷移の作成に使用する <xref:System.Windows.Media.ImageSource> を使用して表示、オブジェクト、 <xref:System.Windows.Controls.Image> コントロールです。 見えなくなるまで、1 つのストーリー ボードは、image コントロールを縮小します。 これが完了したら、古い <xref:System.Windows.Media.ImageSource> が、他のスワップされる <xref:System.Windows.Media.ImageSource>, 、およびイメージの展開された 2 つ目のストーリー ボードの制御になるまで拡大もう一度です。  
   
- [!code-xaml[timingbehaviors_snip#TimelineCompletedExampleMarkupUsingWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_snip/CSharp/TimelineCompletedExample.xaml#timelinecompletedexamplemarkupusingwholepage)]  
+ [!code-xml[timingbehaviors\_snip\#TimelineCompletedExampleMarkupUsingWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_snip/CSharp/TimelineCompletedExample.xaml#timelinecompletedexamplemarkupusingwholepage)]  
   
   
   
@@ -521,13 +584,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a new, controllable <see cref="T:System.Windows.Media.Animation.Clock" /> from this <see cref="T:System.Windows.Media.Animation.Timeline" />. If this <see cref="T:System.Windows.Media.Animation.Timeline" /> has children, a tree of clocks is created with this <see cref="T:System.Windows.Media.Animation.Timeline" /> as the root.</summary>
-        <returns>A new, controllable <see cref="T:System.Windows.Media.Animation.Clock" /> constructed from this <see cref="T:System.Windows.Media.Animation.Timeline" />. If this <see cref="T:System.Windows.Media.Animation.Timeline" /> is a <see cref="T:System.Windows.Media.Animation.TimelineGroup" /> that contains child timelines, a tree of <see cref="T:System.Windows.Media.Animation.Clock" /> objects is created with a controllable <see cref="T:System.Windows.Media.Animation.Clock" /> created from this <see cref="T:System.Windows.Media.Animation.Timeline" /> as the root.</returns>
+        <summary>この <see cref="T:System.Windows.Media.Animation.Timeline" /> から新しい制御可能な <see cref="T:System.Windows.Media.Animation.Clock" /> を作成します。 この <see cref="T:System.Windows.Media.Animation.Timeline" /> に子がある場合は、この <see cref="T:System.Windows.Media.Animation.Timeline" /> をルートにしてクロックのツリーが作成されます。</summary>
+        <returns>この <see cref="T:System.Windows.Media.Animation.Timeline" /> から構築された、制御可能な新しい <see cref="T:System.Windows.Media.Animation.Clock" />。 この <see cref="T:System.Windows.Media.Animation.Timeline" /> が子タイムラインを含む <see cref="T:System.Windows.Media.Animation.TimelineGroup" /> である場合、この <see cref="T:System.Windows.Media.Animation.Timeline" /> から作成された制御可能な <see cref="T:System.Windows.Media.Animation.Clock" /> をルートにして <see cref="T:System.Windows.Media.Animation.Clock" /> オブジェクトのツリーが作成されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Although this <xref:System.Windows.Media.Animation.Timeline> may be the child of one or more <xref:System.Windows.Media.Animation.TimelineGroup> objects, this information is ignored: this method treats the current <xref:System.Windows.Media.Animation.Timeline> as a root <xref:System.Windows.Media.Animation.Timeline>.  
+## 解説  
+ この <xref:System.Windows.Media.Animation.Timeline> 1 つまたは複数の子になる場合があります <xref:System.Windows.Media.Animation.TimelineGroup> オブジェクトの場合、この情報は無視されます。 このメソッドで現在 <xref:System.Windows.Media.Animation.Timeline> ルートとして <xref:System.Windows.Media.Animation.Timeline>します。  
   
  ]]></format>
         </remarks>
@@ -550,15 +613,18 @@
       </Parameters>
       <Docs>
         <param name="hasControllableRoot">
-          <see langword="true" /> if the root <see cref="T:System.Windows.Media.Animation.Clock" /> returned should return a <see cref="T:System.Windows.Media.Animation.ClockController" /> from its <see cref="P:System.Windows.Media.Animation.Clock.Controller" /> property so that the <see cref="T:System.Windows.Media.Animation.Clock" /> tree can be interactively controlled; otherwise, <see langword="false" />.</param>
-        <summary>Creates a new <see cref="T:System.Windows.Media.Animation.Clock" /> from this <see cref="T:System.Windows.Media.Animation.Timeline" /> and specifies whether the new <see cref="T:System.Windows.Media.Animation.Clock" /> is controllable. If this <see cref="T:System.Windows.Media.Animation.Timeline" /> has children, a tree of clocks is created with this <see cref="T:System.Windows.Media.Animation.Timeline" /> as the root.</summary>
-        <returns>A new <see cref="T:System.Windows.Media.Animation.Clock" /> constructed from this <see cref="T:System.Windows.Media.Animation.Timeline" />. If this <see cref="T:System.Windows.Media.Animation.Timeline" /> is a <see cref="T:System.Windows.Media.Animation.TimelineGroup" /> that contains child timelines, a tree of <see cref="T:System.Windows.Media.Animation.Clock" /> objects is created with a controllable <see cref="T:System.Windows.Media.Animation.Clock" /> created from this <see cref="T:System.Windows.Media.Animation.Timeline" /> as the root.</returns>
+          <see langword="true" /> 場合ルート <see cref="T:System.Windows.Media.Animation.Clock" /> 返される返す必要があります、 <see cref="T:System.Windows.Media.Animation.ClockController" /> からその <see cref="P:System.Windows.Media.Animation.Clock.Controller" /> プロパティように、 <see cref="T:System.Windows.Media.Animation.Clock" /> 対話的に制御されているそれ以外の場合、ツリーが表示できる <see langword="false" />です。</param>
+        <summary>新たに作成 <see cref="T:System.Windows.Media.Animation.Clock" /> これから <see cref="T:System.Windows.Media.Animation.Timeline" /> を指定するかどうか、新しい <see cref="T:System.Windows.Media.Animation.Clock" /> が制御できます。 この <see cref="T:System.Windows.Media.Animation.Timeline" /> に子がある場合は、この <see cref="T:System.Windows.Media.Animation.Timeline" /> をルートにしてクロックのツリーが作成されます。</summary>
+        <returns>新しい <see cref="T:System.Windows.Media.Animation.Clock" /> これから構築された <see cref="T:System.Windows.Media.Animation.Timeline" />します。 この <see cref="T:System.Windows.Media.Animation.Timeline" /> が子タイムラインを含む <see cref="T:System.Windows.Media.Animation.TimelineGroup" /> である場合、この <see cref="T:System.Windows.Media.Animation.Timeline" /> から作成された制御可能な <see cref="T:System.Windows.Media.Animation.Clock" /> をルートにして <see cref="T:System.Windows.Media.Animation.Clock" /> オブジェクトのツリーが作成されます。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Although this <xref:System.Windows.Media.Animation.Timeline> may be the child of one or more <xref:System.Windows.Media.Animation.TimelineGroup> objects, this information is ignored: this method treats the current <xref:System.Windows.Media.Animation.Timeline> as a root <xref:System.Windows.Media.Animation.Timeline>.  
+## 解説  
+ この <xref:System.Windows.Media.Animation.Timeline> 1 つまたは複数の子になる場合があります <xref:System.Windows.Media.Animation.TimelineGroup> オブジェクトの場合、この情報は無視されます。 このメソッドで現在 <xref:System.Windows.Media.Animation.Timeline> ルートとして <xref:System.Windows.Media.Animation.Timeline>します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -576,39 +642,42 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the rate at which time progresses for the timeline's clock changes.</summary>
+        <summary>その時点のレートの進行のタイムラインのクロックの変更時に発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The current global speed of a timeline's clock changes in the following circumstances:  
+## 解説  
+ 次の場合、タイムラインのクロックの変更の現在のグローバル速度:  
   
--   The clock changes direction because of its timeline's <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> setting.  
+-   タイムラインの方向が変わった場合、クロック <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> 設定します。  
   
--   The clock accelerates or decelerates because of its timeline's <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> or <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> property settings.  
+-   クロックが加速または減速のタイムラインのため <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> または <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> プロパティの設定です。  
   
--   The clock is paused or resumed.  
+-   クロックが一時停止または再開します。  
   
--   The clock becomes inactive or reactivates.  
+-   クロックが非アクティブになったまたは再アクティブ化します。  
   
--   The <xref:System.Windows.Media.Animation.Clock.CurrentGlobalSpeed%2A> of one of the clock's parent changes.  
+-   <xref:System.Windows.Media.Animation.Clock.CurrentGlobalSpeed%2A> の時計の親の変更の 1 つです。  
   
- The <xref:System.Windows.Media.Animation.Timeline.CurrentGlobalSpeedInvalidated> event is useful for tracking when a timeline's clock becomes paused; in your event handler, use your storyboard's <xref:System.Windows.Media.Animation.Storyboard.GetCurrentGlobalSpeed%2A> method or check the clock's <xref:System.Windows.Media.Animation.Clock.IsPaused%2A> property to determine whether its clock is paused; compare this against a previously cached value to determine whether it changed.  
+ <xref:System.Windows.Media.Animation.Timeline.CurrentGlobalSpeedInvalidated> イベントは、ストーリー ボードを使用して、タイムラインのクロックが一時停止しているを追跡するため、イベント ハンドラーの場合に役立ちます <xref:System.Windows.Media.Animation.Storyboard.GetCurrentGlobalSpeed%2A> メソッドまたは時計をチェック <xref:System.Windows.Media.Animation.Clock.IsPaused%2A> クロックが一時停止するかどうかを確認するに変更されたかどうかを判断する以前にキャッシュされた値と比較します。  
   
- The <xref:System.Object> parameter of the <xref:System.EventHandler> event handler is the timeline's <xref:System.Windows.Media.Animation.Clock>.  
+ <xref:System.Object> のパラメーター、 <xref:System.EventHandler> イベント ハンドラーは、タイムラインの <xref:System.Windows.Media.Animation.Clock>です。  
   
- Although this event handler appears to be associated with a timeline, it actually registers with the <xref:System.Windows.Media.Animation.Clock> created for this timeline.  For more information, see the [Timing Events Overview](~/docs/framework/wpf/graphics-multimedia/timing-events-overview.md).  
+ このイベント ハンドラーは、タイムラインと関連付ける示されますが、実際に登録すると、 <xref:System.Windows.Media.Animation.Clock> このタイムラインのスペースを作成します。  詳細については、次を参照してください。、 [タイミング イベントの概要](http://msdn.microsoft.com/ja-jp/597e3280-0867-4359-a97b-5b2f4149e350)します。  
   
    
   
-## Examples  
- The following example shows how to register for the <xref:System.Windows.Media.Animation.Timeline.CurrentGlobalSpeedInvalidated> event.  
+## 例  
+ 次の例に登録する方法、 <xref:System.Windows.Media.Animation.Timeline.CurrentGlobalSpeedInvalidated> イベントです。  
   
- [!code-csharp[timingbehaviors_procedural_snip#TimelineCurrentGlobalSpeedInvalidatedExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_procedural_snip/CSharp/TimelineCurrentGlobalSpeedInvalidatedExample.cs#timelinecurrentglobalspeedinvalidatedexamplewholepage)]
- [!code-vb[timingbehaviors_procedural_snip#TimelineCurrentGlobalSpeedInvalidatedExampleWholePage](~/samples/snippets/visualbasic/VS_Snippets_Wpf/timingbehaviors_procedural_snip/visualbasic/timelinecurrentglobalspeedinvalidatedexample.vb#timelinecurrentglobalspeedinvalidatedexamplewholepage)]  
+ [!code-csharp[timingbehaviors\_procedural\_snip\#TimelineCurrentGlobalSpeedInvalidatedExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_procedural_snip/CSharp/TimelineCurrentGlobalSpeedInvalidatedExample.cs#timelinecurrentglobalspeedinvalidatedexamplewholepage)]
+ [!code-vb[timingbehaviors\_procedural\_snip\#TimelineCurrentGlobalSpeedInvalidatedExampleWholePage](~/samples/snippets/visualbasic/VS_Snippets_Wpf/timingbehaviors_procedural_snip/visualbasic/timelinecurrentglobalspeedinvalidatedexample.vb#timelinecurrentglobalspeedinvalidatedexamplewholepage)]  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Media.Animation.Storyboard.GetCurrentGlobalSpeed(System.Windows.FrameworkElement)" />
+        <altmember cref="T:System.Windows.Media.Animation.Clock" />
+        <altmember cref="P:System.Windows.Media.Animation.Clock.CurrentGlobalSpeed" />
       </Docs>
     </Member>
     <Member MemberName="CurrentStateInvalidated">
@@ -624,11 +693,11 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the <see cref="P:System.Windows.Media.Animation.Clock.CurrentState" /> property of the timeline's <see cref="T:System.Windows.Media.Animation.Clock" /> is updated.</summary>
+        <summary>タイムラインの <see cref="T:System.Windows.Media.Animation.Clock" /> の <see cref="P:System.Windows.Media.Animation.Clock.CurrentState" /> プロパティが更新されたときに発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Use the <xref:System.Windows.Media.Animation.Timeline.CurrentStateInvalidated> event when you want to be notified  when a timeline's <xref:System.Windows.Media.Animation.Clock> starts, stops, or fills.  
   
  Pausing a <xref:System.Windows.Media.Animation.Clock> does not change its <xref:System.Windows.Media.Animation.Clock.CurrentState%2A>. To be notified when a clock becomes paused, use the <xref:System.Windows.Media.Animation.Timeline.CurrentGlobalSpeedInvalidated> event.  
@@ -637,10 +706,13 @@
   
  The <xref:System.Object> parameter of the <xref:System.EventHandler> event handler is the  <xref:System.Windows.Media.Animation.Clock> that was created for this timeline.  
   
- Although this event handler appears to be associated with a timeline, it actually registers with the <xref:System.Windows.Media.Animation.Clock> created for this timeline.  For more information, see the [Timing Events Overview](~/docs/framework/wpf/graphics-multimedia/timing-events-overview.md).  
+ Although this event handler appears to be associated with a timeline, it actually registers with the <xref:System.Windows.Media.Animation.Clock> created for this timeline.  For more information, see the [Timing Events Overview](http://msdn.microsoft.com/ja-jp/597e3280-0867-4359-a97b-5b2f4149e350).  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Windows.Media.Animation.Clock" />
+        <altmember cref="P:System.Windows.Media.Animation.Clock.CurrentState" />
+        <altmember cref="E:System.Windows.Media.Animation.Timeline.CurrentStateInvalidated" />
       </Docs>
     </Member>
     <Member MemberName="CurrentTimeInvalidated">
@@ -656,24 +728,24 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the <see cref="P:System.Windows.Media.Animation.Clock.CurrentTime" /> property of the timeline's <see cref="T:System.Windows.Media.Animation.Clock" /> is updated.</summary>
+        <summary>発生したときに、 <see cref="P:System.Windows.Media.Animation.Clock.CurrentTime" /> 、タイムラインのプロパティ <see cref="T:System.Windows.Media.Animation.Clock" /> が更新されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Windows.Media.Animation.Timeline.CurrentStateInvalidated> event when you want to be notified when the <xref:System.Windows.Media.Animation.Clock.CurrentTime%2A> of a timeline's <xref:System.Windows.Media.Animation.Clock> is updated.  
+## 解説  
+ 使用して、 <xref:System.Windows.Media.Animation.Timeline.CurrentStateInvalidated> にするときにイベントときに通知、 <xref:System.Windows.Media.Animation.Clock.CurrentTime%2A> のタイムラインの <xref:System.Windows.Media.Animation.Clock> が更新されます。  
   
- The <xref:System.Object> parameter of the <xref:System.EventHandler> event handler is the timeline's <xref:System.Windows.Media.Animation.Clock>.  
+ <xref:System.Object> のパラメーター、 <xref:System.EventHandler> イベント ハンドラーは、タイムラインの <xref:System.Windows.Media.Animation.Clock>です。  
   
- Although this event handler appears to be associated with a timeline, it actually registers with the <xref:System.Windows.Media.Animation.Clock> created for this timeline.  For more information, see the [Timing Events Overview](~/docs/framework/wpf/graphics-multimedia/timing-events-overview.md).  
+ このイベント ハンドラーは、タイムラインと関連付ける示されますが、実際に登録すると、 <xref:System.Windows.Media.Animation.Clock> このタイムラインのスペースを作成します。  詳細については、次を参照してください。、 [タイミング イベントの概要](http://msdn.microsoft.com/ja-jp/597e3280-0867-4359-a97b-5b2f4149e350)します。  
   
    
   
-## Examples  
- The following example shows how to register for the <xref:System.Windows.Media.Animation.Timeline.CurrentTimeInvalidated> event.  
+## 例  
+ 次の例に登録する方法、 <xref:System.Windows.Media.Animation.Timeline.CurrentTimeInvalidated> イベントです。  
   
- [!code-csharp[timingbehaviors_procedural_snip#TimelineCurrentTimeInvalidatedExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_procedural_snip/CSharp/TimelineCurrentTimeInvalidatedExample.cs#timelinecurrenttimeinvalidatedexamplewholepage)]
- [!code-vb[timingbehaviors_procedural_snip#TimelineCurrentTimeInvalidatedExampleWholePage](~/samples/snippets/visualbasic/VS_Snippets_Wpf/timingbehaviors_procedural_snip/visualbasic/timelinecurrenttimeinvalidatedexample.vb#timelinecurrenttimeinvalidatedexamplewholepage)]  
+ [!code-csharp[timingbehaviors\_procedural\_snip\#TimelineCurrentTimeInvalidatedExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_procedural_snip/CSharp/TimelineCurrentTimeInvalidatedExample.cs#timelinecurrenttimeinvalidatedexamplewholepage)]
+ [!code-vb[timingbehaviors\_procedural\_snip\#TimelineCurrentTimeInvalidatedExampleWholePage](~/samples/snippets/visualbasic/VS_Snippets_Wpf/timingbehaviors_procedural_snip/visualbasic/timelinecurrenttimeinvalidatedexample.vb#timelinecurrenttimeinvalidatedexamplewholepage)]  
   
  ]]></format>
         </remarks>
@@ -692,13 +764,13 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value specifying the percentage of the timeline's <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> spent decelerating the passage of time from its maximum rate to zero.</summary>
-        <value>A value between 0 and 1, inclusive, that specifies the percentage of the timeline's <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> spent decelerating the passage of time from its maximum rate to zero. If the timeline's <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> property is also set, the sum of <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> and <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> must be less than or equal to 1. The default value is 0.</value>
+        <summary>時間の経過を最大速度から 0 に減速する場合に、費やされるタイムラインの <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> の比率を指定する値を取得または設定します。</summary>
+        <value>時間の経過を最大速度から 0 に減速する場合に、費やされるタイムラインの <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> の比率を指定する 0 ～ 1 \(両端を含む\) の値。 タイムラインの <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> プロパティも設定されている場合、<see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> と <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> の合計は 1 以下である必要があります。 既定値は 0 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use the <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> property to create animations that slow down before stopping. The <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> property is useful for creating ease-in effects or making movement seem more natural. Use the <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> and <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> properties together to create animations that that start slowly, speed up, and then slow down again before finishing.  
+## 解説  
+ Use the <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> property to create animations that slow down before stopping. The <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> property is useful for creating ease\-in effects or making movement seem more natural. Use the <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> and <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> properties together to create animations that that start slowly, speed up, and then slow down again before finishing.  
   
 <a name="dependencyPropertyInfo_DecelerationRatio"></a>   
 ## Dependency Property Information  
@@ -706,13 +778,15 @@
 |||  
 |-|-|  
 |Identifier field|<xref:System.Windows.Media.Animation.Timeline.DecelerationRatioProperty>|  
-|Metadata properties set to `true`|None|  
+|Metadata properties set to **languageKeyword tag is not supported!!!!**|None|  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> is less than 0 or greater than 1.</exception>
-        <exception cref="T:System.InvalidOperationException">The sum of <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> and <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> exceeds 1.</exception>
+          <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> が 0 より小さいか、または 1 を超えています。</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" /> と <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> の合計が 1 を超えています。</exception>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.AccelerationRatio" />
       </Docs>
     </Member>
     <Member MemberName="DecelerationRatioProperty">
@@ -728,8 +802,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies for the <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.DecelerationRatio" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DesiredFrameRateProperty">
@@ -745,8 +828,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.DesiredFrameRate" /> attached property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.DesiredFrameRate" /> 添付プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Duration">
@@ -762,41 +854,42 @@
         <ReturnType>System.Windows.Duration</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the length of time for which this timeline plays, not counting repetitions.</summary>
-        <value>The timeline's simple duration: the amount of time this timeline takes to complete a single forward iteration. The default value is <see cref="P:System.Windows.Duration.Automatic" />.</value>
+        <summary>取得または繰り返しをカウントせずに、このタイムラインの再生時間の長さを設定します。</summary>
+        <value>タイムラインの単一の継続時間: このタイムラインは、1 つの前方反復処理を完了するまでの時間数。 既定値は <see cref="P:System.Windows.Duration.Automatic" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A timeline's simple duration constitutes the time for a single forward iteration versus the total play time, which includes repetitions.  
+## 解説  
+ タイムラインの単一の継続時間は、繰り返しが含まれる合計再生時間に対して 1 回の前方反復の時間を構成します。  
   
-## Default Duration Behavior  
- The behavior of a <xref:System.Windows.Media.Animation.Timeline.Duration%2A> structure with a value of <xref:System.Windows.Duration.Automatic%2A> depends on the type of timeline:  
-  
-|**Timeline**|**Behavior**|  
-|-|-|  
-|<xref:System.Windows.Media.Animation.Timeline>|Undetermined (<xref:System.Windows.Media.Animation.Timeline> is abstract)|  
-|<xref:System.Windows.Media.Animation.ParallelTimeline>,<br /><br /> <xref:System.Windows.Media.Animation.Storyboard>,<br /><br /> <xref:System.Windows.Media.Animation.TimelineGroup>|Expands to fit child timelines|  
-|\<*Type*>Animation (Known as a "From/To/By" or "basic" animations)|1 second|  
-|\<*Type*>AnimationUsingKeyFrames (Known as key frame animations)|Sum of all key frame <xref:System.Windows.Media.Animation.KeyTime> values|  
-  
-<a name="dependencyPropertyInfo_Duration"></a>   
-## Dependency Property Information  
+## 既定の期間の動作  
+ 動作、 <xref:System.Windows.Media.Animation.Timeline.Duration%2A> の値を持つ <xref:System.Windows.Duration.Automatic%2A> タイムラインの種類によって異なります。  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.DurationProperty>|  
-|Metadata properties set to `true`|None|  
+|**タイムライン**|**動作**|  
+|<xref:System.Windows.Media.Animation.Timeline>|不定 \(<xref:System.Windows.Media.Animation.Timeline> は抽象クラスです\)|  
+|<xref:System.Windows.Media.Animation.ParallelTimeline>、<br /><br /> <xref:System.Windows.Media.Animation.Storyboard>、<br /><br /> <xref:System.Windows.Media.Animation.TimelineGroup>|子タイムラインを合わせて拡張されます。|  
+|\<*型*\> アニメーション \(、"から\/に\/"または"basic"アニメーションと呼ばれます\)|1 秒|  
+|\<*型*\> AnimationUsingKeyFrames \(キー フレーム アニメーションと呼ばれます\)|すべてのキー フレームの合計 <xref:System.Windows.Media.Animation.KeyTime> 値|  
+  
+<a name="dependencyPropertyInfo_Duration"></a>   
+## 依存プロパティ情報  
+  
+|||  
+|-|-|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.DurationProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
    
   
-## Examples  
- <xref:System.Windows.Media.Animation.ParallelTimeline> and <xref:System.Windows.Media.Animation.Storyboard> are types of <xref:System.Windows.Media.Animation.TimelineGroup> objects. The duration of a <xref:System.Windows.Media.Animation.TimelineGroup> is determined by the duration of its child timelines. For example, the <xref:System.Windows.Media.Animation.Storyboard> below will run for six seconds (duration of 6 seconds) because that is when its last child Timeline (<xref:System.Windows.Media.Animation.DoubleAnimation>) ends.  
+## 例  
+ <xref:System.Windows.Media.Animation.ParallelTimeline> <xref:System.Windows.Media.Animation.Storyboard> 種類 <xref:System.Windows.Media.Animation.TimelineGroup> オブジェクトです。 期間、 <xref:System.Windows.Media.Animation.TimelineGroup> はその子タイムラインの期間によって決まります。 たとえば、 <xref:System.Windows.Media.Animation.Storyboard> 以下 6 秒間 \(6 秒の期間\) のためが実行されるとき、最後の子タイムライン \(<xref:System.Windows.Media.Animation.DoubleAnimation>\) を終了します。  
   
 > [!NOTE]
->  Note: code has been omitted from the following examples, which are provided for illustrative purposed only.  
+>  注: からのものを次の例は、コードが実装されていません  
   
- [xaml]  
+ \[xaml\]  
   
 ```  
 ...  
@@ -807,9 +900,9 @@
 ...  
 ```  
   
- Examples of \<*Type*>Animations include <xref:System.Windows.Media.Animation.DoubleAnimation>, <xref:System.Windows.Media.Animation.PointAnimation>, <xref:System.Windows.Media.Animation.ColorAnimation>, etc. If no <xref:System.Windows.Media.Animation.Timeline.Duration%2A> is specified for these types of animations, they will run for one second.  
+ 例については \<*型*\> アニメーションとは、 <xref:System.Windows.Media.Animation.DoubleAnimation>, 、<xref:System.Windows.Media.Animation.PointAnimation>, 、<xref:System.Windows.Media.Animation.ColorAnimation>, などです。 ない場合 <xref:System.Windows.Media.Animation.Timeline.Duration%2A> が指定されてこれらの種類のアニメーションでは、1 秒間実行されます。  
   
- [xaml]  
+ \[xaml\]  
   
 ```  
 ...  
@@ -819,9 +912,9 @@
 ...  
 ```  
   
- Examples of \<*Type*>AnimationUsingKeyFrames include <xref:System.Windows.Media.Animation.DoubleAnimationUsingKeyFrames>, <xref:System.Windows.Media.Animation.PointAnimationUsingKeyFrames>, etc. If no <xref:System.Windows.Media.Animation.Timeline.Duration%2A> is specified for these types of animations they will run until all key frames are finished.  
+ 例については \<*型*\> AnimationUsingKeyFrames 含める <xref:System.Windows.Media.Animation.DoubleAnimationUsingKeyFrames>, 、<xref:System.Windows.Media.Animation.PointAnimationUsingKeyFrames>, などです。 ない場合 <xref:System.Windows.Media.Animation.Timeline.Duration%2A> アニメーション キー フレームですべてが完了するまで、これらは実行のこれらの種類を指定します。  
   
- [xaml]  
+ \[xaml\]  
   
 ```  
 ...  
@@ -841,6 +934,8 @@
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Media.Animation.ClockController.SkipToFill" />
+        <altmember cref="M:System.Windows.Media.Animation.ClockController.Stop" />
       </Docs>
     </Member>
     <Member MemberName="DurationProperty">
@@ -856,8 +951,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FillBehavior">
@@ -873,27 +977,27 @@
         <ReturnType>System.Windows.Media.Animation.FillBehavior</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that specifies how the <see cref="T:System.Windows.Media.Animation.Timeline" /> behaves after it reaches the end of its active period.</summary>
-        <value>A value that specifies how the timeline behaves after it reaches the end of its active period but its parent is inside its active or fill period. The default value is <see cref="F:System.Windows.Media.Animation.FillBehavior.HoldEnd" />.</value>
+        <summary>アクティブ期間の終わりに達した後の <see cref="T:System.Windows.Media.Animation.Timeline" /> の動作を指定する値を取得または設定します。</summary>
+        <value>アクティブ期間の終わりに達した後 \(ただし親はアクティブ期間内または保留期間内にある\) のタイムラインの動作を指定する値。 既定値は <see cref="F:System.Windows.Media.Animation.FillBehavior.HoldEnd" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Set an animations <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> property to <xref:System.Windows.Media.Animation.FillBehavior.HoldEnd> when you want the animation to hold its value after it reaches the end of its active period. An animation that has reached the end of its active period that has a <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> setting of <xref:System.Windows.Media.Animation.FillBehavior.HoldEnd> is said to be in its fill period. When you don't want an animation to hold its value after it reaches the end of its active period, set its  
+## 解説  
+ 設定、アニメーション <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> プロパティを <xref:System.Windows.Media.Animation.FillBehavior.HoldEnd> アクティブな期間の終わりに達すると、その値を保持するために、アニメーションの場合します。 アクティブな期間の末尾に到達するアニメーションが、 <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> 設定 <xref:System.Windows.Media.Animation.FillBehavior.HoldEnd> 保留期間内にあると言います。 アクティブな期間の終わりに達すると、アニメーションの値を保持する必要がある場合は、設定、  
   
- <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> property to <xref:System.Windows.Media.Animation.FillBehavior.Stop>.  
+ <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> プロパティを <xref:System.Windows.Media.Animation.FillBehavior.Stop>します。  
   
- Because an animation in its fill period continues to override its target property's value, attempting to set the target property's value through other means might appear to have no effect. For an example showing how to set a property value after it has been animated, see [How to: Set a Property After Animating It with a Storyboard](~/docs/framework/wpf/graphics-multimedia/how-to-set-a-property-after-animating-it-with-a-storyboard.md).  
+ 保留期間でのアニメーションは、ターゲット プロパティの値をオーバーライドし続ける、ためには、効果がないように見える可能性があります他の手段でターゲット プロパティの値を設定しようとしています。 アニメーション化された後に、プロパティ値を設定する方法を示す例では、次を参照してください。 [方法: 設定、プロパティ後アニメーション ストーリー ボードを](http://msdn.microsoft.com/ja-jp/79466556-4dbf-40bd-9c1e-a77613b07077)します。  
   
- A child timeline stops playing and filling when its parent timeline stops; if you want a child timeline to fill, make sure its parent timeline has a <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> of <xref:System.Windows.Media.Animation.FillBehavior.HoldEnd>.  
+ 子タイムライン再生と、親のタイムラインが中止されます。 保留を停止します。子タイムラインに入力する場合は、確認、親のタイムライン、 <xref:System.Windows.Media.Animation.Timeline.FillBehavior%2A> の <xref:System.Windows.Media.Animation.FillBehavior.HoldEnd>です。  
   
 <a name="dependencyPropertyInfo_FillBehavior"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.FillBehaviorProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.FillBehaviorProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
  ]]></format>
         </remarks>
@@ -912,8 +1016,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.FillBehavior" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.FillBehavior" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FreezeCore">
@@ -932,18 +1045,21 @@
         <Parameter Name="isChecking" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="isChecking">
-          <see langword="true" /> to check if this instance can be frozen; <see langword="false" /> to freeze this instance.</param>
-        <summary>Makes this <see cref="T:System.Windows.Media.Animation.Timeline" /> unmodifiable or determines whether it can be made unmodifiable.</summary>
-        <returns>If <paramref name="isChecking" /> is true, this method returns <see langword="true" /> if this instance can be made read-only, or <see langword="false" /> if it cannot be made read-only.  
+        <param name="isChecking">このインスタンスが固定可能かどうかを確認するには、<see langword="true" />。このインスタンスを固定するには <see langword="false" />。</param>
+        <summary>これにより、 <see cref="T:System.Windows.Media.Animation.Timeline" /> 不可能な状態をできるかどうか、不可能な状態を決定したりします。</summary>
+        <returns>
+          <paramref name="isChecking" /> が true の場合、このインスタンスを読み取り専用にできるなら、このメソッドは <see langword="true" /> を返します。読み取り専用にできないなら <see langword="false" /> を返します。  
   
- If <paramref name="isChecking" /> is false, this method returns <see langword="true" /> if this instance is now read-only, or <see langword="false" /> if it cannot be made read-only, with the side effect of having begun to change the frozen status of this object.</returns>
+ <paramref name="isChecking" /> が false の場合、このインスタンスが現在読み取り専用であるなら、このメソッドは <see langword="true" /> を返します。このオブジェクトの固定された状態を変更し始めたことの副作用によって、これを読み取り専用にできない場合は <see langword="false" /> を返します。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Do not call this method directly (except when calling base in an implementation). This method is called internally by <xref:System.Windows.Freezable.Freeze%2A>.  
+## 解説  
+ 直接 \(呼び出す場合を除きますベースの実装における\) には、このメソッドを呼び出す必要はありません。 このメソッドは内部で <xref:System.Windows.Freezable.Freeze%2A>します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
@@ -952,6 +1068,7 @@
   
  A typical implementation would call base, then call the static <see cref="M:System.Windows.Freezable.Freeze" /> method on all <see cref="T:System.Windows.Freezable" /> typed properties that the class contains, returning <see langword="true" /> only if all properties were frozen (or could have been frozen, in the case of passing through a <see langword="false" /> value for <paramref name="isChecking" />).</para>
         </block>
+        <altmember cref="M:System.Windows.Freezable.Freeze" />
       </Docs>
     </Member>
     <Member MemberName="GetAsFrozenCore">
@@ -970,18 +1087,22 @@
         <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
       </Parameters>
       <Docs>
-        <param name="sourceFreezable">The <see cref="T:System.Windows.Media.Animation.Timeline" /> instance to clone.</param>
-        <summary>Makes this instance a clone of the specified <see cref="T:System.Windows.Media.Animation.Timeline" /> object.</summary>
+        <param name="sourceFreezable">
+          <see cref="T:System.Windows.Media.Animation.Timeline" /> インスタンスを複製します。</param>
+        <summary>このインスタンスの指定した <see cref="T:System.Windows.Media.Animation.Timeline" /> オブジェクトです。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- When copying dependency properties, this method copies resource references and data bindings (but they might no longer resolve) but not animations or their current values. Note that if these properties contain resource references or data bindings, <xref:System.Windows.Freezable.GetAsFrozen%2A> will fail when trying to freeze the object and will throw an <xref:System.InvalidOperationException>.  
+## 解説  
+ このメソッドは、依存関係プロパティをコピーするときにリソース参照とデータ バインディングをコピーしますが \(ただし、これらは解決されなくなる場合があります\)、アニメーションやその現在の値はコピーしません。 これらのプロパティには、データ バインディングまたはリソースの参照が含まれている場合は、 <xref:System.Windows.Freezable.GetAsFrozen%2A> に失敗する、オブジェクトを圧縮しようとしているとスローされます、 <xref:System.InvalidOperationException>です。  
   
- This method is called by the <xref:System.Windows.Freezable.GetAsFrozen%2A> method and should not be called directly from your code, except when calling the base implementation while overriding this method. To create a frozen copy of the current object, call <xref:System.Windows.Freezable.GetAsFrozen%2A> instead of calling this method directly.  
+ このメソッドは、 <xref:System.Windows.Freezable.GetAsFrozen%2A> メソッドは以外で呼び出されて、コードから直接このメソッドを上書きするときに基本実装を呼び出すときに、します。 現在のオブジェクトの固定コピーを作成するには <xref:System.Windows.Freezable.GetAsFrozen%2A> このメソッドを直接呼び出す代わりにします。  
   
- For more information, see <xref:System.Windows.Freezable.GetAsFrozenCore%2A?displayProperty=fullName>.  
+ 詳細については、「<xref:System.Windows.Freezable.GetAsFrozenCore%2A?displayProperty=fullName>」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1002,16 +1123,19 @@
         <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
       </Parameters>
       <Docs>
-        <param name="sourceFreezable">The <see cref="T:System.Windows.Media.Animation.Timeline" /> to copy and freeze.</param>
-        <summary>Makes this instance a frozen clone of the specified <see cref="T:System.Windows.Media.Animation.Timeline" />. Resource references, data bindings, and animations are not copied, but their current values are.</summary>
+        <param name="sourceFreezable">コピーし、固定する <see cref="T:System.Windows.Media.Animation.Timeline" />。</param>
+        <summary>このインスタンスを指定した <see cref="T:System.Windows.Media.Animation.Timeline" />します。 リソース参照、データ バインディング、アニメーションはコピーされませんが、それらの現在値はコピーされます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is called by the <xref:System.Windows.Freezable.GetCurrentValueAsFrozen%2A> method and should not be called directly from your code, except when calling the base implementation while overriding this method. To create a frozen copy of the current object, call <xref:System.Windows.Freezable.GetCurrentValueAsFrozen%2A> instead of calling this method directly.  
+## 解説  
+ このメソッドは、 <xref:System.Windows.Freezable.GetCurrentValueAsFrozen%2A> メソッドは以外で呼び出されて、コードから直接このメソッドを上書きするときに基本実装を呼び出すときに、します。 現在のオブジェクトの固定コピーを作成するには <xref:System.Windows.Freezable.GetCurrentValueAsFrozen%2A> このメソッドを直接呼び出す代わりにします。  
   
- For more information see <xref:System.Windows.Freezable.GetCurrentValueAsFrozenCore%2A?displayProperty=fullName>.  
+ 詳細については、「<xref:System.Windows.Freezable.GetCurrentValueAsFrozenCore%2A?displayProperty=fullName>」を参照してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
       </Docs>
@@ -1032,17 +1156,21 @@
         <Parameter Name="timeline" Type="System.Windows.Media.Animation.Timeline" />
       </Parameters>
       <Docs>
-        <param name="timeline">The timeline from which to retrieve the desired frame rate.</param>
-        <summary>Gets the desired frame rate of the specified <see cref="T:System.Windows.Media.Animation.Timeline" />.</summary>
-        <returns>The desired frame rate of this timeline. The default value is <see langword="null" />.</returns>
+        <param name="timeline">目的のフレーム レートを取得する対象のタイムラインになります。</param>
+        <summary>指定した目的のフレーム レートを取得 <see cref="T:System.Windows.Media.Animation.Timeline" />します。</summary>
+        <returns>このタイムラインの目的のフレーム レートです。 既定値は <see langword="null" /> です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides read access to the <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> attached property. For more information, see the <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> page.  
+## 解説  
+ このメソッドへの読み取りアクセスを提供する、 <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> 添付プロパティです。 詳細については、次を参照してください。、 <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> ページです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.DesiredFrameRate" />
       </Docs>
     </Member>
     <Member MemberName="GetNaturalDuration">
@@ -1061,21 +1189,27 @@
         <Parameter Name="clock" Type="System.Windows.Media.Animation.Clock" />
       </Parameters>
       <Docs>
-        <param name="clock">The <see cref="T:System.Windows.Media.Animation.Clock" /> that was created for this <see cref="T:System.Windows.Media.Animation.Timeline" />.</param>
-        <summary>Returns the length of a single iteration of this <see cref="T:System.Windows.Media.Animation.Timeline" />.</summary>
-        <returns>The length of a single iteration of this <see cref="T:System.Windows.Media.Animation.Timeline" />, or <see cref="P:System.Windows.Duration.Automatic" /> if the natural duration is unknown.</returns>
+        <param name="clock">
+          <see cref="T:System.Windows.Media.Animation.Clock" /> これに作成された <see cref="T:System.Windows.Media.Animation.Timeline" />します。</param>
+        <summary>この単一のイテレーションの長さを返す <see cref="T:System.Windows.Media.Animation.Timeline" />します。</summary>
+        <returns>この 1 つのイテレーションの長さ <see cref="T:System.Windows.Media.Animation.Timeline" />, 、または <see cref="P:System.Windows.Duration.Automatic" /> 自然な長さが不明な場合です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method should only be called when the <xref:System.Windows.Media.Animation.Timeline.Duration%2A> property is set to <xref:System.Windows.Duration.Automatic%2A>. If <xref:System.Windows.Media.Animation.Timeline.Duration%2A> is <xref:System.Windows.Duration.Automatic%2A>, the natural duration is determined by that particular class's implementation of <xref:System.Windows.Media.Animation.Timeline.GetNaturalDurationCore%2A>.  
+## 解説  
+ このメソッドをのみ呼び出すときに、 <xref:System.Windows.Media.Animation.Timeline.Duration%2A> にプロパティが設定されている <xref:System.Windows.Duration.Automatic%2A>します。 場合 <xref:System.Windows.Media.Animation.Timeline.Duration%2A> は <xref:System.Windows.Duration.Automatic%2A>, の特定のクラスの実装では、自然な時間を確認してください。 <xref:System.Windows.Media.Animation.Timeline.GetNaturalDurationCore%2A>します。  
   
- If <xref:System.Windows.Media.Animation.Timeline.GetNaturalDuration%2A> returns <xref:System.Windows.Duration.Automatic%2A>, it means that the natural duration is unknown, which implies a natural duration of <xref:System.Windows.Duration.Forever%2A>. Such is the case for streaming media.  
+ 場合 <xref:System.Windows.Media.Animation.Timeline.GetNaturalDuration%2A> 返します <xref:System.Windows.Duration.Automatic%2A>, 、自然な長さが不明で、意味の自然な長さであることを意味して <xref:System.Windows.Duration.Forever%2A>します。 ストリーミングを行う場合などがこれです。  
   
- Note that passing this method a clock other than the one that was created for this timeline is possible, but will provide unreliable results.  
+ 成功しているこのメソッドが作成されたものではないこのタイムライン用の時計は可能ですが、信頼できない結果に注意してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.Duration" />
+        <altmember cref="M:System.Windows.Media.Animation.Timeline.GetNaturalDurationCore(System.Windows.Media.Animation.Clock)" />
       </Docs>
     </Member>
     <Member MemberName="GetNaturalDurationCore">
@@ -1094,20 +1228,25 @@
         <Parameter Name="clock" Type="System.Windows.Media.Animation.Clock" />
       </Parameters>
       <Docs>
-        <param name="clock">The <see cref="T:System.Windows.Media.Animation.Clock" /> that was created for this <see cref="T:System.Windows.Media.Animation.Timeline" />.</param>
-        <summary>Returns the length of a single iteration of this <see cref="T:System.Windows.Media.Animation.Timeline" />. This method provides the implementation for <see cref="M:System.Windows.Media.Animation.Timeline.GetNaturalDuration(System.Windows.Media.Animation.Clock)" />.</summary>
-        <returns>The length of a single iteration of this <see cref="T:System.Windows.Media.Animation.Timeline" />, or <see cref="P:System.Windows.Duration.Automatic" /> if the natural duration is unknown.</returns>
+        <param name="clock">
+          <see cref="T:System.Windows.Media.Animation.Clock" /> これに作成された <see cref="T:System.Windows.Media.Animation.Timeline" />します。</param>
+        <summary>この単一のイテレーションの長さを返す <see cref="T:System.Windows.Media.Animation.Timeline" />します。 このメソッドの実装を提供する <see cref="M:System.Windows.Media.Animation.Timeline.GetNaturalDuration(System.Windows.Media.Animation.Clock)" />です。</summary>
+        <returns>この 1 つのイテレーションの長さ <see cref="T:System.Windows.Media.Animation.Timeline" />, 、または <see cref="P:System.Windows.Duration.Automatic" /> 自然な長さが不明な場合です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method provides the implementation for <xref:System.Windows.Media.Animation.Timeline.GetNaturalDuration%2A> and should not be called directly from your code. Use <xref:System.Windows.Media.Animation.Timeline.GetNaturalDuration%2A> instead.  
+## 解説  
+ このメソッドの実装を提供する <xref:System.Windows.Media.Animation.Timeline.GetNaturalDuration%2A> コードから直接呼び出されない必要があります。 代わりに、<xref:System.Windows.Media.Animation.Timeline.GetNaturalDuration%2A> を使用してください。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
           <para>This method should be implemented by timeline classes that need to provide a custom natural <see cref="T:System.Windows.Duration" /> when the <see cref="P:System.Windows.Media.Animation.Timeline.Duration" /> property is set to <see cref="P:System.Windows.Duration.Automatic" />. If the author cannot determine the natural duration, this method should return <see cref="P:System.Windows.Duration.Automatic" />.</para>
         </block>
+        <altmember cref="M:System.Windows.Media.Animation.Timeline.GetNaturalDuration(System.Windows.Media.Animation.Clock)" />
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -1131,9 +1270,17 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the name of this <see cref="T:System.Windows.Media.Animation.Timeline" />.</summary>
-        <value>The name of this timeline. The default value is <see langword="null" />.</value>
-        <remarks>To be added.</remarks>
+        <summary>この名前を取得または <see cref="T:System.Windows.Media.Animation.Timeline" />です。</summary>
+        <value>このタイムラインの名前。 既定値は <see langword="null" /> です。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="NameProperty">
@@ -1149,8 +1296,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.Name" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.Name" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveRequested">
@@ -1166,17 +1322,23 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when the clock created for this timeline or one of its parent timelines is removed.</summary>
+        <summary>クロックがこのタイムラインの作成や、親タイムラインのいずれかが削除されると発生します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This event is raised by applying a <xref:System.Windows.Media.Animation.RemoveStoryboard> action to a storyboard, using a Storyboard's <xref:System.Windows.Media.Animation.Storyboard.Remove%2A> method, or (when working directly with clocks) calling the <xref:System.Windows.Media.Animation.ClockController.Remove%2A?displayProperty=fullName> method.  
+## 解説  
+ このイベントは、適用することで、 <xref:System.Windows.Media.Animation.RemoveStoryboard> アクション、ストーリー ボードを使用して、ストーリー ボードを <xref:System.Windows.Media.Animation.Storyboard.Remove%2A> メソッド、\(クロックを直接操作する\) 場合、またはを呼び出す、 <xref:System.Windows.Media.Animation.ClockController.Remove%2A?displayProperty=fullName> メソッドです。  
   
- Although this event handler appears to be associated with a timeline, it actually registers with the <xref:System.Windows.Media.Animation.Clock> created for this timeline.  For more information, see the [Timing Events Overview](~/docs/framework/wpf/graphics-multimedia/timing-events-overview.md).  
+ このイベント ハンドラーは、タイムラインと関連付ける示されますが、実際に登録すると、 <xref:System.Windows.Media.Animation.Clock> このタイムラインのスペースを作成します。  詳細については、次を参照してください。、 [タイミング イベントの概要](http://msdn.microsoft.com/ja-jp/597e3280-0867-4359-a97b-5b2f4149e350)します。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="T:System.Windows.Media.Animation.RemoveStoryboard" />
+        <altmember cref="M:System.Windows.Media.Animation.Storyboard.Remove(System.Windows.FrameworkElement)" />
+        <altmember cref="M:System.Windows.Media.Animation.ClockController.Remove" />
       </Docs>
     </Member>
     <Member MemberName="RepeatBehavior">
@@ -1192,28 +1354,29 @@
         <ReturnType>System.Windows.Media.Animation.RepeatBehavior</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the repeating behavior of this timeline.</summary>
-        <value>An iteration <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Count" /> that specifies the number of times the timeline should play, a <see cref="T:System.TimeSpan" /> value that specifies the total the length of this timeline's active period, or the special value <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Forever" />, which specifies that the timeline should repeat indefinitely. The default value is a <see cref="T:System.Windows.Media.Animation.RepeatBehavior" /> with a <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Count" /> of <c>1</c>, which indicates that the timeline plays once.</value>
+        <summary>このタイムラインの繰り返し動作を取得または設定します。</summary>
+        <value>タイムラインの再生回数を指定する <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Count" />、タイムラインのアクティブな期間の長さの合計を指定する <see cref="T:System.TimeSpan" /> 値、またはタイムラインを無限に繰り返すように指定する特殊な値 <see cref="P:System.Windows.Media.Animation.RepeatBehavior.Forever" />。 既定値は、タイムラインが 1 回再生されることを示す、<see cref="P:System.Windows.Media.Animation.RepeatBehavior.Count" /> が <c>1</c> の <see cref="T:System.Windows.Media.Animation.RepeatBehavior" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If an iteration <xref:System.Windows.Media.Animation.RepeatBehavior.Count%2A> is specified and the timeline's <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> property is set to `true`, a single repetition consists of one forward iteration and one backward iteration. A timeline with an <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> property set to true an iteration <xref:System.Windows.Media.Animation.RepeatBehavior.Count%2A> of 2 would play forwards, then backwards, then forwards again, and then backwards again.  
+## 解説  
+ 場合は、イテレーション <xref:System.Windows.Media.Animation.RepeatBehavior.Count%2A> が指定されていると、タイムラインの <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> にプロパティが設定されている `true`, 、順方向の 1 つの反復と旧バージョンとイテレーションは 1 つの 1 つの繰り返しで構成されます。 使用したタイムライン、 <xref:System.Windows.Media.Animation.Timeline.AutoReverse%2A> プロパティ イテレーションを true に設定 <xref:System.Windows.Media.Animation.RepeatBehavior.Count%2A> 2 を担うように、その逆の順序で、転送、し、もう一度旧バージョンとします。  
   
- Instead of specifying the number of times a timeline plays, you can also specify the total length of time you want the timeline to play. For a timeline to repeat, this <xref:System.Windows.Media.Animation.RepeatBehavior.Duration%2A?displayProperty=fullName> value should be greater than the timeline's <xref:System.Windows.Media.Animation.Timeline.Duration%2A>. For example, a timeline with a <xref:System.Windows.Media.Animation.Timeline.Duration%2A> of 2 seconds and a <xref:System.Windows.Media.Animation.RepeatBehavior.Duration%2A?displayProperty=fullName> of 4 seconds will play twice. If the <xref:System.Windows.Media.Animation.RepeatBehavior.Duration%2A?displayProperty=fullName> is less than the timeline's <xref:System.Windows.Media.Animation.Timeline.Duration%2A>, the timeline's active period is cut short.  
+ タイムラインの再生回数を指定するには、代わりにも、タイムライン再生する時間の長さの合計を指定することができます。 このプロセスを繰り返して、タイムラインのスペースを <xref:System.Windows.Media.Animation.RepeatBehavior.Duration%2A?displayProperty=fullName> 値は、タイムラインのより大きくなければなりません <xref:System.Windows.Media.Animation.Timeline.Duration%2A>します。 使用したタイムラインなど、 <xref:System.Windows.Media.Animation.Timeline.Duration%2A> 2 秒間の <xref:System.Windows.Media.Animation.RepeatBehavior.Duration%2A?displayProperty=fullName> 4 秒には 2 回に再生されます。 場合、 <xref:System.Windows.Media.Animation.RepeatBehavior.Duration%2A?displayProperty=fullName> がタイムラインのより小さい <xref:System.Windows.Media.Animation.Timeline.Duration%2A>, 、タイムラインの有効期間を短縮します。  
   
- For more information about repeating timelines, see [Animation Overview](~/docs/framework/wpf/graphics-multimedia/animation-overview.md).  
+ 詳細については、タイムラインの繰り返し、次を参照してください。 [アニメーションの概要](http://msdn.microsoft.com/ja-jp/bd9ce563-725d-4385-87c9-d7ee38cf79ea)します。  
   
 <a name="dependencyPropertyInfo_RepeatBehavior"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.RepeatBehaviorProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.RepeatBehaviorProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.AutoReverse" />
       </Docs>
     </Member>
     <Member MemberName="RepeatBehaviorProperty">
@@ -1229,8 +1392,17 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies the <see cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.RepeatBehavior" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDesiredFrameRate">
@@ -1250,17 +1422,22 @@
         <Parameter Name="desiredFrameRate" Type="System.Nullable&lt;System.Int32&gt;" />
       </Parameters>
       <Docs>
-        <param name="timeline">The <see cref="T:System.Windows.Media.Animation.Timeline" /> to which <c>desiredFrameRate</c> is assigned.</param>
-        <param name="desiredFrameRate">The maximum number of frames this timeline should generate each second, or <see langword="null" /> if the system should control the number of frames.</param>
-        <summary>Sets the desired frame rate of the specified <see cref="T:System.Windows.Media.Animation.Timeline" />.</summary>
+        <param name="timeline">
+          <see cref="T:System.Windows.Media.Animation.Timeline" /> する <c>desiredFrameRate</c> が割り当てられます。</param>
+        <param name="desiredFrameRate">このタイムラインは、1 秒間を生成するフレームの最大数または <see langword="null" /> 場合は、システムは、フレームの数を制御する必要があります。</param>
+        <summary>指定した目的のフレーム レートを設定 <see cref="T:System.Windows.Media.Animation.Timeline" />します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method sets the <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> attached property. For more information, see the <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> page.  
+## 解説  
+ このメソッドは、設定、 <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> 添付プロパティです。 詳細については、次を参照してください。、 <xref:System.Windows.Media.Animation.Timeline.DesiredFrameRate%2A> ページです。  
   
+   
+  
+## 例  
  ]]></format>
         </remarks>
+        <altmember cref="P:System.Windows.Media.Animation.Timeline.DesiredFrameRate" />
       </Docs>
     </Member>
     <Member MemberName="SpeedRatio">
@@ -1281,35 +1458,35 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the rate, relative to its parent, at which time progresses for this <see cref="T:System.Windows.Media.Animation.Timeline" />.</summary>
-        <value>A finite value greater than 0 that describes the rate at which time progresses for this timeline, relative to the speed of the timeline's parent or, if this is a root timeline, the default timeline speed. The default value is 1.</value>
+        <summary>取得または設定の割合を親に対してこの時間の進行 <see cref="T:System.Windows.Media.Animation.Timeline" />します。</summary>
+        <value>タイムラインの親の速度を基準としたこのタイムラインの時間の進行速度を示す 0 より大きい最小有限値またはルート タイムラインには、既定のタイムラインの速度の場合。 既定値は 1 です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- A timeline's <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> setting does not have an effect on its <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>; that time is relative to the timeline's parent or, if the timeline is a root timeline, the moment at which the timeline's clock was begun.  
+## 解説  
+ タイムラインの <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 設定の効果を持たないその <xref:System.Windows.Media.Animation.Timeline.BeginTime%2A>; は、その時間は、タイムラインの親を基準とした場合、または、タイムラインがルート タイムラインには、タイムラインのクロックが開始された時点。  
   
- If <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> or <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> are specified, this <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> is the average ratio over the natural length of the timeline.  
+ 場合 <xref:System.Windows.Media.Animation.Timeline.AccelerationRatio%2A> または <xref:System.Windows.Media.Animation.Timeline.DecelerationRatio%2A> 指定すると、この <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 平均の比率がタイムラインの自然な長さを超えています。  
   
 <a name="dependencyPropertyInfo_SpeedRatio"></a>   
-## Dependency Property Information  
+## 依存プロパティ情報  
   
 |||  
 |-|-|  
-|Identifier field|<xref:System.Windows.Media.Animation.Timeline.SpeedRatioProperty>|  
-|Metadata properties set to `true`|None|  
+|識別子のフィールド|<xref:System.Windows.Media.Animation.Timeline.SpeedRatioProperty>|  
+|メタデータのプロパティを設定するには `true`|なし|  
   
    
   
-## Examples  
- A timeline's <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> property controls its rate of progress, relative to its parent. If the timeline is a root, its <xref:System.Windows.Media.MediaPlayer.SpeedRatio%2A> is relative to the default timeline speed. The following example shows several timelines with different <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> settings.  
+## 例  
+ タイムラインの <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> プロパティは親に対しての進行速度を制御します。 タイムラインが、ルートの場合、 <xref:System.Windows.Media.MediaPlayer.SpeedRatio%2A> 既定のタイムラインの速度に対する相対パスです。 次の例では、異なるいくつかのタイムライン <xref:System.Windows.Media.Animation.Timeline.SpeedRatio%2A> 設定します。  
   
- [!code-xaml[timingbehaviors_snip#_graphicsmm_SpeedExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_snip/CSharp/SpeedExample.xaml#_graphicsmm_speedexamplewholepage)]  
+ [!code-xml[timingbehaviors\_snip\#\_graphicsmm\_SpeedExampleWholePage](~/samples/snippets/csharp/VS_Snippets_Wpf/timingbehaviors_snip/CSharp/SpeedExample.xaml#_graphicsmm_speedexamplewholepage)]  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <see cref="P:System.Windows.Media.Animation.Timeline.SpeedRatio" /> is less than 0 or is not a finite value.</exception>
+          <see cref="P:System.Windows.Media.Animation.Timeline.SpeedRatio" /> 0 未満か、有限の値ではありません。</exception>
       </Docs>
     </Member>
     <Member MemberName="SpeedRatioProperty">
@@ -1325,9 +1502,49 @@
         <ReturnType>System.Windows.DependencyProperty</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Identifies for the <see cref="P:System.Windows.Media.Animation.Timeline.SpeedRatio" /> dependency property.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="P:System.Windows.Media.Animation.Timeline.SpeedRatio" /> 依存関係プロパティを識別します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+   
+  
+## 例  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <see cref="T:System.Windows.Media.Animation.Timeline" /> クラスの新しいインスタンスを初期化します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="CreateClock">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>作成、 <see cref="T:System.Windows.Media.Animation.Clock" /> これから <see cref="T:System.Windows.Media.Animation.Timeline" />します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

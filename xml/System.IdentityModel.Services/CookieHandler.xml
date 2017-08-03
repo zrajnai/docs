@@ -11,25 +11,25 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides an abstract base class for reading, writing, and deleting session cookies on an HTTP client.</summary>
+    <summary>読み取り、書き込み、および HTTP クライアントでセッション cookie を削除するための抽象基本クラスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.IdentityModel.Services.SessionAuthenticationModule> (SAM) uses an instance of the <xref:System.IdentityModel.Services.CookieHandler> class to read, write, and delete the cookie or cookies that contain the <xref:System.IdentityModel.Tokens.SessionSecurityToken> on the HTTP client. The cookie (or cookies, in the case where the session token is split across several cookies) that contains the session token is known as the session cookie.  
+## 解説  
+ <xref:System.IdentityModel.Services.SessionAuthenticationModule> \(SAM\) のインスタンスを使用して、 <xref:System.IdentityModel.Services.CookieHandler> 読み取り、書き込み、および cookie または含まれている cookie を削除するクラス、 <xref:System.IdentityModel.Tokens.SessionSecurityToken> HTTP クライアントにします。 Cookie \(または cookie、セッション トークンは、いくつかの cookie を分割する場合\) を含む、セッション トークンは、セッションの cookie と呼ばれます。  
   
- Windows Identity Foundation (WIF) ships with a cookie handler called the chunked cookie handler that is implemented by the <xref:System.IdentityModel.Services.ChunkedCookieHandler> class. The chunked cookie handler splits the session token across one or more cookies according to a specified chunk size. This is to meet size limitations on individual cookies imposed by many browsers.  
+ Windows Identity Foundation \(WIF\) によって実装されるチャンクされたクッキー ハンドラーと呼ばれるクッキー ハンドラーに付属の <xref:System.IdentityModel.Services.ChunkedCookieHandler> クラスです。 チャンクされたクッキー ハンドラーでは、指定したチャンクのサイズに応じて 1 つまたは複数の cookie で、セッションのトークンが分割されます。 これは、多くのブラウザーによって課される個々 のクッキーのサイズ制限を満たすため。  
   
- You can derive from <xref:System.IdentityModel.Services.CookieHandler> to create your own cookie handler. When you do so, you must override the <xref:System.IdentityModel.Services.CookieHandler.DeleteCore%2A>, <xref:System.IdentityModel.Services.CookieHandler.ReadCore%2A>, and <xref:System.IdentityModel.Services.CookieHandler.WriteCore%2A> methods to perform the actual work of deleting, reading, and writing the session cookie. These methods typically read the cookie from the <xref:System.Web.HttpRequest.Cookies%2A?displayProperty=fullName> collection and write or delete cookies through the <xref:System.Web.HttpResponse.Cookies%2A?displayProperty=fullName> collection. The <xref:System.Web.HttpContext> object through which you can access the request and response is provided as a parameter to each of these methods. In addition to the required methods, you can optionally override other virtual methods properties exposed by the <xref:System.IdentityModel.Services.CookieHandler> class to customize the behavior of your handler.  
+ 派生できます <xref:System.IdentityModel.Services.CookieHandler> を独自のクッキー ハンドラーを作成します。 これを行う場合はオーバーライドする必要があります、 <xref:System.IdentityModel.Services.CookieHandler.DeleteCore%2A>, 、<xref:System.IdentityModel.Services.CookieHandler.ReadCore%2A>, 、および <xref:System.IdentityModel.Services.CookieHandler.WriteCore%2A> の削除、読み取り、およびセッションの cookie の書き込みの実際の作業を実行するメソッドです。 これらのメソッドは、通常から cookie を読み取り、 <xref:System.Web.HttpRequest.Cookies%2A?displayProperty=fullName> を通じて収集し、書き込み、または削除の cookie、 <xref:System.Web.HttpResponse.Cookies%2A?displayProperty=fullName> コレクションです。<xref:System.Web.HttpContext> オブジェクトを要求にアクセスすることができ、応答は、これらの各メソッドのパラメーターとして提供されます。 だけでなく、必要なメソッド、によって公開されているその他の仮想メソッドのプロパティをオーバーライドすることができます必要に応じて、 <xref:System.IdentityModel.Services.CookieHandler> ハンドラーの動作をカスタマイズするクラス。  
   
- Several properties are exposed by the <xref:System.IdentityModel.Services.CookieHandler> class that specify default behavior and properties for the session cookie. The <xref:System.IdentityModel.Services.CookieHandler.Name%2A>, <xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties supply the base name for the cookie, the domain in which it is valid and the path under which it is stored on the client. The <xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> property specifies whether the cookie is accessible to client-side scripts. The <xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> property specifies whether the cookie should be transmitted only over secure (HTTPS) connections. If set, the <xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> property is used to set the expiration time for persistent sessions, that is for sessions that remain valid even after the browser is closed. All of these properties have equivalent properties that are typically set on the underlying <xref:System.Web.HttpCookie> object (or objects) by the "core" methods of the handler. For more information see the documentation for each property.  
+ によっていくつかのプロパティが公開されている、 <xref:System.IdentityModel.Services.CookieHandler> 既定の動作と、セッションの cookie のプロパティを指定するクラス。<xref:System.IdentityModel.Services.CookieHandler.Name%2A>, 、<xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, 、および <xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティが有効なドメインと、クライアントに格納するパスの cookie の基本名を指定します。<xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> プロパティは、cookie がクライアント側スクリプトにアクセスできるかどうかを指定します。<xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> プロパティは、セキュリティで保護された \(HTTPS\) 接続経由でのみ、クッキーが送信されるかどうかを指定します。 場合、設定、 <xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> プロパティを使用しているが、ブラウザーを閉じた後も有効なままのセッションで永続的なセッションの期限を設定します。 これらのプロパティのすべて、基になるに通常設定されている同等のプロパティである <xref:System.Web.HttpCookie> 、ハンドラーの"core"メソッドによって、オブジェクト \(またはオブジェクト\)。 詳細については、各プロパティのドキュメントを参照してください。  
   
- The cookie handler that is used by the SAM can be specified in configuration through the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element. The cookie handler set by this element can be modified in an event delegate for the <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfigurationCreated?displayProperty=fullName> event or it can be set or accessed directly through the <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A?displayProperty=fullName> property.  
+ SAM で使用されるクッキー ハンドラーを使用した構成で指定できます、 [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 要素。 イベントのデリゲートで変更できるこの要素によって設定クッキー ハンドラー、 <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfigurationCreated?displayProperty=fullName> イベントかそれを設定またはを介して直接アクセス、 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A?displayProperty=fullName> プロパティです。  
   
    
   
-## Examples  
- The following example configures the SAM to use a custom cookie handler of type `MyNamespace.MyCustomCookieHandler`.  
+## 例  
+ 次の例の構成の種類のカスタム クッキー ハンドラーを使用して、SAM `MyNamespace.MyCustomCookieHandler`します。  
   
 ```xml  
 <cookieHandler mode="Custom">  
@@ -39,6 +39,7 @@
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.IdentityModel.Services.ChunkedCookieHandler" />
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -52,8 +53,13 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Called from constructors in derived classes to initialize the <see cref="T:System.IdentityModel.Services.CookieHandler" /> class.</summary>
-        <remarks>To be added.</remarks>
+        <summary>初期化するために派生クラスのコンス トラクターから呼び出される、 <see cref="T:System.IdentityModel.Services.CookieHandler" /> クラスです。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Delete">
@@ -70,12 +76,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Deletes the cookie associated with the current request that has the default name, domain, and path.</summary>
+        <summary>既定の名前、ドメイン、およびパスが現在の要求に関連付けられているクッキーを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The name, domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Name%2A>, <xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties. The request is specified by <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>  
+## 解説  
+ 名、ドメインおよびパスがで指定された、 <xref:System.IdentityModel.Services.CookieHandler.Name%2A>, 、<xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, 、および <xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。 要求が指定されました。 <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>  
   
  ]]></format>
         </remarks>
@@ -97,18 +103,18 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie.</param>
-        <summary>Deletes the cookie associated with the current request that has the specified name and the default domain and path.</summary>
+        <param name="name">クッキーの名前。</param>
+        <summary>指定した名前および既定のドメインとパスを持つ現在の要求に関連付けられているクッキーを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Domain%2A> and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties. The request is specified by <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>  
+## 解説  
+ ドメインとパスが指定された、 <xref:System.IdentityModel.Services.CookieHandler.Domain%2A> と <xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。 要求が指定されました。 <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Delete">
@@ -127,13 +133,14 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>Deletes the cookie associated with the current request that has the default name, domain, and path.</summary>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>既定の名前、ドメイン、およびパスが現在の要求に関連付けられているクッキーを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The name, domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Name%2A>, <xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties.  
+## 解説  
+ 名、ドメインおよびパスがで指定された、 <xref:System.IdentityModel.Services.CookieHandler.Name%2A>, 、<xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, 、および <xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。  
   
  ]]></format>
         </remarks>
@@ -156,19 +163,20 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie.</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>Deletes the cookie associated with the specified request that has the specified name and the default domain and path.</summary>
+        <param name="name">クッキーの名前。</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>指定した名前および既定のドメインとパスを持つ指定された要求に関連付けられているクッキーを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Domain%2A> and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties.  
+## 解説  
+ ドメインとパスが指定された、 <xref:System.IdentityModel.Services.CookieHandler.Domain%2A> と <xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Delete">
@@ -190,14 +198,20 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie.</param>
-        <param name="path">The path for the cookie.</param>
-        <param name="domain">The domain for the cookie</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request</param>
-        <summary>Deletes the cookie associated with the specified request that has the specified name, path, and domain.</summary>
-        <remarks>To be added.</remarks>
+        <param name="name">クッキーの名前。</param>
+        <param name="path">クッキーのパスです。</param>
+        <param name="domain">クッキーのドメイン</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求の</param>
+        <summary>指定した名前、パス、およびドメインを持つ指定された要求に関連付けられているクッキーを削除します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="DeleteCore">
@@ -219,16 +233,17 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie</param>
-        <param name="path">The path for the cookie</param>
-        <param name="domain">The domain for the cookie</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>When overridden in a derived class, deletes the cookie associated with the specified request that has the specified name, domain, and path.</summary>
+        <param name="name">クッキーの名前</param>
+        <param name="path">クッキーのパス</param>
+        <param name="domain">クッキーのドメイン</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、指定した名前、ドメイン、およびパスを持つ指定された要求に関連付けられているクッキーを削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Called from the overloaded <xref:System.IdentityModel.Services.CookieHandler.Delete%2A> methods to do the actual work of deleting the cookie. The <xref:System.IdentityModel.Services.CookieHandler.Delete%2A> methods will ensure that name and path are non-empty strings.  
+## 解説  
+ オーバー ロードされたから呼び出される <xref:System.IdentityModel.Services.CookieHandler.Delete%2A> cookie を削除するは、実際の作業を行う方法です。<xref:System.IdentityModel.Services.CookieHandler.Delete%2A> メソッドは、名前とパスが空でない文字列があることを確認します。  
   
  ]]></format>
         </remarks>
@@ -250,15 +265,15 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the domain used for cookies.</summary>
-        <value>The domain used for cookies. The default is <see langword="null" />.</value>
+        <summary>取得または cookie のために使用されるドメインを設定します。</summary>
+        <value>Cookie の使用されるドメインです。 既定値は、<see langword="null" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Corresponds to the <xref:System.Web.HttpCookie.Domain%2A?displayProperty=fullName> property.  
+## 解説  
+ <xref:System.Web.HttpCookie.Domain%2A?displayProperty=fullName> プロパティに対応します。  
   
- The property can be initialized by specifying the `domain` attribute on the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element in configuration.  
+ 指定することによって、プロパティを初期化すること、 `domain` 属性を [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 構成内の要素。  
   
  ]]></format>
         </remarks>
@@ -277,18 +292,18 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that indicates whether the cookie should be hidden from client script.</summary>
+        <summary>取得またはクライアント スクリプトから cookie を非表示にするかどうかを示す値を設定します。</summary>
         <value>
-          <see langword="true" /> if the cookie should be hidden from client script; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+          <see langword="true" /> クライアント スクリプトから cookie を非表示にする場合それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Controls whether the "HttpOnly" flag is emitted in the Set-Cookie header for cookies written by the handler. Some web browsers honor this flag by keeping client-side script from accessing the cookie value.  
+## 解説  
+ ハンドラーによって書き込まれた cookie の Set\-cookie ヘッダーに"HttpOnly"フラグが出力されるかどうかを制御します。 一部の web ブラウザーはクッキー値へのアクセスをクライアント側スクリプトを保持することでこのフラグを優先します。  
   
- This property corresponds to the <xref:System.Web.HttpCookie.HttpOnly%2A?displayProperty=fullName> property.  
+ このプロパティに対応して、 <xref:System.Web.HttpCookie.HttpOnly%2A?displayProperty=fullName> プロパティです。  
   
- The property can be initialized by specifying the `hideFromScript` attribute on the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element in configuration.  
+ 指定することによって、プロパティを初期化すること、 `hideFromScript` 属性を [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 構成内の要素。  
   
  ]]></format>
         </remarks>
@@ -311,11 +326,17 @@
         <Parameter Name="targetUri" Type="System.Uri" />
       </Parameters>
       <Docs>
-        <param name="baseUri">The base URL of the request.</param>
-        <param name="targetUri">The URL to match</param>
-        <summary>If the target domain is within the cookie domain and the target path is within the cookie path, match the casing of the cookie path portion.</summary>
-        <returns>Returns <see cref="T:System.String" />.</returns>
-        <remarks>To be added.</remarks>
+        <param name="baseUri">要求のベース URL です。</param>
+        <param name="targetUri">一致するように URL</param>
+        <summary>Cookie ドメイン内では、ターゲット ドメインは、cookie パス内のターゲット パスが、クッキーのパス部分の大文字と小文字が一致します。</summary>
+        <returns>
+          <see cref="T:System.String" /> を返します。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -331,19 +352,19 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the base name for cookies written by the handler.</summary>
-        <value>The base name to use for cookies. The default is "FedAuth".</value>
+        <summary>取得またはハンドラーによって書き込まれた cookie のベース名を設定します。</summary>
+        <value>クッキーを使用する基本名。 既定値は、"FedAuth"です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property corresponds to the <xref:System.Web.HttpCookie.Name%2A?displayProperty=fullName> property.  
+## 解説  
+ このプロパティに対応して、 <xref:System.Web.HttpCookie.Name%2A?displayProperty=fullName> プロパティです。  
   
- The property can be initialized by specifying the `name` attribute on the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element in configuration.  
+ 指定することによって、プロパティを初期化すること、 `name` 属性を [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 構成内の要素。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An attempt to set a <see langword="null" /> or empty value occurs.</exception>
+        <exception cref="T:System.ArgumentException">設定の試行、 <see langword="null" /> か空の値が発生します。</exception>
       </Docs>
     </Member>
     <Member MemberName="Path">
@@ -359,19 +380,19 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets the virtual path for cookies written by the handler.</summary>
-        <value>The virtual path. Defaults to the root of the ASP.NET application.</value>
+        <summary>取得またはハンドラーによって書き込まれた cookie の仮想パスを設定します。</summary>
+        <value>仮想パス。 既定値は、ASP.NET アプリケーションのルートです。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property corresponds to the <xref:System.Web.HttpCookie.Path%2A?displayProperty=fullName> property.  
+## 解説  
+ このプロパティに対応して、 <xref:System.Web.HttpCookie.Path%2A?displayProperty=fullName> プロパティです。  
   
- The property can be initialized by specifying the `path` attribute on the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element in configuration.  
+ 指定することによって、プロパティを初期化すること、 `path` 属性を [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 構成内の要素。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">An attempt to set a <see langword="null" /> or empty value occurs.</exception>
+        <exception cref="T:System.ArgumentException">設定の試行、 <see langword="null" /> か空の値が発生します。</exception>
       </Docs>
     </Member>
     <Member MemberName="PersistentSessionLifetime">
@@ -387,21 +408,21 @@
         <ReturnType>System.Nullable&lt;System.TimeSpan&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The lifetime of persistent sessions. If zero, transient sessions are always used.</summary>
-        <value>The session lifetime. The default is <see langword="null" />.</value>
+        <summary>永続的なセッションの有効期間。 0 の場合、一時的なセッションは、常に使用します。</summary>
+        <value>セッションの有効期間。 既定値は、<see langword="null" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Tickets for persistent sessions are stored in file-based cookies, meaning that the sign-in session may continue after the web browser is closed and reopened.  
+## 解説  
+ 永続的なセッション チケットは、意味は、web ブラウザーを閉じてから再び開いた後、サインイン セッションの継続、ファイル ベースの cookie に格納されます。  
   
- This property is used to set the <xref:System.Web.HttpCookie.Expires%2A?displayProperty=fullName> property.  
+ このプロパティは、設定に使用される、 <xref:System.Web.HttpCookie.Expires%2A?displayProperty=fullName> プロパティです。  
   
- The property can be initialized by specifying the `persistentSessionLifetime` attribute on the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element in configuration.  
+ 指定することによって、プロパティを初期化すること、 `persistentSessionLifetime` 属性を [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 構成内の要素。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">A value that is less than zero is specified.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">0 未満の値を指定するとします。</exception>
       </Docs>
     </Member>
     <Member MemberName="Read">
@@ -418,13 +439,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Reads the cookie associated with the current request that has the default name.</summary>
-        <returns>The cookie value or <see langword="null" /> if the cookie was not found.</returns>
+        <summary>既定の名前を持つ現在の要求に関連付けられているクッキーを読み取ります。</summary>
+        <returns>Cookie の値または <see langword="null" /> cookie が見つからなかった場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The name of the cookie is specified by the <xref:System.IdentityModel.Services.CookieHandler.Name%2A> property. The request is specified by <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>.  
+## 解説  
+ 指定されたクッキーの名前、 <xref:System.IdentityModel.Services.CookieHandler.Name%2A> プロパティです。 要求の指定によって <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>します。  
   
  ]]></format>
         </remarks>
@@ -446,19 +467,19 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie to read.</param>
-        <summary>Reads the cookie associated with the current request that has the specified name.</summary>
-        <returns>The cookie value or <see langword="null" /> if the cookie was not found.</returns>
+        <param name="name">読み取る cookie の名前です。</param>
+        <summary>指定した名前を持つ現在の要求に関連付けられているクッキーを読み取ります。</summary>
+        <returns>Cookie の値または <see langword="null" /> cookie が見つからなかった場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The request is specified by <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>  
+## 解説  
+ 要求が指定されました。 <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Read">
@@ -477,14 +498,15 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>Reads the cookie associated with the current request that has the default name, domain, and path.</summary>
-        <returns>The cookie value or <see langword="null" /> if the cookie was not found.</returns>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>既定の名前、ドメイン、およびパスが現在の要求に関連付けられているクッキーを読み取ります。</summary>
+        <returns>Cookie の値または <see langword="null" /> cookie が見つからなかった場合。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The name of the cookie is specified by the <xref:System.IdentityModel.Services.CookieHandler.Name%2A> property.  
+## 解説  
+ 指定されたクッキーの名前、 <xref:System.IdentityModel.Services.CookieHandler.Name%2A> プロパティです。  
   
  ]]></format>
         </remarks>
@@ -507,13 +529,19 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie to read.</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>Reads the cookie associated with the specified request that has the specified name and the default domain and path.</summary>
-        <returns>The cookie value or <see langword="null" /> if the cookie was not found.</returns>
-        <remarks>To be added.</remarks>
+        <param name="name">読み取る cookie の名前です。</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>指定した名前および既定のドメインとパスを持つ指定された要求に関連付けられているクッキーを読み取ります。</summary>
+        <returns>Cookie の値または <see langword="null" /> cookie が見つからなかった場合。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="ReadCore">
@@ -533,15 +561,16 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the cookie</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>When overridden in a derived class, reads the cookie that has the specified name and that is associated with the specified request.</summary>
-        <returns>The cookie value or <see langword="null" /> if the cookie was not found</returns>
+        <param name="name">クッキーの名前</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、指定の名前を持つ cookie を読み込んで、指定された要求に関連付けられています。</summary>
+        <returns>Cookie の値または <see langword="null" /> 場合は、cookie が見つかりませんでした。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Called from the overloaded <xref:System.IdentityModel.Services.CookieHandler.Read%2A> methods to do the actual work of reading the cookie. The <xref:System.IdentityModel.Services.CookieHandler.Read%2A> methods will ensure that `name` is a non-empty string.  
+## 解説  
+ オーバー ロードされたから呼び出される <xref:System.IdentityModel.Services.CookieHandler.Read%2A> の cookie を読み取るの実際の作業を行う方法です。<xref:System.IdentityModel.Services.CookieHandler.Read%2A> メソッドが必ず `name` 空でない文字列です。  
   
  ]]></format>
         </remarks>
@@ -563,18 +592,18 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets or sets a value that specifies whether the cookie should be used only with SSL.</summary>
+        <summary>取得または cookie を SSL でのみ使用する必要があるかどうかを指定する値を設定します。</summary>
         <value>
-          <see langword="true" /> if the cookie should only be used over an SSL connection; otherwise, <see langword="false" />. The default is <see langword="true" />.</value>
+          <see langword="true" /> cookie を; SSL 接続経由でのみ使用する場合それ以外の場合、 <see langword="false" />です。 既定値は、<see langword="true" /> です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Controls whether the "Secure" flag in the Set-Cookie header is emitted for any cookies written. If this value is `true`, the session cookies will only be available over HTTPS.  
+## 解説  
+ 書き込まれた cookie に対してセット クッキー ヘッダーの「セキュリティで保護された」フラグが生成されるかどうかを制御します。 この値が場合 `true`, 、cookie はできるだけ over HTTPS セッションです。  
   
- This property corresponds to the <xref:System.Web.HttpCookie.Secure%2A?displayProperty=fullName> property.  
+ このプロパティに対応して、 <xref:System.Web.HttpCookie.Secure%2A?displayProperty=fullName> プロパティです。  
   
- The property can be initialized by specifying the `requireSSL` attribute on the [\&lt;cookieHandler\&gt;](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) element in configuration.  
+ 指定することによって、プロパティを初期化すること、 `requireSSL` 属性を [\<cookieHandler\>](http://msdn.microsoft.com/ja-jp/bfdc127f-8d94-4566-8bef-f583c6ae7398) 構成内の要素。  
   
  ]]></format>
         </remarks>
@@ -598,23 +627,23 @@
         <Parameter Name="tokenExpirationTime" Type="System.DateTime" />
       </Parameters>
       <Docs>
-        <param name="value">The cookie value.</param>
+        <param name="value">Cookie の値。</param>
         <param name="isPersistent">
-          <see langword="true" /> if the cookie is persistent; <see langword="false" /> if the cookie is session-only, that is, only valid until the browser on the client is closed.</param>
-        <param name="tokenExpirationTime">The expiration time for the underlying token.</param>
-        <summary>Writes a cookie associated with the current request that has the specified value, persistence, and expiration time.</summary>
+          <see langword="true" /> 場合は、クッキーが永続的です。 <see langword="false" /> クッキーがセッションのみの場合は、クライアントのブラウザーまでのみ有効ですが閉じられます。</param>
+        <param name="tokenExpirationTime">基になるトークンの有効期限。</param>
+        <summary>指定した値、永続化、および有効期限を持つ現在の要求に関連付けられているクッキーを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If the `isPersistent` parameter is `false`, the cookie expiration time is set to <xref:System.DateTime?displayProperty=fullName>. If the `isPersistent` parameter is `true`, the cookie expiration time is set to the value of the <xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> property if it is not `null` or, if the <xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> property is `null`, the expiration time is set to the value of the `tokenExpirationTime` parameter.  
+## 解説  
+ 場合、 `isPersistent` パラメーターは `false`, 、クッキーの有効期限に設定されている [Write メソッド \(Byte\<xref:System.DateTime.MinValue?displayProperty=fullName>します。 場合、 `isPersistent` パラメーターは `true`, 、クッキーの有効期限がの値に設定されている、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> プロパティがない場合 `null` 場合は、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> プロパティは、 `null`, の値に有効期限の時刻が設定されている、 `tokenExpirationTime` パラメーター。  
   
- The cookie name, domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Name%2A>, <xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties. The request is specified by <xref:System.Web.HttpContext.Current%2A>. Whether the cookie should be sent only over SSL is specified by the <xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> property and whether the cookie should be hidden from client-side scripts is specified by the <xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> property.  
+ Cookie 名、ドメインおよびパスがで指定された、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Name%2A>, 、[Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Domain%2A>, 、および [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。 要求の指定によって [Write メソッド \(Byte\<xref:System.Web.HttpContext.Current%2A>します。 指定された SSL 経由のみ、クッキーを送信するかどうか、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> で指定されたプロパティは、クライアント側スクリプトから cookie を非表示にするかどうか、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> プロパティです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="value" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -635,22 +664,22 @@
         <Parameter Name="expirationTime" Type="System.DateTime" />
       </Parameters>
       <Docs>
-        <param name="value">The cookie value.</param>
-        <param name="name">The name of the cookie.</param>
-        <param name="expirationTime">The expiration time for the cookie, or <see cref="F:System.DateTime.MinValue" /> for a session (session-only) cookie.</param>
-        <summary>Writes a cookie associated with the current request that has the specified name, value, and expiration time.</summary>
+        <param name="value">Cookie の値。</param>
+        <param name="name">クッキーの名前。</param>
+        <param name="expirationTime">Cookie の有効期限または <see cref="F:System.DateTime.MinValue" /> セッション \(セッション専用\) のクッキー。</param>
+        <summary>指定した名前、値、および有効期限が現在の要求に関連付けられているクッキーを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The cookie domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Domain%2A> and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties. The request is specified by <xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>.  The request is specified by <xref:System.Web.HttpContext.Current%2A>. Whether the cookie should be sent only over SSL is specified by the <xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> property and whether the cookie should be hidden from client-side scripts is specified by the <xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> property.  
+## 解説  
+ Cookie ドメインとパスが指定された、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Domain%2A> と [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。 要求の指定によって [Write メソッド \(Byte\<xref:System.Web.HttpContext.Current%2A?displayProperty=fullName>します。  要求の指定によって [Write メソッド \(Byte\<xref:System.Web.HttpContext.Current%2A>します。 指定された SSL 経由のみ、クッキーを送信するかどうか、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> で指定されたプロパティは、クライアント側スクリプトから cookie を非表示にするかどうか、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> プロパティです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="value" /> が <see langword="null" /> または空です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -672,23 +701,24 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="value">The cookie value.</param>
-        <param name="name">The name of the cookie.</param>
-        <param name="expirationTime">The expiration time for the cookie, or <see cref="F:System.DateTime.MinValue" /> for a session (session-only) cookie.</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>Writes a cookie associated with the specified request that has the specified name, value, and expiration time.</summary>
+        <param name="value">Cookie の値。</param>
+        <param name="name">クッキーの名前。</param>
+        <param name="expirationTime">Cookie の有効期限または <see cref="F:System.DateTime.MinValue" /> セッション \(セッション専用\) のクッキー。</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>指定した名前、値、および有効期限を持つ指定された要求に関連付けられているクッキーを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The cookie domain and path are specified by the <xref:System.IdentityModel.Services.CookieHandler.Domain%2A> and <xref:System.IdentityModel.Services.CookieHandler.Path%2A> properties. The request is specified by <xref:System.Web.HttpContext.Current%2A>. Whether the cookie should be sent only over SSL is specified by the <xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> property and whether the cookie should be hidden from client-side scripts is specified by the <xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> property.  
+## 解説  
+ Cookie ドメインとパスが指定された、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Domain%2A> と [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Path%2A> プロパティです。 要求の指定によって [Write メソッド \(Byte\<xref:System.Web.HttpContext.Current%2A>します。 指定された SSL 経由のみ、クッキーを送信するかどうか、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.RequireSsl%2A> で指定されたプロパティは、クライアント側スクリプトから cookie を非表示にするかどうか、 [Write メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.HideFromClientScript%2A> プロパティです。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="value" /> が <see langword="null" /> または空です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="Write">
@@ -714,22 +744,28 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="value">The cookie value.</param>
-        <param name="name">The name of the cookie.</param>
-        <param name="path">The path for the cookie</param>
-        <param name="domain">The domain for the cookie</param>
-        <param name="expirationTime">The expiration time for the cookie, or <see cref="F:System.DateTime.MinValue" /> for a session (session-only) cookie.</param>
+        <param name="value">Cookie の値。</param>
+        <param name="name">クッキーの名前。</param>
+        <param name="path">クッキーのパス</param>
+        <param name="domain">クッキーのドメイン</param>
+        <param name="expirationTime">Cookie の有効期限または <see cref="F:System.DateTime.MinValue" /> セッション \(セッション専用\) のクッキー。</param>
         <param name="requiresSsl">
-          <see langword="true" /> if the cookie should only be used over an SSL connection; otherwise, <see langword="false" />.</param>
+          <see langword="true" /> cookie を; SSL 接続経由でのみ使用する場合それ以外の場合、 <see langword="false" />です。</param>
         <param name="hideFromClientScript">
-          <see langword="true" /> if the cookie should be hidden from client script; otherwise, <see langword="false" />.</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>Writes a cookie associated with the specified request that has the specified name, value, domain, path, expiration time, and visibility.</summary>
-        <remarks>To be added.</remarks>
+          <see langword="true" /> クライアント スクリプトから cookie を非表示にする場合それ以外の場合、 <see langword="false" />です。</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>指定した名前、値、ドメイン、パス、有効期限、および可視性を持つ指定された要求に関連付けられているクッキーを書き込みます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="value" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="value" /> が <see langword="null" /> または空です。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="name" /> is <see langword="null" /> or empty.</exception>
+          <paramref name="name" /> が <see langword="null" /> または空です。</exception>
       </Docs>
     </Member>
     <Member MemberName="WriteCore">
@@ -755,22 +791,23 @@
         <Parameter Name="context" Type="System.Web.HttpContext" />
       </Parameters>
       <Docs>
-        <param name="value">The cookie value.</param>
-        <param name="name">The name of the cookie.</param>
-        <param name="path">The path for the cookie</param>
-        <param name="domain">The domain for the cookie</param>
-        <param name="expirationTime">The expiration time for the cookie, or <see cref="F:System.DateTime.MinValue" /> for a session (session-only) cookie.</param>
+        <param name="value">Cookie の値。</param>
+        <param name="name">クッキーの名前。</param>
+        <param name="path">クッキーのパス</param>
+        <param name="domain">クッキーのドメイン</param>
+        <param name="expirationTime">Cookie の有効期限または <see cref="F:System.DateTime.MinValue" /> セッション \(セッション専用\) のクッキー。</param>
         <param name="secure">
-          <see langword="true" /> if the cookie should only be used over an SSL connection; otherwise, <see langword="false" />.</param>
+          <see langword="true" /> cookie を; SSL 接続経由でのみ使用する場合それ以外の場合、 <see langword="false" />です。</param>
         <param name="httpOnly">
-          <see langword="true" /> if the cookie should be hidden from client script; otherwise, <see langword="false" />.</param>
-        <param name="context">The <see cref="T:System.Web.HttpContext" /> for the request.</param>
-        <summary>When overridden in a derived class, writes a cookie associated with the specified request that has the specified name, value, domain, path, expiration time, persistence and visibility.</summary>
+          <see langword="true" /> クライアント スクリプトから cookie を非表示にする場合それ以外の場合、 <see langword="false" />です。</param>
+        <param name="context">
+          <see cref="T:System.Web.HttpContext" /> 要求します。</param>
+        <summary>派生クラスでオーバーライドされた場合は、指定した名前、値、ドメイン、パス、有効期限、持続性と可視性を持つ指定された要求に関連付けられているクッキーを書き込みます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Called from the overloaded <xref:System.IdentityModel.Services.CookieHandler.Write%2A> methods to do the actual work of writing the cookie. The <xref:System.IdentityModel.Services.CookieHandler.Write%2A> methods will ensure that `value` is a non-empty byte array and that `name` and `path` are non-empty strings.  
+## 解説  
+ オーバー ロードされたから呼び出される [WriteCore メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Write%2A> cookie の書き込みの実際の作業を行う方法です。[WriteCore メソッド \(Byte\<xref:System.IdentityModel.Services.CookieHandler.Write%2A> メソッドが必ず `value` が空でないバイト配列、 `name` と `path` 空でない文字列です。  
   
  ]]></format>
         </remarks>
@@ -779,5 +816,50 @@
         </block>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Write">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>Cookie を書き込みます。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Read">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>クッキーを読み取ります。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="Delete">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>Cookie を削除します。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

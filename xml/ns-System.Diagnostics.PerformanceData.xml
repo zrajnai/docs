@@ -1,56 +1,56 @@
 <Namespace Name="System.Diagnostics.PerformanceData">
   <Docs>
-    <summary>Use the classes in this namespace to provide counter data. The counters are used to expose performance metrics to consumers such as the Performance Monitor. The namespace does not contain classes for consuming the counter data. For a complete description of the performance counters architecture, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa373083\(v=vs.85\">Performance Counters</see>.aspx).</summary>
+    <summary>この名前空間のクラスを使用して、カウンター データを提供します。 カウンターを使用して、パフォーマンス モニターなどのコンシューマーにパフォーマンス指標を公開します。 名前空間には、カウンター データを使用するためのクラスは含まれません。 パフォーマンス カウンター アーキテクチャの詳細については、次を参照してください。 [Performance Counters](https://msdn.microsoft.com/en-us/library/windows/desktop/aa373083\(v=vs.85\).aspx)です。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The classes in this namespace support the new architecture (version 2.0) for performance counters that was introduced in Windows Vista. In the new architecture, the provider no longer responds to consumer requests directly, but instead simply maintains the counter data. The system injects a thread into the provider's process when the provider creates an instance of the counter set; the thread is responsible for handling consumer requests.  
+## 解説  
+ この名前空間のクラスは、Windows Vista で導入されたパフォーマンス カウンターの新しいアーキテクチャ \(version 2.0\) をサポートします。 新しいアーキテクチャでは、プロバイダーは、直接、コンシューマーの要求に応答しなくが、代わりに、カウンター データを保持するだけにします。 システムでは、プロバイダーは、カウンター セットのインスタンスを作成するときに、プロバイダーのプロセスにスレッドを挿入します。スレッドは、コンシューマーの要求を処理します。  
   
- The following steps show the process for writing a counters provider.  
+ 次の手順では、カウンターのプロバイダーを作成する手順を示します。  
   
-1.  The counters that the provider provides is defined in an XML-based manifest. The counters are logically grouped into counter sets. The counters within a counter set are identified by a numeric identifier that is unique within the counter set. A provider can define one or more counter sets. A counter set is identified by a Guid that is unique to a provider. Note that if you use these classes to write your provider:  
+1.  プロバイダーが提供するカウンターは、XML ベースのマニフェストで定義されます。 カウンターは、カウンター セットを論理的にグループ化されます。 カウンター セット内のカウンターは、カウンター セット内で一意の数値識別子によって識別されます。 プロバイダーは、1 つまたは複数のカウンター セットを定義できます。 カウンター セットは、プロバイダーに一意の Guid によって識別されます。 場合は、プロバイダーを作成するこれらのクラスを使用することに注意してください。  
   
-    -   The callback attribute of the provider element is ignored.  
+    -   プロバイダー要素のコールバック属性は無視されます。  
   
-    -   The reference value for the name attribute of the counterAttribute element is ignored.  
+    -   参照 counterAttribute 要素の name 属性の値は無視されます。  
   
-     For details on writing the manifest, see [Performance Counters Schema](https://msdn.microsoft.com/en-us/library/windows/desktop/aa373092\(v=vs.85\).aspx).  
+     マニフェストの作成方法の詳細については、「 [Performance Counters Schema](https://msdn.microsoft.com/en-us/library/windows/desktop/aa373092\(v=vs.85\).aspx)です。  
   
-2.  After writing your manifest, use the [CTRPP](https://msdn.microsoft.com/en-us/library/windows/desktop/aa372128\(v=vs.85\).aspx) tool to compile the manifest (ctrpp provider.man). The tool generates four files: .h, .c, .rc, and *_r.h. You can ignore the .h and .c files. The .rc file contains the localized strings defined in your manifest. You use the .rc and *_r.h files to create the compiled resource file (.res) that you include in your project. The following call shows how to compile the resource file:  
+2.  使用して、マニフェストを作成した後、 [CTRPP](https://msdn.microsoft.com/en-us/library/windows/desktop/aa372128\(v=vs.85\).aspx)マニフェスト \(ctrpp provider.man\) をコンパイルするツールです。 このツールは、4 つのファイルを生成: .h、.c、.rc、および \* \_r.h です。 .H および .c ファイルを無視することができます。 .Rc ファイルには、マニフェストで定義されているローカライズされた文字列が含まれています。 .Rc、\*\_r.h ファイルを使用するには、プロジェクトに含めることのコンパイル済みのリソース ファイル \(.res\) を作成します。 次の呼び出しは、リソース ファイルをコンパイルする方法を示しています。  
   
     ```  
     rc /r /i "c:\Program Files\Microsoft SDKs\Windows\v6.0\Include" provider.rc  
     ```  
   
-     If you get an error that references sal.h, copy the sal.h file from your Microsoft Visual Studio, Visual C include directory to the directory you specify for the /i switch.  
+     Sal.h を参照するエラーが発生した場合は、Microsoft Visual Studio から sal.h ファイルをコピー、Visual C のインクルード ディレクトリ\/i スイッチを指定するディレクトリをします。  
   
-     Add a path to the compiled resource file (.res) to your project's Application property page.  
+     プロジェクトのアプリケーションのプロパティ ページには、コンパイル済みのリソース ファイル \(.res\) へのパスを追加します。  
   
-3.  Write your provider. The following steps show the calls made by a provider:  
+3.  プロバイダーを記述します。 次の手順では、プロバイダーによって行われた呼び出しを示しています。  
   
-    1.  Call the <xref:System.Diagnostics.PerformanceData.CounterSet.%23ctor%2A?displayProperty=fullName> constructor to define the counter set. Call this method for each counter set defined in the manifest.  
+    1.  呼び出す、<xref:System.Diagnostics.PerformanceData.CounterSet.%23ctor%2A?displayProperty=fullName>コンス トラクターをカウンター セットを定義します。 マニフェストで定義されている各カウンターには、このメソッドを呼び出します。  
   
-    2.  For each counter set, call one of the <xref:System.Diagnostics.PerformanceData.CounterSet.AddCounter%2A?displayProperty=fullName> methods to add the counters to the set. Call this method for each counter defined in the counter set.  
+    2.  各カウンター セットのいずれかを呼び出して、<xref:System.Diagnostics.PerformanceData.CounterSet.AddCounter%2A?displayProperty=fullName>セットにカウンターを追加する方法です。 カウンター セットで定義されている各カウンターには、このメソッドを呼び出します。  
   
-    3.  Call the <xref:System.Diagnostics.PerformanceData.CounterSet.CreateCounterSetInstance%2A?displayProperty=fullName> method to create an instance of the counter set (an instance contains the counter data). For single instance counter sets, call this method one time. For multiple instance counter sets, call this method for each instance for which you need to provide counter data (use a unique name for each instance).  
+    3.  呼び出す、<xref:System.Diagnostics.PerformanceData.CounterSet.CreateCounterSetInstance%2A?displayProperty=fullName>メソッド \(インスタンスには、カウンター データが含まれています\)、カウンター セットのインスタンスを作成します。 1 つのインスタンスのカウンター セットは、1 回このメソッドを呼び出します。 複数のインスタンスのカウンター セットの対象のカウンター データ \(各インスタンスの一意の名前を使用\) を提供する必要があります。 各インスタンスに対して、このメソッドを呼び出します。  
   
-    4.  Use the <xref:System.Diagnostics.PerformanceData.CounterSetInstance.Counters%2A?displayProperty=fullName> property to access and set the counter data for the counter.  
+    4.  使用して、<xref:System.Diagnostics.PerformanceData.CounterSetInstance.Counters%2A?displayProperty=fullName>プロパティにアクセスして、カウンターのカウンター データを設定します。  
   
-4.  After you finish your provider, use the LodCtr tool to register the counters on the computer. For example,  
+4.  完了したら、プロバイダーは、コンピューターのカウンターを登録するのに LodCtr ツールを使用します。 次に例を示します。  
   
     ```  
     lodctr /m:provider.man  
     ```  
   
-     The example assumes the manifest and executable file are in the current directory. For complete details on using the LodCtr, see [Microsoft Technet](Http://Go.Microsoft.Com/FWLink/?LinkId=84000).  
+     この例では、マニフェストと実行可能ファイルは、現在のディレクトリにします。 使用して、LodCtr 完全な詳細については、「 [Microsoft Technet](Http://Go.Microsoft.Com/FWLink/?LinkId=84000)です。  
   
- You can use the classes in this namespace on computers that run the Windows Vista and later operating systems.  
+ Windows Vista およびそれ以降のオペレーティング システムを実行するコンピューターでこの名前空間のクラスを使用することができます。  
   
    
   
-## Examples  
- The following shows a simple manifest:  
+## 例  
+ 単純なマニフェストを次に示します。  
   
 ```  
 <!-- <?xml version="1.0" encoding="UTF-16"?> -->  
@@ -152,7 +152,7 @@
 </instrumentationManifest>  
 ```  
   
- The following shows a simple provider implementation for the manifest:  
+ マニフェストの簡単なプロバイダーの実装を次に示します。  
   
 ```  
 using System.Diagnostics.PerformanceData;  

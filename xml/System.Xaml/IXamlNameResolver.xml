@@ -8,22 +8,24 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Describes a service that can return objects that are specified by XAML name, or alternatively, returns a token that defers name resolution. The service can also return an enumerable set of all named objects that are in the XAML namescope.</summary>
+    <summary>XAML の名前で指定されたオブジェクトを返すことができますか、または、名前解決を延期するトークンを返しますサービスについて説明します。 サービスの XAML 名前スコープに含まれるすべての名前付きオブジェクトの列挙可能なセットを返すもことができます。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This interface is not intended for external implementation of typical XAML scenarios because it is a service. This service enables markup extensions and type converters to resolve XAML names to other objects from the same XAML source while they are still in a XAML node representation. The service can be used to resolve forward references for any mechanism that relies on XAML names for nonlinear access to the surrounding XAML production. For more information, see [Type Converters and Markup Extensions for XAML](~/docs/framework/xaml-services/type-converters-and-markup-extensions-for-xaml.md).  
+## 解説  
+ サービスなので、このインターフェイスは XAML の一般的なシナリオの実装を外部のものでありません。 このサービスは、マークアップ拡張機能とは、XAML ノードの表現の中には、XAML の同じソースからその他のオブジェクトを XAML の名前を解決する型コンバーターを使用します。 周囲の XAML の運用環境への非線形アクセスに XAML 名に依存する任意のメカニズムの前方参照を解決するのには、サービスを使用できます。 詳細については、「[Type Converters or Markup Extensions for XAML](http://msdn.microsoft.com/ja-jp/db07a952-05ce-4aa4-b6f9-aac7397d0326)」を参照してください。  
   
- Type converters and markup extensions can query for <xref:System.Xaml.IXamlNameResolver> as a service on the service context that is provided by a XAML object writer, when the XAML object writer invokes value conversion behavior. For more information, see [Type Converters and Markup Extensions for XAML](~/docs/framework/xaml-services/type-converters-and-markup-extensions-for-xaml.md) and [Service Contexts Available to Type Converters and Markup Extensions](~/docs/framework/xaml-services/service-contexts-available-to-type-converters-and-markup-extensions.md).  
+ 型コンバーターおよびマークアップ拡張機能を照会できます <xref:System.Xaml.IXamlNameResolver> XAML オブジェクト ライターは、値変換の動作を呼び出したときに、XAML オブジェクト ライターによって提供されるサービスのコンテキストでサービスとして。 詳細については、[Type Converters or Markup Extensions for XAML](http://msdn.microsoft.com/ja-jp/db07a952-05ce-4aa4-b6f9-aac7397d0326) および [Service Contexts Available to Type Converters and Markup Extensions](http://msdn.microsoft.com/ja-jp/b4dad00f-03da-4579-a4e9-d8d72d2ccbce) を参照してください。  
   
- This service exposes an API that can defer name resolution. The metaphor implemented by the service is that names that cannot be resolved in a first pass against a partial name-object graph should be stored and used to create the fixup token. In the default behavior, all such names are submitted for another resolution attempt on a second pass. On the second pass, the overall name-object graph is complete, and all the fixup tokens are able to resolve.  
+ このサービスは、名前解決を延期できる API を公開します。 サービスによって実装されるメタファは、部分的な名前とオブジェクト グラフに対する最初のパスに解決できない名前を格納されているし、フィックス アップのトークンを作成するために使用することです。 既定の動作でそのようなすべての名前は 2 回目で別の解決の試みに送信されます。 2 番目の段階で、全体的なオブジェクトの名前のグラフが完了して、フィックス アップのすべてのトークンを解決するのには、です。  
   
 > [!NOTE]
->  Even if they are permitted by a particular implementation, forward references in XAML inevitably have performance consequences. As a best practice for production-quality XAML, avoid forward references whenever possible.  
+>  場合でも、特定の実装によっては許可されて、XAML での前方参照必然的あるいないパフォーマンスへの影響です。 実稼働品質の XAML のベスト プラクティスとしては、前方参照は可能な限りを回避します。  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.Windows.Markup.INameScopeDictionary" />
+    <altmember cref="T:System.Windows.NameScope" />
   </Docs>
   <Members>
     <Member MemberName="GetAllNamesAndValuesInScope">
@@ -40,8 +42,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns an enumerable set of all named objects in the XAML namescope.</summary>
-        <returns>An enumerable set of <see cref="T:System.Collections.Generic.KeyValuePair`2" /> objects. For each <see cref="T:System.Collections.Generic.KeyValuePair`2" />, the <see cref="P:System.Collections.Generic.KeyValuePair`2.Key" /> component is a string, and the <see cref="P:System.Collections.Generic.KeyValuePair`2.Value" /> component is the object that uses the <see cref="P:System.Collections.Generic.KeyValuePair`2.Key" /> name in the XAML namescope.</returns>
+        <summary>XAML 名前スコープ内のすべての名前付きオブジェクトの列挙可能なセットを返します。</summary>
+        <returns>列挙可能なセット <see cref="T:System.Collections.Generic.KeyValuePair`2" /> オブジェクトです。 各 <see cref="T:System.Collections.Generic.KeyValuePair`2" />, 、 <see cref="P:System.Collections.Generic.KeyValuePair`2.Key" /> コンポーネントは、文字列、および <see cref="P:System.Collections.Generic.KeyValuePair`2.Value" /> コンポーネントは、オブジェクトを使用する、 <see cref="P:System.Collections.Generic.KeyValuePair`2.Key" /> XAML 名前スコープ内の名前。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -61,16 +63,16 @@
         <Parameter Name="names" Type="System.Collections.Generic.IEnumerable&lt;System.String&gt;" />
       </Parameters>
       <Docs>
-        <param name="names">A collection of names that are possible forward references.</param>
-        <summary>Returns an object that can correct for certain markup patterns that produce forward references.</summary>
-        <returns>An object that provides a token for lookup behavior to be evaluated later.</returns>
+        <param name="names">前方参照は可能な名前のコレクション。</param>
+        <summary>特定の前方参照を生成するマークアップのパターンを修正できるオブジェクトを返します。</summary>
+        <returns>後で評価されるように検索の動作のトークンを提供するオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Existing internal service providers that are available in schema contexts for markup extensions and type converters can implement this service; however, they return an internal type that only the existing XAML writers that work under the default XAML schema context can process.  
+## 解説  
+ マークアップ拡張機能のスキーマのコンテキストで使用できず、コンバーターの入力を既存の内部サービス プロバイダーは、このサービスを実装できます。ただし、既定の XAML スキーマ コンテキストで動作する既存の XAML ライターのみが処理できる内部型を返します。  
   
- When all the forward referenced names are resolvable, the user code is called to reparse each name in the list.  
+ 前方のすべての参照名が解決可能な場合は、一覧内の各名前の再解析ポイントをユーザー コードが呼び出されます。  
   
  ]]></format>
         </remarks>
@@ -93,18 +95,18 @@
         <Parameter Name="canAssignDirectly" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="names">A collection of names that are possible forward references.</param>
+        <param name="names">前方参照は可能な名前のコレクション。</param>
         <param name="canAssignDirectly">
-          <see langword="true" /> to immediately assign the resolved name reference to the target property. <see langword="false" /> to call the user code for a reparse. The default behavior is <see langword="false" />.</param>
-        <summary>Returns an object that can correct for certain markup patterns that produce forward references.</summary>
-        <returns>An object that provides a token for lookup behavior to be evaluated later.</returns>
+          <see langword="true" /> すぐにするには、ターゲット プロパティへの参照を解決された名前を割り当てます。<see langword="false" /> 再解析のユーザー コードを呼び出す。 既定の動作は <see langword="false" />です。</param>
+        <summary>特定の前方参照を生成するマークアップのパターンを修正できるオブジェクトを返します。</summary>
+        <returns>後で評価されるように検索の動作のトークンを提供するオブジェクト。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Existing internal service providers that are available in schema contexts for markup extensions and type converters implement this service; however, they return an internal type that can only be processed by the existing XAML writers that work under the default XAML schema context.  
+## 解説  
+ 既存の内部のサービス プロバイダーのマークアップ拡張のスキーマのコンテキストで使用可能なコンバーターの入力をこのサービスを実装します。ただし、既定の XAML スキーマ コンテキストで動作する既存の XAML ライターによってのみ処理可能な内部型を返します。  
   
- If `canAssignDirectly` is `false`, when all the forward referenced names are resolvable, the user code is called to reparse each name in the list.  
+ 場合 `canAssignDirectly` は `false`, 前方のすべての参照名は、解決可能なときに、再解析ポイントのリスト内の各名前に、ユーザー コードが呼び出されます。  
   
  ]]></format>
         </remarks>
@@ -123,14 +125,14 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that determines whether calling <see cref="M:System.Xaml.IXamlNameResolver.GetFixupToken(System.Collections.Generic.IEnumerable{System.String},System.Boolean)" /> is available in order to resolve a name into a token for forward resolution.</summary>
+        <summary>呼び出すかどうかを決定する値を取得 <see cref="M:System.Xaml.IXamlNameResolver.GetFixupToken(System.Collections.Generic.IEnumerable{System.String},System.Boolean)" /> は順方向の解像度用のトークンに名前を解決するために使用できます。</summary>
         <value>
-          <see langword="true" /> if <see cref="M:System.Xaml.IXamlNameResolver.GetFixupToken(System.Collections.Generic.IEnumerable{System.String},System.Boolean)" /> is available as an implementation that returns a useful token for forward resolution; otherwise, <see langword="false" />.</value>
+          <see langword="true" /> 場合 <see cref="M:System.Xaml.IXamlNameResolver.GetFixupToken(System.Collections.Generic.IEnumerable{System.String},System.Boolean)" /> は順方向の解像度の便利なトークンを返す実装として使用できます。 それ以外の場合、 <see langword="false" />です。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This property returns `false` when <xref:System.Xaml.IXamlNameResolver.GetFixupToken%2A> does not return a token because a <xref:System.Xaml.Schema.XamlValueConverter%601> is involved in the second pass on an existing token.  
+## 解説  
+ このプロパティを返します `false` と <xref:System.Xaml.IXamlNameResolver.GetFixupToken%2A> ため、トークンを返さない、 <xref:System.Xaml.Schema.XamlValueConverter%601> は既存のトークンに対する 2 つ目の処理に関連します。  
   
  ]]></format>
         </remarks>
@@ -149,7 +151,7 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Occurs when a XAML processor has registered all the relevant names to the backing XAML namescope.</summary>
+        <summary>XAML プロセッサには、バッキング XAML 名前スコープに関連するすべての名前が登録されると発生します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -169,17 +171,18 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">The name reference to resolve.</param>
-        <summary>Resolves an object from a name reference.</summary>
-        <returns>The resolved object; or null.</returns>
+        <param name="name">名前の参照を解決します。</param>
+        <summary>名前参照からオブジェクトを解決します。</summary>
+        <returns>解決されたオブジェクトです。または null。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- If a value is returned as `null`, a forward reference might exist. Implementations that want to support forward references can use the `FixupToken` pattern through the <xref:System.Xaml.IXamlNameResolver.GetFixupToken%2A> and <xref:System.Xaml.IXamlNameResolver.IsFixupTokenAvailable%2A> APIs.  
+## 解説  
+ 値として返された場合 `null`, 、前方参照が存在する可能性があります。 前方参照をサポートするために必要な実装を使用して、 `FixupToken` を通じてパターン、 <xref:System.Xaml.IXamlNameResolver.GetFixupToken%2A> と <xref:System.Xaml.IXamlNameResolver.IsFixupTokenAvailable%2A> Api です。  
   
  ]]></format>
         </remarks>
+        <altmember cref="M:System.Windows.Markup.INameScope.FindName(System.String)" />
       </Docs>
     </Member>
     <Member MemberName="Resolve">
@@ -199,12 +202,35 @@
         <Parameter Name="isFullyInitialized" Type="System.Boolean&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="name">The name reference to resolve.</param>
-        <param name="isFullyInitialized">When this method returns, <see langword="true" /> if the returned object has any dependencies on unresolved references; otherwise, <see langword="false" />.</param>
-        <summary>Resolves an object from a name reference, and provides a tracking value that reports whether the object is fully initialized for object graph purposes.</summary>
-        <returns>An object that provides a token for lookup behavior to be evaluated later.</returns>
-        <remarks>To be added.</remarks>
+        <param name="name">名前の参照を解決します。</param>
+        <param name="isFullyInitialized">このメソッドが戻るとき <see langword="true" /> 、返されたオブジェクトにすべての依存関係がある場合は、未解決の参照をそれ以外の場合、 <see langword="false" />です。</param>
+        <summary>名前参照からオブジェクトを解決し、オブジェクトがオブジェクト グラフ用に完全に初期化されるかどうかを報告する追跡値を提供します。</summary>
+        <returns>後で評価されるように検索の動作のトークンを提供するオブジェクト。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## 解説  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
+    <MemberGroup MemberName="Resolve">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>名前参照からオブジェクトを解決します。</summary>
+      </Docs>
+    </MemberGroup>
+    <MemberGroup MemberName="GetFixupToken">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>特定の前方参照を生成するマークアップのパターンを修正できるオブジェクトを返します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

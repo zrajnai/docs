@@ -16,13 +16,13 @@
   </TypeParameters>
   <Interfaces />
   <Docs>
-    <typeparam name="T">The object that participates in the custom behavior.</typeparam>
-    <summary>Enables an object to extend another object through aggregation.</summary>
+    <typeparam name="T">カスタム動作を実装するオブジェクト。</typeparam>
+    <summary>オブジェクトが集約を介して別のオブジェクトを拡張できるようにします。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- [!INCLUDE[indigo2](~/includes/indigo2-md.md)] allows you to extend <xref:System.ServiceModel.IExtensibleObject%601?displayProperty=fullName> objects (the <xref:System.ServiceModel.IContextChannel?displayProperty=fullName>, <xref:System.ServiceModel.ServiceHost?displayProperty=fullName>, <xref:System.ServiceModel.InstanceContext?displayProperty=fullName>, and <xref:System.ServiceModel.OperationContext?displayProperty=fullName> classes) by adding a new state or behavior by using its extensible object pattern. The extensible object pattern is used in [!INCLUDE[indigo2](~/includes/indigo2-md.md)] to either extend existing run-time classes with new functionality or to add new state features to an object.  
+## 解説  
+ [!INCLUDE[indigo2](~/includes/indigo2-md.md)] では、拡張可能オブジェクト パターンを使用して新しい状態または動作を追加することで、<xref:System.ServiceModel.IExtensibleObject%601?displayProperty=fullName> オブジェクト \(<xref:System.ServiceModel.IContextChannel?displayProperty=fullName>、<xref:System.ServiceModel.ServiceHost?displayProperty=fullName>、<xref:System.ServiceModel.InstanceContext?displayProperty=fullName>、および <xref:System.ServiceModel.OperationContext?displayProperty=fullName> の各クラス\) を拡張できます。 拡張可能オブジェクト パターンは、[!INCLUDE[indigo2](~/includes/indigo2-md.md)] では、既存のランタイム クラスに新しい機能を付け加えて拡張するため、またはオブジェクトに新しい状態の機能を追加するために使用されます。  
   
  ]]></format>
     </remarks>
@@ -45,26 +45,29 @@
         <Parameter Name="owner" Type="T" />
       </Parameters>
       <Docs>
-        <param name="owner">The extensible object that aggregates this extension.</param>
-        <summary>Enables an extension object to find out when it has been aggregated. Called when the extension is added to the <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions" /> property.</summary>
+        <param name="owner">この拡張を集約する拡張可能オブジェクト。</param>
+        <summary>集約されているときに拡張オブジェクトがそれを認識できるようにします。 拡張が <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions" /> プロパティに追加されたときに呼び出されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Use this method to keep track of the <xref:System.ServiceModel.IExtensibleObject%601> object to which the current instance of the extension belongs. This call gives extensions a chance to handle events or inspect properties of their owner.  
+## 解説  
+ このメソッドを使用して、拡張の現在のインスタンスが属する <xref:System.ServiceModel.IExtensibleObject%601> オブジェクトを追跡します。 この呼び出しは、イベントを処理するか、所有者のプロパティを検査するチャンスを拡張に与えます。  
   
    
   
-## Examples  
- The following example code shows how this method can be used to keep track of the <xref:System.ServiceModel.IExtensibleObject%601> object to which the current instance of the extension belongs.  
+## 例  
+ 次のコード例は、このメソッドを使用して、拡張の現在のインスタンスが属する <xref:System.ServiceModel.IExtensibleObject%601> オブジェクトを追跡する方法を示しています。  
   
-```csharp  
+ \[C\#\]  
+  
+```  
 InstanceContext owner;  
   
 public void Attach(InstanceContext owner)  
 {  
   this.owner = owner;   
 }  
+  
 ```  
   
  ]]></format>
@@ -88,15 +91,15 @@ public void Attach(InstanceContext owner)
         <Parameter Name="owner" Type="T" />
       </Parameters>
       <Docs>
-        <param name="owner">The extensible object that aggregates this extension.</param>
-        <summary>Enables an object to find out when it is no longer aggregated. Called when an extension is removed from the <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions" /> property.</summary>
+        <param name="owner">この拡張を集約する拡張可能オブジェクト。</param>
+        <summary>もう集約されていないことをオブジェクトが認識できるようにします。 拡張が <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions" /> プロパティから削除されたときに呼び出されます。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
+## 解説  
  Use the <xref:System.ServiceModel.IExtension%601.Detach%2A> method to find out when the extension has been removed. An extension can use this to unhook events on the extensible object. An extension can also throw <xref:System.InvalidOperationException?displayProperty=fullName> from this method to indicate that, once added, the extension cannot be removed.  
   
- Note that this method is not called when the owner object is disposed or closed. If needed, it is up to the extension or the code adding the extension to hook the appropriate <xref:System.ServiceModel.ICommunicationObject?displayProperty=fullName> events or implement the appropriate interfaces (for <xref:System.ServiceModel.OperationContext?displayProperty=fullName>) to observe the lifecycle of the owner.  
+ Note that this method is not called when the owner object is disposed or closed. If needed, it is up to the extension or the code adding the extension to hook the appropriate <xref:System.ServiceModel.ICommunicationObject?displayProperty=fullName> events or implement the appropriate interfaces \(for <xref:System.ServiceModel.OperationContext?displayProperty=fullName>\) to observe the lifecycle of the owner.  
   
  ]]></format>
         </remarks>

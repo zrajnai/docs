@@ -17,46 +17,46 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides the base class for the activation of manifest-based assemblies.</summary>
+    <summary>アセンブリのマニフェストに基づくのライセンス認証のためには、基本クラスを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- There is a single designated instance of the <xref:System.Runtime.Hosting.ApplicationActivator> class in each <xref:System.AppDomain> to which all activation calls are routed. The <xref:System.AppDomainManager> for the current <xref:System.AppDomain> can provide its own custom <xref:System.Runtime.Hosting.ApplicationActivator> for this purpose. If a custom <xref:System.Runtime.Hosting.ApplicationActivator> is not provided, an instance of the default <xref:System.Runtime.Hosting.ApplicationActivator> is created.  
+## 解説  
+ 1 つの指定されたインスタンスがある、 <xref:System.Runtime.Hosting.ApplicationActivator> 各クラス <xref:System.AppDomain> の呼び出しをルーティングするすべてのアクティブ化します。<xref:System.AppDomainManager> 現在の <xref:System.AppDomain> 独自のカスタムを提供できる <xref:System.Runtime.Hosting.ApplicationActivator> この目的のためです。 場合は、カスタム <xref:System.Runtime.Hosting.ApplicationActivator> 、既定のインスタンスを指定しない <xref:System.Runtime.Hosting.ApplicationActivator> が作成されます。  
   
- The following steps describe the behavior of the default <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstance%2A> method implementation:  
+ 次の手順では、既定の動作 <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstance%2A> メソッドの実装。  
   
-1.  Checks if the <xref:System.ActivationContext> of the add-in to be activated matches the <xref:System.ActivationContext> of the current domain; if not, proceeds to step 2. Otherwise, executes the assembly and returns the result wrapped in an object handle.  
+1.  場合にチェック、 <xref:System.ActivationContext> アドインをアクティブ化された一致項目の <xref:System.ActivationContext> 、現在のドメインかどうか、手順 2. に進みます。 それ以外の場合、アセンブリを実行し、オブジェクト ハンドルでラップした結果を返します。  
   
-2.  Activates the add-in in a new <xref:System.AppDomain>. The following steps are taken to initialize a new <xref:System.AppDomain> using the <xref:System.Runtime.Hosting.ActivationArguments> for the add-in.  
+2.  新しいアドインをアクティブに <xref:System.AppDomain>します。 次の手順は、新しい初期化するために実行 <xref:System.AppDomain> を使用して、 <xref:System.Runtime.Hosting.ActivationArguments> 、アドインのです。  
   
-    1.  Creates a new <xref:System.AppDomainSetup> object using an <xref:System.Runtime.Hosting.ActivationArguments> object containing the activation context for the add-in.  
+    1.  新たに作成 <xref:System.AppDomainSetup> オブジェクトを使用して、 <xref:System.Runtime.Hosting.ActivationArguments> 、アドインのアクティベーション コンテキストを格納するオブジェクト。  
   
-    2.  Calls the <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> method to create a new domain using the <xref:System.AppDomainSetup> object.  
+    2.  呼び出し、 <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> を使用して新しいドメインを作成する方法、 <xref:System.AppDomainSetup> オブジェクトです。  
   
-    3.  The <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> method calls the <xref:System.Security.HostSecurityManager.DetermineApplicationTrust%2A?displayProperty=fullName> method to acquire an <xref:System.Security.Policy.ApplicationTrust> object for the add-in. If the <xref:System.Security.Policy.ApplicationTrust.IsApplicationTrustedToRun%2A> property returns `true`, the add-in is executed. If not, <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> throws a <xref:System.Security.Policy.PolicyException> indicating that execution permission could not be acquired.  
+    3.  <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> メソッドの呼び出し、 <xref:System.Security.HostSecurityManager.DetermineApplicationTrust%2A?displayProperty=fullName> を取得するメソッド、 <xref:System.Security.Policy.ApplicationTrust> に追加のオブジェクト。 場合、 <xref:System.Security.Policy.ApplicationTrust.IsApplicationTrustedToRun%2A> プロパティを返します。 `true`, 、アドインを実行します。 ない場合は、 <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> スロー、 <xref:System.Security.Policy.PolicyException> 実行アクセス許可を取得できなかったことを示します。  
   
-    4.  If the add-in is trusted to run, then a new <xref:System.AppDomain> is created and configured for the <xref:System.ActivationContext> of the add-in, and the add-in is loaded and executed.  
+    4.  アドインは、実行し、新しい信頼できる場合に <xref:System.AppDomain> が作成され、構成されている、 <xref:System.ActivationContext> 、アドインのアドインが読み込まれ、実行するとします。  
   
-    5.  The result of the activation of the add-in is returned, wrapped in an object handle.  
+    5.  オブジェクト ハンドルにラップされて、アドインのアクティブ化の結果が返されます。  
   
- A custom activator can tailor the activation of an add-in to a particular set of circumstances. For example, a custom activator could find an existing <xref:System.AppDomain> to activate this add-in instead of creating a new domain every time.  
+ カスタム アクティベータは、特定の状況のセットのアドインのアクティブ化を調整できます。 たとえば、カスタムのアクティベーターが見つかりませんでした、既存 <xref:System.AppDomain> このアドインたびに新しいドメインを作成する代わりにアクティブにします。  
   
- The following steps describe the behavior of a custom <xref:System.Runtime.Hosting.ApplicationActivator> that activates an add-in in an existing <xref:System.AppDomain>:  
+ 次の手順では、カスタムの動作 <xref:System.Runtime.Hosting.ApplicationActivator> 、既存のアドインをアクティブに <xref:System.AppDomain>:  
   
-1.  The custom activator finds a domain that has the same <xref:System.ActivationContext> as the add-in that is being activated.  
+1.  カスタムのアクティベーターが同じドメインを検索 <xref:System.ActivationContext> アドインをアクティブ化するとします。  
   
-2.  If the <xref:System.ActivationContext> has never been seen before in the process, the custom activator creates a new <xref:System.AppDomain> for this <xref:System.ActivationContext> by calling the <xref:System.AppDomain.CreateDomain%2A> method directly, or delegating this activity to the <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> in the base class.  
+2.  場合、 <xref:System.ActivationContext> プロセスでは、カスタムのアクティベーター新しいを作成する前に表示されていることはありません <xref:System.AppDomain> この <xref:System.ActivationContext> を呼び出して、 <xref:System.AppDomain.CreateDomain%2A> メソッドを直接、またはこのアクティビティに委任すること、 <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstanceHelper%2A> 、基本クラスです。  
   
-3.  If there is an existing domain with the same <xref:System.ActivationContext>, then the activator can delegate the <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstance%2A> method call to the <xref:System.Runtime.Hosting.ApplicationActivator> in the target domain. Note that this would be a cross-domain call to an <xref:System.Runtime.Hosting.ApplicationActivator> that resides in the target <xref:System.AppDomain>.  
+3.  同じ既存のドメインがある場合 <xref:System.ActivationContext>, 、アクティベーターを委任でき、 <xref:System.Runtime.Hosting.ApplicationActivator.CreateInstance%2A> メソッドの呼び出しを <xref:System.Runtime.Hosting.ApplicationActivator> 対象のドメイン内です。 ドメイン間の呼び出しになると、 <xref:System.Runtime.Hosting.ApplicationActivator> ターゲット内に存在していて <xref:System.AppDomain>します。  
   
    
   
-## Examples  
- The following code example shows how to obtain an <xref:System.Runtime.Hosting.ApplicationActivator> object from the current <xref:System.AppDomain.DomainManager%2A> for a manifest-based application.  
+## 例  
+ 次のコード例を取得する方法を示しています、 <xref:System.Runtime.Hosting.ApplicationActivator> オブジェクト現在から <xref:System.AppDomain.DomainManager%2A> マニフェストに基づくアプリケーションのです。  
   
- [!code-csharp[System.Runtime.Hosting.ApplicationActivator#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Runtime.Hosting.ApplicationActivator/cs/program.cs#1)]
- [!code-vb[System.Runtime.Hosting.ApplicationActivator#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Runtime.Hosting.ApplicationActivator/vb/program.vb#1)]  
+ [!code-csharp[System.Runtime.Hosting.ApplicationActivator\#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Runtime.Hosting.ApplicationActivator/cs/program.cs#1)]
+ [!code-vb[System.Runtime.Hosting.ApplicationActivator\#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Runtime.Hosting.ApplicationActivator/vb/program.vb#1)]  
   
  ]]></format>
     </remarks>
@@ -74,7 +74,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.Hosting.ApplicationActivator" /> class.</summary>
+        <summary>
+          <see cref="T:System.Runtime.Hosting.ApplicationActivator" /> クラスの新しいインスタンスを初期化します。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -95,19 +96,21 @@
         <Parameter Name="activationContext" Type="System.ActivationContext" />
       </Parameters>
       <Docs>
-        <param name="activationContext">An <see cref="T:System.ActivationContext" /> that identifies the application to activate.</param>
-        <summary>Creates an instance of the application to be activated, using the specified activation context.</summary>
-        <returns>An <see cref="T:System.Runtime.Remoting.ObjectHandle" /> that is a wrapper for the return value of the application execution. The return value must be unwrapped to access the real object.</returns>
+        <param name="activationContext">
+          <see cref="T:System.ActivationContext" /> アクティブにするアプリケーションを識別します。</param>
+        <summary>指定されたアクティブ化コンテキストを使用して、アクティブ化するアプリケーションのインスタンスを作成します。</summary>
+        <returns>
+          <see cref="T:System.Runtime.Remoting.ObjectHandle" /> はアプリケーションの実行の戻り値のラッパーです。 戻り値は、ラップを実際のオブジェクトにアクセスすることがあります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is intended for the manifest-based activation of applications.  
+## 解説  
+ このメソッドは、アプリケーションのマニフェストに基づくアクティベーション。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="activationContext" /> is <see langword="null" />.</exception>
+          <paramref name="activationContext" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateInstance">
@@ -128,20 +131,22 @@
         <Parameter Name="activationCustomData" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="activationContext">An <see cref="T:System.ActivationContext" /> that identifies the application to activate.</param>
-        <param name="activationCustomData">Custom activation data.</param>
-        <summary>Creates an instance of the application to be activated, using the specified activation context  and custom activation data.</summary>
-        <returns>An <see cref="T:System.Runtime.Remoting.ObjectHandle" /> that is a wrapper for the return value of the application execution. The return value must be unwrapped to access the real object.</returns>
+        <param name="activationContext">
+          <see cref="T:System.ActivationContext" /> アクティブにするアプリケーションを識別します。</param>
+        <param name="activationCustomData">カスタム アクティベーション データです。</param>
+        <summary>指定されたアクティベーション コンテキストとカスタム アクティベーション データを使用して、アクティブ化するアプリケーションのインスタンスを作成します。</summary>
+        <returns>
+          <see cref="T:System.Runtime.Remoting.ObjectHandle" /> はアプリケーションの実行の戻り値のラッパーです。 戻り値は、ラップを実際のオブジェクトにアクセスすることがあります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is intended for the manifest-based activation of applications. The activation data consists of information such as the query string portion of a URL.  
+## 解説  
+ このメソッドは、アプリケーションのマニフェストに基づくアクティベーション。 ライセンス認証データは、URL のクエリ文字列部分などの情報で構成されます。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="activationContext" /> is <see langword="null" />.</exception>
+          <paramref name="activationContext" /> は <see langword="null" /> です。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateInstanceHelper">
@@ -161,20 +166,33 @@
         <Parameter Name="adSetup" Type="System.AppDomainSetup" />
       </Parameters>
       <Docs>
-        <param name="adSetup">An <see cref="T:System.AppDomainSetup" /> object whose <see cref="P:System.AppDomainSetup.ActivationArguments" /> property identifies the application to activate.</param>
-        <summary>Creates an instance of an application using the specified <see cref="T:System.AppDomainSetup" /> object.</summary>
-        <returns>An <see cref="T:System.Runtime.Remoting.ObjectHandle" /> that is a wrapper for the return value of the application execution. The return value must be unwrapped to access the real object.</returns>
+        <param name="adSetup">
+          <see cref="T:System.AppDomainSetup" /> オブジェクト <see cref="P:System.AppDomainSetup.ActivationArguments" /> プロパティがアクティブにするアプリケーションを識別します。</param>
+        <summary>指定して、アプリケーションのインスタンスを作成 <see cref="T:System.AppDomainSetup" /> オブジェクトです。</summary>
+        <returns>
+          <see cref="T:System.Runtime.Remoting.ObjectHandle" /> はアプリケーションの実行の戻り値のラッパーです。 戻り値は、ラップを実際のオブジェクトにアクセスすることがあります。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method is intended for the manifest-based activation of applications.  
+## 解説  
+ このメソッドは、アプリケーションのマニフェストに基づくアクティベーション。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">The <see cref="P:System.AppDomainSetup.ActivationArguments" /> property of <paramref name="adSetup" /> is <see langword="null" />.</exception>
-        <exception cref="T:System.Security.Policy.PolicyException">The application instance failed to execute because the policy settings on the current application domain do not provide permission for this application to run.</exception>
+        <exception cref="T:System.ArgumentException">
+          <see cref="P:System.AppDomainSetup.ActivationArguments" /> の <paramref name="adSetup " />は <see langword="null" />です。</exception>
+        <exception cref="T:System.Security.Policy.PolicyException">アプリケーション インスタンスは、現在のアプリケーション ドメインのポリシー設定は、このアプリケーションを実行するアクセス許可を提供しないのでを実行できませんでした。</exception>
       </Docs>
     </Member>
+    <MemberGroup MemberName="CreateInstance">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>アプリケーションを識別するアクティベーション コンテキストを使用して、アクティブ化するアプリケーションのインスタンスを作成します。</summary>
+      </Docs>
+    </MemberGroup>
   </Members>
 </Type>

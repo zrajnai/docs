@@ -22,48 +22,53 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Provides methods to manage the global designer verbs and menu commands available in design mode, and to show some types of shortcut menus.</summary>
+    <summary>グローバル デザイナー動詞とデザイン モードで使用できるメニュー コマンドを管理し、いくつかの種類のショートカット メニューを表示するメソッドを提供します。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This interface provides methods to:  
+## 解説  
+ このインターフェイスは、メソッドを提供します。  
   
--   Find, invoke, add and remove global designer verb commands.  
+-   検索、起動、追加およびグローバル デザイナー動詞のコマンドを削除します。  
   
--   Find, invoke, add and remove standard menu commands.  
+-   検索、起動、追加および標準のメニュー コマンドを削除します。  
   
--   Alter the event handlers associated with standard menu commands.  
+-   標準のメニュー コマンドに関連するイベント ハンドラーを変更します。  
   
--   Display a shortcut menu of standard commands that is associated with a menu <xref:System.ComponentModel.Design.CommandID>.  
+-   メニューに関連付けられている標準コマンドのショートカット メニューを表示する <xref:System.ComponentModel.Design.CommandID>です。  
   
- Designer verbs represent custom-defined commands that are listed on the shortcut menu in design mode. A designer verb can provide a specified text label. Each designer verb is automatically assigned a unique <xref:System.ComponentModel.Design.CommandID>. A designer can provide designer verbs through its <xref:System.ComponentModel.Design.IDesigner.Verbs%2A> property, but these are only available when the designer's component is currently selected. Global designer verbs are designer verb commands that can be accessed from a design-mode shortcut menu regardless of the selected component. This interface allows you to manage the set of global designer verbs that are available in design mode.  
+ デザイナー動詞は、デザイン モードでショートカット メニューに表示されているカスタム定義のコマンドを表します。 デザイナー動詞は、指定したテキスト ラベルを指定できます。 各デザイナー動詞が自動的に割り当てられる一意 <xref:System.ComponentModel.Design.CommandID>します。 デザイナーがを通じてデザイナー動詞を指定できます、 <xref:System.ComponentModel.Design.IDesigner.Verbs%2A> ですが、これらには、デザイナーのコンポーネントが現在選択されています。 グローバル デザイナー動詞は、選択したコンポーネントに関係なく、デザイン モードのショートカット メニューからアクセス可能なデザイナー動詞コマンドです。 このインターフェイスでは、デザイン モードで使用できるグローバル デザイナー動詞のセットを管理することができます。  
   
- You can add a global designer verb using the <xref:System.ComponentModel.Design.IMenuCommandService.AddVerb%2A> method, and you can remove a global designer verb using the <xref:System.ComponentModel.Design.IMenuCommandService.RemoveVerb%2A> method. You can invoke a designer verb using the <xref:System.ComponentModel.Design.IMenuCommandService.GlobalInvoke%2A> method if you know the <xref:System.ComponentModel.Design.CommandID> of the verb. The <xref:System.ComponentModel.Design.IMenuCommandService.Verbs%2A> property of this interface contains the current set of designer verb commands to display in a shortcut menu. This set of designer verb commands consists of all global designer verbs and any designer verbs offered by the designer of any currently selected component. This set of verbs is updated each time a component with a designer offering designer verb commands is selected or deselected.  
+ グローバル デザイナー動詞を使用して、追加することができます、 <xref:System.ComponentModel.Design.IMenuCommandService.AddVerb%2A> メソッドを使用して、グローバル デザイナー動詞を削除できます、 <xref:System.ComponentModel.Design.IMenuCommandService.RemoveVerb%2A> メソッドです。 デザイナー動詞を使用して、呼び出すことができます、 <xref:System.ComponentModel.Design.IMenuCommandService.GlobalInvoke%2A> メソッドがわかっている場合、 <xref:System.ComponentModel.Design.CommandID> 動詞のです。<xref:System.ComponentModel.Design.IMenuCommandService.Verbs%2A> このインターフェイスのプロパティには、現在のショートカット メニューに表示するデザイナー動詞コマンドのセットが含まれています。 このデザイナー動詞コマンドのセットは、すべてのグローバル デザイナー動詞と現在選択されているコンポーネントのデザイナーによって提供されるデザイナー動詞で構成されます。 この動詞のセットはデザイナー動詞コマンドを提供しているデザイナーでコンポーネントを選択または選択解除するたびに更新します。  
   
- Menu commands are limited to the set of predefined standard commands. Most of the predefined standard commands are defined in the <xref:System.ComponentModel.Design.StandardCommands> and <xref:System.Windows.Forms.Design.MenuCommands> enumerations. You can add, remove, and invoke menu commands, and search for menu commands that have been added to a menu using methods of this interface.  
+ メニュー コマンドは、定義済みの標準コマンドのセットに制限されます。 ほとんどの定義済みの標準的なコマンドがで定義されている、 <xref:System.ComponentModel.Design.StandardCommands> と <xref:System.Windows.Forms.Design.MenuCommands> 列挙体です。 追加できますが、によりを削除してメニュー コマンドを実行し、このインターフェイスのメソッドを使用してメニューに追加されているメニュー コマンドを検索します。  
   
- You can add a standard menu command using the <xref:System.ComponentModel.Design.IMenuCommandService.AddCommand%2A> method, and remove a standard menu command using the <xref:System.ComponentModel.Design.IMenuCommandService.RemoveCommand%2A> method. You can attach an event handler to a predefined standard menu command by following the procedure detailed in the documentation for the <xref:System.ComponentModel.Design.IMenuCommandService.AddCommand%2A> method. You can retrieve a menu command by <xref:System.ComponentModel.Design.CommandID> if it has been added to a menu using the <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> method. You can invoke a menu command or designer verb command by <xref:System.ComponentModel.Design.CommandID> using the <xref:System.ComponentModel.Design.IMenuCommandService.GlobalInvoke%2A> method.  
-  
-> [!NOTE]
->  An attempt to add a menu command with an already existing <xref:System.ComponentModel.Design.CommandID> will throw an <xref:System.InvalidOperationException>. When adding a menu command, be sure to check that it is not already on a menu using the <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> method, or use exception handling wisely.  
+ 使用して標準メニュー コマンドを追加する、 <xref:System.ComponentModel.Design.IMenuCommandService.AddCommand%2A> メソッド、および標準のメニュー コマンドを使用して、削除、 <xref:System.ComponentModel.Design.IMenuCommandService.RemoveCommand%2A> メソッドです。 イベント ハンドラーを定義済みの標準的なメニュー コマンドにアタッチするには、ドキュメントの詳細な手順により、 <xref:System.ComponentModel.Design.IMenuCommandService.AddCommand%2A> メソッドです。 メニュー コマンドを取得する <xref:System.ComponentModel.Design.CommandID> を使用してメニューに追加された場合、 <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> メソッドです。 メニュー コマンドや、デザイナー動詞のコマンドを呼び出すことができます <xref:System.ComponentModel.Design.CommandID> を使用して、 <xref:System.ComponentModel.Design.IMenuCommandService.GlobalInvoke%2A> メソッドです。  
   
 > [!NOTE]
->  A menu command can be added to a menu, and have its <xref:System.ComponentModel.Design.MenuCommand.Visible%2A> or <xref:System.ComponentModel.Design.MenuCommand.Enabled%2A> properties set to `false`. If you cannot visually locate a menu command that has been added on a menu, one of these properties may have been set to `false`.  
+>  既に既存のメニュー コマンドを追加しようとすると、 <xref:System.ComponentModel.Design.CommandID> をスロー、 <xref:System.InvalidOperationException>です。 メニュー コマンドを追加するときにすることになっていないを使用してメニューを確認することを確認して、 <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> メソッド、または使用して例外がうまく処理します。  
   
- You can show certain standard shortcut menus containing menu commands at a specified location using the <xref:System.ComponentModel.Design.IMenuCommandService.ShowContextMenu%2A> method. The documentation for this method contains a table listing the command IDs that specify the valid menus to show.  
+> [!NOTE]
+>  メニュー コマンドを選択し、メニューに追加することができますが、 <xref:System.ComponentModel.Design.MenuCommand.Visible%2A> または <xref:System.ComponentModel.Design.MenuCommand.Enabled%2A> プロパティに設定 `false`します。 メニューに追加されているメニュー コマンド、視覚的に見つからない場合はこれらのプロパティのいずれかに設定されている `false`します。  
+  
+ 使用して、指定した場所にメニュー コマンドを含む特定の標準のショートカット メニューを表示することができます、 <xref:System.ComponentModel.Design.IMenuCommandService.ShowContextMenu%2A> メソッドです。 このメソッドのドキュメントには、表示する有効なメニューを指定するコマンド Id の一覧を示すテーブルが含まれています。  
   
    
   
-## Examples  
- This example demonstrates using the <xref:System.ComponentModel.Design.IMenuCommandService> to add a <xref:System.ComponentModel.Design.MenuCommand>.  
+## 例  
+ この例では、 <xref:System.ComponentModel.Design.IMenuCommandService> を追加する、 <xref:System.ComponentModel.Design.MenuCommand>です。  
   
- [!code-cpp[MenuCommand Example#1](~/samples/snippets/cpp/VS_Snippets_Winforms/MenuCommand Example/CPP/component1.cpp#1)]
- [!code-csharp[MenuCommand Example#1](~/samples/snippets/csharp/VS_Snippets_Winforms/MenuCommand Example/CS/component1.cs#1)]
- [!code-vb[MenuCommand Example#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/MenuCommand Example/VB/component1.vb#1)]  
+ [!code-cpp[MenuCommand Example\#1](~/samples/snippets/cpp/VS_Snippets_Winforms/MenuCommand Example/CPP/component1.cpp#1)]
+ [!code-csharp[MenuCommand Example\#1](~/samples/snippets/csharp/VS_Snippets_Winforms/MenuCommand Example/CS/component1.cs#1)]
+ [!code-vb[MenuCommand Example\#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/MenuCommand Example/VB/component1.vb#1)]  
   
  ]]></format>
     </remarks>
+    <altmember cref="T:System.ComponentModel.Design.MenuCommand" />
+    <altmember cref="T:System.ComponentModel.Design.DesignerVerb" />
+    <altmember cref="T:System.ComponentModel.Design.CommandID" />
+    <altmember cref="T:System.Windows.Forms.Design.MenuCommands" />
+    <altmember cref="T:System.ComponentModel.Design.StandardCommands" />
   </Docs>
   <Members>
     <Member MemberName="AddCommand">
@@ -91,32 +96,35 @@
         <Parameter Name="command" Type="System.ComponentModel.Design.MenuCommand" />
       </Parameters>
       <Docs>
-        <param name="command">The <see cref="T:System.ComponentModel.Design.MenuCommand" /> to add.</param>
-        <summary>Adds the specified standard menu command to the menu.</summary>
+        <param name="command">追加する <see cref="T:System.ComponentModel.Design.MenuCommand" />。</param>
+        <summary>指定した標準メニュー コマンドをメニューに追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.Windows.Forms.Design.MenuCommands> and <xref:System.ComponentModel.Design.StandardCommands> enumerations contain <xref:System.ComponentModel.Design.CommandID> identifiers for predefined standard commands and menu commands that are already associated with a location on a particular menu.  
+## 解説  
+ <xref:System.Windows.Forms.Design.MenuCommands> と <xref:System.ComponentModel.Design.StandardCommands> 列挙型を含む <xref:System.ComponentModel.Design.CommandID> 識別子の定義済みの標準コマンドとされているメニュー コマンドに関連付けられている特定のメニュー上の場所。  
   
 > [!NOTE]
->  An attempt to add a menu command with an already existing <xref:System.ComponentModel.Design.CommandID> will throw an <xref:System.InvalidOperationException>. When adding a menu command, be sure to check that it is not already on a menu using the <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> method, or use exception handling wisely.  
+>  既に既存のメニュー コマンドを追加しようとすると、 <xref:System.ComponentModel.Design.CommandID> をスロー、 <xref:System.InvalidOperationException>です。 メニュー コマンドを追加するときにすることになっていないを使用してメニューを確認することを確認して、 <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> メソッド、または使用して例外がうまく処理します。  
   
- You can attach an event handler to a predefined menu command with the following procedure:  
+ 次の手順で定義済みのメニュー コマンドには、イベント ハンドラーをアタッチすることができます。  
   
-1.  If the menu command to link with an event handler has been added to a menu, or is located with the <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> method, consider whether you wish to restore this menu command later, and whether you want to invoke the current event handler from your new event handler. If your code might restore the menu command or chain the invocation of event handlers, be sure to store a reference to the menu command somewhere.  
+1.  イベント ハンドラーとリンクするメニュー コマンドがメニューに追加されましたまたはである場合、 <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> メソッドでは、後で、このメニュー コマンドを復元するかどうかと、新しいイベント ハンドラーから現在のイベント ハンドラーを起動するかどうかを検討してください。 場合は、コードには、メニュー コマンドやイベント ハンドラーの呼び出しのチェーンを復元できます、メニュー コマンドをどこかへの参照を格納することを確認します。  
   
-2.  Ensure that any previously existing menu command with the same <xref:System.ComponentModel.Design.CommandID> has been removed from the menu using the <xref:System.ComponentModel.Design.IMenuCommandService.RemoveCommand%2A> method.  
+2.  同じでメニュー コマンドに以前から存在することを確認 <xref:System.ComponentModel.Design.CommandID> を使用して、メニューから削除された、 <xref:System.ComponentModel.Design.IMenuCommandService.RemoveCommand%2A> メソッドです。  
   
-3.  Create a new <xref:System.ComponentModel.Design.MenuCommand> and specify your event handler in the constructor, along with a <xref:System.ComponentModel.Design.CommandID> representing the command to add. Each standard menu command is associated with a predefined menu location where it is added to. The supported command IDs are defined in the <xref:System.ComponentModel.Design.StandardCommands> and <xref:System.Windows.Forms.Design.MenuCommands> enumerations.  
+3.  新しい <xref:System.ComponentModel.Design.MenuCommand> と共に、コンス トラクターでイベント ハンドラーを指定し、 <xref:System.ComponentModel.Design.CommandID> を追加するコマンドを表します。 各標準のメニュー コマンドに追加される定義済みのメニューの場所に関連付けられます。 サポートされているコマンド Id が定義されている、 <xref:System.ComponentModel.Design.StandardCommands> と <xref:System.Windows.Forms.Design.MenuCommands> 列挙体です。  
   
-4.  If you want to invoke any preexisting event handler for the menu command, call the <xref:System.ComponentModel.Design.MenuCommand.Invoke%2A> method of the menu command you have replaced on the menu from the event handler that handles the invoke event of your menu command.  
+4.  メニュー コマンドの既存のイベント ハンドラーを呼び出す場合、 <xref:System.ComponentModel.Design.MenuCommand.Invoke%2A> メニュー コマンドの呼び出しイベントを処理するイベント ハンドラーからメニューに置き換えたメニュー コマンドのメソッドです。  
   
-5.  If you are interested in restoring the event handler of a preexisting menu command that you have replaced, add the stored, preexisting menu command after you remove the replacement menu command you created. You may want to add this behavior to the `Dispose` method for your type.  
+5.  交換した既存のメニュー コマンドのイベント ハンドラーを復元する場合は、格納されている追加で、既存メニュー コマンドの置換\] メニューのコマンドを削除した後に作成します。 この動作を追加することも、 `Dispose` 、型の方法です。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="T:System.ComponentModel.Design.CommandID" /> of the specified <see cref="T:System.ComponentModel.Design.MenuCommand" /> is already present on a menu.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="T:System.ComponentModel.Design.CommandID" /> の指定した <see cref="T:System.ComponentModel.Design.MenuCommand" /> がメニューに既に存在します。</exception>
+        <altmember cref="T:System.ComponentModel.Design.MenuCommand" />
+        <altmember cref="T:System.ComponentModel.Design.CommandID" />
       </Docs>
     </Member>
     <Member MemberName="AddVerb">
@@ -144,16 +152,17 @@
         <Parameter Name="verb" Type="System.ComponentModel.Design.DesignerVerb" />
       </Parameters>
       <Docs>
-        <param name="verb">The <see cref="T:System.ComponentModel.Design.DesignerVerb" /> to add.</param>
-        <summary>Adds the specified designer verb to the set of global designer verbs.</summary>
+        <param name="verb">追加する <see cref="T:System.ComponentModel.Design.DesignerVerb" />。</param>
+        <summary>指定したデザイナー動詞をグローバル デザイナー動詞のセットに追加します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Designers of components that provide designer verbs should use the <xref:System.ComponentModel.Design.IDesigner.Verbs%2A> property of their designer rather than calling this method. This method adds a global designer verb that can be accessed from the right-click shortcut menu in design mode regardless of the currently selected component.  
+## 解説  
+ デザイナー動詞を提供するコンポーネントのデザイナーを使用する必要があります、 <xref:System.ComponentModel.Design.IDesigner.Verbs%2A> このメソッドを呼び出すのではなく、そのデザイナーのプロパティです。 このメソッドは、現在選択されているコンポーネントに関係なく、デザイン モードで右クリックのショートカット メニューからアクセス可能なグローバル デザイナー動詞を追加します。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.DesignerVerb" />
       </Docs>
     </Member>
     <Member MemberName="FindCommand">
@@ -181,10 +190,12 @@
         <Parameter Name="commandID" Type="System.ComponentModel.Design.CommandID" />
       </Parameters>
       <Docs>
-        <param name="commandID">The <see cref="T:System.ComponentModel.Design.CommandID" /> to search for.</param>
-        <summary>Searches for the specified command ID and returns the menu command associated with it.</summary>
-        <returns>The <see cref="T:System.ComponentModel.Design.MenuCommand" /> associated with the command ID, or <see langword="null" /> if no command is found.</returns>
+        <param name="commandID">検索対象の <see cref="T:System.ComponentModel.Design.CommandID" />。</param>
+        <summary>指定されたコマンド ID を検索し、それに関連付けられているメニュー コマンドを返します。</summary>
+        <returns>
+          <see cref="T:System.ComponentModel.Design.MenuCommand" /> コマンド ID に関連付けられているか、 <see langword="null" /> コマンドが見つからない場合。</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="T:System.ComponentModel.Design.CommandID" />
       </Docs>
     </Member>
     <Member MemberName="GlobalInvoke">
@@ -212,18 +223,20 @@
         <Parameter Name="commandID" Type="System.ComponentModel.Design.CommandID" />
       </Parameters>
       <Docs>
-        <param name="commandID">The <see cref="T:System.ComponentModel.Design.CommandID" /> of the command to search for and execute.</param>
-        <summary>Invokes a menu or designer verb command matching the specified command ID.</summary>
+        <param name="commandID">
+          <see cref="T:System.ComponentModel.Design.CommandID" /> コマンドを検索し、実行します。</param>
+        <summary>指定されたコマンド ID に一致するメニューまたはデザイナー動詞コマンドを呼び出す</summary>
         <returns>
-          <see langword="true" /> if the command was found and invoked successfully; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> コマンドが見つかり、正常に呼び出される場合それ以外の場合、 <see langword="false" />です。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method searches for a menu command or designer verb with a <xref:System.ComponentModel.Design.CommandID> matching the specified <xref:System.ComponentModel.Design.CommandID>. This method first searches within the designer verbs collection consisting of global and active designer-provided verbs before continuing the search, if necessary, through the global environment command service. If a matching menu command or designer verb is located, the command is invoked.  
+## 解説  
+ このメソッドは、メニュー コマンドやとデザイナー動詞を検索、 <xref:System.ComponentModel.Design.CommandID> 指定に一致する <xref:System.ComponentModel.Design.CommandID>です。 このメソッドは、まずグローバル環境コマンド サービスを通じて、必要に応じて、検索を続行する前にグローバルとアクティブなデザイナーが提供の動詞で構成されるデザイナー動詞のコレクション内で検索します。 一致するメニュー コマンドやデザイナー動詞が見つかった場合は、コマンドが呼び出されます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.CommandID" />
       </Docs>
     </Member>
     <Member MemberName="RemoveCommand">
@@ -251,16 +264,17 @@
         <Parameter Name="command" Type="System.ComponentModel.Design.MenuCommand" />
       </Parameters>
       <Docs>
-        <param name="command">The <see cref="T:System.ComponentModel.Design.MenuCommand" /> to remove.</param>
-        <summary>Removes the specified standard menu command from the menu.</summary>
+        <param name="command">削除する <see cref="T:System.ComponentModel.Design.MenuCommand" />。</param>
+        <summary>指定した標準メニューのメニューから削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method removes the specified <xref:System.ComponentModel.Design.MenuCommand> if it is found. This method does not raise an exception or return a value if the specified <xref:System.ComponentModel.Design.MenuCommand> is not found. Use the <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> method to determine whether a <xref:System.ComponentModel.Design.MenuCommand> matching a specified <xref:System.ComponentModel.Design.CommandID> is located on a menu.  
+## 解説  
+ このメソッドは、指定された削除 <xref:System.ComponentModel.Design.MenuCommand> が存在する場合。 このメソッドが例外を発生させるまたは値が返さしていない、指定した <xref:System.ComponentModel.Design.MenuCommand> が見つかりません。 使用して、 <xref:System.ComponentModel.Design.IMenuCommandService.FindCommand%2A> メソッドを呼び出せば確認するかどうか、 <xref:System.ComponentModel.Design.MenuCommand> 、指定した一致 <xref:System.ComponentModel.Design.CommandID> メニュー上にあります。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.MenuCommand" />
       </Docs>
     </Member>
     <Member MemberName="RemoveVerb">
@@ -288,16 +302,17 @@
         <Parameter Name="verb" Type="System.ComponentModel.Design.DesignerVerb" />
       </Parameters>
       <Docs>
-        <param name="verb">The <see cref="T:System.ComponentModel.Design.DesignerVerb" /> to remove.</param>
-        <summary>Removes the specified designer verb from the collection of global designer verbs.</summary>
+        <param name="verb">削除する <see cref="T:System.ComponentModel.Design.DesignerVerb" />。</param>
+        <summary>グローバル デザイナー動詞のコレクションから指定したデザイナー動詞を削除します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- This method removes the specified global designer verb if it is within the global designer verbs collection. You can add a designer verb to the global designer verbs collection using the <xref:System.ComponentModel.Design.IMenuCommandService.AddVerb%2A> method.  
+## 解説  
+ このメソッドは、グローバル デザイナー動詞のコレクション内にある場合に、指定したグローバル デザイナー動詞を削除します。 デザイナー動詞を使用してグローバル デザイナー動詞のコレクションに追加すること、 <xref:System.ComponentModel.Design.IMenuCommandService.AddVerb%2A> メソッドです。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.DesignerVerb" />
       </Docs>
     </Member>
     <Member MemberName="ShowContextMenu">
@@ -327,27 +342,29 @@
         <Parameter Name="y" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="menuID">The <see cref="T:System.ComponentModel.Design.CommandID" /> for the shortcut menu to show.</param>
-        <param name="x">The x-coordinate at which to display the menu, in screen coordinates.</param>
-        <param name="y">The y-coordinate at which to display the menu, in screen coordinates.</param>
-        <summary>Shows the specified shortcut menu at the specified location.</summary>
+        <param name="menuID">
+          <see cref="T:System.ComponentModel.Design.CommandID" /> のショートカット メニューを表示します。</param>
+        <param name="x">画面座標で、メニューを表示する位置の x 座標。</param>
+        <param name="y">画面座標で、メニューを表示する位置の y 座標。</param>
+        <summary>指定した場所に指定されたショートカット メニューを表示します。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The <xref:System.ComponentModel.Design.IMenuCommandService.ShowContextMenu%2A> method can display any of the following Visual Studio shortcut menus containing menu commands at a specified point:  
+## 解説  
+ <xref:System.ComponentModel.Design.IMenuCommandService.ShowContextMenu%2A> メソッドが特定の時点でのメニュー コマンドを含む次の Visual Studio のショートカット メニューを表示します。  
   
-|Menu|CommandID|  
+|メニュー|CommandID|  
 |----------|---------------|  
-|The shortcut menu displayed for a container|<xref:System.Windows.Forms.Design.MenuCommands.ContainerMenu>|  
-|The shortcut menu displayed for the component tray|<xref:System.Windows.Forms.Design.MenuCommands.ComponentTrayMenu>|  
-|The shortcut menu displayed for a selection|<xref:System.Windows.Forms.Design.MenuCommands.SelectionMenu>|  
-|The shortcut menu displayed for a tray selection|<xref:System.Windows.Forms.Design.MenuCommands.TraySelectionMenu>|  
+|コンテナーに対して表示されるショートカット メニュー|<xref:System.Windows.Forms.Design.MenuCommands.ContainerMenu>|  
+|コンポーネント トレイに表示されるショートカット メニュー|<xref:System.Windows.Forms.Design.MenuCommands.ComponentTrayMenu>|  
+|ショートカット メニューを選択するための表示|<xref:System.Windows.Forms.Design.MenuCommands.SelectionMenu>|  
+|トレイを選択するために表示されるショートカット メニュー|<xref:System.Windows.Forms.Design.MenuCommands.TraySelectionMenu>|  
   
- This method can also display other registered shortcut menus.  
+ このメソッドは、その他の登録済みのショートカット メニューを表示もできます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.CommandID" />
       </Docs>
     </Member>
     <Member MemberName="Verbs">
@@ -372,16 +389,18 @@
         <ReturnType>System.ComponentModel.Design.DesignerVerbCollection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a collection of the designer verbs that are currently available.</summary>
-        <value>A <see cref="T:System.ComponentModel.Design.DesignerVerbCollection" /> that contains the designer verbs that are currently available.</value>
+        <summary>現在利用可能なデザイナー動詞のコレクションを取得します。</summary>
+        <value>A <see cref="T:System.ComponentModel.Design.DesignerVerbCollection" /> 現在利用可能なデザイナー動詞を格納しています。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- The set of currently available designer verbs consists of all global designer verbs, which are added by the <xref:System.ComponentModel.Design.IMenuCommandService.AddVerb%2A> method on this interface, and individual designer verbs, which are offered by the <xref:System.ComponentModel.Design.IDesigner.Verbs%2A> property of individual designers. If the name of a global verb conflicts with the name of a designer verb, the designer-provided designer verb takes precedence.  
+## 解説  
+ すべてグローバル デザイナー動詞、によって追加されるのでは現在利用可能なデザイナー動詞のセット、 <xref:System.ComponentModel.Design.IMenuCommandService.AddVerb%2A> メソッドをこのインターフェイス、および個々 のデザイナー動詞で提供される、 <xref:System.ComponentModel.Design.IDesigner.Verbs%2A> 個々 の設計者のプロパティです。 グローバル動詞の名前は、デザイナー動詞の名前と競合する場合は、デザイナーが提供デザイナー動詞が優先されます。  
   
  ]]></format>
         </remarks>
+        <altmember cref="T:System.ComponentModel.Design.DesignerVerbCollection" />
+        <altmember cref="P:System.ComponentModel.Design.IDesigner.Verbs" />
       </Docs>
     </Member>
   </Members>
